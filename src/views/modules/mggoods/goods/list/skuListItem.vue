@@ -1,0 +1,370 @@
+<template>
+  <div>
+      <el-table
+        width="100%"
+        :data="dataList"
+        border
+        v-loading="dataListLoading"
+        style="width: 100%"
+        @selection-change="handleSelectionChange"
+        >
+        <el-table-column
+          type="selection"
+          width="70">
+        </el-table-column>
+
+        <el-table-column
+          label="序号"
+          width="70"
+          align="center">
+            <template slot-scope="scope">
+              {{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}
+            </template>
+        </el-table-column>
+
+		    <el-table-column
+		      prop="specSerial"
+		      label="sku"
+          width="180"
+		      align="center">
+		    </el-table-column>
+
+        <el-table-column
+		      label="图片"
+		      align="center"
+          width="120">
+            <template slot-scope="scope">
+                  <img :src="scope.row.specMainPicture | filterImgUrl" alt="" style="width:60px;height:60px;object-fit: contain;">
+            </template>
+		    </el-table-column>
+
+        <el-table-column
+		      prop="goodsName"
+		      label="商品名称"
+          width="180"
+		      align="center">
+		    </el-table-column>
+
+        <el-table-column
+		      prop="brandName"
+		      label="品牌"
+		      align="center" >
+		    </el-table-column>
+
+       <el-table-column
+		      prop="price"
+		      label="价格(销售价/成本价)"
+		      align="right"
+          min-width="120">
+            <template slot-scope="scope">
+              <div class="priceWrap">  
+                  <div class="price1">￥{{scope.row.specSellPrice}}</div>
+                  <div class="price2">￥{{scope.row.specCostPrice}}</div>
+              </div>
+            </template>
+		    </el-table-column>
+
+         <el-table-column
+          prop="gcName"
+		      label="分类"
+		      align="center"
+         >
+            <template slot-scope="scope">
+              <div>
+                 {{scope.row.gcName}}
+              </div>
+            </template>
+		    </el-table-column>
+
+        <el-table-column
+		      prop="specAttrName"
+		      label="规格"
+		      align="center">
+		    </el-table-column>
+
+		    <el-table-column
+		      label="操作"
+		      align="center"
+          width="140"
+		      >
+            <template slot-scope="scope">
+			        <el-button @click="showSkuModel(scope.row)" type="text" size="mini">编辑</el-button>
+              <el-button  @click="cotrolSkuShow('singe',scope.row)" type="text" size="mini">
+                  <span  v-if="scope.row.specShow==0 || scope.row.specShow==2">上架</span>
+                  <span  v-if="scope.row.specShow==1" class="artclose">下架</span>
+                  <!-- <span  v-if="scope.row.specShow==2"   style="color:#FF0000">未上架</span> -->
+
+              </el-button>
+              <!-- <div class="btnWrap">
+                <div  class="editWrap" >
+                    <svg class="icon-svg btsvg" aria-hidden="true"><use xlink:href="#icon-edit-square"></use></svg>
+                    <span>编辑</span>
+                </div>
+
+                <div class="upDownWrap" @click="cotrolSkuShow('singe',scope.row)">
+                    <span v-if="scope.row.specShow==1" style="color:#0B9D27;" >
+                        <svg class="icon-svg btsvg" aria-hidden="true"><use xlink:href="#icon-vertical-align-top"></use></svg>
+                        <span>下架</span>
+                    </span>
+                    <span v-else style="color:#FF0000" >
+                        <svg class="icon-svg btsvg" aria-hidden="true"><use xlink:href="#icon-vertical-align-botto"></use></svg>
+                        <span>上架</span>
+                    </span>
+                </div>
+              </div> -->
+			      </template>
+		    </el-table-column>
+	  </el-table>
+    <div  class="bottomFun"> 
+        <div class="bottomFunLeft">
+            <!-- <el-checkbox v-model="checked" @change="change">全选</el-checkbox> -->
+           <div class="grayBtnWarp">
+              <el-button type="primary" plain @click="cotrolSkuShow('batch',1)">上架</el-button>
+              <el-button type="info" plain @click="cotrolSkuShow('batch',0)">下架</el-button>
+              <!-- <el-button type="danger" plain @click="deleteHandle()">删除</el-button> -->
+           </div>
+        </div>
+       <!-- 分页 -->
+       <el-pagination
+	      @size-change="pageSizeChangeHandle"
+	      @current-change="pageCurrentChangeHandle"
+	      :current-page="page"
+	      :page-sizes="[10, 20, 50, 100]"
+	      :page-size="limit"
+	      :total="total"
+	      layout="total, sizes, prev, pager, next, jumper">
+	    </el-pagination>
+    </div>
+
+    <skuData v-if="skuDataVisible" ref="skuDataCompon" @searchDataList="getDataList" ></skuData>
+  </div>
+</template>
+
+<script>
+import mixinViewModule from '@/mixins/view-module'
+
+import skuData from './model-sku-data'
+
+import { goodsSpecShow } from '@/api/api'
+import { goodsSpecPage } from '@/api/url'
+
+export default {
+  mixins: [mixinViewModule],
+  data () {
+    return {
+      mixinViewModuleOptions: {
+          getDataListURL: goodsSpecPage,
+          activatedIsNeed:false,
+          getDataListIsPage: true,
+          // exportURL: '/admin-api/log/login/export',
+          // deleteURL: deleteGoodsUrl,
+          // deleteIsBatch: true,
+          // deleteIsBatchKey: 'id'
+      },
+      checked:false,
+      skuDataVisible:false,
+      multipleSelection:[],
+      dataForm:{},
+    }
+  }, 
+  components: {
+      skuData,
+	},
+  created () {
+  },
+  methods: {
+    init(dataForm){
+        Object.assign(this.dataForm,dataForm)
+        this.getDataList();
+    },
+    reset () {
+
+    },
+    editRow(){
+      
+    },
+    showSkuModel(row){
+      this.skuDataVisible = true;
+      row.goodsName = this.dataForm.goodsName
+      this.$nextTick(()=>{
+          this.$refs.skuDataCompon.init(row);
+      })
+    },
+    change(tab){
+        console.log(tab);
+    },
+    handleSelectionChange(val){
+      this.multipleSelection = val;
+       this.dataListSelectionChangeHandle(val);
+    },
+    getIds(){
+      var ids= [];
+      console.log(this.multipleSelection);
+      this.multipleSelection.forEach((item,index)=>{
+          if("object" == typeof(item)){
+            ids.push(item.id);
+          }else{
+            ids.push(id);
+          }
+      })
+      return ids;
+    },
+    // 控制上下架
+    cotrolSkuShow(type,rowOrstatus){
+        var ids= [];
+        var specShow = 0;
+        if(type=="batch"){ //批量
+          if(this.multipleSelection.length==0){
+            this.$message({
+              message: "请选择商品",
+              type:"warning",
+              duration: 1500,
+            })
+            return
+          }
+
+          ids = this.getIds();
+          specShow = rowOrstatus
+        }else{ //单个
+          ids = [rowOrstatus.id]
+          specShow = rowOrstatus.specShow==1?0:1;
+        }
+        var obj = {
+            ids:ids,
+            specShow:specShow,
+        }
+        goodsSpecShow(obj).then(res=>{
+            let status="";
+            let msg = "";
+            if(res.code=="200"){
+              status= "success"
+              msg = specShow==1?"sku上架成功":"sku下架成功"
+              this.getDataList();
+            }else{
+               status= "error"
+                msg = res.msg;
+            }
+            this.$message({
+               message: msg,
+              type:status,
+              duration: 1500,
+            })
+        })
+    },
+      
+  }
+}
+</script>
+<style lang="scss"  scoped>
+@import "@/element-ui/theme-variables.scss";
+// 表头背景和字体颜色
+/deep/ .el-table__header  th{
+  background:#f5f7fa;
+}
+// 勾选表格复选框居中
+/deep/ tr .cell{
+    display: flex;
+    justify-content: center
+}
+// 表内字体默认颜色
+/deep/ .el-table__row{
+ color: #999999FF;
+ font-size: 14px;
+}
+
+// 复选框颜色改正
+/deep/ .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+    // background-color: #666666 !important;
+    // border-color: #666666 !important;
+}
+// 表格内部纵向分割线颜色
+.el-table--border td, .el-table--border th, .el-table__body-wrapper .el-table--border.is-scrolling-left~.el-table__fixed{
+      border-right: 1px solid white;
+}
+// 商品 
+.goodsPropsWrap{
+  margin: auto;
+  height: 110px;
+  width: 320px;
+    display: flex;
+  justify-content: space-around;
+  align-items: center;
+  .goodsImg{
+      width: 70px;
+      height: 70px;
+      img{
+        width:100%;
+        height: 100%;
+      }
+  }
+  .goodsProps{
+        width: 200px;
+        height: 70px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        color: #999999;
+      .goodsName{
+        color: #666666FF;
+      }
+  }
+}
+
+// 价格
+.priceWrap{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  .price1{
+    color: $--color-primary;
+  }
+  div{
+    width: 100%;
+    text-align: right;
+  }
+
+}
+
+// 分类
+
+
+// 店铺名称
+
+// 操作
+.btnWrap{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    .editWrap{
+       cursor: pointer;
+    }
+  .skuWrap{
+    cursor: pointer;
+  }
+  .btsvg{
+    margin-right: 3px;
+  }
+}
+.el-table__row:hover {
+  .editWrap,.skuWrap{
+    color: #2260D2; 
+  }
+}
+.bottomFun{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  .bottomFunLeft{
+    width: 450px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+
+}
+
+
+</style>
