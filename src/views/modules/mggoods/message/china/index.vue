@@ -106,24 +106,11 @@
             categoryCnPage(obj).then((res)=>{
                 console.log('分类信息',res)
                 if(res.code == 200 && res.data.list){
-                    // this.operateShopStore = [...this.operateShopStore,...res.data.list]
                     this.dataList = res.data.list;
                 }
             })
         },
         methods: {
-            // checkChange(list){
-            //     console.log("check-change");
-            //     console.log(list);
-            // },
-            // nodeClick(list){
-            //     console.log("node-click");
-            //     console.log(list);
-            // },
-            // currentChange(list){
-            //     console.log("current-change");
-            //     console.log(list);
-            // },
             reset() {
                 this.dataForm.conditionName = "";
                 this.getDataList();
