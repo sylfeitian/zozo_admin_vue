@@ -4,11 +4,9 @@
         <el-button size="mini" @click="more">查看详情</el-button>
         <el-button size="mini">操作日志</el-button>
         <el-table border style="margin-top: 20px;">
-            <el-table-column label="数据列表" header-align="left" align="left">
-                <el-table-column label="时间" header-align="center" align="center"></el-table-column>
-                <el-table-column label="账户" header-align="center" align="center"></el-table-column>
-                <el-table-column label="操作内容" header-align="center" align="center"></el-table-column>
-            </el-table-column>
+            <el-table-column label="时间" header-align="center" align="center"></el-table-column>
+            <el-table-column label="账户" header-align="center" align="center"></el-table-column>
+            <el-table-column label="操作内容" header-align="center" align="center"></el-table-column>
         </el-table>
         <!-- 分页 -->
         <el-pagination
@@ -30,7 +28,7 @@
         mixins: [mixinViewModule],
         data () {
             return {
-                breaddata: [ "商品管理", "商品详情"],
+                breaddata: [ "商品管理","商品管理", "商品详情", "操作日志"],
             }
         },
         components: {

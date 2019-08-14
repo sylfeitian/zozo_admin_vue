@@ -1,8 +1,9 @@
 <template>
     <div>
-        <list v-if="mainVisible" ref="listCompon" @detShowChange="detShowChange"></list>
+        <list v-if="mainVisible" ref="listCompon" @detShowChange="detShowChange" @editList="editList"></list>
         <operationallog v-if="operationallogVisible" ref="operationallogCompon" @operationallogList="operationallogList" @more="more"></operationallog>
-        <detail v-if="detailVisible" ref="detailCompon" @detailList="detailList" @logMore="logMore" @operational="operational"></detail>
+        <detail v-if="detailVisible" ref="detailCompon" @logMore="logMore" @operational="operational"></detail>
+        <edit v-if="editVisible" ref="editCompon"></edit>
     </div>
 </template>
 
@@ -10,6 +11,7 @@
     import list from "./list"
     import operationallog from "./operationalLog"
     import detail from "./detail";
+    import edit from "./edit";
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     export default {
@@ -18,14 +20,16 @@
             return {
                 mainVisible:true,
                 detailVisible:false,
-                operationallogVisible:false
+                operationallogVisible:false,
+                editVisible: false
             }
         },
         components: {
             Bread,
             detail,
             list,
-            operationallog
+            operationallog,
+            edit
         },
         methods: {
             detShowChange () {
@@ -46,10 +50,10 @@
             //     this.detailVisible = false;
             //     this.recordlistVisible = true;
             // },
-            // logMore () {
-            //     this.detailVisible = false;
-            //     this.recordlistVisible = true;
-            // },
+            logMore () {
+                this.detailVisible = false;
+                this.mainVisible = true;
+            },
             operational () {
                 this.detailVisible = false;
                 this.operationallogVisible = true;
@@ -57,6 +61,10 @@
             more () {
                 this.detailVisible = true;
                 this.operationallogVisible = false;
+            },
+            editList () {
+                this.mainVisible = false;
+                this.editVisible = true;
             }
         },
     }

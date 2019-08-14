@@ -1,8 +1,6 @@
 <template>
     <div>
         <Bread :breaddata="breaddata" @changePage="changePage" :index="'2'"></Bread>
-        <el-button size="mini">查看详情</el-button>
-        <el-button size="mini" @click="operational">操作日志</el-button>
         <el-form
                 ref="dataForm"
                 class="grayLine topGapPadding"
@@ -12,16 +10,17 @@
         >
             <el-form-item label="商品分类：" class="item" style="margin-top: 20px;">
                 <span>{{dataForm.id}}</span>
+                <span style="margin-left: 2%;color:green;cursor:pointer;">修改</span>
             </el-form-item>
-            <el-form-item label="商品ID：" class="item">
+            <el-form-item label="商品编码：" class="item">
                 <span>{{dataForm.id}}</span>
-                <span style="margin-left:2%;color:green;cursor:pointer;" @click="logMore">查看备案信息</span>
             </el-form-item>
             <el-form-item label="日本商品名称：" class="item">
                 <span>{{dataForm.id}}</span>
             </el-form-item>
             <el-form-item label="商品名称：" class="item">
-                <span>{{dataForm.id}}</span>
+                <el-input v-model="dataForm.goodsId" placeholder="请输入" maxlength="60"></el-input>&nbsp;&nbsp;
+                <span style="color: #bebebe;">最多可输入60个文字</span>
             </el-form-item>
             <el-form-item label="品牌：" class="item">
                 <span>{{dataForm.id}}</span>
@@ -34,20 +33,24 @@
             </el-form-item>
             <el-form-item label="原产地：" class="item">
                 <span>{{dataForm.id}}</span>
+                <el-input v-model="dataForm.goodsId" placeholder="请输入" maxlength="10"></el-input>&nbsp;&nbsp;
+                <span style="color: #bebebe;">最多可输入10个文字</span>
             </el-form-item>
             <el-form-item label="材质：" class="item">
                 <span>{{dataForm.id}}</span>
+                <el-input v-model="dataForm.goodsId" placeholder="请输入" maxlength="10"></el-input>&nbsp;&nbsp;
+                <span style="color: #bebebe;">最多可输入10个文字</span>
             </el-form-item>
             <el-form-item label="上架状态：" class="item">
                 <span>{{dataForm.id}}</span>
             </el-form-item>
-            <el-form-item label="日本上架状态：" class="item">
+            <el-form-item label="可售状态：" class="item">
                 <span>{{dataForm.id}}</span>
             </el-form-item>
             <el-form-item label="颜色尺码：">
                 <el-table border="" class="inforRight" style="display:inline-block;width: 80%">
                     <el-table-column prop="goodsName" label="SKU编码" align="center"></el-table-column>
-<!--                    <el-table-column prop="specId" label="备案编码" align="center"></el-table-column>-->
+                    <!--                    <el-table-column prop="specId" label="备案编码" align="center"></el-table-column>-->
                     <el-table-column prop="specName" label="颜色" align="center"></el-table-column>
                     <el-table-column prop="goodsName" label="尺码" align="center"></el-table-column>
                     <el-table-column prop="specId" label="尺码信息" align="center"></el-table-column>
@@ -90,11 +93,11 @@
 </template>
 
 <script>
-    import addEditData from './recordList'
+    //import addEditData from './recordList'
     import Bread from "@/components/bread";
     import Table from "@/components/table";
     import quillEditorImg from "@/components/quillEditor"
-    //import addEditData from './model-show-data'
+    import addEditData from './model-edit-data'
     import mixinViewModule from '@/mixins/view-module'
 
     import 'quill/dist/quill.core.css';
@@ -132,21 +135,12 @@
             // logMore() {
             //     this.$router.push({ name: "mggoods-message-goodslist-recordList" });
             // },
-            //返回上一级
-            // changePage() {
-            //     this.$emit("changeState");
-            // },
+            // 返回上一级
+            changePage() {
+                this.$emit("changeState");
+            },
             changePage(){
                 this.$emit("showList");
-            },
-            logMore(index=-1,row=""){
-                this.setAddEditDataVisible(true);
-                this.$nextTick(() => {
-                    this.$refs.addEditData.init(row)
-                })
-            },
-            setAddEditDataVisible(boolargu){
-                this.addEditDataVisible =  boolargu;
             },
             operational () {
                 this.$emit("operational")
@@ -185,9 +179,12 @@
         width: 100px!important;
     }
     .item {
-        height: 26px!important;
+        height: 28px!important;
     }
     .grayLine {
         border-bottom: 0!important;
+    }
+    /deep/ .el-input {
+        width: 200px!important;
     }
 </style>
