@@ -1,0 +1,143 @@
+<template>
+    <div>
+        <el-form
+                :model="dataForm"
+                :rules="dataRule"
+                ref="addForm"
+                @keyup.enter.native="dataFormSubmit('addForm')"
+                label-width="120px"
+
+        >
+            <el-form-item style="background-color: #f3f3f3;">
+                <p style="margin-left: -100px;">基础信息</p>
+            </el-form-item>
+            <el-form-item label="标题：" prop="sizeName" :label-width="formLabelWidth">
+                <el-input v-model="dataForm.sizeName" auto-complete="off" placeholder="请填写时尚纪实标题" style="width: 1200px;"></el-input>
+                <p style="color: #bebebe;line-height: 14px;">请输入120个汉字，包含汉字、数字、英文、常用字符</p>
+            </el-form-item>
+            <el-form-item label="编号：" prop="" :label-width="formLabelWidth" style="display: inline-block;vertical-align:top;">
+                <el-input v-model="dataForm.sizeName" auto-complete="off" placeholder="" style="width: 540px;"></el-input>
+                <p style="color: #bebebe;line-height: 14px;">请输入20个字符以内，包含英文、数字的编号</p>
+            </el-form-item>
+            <el-form-item label="发布人：" prop="" :label-width="formLabelWidth" style="display: inline-block;vertical-align:top;">
+                <el-input v-model="dataForm.sizeName" auto-complete="off" placeholder="" style="width: 540px;"></el-input>
+            </el-form-item>
+            <el-form-item label="关注量：" prop="" :label-width="formLabelWidth" style="display: inline-block;">
+                <el-input v-model="dataForm.sizeName" auto-complete="off" placeholder="（仅可填写数字，可选）" style="width: 540px;"></el-input>
+            </el-form-item>
+            <el-form-item label="浏览量：" prop="" :label-width="formLabelWidth" style="display: inline-block;">
+                <el-input v-model="dataForm.sizeName" auto-complete="off" placeholder="（仅可填写数字，可选）" style="width: 540px;"></el-input>
+            </el-form-item>
+            <el-form-item style="background-color: #f3f3f3;">
+                <p style="margin-left: -100px;">详细信息</p>
+            </el-form-item>
+            <el-form-item label="内容：" prop="con" :label-width="formLabelWidth" style="display: inline-block;vertical-align:top;">
+                <quill-editor-img class="inforRight" style="display: inline-block;"  @artmessageContent='artmessageContent' ref="refmessageContent"></quill-editor-img>
+            </el-form-item>
+            <el-form-item label="上传封面图：" prop="img" :label-width="formLabelWidth">
+                <template slot-scope="scope">
+                    <div class="pcCoverUrl imgUrl" style="float: left;width:50%;">
+                        <img-cropper
+                                v-loading="uploading"
+                                ref="cropperImg"
+                                list-type="picture-card"
+                                :index="'1'"
+                                :cropImg="dataForm.mainPic"
+                                :imgWidth='"100px"'
+                                :imgHeight='"100px"'
+                                @GiftUrlHandle="GiftUrlHandle"
+                                style="display: inline-block;"
+                        ></img-cropper>
+                        <el-dialog :visible.sync="dialogVisible" size="tiny">
+                            <img width="100%" :src="dialogImageUrl" alt="">
+                        </el-dialog>
+                    </div>
+                </template>
+            </el-form-item>
+            <el-form-item style="text-align: center;margin-left: -120px!important;">
+                <el-button  @click="dataFormCancel()">保存</el-button>
+                <el-button type="primary" @click="dataFormSubmit('addForm')">保存并发布</el-button>
+            </el-form-item>
+        </el-form>
+    </div>
+</template>
+
+<script>
+    import imgCropper from "@/components/model-photo-cropper";
+    import { uploadPicBase64 } from '@/api/api'
+    import quillEditorImg from "@/components/quillEditor"
+    export default {
+        data () {
+            return {
+                dataForm: {},
+                dataRule : {
+                    sizeName : [
+                        { required: true, message: '必填项不能为空', trigger: 'blur' },
+                    ],
+                    con : [
+                        { required: true, message: '必填项不能为空', trigger: 'blur' },
+                    ],
+                    img : [
+                        { required: true, message: '必填项不能为空', trigger: 'blur' },
+                    ]
+                },
+                formLabelWidth: '120px',
+                dialogImageUrl: "",
+                uploading:false,
+                dialogVisible: false
+            }
+        },
+        components: {
+            quillEditorImg,
+            imgCropper
+        },
+        methods: {
+            artmessageContent(messageContent){
+                this.dataForm.messageContent = messageContent;
+            },
+            init (id) {
+                console.log(this.id)
+            },
+            GiftUrlHandle(val){
+                console.log("base64上传图片接口");
+                console.log(val);
+                this.uploadPic(val);
+            },
+            //上传图片
+            uploadPic(base64){
+                const params = { "imgStr": base64 };
+                const that = this;
+                this.uploading = true;
+                return new Promise(function(resolve){
+                    uploadPicBase64(params).then(res =>{
+                        that.uploading = false
+                        if(res && res.code == "200"){
+                            var url = res.data.url
+                            that.dataForm.gcPic = url;
+                            // that.currentIndex = -1;//不能这样写，防止网络延迟
+                            resolve("true")
+                        }else {
+                            // that.currentIndex = -1;//不能这样写，防止网络延迟
+                            resolve("false")
+                        }
+                    })
+                });
+            },
+            changePage(){
+                this.$emit("addList");
+            }
+        }
+    }
+</script>
+
+<style scoped>
+    /deep/ .el-form-item__content {
+        line-height: 20px!important;
+    }
+    /deep/ .upload-box {
+        border: 0!important;
+    }
+    /deep/ .el-button {
+        width: 150px;
+    }
+</style>
