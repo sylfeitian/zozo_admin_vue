@@ -101,6 +101,7 @@
 <script>
 import imgCropper from "@/components/model-photo-cropper";
 import { uploadPicBase64 } from '@/api/api'
+import { backScanCategoryCn,updataCategoryCn } from '@/api/api'
 export default {
     name: "model-add-edit-data",
     data() {
@@ -150,29 +151,6 @@ export default {
                 { required: true, message: '必填项不能为空', trigger: 'blur' },
             ]
       },
-    //   dataArray:[{
-    //       value: 'zhinan',
-    //       label: '指南',
-    //       children: [
-    //           {
-    //         value: 'shejiyuanze',
-    //         label: '设计原则',
-    //         children: [{
-    //           value: 'yizhi',
-    //           label: '一致'
-    //         }, {
-    //           value: 'fankui',
-    //           label: '反馈'
-    //         }, {
-    //           value: 'xiaolv',
-    //           label: '效率'
-    //         }, {
-    //           value: 'kekong',
-    //           label: '可控'
-    //         }]
-    //        }
-    //        ]
-    //     }],
     }
   },
   props:['dataArray'],
@@ -197,41 +175,26 @@ export default {
               // this.getApplyPullList();
           })
       },
-        backScan(row){
-            var obj = {
-                params:{
-                    gcId:row.id,
-                }
-            }
-            goodsclasscustomById(obj).then((res)=>{
-                if(res.code == 200){
-                    console.log(res.data)
-                    this.value = res.data.idPath.split(',')
-                    // 防止后端反回的字符串中最后一位是“，”
-                    if(this.value.length>0 && this.value[this.value.length-1] ==""){
-                        this.value.splice(this.value.length-1,1);
-                    }
-                    
-                    if(res.data.gcIdPath) this.value2 = res.data.gcIdPath.split(',')
-                    // 防止后端反回的字符串中最后一位是“，”
-                    if(this.value2.length>0 && this.value2[this.value2.length-1] ==""){
-                        this.value2.splice(this.value2.length-1,1);
-                    }
+      // 编辑回显
+      backScan(){
+          var obj  = {
+              id:this.row.id
+          }
+          backScanCategoryCn(obj).then((res)=>{
+              if(res.code == 200){
+                  Object.assign(this.dataForm,res.data);
+                  this.$nextTick(()=>{
+                      if(this.$refs.cropperImg1){
+                          console.log(this.$refs.cropperImg1	);
+                          this.$refs.cropperImg1.cropper.imgShow  = true
+                          this.$refs.cropperImg1.cropper.cropImg  = this.dataForm.brandPic
+                      }
+                  })
+              }else{
 
-                    // 如果是编辑，要计算他的父级id
-                    if(row.type=="edit"){
-                        var index = this.value.indexOf(this.row.id);
-                        if(index!=-1) this.value.splice(index,1);
-                        this.dataForm.gcParentId =  res.data.gcParentId;
-                         this.dataForm.gcPic =  res.data.gcPic;
-                        
-                    }
-                    this.dataForm.sort =  res.data.sort;
-                    // this.dataForm.brandId =  res.data.brandId;
-                    // this.dataForm.brandName =  res.data.brandName;
-                }
-            })
-        },
+              }
+          })
+      },
         handleSelect(item){
           console.log(item);
           this.dataForm.brandName= item.brandName
@@ -252,7 +215,7 @@ export default {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                      this.saveLoading = true;
-                    let fn = this.row.type=="edit"?updataGoodsclasscustom:addGoodsclasscustom
+                    let fn = updataCategoryCn
                    fn(this.dataForm).then((res)=>{
                         this.saveLoading = false;
                        let status = "warning"
