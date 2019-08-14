@@ -21,11 +21,11 @@
                 </template>
             </el-table-column>
             <el-table-column prop="name" label="分类名称" align="center"></el-table-column>
-            <el-table-column prop="japanDesc" label="分类属性" align="center"></el-table-column>
-            <el-table-column prop="memberAvatar" label="分类图片" align="center">
+            <el-table-column prop="grade" label="分类属性" align="center"></el-table-column>
+            <el-table-column prop="genderMain" label="分类图片" align="center">
                 <template slot-scope="scope">
                     <img
-                            :src="$imgDomain + scope.row.memberAvatar"
+                            :src="$imgDomain + scope.row.genderMain"
                             alt=""
                             style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                     >
