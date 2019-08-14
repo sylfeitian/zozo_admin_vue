@@ -3,18 +3,11 @@
         <Bread  :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
             <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
-            <el-form-item label="商品名称/ID：">
-                <el-input v-model="dataForm.goodsName" placeholder="商品名称/商品编号" ></el-input>
+            <el-form-item label="商品名称：">
+                <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" ></el-input>
             </el-form-item>
-            <el-form-item  label="品牌：">
-                <el-select v-model="dataForm.brandName" placeholder="请选择">
-                    <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
+            <el-form-item label="商品ID：">
+                <el-input v-model="dataForm.goodsId" placeholder="请输入spuID" ></el-input>
             </el-form-item>
             <el-form-item label="分类：">
                 <el-select v-model="dataForm.conditionName" placeholder="请选择">
@@ -26,9 +19,14 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <br>
-            <el-form-item  label="所属店铺：">
-                <el-select v-model="dataForm.storeName" placeholder="请选择">
+            <el-form-item label="店铺名称：">
+                <el-input v-model="dataForm.goodsId" placeholder="请输入店铺名称" ></el-input>
+            </el-form-item>
+            <el-form-item label="品牌名称：">
+                <el-input v-model="dataForm.goodsId" placeholder="请输入品牌名称" ></el-input>
+            </el-form-item>
+            <el-form-item label="上架状态：">
+                <el-select v-model="dataForm.state" placeholder="请选择">
                     <el-option
                             v-for="item in options"
                             :key="item.value"
@@ -47,7 +45,7 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="价格变动：">
+            <el-form-item label="价格变更：">
                 <el-select v-model="dataForm.state" placeholder="请选择">
                     <el-option
                             v-for="item in options"
@@ -58,7 +56,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="getDataList()">查询</el-button>
+                <el-button  class="btn" type="primary" @click="editList()">查询</el-button>
                 <el-button   class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
             </el-form-item>
         </el-form>
@@ -177,7 +175,7 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button size="mini" type="text" @click="detShowChange(scope.row)">查看详情</el-button>
+<!--                    <el-button size="mini" type="text" @click="detShowChange(scope.row)">查看详情</el-button>-->
                     <el-button @click="goEidt(scope.row)" type="text" size="mini">编辑</el-button>
                     <el-button  @click="cotrolGoodsShow('singe',scope.row)" type="text" size="mini" >
                         <span  v-if="scope.row.goodsShow==0 || scope.row.goodsShow==2">上架</span>
@@ -308,6 +306,10 @@
             //详情页展示判断
             detShowChange() {
                 this.$emit("detShowChange");
+            },
+            //编辑页展示判断
+            editList() {
+                this.$emit("editList");
             },
             //查看详情
             getSalesDet(index, statue) {

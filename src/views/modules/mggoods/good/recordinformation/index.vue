@@ -135,14 +135,14 @@
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="gcName" label="三级分类编码"  align="center">
+            <el-table-column prop="gcName" label="京东三级分类"  align="center" v-if="dataForm.goodsShow==''">
                 <template slot-scope="scope">
                     <div>
                         {{scope.row.gcName}}
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="gcName" label="海关备案号"  align="center">
+            <el-table-column prop="gcName" label="HSCODE"  align="center">
                 <template slot-scope="scope">
                     <div>
                         {{scope.row.gcName}}

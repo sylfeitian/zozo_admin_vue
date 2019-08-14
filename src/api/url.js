@@ -161,3 +161,11 @@ export const uploadPicBase64 = `${base}/picture`;
 // 店铺管理--------------------------------------------------------------------------------------------------------------------
 // 店铺列表
 export const shopPageUrl = `${base}/shopStore/page`;
+
+
+
+// 中国分类管理--------------------------------------------------------------------------------------------------------------------
+// 中国分类管理列表
+export const categoryCnUrl = `${base}/categoryCn/page`;
+// 删除分类接口
+export const deleteCategoryCnUrl = `${base}/categoryCn/delete`;

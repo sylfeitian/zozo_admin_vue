@@ -1,7 +1,7 @@
 <template>
   <div class="aui-wrapper aui-page__login">
     <canvasbg></canvasbg>
-    <div class="aui-content__wrapper" stype=" pointer-events:auto;">
+    <div class="aui-content__wrapper" style=" pointer-events:auto;">
       <main class="aui-content logincontent">
         <div class="login-header">
           <h2 class="login-brand">{{ $t('brand.lg') }}</h2>
@@ -47,11 +47,11 @@
             </el-form-item>
           </el-form>
         </div>
-        <div class="login-footer">
-          <p>
-          </p>
-          <p><a href="https://www.leimingtech.com/" target="_blank">雷铭科技</a>2019 © leimingtech.com</p>
-        </div>
+<!--        <div class="login-footer">-->
+<!--          <p>-->
+<!--          </p>-->
+<!--          <p><a href="https://www.leimingtech.com/" target="_blank">雷铭科技</a>2019 © leimingtech.com</p>-->
+<!--        </div>-->
       </main>
     </div>
   </div>
