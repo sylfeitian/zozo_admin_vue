@@ -394,7 +394,7 @@ export const categoryCn = params => { return http.get(`${base}/categoryCn`, para
 // 删除分类接口
 export const deleteCategoryCn = params => { return http.delete(`${base}/categoryCn/delete`, params).then(res => res.data); };
 // 新增/修改分类
-export const updataCategoryCn = params => { return http.put(`${base}/categoryCn/edit`, params).then(res => res.data); };
+export const updateCategoryCn = params => { return http.put(`${base}/categoryCn/edit`, params).then(res => res.data); };
 // 关联查询一级二级三级分类
 export const categoryCnList = params => { return http.get(`${base}/categoryCn/listCorrelated`, params).then(res => res.data); };
 // 分页查询分类
@@ -409,3 +409,49 @@ export const showCategoryCn = params => { return http.put(`${base}/categoryCn/sh
 export const categoryCnSort = params => { return http.put(`${base}/categoryCn/sort`, params).then(res => res.data); };
 // 根据分类id查询中方分类
 export const backScanCategoryCn = params => { return http.get(`${base}/categoryCn/${params.id}`, params).then(res => res.data); };
+
+
+
+//备案商品管理接口--------------------------------------------------------------------------------------------------------------------
+// 导出备案商品信息
+export const exportRegister = params => { return http.get(`${base}/goods/register/export`, params).then(res => res.data); };
+// 导入商品备案信息
+export const importRegister = params => { return http.post(`${base}/goods/register/import`, params).then(res => res.data); };
+// 备案商品分页查询接口
+export const registerPage = params => { return http.get(`${base}/goods/register/page`, params).then(res => res.data); };
+// 根据商品的spuid查询商品的备案信息
+export const backScanRegister = params => { return http.post(`${base}/goods/register/${params.id}`, params).then(res => res.data); };
+
+
+
+
+//品牌管理接口--------------------------------------------------------------------------------------------------------------------
+// 修改品牌
+export const updataShopBrand = params => { return http.put(`${base}/shopBrand`, params).then(res => res.data); };
+// 搜索用品牌列表
+export const searchShopBrand = params => { return http.get(`${base}/shopBrand/brand/page`, params).then(res => res.data); };
+// 导入品牌信息
+export const importShopBrand = params => { return http.post(`${base}/shopBrand/import`, params).then(res => res.data); };
+// 分页查询信息
+export const shopBrandPage = params => { return http.get(`${base}/shopBrand/page`, params).then(res => res.data); };
+// 根据店铺id分页查询信息
+export const pageByStore = params => { return http.get(`${base}/shopBrand/pageByStore`, params).then(res => res.data); };
+// 根据中国ID获取品牌信息
+export const backScanShopBrand = params => { return http.get(`${base}/shopBrand/${params.id}`, params).then(res => res.data); };
+
+
+
+
+//风格标签管理接口--------------------------------------------------------------------------------------------------------------------
+// 查询主标签列表(店铺和look folder)
+export const searchShopStyle = params => { return http.get(`${base}/shopstyle/style/check/mainList`, params).then(res => res.data); };
+// 新增/修改标签信息
+export const updateShopStyle = params => { return http.post(`${base}/shopstyle/style/edit`, params).then(res => res.data); };
+// 查询标签分页列表
+export const shopStylePage = params => { return http.get(`${base}/shopstyle/style/page`, params).then(res => res.data); };
+// 修改主标签关联副标签
+export const shopStyleUnion = params => { return http.post(`${base}/shopstyle/style/union`, params).then(res => res.data); };
+// 根据主标签id查询已关联副标签
+export const backScanShopStyleUnion = params => { return http.get(`${base}/shopstyle/style/union/${params.id}`, params).then(res => res.data); };
+// 根据id查询标签详情
+export const backScanShopStyle = params => { return http.get(`${base}/shopstyle/style/${params.id}`, params).then(res => res.data); };

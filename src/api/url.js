@@ -169,3 +169,22 @@ export const shopPageUrl = `${base}/shopStore/page`;
 export const categoryCnUrl = `${base}/categoryCn/page`;
 // 删除分类接口
 export const deleteCategoryCnUrl = `${base}/categoryCn/delete`;
+
+
+
+
+
+// 品牌管理--------------------------------------------------------------------------------------------------------------------
+// 品牌列表
+export const shopBrandUrl = `${base}/shopBrand/page`;
+// 编辑品牌
+export const deleteShopBrandUrl = `${base}/shopBrand`;
+
+
+
+
+// 风格标签管理--------------------------------------------------------------------------------------------------------------------
+// 风格标签列表
+export const shopStyleUrl = `${base}/shopstyle/style/page`;
+// 编辑风格标签
+export const deleteShopStyle = `${base}/shopstyle/style/edit`;
