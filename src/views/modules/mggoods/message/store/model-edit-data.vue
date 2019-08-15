@@ -77,7 +77,7 @@
 </template>
 
 <script>
-    import { updateShopStore,operateShopStore,updateGoodsSpecSku } from '@/api/api'
+    import { updateShopStore,backScanShopStore } from '@/api/api'
     import imgCropper from "@/components/model-photo-cropper";
     import { uploadPicBase64 } from '@/api/api'
     export default {
@@ -137,6 +137,27 @@
                     // this.getApplyPullList();
                 })
             },
+            // 编辑回显
+            backScan(){
+                var obj  = {
+                    id:this.row.id,
+                    storeNameGlo:this.row.storeNameGlo,
+                    storeNameJp:this.row.storeNameJp,
+                    storeName:this.row.storeName,
+                    descriptionJp:this.row.descriptionJp,
+                    description:this.row.description,
+                    imageUrl:this.row.imageUrl,
+                    storeLogo:this.row.storeLogo,
+                }
+                backScanShopStore(obj).then((res)=>{
+                    if(res.code == 200){
+                        Object.assign(this.dataForm,res.data);
+
+                    }else{
+
+                    }
+                })
+            },
             //上传图片
             uploadPic(base64){
                 const params = { "imgStr": base64 };
@@ -180,7 +201,7 @@
                             "mainTag":  this.dataForm.mainTag,
                         }
                         if(this.row) obj.id = this.row.id
-                        var fn = this.row.updateShopStore;
+                        var fn = updateShopStore;
                         fn(obj).then((res) => {
                             this.loading = false;
                             // alert(JSON.stringify(res));
@@ -223,7 +244,7 @@
                 this.closeDialog();
             },
             closeDialog() {
-                this.$parent.addEditDataVisible = false;
+                this.$parent.editDataVisible = false;
             },
         }
     }

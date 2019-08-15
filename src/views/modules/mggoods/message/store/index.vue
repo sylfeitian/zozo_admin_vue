@@ -93,7 +93,7 @@
     import addEditData from './model-add-edit-data'
     import editData from './model-edit-data'
     import { shopPageUrl } from '@/api/url'
-    import { shopStorePage } from '@/api/api'
+    // import { shopStorePage } from '@/api/api'
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -125,19 +125,20 @@
             }
         },
         created(){
-            let obj = {
-                params:{
-                    page:1,
-                    limit:100,
-                }
-            }
-            shopStorePage(obj).then((res)=>{
-                console.log('店铺信息',res)
-                if(res.code == 200 && res.data.list){
-                    // this.operateShopStore = [...this.operateShopStore,...res.data.list]
-                    this.dataList = res.data.list;
-                }
-            })
+            // let obj = {
+            //     params:{
+            //         page:1,
+            //         limit:10,
+            //     }
+            // }
+            // shopStorePage(obj).then((res)=>{
+            //     console.log('店铺信息',res)
+            //     if(res.code == 200 && res.data.list){
+            //         // this.operateShopStore = [...this.operateShopStore,...res.data.list]
+            //         this.dataList = res.data.list;
+            //     }
+            // })
+            this.getDataList();
         },
         components: {
             Bread,
@@ -150,7 +151,7 @@
                 this.dataForm.id = "";//店铺ID
                 this.dataForm.storeName = "";//店铺名称
                 this.dataForm.operateFlag = "";//营业状态
-                //this.handleClick();
+                this.getDataList();
             },
             // 新建
             addHandle(index=-1,row=""){
