@@ -8,17 +8,17 @@
                 @keyup.enter.native="getDataList()"
         >
             <el-form-item label="店铺ID：">
-                <el-input v-model="dataForm.id" placeholder="标签名称" ></el-input>
+                <el-input v-model="dataForm.id" placeholder="请输入" ></el-input>
             </el-form-item>
             <el-form-item label="店铺名称：">
-                <el-input v-model="dataForm.storeName" placeholder="标签名称" ></el-input>
+                <el-input v-model="dataForm.storeName" placeholder="请输入" ></el-input>
             </el-form-item>
             <el-form-item  label="营业状态：">
                 <el-select v-model="dataForm.operateFlag" placeholder="请选择">
                     <el-option
                             v-for="item in operateShopStore"
                             :key="item.id"
-                            :label="item.sgName"
+                            :label="item.name"
                             :value="item.id">
                     </el-option>
                 </el-select>
@@ -28,7 +28,7 @@
                 <el-button class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
             </el-form-item>
         </el-form>
-        <el-button @click="editHandle()" class="btn" type="primary" style="float: right;">导入店铺信息</el-button>
+        <el-button @click="" class="btn" type="primary" style="float: right;">导入店铺信息</el-button>
         <el-table
                 width="100%"
                 :data="dataList"
@@ -62,7 +62,7 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button type="text" @click.native.prevent="editHandle" size="mini">编辑</el-button>
+                    <el-button type="text" @click="editHandle(scope.$index, scope.row)" size="mini">编辑</el-button>
                     <el-button  @click="cotrolOperateFlag('singe',scope.row)" type="text" size="mini" >
                         <span  v-if="scope.row.operateFlag==0">营业</span>
                         <span  v-if="scope.row.operateFlag==1" class="artclose">停业</span>
@@ -119,9 +119,7 @@
                 addDataVisible:false,
                 editDataVisible:false,
                 multipleSelection:[],
-                operateShopStore:[
-                    {id:'',sgName:'全部'},
-                ],//营业状态
+                operateShopStore:[{ id: '0', name: '营业中' },{ id: '1', name: '已停业' }],//营业状态
             }
         },
         created(){

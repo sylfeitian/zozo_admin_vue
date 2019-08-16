@@ -64,7 +64,7 @@
                     </div>
                 </template>
             </el-form-item>
-            <el-form-item label="标签分类：" prop="mainTag">
+            <el-form-item label="选择风格标签：" prop="mainTag">
                 <el-select v-model="value" multiple :options="dataArray" @change="handleChange" clearable change-on-select></el-select>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
@@ -107,10 +107,10 @@
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ],
                     imageUrl: [
-                        {required: true, message: "请选择标签分类", trigger: "blur"}
+                        {required: true, message: "必填项不能为空", trigger: "blur"}
                     ],
                     mainTag: [
-                        {required: true, message: "请选择标签分类", trigger: "change"}
+                        {required: true, message: "必填项不能为空", trigger: "change"}
                     ],
                 },
                 value:[],
@@ -143,9 +143,9 @@
                     id:this.row.id,
                     storeNameGlo:this.row.storeNameGlo,
                     storeNameJp:this.row.storeNameJp,
-                    storeName:this.row.storeName,
+                    // storeName:this.row.storeName,
                     descriptionJp:this.row.descriptionJp,
-                    description:this.row.description,
+                    // description:this.row.description,
                     imageUrl:this.row.imageUrl,
                     storeLogo:this.row.storeLogo,
                 }
