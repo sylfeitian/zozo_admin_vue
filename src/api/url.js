@@ -187,4 +187,4 @@ export const deleteShopBrandUrl = `${base}/shopBrand`;
 // 风格标签列表
 export const shopStyleUrl = `${base}/shopstyle/style/page`;
 // 编辑风格标签
-export const deleteShopStyle = `${base}/shopstyle/style/edit`;
+export const deleteShopStyle = `${base}/shopstyle`;

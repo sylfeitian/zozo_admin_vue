@@ -443,6 +443,8 @@ export const backScanShopBrand = params => { return http.get(`${base}/shopBrand/
 
 
 //风格标签管理接口--------------------------------------------------------------------------------------------------------------------
+// 删除标签接口
+export const deleteShopStyle = params => { return http.delete(`${base}/shopstyle`, params).then(res => res.data); };
 // 查询主标签列表(店铺和look folder)
 export const searchShopStyle = params => { return http.get(`${base}/shopstyle/style/check/mainList`, params).then(res => res.data); };
 // 新增/修改标签信息
