@@ -24,7 +24,7 @@
                 this.addoraditVisible = true;
                 this.mainVisible = false;
                 this.$nextTick(()=>{
-                    // this.$refs.addoraditCompon.init(id);
+                    this.$refs.addoraditCompon.getDataList();
                 })
             },
             addoraditList(){
