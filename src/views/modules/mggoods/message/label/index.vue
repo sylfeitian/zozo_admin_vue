@@ -40,7 +40,7 @@
                     <!-- {{scope.$index+1+(parseInt(params.currentPage)-1)* parseInt(params.currentPageSize) }} -->
                 </template>
             </el-table-column>
-            <el-table-column prop="labelName" label="风格标签名称" align="center"></el-table-column>
+            <el-table-column prop="styleName" label="风格标签名称" align="center"></el-table-column>
             <el-table-column label="风格标签类型" align="center">
                 <template slot-scope="scope">
                     <span  v-if="scope.row.styleType==0">主标签</span>
