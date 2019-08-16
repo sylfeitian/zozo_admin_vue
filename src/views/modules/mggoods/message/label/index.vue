@@ -15,9 +15,9 @@
                 <el-select v-model="dataForm.styleType" placeholder="请选择">
                     <el-option
                             v-for="item in options"
-                            :key="item.value"
+                            :key="item.id"
                             :label="item.label"
-                            :value="item.value">
+                            :value="item.id">
                     </el-option>
                 </el-select>
             </el-form-item>
@@ -44,7 +44,8 @@
             <el-table-column prop="styleType" label="风格标签类型" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button type="text" @click.native.prevent="addOrEditHandle" size="mini">编辑</el-button>
+                    <el-button type="text" @click="addOrEditHandle(scope.$index, scope.row)" size="mini">编辑</el-button>
+                    <el-button type="text" @click.native.prevent="addOrEditHandle" size="mini">管理副风格标签</el-button>
                     <el-button class="artdanger" @click.native.prevent="deleteHandle(scope.row.id)"type="text"size="mini">删除</el-button>
                 </template>
             </el-table-column>
@@ -90,13 +91,10 @@
                 },
                 breaddata: [ "基础资料管理", "风格标签管理"],
                 options: [{
-                    value: '选项1',
-                    label: '全部'
-                }, {
-                    value: '选项2',
+                    id: '0',
                     label: '主标签'
                 }, {
-                    value: '选项3',
+                    id: '1',
                     label: '副标签'
                 }],
                 dataList: [],
@@ -115,6 +113,7 @@
             addEditData
         },
         created () {
+            this.dataForm.styleType = this.options[0].id;
             this.getDataList();
         },
         methods: {
