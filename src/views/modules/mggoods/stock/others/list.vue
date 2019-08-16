@@ -2,27 +2,29 @@
     <div>
         <Bread :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
-            <el-form-item prop="memberId" label="单据单号：">
-                <el-input v-model="dataForm.memberId" placeholder="请输入单据单号"></el-input>
+            <el-form-item prop="documentNo" label="单据单号：">
+                <el-input v-model="dataForm.documentNo" placeholder="请输入单据单号"></el-input>
             </el-form-item>
-            <el-form-item prop="orderId" label="操作人：">
-                <el-input v-model="dataForm.orderId" placeholder="请输入操作人账号"></el-input>
+            <el-form-item prop="creator" label="操作人：">
+                <el-input v-model="dataForm.creator" placeholder="请输入操作人账号"></el-input>
             </el-form-item>
             <el-form-item label="出库时间：">
                 <el-date-picker
-                        v-model="timeArr"
+                        v-model="valuetime"
                         type="datetimerange"
                         value-format="yyyy-MM-dd HH:mm:ss"
                         align="left"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
+                         @blur='acttime'
                         :default-time="['00:00:00', '23:59:59']"
                 ></el-date-picker>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="showDetail()">搜索</el-button>
+                <el-button  class="btn" type="primary" @click="getDataList()">查询</el-button>
                 <el-button  class="btn" type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
+            <!--@click="showDetail()"-->
             <el-form-item>
                 <el-button  class="btn" type="primary" plain @click="addOrAdit()" >添加出库单</el-button>
             </el-form-item>
@@ -40,10 +42,10 @@
                     <!-- {{scope.$index+1+(parseInt(params.currentPage)-1)* parseInt(params.currentPageSize) }} -->
                 </template>
             </el-table-column>
-            <el-table-column prop="name" label="单据单号" align="center"></el-table-column>
-            <el-table-column prop="" label="出库时间" align="center"></el-table-column>
-            <el-table-column prop="" label="出库总数量" align="center"></el-table-column>
-            <el-table-column prop="" label="操作人" align="center"></el-table-column>
+            <el-table-column prop="documentNo" label="单据单号" align="center"></el-table-column>
+            <el-table-column prop="createDate" label="出库时间" align="center"></el-table-column>
+            <el-table-column prop="outputQuantity" label="出库总数量" align="center"></el-table-column>
+            <el-table-column prop="creator" label="操作人" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="showDetail(scope.$index, scope.row)"type="text"size="mini">查看</el-button>
@@ -69,12 +71,28 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import showData from './model-show-data'
+    import {getstockdata} from '@/api/url'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
+            	mixinViewModuleOptions: {
+		          getDataListURL: getstockdata,
+		          getDataListIsPage: true,
+		          // exportURL: '/admin-api/log/login/export',
+		          deleteURL: '',
+		          dataListLoading: false, 
+		          deleteIsBatch: true,
+		          deleteIsBatchKey: 'id'
+			    },
                 breaddata: [ "库存管理", "其他出库单"],
-                dataForm: {},
+                valuetime: null,
+                dataForm: {
+                	documentNo: null,
+                	creator: null,
+                	startTime: null,
+                	endTime: null,
+                },
                 timeArr: "", //出库时间
                 dataList: [],
                 dataListLoading: false,
@@ -85,7 +103,20 @@
             Bread,
             showData
         },
+        watch:{
+			valuetime(val){
+		      if(!val){
+		      	this.dataForm.strTime = '';
+		    	this.dataForm.endTime = '';
+		      }
+		    }
+		},
         methods: {
+        	//开始结束时间
+		    acttime(){
+		    	this.dataForm.startTime = this.valuetime[0];
+		    	this.dataForm.endTime = this.valuetime[1];
+		    },
             addOrAdit(id){
                 this.$emit("addOrAdit",id);
             },

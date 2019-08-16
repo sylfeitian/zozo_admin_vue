@@ -3,10 +3,12 @@
         <el-row>
             <el-col :span="24">
                 <div class="rltv">
-                    <div class="tree-title tree-head-first">{{mate.title || '标题'}}</div>
+                    <div class="tree-title tree-head-first">分类名称</div>
                     <!-- <div class="tree-title tree-head-first">新增下级</div> -->
                     <el-row class="last">
                         <el-col v-for="col in mate.columns" :key="col.label" :span="col.span" class="tree-title" :class="{'text-center': col.center}">{{col.label}}</el-col>
+                        <!--<el-col :span="actionSpan" class="tree-title text-center" v-if="this.mate.actions && this.mate.actions.length">分类图片</el-col>
+                        <el-col :span="actionSpan" class="tree-title text-center" v-if="this.mate.actions && this.mate.actions.length">是否显示</el-col>-->
                         <el-col :span="actionSpan" class="tree-title text-center" v-if="this.mate.actions && this.mate.actions.length">操作</el-col>
                     </el-row>
                 </div>
@@ -70,7 +72,7 @@
                 this.mate.columns.map(col => {
                     sum += Number.parseInt(col.span);
                 });
-                this.actionSpan = 24 - sum;
+                this.actionSpan = (24 - sum);
                 this.mate.actions = this.mate.actions.filter(item => !item.isHide);
                 if (!this.mate.actions || !this.mate.actions.length) {
                     let last = this.mate.columns.length;
@@ -79,6 +81,7 @@
             },
             renderContent: function (h, node) {
                 // 生成按钮
+                var self = this;
                 let buttons = [];
                 if (this.mate.actions) {
                     for (let btn of this.mate.actions) {
@@ -96,8 +99,10 @@
                         }));
                     }
                 }
+
                 // 单元格渲染
                 let colSpan = 0;
+                console.log(this.mate.columns);
                 let cols = this.mate.columns.map((col) => {
                     let value = '--',
                         key =  col.prop;
@@ -109,11 +114,46 @@
                     }
                     colSpan = Number(col.span);
                     if (colSpan <= 0) colSpan = 3;
+                    
+                	// 分类图片(插入图片)
+                	if(key == 'genderMain' && value != '--'){
+                		return h(
+                			'el-col',
+                    		{
+	                    		'props': {span: colSpan},
+	                    		'class': {'text-center': col.center, 'textIndex5': true},
+	                    		'domProps': { innerHTML: `<img src=${value} width=100%>` },// DOM 属性
+                			},   
+						);
+                	};
+                	
+					// 是否显示(插入开关)
+					if(key == 'showFlag'){
+						// 打印出 这俩值看看
+						//console.log( node.data[key], value)
+						/**
+						 * jsx 语法
+						 * {} 解析变量
+						 * on-事件   触发组件内部使用 `vm.$emit` 触发的事件
+						 * nativeOn事件 仅用于组件，用于监听原生事件
+						*/
+						return (
+							<el-col span={col.span} >
+								<el-switch 
+									value={node.data.showFlag == 1 ? true : false} 
+									on-change={ () => node.data.showFlag = node.data.showFlag == 0 ? 1 : 0 } 
+									nativeOnClick={(event) => event.stopPropagation()}
+                   				></el-switch>
+							</el-col>
+						)
+					};
+
                     return h('el-col', {props: {span: colSpan}, 'class': {'text-center': col.center, 'textIndex5': true}}, value);
                 });
+
                 // 插入行按钮
                 cols.push(h('el-col', {props: {span: this.actionSpan}, 'class': {'text-center': true}}, buttons));
-
+                
                 return h('span', [h('span', node.data.label), h('div', {'class': {'line-row': true}}, cols)]);
             },
             handleCheckChange (...list) {

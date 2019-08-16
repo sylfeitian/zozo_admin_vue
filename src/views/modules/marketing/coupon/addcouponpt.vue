@@ -92,7 +92,6 @@ export default {
           deleteIsBatch: true,
           // deleteIsBatchKey: 'id'
       },
-      dataForm: {},
       saveLoading: false,
       activeName2: 'first',
       datatextarea:'',

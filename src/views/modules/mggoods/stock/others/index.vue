@@ -33,7 +33,7 @@
                 this.$nextTick(()=>{
                     this.$refs.listCompon.getDataList();
                 })
-            }
+            },
 
         }
     }
