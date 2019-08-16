@@ -14,23 +14,37 @@
             @keyup.enter.native="dataFormSubmit('addForm')"
             label-width="120px"
         >
-            <el-form-item label="标签名称：" prop="labelName">
-                <el-input v-model="dataForm.labelName" placeholder="0"></el-input>
+            <el-form-item  label="风格标签分类：">
+                <el-select v-model="dataForm.styleType" placeholder="请选择">
+                    <el-option
+                            v-for="item in options"
+                            :key="item.id"
+                            :label="item.label"
+                            :value="item.id">
+                    </el-option>
+                </el-select>
             </el-form-item>
-            <el-form-item label="标签分类：" prop="labelSort">
-                <el-select v-model="value" :options="dataArray" @change="handleChange" clearable change-on-select></el-select>
+            <el-form-item label="风格标签名称：" prop="styleName">
+                <el-input v-model="dataForm.styleName" placeholder="0"></el-input>
             </el-form-item>
-            <el-form-item label="性别：" prop="sex">
-                <el-select v-model="value2" :options="dataArray2" @change="handleChange2" clearable change-on-select></el-select>
+            <el-form-item label="性别：">
+                <el-select v-model="dataForm.gender" placeholder="请选择">
+                    <el-option
+                            v-for="item in genderOptions"
+                            :key="item.id"
+                            :label="item.label"
+                            :value="item.id">
+                    </el-option>
+                </el-select>
             </el-form-item>
-            <el-form-item label="主图：" prop="mainPic" >
+            <el-form-item label="主图：" prop="imgUrl" >
                 <template slot-scope="scope">
                     <div class="pcCoverUrl imgUrl" style="float: left;width:50%;">
                         <img-cropper
                                 v-loading="uploading"
                                 ref="cropperImg"
                                 :index="'1'"
-                                :cropImg="dataForm.mainPic"
+                                :cropImg="dataForm.imgUrl"
                                 :imgWidth='"100px"'
                                 :imgHeight='"100px"'
                                 @GiftUrlHandle="GiftUrlHandle"
@@ -44,6 +58,7 @@
 <!--            </el-form-item>-->
             <el-form-item label="排序：" prop="sort" :label-width="formLabelWidth">
                 <el-input v-model="dataForm.sort" placeholder="0"></el-input>
+                <span style="color: #999;">数字越大越靠前</span>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
                 <el-button  @click="dataFormCancel()">取消</el-button>
@@ -57,6 +72,7 @@
 <script>
     import imgCropper from "@/components/model-photo-cropper";
     import { uploadPicBase64 } from '@/api/api'
+    import { backScanShopStyle,updateShopStyle,deleteShopStyle } from '@/api/api'
     export default {
         name: "model-add-edit-data",
         data () {
@@ -66,24 +82,28 @@
                 uploading:false,
                 title:'',
                 dataForm: {
-                    labelName: "",//标签名称
-                    labelSort: "",//标签分类
-                    sex: "",//性别
-                    mainPic: "",//主图
-                    desc: "",//描述
+                    styleName: "",//标签名称
+                    styleType: "",//标签分类
+                    gender: "",//性别
+                    imgUrl: "",//主图
                     sort: "",//排序
                 },
                 dataRule : {
-                    labelName : [
+                    styleName : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ],
-                    labelSort: [
+                    styleType: [
                         {required: true, message: "请选择标签分类", trigger: "change"}
-                    ],
-                    desc : [
-                        { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ]
                 },
+                options: [{
+                    id: '0',
+                    label: '主标签'
+                }, {
+                    id: '1',
+                    label: '副标签'
+                }],
+                genderOptions: [{id: '0',label: '男'}, {id: '1',label: '女'}, {id: '2',label: '儿童'}],
                 value:[],
                 value2:[],
                 dataArray:[],
@@ -93,6 +113,9 @@
         },
         components:{
             imgCropper
+        },
+        created () {
+            this.dataForm.styleType = this.options[0].id;
         },
         methods: {
             init (row) {
@@ -111,21 +134,21 @@
                 })
             },
             //编辑回显
-            // backScan(){
-            //     var obj  = {
-            //         id:this.row.id,
-            //         labelName:this.row.labelName,
-            //         labelSort:this.row.labelSort,
-            //     }
-            //     backScanAftertemplate(obj).then((res)=>{
-            //         if(res.code == 200){
-            //             Object.assign(this.dataForm,res.data);
-            //
-            //         }else{
-            //
-            //         }
-            //     })
-            // },
+            backScan(){
+                var obj  = {
+                    id:this.row.id,
+                    styleName:this.row.styleName,
+                    styleType:this.row.styleType,
+                }
+                backScanShopStyle(obj).then((res)=>{
+                    if(res.code == 200){
+                        Object.assign(this.dataForm,res.data);
+
+                    }else{
+
+                    }
+                })
+            },
             handleChange() {
                 var value = this.value;
                 console.log(value);
@@ -136,16 +159,16 @@
                     this.dataForm.labelSort = 0;
                 }
             },
-            handleChange2() {
-                var value = this.value;
-                console.log(value);
-                console.log(value[value.length-1]);
-                if(value.length >0){
-                    this.dataForm.sex =value[value.length-1]
-                }else{
-                    this.dataForm.sex = 0;
-                }
-            },
+            // handleChange2() {
+            //     var value = this.value;
+            //     console.log(value);
+            //     console.log(value[value.length-1]);
+            //     if(value.length >0){
+            //         this.dataForm.sex =value[value.length-1]
+            //     }else{
+            //         this.dataForm.sex = 0;
+            //     }
+            // },
             //上传图片
             uploadPic(base64){
                 const params = { "imgStr": base64 };
@@ -178,15 +201,14 @@
                     if (valid) {
                         this.loading = true;
                         var obj = {
-                            "labelName":  this.dataForm.labelName,
-                            "labelSort":  this.dataForm.labelSort,
+                            "styleName":  this.dataForm.styleName,
+                            "styleType":  this.dataForm.styleType,
                             "sex":  this.dataForm.sex,
-                            "mainPic":  this.dataForm.mainPic,
-                            "desc":  this.dataForm.desc,
+                            "imgUrl":  this.dataForm.imgUrl,
                             "sort":  this.dataForm.sort,
                         }
                         if(this.row) obj.id = this.row.id
-                        //var fn = this.row?updateBrand:addBrand;
+                        var fn = updateShopStyle;
                         fn(obj).then((res) => {
                             this.loading = false;
                             // alert(JSON.stringify(res));

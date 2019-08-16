@@ -15,19 +15,19 @@
             label-width="120px"
         >
             <el-form-item label="品牌ID：">
-                <span>{{dataForm.japanId}}</span>
+                <span>{{dataForm.id}}</span>
             </el-form-item>
             <el-form-item label="日本品牌名称：">
-                <span>{{dataForm.japanName}}</span>
+                <span>{{dataForm.brandNameJp}}</span>
             </el-form-item>
             <el-form-item label="日本品牌描述：">
-                <span>{{dataForm.japanDesc}}</span>
+                <span>{{dataForm.descriptionJp}}</span>
             </el-form-item>
-            <el-form-item label="品牌名称：" prop="name" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.name" placeholder="请输入品牌名称"></el-input>
+            <el-form-item label="品牌名称：" prop="brandName" :label-width="formLabelWidth">
+                <el-input v-model="dataForm.brandName" placeholder="请输入品牌名称"></el-input>
             </el-form-item>
-            <el-form-item label="品牌描述：" prop="desc" :label-width="formLabelWidth">
-                <el-input type="textarea" v-model="dataForm.desc" placeholder="请输入品牌描述"></el-input>
+            <el-form-item label="品牌描述：" prop="description" :label-width="formLabelWidth">
+                <el-input type="textarea" v-model="dataForm.description" placeholder="请输入品牌描述"></el-input>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
                 <el-button type="primary" @click="dataFormSubmit('addForm')"
@@ -39,6 +39,7 @@
 </template>
 
 <script>
+    import { backScanShopBrand,updataShopBrand } from '@/api/api'
     export default {
         name: "model-add-edit-data",
         data () {
@@ -46,12 +47,11 @@
                 visible : false,
                 loading : false,
                 dataForm: {
-                    japanId: "",//品牌ID
-                    japanName: "",//日本品牌名称
-                    name: "",//品牌名称
-                    japanDesc: "",//日本品牌描述
-                    desc: "",//品牌描述
-                    state: ""//是否可售
+                    id: "",//品牌ID
+                    brandNameJp: "",//日本品牌名称
+                    descriptionJp: "",//日本品牌描述
+                    description: "",//品牌描述
+                    brandName: ""//品牌名称
                 },
                 dataRule : {
                     name : [
@@ -86,24 +86,23 @@
                 })
             },
             // 编辑回显
-            // backScan(){
-            //     var obj  = {
-            //         id:this.row.id,
-            //         japanId:this.row.japanId,
-            //         japanName:this.row.japanName,
-            //         name:this.row.name,
-            //         japanDesc:this.row.japanDesc,
-            //         desc:this.row.desc,
-            //     }
-            //     backScanAftertemplate(obj).then((res)=>{
-            //         if(res.code == 200){
-            //             Object.assign(this.dataForm,res.data);
-            //
-            //         }else{
-            //
-            //         }
-            //     })
-            // },
+            backScan(){
+                var obj  = {
+                    id:this.row.id,
+                    brandNameJp:this.row.brandNameJp,
+                    descriptionJp:this.row.descriptionJp,
+                    brandName:this.row.brandName,
+                    description:this.row.description
+                }
+                backScanShopBrand(obj).then((res)=>{
+                    if(res.code == 200){
+                        Object.assign(this.dataForm,res.data);
+
+                    }else{
+
+                    }
+                })
+            },
             // 提交
             dataFormSubmit(formName){
                 // alert([this.dataForm.name,this.dataForm.domainAddress]);
@@ -111,14 +110,14 @@
                     if (valid) {
                         this.loading = true;
                         var obj = {
-                            "japanName":  this.dataForm.japanName,
-                            "name":  this.dataForm.name,
-                            "japanDesc":  this.dataForm.japanDesc,
-                            "desc":  this.dataForm.desc,
-                            "state":  this.dataForm.state,
+                            "id":  this.dataForm.id,
+                            "brandNameJp":  this.dataForm.brandNameJp,
+                            "descriptionJp":  this.dataForm.descriptionJp,
+                            "brandName":  this.dataForm.brandName,
+                            "description":  this.dataForm.description,
                         }
                         if(this.row) obj.id = this.row.id
-                        //var fn = this.row?updateBrand:addBrand;
+                        var fn = updataShopBrand;
                         fn(obj).then((res) => {
                             this.loading = false;
                             // alert(JSON.stringify(res));

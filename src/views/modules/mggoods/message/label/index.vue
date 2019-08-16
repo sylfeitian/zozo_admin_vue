@@ -8,16 +8,16 @@
             @keyup.enter.native="getDataList()"
         >
             <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
-            <el-form-item label="标签名称：">
-                <el-input v-model="dataForm.labelName" placeholder="标签名称" ></el-input>
+            <el-form-item label="风格标签名称：">
+                <el-input v-model="dataForm.styleName" placeholder="标签名称" ></el-input>
             </el-form-item>
-            <el-form-item  label="标签分类：">
-                <el-select v-model="dataForm.labelSort" placeholder="请选择">
+            <el-form-item  label="风格标签分类：">
+                <el-select v-model="dataForm.styleType" placeholder="请选择">
                     <el-option
                             v-for="item in options"
-                            :key="item.value"
+                            :key="item.id"
                             :label="item.label"
-                            :value="item.value">
+                            :value="item.id">
                     </el-option>
                 </el-select>
             </el-form-item>
@@ -40,10 +40,17 @@
                     <!-- {{scope.$index+1+(parseInt(params.currentPage)-1)* parseInt(params.currentPageSize) }} -->
                 </template>
             </el-table-column>
-            <el-table-column prop="labelName" label="标签名称" align="center"></el-table-column>
+            <el-table-column prop="styleName" label="风格标签名称" align="center"></el-table-column>
+            <el-table-column label="风格标签类型" align="center">
+                <template slot-scope="scope">
+                    <span  v-if="scope.row.styleType==0">主标签</span>
+                    <span  v-if="scope.row.styleType==1">副标签</span>
+                </template>
+            </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button type="text" @click.native.prevent="addOrEditHandle" size="mini">编辑</el-button>
+                    <el-button type="text" @click="addOrEditHandle(scope.$index, scope.row)" size="mini">编辑</el-button>
+                    <el-button type="text" @click.native.prevent="addOrEditHandle" size="mini">管理副风格标签</el-button>
                     <el-button class="artdanger" @click.native.prevent="deleteHandle(scope.row.id)"type="text"size="mini">删除</el-button>
                 </template>
             </el-table-column>
@@ -73,26 +80,33 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import addEditData from './model-add-edit-data'
+    import { shopStyleUrl, deleteShopStyle } from '@/api/url'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
-                breaddata: [ "基础资料管理", "标签管理"],
+                mixinViewModuleOptions: {
+                    getDataListURL: shopStyleUrl,
+                    getDataListIsPage: true,
+                    // exportURL: '/admin-api/log/login/export',
+                    deleteURL: deleteShopStyle,
+                    deleteIsBatch: false,
+                    deleteIsBatch: true,
+                    deleteIsBatchKey: 'id'
+                },
+                breaddata: [ "基础资料管理", "风格标签管理"],
                 options: [{
-                    value: '选项1',
-                    label: '全部'
-                }, {
-                    value: '选项2',
+                    id: '0',
                     label: '主标签'
                 }, {
-                    value: '选项3',
+                    id: '1',
                     label: '副标签'
                 }],
                 dataList: [],
                 dataListLoading: false,
                 dataForm: {
-                    labelName: "",//标签名称
-                    labelSort: ""//标签分类
+                    styleName: "",//标签名称
+                    styleType: ""//标签分类
                 },
                 addEditDataVisible:false,
                 isIndeterminate: false,
@@ -103,13 +117,15 @@
             Bread,
             addEditData
         },
+        created () {
+            this.dataForm.styleType = this.options[0].id;
+            this.getDataList();
+        },
         methods: {
             // 重置
             reset() {
-                this.dataForm.labelName = "";//标签名称
-                this.dataForm.labelSort = "";//标签分类
-                this.dataForm.sort = "";//排序
-                this.dataForm.time = "";//添加时间
+                this.dataForm.styleName = "";//标签名称
+                this.dataForm.styleType = "";//标签分类
                 this.getDataList();
             },
             handleCheckAllChange(val) {

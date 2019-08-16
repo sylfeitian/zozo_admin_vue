@@ -8,17 +8,17 @@
                 @keyup.enter.native="getDataList()"
         >
             <el-form-item label="店铺ID：">
-                <el-input v-model="dataForm.id" placeholder="标签名称" ></el-input>
+                <el-input v-model="dataForm.id" placeholder="请输入" ></el-input>
             </el-form-item>
             <el-form-item label="店铺名称：">
-                <el-input v-model="dataForm.storeName" placeholder="标签名称" ></el-input>
+                <el-input v-model="dataForm.storeName" placeholder="请输入" ></el-input>
             </el-form-item>
             <el-form-item  label="营业状态：">
                 <el-select v-model="dataForm.operateFlag" placeholder="请选择">
                     <el-option
                             v-for="item in operateShopStore"
                             :key="item.id"
-                            :label="item.sgName"
+                            :label="item.name"
                             :value="item.id">
                     </el-option>
                 </el-select>
@@ -28,7 +28,7 @@
                 <el-button class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
             </el-form-item>
         </el-form>
-        <el-button @click="editHandle()" class="btn" type="primary" style="float: right;">导入店铺信息</el-button>
+        <el-button @click="" class="btn" type="primary" style="float: right;">导入店铺信息</el-button>
         <el-table
                 width="100%"
                 :data="dataList"
@@ -41,7 +41,12 @@
             <el-table-column prop="storeNameJp" label="店铺日本名称" align="center"></el-table-column>
             <el-table-column prop="storeNameGlo" label="全球名称" align="center"></el-table-column>
             <el-table-column prop="storeName" label="店铺中文名称" align="center"></el-table-column>
-            <el-table-column prop="operateFlag" label="营业状态" align="center"></el-table-column>
+            <el-table-column label="营业状态" align="center">
+                <template slot-scope="scope">
+                    <span  v-if="scope.row.operateFlag==0">营业中</span>
+                    <span  v-if="scope.row.operateFlag==1">已停业</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="japanState" label="日本店铺状态" align="center"></el-table-column>
             <el-table-column prop="updateDate" label="更新时间" align="center"></el-table-column>
             <el-table-column prop="mainTag" label="店铺主风格标签" align="center"></el-table-column>
@@ -62,8 +67,8 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button type="text" @click.native.prevent="editHandle" size="mini">编辑</el-button>
-                    <el-button  @click="cotrolOperateFlag('singe',scope.row)" type="text" size="mini" >
+                    <el-button type="text" @click="editHandle(scope.$index, scope.row)" size="mini">编辑</el-button>
+                    <el-button  @click="forbitHandle('singe',scope.row)" type="text" size="mini" >
                         <span  v-if="scope.row.operateFlag==0">营业</span>
                         <span  v-if="scope.row.operateFlag==1" class="artclose">停业</span>
                     </el-button>
@@ -93,7 +98,7 @@
     import addEditData from './model-add-edit-data'
     import editData from './model-edit-data'
     import { shopPageUrl } from '@/api/url'
-    import { shopStorePage } from '@/api/api'
+    import { operateShopStore } from '@/api/api'
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -119,25 +124,24 @@
                 addDataVisible:false,
                 editDataVisible:false,
                 multipleSelection:[],
-                operateShopStore:[
-                    {id:'',sgName:'全部'},
-                ],//营业状态
+                operateShopStore:[{ id: '0', name: '营业中' },{ id: '1', name: '已停业' }],//营业状态
             }
         },
         created(){
-            let obj = {
-                params:{
-                    page:1,
-                    limit:100,
-                }
-            }
-            shopStorePage(obj).then((res)=>{
-                console.log('店铺信息',res)
-                if(res.code == 200 && res.data.list){
-                    // this.operateShopStore = [...this.operateShopStore,...res.data.list]
-                    this.dataList = res.data.list;
-                }
-            })
+            // let obj = {
+            //     params:{
+            //         page:1,
+            //         limit:10,
+            //     }
+            // }
+            // shopStorePage(obj).then((res)=>{
+            //     console.log('店铺信息',res)
+            //     if(res.code == 200 && res.data.list){
+            //         // this.operateShopStore = [...this.operateShopStore,...res.data.list]
+            //         this.dataList = res.data.list;
+            //     }
+            // })
+            this.getDataList();
         },
         components: {
             Bread,
@@ -150,7 +154,7 @@
                 this.dataForm.id = "";//店铺ID
                 this.dataForm.storeName = "";//店铺名称
                 this.dataForm.operateFlag = "";//营业状态
-                //this.handleClick();
+                this.getDataList();
             },
             // 新建
             addHandle(index=-1,row=""){
@@ -185,6 +189,41 @@
                     operateFlag:operateFlag,
                 }
             },
+            forbitHandle(index,row){
+                this.currentIndex = index;
+                var obj = {
+                    "id": row.id,
+                    "operateFlag":row.operateFlag==1?2:1  //
+                }
+                var msg = ""
+                row.operateFlag==1?msg="禁用":msg="启用"
+                this.$confirm('是否'+msg+'该分组?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.forbitLoading = true;
+                    operateShopStore(obj).then((res)=>{
+                        this.forbitLoading = false;
+                        // console.log(res);
+                        if(res.code==200){
+                            this.getDataList();
+                            this.$message({
+                                message:res.msg,
+                                type: 'success',
+                                duration: 1500,
+                            })
+                        }else{
+                            this.$message({
+                                message:res.msg,
+                                type: 'error',
+                                duration: 1500,
+                            })
+                        }
+                    })
+
+                }).catch(() => {});
+            }
         }
     }
 </script>

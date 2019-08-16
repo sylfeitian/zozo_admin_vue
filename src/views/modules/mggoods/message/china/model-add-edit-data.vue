@@ -101,7 +101,7 @@
 <script>
 import imgCropper from "@/components/model-photo-cropper";
 import { uploadPicBase64 } from '@/api/api'
-import { backScanCategoryCn,updataCategoryCn } from '@/api/api'
+import { backScanCategoryCn,updateCategoryCn } from '@/api/api'
 export default {
     name: "model-add-edit-data",
     data() {

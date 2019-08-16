@@ -10,7 +10,7 @@
         >
             <el-form-item label="商品分类：" class="item" style="margin-top: 20px;">
                 <span>{{dataForm.id}}</span>
-                <span style="margin-left: 2%;color:green;cursor:pointer;">修改</span>
+                <span style="margin-left: 2%;color:green;cursor:pointer;" @click="logMore">修改</span>
             </el-form-item>
             <el-form-item label="商品编码：" class="item">
                 <span>{{dataForm.id}}</span>

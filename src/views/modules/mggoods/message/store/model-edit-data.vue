@@ -64,7 +64,7 @@
                     </div>
                 </template>
             </el-form-item>
-            <el-form-item label="标签分类：" prop="mainTag">
+            <el-form-item label="选择风格标签：" prop="mainTag">
                 <el-select v-model="value" multiple :options="dataArray" @change="handleChange" clearable change-on-select></el-select>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
@@ -77,7 +77,7 @@
 </template>
 
 <script>
-    import { updateShopStore,operateShopStore,updateGoodsSpecSku } from '@/api/api'
+    import { updateShopStore,backScanShopStore } from '@/api/api'
     import imgCropper from "@/components/model-photo-cropper";
     import { uploadPicBase64 } from '@/api/api'
     export default {
@@ -107,10 +107,10 @@
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ],
                     imageUrl: [
-                        {required: true, message: "请选择标签分类", trigger: "blur"}
+                        {required: true, message: "必填项不能为空", trigger: "blur"}
                     ],
                     mainTag: [
-                        {required: true, message: "请选择标签分类", trigger: "change"}
+                        {required: true, message: "必填项不能为空", trigger: "change"}
                     ],
                 },
                 value:[],
@@ -135,6 +135,27 @@
                 this.$nextTick(() => {
                     this.$refs['addForm'].resetFields();
                     // this.getApplyPullList();
+                })
+            },
+            // 编辑回显
+            backScan(){
+                var obj  = {
+                    id:this.row.id,
+                    storeNameGlo:this.row.storeNameGlo,
+                    storeNameJp:this.row.storeNameJp,
+                    // storeName:this.row.storeName,
+                    descriptionJp:this.row.descriptionJp,
+                    // description:this.row.description,
+                    imageUrl:this.row.imageUrl,
+                    storeLogo:this.row.storeLogo,
+                }
+                backScanShopStore(obj).then((res)=>{
+                    if(res.code == 200){
+                        Object.assign(this.dataForm,res.data);
+
+                    }else{
+
+                    }
                 })
             },
             //上传图片
@@ -180,7 +201,7 @@
                             "mainTag":  this.dataForm.mainTag,
                         }
                         if(this.row) obj.id = this.row.id
-                        var fn = this.row.updateShopStore;
+                        var fn = updateShopStore;
                         fn(obj).then((res) => {
                             this.loading = false;
                             // alert(JSON.stringify(res));
@@ -223,7 +244,7 @@
                 this.closeDialog();
             },
             closeDialog() {
-                this.$parent.addEditDataVisible = false;
+                this.$parent.editDataVisible = false;
             },
         }
     }

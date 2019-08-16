@@ -87,10 +87,20 @@
                     // this.getApplyPullList();
                 })
             },
+            closeDialog() {
+                console.log("关闭窗口");
+                this.$parent.addEditDataVisible = false;
+            },
+            dataFormCancel(){
+                this.visible = false;
+                this.closeDialog();
+            },
         }
     }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+    /deep/ .el-input .el-input--default .el-input--suffix {
+        width: 300px!important;
+    }
 </style>
