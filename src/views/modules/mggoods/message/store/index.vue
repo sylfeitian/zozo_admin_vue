@@ -41,7 +41,12 @@
             <el-table-column prop="storeNameJp" label="店铺日本名称" align="center"></el-table-column>
             <el-table-column prop="storeNameGlo" label="全球名称" align="center"></el-table-column>
             <el-table-column prop="storeName" label="店铺中文名称" align="center"></el-table-column>
-            <el-table-column prop="operateFlag" label="营业状态" align="center"></el-table-column>
+            <el-table-column label="营业状态" align="center">
+                <template slot-scope="scope">
+                    <span  v-if="scope.row.operateFlag==0">营业中</span>
+                    <span  v-if="scope.row.operateFlag==1">已停业</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="japanState" label="日本店铺状态" align="center"></el-table-column>
             <el-table-column prop="updateDate" label="更新时间" align="center"></el-table-column>
             <el-table-column prop="mainTag" label="店铺主风格标签" align="center"></el-table-column>
@@ -63,7 +68,7 @@
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button type="text" @click="editHandle(scope.$index, scope.row)" size="mini">编辑</el-button>
-                    <el-button  @click="cotrolOperateFlag('singe',scope.row)" type="text" size="mini" >
+                    <el-button  @click="forbitHandle('singe',scope.row)" type="text" size="mini" >
                         <span  v-if="scope.row.operateFlag==0">营业</span>
                         <span  v-if="scope.row.operateFlag==1" class="artclose">停业</span>
                     </el-button>
@@ -93,7 +98,7 @@
     import addEditData from './model-add-edit-data'
     import editData from './model-edit-data'
     import { shopPageUrl } from '@/api/url'
-    // import { shopStorePage } from '@/api/api'
+    import { operateShopStore } from '@/api/api'
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -184,6 +189,41 @@
                     operateFlag:operateFlag,
                 }
             },
+            forbitHandle(index,row){
+                this.currentIndex = index;
+                var obj = {
+                    "id": row.id,
+                    "operateFlag":row.operateFlag==1?2:1  //
+                }
+                var msg = ""
+                row.operateFlag==1?msg="禁用":msg="启用"
+                this.$confirm('是否'+msg+'该分组?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.forbitLoading = true;
+                    operateShopStore(obj).then((res)=>{
+                        this.forbitLoading = false;
+                        // console.log(res);
+                        if(res.code==200){
+                            this.getDataList();
+                            this.$message({
+                                message:res.msg,
+                                type: 'success',
+                                duration: 1500,
+                            })
+                        }else{
+                            this.$message({
+                                message:res.msg,
+                                type: 'error',
+                                duration: 1500,
+                            })
+                        }
+                    })
+
+                }).catch(() => {});
+            }
         }
     }
 </script>

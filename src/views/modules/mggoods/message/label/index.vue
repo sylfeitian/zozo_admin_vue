@@ -41,7 +41,12 @@
                 </template>
             </el-table-column>
             <el-table-column prop="labelName" label="风格标签名称" align="center"></el-table-column>
-            <el-table-column prop="styleType" label="风格标签类型" align="center"></el-table-column>
+            <el-table-column label="风格标签类型" align="center">
+                <template slot-scope="scope">
+                    <span  v-if="scope.row.styleType==0">主标签</span>
+                    <span  v-if="scope.row.styleType==1">副标签</span>
+                </template>
+            </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button type="text" @click="addOrEditHandle(scope.$index, scope.row)" size="mini">编辑</el-button>
