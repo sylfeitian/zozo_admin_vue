@@ -193,3 +193,19 @@ export const deleteShopBrandUrl = `${base}/shopBrand`;
 export const shopStyleUrl = `${base}/shopstyle/style/page`;
 // 编辑风格标签
 export const deleteShopStyle = `${base}/shopstyle`;
+
+
+
+// 仓库管理--------------------------------------------------------------------------------------------------------------------
+// 仓库列表
+export const wareUrl = `${base}/ware/list`;
+// 修改仓库启用状态
+export const deleteWare = `${base}/ware/isenable`;
+// 仓库sku商品
+export const skuGoods = `${base}/ware/skugoods`;
+
+
+
+// 备案商品管理--------------------------------------------------------------------------------------------------------------------
+// 备案商品列表
+export const registerUrl = `${base}/goods/register/page`;
