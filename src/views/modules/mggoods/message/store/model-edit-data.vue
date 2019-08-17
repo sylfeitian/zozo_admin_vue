@@ -15,7 +15,7 @@
                 label-width="120px"
         >
             <el-form-item label="店铺ID：">
-                <span>{{dataForm.id}}</span>
+                <span>{{dataForm.idJp}}</span>
             </el-form-item>
             <el-form-item label="海外店铺名称：">
                 <span>{{dataForm.storeNameGlo}}</span>
@@ -89,7 +89,7 @@
                 loading : false,
                 uploading:false,
                 dataForm: {
-                    id: "",//店铺ID
+                    idJp: "",//店铺ID
                     storeNameGlo: "",//海外店铺名称
                     storeNameJp: "",//店铺日文名称
                     storeName: "",//店铺中文名称
@@ -140,7 +140,7 @@
             // 编辑回显
             backScan(){
                 var obj  = {
-                    id:this.row.id,
+                    idJp:this.row.idJp,
                     storeNameGlo:this.row.storeNameGlo,
                     storeNameJp:this.row.storeNameJp,
                     // storeName:this.row.storeName,
@@ -190,7 +190,7 @@
                     if (valid) {
                         this.loading = true;
                         var obj = {
-                            "id":  this.dataForm.id,
+                            "idJp":  this.dataForm.idJp,
                             "storeNameGlo":  this.dataForm.storeNameGlo,
                             "storeNameJp":  this.dataForm.storeNameJp,
                             "storeName":  this.dataForm.storeName,

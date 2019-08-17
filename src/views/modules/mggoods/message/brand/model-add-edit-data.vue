@@ -15,7 +15,7 @@
             label-width="120px"
         >
             <el-form-item label="品牌ID：">
-                <span>{{dataForm.id}}</span>
+                <span>{{dataForm.idJp}}</span>
             </el-form-item>
             <el-form-item label="日本品牌名称：">
                 <span>{{dataForm.brandNameJp}}</span>
@@ -47,7 +47,7 @@
                 visible : false,
                 loading : false,
                 dataForm: {
-                    id: "",//品牌ID
+                    idJp: "",//品牌ID
                     brandNameJp: "",//日本品牌名称
                     descriptionJp: "",//日本品牌描述
                     description: "",//品牌描述
@@ -88,7 +88,7 @@
             // 编辑回显
             backScan(){
                 var obj  = {
-                    id:this.row.id,
+                    idJp:this.row.idJp,
                     brandNameJp:this.row.brandNameJp,
                     descriptionJp:this.row.descriptionJp,
                     brandName:this.row.brandName,
@@ -110,7 +110,7 @@
                     if (valid) {
                         this.loading = true;
                         var obj = {
-                            "id":  this.dataForm.id,
+                            "idJp":  this.dataForm.idJp,
                             "brandNameJp":  this.dataForm.brandNameJp,
                             "descriptionJp":  this.dataForm.descriptionJp,
                             "brandName":  this.dataForm.brandName,

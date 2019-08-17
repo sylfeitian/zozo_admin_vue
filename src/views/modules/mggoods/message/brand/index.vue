@@ -4,7 +4,7 @@
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
             <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
             <el-form-item label="品牌ID：">
-                <el-input v-model="dataForm.id" ></el-input>
+                <el-input v-model="dataForm.idJp" ></el-input>
             </el-form-item>
             <el-form-item label="品牌名称：">
                 <el-input v-model="dataForm.brandName" ></el-input>
@@ -23,7 +23,7 @@
                 @sort-change="dataListSortChangeHandle"
                 @selection-change="dataListSelectionChangeHandle"
                 style="width: 100%;">
-            <el-table-column prop="id" label="品牌ID" align="center"></el-table-column>
+            <el-table-column prop="idJp" label="品牌ID" align="center"></el-table-column>
             <el-table-column prop="brandNameJp" label="日本品牌名称" align="center"></el-table-column>
             <el-table-column prop="brandNameGlo" label="全球名称" align="center"></el-table-column>
             <el-table-column prop="brandName" label="品牌名称" align="center"></el-table-column>
@@ -75,7 +75,7 @@
                 },
                 breaddata: [ "商品管理", "品牌"],
                 dataForm: {
-                    id: "",
+                    idJp: "",
                     brandName: "",
                 },
                 value: '',
@@ -95,7 +95,7 @@
         },
         methods: {
             reset() {
-                this.dataForm.id = "";
+                this.dataForm.idJp = "";
                 this.dataForm.brandName = "";
                 this.getDataList();
             },

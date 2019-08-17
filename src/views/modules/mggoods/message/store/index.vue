@@ -8,7 +8,7 @@
                 @keyup.enter.native="getDataList()"
         >
             <el-form-item label="店铺ID：">
-                <el-input v-model="dataForm.id" placeholder="请输入" ></el-input>
+                <el-input v-model="dataForm.idJp" placeholder="请输入" ></el-input>
             </el-form-item>
             <el-form-item label="店铺名称：">
                 <el-input v-model="dataForm.storeName" placeholder="请输入" ></el-input>
@@ -36,7 +36,7 @@
                 v-loading="dataListLoading"
                 style="width: 100%;margin-top: 60px;"
         >
-            <el-table-column prop="id" label="店铺id" align="center"></el-table-column>
+            <el-table-column prop="idJp" label="店铺id" align="center"></el-table-column>
             <el-table-column prop="storeLogo" label="店铺logo" align="center"></el-table-column>
             <el-table-column prop="storeNameJp" label="店铺日本名称" align="center"></el-table-column>
             <el-table-column prop="storeNameGlo" label="全球名称" align="center"></el-table-column>
@@ -115,7 +115,7 @@
                 breaddata: [ "基础资料管理", "店铺管理"],
                 options: [],
                 dataForm: {
-                    id: "",//店铺ID
+                    idJp: "",//店铺ID
                     storeName: "",//店铺名称
                     operateFlag:""//营业状态:0营业;1停业
                 },
@@ -151,7 +151,7 @@
         methods: {
             // 重置
             reset() {
-                this.dataForm.id = "";//店铺ID
+                this.dataForm.idJp = "";//店铺ID
                 this.dataForm.storeName = "";//店铺名称
                 this.dataForm.operateFlag = "";//营业状态
                 this.getDataList();

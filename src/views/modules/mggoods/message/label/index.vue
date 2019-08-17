@@ -125,7 +125,7 @@
             // 重置
             reset() {
                 this.dataForm.styleName = "";//标签名称
-                this.dataForm.styleType = "";//标签分类
+                this.dataForm.styleType = this.options[0].id;//标签分类
                 this.getDataList();
             },
             handleCheckAllChange(val) {

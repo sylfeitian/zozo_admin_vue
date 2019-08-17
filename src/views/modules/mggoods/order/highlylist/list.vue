@@ -32,16 +32,17 @@
                         :default-time="['00:00:00', '23:59:59']"
                 ></el-date-picker>
             </el-form-item>
-            <el-form-item label="订单类型：" prop="orderType">
-                <el-select v-model="dataForm.orderType" placeholder="请选择">
-                    <el-option label="全部" value=""></el-option>
-                    <el-option label="未付款" value="0"></el-option>
-                    <el-option label="已付款" value="1"></el-option>
-                </el-select>
-            </el-form-item>
+            <!--            <el-form-item label="订单类型：" prop="orderType">-->
+            <!--                <el-select v-model="dataForm.orderType" placeholder="请选择">-->
+            <!--                    <el-option label="全部" value=""></el-option>-->
+            <!--                    <el-option label="未付款" value="0"></el-option>-->
+            <!--                    <el-option label="已付款" value="1"></el-option>-->
+            <!--                </el-select>-->
+            <!--            </el-form-item>-->
             <el-form-item>
                 <el-button class="btn" type="primary" @click="addOrAdit()">搜索</el-button>
                 <el-button class="btn" type="primary" plain @click="reset('dataForm')">重置</el-button>
+                <el-button type="primary" plain @click="exportHandle()">导出</el-button>
             </el-form-item>
             <br>
             <!-- <el-form-item>
@@ -70,7 +71,7 @@
                 <template slot-scope="scope">￥{{scope.row.orderAmount}}</template>
             </el-table-column>
             <el-table-column prop="paymentName" label="支付方式" align="center"></el-table-column>
-            <el-table-column prop="orderStatus" label="订单状态" align="center"></el-table-column>
+            <el-table-column prop="orderState" label="订单状态" align="center"></el-table-column>
             <el-table-column prop="orderType" label="订单类型" align="center" :formatter="orderState"></el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
@@ -106,7 +107,7 @@
     import { orderlists } from "@/api/url";
     import { orderDetail, paymentList } from "@/api/api";
     // import discountDet from "./discountDet";
-    import orderDet from "./orderDet";
+    // import orderDet from "./orderDet";
     import mixinViewModule from "@/mixins/view-module";
     export default {
         mixins: [mixinViewModule],
@@ -173,11 +174,6 @@
             this.radio1 = this.status == undefined ? "" : this.status;
             this.dataForm.orderStatus = this.status == undefined ? "" : this.status;
             this.getPaymentList();
-        },
-        components: {
-            Bread,
-            orderDet,
-            // discountDet
         },
         methods: {
             addOrAdit(id){
@@ -261,6 +257,11 @@
                     }
                 });
             }
+        },
+        components: {
+            Bread,
+            // orderDet,
+            // discountDet
         }
     };
 </script>

@@ -425,6 +425,7 @@ export const backScanShopStore = params => { return http.get(`${base}/shopStore/
 
 
 
+
 //备案商品管理接口--------------------------------------------------------------------------------------------------------------------
 // 导出备案商品信息
 export const exportRegister = params => { return http.get(`${base}/goods/register/export`, params).then(res => res.data); };
@@ -471,3 +472,24 @@ export const backScanShopStyleUnion = params => { return http.get(`${base}/shops
 // 根据id查询标签详情
 export const backScanShopStyle = params => { return http.get(`${base}/shopstyle/style/${params.id}`, params).then(res => res.data); };
 
+
+
+//仓库管理接口--------------------------------------------------------------------------------------------------------------------
+// 新增仓库信息
+export const addWare = params => { return http.post(`${base}/ware`, params).then(res => res.data); };
+// 修改库信息
+export const updataWare = params => { return http.put(`${base}/ware`, params).then(res => res.data); };
+// 仓库list  无分页
+export const allWare = params => { return http.get(`${base}/ware/all`, params).then(res => res.data); };
+// 导出数据
+export const importWare = params => { return http.get(`${base}/ware/import`, params).then(res => res.data); };
+// 修改仓库启用状态
+export const deleteWare = params => { return http.delete(`${base}/ware/isenable`, params).then(res => res.data); };
+// 仓库列表
+export const warePage = params => { return http.get(`${base}/ware/list`, params).then(res => res.data); };
+// 仓库sku商品
+export const skuGoods = params => { return http.get(`${base}/ware/skugoods`, params).then(res => res.data); };
+// 校验仓库名称
+export const verifyWare = params => { return http.get(`${base}/ware/verify/name`, params).then(res => res.data); };
+// 根据ID获取仓库信息
+export const backScanWare = params => { return http.get(`${base}/ware/${params.id}`, params).then(res => res.data); };
