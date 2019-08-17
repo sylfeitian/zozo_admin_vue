@@ -121,8 +121,6 @@ import cloneDeep from 'lodash/cloneDeep'
 import mixinViewModule from "@/mixins/view-module";
 import TableTreeColumn from "@/components/table-tree-column";
 
-// import { categoryUrl } from "@/api/url";
-// import { goodsclassPageUrl } from "@/api/url";
 import { categoryUrl } from "@/api/url";
 import { deleteGoodsclasscustomUrl } from "@/api/url";
 

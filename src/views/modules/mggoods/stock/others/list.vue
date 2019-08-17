@@ -117,6 +117,19 @@
 		    	this.dataForm.startTime = this.valuetime[0];
 		    	this.dataForm.endTime = this.valuetime[1];
 		    },
+		    // 每页数
+			sizeChangeHandle (val) {
+				this.params.currentPageSize = val;
+				this.params.currentPage = 1;
+				this.limit = val;
+				this.getDataList();
+			},
+			// 当前页
+			currentChangeHandle (val) {
+				this.params.currentPage = val;
+				this.page = val;
+				this.getDataList();
+			},
             addOrAdit(id){
                 this.$emit("addOrAdit",id);
             },
@@ -130,12 +143,10 @@
                 this.showDataVisible =  boolargu;
             },
             reset(formName) {
-                this.timeArr = [];
-                this.dataForm.startCreateDate = "";
-                this.dataForm.endtime = "";
-                this.dataForm.startPaymentTime = "";
-                this.dataForm.endPaymentTime = "";
-                this.$refs[formName].resetFields();
+                this.dataForm.documentNo = null;
+                this.dataForm.creator = null;
+                this.dataForm.startTime = null;
+                this.dataForm.endTime = null;
                 this.getDataList();
             },
         }

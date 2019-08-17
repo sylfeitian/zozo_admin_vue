@@ -10,6 +10,10 @@ let base ="/admin-api";
 //库存管理------------------------------------------------------------------------------------------------------------
 //出库单管理
 export const getstockdata = `${base}/wareHouse/odo/list/page`;
+//当前仓库的商品
+export const getallstock  = `${base}/wareHouse/odoGoods/stock/page`;  
+//删除一个添加的商品
+export const delstock  = `${base}/wareHouse/odoGoods`;
 
 // 商品管理--------------------------------------------------------------------------------------------------------------------
  // 商品列表

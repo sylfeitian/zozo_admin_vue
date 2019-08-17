@@ -53,6 +53,7 @@ export default {
             }
           }
         ).then(({ data: res }) => {
+        	console.log(res.data);
           this.dataListLoading = false
           if (res.code !== 200) {
             this.dataList = []
