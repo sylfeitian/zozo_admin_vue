@@ -3,11 +3,14 @@
         <Bread  :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" style="margin-top: 20px;">
             <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
-            <el-form-item label="输入搜索：">
-                <el-input v-model="dataForm.goodsName" placeholder="商品名称/商品货号" ></el-input>
+            <el-form-item label="商品名称：">
+                <el-input v-model="dataForm.goodsName" placeholder="商品名称" ></el-input>
             </el-form-item>
-            <el-form-item  label="品牌：">
-                <el-select v-model="dataForm.brandName" placeholder="请选择">
+            <el-form-item label="商品sku ID：">
+                <el-input v-model="dataForm.goodsCsIdJp" placeholder="商品skuid" ></el-input>
+            </el-form-item>
+            <el-form-item label="分类：">
+                <el-select v-model="dataForm.firstCategory" placeholder="请选择">
                     <el-option
                             v-for="item in options"
                             :key="item.value"
@@ -17,27 +20,13 @@
                 </el-select>
             </el-form-item>
             <el-form-item  label="所属店铺：">
-                <el-select v-model="dataForm.storeName" placeholder="请选择">
-                    <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
+                <el-input v-model="dataForm.storeName" placeholder="请输入店铺名称" ></el-input>
             </el-form-item>
-            <el-form-item label="分类：">
-                <el-select v-model="dataForm.conditionName" placeholder="请选择">
-                    <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
+            <el-form-item  label="品牌：">
+                <el-input v-model="dataForm.brandName" placeholder="请输入品牌名称" ></el-input>
             </el-form-item>
             <el-form-item  label="状态：">
-                <el-select v-model="dataForm.state" placeholder="请选择">
+                <el-select v-model="dataForm.tofileFlag" placeholder="请选择">
                     <el-option
                             v-for="item in options"
                             :key="item.value"
@@ -68,7 +57,7 @@
             <el-table-column label="商品SKU ID" align="center">
                 <template slot-scope="scope">
                     <div>
-                        {{scope.row.goodsId}}
+                        {{scope.row.skuIdJp}}
                     </div>
                 </template>
             </el-table-column>
@@ -76,7 +65,7 @@
                 <template slot-scope="scope">
                     <div class="goodsPropsWrap">
                         <div class="goodsImg">
-                            <img :src="scope.row.pictureUrl | filterImgUrl" alt=""/>
+                            <img :src="scope.row.imageUrl | filterImgUrl" alt=""/>
                         </div>
                     </div>
                 </template>
@@ -91,7 +80,7 @@
             <el-table-column prop="storeName" label="规格" align="center" width="150">
                 <template slot-scope="scope">
                     <div>
-                        {{scope.row.storeName}}
+                        {{scope.row.spe }}
                     </div>
                 </template>
             </el-table-column>
@@ -105,13 +94,13 @@
             <el-table-column prop="storeName" label="品牌" align="center">
             <template slot-scope="scope">
                 <div>
-                    {{scope.row.store}}
+                    {{scope.row.brandName}}
                 </div>
             </template>
         </el-table-column>
             <el-table-column prop="price" label="售价" align="center">
                 <template slot-scope="scope">
-                    <div class="price1">￥{{scope.row.specSellPrice}}</div>
+                    <div class="price1">￥{{scope.row.sellPrice }}</div>
                 </template>
             </el-table-column>
 <!--            <el-table-column label="售价类型" align="center" width="150">-->
@@ -121,31 +110,31 @@
 <!--                    </div>-->
 <!--                </template>-->
 <!--            </el-table-column>-->
-            <el-table-column prop="gcName" label="分类"  align="center">
+            <el-table-column prop="firstCategory " label="分类"  align="center">
                 <template slot-scope="scope">
                     <div>
-                        {{scope.row.gcName}}
+                        {{scope.row.firstCategory }}
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="gcName" label="状态"  align="center">
+            <el-table-column prop="tofileFlag" label="状态"  align="center">
                 <template slot-scope="scope">
                     <div>
-                        {{scope.row.gcName}}
+                        {{scope.row.tofileFlag}}
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="gcName" label="京东三级分类"  align="center" v-if="dataForm.goodsShow==''">
+            <el-table-column prop="jdThirdCategory" label="京东三级分类"  align="center" v-if="dataForm.goodsShow==''">
                 <template slot-scope="scope">
                     <div>
-                        {{scope.row.gcName}}
+                        {{scope.row.jdThirdCategory}}
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="gcName" label="HSCODE"  align="center">
+            <el-table-column prop="hsCode" label="HSCODE"  align="center">
                 <template slot-scope="scope">
                     <div>
-                        {{scope.row.gcName}}
+                        {{scope.row.hsCode}}
                     </div>
                 </template>
             </el-table-column>
@@ -175,18 +164,29 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
+    import { registerUrl } from '@/api/url'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
+                mixinViewModuleOptions: {
+                    getDataListURL: registerUrl,
+                    getDataListIsPage: true,
+                    // exportURL: '/admin-api/log/login/export',
+                    // deleteURL: deleteWare,
+                    deleteIsBatch: false,
+                    deleteIsBatch: true,
+                    deleteIsBatchKey: 'id'
+                },
                 breaddata: [ "商品管理", "备案商品管理"],
                 activeName: "",
                 dataForm: {
-                    goodsName: "",//商品名称/商品货号
-                    brandName: "",//品牌名称
-                    conditionName: "",//分类名称
-                    storeName: "",//店铺名称
-                    goodsShow:"",//上下架状态:0下架;1上架
+                    goodsName: "",// 商品名称
+                    goodsCsIdJp: "",// 商品sku ID
+                    firstCategory: "",// 分类
+                    storeName: "",// 店铺名称
+                    brandName:"",// 品牌
+                    tofileFlag:"",// 状态
                 },
                 options: [{
                     value: '选项1',
@@ -230,5 +230,9 @@
     @import "@/element-ui/theme-variables.scss";
     .grayLine{
         border-bottom: 0!important;
+    }
+    img {
+        width: 100px;
+        height: 100px;
     }
 </style>
