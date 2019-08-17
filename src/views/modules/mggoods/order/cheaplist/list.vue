@@ -75,7 +75,7 @@
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <!-- <el-button type="primary" @click="submitStore()">{{ $t('confirm') }}</el-button> -->
-                    <el-button size="mini" type="text" @click="handleEdit( scope.row)">查看</el-button>
+                    <el-button size="mini" type="text" @click="addOrAdit( scope.row)">查看</el-button>
                     <el-button size="mini" type="text" @click="handleEdit( scope.row)">取消订单</el-button>
                 </template>
             </el-table-column>
