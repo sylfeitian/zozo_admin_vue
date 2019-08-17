@@ -426,25 +426,25 @@ export const backScanShopStore = params => { return http.get(`${base}/shopStore/
 
 //中国分类管理--------------------------------------------------------------------------------------------------------------------
 // 获取一级分类
-export const categoryCn = params => { return http.get(`${base}/categoryCn`, params).then(res => res.data); };
+// export const categoryCn = params => { return http.get(`${base}/categoryCn`, params).then(res => res.data); };
 // 删除分类接口
-export const deleteCategoryCn = params => { return http.delete(`${base}/categoryCn/delete`, params).then(res => res.data); };
+// export const deleteCategoryCn = params => { return http.delete(`${base}/categoryCn/delete`, params).then(res => res.data); };
 // 新增/修改分类
-export const updateCategoryCn = params => { return http.put(`${base}/categoryCn/edit`, params).then(res => res.data); };
+// export const updateCategoryCn = params => { return http.put(`${base}/categoryCn/edit`, params).then(res => res.data); };
 // 关联查询一级二级三级分类
-export const categoryCnList = params => { return http.get(`${base}/categoryCn/listCorrelated`, params).then(res => res.data); };
+// export const categoryCnList = params => { return http.get(`${base}/categoryCn/listCorrelated`, params).then(res => res.data); };
 // 分页查询分类
-export const categoryCnPage = params => { return http.get(`${base}/categoryCn/page`, params).then(res => res.data); };
+// export const categoryCnPage = params => { return http.get(`${base}/categoryCn/page`, params).then(res => res.data); };
 // 设为推荐
-export const recommendCategoryCn = params => { return http.put(`${base}/categoryCn/recommend`, params).then(res => res.data); };
+// export const recommendCategoryCn = params => { return http.put(`${base}/categoryCn/recommend`, params).then(res => res.data); };
 // 搜索用分类列表
-export const searchCategoryCn = params => { return http.get(`${base}/categoryCn/search/list`, params).then(res => res.data); };
+// export const searchCategoryCn = params => { return http.get(`${base}/categoryCn/search/list`, params).then(res => res.data); };
 // 是否显示分类
-export const showCategoryCn = params => { return http.put(`${base}/categoryCn/show`, params).then(res => res.data); };
+// export const showCategoryCn = params => { return http.put(`${base}/categoryCn/show`, params).then(res => res.data); };
 // 修改排序号
-export const categoryCnSort = params => { return http.put(`${base}/categoryCn/sort`, params).then(res => res.data); };
+// export const categoryCnSort = params => { return http.put(`${base}/categoryCn/sort`, params).then(res => res.data); };
 // 根据分类id查询中方分类
-export const backScanCategoryCn = params => { return http.get(`${base}/categoryCn/${params.id}`, params).then(res => res.data); };
+// export const backScanCategoryCn = params => { return http.get(`${base}/categoryCn/${params.id}`, params).then(res => res.data); };
 
 
 
