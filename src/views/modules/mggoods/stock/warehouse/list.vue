@@ -3,25 +3,23 @@
         <Bread :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
             <el-form-item label="仓库名称/ID：">
-                <el-input v-model="dataForm.id" ></el-input>
+                <el-input v-model="dataForm.warehouseName" ></el-input>
             </el-form-item>
-            <el-form-item label="仓库种类：" prop="">
-                <el-select v-model="dataForm.paymentStatus" placeholder="请选择">
-                    <el-option label="全部" value=""></el-option>
-                    <el-option label="已取消发布" value="0"></el-option>
-                    <el-option label="已发布" value="1"></el-option>
+            <el-form-item label="仓库种类：">
+                <el-select v-model="dataForm.type" placeholder="请选择">
+                    <el-option label="发货仓" value="0"></el-option>
+                    <el-option label="退货仓" value="1"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="启用状态：" prop="">
-                <el-select v-model="dataForm.paymentStatus" placeholder="请选择">
-                    <el-option label="全部" value=""></el-option>
-                    <el-option label="已取消发布" value="0"></el-option>
-                    <el-option label="已发布" value="1"></el-option>
+            <el-form-item label="启用状态：">
+                <el-select v-model="dataForm.isEnable" placeholder="请选择">
+                    <el-option label="不启用" value="0"></el-option>
+                    <el-option label="启用" value="1"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="addOrAdit()">搜索</el-button>
-                <el-button  class="btn" type="primary" plain @click="addoraditList()" >重置</el-button>
+                <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
+                <el-button  class="btn" type="primary" plain @click="reset()" >重置</el-button>
                 <el-button  class="btn" type="primary" plain @click="addOrAdit()" >添加仓库</el-button>
             </el-form-item>
         </el-form>
@@ -38,13 +36,31 @@
                     <!-- {{scope.$index+1+(parseInt(params.currentPage)-1)* parseInt(params.currentPageSize) }} -->
                 </template>
             </el-table-column>
-            <el-table-column prop="name" label="仓库名称" align="center"></el-table-column>
-            <el-table-column prop="" label="仓库所在地" align="center"></el-table-column>
-            <el-table-column prop="" label="仓库种类" align="center"></el-table-column>
-            <el-table-column prop="" label="负责人" align="center"></el-table-column>
-            <el-table-column prop="" label="联系方式" align="center"></el-table-column>
-            <el-table-column prop="" label="状态" align="center"></el-table-column>
-            <el-table-column prop="" label="启用" align="center"></el-table-column>
+            <el-table-column prop="warehouseName" label="仓库名称" align="center"></el-table-column>
+            <el-table-column prop="addressInfo" label="仓库所在地" align="center"></el-table-column>
+            <el-table-column label="仓库种类" align="center">
+                <template slot-scope="scope">
+                    <span  v-if="scope.row.type==0">发货仓</span>
+                    <span  v-if="scope.row.type==1">退货仓</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="name" label="负责人" align="center"></el-table-column>
+            <el-table-column prop="phone" label="联系方式" align="center"></el-table-column>
+            <el-table-column prop="isEnable" label="状态" align="center">
+                <template slot-scope="scope">
+                    <span  v-if="scope.row.isEnable==0">不启用</span>
+                    <span  v-if="scope.row.isEnable==1">启用</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="" label="启用" align="center">
+                <template slot-scope="scope">
+                    <el-switch
+                            v-model="value"
+                            active-color="#13ce66"
+                            inactive-color="#ff4949">
+                    </el-switch>
+                </template>
+            </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="addOrAdit(scope.$index, scope.row)"type="text"size="mini">编辑</el-button>
@@ -74,14 +90,28 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import addEditData from './model-add-edit-data'
-    // import showData from './model-show-data'
+    import { wareUrl,deleteWare } from '@/api/url'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
+                mixinViewModuleOptions: {
+                    getDataListURL: wareUrl,
+                    getDataListIsPage: true,
+                    // exportURL: '/admin-api/log/login/export',
+                    deleteURL: deleteWare,
+                    deleteIsBatch: false,
+                    deleteIsBatch: true,
+                    deleteIsBatchKey: 'id'
+                },
                 activeName: "",
                 breaddata: [ "仓库管理"],
-                dataForm: {},
+                dataForm: {
+                    warehouseName: "",
+                    type: "",
+                    isEnable: "",
+
+                },
                 value: '',
                 dataList: [],
                 dataListLoading: false,
