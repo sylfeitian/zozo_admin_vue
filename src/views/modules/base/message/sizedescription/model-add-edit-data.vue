@@ -5,7 +5,7 @@
             :close-on-click-modal="false"
             :visible.sync="visible"
             :before-close="closeDialog"
-            width="26%"
+            width="36%"
     >
         <el-form
                 :model="dataForm"
@@ -15,13 +15,13 @@
                 label-width="120px"
         >
             <el-form-item label="尺码项目ID：">
-                <span>{{dataForm.sizeId}}</span>
+                <span>{{dataForm.idJp}}</span>
             </el-form-item>
             <el-form-item label="日本尺码项目名称：">
-                <span>{{dataForm.japanSize}}</span>
+                <span>{{dataForm.nameJp}}</span>
             </el-form-item>
             <el-form-item label="尺码项目名称：" prop="sizeName" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.sizeName" auto-complete="off"></el-input>
+                <el-input v-model="dataForm.name" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
                 <el-button type="primary" @click="dataFormSubmit()"
@@ -66,7 +66,7 @@
                 this.row = row;
                 if(row){
                     this.title="编辑尺码项目信息";
-                    this.backScan();
+                    this.backScan(row);
                 }else{
                     this.title="新建尺码项目信息"
 
@@ -77,22 +77,10 @@
                 })
             },
             //编辑回显
-            // backScan(){
-            //     var obj  = {
-            //         id:this.row.id,
-            //         sizeId:this.row.sizeId,
-            //         japanSize:this.row.japanSize,
-            //         sizeName:this.row.sizeName,
-            //     }
-            //     backScanAftertemplate(obj).then((res)=>{
-            //         if(res.code == 200){
-            //             Object.assign(this.dataForm,res.data);
-            //
-            //         }else{
-            //
-            //         }
-            //     })
-            // },
+               backScan(row){
+                   this.dataForm = row;
+                   console.log(row)
+               },
             // 提交
             dataFormSubmit(formName){
                 // alert([this.dataForm.name,this.dataForm.domainAddress]);
@@ -148,5 +136,11 @@
     /*}*/
     .title {
         margin-left: -98px;
+    }
+    /deep/.el-form-item__label{
+    	width: 145px !important;
+    }
+    /deep/.el-form-item__content{
+    	margin-left: 160px !important;
     }
 </style>

@@ -31,6 +31,7 @@
             v-loading="dataListLoading"
             @select-all = "onTableSelect"
             @select = "onTableSelect"
+            @selection-change = 'selectionchange'
             style="width: 100%;margin-top:20px;"
         >
         	<el-table-column
@@ -109,15 +110,18 @@
         	this.getDataList();
         },
         methods: {
+        	selectionchange(sta,stb){
+        		console.log(sta,stb);
+        	},
         	//单个去选商品    //点击全选
         	onTableSelect(rows, row) {
-    			console.log(this.$refs.dataList.selection,this.page);
+//  			console.log(this.$refs.dataList.selection,this.page);
         		if(this.currentpageclickdata[this.page]){    //存在
         			this.currentpageclickdata[this.page] = this.$refs.dataList.selection;
         		}else{  								    //不存在
         			this.$set(this.currentpageclickdata, this.page, this.$refs.dataList.selection)
         		}
-        		console.log(this.currentpageclickdata);
+//      		console.log(this.currentpageclickdata);
         		this.artselect(this.currentpageclickdata);
 			},
 			artselect(){     

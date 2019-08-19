@@ -16,7 +16,7 @@
                 <el-input v-model="dataForm.orderId" type="text" maxlength="500" placeholder="请输入备注内容" style="width:400px;"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="">保存</el-button>
+                <el-button  class="btn" type="primary" @click="artaddodoGoods">保存</el-button>
             </el-form-item>
         </el-form>
         <el-form>
@@ -66,7 +66,7 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import showData from './model-show-data'
-    import { getallstock} from "@/api/api"
+    import { getallstock,addodoGoods} from "@/api/api"      //获取仓库，保存商品
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -106,12 +106,16 @@
         	searchDataList(rows){
         		this.dataList = rows;
         	},
+        	artaddodoGoods(){
+        		console.log(this.dataList);
+        		addodoGoods(this.dataList).then((data)=>{
+        			console.log(data);
+        		})
+        	},
         	//删除商品
         	deletelocaldata(index,row){
         		console.log(index);
-        		
-        		this.dataList.shift();
-        		this.dataList.remove(index);
+        		this.dataList.splice(index, 1); 
         		console.log(this.dataList);
         	},
         	//所有仓库

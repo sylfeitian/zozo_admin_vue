@@ -7,13 +7,21 @@ let requestType = { headers: { 'content-type': 'application/x-www-form-urlencode
 //Base64上传图片
 export const uploadPicBase64 = params => { return http.post(`${base}/picture/base64`, params).then(res => res.data); };
 
+//基础--------------------------------------------------------------------------------------------------------------------------
+// 新增/修改分类
+export const updatasizeCn = params => { return http.put(`${base}/sizeCn`, params).then(res => res.data); };
+
+
+
+
 
 //仓库管理--------------------------------------------------------------------------------------------------------
 // 获取所有仓库
 export const getallstockname = params => { return http.get(`${base}/wareHouse/odoGoods/houseName`, params).then(res => res.data); };
 // 获取弹框仓库商品
 export const getallstock = params => { return http.get(`${base}/wareHouse/odoGoods/stock/page`, params).then(res => res.data); };
-
+// 保存商品  
+export const addodoGoods = params => { return http.post(`${base}/wareHouse/odoGoods/add`, params).then(res => res.data); };
 
 //中国分类管理--------------------------------------------------------------------------------------------------------------------
 // 获取一级分类
