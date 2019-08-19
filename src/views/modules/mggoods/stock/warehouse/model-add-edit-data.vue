@@ -31,7 +31,6 @@
             </el-form-item>
             <el-form-item label="仓库所在地：" prop="addressInfo" :label-width="formLabelWidth">
                 <el-select
-                        disabled
                         v-model="dataForm.provinceId"
                         placeholder="省"
                         loading-text="加载中···"
@@ -46,7 +45,6 @@
                     ></el-option>
                 </el-select>
                 <el-select
-                        disabled
                         v-model="dataForm.cityId"
                         placeholder="市"
                         @visible-change="getGoodsClass(1)"
@@ -59,7 +57,6 @@
                     ></el-option>
                 </el-select>
                 <el-select
-                        disabled
                         v-model="dataForm.areaId"
                         placeholder="县"
                         @visible-change="getGoodsClass(2)"
@@ -72,7 +69,6 @@
                     ></el-option>
                 </el-select>
                 <el-select
-                        disabled
                         v-model="dataForm.stressId"
                         placeholder="街道/街道"
                 >

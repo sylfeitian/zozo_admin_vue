@@ -28,15 +28,22 @@
         name: "model-order-data",
         data () {
             return {
+                visible : false,
+                loading : false,
+                title:'',
+                dataForm : {},
                 active: 0
             }
         },
         methods: {
-            init (row) {
+            init () {
                 this.visible = true;
-                this.row = row;
                 this.title="订单跟踪";
-            }
+            },
+            closeDialog() {
+                console.log("关闭窗口");
+                this.$parent.addEditDataVisible = false;
+            },
         }
     }
 </script>

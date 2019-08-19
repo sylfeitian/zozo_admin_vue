@@ -3,21 +3,21 @@
         <Bread  :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
             <el-form-item label="颜色组ID：">
-                <el-input v-model="dataForm.colorGroupId" ></el-input>
+                <el-input v-model="dataForm.idJp" ></el-input>
             </el-form-item>
             <el-form-item label="颜色组名称：">
-                <el-input v-model="dataForm.colorGroup" ></el-input>
+                <el-input v-model="dataForm.name" ></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="getDataList()">查询</el-button>
                 <el-button   class="btn" type="primary" plain @click="reset()">重置条件</el-button>
             </el-form-item>
         </el-form>
-        <el-button @click="addOrEditHandle()"  class="btn" type="primary" style="float: right;">导入信息</el-button>
-        <el-table width="100%" :data="dataList" border v-loading="dataListLoading" style="width: 100%;margin-top: 60px">
-            <el-table-column prop="colorGroupId" label="颜色组ID" align="center"></el-table-column>
-            <el-table-column prop="japanGroup" label="日本颜色组名称" align="center"></el-table-column>
-            <el-table-column prop="colorGroup" label="颜色组名称" align="center"></el-table-column>
+        <el-button @click="addOrEditHandle()"  class="btn" type="primary">导入信息</el-button>
+        <el-table width="100%" :data="dataList" border v-loading="dataListLoading" style="width: 100%;margin-top: 20px">
+            <el-table-column prop="idJp" label="颜色组ID" align="center"></el-table-column>
+            <el-table-column prop="nameJp" label="日本颜色组名称" align="center"></el-table-column>
+            <el-table-column prop="name" label="颜色组名称" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="addOrEditHandle(scope.$index, scope.row)"type="text"size="mini">编辑</el-button>
@@ -43,20 +43,26 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import addEditData from './model-add-edit-data'
+    import { colorcategoryUrl } from '@/api/url'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
+                mixinViewModuleOptions: {
+                    getDataListURL: colorcategoryUrl,
+                    getDataListIsPage: true,
+                    // exportURL: '/admin-api/log/login/export',
+                    // deleteURL: deleteShopStyle,
+                    deleteIsBatch: false,
+                    deleteIsBatch: true,
+                    deleteIsBatchKey: 'id'
+                },
                 breaddata: [ "商品管理", "颜色组"],
                 dataForm: {
-                    colorGroupId:"",//颜色组id
-                    colorGroup: "",//颜色组名称
+                    idJp: null,//颜色组id
+                    name: null,//颜色组名称
                 },
                 value: '',
-                form: {
-                    japanGroup: "",//日本颜色组名称
-                    colorGroup: ""//颜色组名称
-                },
                 addEditDataVisible:false,
                 formLabelWidth: '120px',
                 dataListLoading: false,
@@ -69,7 +75,8 @@
         },
         methods: {
             reset() {
-                this.dataForm.colorsName = "";//颜色组名称
+                this.dataForm.idJp = null;
+                this.dataForm.name = null;
                 this.getDataList();
             },
             // 新建和编辑
@@ -87,7 +94,5 @@
 </script>
 
 <style scoped>
-    .grayLine{
-        border-bottom: 0!important;
-    }
+
 </style>

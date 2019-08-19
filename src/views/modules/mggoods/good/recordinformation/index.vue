@@ -13,9 +13,9 @@
                 <el-select v-model="dataForm.firstCategory" placeholder="请选择">
                     <el-option
                             v-for="item in options"
-                            :key="item.value"
+                            :key="item.id"
                             :label="item.label"
-                            :value="item.value">
+                            :value="item.id">
                     </el-option>
                 </el-select>
             </el-form-item>
@@ -25,16 +25,27 @@
             <el-form-item  label="品牌：">
                 <el-input v-model="dataForm.brandName" placeholder="请输入品牌名称" ></el-input>
             </el-form-item>
-            <el-form-item  label="状态：">
-                <el-select v-model="dataForm.tofileFlag" placeholder="请选择">
+            <el-form-item  label="状态：" v-if="dataForm.goodsShow==''">
+                <el-select v-model="dataForm.transportFlag" placeholder="请选择">
                     <el-option
-                            v-for="item in options"
-                            :key="item.value"
+                            v-for="item in stateOptions"
+                            :key="item.id"
                             :label="item.label"
-                            :value="item.value">
+                            :value="item.id">
                     </el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item  label="备案状态：" v-if="dataForm.goodsShow=='1'">
+                <el-select v-model="dataForm.tofileFlag" placeholder="请选择">
+                    <el-option
+                            v-for="item in alreadyOptions"
+                            :key="item.id"
+                            :label="item.label"
+                            :value="item.id">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <br>
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="getDataList()">查询</el-button>
                 <el-button   class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
@@ -57,7 +68,7 @@
             <el-table-column label="商品SKU ID" align="center">
                 <template slot-scope="scope">
                     <div>
-                        {{scope.row.skuIdJp}}
+                        {{scope.row.skuId}}
                     </div>
                 </template>
             </el-table-column>
@@ -65,7 +76,7 @@
                 <template slot-scope="scope">
                     <div class="goodsPropsWrap">
                         <div class="goodsImg">
-                            <img :src="scope.row.imageUrl | filterImgUrl" alt=""/>
+                            <img :src="scope.row.imageUrl" alt=""/>
                         </div>
                     </div>
                 </template>
@@ -80,7 +91,7 @@
             <el-table-column prop="storeName" label="规格" align="center" width="150">
                 <template slot-scope="scope">
                     <div>
-                        {{scope.row.spe }}
+                        {{scope.row.csName}}
                     </div>
                 </template>
             </el-table-column>
@@ -187,16 +198,21 @@
                     storeName: "",// 店铺名称
                     brandName:"",// 品牌
                     tofileFlag:"",// 状态
+                    transportFlag: ""
                 },
-                options: [{
-                    value: '选项1',
-                    label: '全部'
+                alreadyOptions: [{
+                    id: '0',
+                    label: '待备案'
+                },{
+                    id: '3',
+                    label: '待重新备案'
+                }],
+                stateOptions: [{
+                    id: '0',
+                    label: '未下发'
                 }, {
-                    value: '选项2',
-                    label: '已售完'
-                }, {
-                    value: '选项3',
-                    label: '未售完'
+                    id: '1',
+                    label: '已下发'
                 }],
             }
         },
@@ -205,6 +221,8 @@
             //orderDet
         },
         created() {
+            this.dataForm.goodsShow = 0;
+            this.getDataList();
         },
         methods: {
             handleClick(tab) {
