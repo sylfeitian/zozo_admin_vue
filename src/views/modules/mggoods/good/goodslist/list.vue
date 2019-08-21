@@ -7,26 +7,19 @@
                 <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" ></el-input>
             </el-form-item>
             <el-form-item label="商品ID：">
-                <el-input v-model="dataForm.goodsId" placeholder="请输入spuID" ></el-input>
+                <el-input v-model="dataForm.brandId" placeholder="请输入spuID" ></el-input>
             </el-form-item>
             <el-form-item label="分类：">
-                <el-select v-model="dataForm.conditionName" placeholder="请选择">
-                    <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
+                <el-input v-model="dataForm.gcId" placeholder="请输入" ></el-input>
             </el-form-item>
             <el-form-item label="店铺名称：">
-                <el-input v-model="dataForm.goodsId" placeholder="请输入店铺名称" ></el-input>
+                <el-input v-model="dataForm.storeName" placeholder="请输入店铺名称" ></el-input>
             </el-form-item>
             <el-form-item label="品牌名称：">
-                <el-input v-model="dataForm.goodsId" placeholder="请输入品牌名称" ></el-input>
+                <el-input v-model="dataForm.brandName" placeholder="请输入品牌名称" ></el-input>
             </el-form-item>
             <el-form-item label="上架状态：">
-                <el-select v-model="dataForm.state" placeholder="请选择">
+                <el-select v-model="dataForm.goodsShow" placeholder="请选择">
                     <el-option
                             v-for="item in options"
                             :key="item.value"
@@ -36,7 +29,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="可售状态：">
-                <el-select v-model="dataForm.state" placeholder="请选择">
+                <el-select v-model="dataForm.goodsStatus" placeholder="请选择">
                     <el-option
                             v-for="item in options"
                             :key="item.value"
@@ -78,7 +71,7 @@
             <el-table-column label="商品ID" align="center" width="100">
                 <template slot-scope="scope">
                     <div>
-                        {{scope.row.goodsId}}
+                        {{scope.row.brandId}}
                     </div>
                 </template>
             </el-table-column>
@@ -222,10 +215,11 @@
                 breaddata: [ "商品管理", "商品列表"],
                 dataForm: {
                     goodsName: "",//商品名称/商品货号
-                    brandName: "",//品牌名称
-                    conditionName: "",//分类名称
+                    brandId: "",//品牌名称
+                    gcId: "",//分类
                     storeName: "",//店铺名称
-                    state: "",//是否可售
+                    brandName:"",//品牌名称
+                    goodsStatus: "",//是否可售
                     goodsShow:"",//上下架状态:0下架;1上架
                 },
                 options: [{
