@@ -10,8 +10,13 @@ export const uploadPicBase64 = params => { return http.post(`${base}/picture/bas
 //基础--------------------------------------------------------------------------------------------------------------------------
 // 新增/修改分类
 export const updatasizeCn = params => { return http.put(`${base}/sizeCn`, params).then(res => res.data); };
-
-
+//分类条件
+export const gettagdatalist = params => { return http.get(`${base}/tag/page`, params).then(res => res.data); };
+//分类条件编辑
+export const uploadtag = params => { return http.put(`${base}/tag?name=${params.name}&id=${params.id}`, params).then(res => res.data); };
+//日本尺码管理关联  
+export const uploadsizejptag = params => { return http.put(`${base}/sizejp/update`, params).then(res => res.data); };
+//
 
 
 

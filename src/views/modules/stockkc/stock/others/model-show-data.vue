@@ -29,9 +29,8 @@
             ref='dataList'
             border=""
             v-loading="dataListLoading"
-            @select-all = "onTableSelect"
+            @select-all = "onTableSelectall"
             @select = "onTableSelect"
-            @selection-change = 'selectionchange'
             style="width: 100%;margin-top:20px;"
         >
         	<el-table-column
@@ -98,7 +97,7 @@
                 formLabelWidth: '120px',
                 clickdata: [],  //选中的商品
                 currentpageclickdata:{},
-                showdatacurrent:[],
+                showdatacurrent:[],      //页面回显
             }
         },
         props:['dataId','showdata'],
@@ -110,12 +109,14 @@
         	this.getDataList();
         },
         methods: {
-        	selectionchange(sta,stb){
-        		console.log(sta,stb);
-        	},
         	//单个去选商品    //点击全选
         	onTableSelect(rows, row) {
-//  			console.log(this.$refs.dataList.selection,this.page);
+        		console.log(rows,row)
+        		
+        		
+        		
+        		
+        		return;
         		if(this.currentpageclickdata[this.page]){    //存在
         			this.currentpageclickdata[this.page] = this.$refs.dataList.selection;
         		}else{  								    //不存在
@@ -123,6 +124,31 @@
         		}
 //      		console.log(this.currentpageclickdata);
         		this.artselect(this.currentpageclickdata);
+			},
+			onTableSelectall(rows){
+				if(this.$refs.dataList.selection[0]){     //全不选
+					console.log('全选');
+				}else{
+					console.log('全不选')
+				}
+//				console.log('全选');
+//				console.log(rows);
+			},
+			artaddordel(arrlist,type,row){
+				if(type == "add"){     //添加
+					let selected = arrlist.length && arrlist.indexOf(row) !== -1
+				    if(selected == false){
+				    	this.$emit("actdodelete",row.id);
+				    }else{
+				    	if(this.dataForm.type == 1){        //店铺
+								this.$emit("actVipNameshop",row);
+							}else{    //会员
+								this.$emit("actVipNamevip",row);
+							}
+				    }
+				}else{                //减少
+					
+				}
 			},
 			artselect(){     
 				this.clickdata = [];

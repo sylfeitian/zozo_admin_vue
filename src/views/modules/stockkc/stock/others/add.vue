@@ -105,6 +105,7 @@
         	//显示所选的商品
         	searchDataList(rows){
         		this.dataList = rows;
+        		console.log(this.dataList);
         	},
         	artaddodoGoods(){
         		console.log(this.dataList);

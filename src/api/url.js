@@ -12,6 +12,8 @@ export const getsizeCndata = `${base}/sizeCn/page`;
 export const delsizeCndata = `${base}/sizeCn`;
 //中国尺码分页
 export const getshoplabel = `${base}/shoplabel/page`;    
+//日本尺码分页      
+export const getsizeJPdata = `${base}/sizejp/page`;  
 
 //库存管理------------------------------------------------------------------------------------------------------------
 //出库单管理
