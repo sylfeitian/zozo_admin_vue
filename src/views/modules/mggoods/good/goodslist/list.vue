@@ -125,8 +125,8 @@
             </el-table-column>
             <el-table-column label="状态" align="center">
                 <template slot-scope="scope">
-                    <span  v-if="scope.row.showWeb==0">可售</span>
-                    <span  v-if="scope.row.showWeb==1">不可售</span>
+                    <el-tag v-if="scope.row.showWeb==0" type="success">可售</el-tag>
+                    <el-tag v-if="scope.row.showWeb==1" type="info">不可售</el-tag>
                 </template>
             </el-table-column>
 <!--            <el-table-column label="日本状态" align="center">-->

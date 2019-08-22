@@ -43,8 +43,8 @@
             <el-table-column prop="storeName" label="店铺中文名称" align="center"></el-table-column>
             <el-table-column label="营业状态" align="center">
                 <template slot-scope="scope">
-                    <span  v-if="scope.row.operateFlag==0">营业中</span>
-                    <span  v-if="scope.row.operateFlag==1">已停业</span>
+                    <el-tag v-if="scope.row.operateFlag==0" type="success">营业中</el-tag>
+                    <el-tag v-if="scope.row.operateFlag==1" type="info">已停业</el-tag>
                 </template>
             </el-table-column>
             <el-table-column prop="japanState" label="日本店铺状态" align="center"></el-table-column>
@@ -196,8 +196,8 @@
                     "operateFlag":row.operateFlag==1?2:1  //
                 }
                 var msg = ""
-                row.operateFlag==1?msg="禁用":msg="启用"
-                this.$confirm('是否'+msg+'该分组?', '提示', {
+                row.operateFlag==1?msg="停业":msg="营业"
+                this.$confirm('是否进行'+msg+'操作?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
