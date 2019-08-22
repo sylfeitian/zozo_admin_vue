@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Bread :breaddata="breaddata" @changePage="changePage"></Bread>
+        <Bread :breaddata="breaddata" :index="'1'" @changePage="changePage"></Bread>
         <el-col :span="12" style="border-right: 1px solid #e6e6e6;">
             <el-form
                     ref="dataForm"
@@ -11,9 +11,6 @@
                 <p class="title">日文</p>
                 <el-form-item label="搭配ID：">
                     <span>{{dataForm.id}}</span>
-                </el-form-item>
-                <el-form-item label="标题：">
-                    <span>{{dataForm.name}}</span>
                 </el-form-item>
                 <el-form-item label="发布人：">
                     <span>{{dataForm.id}}</span>
@@ -144,11 +141,12 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
+    import { getlookdetail } from '@/api/api'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
-                breaddata: [ "内容管理", "搭配详情"],
+                breaddata: [ "内容管理", "搭配管理","搭配详情"],
                 dataList: [],
                 dataListLoading: false,
                 dataForm: {}
@@ -158,29 +156,16 @@
             Bread
         },
         methods: {
-            init(id){
+            init(row){
                 this.$nextTick(()=>{
-                    if(id){
+                    if(row){
                         var obj  = {
-                            id:id
+                            id:row.id
                         }
-                        storeNews(obj).then((res)=>{
+                        getlookdetail(obj).then((res)=>{
                             console.log('详情',res.data)
                             if(res.code == 200){
-                                this.logo = res.data.storeDTO.storeLogo;
-                                this.electronicBusinessLicense = res.data.storeAuthDTO.electronicBusinessLicense;
-                                this.dataForm.storeClassId = res.data.storeClassDTOList.map(item=>{
-                                    return item.classId
-                                })
-                                this.storeId = res.data.storeDTO.id;
-                                this.dataForm.id = res.data.storeUserDTO.id;
-                                Object.assign(this.dataForm, res.data.storeUserDTO);
-                                Object.assign(this.dataForm.saveStoreDTO, res.data.storeDTO);
-                                if(res.data.storeAuthDTO){
-                                    Object.assign(this.dataForm.saveStoreAuthDTO,res.data.storeAuthDTO)
-                                }
-                                this.dataForm.isEnable = JSON.stringify(res.data.isEnable)
-
+                            	this.dataForm = res.data;
                             }
                         })
                     }

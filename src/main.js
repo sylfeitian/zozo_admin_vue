@@ -52,6 +52,20 @@ Vue.prototype.$hasPermission = hasPermission
 // 保存整站vuex本地储存初始状态
 window.SITE_CONFIG['storeState'] = cloneDeep(store.state)
 
+Array.prototype.indexOf = function(val) {   //数组的下标
+    for (var i = 0; i < this.length; i++) {
+        if (this[i] == val) return i;
+    }
+    return -1;
+};
+
+Array.prototype.remove = function(val) {   //删除指定值的一项
+    var index = this.indexOf(val);
+    if (index > -1) {
+        this.splice(index, 1);
+    }
+};
+
 window.vue = new Vue({
   i18n,
   router,
