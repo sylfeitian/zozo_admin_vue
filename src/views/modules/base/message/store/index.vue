@@ -54,9 +54,11 @@
             <el-table-column prop="" label="设为推荐" align="center">
                 <template slot-scope="scope">
                     <el-switch
-                            v-model="value"
+                            v-model="scope.row.recommendFlag"
                             active-color="#13ce66"
-                            inactive-color="#ff4949">
+                            inactive-color="#ff4949"
+                            @click="switchHandle('singe',scope.row)"
+                    >
                     </el-switch>
                 </template>
             </el-table-column>
@@ -98,7 +100,7 @@
     import addEditData from './model-add-edit-data'
     import editData from './model-edit-data'
     import { shopPageUrl } from '@/api/url'
-    import { operateShopStore } from '@/api/api'
+    import { operateShopStore, recommendShopStore } from '@/api/api'
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -223,7 +225,42 @@
                     })
 
                 }).catch(() => {});
-            }
+            },
+            switchHandle(index,row){
+                this.currentIndex = index;
+                var obj = {
+                    "id": row.id,
+                    "recommendFlag":row.recommendFlag==1?0:1  //0不推荐1推荐
+                }
+                var msg = ""
+                row.recommendFlag==1?msg="不推荐":msg="推荐"
+                this.$confirm('是否进行'+msg+'操作?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.forbitLoading = true;
+                    recommendShopStore(obj).then((res)=>{
+                        this.forbitLoading = false;
+                        // console.log(res);
+                        if(res.code==200){
+                            this.getDataList();
+                            this.$message({
+                                message:res.msg,
+                                type: 'success',
+                                duration: 1500,
+                            })
+                        }else{
+                            this.$message({
+                                message:res.msg,
+                                type: 'error',
+                                duration: 1500,
+                            })
+                        }
+                    })
+
+                }).catch(() => {});
+            },
         }
     }
 </script>
