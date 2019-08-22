@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
+    <list default="true" id="f3787b20-4854-4940-b50c-a76b5d40a5f2" name="Default Changelist" comment="" />
+=======
     <list default="true" id="f3787b20-4854-4940-b50c-a76b5d40a5f2" name="Default Changelist" comment="1.商品頁面">
       <change afterPath="$PROJECT_DIR$/src/views/modules/base/message/condition/MyButton.vue" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/views/modules/base/message/condition/MyTableTree.vue" afterDir="false" />
@@ -60,6 +63,7 @@
       <change beforePath="$PROJECT_DIR$/src/views/modules/mgorder/order/list40/index.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/modules/mgorder/returngoods/index.vue" beforeDir="false" />
     </list>
+>>>>>>> fb610746b7b5963d46cc7358aab939028ce50ebe
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -72,6 +76,14 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD
+        <entry file="file://$PROJECT_DIR$/src/views/modules/mggoods/good/goodslist/index.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="300">
+              <caret line="16" column="15" selection-start-line="16" selection-start-column="15" selection-end-line="16" selection-end-column="15" />
+              <folding>
+                <element signature="e#511#536#0" expanded="true" />
+=======
         <entry file="file://$PROJECT_DIR$/src/api/api.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="14025">
@@ -90,12 +102,19 @@
                 <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#3;n#template#0;n#el-table-column#10;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#el-button#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+>>>>>>> fb610746b7b5963d46cc7358aab939028ce50ebe
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD
+        <entry file="file://$PROJECT_DIR$/src/views/modules/base/message/brand/model-add-edit-data.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2150">
+              <caret line="86" column="14" selection-start-line="86" selection-start-column="14" selection-end-line="86" selection-end-column="14" />
+=======
         <entry file="file://$PROJECT_DIR$/src/views/modules/mggoods/good/goodslist/index.vue">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="300">
@@ -103,20 +122,13 @@
               <folding>
                 <element signature="e#511#536#0" expanded="true" />
               </folding>
+>>>>>>> fb610746b7b5963d46cc7358aab939028ce50ebe
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/views/modules/base/message/brand/model-add-edit-data.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2150">
-              <caret line="86" column="14" selection-start-line="86" selection-start-column="14" selection-end-line="86" selection-end-column="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD
         <entry file="file://$PROJECT_DIR$/src/views/modules/mggoods/good/goodslist/detail.vue">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="189">
@@ -127,15 +139,55 @@
                 <element signature="e#5125#5163#0" expanded="true" />
                 <element signature="e#5364#5414#0" expanded="true" />
               </folding>
+=======
+        <entry file="file://$PROJECT_DIR$/src/views/modules/base/message/brand/model-add-edit-data.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2150">
+              <caret line="86" column="14" selection-start-line="86" selection-start-column="14" selection-end-line="86" selection-end-column="14" />
+>>>>>>> fb610746b7b5963d46cc7358aab939028ce50ebe
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/views/modules/base/message/japan/index.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="475">
+              <caret line="19" column="22" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
+              <folding>
+                <element signature="n#style#0;n#MyTableTree#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="e#1128#1178#0" expanded="true" />
+=======
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/views/modules/mggoods/good/goodslist/detail.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="189">
+              <caret line="111" column="20" selection-start-line="111" selection-start-column="20" selection-end-line="111" selection-end-column="20" />
+              <folding>
+                <element signature="n#style#0;n#el-form-item#0;n#el-form#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#Table#0;n#el-form-item#12;n#el-form#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="e#5125#5163#0" expanded="true" />
+                <element signature="e#5364#5414#0" expanded="true" />
+>>>>>>> fb610746b7b5963d46cc7358aab939028ce50ebe
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+<<<<<<< HEAD
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="489">
+              <caret line="39" column="4" selection-start-line="39" selection-start-column="4" selection-end-line="39" selection-end-column="4" />
+=======
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/views/modules/base/message/japan/index.vue">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="846">
               <caret line="77" column="8" lean-forward="true" selection-start-line="77" selection-start-column="8" selection-end-line="77" selection-end-column="8" />
+>>>>>>> fb610746b7b5963d46cc7358aab939028ce50ebe
             </state>
           </provider>
         </entry>
@@ -174,7 +226,11 @@
         <entry file="file://$PROJECT_DIR$/src/api/url.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="6050">
+<<<<<<< HEAD
+              <caret line="242" column="46" selection-start-line="242" selection-start-column="46" selection-end-line="242" selection-end-column="46" />
+=======
               <caret line="254" column="46" selection-start-line="254" selection-start-column="46" selection-end-line="254" selection-end-column="46" />
+>>>>>>> fb610746b7b5963d46cc7358aab939028ce50ebe
             </state>
           </provider>
         </entry>
@@ -286,7 +342,11 @@
       </list>
     </option>
   </component>
+<<<<<<< HEAD
+  <component name="ProjectFrameBounds" extendedState="7">
+=======
   <component name="ProjectFrameBounds" extendedState="6">
+>>>>>>> fb610746b7b5963d46cc7358aab939028ce50ebe
     <option name="x" value="60" />
     <option name="y" value="206" />
     <option name="width" value="1751" />
@@ -510,7 +570,11 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
+    <option name="totallyTimeSpent" value="109521000" />
+=======
     <option name="totallyTimeSpent" value="135196000" />
+>>>>>>> fb610746b7b5963d46cc7358aab939028ce50ebe
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -555,6 +619,88 @@
     <option name="LAST_COMMIT_MESSAGE" value="1.商品頁面" />
   </component>
   <component name="editorHistoryManager">
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/src/views/modules/content/pictures/index.vue">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/content/informationmanage/list/detail.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3625">
+          <caret line="147" column="24" selection-start-line="147" selection-start-column="24" selection-end-line="147" selection-end-column="24" />
+          <folding>
+            <element signature="e#3129#3179#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/content/informationmanage/list/index.vue">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/mixins/view-module.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="766">
+          <caret line="63" column="46" selection-start-line="63" selection-start-column="46" selection-end-line="63" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/element-theme/turquoise/index.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="298">
+          <caret column="91257" selection-start-column="91257" selection-end-column="91257" />
+          <folding>
+            <element signature="e#163759#163898#2" expanded="true" />
+            <element signature="e#166185#166324#2" expanded="true" />
+            <element signature="e#169713#169852#2" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/mggoods/attribute/group/index.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3275">
+          <caret line="131" column="2" selection-start-line="131" selection-start-column="2" selection-end-line="132" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/content/informationmanage/list/list.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3150">
+          <caret line="126" column="23" selection-start-line="126" selection-start-column="9" selection-end-line="126" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/mggoods/order/highlylist/orderDet.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="10" column="47" selection-start-line="10" selection-start-column="47" selection-end-line="10" selection-end-column="47" />
+          <folding>
+            <element signature="n#style#0;n#span#1;n#p#1;n#el-form#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-table#0;n#el-form#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-table#1;n#el-form#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-table#2;n#el-form#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#8461#8511#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/mggoods/order/highlylist/list.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="166">
+          <caret line="42" column="71" selection-start-line="42" selection-start-column="71" selection-end-line="42" selection-end-column="71" />
+          <folding>
+            <element signature="e#5198#5237#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/mggoods/goods/list/skuList.vue">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+=======
+>>>>>>> fb610746b7b5963d46cc7358aab939028ce50ebe
     <entry file="file://$PROJECT_DIR$/src/views/modules/mggoods/stock/warehouse/index.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="700">
@@ -588,6 +734,19 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/src/views/modules/mggoods/good/goodslist/index.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="16" column="15" selection-start-line="16" selection-start-column="15" selection-end-line="16" selection-end-column="15" />
+          <folding>
+            <element signature="e#511#536#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+=======
+>>>>>>> fb610746b7b5963d46cc7358aab939028ce50ebe
     <entry file="file://$PROJECT_DIR$/src/views/modules/mggoods/order/highlylist/index.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -716,6 +875,16 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/src/views/modules/base/message/brand/model-add-edit-data.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2150">
+          <caret line="86" column="14" selection-start-line="86" selection-start-column="14" selection-end-line="86" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+=======
+>>>>>>> fb610746b7b5963d46cc7358aab939028ce50ebe
     <entry file="file://$PROJECT_DIR$/src/views/modules/base/message/store/model-edit-data.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="425">
@@ -787,11 +956,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/views/modules/base/message/label/index.vue">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="2300">
+          <caret line="92" column="14" selection-start-line="79" selection-start-column="12" selection-end-line="92" selection-end-column="14" />
+=======
         <state relative-caret-position="655">
           <caret line="122" column="10" lean-forward="true" selection-start-line="119" selection-start-column="8" selection-end-line="122" selection-end-column="10" />
           <folding>
             <element signature="e#3721#3771#0" expanded="true" />
           </folding>
+>>>>>>> fb610746b7b5963d46cc7358aab939028ce50ebe
         </state>
       </provider>
     </entry>
@@ -814,25 +988,43 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/views/modules/base/message/china/add-edit-data.vue">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="6050">
+          <caret line="242" column="46" selection-start-line="242" selection-start-column="46" selection-end-line="242" selection-end-column="46" />
+=======
         <state relative-caret-position="380">
           <caret line="265" column="32" selection-start-line="265" selection-start-column="24" selection-end-line="265" selection-end-column="32" />
+>>>>>>> fb610746b7b5963d46cc7358aab939028ce50ebe
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/views/modules/base/message/china/index.vue">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="475">
+          <caret line="19" column="22" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
+          <folding>
+            <element signature="n#style#0;n#MyTableTree#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#1128#1178#0" expanded="true" />
+=======
         <state relative-caret-position="775">
           <caret line="32" column="42" selection-start-line="32" selection-start-column="33" selection-end-line="32" selection-end-column="42" />
           <folding>
             <element signature="e#241#268#0" expanded="true" />
+>>>>>>> fb610746b7b5963d46cc7358aab939028ce50ebe
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/index.html">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="489">
+          <caret line="39" column="4" selection-start-line="39" selection-start-column="4" selection-end-line="39" selection-end-column="4" />
+=======
         <state relative-caret-position="689">
           <caret line="47" column="9" lean-forward="true" selection-start-line="47" selection-start-column="9" selection-end-line="47" selection-end-column="9" />
+>>>>>>> fb610746b7b5963d46cc7358aab939028ce50ebe
         </state>
       </provider>
     </entry>
