@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Bread :breaddata="breaddata" @changePage="changePage" :index="'2'"></Bread>
+        <Bread :breaddata="breaddata" @changePage="changePage" :index="'1'"></Bread>
         <el-form
                 ref="dataForm"
                 class="grayLine topGapPadding"
@@ -9,65 +9,65 @@
                 style="margin-left: 20px;"
         >
             <el-form-item label="商品分类：" class="item" style="margin-top: 20px;">
-                <span>{{dataForm.id}}</span>
+                <span>{{dataForm.firstCategory}}</span>
                 <span style="margin-left: 2%;color:green;cursor:pointer;" @click="logMore">修改</span>
             </el-form-item>
             <el-form-item label="商品编码：" class="item">
-                <span>{{dataForm.id}}</span>
+                <span>{{dataForm.goodsName}}</span>
             </el-form-item>
             <el-form-item label="日本商品名称：" class="item">
-                <span>{{dataForm.id}}</span>
+                <span>{{dataForm.nameJp}}</span>
             </el-form-item>
             <el-form-item label="商品名称：" class="item">
-                <el-input v-model="dataForm.goodsId" placeholder="请输入" maxlength="60"></el-input>&nbsp;&nbsp;
+                <el-input v-model="dataForm.name" placeholder="请输入" maxlength="60"></el-input>&nbsp;&nbsp;
                 <span style="color: #bebebe;">最多可输入60个文字</span>
             </el-form-item>
             <el-form-item label="品牌：" class="item">
-                <span>{{dataForm.id}}</span>
+                <span>{{dataForm.brandName}}</span>
             </el-form-item>
             <el-form-item label="所属店铺：" class="item">
-                <span>{{dataForm.id}}</span>
+                <span>{{dataForm.storeName}}</span>
             </el-form-item>
             <el-form-item label="性别：" class="item">
-                <span>{{dataForm.id}}</span>
+                <span>{{dataForm.gender}}</span>
             </el-form-item>
             <el-form-item label="原产地：" class="item">
-                <span>{{dataForm.id}}</span>
-                <el-input v-model="dataForm.goodsId" placeholder="请输入" maxlength="10"></el-input>&nbsp;&nbsp;
+                <span>{{dataForm.madeInJp}}</span>
+                <el-input v-model="dataForm.madeIn" placeholder="请输入" maxlength="10"></el-input>&nbsp;&nbsp;
                 <span style="color: #bebebe;">最多可输入10个文字</span>
             </el-form-item>
             <el-form-item label="材质：" class="item">
-                <span>{{dataForm.id}}</span>
-                <el-input v-model="dataForm.goodsId" placeholder="请输入" maxlength="10"></el-input>&nbsp;&nbsp;
+                <span>{{dataForm.materialJp}}</span>
+                <el-input v-model="dataForm.material" placeholder="请输入" maxlength="10"></el-input>&nbsp;&nbsp;
                 <span style="color: #bebebe;">最多可输入10个文字</span>
             </el-form-item>
             <el-form-item label="上架状态：" class="item">
-                <span>{{dataForm.id}}</span>
+                <span>{{dataForm.showWeb}}</span>
             </el-form-item>
             <el-form-item label="可售状态：" class="item">
-                <span>{{dataForm.id}}</span>
+                <span>{{dataForm.japanShowWeb}}</span>
             </el-form-item>
             <el-form-item label="颜色尺码：">
                 <el-table border="" class="inforRight" style="display:inline-block;width: 80%">
-                    <el-table-column prop="goodsName" label="SKU编码" align="center"></el-table-column>
+                    <el-table-column prop="goodsCsIdjp" label="SKU编码" align="center"></el-table-column>
                     <!--                    <el-table-column prop="specId" label="备案编码" align="center"></el-table-column>-->
-                    <el-table-column prop="specName" label="颜色" align="center"></el-table-column>
-                    <el-table-column prop="goodsName" label="尺码" align="center"></el-table-column>
+                    <el-table-column prop="colorName" label="颜色" align="center"></el-table-column>
+                    <el-table-column prop="sizeName" label="尺码" align="center"></el-table-column>
                     <el-table-column prop="specId" label="尺码信息" align="center"></el-table-column>
-                    <el-table-column prop="specName" label="库存" align="center"></el-table-column>
+                    <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
                     <el-table-column prop="specName" label="是否可售" align="center"></el-table-column>
-                    <el-table-column prop="specName" label="售卖开始时间" align="center"></el-table-column>
-                    <el-table-column prop="specName" label="售卖结束时间" align="center"></el-table-column>
-                    <el-table-column prop="specSellPrice" label="售价(RMB)" align="center">
+                    <el-table-column prop="sellStartDate" label="售卖开始时间" align="center"></el-table-column>
+                    <el-table-column prop="sellEndDate" label="售卖结束时间" align="center"></el-table-column>
+                    <el-table-column prop="sellPrice" label="售价(RMB)" align="center">
                         <template
                                 slot-scope="scope"
                                 v-if="scope.row.specSellPrice!==''&&scope.row.specSellPrice!==null"
-                        >￥{{scope.row.specSellPrice.toFixed(2)}}</template>
+                        >￥{{scope.row.sellPrice.toFixed(2)}}</template>
                     </el-table-column>
                     <el-table-column prop="goodsNum" label="图片" align="center">
                         <template slot-scope="scope">
                             <div class="goodsImg">
-                                <img  :src="scope.row.pictureUrl | filterImgUrl" style="width:60px;height:60px;object-fit: contain;" alt=""/>
+                                <img  :src="scope.row.imageUrl | filterImgUrl" style="width:60px;height:60px;object-fit: contain;" alt=""/>
                             </div>
                         </template>
                     </el-table-column>
@@ -77,10 +77,14 @@
                 <Table class="inforRight" style="display: inline-block;" :tableData="tableData" :tableStyle="{ width:'600px' }"></Table>
             </el-form-item>
             <el-form-item label="商品图片：">
-                <img class="imglist right" alt="">
+                <template slot-scope="scope">
+                    <div class="goodsImg">
+                        <img  :src="scope.row.imageUrl | filterImgUrl" style="width:60px;height:60px;object-fit: contain;" alt=""/>
+                    </div>
+                </template>
             </el-form-item>
             <el-form-item label="日本商品详情：" class="item">
-                <span>{{dataForm.id}}</span>
+                <span>{{dataForm.descriptionJp}}</span>
             </el-form-item>
             <el-form-item label="商品详情：">
                 <!-- 富文本编辑器, 容器 -->
@@ -137,7 +141,7 @@
             // },
             // 返回上一级
             changePage() {
-                this.$emit("changeState");
+                this.$emit("showList");
             },
             changePage(){
                 this.$emit("showList");

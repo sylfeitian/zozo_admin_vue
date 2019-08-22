@@ -3,7 +3,7 @@
         <list v-if="mainVisible" ref="listCompon" @detShowChange="detShowChange" @editList="editList"></list>
         <operationallog v-if="operationallogVisible" ref="operationallogCompon" @operationallogList="operationallogList" @more="more"></operationallog>
         <detail v-if="detailVisible" ref="detailCompon" @logMore="logMore" @operational="operational"></detail>
-        <edit v-if="editVisible" ref="editCompon"></edit>
+        <edit v-if="editVisible" ref="editCompon" @showList="showList"></edit>
     </div>
 </template>
 
@@ -12,10 +12,8 @@
     import operationallog from "./operationalLog"
     import detail from "./detail";
     import edit from "./edit";
-    import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     export default {
-        mixins: [mixinViewModule],
         data () {
             return {
                 mainVisible:true,
@@ -32,12 +30,12 @@
             edit
         },
         methods: {
-            detShowChange () {
+            detShowChange (row) {
                 this.detailVisible = true;
                 this.mainVisible = false;
-                // this.$nextTick(()=>{
-                //     this.$refs.detailCompon.init(row);
-                // })
+                this.$nextTick(()=>{
+                    this.$refs.detailCompon.init(row);
+                })
             },
             operationallogList () {
                 this.detailVisible = false;
@@ -65,6 +63,10 @@
             editList () {
                 this.mainVisible = false;
                 this.editVisible = true;
+            },
+            showList () {
+                this.mainVisible = true;
+                this.editVisible = false;
             }
         },
     }

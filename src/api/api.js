@@ -123,17 +123,17 @@ export const addGoods = params => { return http.post(`${base}/goods`, params).th
 // 编辑商品，商品修改
 export const updateGoods = params => { return http.put(`${base}/goods`, params).then(res => res.data); };
 // 编辑回显
-export const backScanGoods = params => { return http.get(`${base}/goods/${params.id}`).then(res => res.data); }
+// export const backScanGoods = params => { return http.get(`${base}/goods/${params.id}`).then(res => res.data); }
 // 编辑回显
 export const backScanDetailGoods = params => { return http.get(`${base}/goods/detail/${params.id}`).then(res => res.data); }
 // 商品上下架状态批量修改
-export const showBatchGoods = params => { return http.put(`${base}/goods/show?goodsShow=${params.goodsShow}`, params.ids).then(res => res.data); };
+// export const showBatchGoods = params => { return http.put(`${base}/goods/show?goodsShow=${params.goodsShow}`, params.ids).then(res => res.data); };
 // 单个商品上下架状态修改
 // export const showGoods = params => { return http.put(`${base}/goods/show/${params.id}`, params).then(res => res.data); };
 
 // 商品审核--------------------------------------
 //修改商品审核状态
-export const checkGoods = params => { return http.put(`${base}/goods/check`, params).then(res => res.data); };
+// export const checkGoods = params => { return http.put(`${base}/goods/check`, params).then(res => res.data); };
 //批量修改商品审核状态
 export const checkBatchGoods = params => { return http.put(`${base}/goods/check/batch?goodsStatus=${params.goodsStatus}&rejectReason=${params.rejectReason}`, params.ids).then(res => res.data); };
 
@@ -512,3 +512,77 @@ export const skuGoods = params => { return http.get(`${base}/ware/skugoods`, par
 export const verifyWare = params => { return http.get(`${base}/ware/verify/name`, params).then(res => res.data); };
 // 根据ID获取仓库信息
 export const backScanWare = params => { return http.get(`${base}/ware/${params.id}`, params).then(res => res.data); };
+
+
+
+//日本分类管理接口--------------------------------------------------------------------------------------------------------------------
+// 查询日本分类子分类(parentId为0,且无cateId)
+export const searchCategoryJp = params => { return http.get(`${base}/categoryJp/children`, params).then(res => res.data); };
+// 导入日本分类
+export const importCategoryJp = params => { return http.post(`${base}/categoryJp/import`, params).then(res => res.data); };
+// 分页查询日本分类
+export const categoryJpList = params => { return http.get(`${base}/categoryJp/page`, params).then(res => res.data); };
+// 分页查询，父分类和子分类分层显示
+export const categoryJpPageTier = params => { return http.get(`${base}/categoryJp/pageTier`, params).then(res => res.data); };
+// 更新分类详情
+export const updateCategoryJp = params => { return http.put(`${base}/categoryJp/update?name=${params.name}&id=${params.id}`, params).then(res => res.data); };
+// 根据分类id查询日本分类
+export const backScanCategoryJp = params => { return http.get(`${base}/categoryJp/${params.id}`, params).then(res => res.data); };
+
+
+
+//颜色管理接口--------------------------------------------------------------------------------------------------------------------
+// 更新颜色
+export const updateColor = params => { return http.put(`${base}/color/update`, params).then(res => res.data); };
+// 查询颜色详情
+export const backScanColor = params => { return http.get(`${base}/color/${params.id}`, params).then(res => res.data); };
+
+
+
+//颜色组管理接口--------------------------------------------------------------------------------------------------------------------
+// 更新颜色组
+export const updateColorcategory = params => { return http.put(`${base}/color/colorcategory/update`, params).then(res => res.data); };
+// 查询颜色组详情
+export const backScanColorcategory = params => { return http.get(`${base}/color/colorcategory/${params.id}`, params).then(res => res.data); };
+
+
+
+//尺码描述管理接口--------------------------------------------------------------------------------------------------------------------
+// 编辑尺码项
+export const editSizeLabel = params => { return http.put(`${base}/shoplabel/editSizeLabel`, params).then(res => res.data); };
+// 编辑页面回显
+export const backScanJpShoplabel = params => { return http.get(`${base}/shoplabel/getByIdJp/${params.id}`, params).then(res => res.data); };
+// 根据商品spuId和尺码id查询尺码值
+export const updateShoplabel = params => { return http.put(`${base}/shoplabel/goods`, params).then(res => res.data); };
+// 导入尺码项
+export const importShoplabel = params => { return http.post(`${base}/shoplabel/import`, params).then(res => res.data); };
+// 分页
+export const shoplabelPage = params => { return http.get(`${base}/shoplabel/page`, params).then(res => res.data); };
+// 根据id获取尺码项
+export const backScanShoplabel = params => { return http.get(`${base}/shoplabel/${params.id}`, params).then(res => res.data); };
+
+
+
+//商品管理接口--------------------------------------------------------------------------------------------------------------------
+// 修改商品
+export const deleteGoods = params => { return http.delete(`${base}/goods`, params).then(res => res.data); };
+// 商品保存
+export const goodsSave = params => { return http.post(`${base}/goods`, params).then(res => res.data); };
+// 商品修改
+export const editGoods = params => { return http.put(`${base}/goods`, params).then(res => res.data); };
+// 商品审核
+export const checkGoods = params => { return http.put(`${base}/goods/check`, params).then(res => res.data); };
+// 商品导出
+export const exportGoods = params => { return http.get(`${base}/goods/export`, params).then(res => res.data); };
+// 商品分页
+export const goodsPage = params => { return http.get(`${base}/goods/page`, params).then(res => res.data); };
+// 查看商品操作日志分页查询
+export const backScanGoodsLog = params => { return http.get(`${base}/goods/page/log/${params.spuId}`, params).then(res => res.data); };
+// 商品上下架状态批量修改
+export const showBatchGoods = params => { return http.put(`${base}/goods/show`, params).then(res => res.data); };
+// 单个商品上下架状态修改
+export const showGoods = params => { return http.put(`${base}/goods/show/${params.id}`, params).then(res => res.data); };
+// 获取商品尺码信息
+export const getGoodsSize = params => { return http.get(`${base}/goods/size/item`, params).then(res => res.data); };
+// 商品详细信息
+export const backScanGoods = params => { return http.get(`${base}/goods/${params.id}`, params).then(res => res.data); };

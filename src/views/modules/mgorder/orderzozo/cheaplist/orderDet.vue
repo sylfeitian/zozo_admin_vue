@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Bread :breaddata="orderDetData" @changePage="getList(1)" :index="'1'"></Bread>
+        <Bread :breaddata="orderDetData" @changePage="changePage" :index="'1'"></Bread>
         <el-form
                 :inline="true"
                 class="grayLine topGapPadding"
@@ -138,7 +138,7 @@
             </el-table>
         </el-form>
         <!-- 弹窗, 新建 -->
-        <orderData  v-if="addEditDataVisible" ref="addEditData" @searchDataList="getDataList"></orderData>
+        <orderData  v-if="orderDataVisible" ref="addEditData" @searchDataList="getDataList"></orderData>
     </div>
 </template>
 <script>
@@ -155,53 +155,36 @@
                 dialogFormVisible: false,
                 orderDetData: ["订单管理", "BC订单管理", "订单详情"],
                 dataForm: {},
-                addEditDataVisible: false
+                orderDataVisible: false
             };
         },
         components: {
-            Bread
+            Bread,
+            orderData
         },
-        props: ["data", "addressInfo", "orderLog", "orderData", "packageInfo"],
+        props: ["data", "addressInfo", "orderLog","packageInfo"],
         methods: {
+            changePage(){
+                this.goList();
+            },
             //页面跳转 1-列表页
-            getList(nums) {
-                this.$emit("changePage", nums);
+            goList() {
+                this.$emit("addoraditList");
             },
 
             //添加备注
             addRemarks() {
                 this.dialogFormVisible = !this.dialogFormVisible;
             },
-            copyOrder() {
-                var clipboard = new Clipboard(".btn");
-                let that = this;
-                clipboard.on("success", e => {
-                    that.$message({
-                        message: "订单号复制成功",
-                        type: "success",
-                        duration: 1000
-                    });
-                    clipboard.destroy();
-                });
-
-                clipboard.on("error", e => {
-                    that.$message({
-                        message: "订单号复制失败，请重新复制",
-                        type: "error",
-                        duration: 1000
-                    });
-                    clipboard.destroy();
-                });
-            },
             // 物流信息
             orderDataHandle(index=-1,row=""){
-                this.setAddEditDataVisible(true);
+                this.setOrderDataVisible(true);
                 this.$nextTick(() => {
                     this.$refs.orderData.init(row)
                 })
             },
-            setAddEditDataVisible(boolargu){
-                this.addEditDataVisible =  boolargu;
+            setOrderDataVisible(boolargu){
+                this.orderDataVisible =  boolargu;
             },
         }
     };

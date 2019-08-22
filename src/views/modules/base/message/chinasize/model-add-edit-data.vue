@@ -10,28 +10,24 @@
         <el-form
                 :model="dataForm"
                 :rules="dataRule"
-                ref="dataForm"
+                ref="addForm"
                 label-width="120px">
-            <el-form-item label="尺码名称：" prop="name">
-                <el-input v-model="dataForm.name" maxlength="10" placeholder="请输入10个字以内的内容"></el-input>
+            <el-form-item label="品牌ID：">
+                <span>{{dataForm.brandId}}</span>
             </el-form-item>
-            <el-form-item label="排序：" prop="sort">
-                <el-input type="number" v-model="dataForm.sort"  @blur='artnumberinput(dataForm.sort)' min='0'  placeholder="0"></el-input>
+            <el-form-item label="品牌名称：" prop="brandName">
+                <el-input v-model="dataForm.brandName" maxlength="60" placeholder="请输入属性名称"></el-input>
             </el-form-item>
-            <el-form-item label="" prop="sort">
-                <div style="display: block;">数字越大越靠前</div>
-            </el-form-item>
-            <el-form-item style="text-align: center;">
-            	<el-button  @click="dataFormCancel()">取消</el-button>
-                <el-button type="primary" @click="dataFormSubmit('dataForm')"
+            <el-form-item style="text-align: center;margin-left: -120px!important;">
+                <el-button type="primary" @click="dataFormSubmit('addForm')"
                            :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
+                <el-button  @click="dataFormCancel()">返回</el-button>
             </el-form-item>
         </el-form>
     </el-dialog>
 </template>
 
-<script> 
-	import {updatasizeCn}  from '@/api/api'
+<script>
     export default {
         name: "model-add-edit-data",
         data () {
@@ -39,46 +35,91 @@
                 visible : false,
                 loading : false,
                 dataForm : {
-                	id:'',
-                    name:'',
-                    sort: 0,
+                    brandId:'',
+                    brandName:'',
                 },
+                options: [{
+                    value: '选项1',
+                    label: 'S'
+                }, {
+                    value: '选项2',
+                    label: 'M'
+                }, {
+                    value: '选项3',
+                    label: 'L'
+                },{
+                    value: '选项4',
+                    label: 'XL'
+                },{
+                    value: '选项5',
+                    label: 'XXL'
+                },{
+                    value: '选项6',
+                    label: '3XL'
+                }],
                 dataRule : {
-                    name: [
-			            { required: true, message: '请输入尺码名称', trigger: 'blur' },
-			            { min: 0, max: 10, message: '10个字符以内尺码名称', trigger: 'blur' }
-			          ],
-			          sort: [
-//			            { required: true, message: '请排序数字', trigger: 'blur' },
-			          ],
+                    brandName : [
+                        { required: true, message: '必填项不能为空', trigger: 'blur' },
+                    ]
                 },
-                title:'添加/编辑尺码',
+                optionsApplication: [],
+                optionsRight: [],
+                title:'',
                 row:"",
-                formLabelWidth: '120px',
+                formLabelWidth: '120px'
             }
         },
         methods: {
             init (row) {
                 this.visible = true;
+                this.row = row;
                 if(row){
-                	this.dataForm = row;
+                    this.title="编辑品牌";
+                    this.backScan();
+                }else{
+                    this.title="新建品牌"
+
                 }
-                
+                this.$nextTick(() => {
+                    this.$refs['addForm'].resetFields();
+                    // this.getApplyPullList();
+                })
             },
-            //排序
-		    artnumberinput(scope){
-		    	if(scope<=0){
-		    		this.dataForm.sort = 0;
-		    	}
-		    },
+            //编辑回显
+            // backScan(){
+            //     var obj  = {
+            //         id:this.row.id,
+            //         brandName:this.row.brandName,
+            //     }
+            //     backScanAftertemplate(obj).then((res)=>{
+            //         if(res.code == 200){
+            //             Object.assign(this.dataForm,res.data);
+            //
+            //         }else{
+            //
+            //         }
+            //     })
+            // },
+            // 提交
             dataFormSubmit(formName){
+                // alert([this.dataForm.name,this.dataForm.domainAddress]);
+                // console.log(this.dataForm);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.loading = true;
-                        updatasizeCn(this.dataForm).then((res) => {
+                        var obj={
+                            "chinaSize": this.dataForm.chinaSize,
+                            "storeId": 0,
+                            "japanSize": this.dataForm.japanSize
+                        }
+                        if(this.row) obj.id = this.row.id
+                        //var fn = this.row?updateAftertemplate:addAftertemplate;
+                        fn(obj).then((res) => {
                             this.loading = false;
+                            // alert(JSON.stringify(res));
                             let status = null;
                             if(res.code == "200"){
+                                status = "success";
                                 this.visible = false;
                                 this.$emit('searchDataList');
                                 this.closeDialog();
@@ -90,8 +131,6 @@
                                 type: status,
                                 duration: 1500
                             })
-                            this.visible = false;
-                			this.closeDialog();
                         })
                     } else {
                         //console.log('error 添加失败!!');

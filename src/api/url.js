@@ -34,7 +34,7 @@ export const addstock  = `${base}/wareHouse/odoGoods/add`;
  // 商品列表
 export const goodsPageUrl = `${base}/goods/page`;
 // 删除商品
-export const deleteGoodsUrl = `${base}/goods`;
+//export const deleteGoodsUrl = `${base}/goods`;
 // 商品审核---------------------------------------------------
 // 商品审核列表
 export const goodsVerifyPageUrl = `${base}/goods/verify/page`;
@@ -228,3 +228,35 @@ export const skuGoods = `${base}/ware/skugoods`;
 // 备案商品管理--------------------------------------------------------------------------------------------------------------------
 // 备案商品列表
 export const registerUrl = `${base}/goods/register/page`;
+
+
+
+// 日本分类管理--------------------------------------------------------------------------------------------------------------------
+// 日本分类管理列表
+export const categoryJpUrl = `${base}/categoryJp/page`;
+
+
+
+// 颜色管理--------------------------------------------------------------------------------------------------------------------
+// 颜色管理列表
+export const colorUrl = `${base}/color/page`;
+
+
+
+// 颜色组管理--------------------------------------------------------------------------------------------------------------------
+// 颜色组管理列表
+export const colorcategoryUrl = `${base}/color/colorcategory/page`;
+
+
+
+// 尺码描述管理--------------------------------------------------------------------------------------------------------------------
+// 尺码描述管理列表
+export const shoplabelUrl = `${base}/shoplabel/page`;
+
+
+
+// 商品管理--------------------------------------------------------------------------------------------------------------------
+// 商品管理列表
+export const goodsUrl = `${base}/goods/page`;
+// 删除
+export const deleteGoodsUrl = `${base}/goods`;

@@ -3,10 +3,15 @@
         <Bread :breaddata="breaddata"></Bread>
         <el-button size="mini" @click="more">查看详情</el-button>
         <el-button size="mini">操作日志</el-button>
-        <el-table border style="margin-top: 20px;">
-            <el-table-column label="时间" header-align="center" align="center"></el-table-column>
-            <el-table-column label="账户" header-align="center" align="center"></el-table-column>
-            <el-table-column label="操作内容" header-align="center" align="center"></el-table-column>
+        <el-table
+                width="100%"
+                :data="dataList"
+                border
+                v-loading="dataListLoading"
+                style="margin-top: 20px;">
+            <el-table-column prop="createDate" label="时间" header-align="center" align="center"></el-table-column>
+            <el-table-column prop="creater" label="账户" header-align="center" align="center"></el-table-column>
+            <el-table-column prop="operation" label="操作内容" header-align="center" align="center"></el-table-column>
         </el-table>
         <!-- 分页 -->
         <el-pagination
@@ -24,6 +29,7 @@
 <script>
     import Bread from "@/components/bread";
     import mixinViewModule from '@/mixins/view-module'
+    import { backScanGoodsLog } from '@/api/api'
     export default {
         mixins: [mixinViewModule],
         data () {

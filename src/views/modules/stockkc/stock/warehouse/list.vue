@@ -104,7 +104,7 @@
                     deleteIsBatch: true,
                     deleteIsBatchKey: 'id'
                 },
-                activeName: "",
+                // activeName: "",
                 breaddata: [ "仓库管理"],
                 dataForm: {
                     warehouseName: "",
@@ -118,8 +118,6 @@
                 addEditDataVisible:false,
                 // showDataVisible:false,
                 forbitLoading:false,
-                timeArr: "", //日本发布时间数据
-                timeArr2: "", //发布时间数据
                 startCreateDate: "",
                 endCreateDate: "",
                 endPaymentTime: "",
@@ -135,8 +133,8 @@
         },
         created () {
             // 第一次请求数据
-            this.activeName =  this.status == undefined ? "" : this.status;
-            this.dataForm.goodsShow = this.status == undefined ? "" : this.status;
+            // this.activeName =  this.status == undefined ? "" : this.status;
+            // this.dataForm.goodsShow = this.status == undefined ? "" : this.status;
             this.getDataList();
         },
         methods: {
@@ -166,12 +164,9 @@
                 this.addEditDataVisible =  boolargu;
             },
             reset(formName) {
-                this.timeArr = [];
-                this.timeArr2 = [];
-                this.dataForm.startCreateDate = "";
-                this.dataForm.endtime = "";
-                this.dataForm.startPaymentTime = "";
-                this.dataForm.endPaymentTime = "";
+                this.dataForm.warehouseName = "";
+                this.dataForm.type = "";
+                this.dataForm.isEnable = "";
                 this.$refs[formName].resetFields();
                 this.getDataList();
             },

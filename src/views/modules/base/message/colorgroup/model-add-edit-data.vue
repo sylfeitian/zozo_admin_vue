@@ -15,13 +15,13 @@
             label-width="120px"
         >
             <el-form-item label="颜色组ID：">
-                <span>{{dataForm.colorGroupId}}</span>
+                <span>{{dataForm.id}}</span>
             </el-form-item>
             <el-form-item label="日本颜色组名称：">
-                <span>{{dataForm.japanGroup}}</span>
+                <span>{{dataForm.nameJp}}</span>
             </el-form-item>
-            <el-form-item label="颜色组名称：" prop="colorGroup" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.colorGroup" auto-complete="off"></el-input>
+            <el-form-item label="颜色组名称：" prop="name" :label-width="formLabelWidth">
+                <el-input v-model="dataForm.name" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
                 <el-button type="primary" @click="dataFormSubmit('addForm')"
@@ -33,6 +33,7 @@
 </template>
 
 <script>
+    import { backScanColorcategory,updateColorcategory } from '@/api/api'
     export default {
         name: "model-add-edit-data",
         data () {
@@ -40,12 +41,12 @@
                 visible : false,
                 loading : false,
                 dataForm: {
-                    colorGroupId: "",//颜色组ID
-                    japanGroup: "",//日本品牌名称
-                    colorGroup: "",//颜色组名称
+                    id: "",//颜色组ID
+                    nameJp: "",//日本品牌名称
+                    name: "",//颜色组名称
                 },
                 dataRule : {
-                    colorGroup : [
+                    name : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ]
                 },
@@ -77,21 +78,21 @@
                 })
             },
             //编辑回显
-            // backScan(){
-            //     var obj  = {
-            //         id:this.row.id,
-            //         colorGroupId:this.row.colorGroupId,
-            //         japanGroup:this.row.japanGroup,
-            //         colorGroup:this.row.colorGroup,
-            //     backScanAftertemplate(obj).then((res)=>{
-            //         if(res.code == 200){
-            //             Object.assign(this.dataForm,res.data);
-            //
-            //         }else{
-            //
-            //         }
-            //     })
-            // },
+            backScan(){
+                var obj  = {
+                    id:this.row.id,
+                    nameJp:this.row.nameJp,
+                    name:this.row.name
+                }
+                backScanColorcategory(obj).then((res)=>{
+                    if(res.code == 200){
+                        Object.assign(this.dataForm,res.data);
+
+                    }else{
+
+                    }
+                })
+            },
             // 提交
             dataFormSubmit(formName){
                 // alert([this.dataForm.name,this.dataForm.domainAddress]);
@@ -99,11 +100,10 @@
                     if (valid) {
                         this.loading = true;
                         var obj = {
-                            "japanGroup":  this.dataForm.japanGroup,
-                            "colorGroup":  this.dataForm.colorGroup,
+                            "name":  this.dataForm.name,
                         }
                         if(this.row) obj.id = this.row.id
-                        //var fn = this.row?updateBrand:addBrand;
+                        var fn = updateColorcategory;
                         fn(obj).then((res) => {
                             this.loading = false;
                             // alert(JSON.stringify(res));
