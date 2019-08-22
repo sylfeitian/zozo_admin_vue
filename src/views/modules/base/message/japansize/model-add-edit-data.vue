@@ -14,14 +14,14 @@
             @keyup.enter.native="dataFormSubmit('addForm')"
             label-width="120px"
         >
-            <el-form-item label="尺码ID：">
-                <span>{{dataForm.sizeId}}</span>
+            <el-form-item label="日本尺码ID：">
+                <span>{{dataForm.idJp}}</span>
             </el-form-item>
             <el-form-item label="日本尺码名称：">
-                <span>{{dataForm.japanSize}}</span>
+                <span>{{dataForm.nameJp}}</span>
             </el-form-item>
-            <el-form-item label="尺码名称：" prop="sizeName" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.sizeName" auto-complete="off"></el-input>
+            <el-form-item label="尺码名称：" prop="name" :label-width="formLabelWidth">
+                <el-input v-model="dataForm.name" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
                 <el-button type="primary" @click="dataFormSubmit()"
@@ -63,14 +63,9 @@
         methods: {
             init (row) {
                 this.visible = true;
-                this.row = row;
-                if(row){
-                    this.title="编辑尺码";
-                    this.backScan();
-                }else{
-                    this.title="新建尺码"
-
-                }
+                this.dataForm = row;
+                this.title="编辑尺码";
+               
                 this.$nextTick(() => {
                     this.$refs['addForm'].resetFields();
                     // this.getApplyPullList();

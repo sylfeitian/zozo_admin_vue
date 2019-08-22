@@ -5,43 +5,40 @@
             <el-form-item label="ID：">
                 <el-input v-model="dataForm.id" ></el-input>
             </el-form-item>
-            <el-form-item label="标题：">
-                <el-input v-model="dataForm.id" ></el-input>
-            </el-form-item>
             <el-form-item label="用户：">
-                <el-input v-model="dataForm.name" ></el-input>
+                <el-input v-model="dataForm.nickname" ></el-input>
             </el-form-item>
             <el-form-item label="日本发布时间：">
                 <el-date-picker
-			      	v-model="valuetime"
+			      	v-model="valuetime1"
 			     	type="daterange"
 			      	range-separator="-"
 			      	start-placeholder="开始日期"
 			      	end-placeholder="结束日期"
 			      	value-format="yyyy-MM-dd"
-			      	@blur='acttime'>
+			      	@blur='acttime1'>
 			    </el-date-picker>
             </el-form-item>
             <el-form-item label="发布时间：">
                <el-date-picker
-		      		v-model="valuetime"
+		      		v-model="valuetime2"
 		      		type="daterange"
 		      		range-separator="-"
 		      		start-placeholder="开始日期"
 		      		end-placeholder="结束日期"
 		      		value-format="yyyy-MM-dd"
-		      		@blur='acttime'>
+		      		@blur='acttime2'>
 		    	</el-date-picker>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="addOrAdit()">搜索</el-button>
-                <el-button  class="btn"type="primary" plain @click="reset()" >重置</el-button>
+                <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
+                <el-button  class="btn" type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
         <el-radio-group v-model="activeName" @change="handleClick">
             <el-radio-button label="">全部</el-radio-button>
-            <el-radio-button label="upper">已发布</el-radio-button>
-            <el-radio-button label="lower">已取消发布</el-radio-button>
+            <el-radio-button label="1">已发布</el-radio-button>
+            <el-radio-button label="0">已取消发布</el-radio-button>
         </el-radio-group>
         <el-table
                 width="100%"
@@ -51,29 +48,29 @@
                 style="width: 100%;margin-top:20px;"
         >
             <el-table-column type="selection" width="70"></el-table-column>
-            <el-table-column prop="id" label="ID" align="center"></el-table-column>
-            <el-table-column prop="memberAvatar" label="封面图片" align="center">
+            <el-table-column prop="idJp" width="70" label="ID" align="center"></el-table-column>
+            <el-table-column prop="imageUrl" label="封面图片" width="80" align="center">
                 <template slot-scope="scope">
                     <img
-                            :src="$imgDomain + scope.row.memberAvatar"
-                            alt=""
-                            style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
+                        :src="$imgDomain + scope.row.imageUrl"
+                        alt=""
+                        style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                     >
                 </template>
             </el-table-column>
-            <el-table-column prop="name" label="标题" align="center"></el-table-column>
-            <el-table-column prop="japanDesc" label="用户" align="center"></el-table-column>
-            <el-table-column prop="desc" label="相关商品" align="center"></el-table-column>
-            <el-table-column prop="japanName" label="发布状态" align="center"></el-table-column>
-            <el-table-column prop="name" label="日本发布状态" align="center"></el-table-column>
-            <el-table-column prop="japanDesc" label="日本发布时间" align="center"></el-table-column>
+            <el-table-column prop="nickname" label="用户" align="center"></el-table-column>
+            <el-table-column prop="itemList" label="相关商品" align="center"></el-table-column>
+            <el-table-column prop="state" label="发布状态" align="center">
+            </el-table-column>
+            <el-table-column prop="jpPublishState" label="日本发布状态" width="100" align="center"></el-table-column>
+            <el-table-column prop="publishTime" label="日本发布时间" width="100" align="center"></el-table-column>
             <el-table-column prop="desc" label="发布时间" align="center"></el-table-column>
-            <el-table-column prop="desc" label="收藏量" align="center"></el-table-column>
+            <el-table-column prop="favNumCn" label="收藏量" width="80" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button @click.native.prevent="showDetail(scope.$index, scope.row)"type="text"size="mini">查看</el-button>
-                    <el-button @click.native.prevent="addOrAdit(scope.$index, scope.row)"type="text"size="mini">编辑</el-button>
-                    <el-button @click.native.prevent="forbitHandle(scope.$index,scope.row)"type="text"size="mini">
+                    <el-button @click.native.prevent="showDetail(scope.row)"type="text"size="mini">查看</el-button>
+                    <el-button @click.native.prevent="addOrAdit(scope.row)"type="text"size="mini">编辑</el-button>
+                    <el-button @click.native.prevent="forbitHandle(scope.row)"type="text"size="mini">
                         <span v-if="scope.row.groupStatus==1" class="artdisable">{{scope.$index==currentIndex&&forbitLoading?"取消发布中..":"取消发布"}}</span>
                         <span v-else class="artstart">{{scope.$index==currentIndex && forbitLoading?"发布中..":"发布"}}</span>
                     </el-button>
@@ -105,13 +102,31 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
+    import {getlookpage} from '@/api/url'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
+            	mixinViewModuleOptions: {
+			        getDataListURL: getlookpage,
+			        getDataListIsPage: true,
+			        // exportURL: '/admin-api/log/login/export',
+			        deleteURL: '',
+			        dataListLoading: false, 
+			        deleteIsBatch: true,
+			        deleteIsBatchKey: 'id'
+			    },
                 activeName: "",
                 breaddata: [ "内容管理", "搭配管理"],
-                dataForm: {},
+                dataForm: {
+                	id:null,  //编号
+                	state:null,    //发布状态
+                	nickname: null,  //用户昵称
+                	publishStartTime: null,  //发布开始时间
+                	publishEndTime: null,  //发布结束时间
+                	publishStartTimeJp: null,  //日本发布开始时间
+                	publishEndTimeJp:null,  //日本发布结束时间
+                },
                 value: '',
                 dataList: [],
                 dataListLoading: false,
@@ -124,25 +139,51 @@
                 startPaymentTime: "",
                 isIndeterminate: false,
                 checkAll: false,
+                valuetime1:'',   //发布时间
+                valuetime2:'',   //日本发布时间
+                currentIndex:'',
             }
         },
         components: {
             Bread
         },
+        watch:{
+			valuetime1(val){
+		      if(!val){
+		      	this.dataForm.publishStartTime = '';
+		    	this.dataForm.publishEndTime = '';
+		      }
+		    },
+		    valuetime2(val){
+		      if(!val){
+		      	this.dataForm.publishStartTimeJp = '';
+		    	this.dataForm.publishEndTimeJp = '';
+		      }
+		    },
+		},
         created () {
             // 第一次请求数据
             this.handleClick();
             this.activeName =  this.status == undefined ? "" : this.status;
             this.dataForm.goodsShow = this.status == undefined ? "" : this.status;
-            this.getDataList();
         },
         methods: {
-            showDetail(id){
-                this.$emit("showDetail",id);
+            showDetail(row){     //查看
+                this.$emit("showDetail",row);
             },
             addOrAdit(id){
                 this.$emit("addOrAdit",id);
             },
+            //发布开始结束时间
+		    acttime1(){
+		    	this.dataForm.publishStartTime = this.valuetime1[0];
+		    	this.dataForm.publishEndTime = this.valuetime2[1];
+		    },
+		    //日本发布开始结束时间
+		    acttime2(){
+		    	this.dataForm.publishStartTimeJp = this.valuetime1[0];
+		    	this.dataForm.publishEndTimeJp = this.valuetime2[1];
+		    },
             getData() {
                 this.dataForm.startCreateDate = this.timeArr && this.timeArr[0];
                 this.dataForm.endCreateDate = this.timeArr && this.timeArr[1];
@@ -151,22 +192,22 @@
                 this.getDataList();
             },
             reset(formName) {
-                this.timeArr = [];
-                this.timeArr2 = [];
-                this.dataForm.startCreateDate = "";
-                this.dataForm.endtime = "";
-                this.dataForm.startPaymentTime = "";
-                this.dataForm.endPaymentTime = "";
-                this.$refs[formName].resetFields();
+                this.dataForm.id = null;
+                this.dataForm.state = null;
+                this.dataForm.nickname = null;
+                this.dataForm.publishStartTime = null;
+                this.dataForm.publishEndTime = null;
+                this.dataForm.publishStartTimeJp = null;
+                this.dataForm.publishEndTimeJp = null;
                 this.getDataList();
             },
             handleClick(tab,val) {
                 if(tab== ""){
-                    this.dataForm.goodsShow = ""
-                }else if(tab== "upper"){
-                    this.dataForm.goodsShow = "1"
-                }else if(tab== "lower"){
-                    this.dataForm.goodsShow = "0"
+                    this.dataForm.state = null
+                }else if(tab== "1"){
+                    this.dataForm.state = "1"
+                }else if(tab== "0"){
+                    this.dataForm.state = "0"
                 }
                 this.changeVal = val;
                 console.log(this.changeVal)
