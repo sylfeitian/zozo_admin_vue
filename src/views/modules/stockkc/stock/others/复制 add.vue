@@ -105,21 +105,12 @@
         	//显示所选的商品
         	searchDataList(rows){
         		this.dataList = rows;
+        		console.log(this.dataList);
         	},
         	artaddodoGoods(){
-        		if(this.dataList.length < 1){
-        			this.$message('请添加商品')
-        			return;
-        		}
+        		console.log(this.dataList);
         		addodoGoods(this.dataList).then((data)=>{
-        			if(data.code == 200){
-        				this.$message({
-        					message:'保存成功',
-        					type:'success'
-        				})
-        			}else{
-        				this.$message('服务器内部错误')
-        			}
+        			console.log(data);
         		})
         	},
         	//删除商品

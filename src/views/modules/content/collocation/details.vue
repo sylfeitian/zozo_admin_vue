@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Bread :breaddata="breaddata" @changePage="changePage"></Bread>
+        <Bread :breaddata="breaddata" :index="'1'" @changePage="changePage"></Bread>
         <el-col :span="12" style="border-right: 1px solid #e6e6e6;">
             <el-form
                     ref="dataForm"
@@ -144,11 +144,12 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
+    import { getlookdetail } from '@/api/api'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
-                breaddata: [ "内容管理", "搭配详情"],
+                breaddata: [ "内容管理", "搭配管理","搭配详情"],
                 dataList: [],
                 dataListLoading: false,
                 dataForm: {}
@@ -158,13 +159,13 @@
             Bread
         },
         methods: {
-            init(id){
+            init(row){
                 this.$nextTick(()=>{
-                    if(id){
+                    if(row){
                         var obj  = {
-                            id:id
+                            id:row.id
                         }
-                        storeNews(obj).then((res)=>{
+                        getlookdetail(obj).then((res)=>{
                             console.log('详情',res.data)
                             if(res.code == 200){
                                 this.logo = res.data.storeDTO.storeLogo;

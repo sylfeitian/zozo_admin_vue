@@ -25,7 +25,7 @@
             <el-table-column prop="cnSizeName" label="关联中国尺码" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button @click.native.prevent="relationHandle(scope.$index, scope.row)"type="text"size="mini">{{scope.row.name?'修改':'关联尺码'}}</el-button>
+                    <el-button @click.native.prevent="relationHandle(scope.$index, scope.row)"type="text"size="mini">{{scope.row.cnSizeName?'修改':'关联尺码'}}</el-button>
                     <el-button @click.native.prevent="addOrEditHandle(scope.$index, scope.row)"type="text"size="mini">编辑</el-button>
                 </template>
             </el-table-column>

@@ -96,7 +96,6 @@
                 loading : false,
                 formLabelWidth: '120px',
                 clickdata: [],  //选中的商品
-                currentpageclickdata:{},
                 showdatacurrent:[],      //页面回显
             }
         },
@@ -111,56 +110,46 @@
         methods: {
         	//单个去选商品    //点击全选
         	onTableSelect(rows, row) {
-        		console.log(rows,row)
-        		
-        		
-        		
-        		
-        		return;
-        		if(this.currentpageclickdata[this.page]){    //存在
-        			this.currentpageclickdata[this.page] = this.$refs.dataList.selection;
-        		}else{  								    //不存在
-        			this.$set(this.currentpageclickdata, this.page, this.$refs.dataList.selection)
+        		let selected = rows.length && rows.indexOf(row) !== -1
+        		if(selected){   //true    添加
+        			this.showdatacurrent.push(row);
+        		}else{          //删除
+			        for (var i = 0; i < this.showdatacurrent.length; i++) {
+				        if (this.showdatacurrent[i].id == row.id){
+						    this.showdatacurrent.splice(i, 1);
+				        }
+				    }
         		}
-//      		console.log(this.currentpageclickdata);
-        		this.artselect(this.currentpageclickdata);
+        		console.log(this.showdatacurrent);
 			},
 			onTableSelectall(rows){
-				if(this.$refs.dataList.selection[0]){     //全不选
-					console.log('全选');
-				}else{
-					console.log('全不选')
-				}
-//				console.log('全选');
-//				console.log(rows);
-			},
-			artaddordel(arrlist,type,row){
-				if(type == "add"){     //添加
-					let selected = arrlist.length && arrlist.indexOf(row) !== -1
-				    if(selected == false){
-				    	this.$emit("actdodelete",row.id);
-				    }else{
-				    	if(this.dataForm.type == 1){        //店铺
-								this.$emit("actVipNameshop",row);
-							}else{    //会员
-								this.$emit("actVipNamevip",row);
-							}
-				    }
-				}else{                //减少
-					
-				}
-			},
-			artselect(){     
-				this.clickdata = [];
-				for(var k in this.currentpageclickdata){
-					this.currentpageclickdata[k].forEach((item)=>{
-						this.clickdata.push(item);
+				if(this.$refs.dataList.selection[0]){     //全选
+					var flag = true;    //添加进去
+					rows.forEach((item)=>{
+						flag = true; 
+						for (var i = 0; i < this.showdatacurrent.length; i++) {
+					        if (this.showdatacurrent[i].id == item.id){
+							    flag = false;   //已经存在不用添加
+					        }
+					   }
+						if (flag){
+							this.showdatacurrent.push(item);
+						}
 					})
-        		}
-				this.showdatacurrent = this.clickdata;
+				}else{     //全不选
+					this.dataList.forEach((item)=>{
+						for (var i = 0; i < this.showdatacurrent.length; i++) {
+					        if (this.showdatacurrent[i].id == item.id){
+						    	this.showdatacurrent.splice(i, 1);
+					        }
+					   }
+					})
+				}
+				console.log(this.showdatacurrent);
 			},
-			handleClose(done) {
-			    this.$emit('searchDataList',this.clickdata);
+			handleClose(done) {    //带回到父级页面
+				console.log(this.showdatacurrent);
+			    this.$emit('searchDataList',this.showdatacurrent);
 		        done();
 		   },
 			init(row){

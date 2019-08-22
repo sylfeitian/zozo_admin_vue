@@ -20,8 +20,18 @@
             <el-form-item label="尺码名称：">
                 <span>{{dataForm.name}}</span>
             </el-form-item>
-            <el-form-item label="关联尺码：" prop="cnSizeName" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.cnSizeName" auto-complete="off"></el-input>
+            <el-form-item label="关联尺码：" prop="cnSizeId" :label-width="formLabelWidth">
+            	<el-select
+		          v-model="dataForm.cnSizeId"
+		          placeholder="请选择"
+		          loading-text="加载中···">
+		          <el-option
+		            v-for="item in goodKindList1"
+		            :key="item.id"
+		            :label="item.name"
+		            :value="item.id">
+		          </el-option>
+		        </el-select>
             </el-form-item>
             <el-form-item style="text-align: center;">
                 <el-button type="primary" @click="dataFormSubmit('addForm')"
@@ -33,7 +43,7 @@
 </template>
 
 <script>
-	import {uploadsizejptag} from '@/api/api'
+	import {uploadsizejptag,getsizecn} from '@/api/api'
     export default {
         name: "model-add-edit-data",
         data () {
@@ -41,10 +51,13 @@
                 visible : false,
                 loading : false,
                 dataForm: {
+                	id:"",
                     idJp: "",//尺码ID
                     name: "",//日本尺码名称
                     cnSizeName: "",//尺码名称
+                    cnSizeId:"",//中国尺码id
                 },
+                goodKindList1:[],
                 dataRule : {
                     cnSizeName : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -59,17 +72,31 @@
         },
         components:{
         },
-        computed:{},
-        mounted(){},
+        computed:{
+        	
+        },
+        mounted(){
+        	this.artgetsize();
+        },
         methods: {
+        	//获取尺码
+        	artgetsize(){
+                getsizecn().then(({data})=>{
+                	if(data){
+                		this.goodKindList1 = data;
+		          	}else {
+			          	this.$message.error("服务器错误");
+		          	}
+	                })
+        	},
             init (row) {
                 this.visible = true;
                 this.dataForm = row;
                 this.title="修改/关联尺码";
-                this.$nextTick(() => {
-                    this.$refs['addForm'].resetFields();
-                    // this.getApplyPullList();
-                })
+//              this.$nextTick(() => {
+//                  this.$refs['addForm'].resetFields();
+//                  // this.getApplyPullList();
+//              })
             },
             // 提交
             dataFormSubmit(formName){
@@ -77,11 +104,9 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.loading = true;
-                        
+                        console.log(this.dataForm);
                         uploadsizejptag(this.dataForm).then((res) => {
                             this.loading = false;
-                            // alert(JSON.stringify(res));
-                            
                             let status = null;
                             if(res.code == "200"){
                                 status = "success";

@@ -5,6 +5,11 @@
  */
 
 let base ="/admin-api";
+
+//内容---------------------------------------------------------------------------------------
+//搭配分页
+export const getlookpage = `${base}/look/page`; 
+
 //基础数据--------------------------------------------------------------------------------------------
 //中国尺码分页
 export const getsizeCndata = `${base}/sizeCn/page`;    
@@ -14,6 +19,8 @@ export const delsizeCndata = `${base}/sizeCn`;
 export const getshoplabel = `${base}/shoplabel/page`;    
 //日本尺码分页      
 export const getsizeJPdata = `${base}/sizejp/page`;  
+
+
 
 //库存管理------------------------------------------------------------------------------------------------------------
 //出库单管理
