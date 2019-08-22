@@ -71,7 +71,7 @@
             <el-table-column label="商品ID" align="center" width="100">
                 <template slot-scope="scope" >
                     <div @click="detShowChange(scope.row)">
-                        {{scope.row.id}}
+                        {{scope.row.idJp}}
                     </div>
                 </template>
             </el-table-column>
@@ -79,7 +79,7 @@
                 <template slot-scope="scope">
                     <div class="goodsPropsWrap">
                         <div class="goodsImg">
-                            <img :src="scope.row.imageUrl" alt=""/>
+<!--                            <img :src="scope.row.imageUrl" alt=""/>-->
                         </div>
                     </div>
                 </template>
@@ -105,7 +105,7 @@
             </el-table-column>
             <el-table-column prop="salePlan" label="售价类型" align="center" width="100">
                 <template slot-scope="scope">
-                    <span  v-if="scope.row.salePlan==0">zozo设定</span>
+                    <span  v-if="scope.row.salePlan==0">关税计算</span>
                     <span  v-if="scope.row.salePlan==1">品牌方设定</span>
                 </template>
             </el-table-column>
@@ -298,16 +298,16 @@
                // this.getDataList(); //刷新页面数据
             },
             //详情页展示判断
-            detShowChange() {
-                this.$emit("detShowChange");
-            },
+            // detShowChange() {
+            //     this.$emit("detShowChange");
+            // },
             //编辑页展示判断
-            editList() {
-                this.$emit("editList");
+            editList(id) {
+                this.$emit("editList", id);
             },
             //详情页展示判断
-            detShowChange() {
-                this.$emit("detShowChange");
+            detShowChange(row) {
+                this.$emit("detShowChange", row);
             },
             //查看详情
             getSalesDet(index, statue) {

@@ -76,7 +76,7 @@
             <el-form-item label="商品图片：">
                 <template slot-scope="scope">
                     <div class="goodsImg">
-                        <img  :src="scope.row.imageUrl | filterImgUrl" style="width:60px;height:60px;object-fit: contain;" alt=""/>
+                        <img :src="scope.row.imageUrl | filterImgUrl" style="width:60px;height:60px;object-fit: contain;" alt=""/>
                     </div>
                 </template>
             </el-form-item>
@@ -129,11 +129,19 @@
 
         },
         methods: {
-            init () {
-                this.backScan();
-                this.$nextTick(() => {
-                    this.$refs['addForm'].resetFields();
-                    // this.getApplyPullList();
+            init(row){
+                this.$nextTick(()=>{
+                    if(row){
+                        var obj  = {
+                            id:row.id
+                        }
+                        backScanGoods(obj).then((res)=>{
+                            console.log('详情',res.data)
+                            if(res.code == 200){
+                                this.dataForm = res.data;
+                            }
+                        })
+                    }
                 })
             },
             backScan(){
