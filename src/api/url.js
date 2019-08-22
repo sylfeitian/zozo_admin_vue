@@ -241,3 +241,9 @@ export const shoplabelUrl = `${base}/shoplabel/page`;
 export const goodsUrl = `${base}/goods/page`;
 // 删除
 export const deleteGoodsUrl = `${base}/goods`;
+
+
+
+// 京东分类管理--------------------------------------------------------------------------------------------------------------------
+// 商品管理列表
+export const jdCateUrl = `${base}/jdCate/page`;

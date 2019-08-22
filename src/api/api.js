@@ -589,3 +589,11 @@ export const showGoods = params => { return http.put(`${base}/goods/show/${param
 export const getGoodsSize = params => { return http.get(`${base}/goods/size/item`, params).then(res => res.data); };
 // 商品详细信息
 export const backScanGoods = params => { return http.get(`${base}/goods/${params.id}`, params).then(res => res.data); };
+
+
+
+
+
+//京东分类管理接口--------------------------------------------------------------------------------------------------------------------
+// 分页查询分类
+export const jdCatePage = params => { return http.get(`${base}/jdCate/page`, params).then(res => res.data); };
