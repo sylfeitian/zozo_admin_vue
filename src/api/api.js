@@ -582,7 +582,7 @@ export const goodsPage = params => { return http.get(`${base}/goods/page`, param
 // 查看商品操作日志分页查询
 export const backScanGoodsLog = params => { return http.get(`${base}/goods/page/log/${params.spuId}`, params).then(res => res.data); };
 // 商品上下架状态批量修改
-export const showBatchGoods = params => { return http.put(`${base}/goods/show`, params).then(res => res.data); };
+export const showBatchGoods = params => { return http.put(`${base}/goods/show?ids=${params.ids}&showWeb=${params.showWeb}`, params).then(res => res.data); };
 // 单个商品上下架状态修改
 export const showGoods = params => { return http.put(`${base}/goods/show/${params.id}`, params).then(res => res.data); };
 // 获取商品尺码信息

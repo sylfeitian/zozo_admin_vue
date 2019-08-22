@@ -179,7 +179,7 @@
         </el-table>
         <div class="bottomFun">
             <div class="bottomFunLeft">
-                <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+<!--                <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>-->
                 <el-button class="btn" type="success" @click="cotrolGoodsShow('batch',1)" style="margin-left: 20px;">批量上架</el-button>
                 <el-button class="btn" type="success" @click="cotrolGoodsShow('batch',0)">批量下架</el-button>
             </div>
@@ -202,6 +202,7 @@
     import Bread from "@/components/bread";
     import detail from "./detail";
     import { goodsUrl, deleteGoodsUrl } from '@/api/url'
+    import { showBatchGoods } from '@/api/api'
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -251,20 +252,20 @@
         },
         created () {
             // 第一次请求数据
-            // this.handleClick();
+            this.handleClick();
             this.activeName =  this.status == undefined ? "" : this.status;
-            this.dataForm.goodsShow = this.status == undefined ? "" : this.status;
+            this.dataForm.showWeb = this.status == undefined ? "" : this.status;
         },
         methods: {
             handleClick(tab,val) {
                 if(tab== ""){
-                    this.dataForm.goodsShow = ""
+                    this.dataForm.showWeb = ""
                 }else if(tab== "upper"){
-                    this.dataForm.goodsShow = "1"
+                    this.dataForm.showWeb = "1"
                 }else if(tab== "lower"){
-                    this.dataForm.goodsShow = "0"
+                    this.dataForm.showWeb = "0"
                 }else if(tab== "not"){
-                    this.dataForm.goodsShow = "2"
+                    this.dataForm.showWeb = "2"
                 }
                 this.changeVal = val;
                 console.log(this.changeVal)
@@ -322,7 +323,7 @@
             // 控制上下架
             cotrolGoodsShow(type,rowOrstatus){
                 var ids= [];
-                var goodsShow = 0;
+                var showWeb = 0;
                 if(type=="batch"){ //批量
                     if(this.multipleSelection.length==0){
                         this.$message({
@@ -333,10 +334,10 @@
                         return;
                     }
                     ids = this.getIds();
-                    goodsShow = rowOrstatus
+                    showWeb = rowOrstatus
                 }else{ //单个
                     ids = [rowOrstatus.id]
-                    goodsShow = rowOrstatus.goodsShow==1?0:1;
+                    showWeb = rowOrstatus.showWeb==1?0:1;
                 }
 
                 // if(ids.length==0){
@@ -349,15 +350,15 @@
                 // }
                 var obj = {
                     ids:ids,
-                    goodsShow:goodsShow,
+                    showWeb:showWeb,
                 }
                 showBatchGoods(obj).then(res=>{
                     let status="";
                     let msg = "";
                     if(res.code=="200"){
                         status= "success"
-                        msg = goodsShow==1?"商品上架成功":"商品下架成功"
-                       // this.getDataList();
+                        msg = showWeb==1?"商品上架成功":"商品下架成功"
+                        this.getDataList();
                     }else{
                         status= "error"
                         msg = res.msg;
@@ -368,6 +369,18 @@
                         duration: 1500,
                     })
                 })
+            },
+            getIds(){
+                var ids= [];
+                console.log(this.multipleSelection);
+                this.multipleSelection.forEach((item,index)=>{
+                    if("object" == typeof(item)){
+                        ids.push(item.id);
+                    }else{
+                        ids.push(id);
+                    }
+                })
+                return ids;
             },
             handleCheckAllChange(val) {
                 this.checkednodeslist = val ? this.dataList : [];  //dataList  nodeslist
