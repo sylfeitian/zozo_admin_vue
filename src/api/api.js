@@ -22,7 +22,8 @@ export const getsizecn = params => { return http.get(`${base}/sizejp/getsizecn`,
 //内容------------------------------------------------------------------------------------
 //内容搭配查看  
 export const getlookdetail = params => { return http.get(`${base}/look/${params.id}`, params).then(res => res.data); };
-
+//取消发布  
+export const putoperating = params => { return http.put(`${base}/look/publish/${params.operating}/${params.id}?operating=${params.operating}&id=${params.id}`, params).then(res => res.data); };
 
 
 

@@ -12,9 +12,6 @@
                 <el-form-item label="搭配ID：">
                     <span>{{dataForm.id}}</span>
                 </el-form-item>
-                <el-form-item label="标题：">
-                    <span>{{dataForm.name}}</span>
-                </el-form-item>
                 <el-form-item label="发布人：">
                     <span>{{dataForm.id}}</span>
                 </el-form-item>
@@ -168,20 +165,7 @@
                         getlookdetail(obj).then((res)=>{
                             console.log('详情',res.data)
                             if(res.code == 200){
-                                this.logo = res.data.storeDTO.storeLogo;
-                                this.electronicBusinessLicense = res.data.storeAuthDTO.electronicBusinessLicense;
-                                this.dataForm.storeClassId = res.data.storeClassDTOList.map(item=>{
-                                    return item.classId
-                                })
-                                this.storeId = res.data.storeDTO.id;
-                                this.dataForm.id = res.data.storeUserDTO.id;
-                                Object.assign(this.dataForm, res.data.storeUserDTO);
-                                Object.assign(this.dataForm.saveStoreDTO, res.data.storeDTO);
-                                if(res.data.storeAuthDTO){
-                                    Object.assign(this.dataForm.saveStoreAuthDTO,res.data.storeAuthDTO)
-                                }
-                                this.dataForm.isEnable = JSON.stringify(res.data.isEnable)
-
+                            	this.dataForm = res.data;
                             }
                         })
                     }

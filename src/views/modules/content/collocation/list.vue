@@ -48,30 +48,47 @@
                 style="width: 100%;margin-top:20px;"
         >
             <el-table-column type="selection" width="70"></el-table-column>
-            <el-table-column prop="idJp" width="70" label="ID" align="center"></el-table-column>
-            <el-table-column prop="imageUrl" label="封面图片" width="80" align="center">
+            <el-table-column prop="idJp" width="100" label="ID" align="center"></el-table-column>
+            <el-table-column prop="imageUrl" label="封面图片" width="150" align="center">
                 <template slot-scope="scope">
                     <img
-                        :src="$imgDomain + scope.row.imageUrl"
+                        :src="scope.row.imageUrl"
                         alt=""
                         style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                     >
                 </template>
             </el-table-column>
             <el-table-column prop="nickname" label="用户" align="center"></el-table-column>
-            <el-table-column prop="itemList" label="相关商品" align="center"></el-table-column>
-            <el-table-column prop="state" label="发布状态" align="center">
+            <el-table-column prop="itemList" width="80" label="相关商品" align="center">
+            	<template slot-scope="scope">
+            		{{scope.row.itemList && scope.row.itemList.length || 0}}
+            	</template>
             </el-table-column>
-            <el-table-column prop="jpPublishState" label="日本发布状态" width="100" align="center"></el-table-column>
-            <el-table-column prop="publishTime" label="日本发布时间" width="100" align="center"></el-table-column>
-            <el-table-column prop="desc" label="发布时间" align="center"></el-table-column>
-            <el-table-column prop="favNumCn" label="收藏量" width="80" align="center"></el-table-column>
+            <el-table-column prop="state" width="90" label="发布状态" align="center">
+            	<template slot-scope="scope">
+                    <el-tag v-if="scope.row.state == 1" type="success">已发布</el-tag>
+					<el-tag v-else type="info">取消发布</el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column width="90" prop="jpPublishState"  label="日本发布状态" align="center">
+            	<template slot-scope="scope">
+                    <el-tag v-if="scope.row.jpPublishState == 1" type="success">已发布</el-tag>
+					<el-tag v-else type="info">取消发布</el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column prop="'没有'" label="日本发布时间" width="95" align="center"></el-table-column>
+            <el-table-column prop="publishTime" label="发布时间" width="95" align="center"></el-table-column>
+            <el-table-column prop="favNumJp" label="收藏量" width="80" align="center">
+            	<template slot-scope="scope">
+                    {{scope.row.favNumCn+scope.row.favNumJp}}
+                </template>
+            </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="showDetail(scope.row)"type="text"size="mini">查看</el-button>
                     <el-button @click.native.prevent="addOrAdit(scope.row)"type="text"size="mini">编辑</el-button>
-                    <el-button @click.native.prevent="forbitHandle(scope.row)"type="text"size="mini">
-                        <span v-if="scope.row.groupStatus==1" class="artdisable">{{scope.$index==currentIndex&&forbitLoading?"取消发布中..":"取消发布"}}</span>
+                    <el-button v-if="scope.row.jpPublishState == 1" @click.native.prevent="forbitHandle(scope.$index,scope.row)"type="text"size="mini">
+                        <span v-if="scope.row.state==1" class="artdisable">{{scope.$index==currentIndex&&forbitLoading?"取消发布中..":"取消发布"}}</span>
                         <span v-else class="artstart">{{scope.$index==currentIndex && forbitLoading?"发布中..":"发布"}}</span>
                     </el-button>
                 </template>
@@ -100,9 +117,10 @@
 </template>
 
 <script>
-    import mixinViewModule from '@/mixins/view-module'
+    import mixinViewModule from '@/mixins/view-module';
     import Bread from "@/components/bread";
-    import {getlookpage} from '@/api/url'
+    import { getlookpage } from '@/api/url';
+    import { putoperating, } from '@/api/api';   //发布/取消发布
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -214,22 +232,22 @@
                 this.getDataList();
             },
             forbitHandle(index,row){
+            console.log(row);
                 this.currentIndex = index;
                 var obj = {
                     "id": row.id,
-                    "groupStatus":row.groupStatus==1?2:1  //
+                    "operating":row.state==1?0:1  //1发布   0取消发布
                 }
                 var msg = ""
-                row.groupStatus==1?msg="禁用":msg="启用"
+                row.state==1?msg="取消发布":msg="发布"
                 this.$confirm('是否'+msg+'该分组?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
                     this.forbitLoading = true;
-                    statusAttributegroup(obj).then((res)=>{
+                    putoperating(obj).then((res)=>{
                         this.forbitLoading = false;
-                        // console.log(res);
                         if(res.code==200){
                             this.getDataList();
                             this.$message({
