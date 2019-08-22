@@ -7,10 +7,10 @@
                 <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" ></el-input>
             </el-form-item>
             <el-form-item label="商品ID：">
-                <el-input v-model="dataForm.brandId" placeholder="请输入spuID" ></el-input>
+                <el-input v-model="dataForm.id" placeholder="请输入spuID" ></el-input>
             </el-form-item>
             <el-form-item label="分类：">
-                <el-input v-model="dataForm.gcId" placeholder="请输入" ></el-input>
+                <el-input v-model="dataForm.categoryId" placeholder="请输入" ></el-input>
             </el-form-item>
             <el-form-item label="店铺名称：">
                 <el-input v-model="dataForm.storeName" placeholder="请输入店铺名称" ></el-input>
@@ -19,37 +19,37 @@
                 <el-input v-model="dataForm.brandName" placeholder="请输入品牌名称" ></el-input>
             </el-form-item>
             <el-form-item label="上架状态：">
-                <el-select v-model="dataForm.goodsShow" placeholder="请选择">
+                <el-select v-model="dataForm.showWeb" placeholder="请选择">
                     <el-option
-                            v-for="item in options"
-                            :key="item.value"
+                            v-for="item in showOptions"
+                            :key="item.id"
                             :label="item.label"
-                            :value="item.value">
+                            :value="item.id">
                     </el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="可售状态：">
                 <el-select v-model="dataForm.goodsStatus" placeholder="请选择">
                     <el-option
-                            v-for="item in options"
-                            :key="item.value"
+                            v-for="item in stateOptions"
+                            :key="item.id"
                             :label="item.label"
-                            :value="item.value">
+                            :value="item.id">
                     </el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="价格变更：">
-                <el-select v-model="dataForm.state" placeholder="请选择">
+                <el-select v-model="dataForm.priceState" placeholder="请选择">
                     <el-option
-                            v-for="item in options"
-                            :key="item.value"
+                            v-for="item in priceOptions"
+                            :key="item.id"
                             :label="item.label"
-                            :value="item.value">
+                            :value="item.id">
                     </el-option>
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="editList()">查询</el-button>
+                <el-button  class="btn" type="primary" @click="getDataList()">查询</el-button>
                 <el-button   class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
             </el-form-item>
         </el-form>
@@ -69,9 +69,9 @@
         >
             <el-table-column type="selection" width="70"></el-table-column>
             <el-table-column label="商品ID" align="center" width="100">
-                <template slot-scope="scope">
-                    <div>
-                        {{scope.row.brandId}}
+                <template slot-scope="scope" >
+                    <div @click="detShowChange(scope.row)">
+                        {{scope.row.id}}
                     </div>
                 </template>
             </el-table-column>
@@ -79,41 +79,40 @@
                 <template slot-scope="scope">
                     <div class="goodsPropsWrap">
                         <div class="goodsImg">
-                            <img :src="scope.row.pictureUrl | filterImgUrl" alt=""/>
+                            <img :src="scope.row.imageUrl" alt=""/>
                         </div>
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="" label="商品名称" align="center">
+            <el-table-column prop="goodsName" label="商品名称" align="center">
                 <template slot-scope="scope">
                     <div>
                         {{scope.row.goodsName}}
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="" label="品牌" align="center">
+            <el-table-column prop="brandName" label="品牌" align="center">
                 <template slot-scope="scope">
                     <div>
                         {{scope.row.brandName}}
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="price" label="售价" width="100" align="center">
+            <el-table-column prop="sellPrice" label="售价" width="100" align="center">
                 <template slot-scope="scope">
-                    <div class="price1">￥{{scope.row.specSellPrice}}</div>
+                    <div class="price1">￥{{scope.row.sellPrice}}</div>
                 </template>
             </el-table-column>
-            <el-table-column prop="" label="售价类型" v-if="dataForm.goodsShow==''" align="center" width="100">
+            <el-table-column prop="salePlan" label="售价类型" align="center" width="100">
                 <template slot-scope="scope">
-                    <div>
-                        {{scope.row.goodsName}}
-                    </div>
+                    <span  v-if="scope.row.salePlan==0">zozo设定</span>
+                    <span  v-if="scope.row.salePlan==1">品牌方设定</span>
                 </template>
             </el-table-column>
             <el-table-column prop="gcName" label="分类"  align="center">
                 <template slot-scope="scope">
                     <div>
-                        {{scope.row.gcName}}
+                        {{scope.row.categoryId}}
                     </div>
                 </template>
             </el-table-column>
@@ -124,55 +123,55 @@
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column label="状态" v-if="dataForm.goodsShow==''" align="center">
+            <el-table-column label="状态" align="center">
+                <template slot-scope="scope">
+                    <span  v-if="scope.row.showWeb==0">可售</span>
+                    <span  v-if="scope.row.showWeb==1">不可售</span>
+                </template>
+            </el-table-column>
+<!--            <el-table-column label="日本状态" align="center">-->
+<!--                <template slot-scope="scope">-->
+<!--                    <div>-->
+<!--                        {{scope.row.state}}-->
+<!--                    </div>-->
+<!--                </template>-->
+<!--            </el-table-column>-->
+            <el-table-column prop="priceState" label="价格变动" align="center">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.priceState==0">价格正常</span>
+                    <span v-if="scope.row.priceState==1">价格上涨</span>
+                    <span v-if="scope.row.priceState==2">价格下架</span>
+                    <span v-if="scope.row.priceState==3" style="color: red;">倒挂</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="更新时间" align="center">
                 <template slot-scope="scope">
                     <div>
-                        {{scope.row.state}}
+                        {{scope.row.updateDate}}
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column label="日本状态" v-if="dataForm.goodsShow=='1'||dataForm.goodsShow=='0'||dataForm.goodsShow=='2'" align="center">
+            <el-table-column label="可售状态" align="center">
                 <template slot-scope="scope">
                     <div>
-                        {{scope.row.state}}
+                        {{scope.row.japanShowWeb}}
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column label="价格变动" v-if="dataForm.goodsShow==''" align="center">
+            <el-table-column label="上下架时间" align="center">
                 <template slot-scope="scope">
                     <div>
-                        {{scope.row.state}}
-                    </div>
-                </template>
-            </el-table-column>
-            <el-table-column label="更新时间" v-if="dataForm.goodsShow==''" align="center">
-                <template slot-scope="scope">
-                    <div>
-                        {{scope.row.state}}
-                    </div>
-                </template>
-            </el-table-column>
-            <el-table-column label="可售状态" v-if="dataForm.goodsShow==''||dataForm.goodsShow=='0'||dataForm.goodsShow=='2'" align="center">
-                <template slot-scope="scope">
-                    <div>
-                        {{scope.row.state4}}
-                    </div>
-                </template>
-            </el-table-column>
-            <el-table-column label="上下架时间" v-if="dataForm.goodsShow==''" align="center">
-                <template slot-scope="scope">
-                    <div>
-                        {{scope.row.state}}
+                        {{scope.row.showWebDate}}
                     </div>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
 <!--                    <el-button size="mini" type="text" @click="detShowChange(scope.row)">查看详情</el-button>-->
-                    <el-button @click="goEidt(scope.row)" type="text" size="mini">编辑</el-button>
+                    <el-button @click="editList(scope.row)" type="text" size="mini">编辑</el-button>
                     <el-button  @click="cotrolGoodsShow('singe',scope.row)" type="text" size="mini" >
-                        <span  v-if="scope.row.goodsShow==0 || scope.row.goodsShow==2">上架</span>
-                        <span  v-if="scope.row.goodsShow==1" class="artclose">下架</span>
+                        <span  v-if="scope.row.showWeb==0 || scope.row.showWeb==2">上架</span>
+                        <span  v-if="scope.row.showWeb==1" class="artclose">下架</span>
                         <!-- <span  v-if="scope.row.goodsShow==2"   style="color:#FF0000">未上架</span> -->
                     </el-button>
                 </template>
@@ -196,49 +195,47 @@
             </el-pagination>
         </div>
     </div>
-<!--    <orderDet-->
-<!--            @changeState="changeState"-->
-<!--            v-else-->
-<!--            :data="data"-->
-<!--            :detdata="detdata"-->
-<!--    ></orderDet>-->
 </template>
 
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import detail from "./detail";
+    import { goodsUrl, deleteGoodsUrl } from '@/api/url'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
+                mixinViewModuleOptions: {
+                    getDataListURL: goodsUrl,
+                    activatedIsNeed:true,
+                    getDataListIsPage: true,
+                    // exportURL: '/admin-api/log/login/export',
+                    deleteURL: deleteGoodsUrl,
+                    deleteIsBatch: true,
+                    deleteIsBatchKey: 'id'
+                },
                 breaddata: [ "商品管理", "商品列表"],
                 dataForm: {
                     goodsName: "",//商品名称/商品货号
-                    brandId: "",//品牌名称
-                    gcId: "",//分类
+                    id: "",//品牌名称
+                    categoryId: "",//分类
                     storeName: "",//店铺名称
                     brandName:"",//品牌名称
                     goodsStatus: "",//是否可售
-                    goodsShow:"",//上下架状态:0下架;1上架
+                    showWeb:"",//上下架状态:0下架;1上架
+                    priceState: "",//价格变更
                 },
-                options: [{
-                    value: '选项1',
-                    label: '全部'
-                }, {
-                    value: '选项2',
-                    label: '已售完'
-                }, {
-                    value: '选项3',
-                    label: '未售完'
-                }],
+                showOptions: [{id: '0', label: '已下架'}, {id: '1', label: '已上架'}, {id: '2', label: '待上架'}],
+                stateOptions: [{id: '0', label: '不可售'}, {id: '1', label: '可售'}],
+                priceOptions: [{id: '0', label: '价格正常'}, {id: '1', label: '价格上涨'}, {id: '2', label: '价格下降'}, {id: '3', label: '倒挂'}],
                 activeName: "",
                 data: {}, //总数据
                 dataListLoading: false,
                 detailOrList: 1,
                 addressInfo: [], //地址数据
-                orderLog: [], //操作日志
-                orderData: [],
+                // orderLog: [], //操作日志
+                // orderData: [],
                 isChange: true, //true--列表 false--详情
                 multipleSelection:[],
                 changeVal: "",
@@ -254,10 +251,9 @@
         },
         created () {
             // 第一次请求数据
-            this.handleClick();
+            // this.handleClick();
             this.activeName =  this.status == undefined ? "" : this.status;
             this.dataForm.goodsShow = this.status == undefined ? "" : this.status;
-            this.getDataList();
         },
         methods: {
             handleClick(tab,val) {
@@ -275,11 +271,14 @@
                 this.getDataList();
             },
             reset() {
-                this.dataForm.goodsName = "";//商品名称/商品货号
-                this.dataForm.brandName = "";//品牌名称
-                this.dataForm.conditionName = "";//分类名称
-                this.dataForm.storeName = "";//店铺名称
-                this.dataForm.state = "";//是否可售
+                this.dataForm.goodsName = "";
+                this.dataForm.id = "";
+                this.dataForm.categoryId = "";
+                this.dataForm.storeName = "";
+                this.dataForm.brandName = "";
+                this.dataForm.goodsStatus = "";
+                this.dataForm.showWeb = "";
+                this.dataForm.priceState = "";
                 this.handleClick();
             },
             // 编辑
@@ -295,7 +294,7 @@
             //页面跳转
             changeState() {
                 this.isChange = !this.isChange;
-                this.getDataList(); //刷新页面数据
+               // this.getDataList(); //刷新页面数据
             },
             //详情页展示判断
             detShowChange() {
@@ -304,6 +303,10 @@
             //编辑页展示判断
             editList() {
                 this.$emit("editList");
+            },
+            //详情页展示判断
+            detShowChange() {
+                this.$emit("detShowChange");
             },
             //查看详情
             getSalesDet(index, statue) {
@@ -354,7 +357,7 @@
                     if(res.code=="200"){
                         status= "success"
                         msg = goodsShow==1?"商品上架成功":"商品下架成功"
-                        this.getDataList();
+                       // this.getDataList();
                     }else{
                         status= "error"
                         msg = res.msg;
@@ -390,5 +393,9 @@
             display: flex;
             align-items: center;
         }
+    }
+    img {
+        width: 100px;
+        height: 100px;
     }
 </style>

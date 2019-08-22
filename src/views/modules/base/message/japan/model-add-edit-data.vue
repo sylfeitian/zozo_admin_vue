@@ -103,6 +103,7 @@
                         if(this.row) obj.id = this.row.id
                         var fn = updateCategoryJp;
                         fn(obj).then((res) => {
+                            console.log(res)
                             this.loading = false;
                             // alert(JSON.stringify(res));
                             let status = null;

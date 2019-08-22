@@ -27,7 +27,7 @@
                 layout="total, sizes, prev, pager, next, jumper">
         </el-pagination>
         <!-- 弹窗, 新建 -->
-        <addEditData  v-if="addEditDataVisible" ref="addEditData" @searchDataList="getDataList"></addEditData>
+        <addEditData  v-if="addEditDataVisible" ref="addEditData" @searchDataList="getTree"></addEditData>
     </div>
 </template>
 
