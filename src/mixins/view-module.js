@@ -40,6 +40,7 @@ export default {
     // 获取数据列表
     getDataList() {
       this.dataListLoading = true
+      console.log(this.dataForm);
       return new Promise((resolve,reject)=>{
         this.$http[this.retquestType](
           this.mixinViewModuleOptions.getDataListURL,
@@ -53,6 +54,7 @@ export default {
             }
           }
         ).then(({ data: res }) => {
+        	console.log(res.data);
           this.dataListLoading = false
           if (res.code !== 200) {
             this.dataList = []
@@ -96,7 +98,6 @@ export default {
     },
     // 分页, 每页条数
     pageSizeChangeHandle(val) {
-    	alert(val)
       this.page = 1
       this.limit = val
       this.getDataList()

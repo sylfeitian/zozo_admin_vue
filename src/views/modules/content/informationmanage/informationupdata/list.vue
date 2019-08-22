@@ -188,8 +188,8 @@ export default {
 	      activeName: "first",
 	      valuetime: '',
 	      params:{
-	      "currentPage": 1, //当前页数
-	      "currentPageSize" : 10, //每页显示的条数
+		      "currentPage": 1, //当前页数
+		      "currentPageSize" : 10, //每页显示的条数
 	      },
 	      vipData:[],
 	      shopData: [],

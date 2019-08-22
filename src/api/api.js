@@ -7,15 +7,26 @@ let requestType = { headers: { 'content-type': 'application/x-www-form-urlencode
 //Base64上传图片
 export const uploadPicBase64 = params => { return http.post(`${base}/picture/base64`, params).then(res => res.data); };
 
+//基础--------------------------------------------------------------------------------------------------------------------------
+// 新增/修改分类
+export const updatasizeCn = params => { return http.put(`${base}/sizeCn`, params).then(res => res.data); };
+//分类条件
+export const gettagdatalist = params => { return http.get(`${base}/tag/page`, params).then(res => res.data); };
+//分类条件编辑
+export const uploadtag = params => { return http.put(`${base}/tag?name=${params.name}&id=${params.id}`, params).then(res => res.data); };
+//日本尺码管理关联  
+export const uploadsizejptag = params => { return http.put(`${base}/sizejp/update`, params).then(res => res.data); };
+//
+
+
 
 //仓库管理--------------------------------------------------------------------------------------------------------
 // 获取所有仓库
 export const getallstockname = params => { return http.get(`${base}/wareHouse/odoGoods/houseName`, params).then(res => res.data); };
 // 获取弹框仓库商品
 export const getallstock = params => { return http.get(`${base}/wareHouse/odoGoods/stock/page`, params).then(res => res.data); };
-
-
-
+// 保存商品  
+export const addodoGoods = params => { return http.post(`${base}/wareHouse/odoGoods/add`, params).then(res => res.data); };
 
 //中国分类管理--------------------------------------------------------------------------------------------------------------------
 // 获取一级分类
@@ -424,27 +435,7 @@ export const backScanShopStore = params => { return http.get(`${base}/shopStore/
 
 
 
-//中国分类管理--------------------------------------------------------------------------------------------------------------------
-// 获取一级分类
-// export const categoryCn = params => { return http.get(`${base}/categoryCn`, params).then(res => res.data); };
-// 删除分类接口
-// export const deleteCategoryCn = params => { return http.delete(`${base}/categoryCn/delete`, params).then(res => res.data); };
-// 新增/修改分类
-// export const updateCategoryCn = params => { return http.put(`${base}/categoryCn/edit`, params).then(res => res.data); };
-// 关联查询一级二级三级分类
-// export const categoryCnList = params => { return http.get(`${base}/categoryCn/listCorrelated`, params).then(res => res.data); };
-// 分页查询分类
-// export const categoryCnPage = params => { return http.get(`${base}/categoryCn/page`, params).then(res => res.data); };
-// 设为推荐
-// export const recommendCategoryCn = params => { return http.put(`${base}/categoryCn/recommend`, params).then(res => res.data); };
-// 搜索用分类列表
-// export const searchCategoryCn = params => { return http.get(`${base}/categoryCn/search/list`, params).then(res => res.data); };
-// 是否显示分类
-// export const showCategoryCn = params => { return http.put(`${base}/categoryCn/show`, params).then(res => res.data); };
-// 修改排序号
-// export const categoryCnSort = params => { return http.put(`${base}/categoryCn/sort`, params).then(res => res.data); };
-// 根据分类id查询中方分类
-// export const backScanCategoryCn = params => { return http.get(`${base}/categoryCn/${params.id}`, params).then(res => res.data); };
+
 
 
 
