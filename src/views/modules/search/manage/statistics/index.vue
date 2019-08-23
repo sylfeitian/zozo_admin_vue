@@ -29,9 +29,9 @@
                 </template>
             </el-table-column>
             <el-table-column prop="" label="搜索词" align="center"></el-table-column>
-            <el-table-column prop="" label="总搜索次数" align="center"></el-table-column>
-            <el-table-column prop="" label="本月搜索次数" align="center"></el-table-column>
-            <el-table-column prop="" label="今日搜索次数" align="center"></el-table-column>
+            <el-table-column prop="" label="总搜索次数" sortable="custom" align="center"></el-table-column>
+            <el-table-column prop="" label="本月搜索次数" sortable="custom" align="center"></el-table-column>
+            <el-table-column prop="" label="今日搜索次数" sortable="custom" align="center"></el-table-column>
             <el-table-column label="操作" align="center" width="250">
                 <template slot-scope="scope">
                     <el-button class="artdanger" @click.native.prevent="deleteHandle(scope.row.id)"type="text"size="mini">删除</el-button>
@@ -49,7 +49,7 @@
                 layout="total, sizes, prev, pager, next, jumper">
         </el-pagination>
         <!-- 弹窗, 编辑 -->
-        <addEditData  v-if="addDataVisible" ref="addEditData" @searchDataList="getDataList"></addEditData>
+<!--        <addEditData  v-if="addDataVisible" ref="addEditData" @searchDataList="getDataList"></addEditData>-->
     </div>
 </template>
 
@@ -80,7 +80,7 @@
         },
         components: {
             Bread,
-            addEditData
+            // addEditData
         },
         methods: {
             // 重置
