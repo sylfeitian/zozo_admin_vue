@@ -14,11 +14,11 @@
                 label-width="120px"
         >
             <el-form-item label="搜索词：">
-                <el-input v-model="dataForm.desc" placeholder="" maxlength="30" show-word-limit></el-input>
+                <el-input v-model="dataForm.keyword" placeholder="" maxlength="30" show-word-limit></el-input>
 <!--                <span style="color: #999999;">0/30</span>-->
             </el-form-item>
             <el-form-item label="排序：">
-                <el-input v-model="dataForm.desc" placeholder="0"></el-input>
+                <el-input v-model="dataForm.sort" placeholder="0"></el-input>
                 <span style="color: #999999;">数字越大越靠前</span>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
@@ -31,6 +31,7 @@
 </template>
 
 <script>
+    import { editShophotkeyword,shophotkeywordSave, backScanShophotkeyword } from '@/api/api'
     export default {
         name: "model-add-edit-data",
         data () {
@@ -38,7 +39,8 @@
                 visible : false,
                 loading : false,
                 dataForm: {
-                    idJp: "",//同义词
+                    keyword: "",
+                    sort: "",
                 },
                 title:'',
                 row:"",
@@ -51,7 +53,7 @@
                 this.row = row;
                 if(row){
                     this.title="编辑搜索词";
-                    // this.backScan();
+                    this.backScan();
                 }else{
                     this.title="新建搜索词"
 
@@ -61,6 +63,22 @@
                     // this.getApplyPullList();
                 })
             },
+            // 编辑回显
+            backScan(){
+                var obj  = {
+                    id:this.row.id,
+                    keyword:this.row.keyword,
+                    sort:this.row.sort,
+                }
+                backScanShophotkeyword(obj).then((res)=>{
+                    if(res.code == 200){
+                        Object.assign(this.dataForm,res.data);
+
+                    }else{
+
+                    }
+                })
+            },
             // 提交
             dataFormSubmit(formName){
                 // alert([this.dataForm.name,this.dataForm.domainAddress]);
@@ -68,10 +86,11 @@
                     if (valid) {
                         this.loading = true;
                         var obj = {
-                            "idJp":  this.dataForm.idJp,
+                            "keyword":  this.dataForm.keyword,
+                            "sort":  this.dataForm.sort,
                         }
                         if(this.row) obj.id = this.row.id
-                        var fn = updataShopBrand;
+                        var fn = this.row?editShophotkeyword:shophotkeywordSave;
                         fn(obj).then((res) => {
                             this.loading = false;
                             // alert(JSON.stringify(res));

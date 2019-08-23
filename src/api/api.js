@@ -595,3 +595,51 @@ export const backScanGoods = params => { return http.get(`${base}/goods/${params
 //京东分类管理接口--------------------------------------------------------------------------------------------------------------------
 // 分页查询分类
 export const jdCatePage = params => { return http.get(`${base}/jdCate/page`, params).then(res => res.data); };
+
+
+
+
+
+//同义词管理接口--------------------------------------------------------------------------------------------------------------------
+// 删除
+export const deleteShopsynonym = params => { return http.delete(`${base}/shopsynonym`, params).then(res => res.data); };
+// 保存
+export const shopsynonymSave = params => { return http.post(`${base}/shopsynonym`, params).then(res => res.data); };
+// 修改
+export const editShopsynonym = params => { return http.put(`${base}/shopsynonym`, params).then(res => res.data); };
+// 分页
+export const shopsynonymPage = params => { return http.get(`${base}/shopsynonym/page`, params).then(res => res.data); };
+// 信息
+export const backScanShopsynonym = params => { return http.get(`${base}/shopsynonym/${params.id}`, params).then(res => res.data); };
+
+
+
+
+
+//搜索统计管理接口--------------------------------------------------------------------------------------------------------------------
+// 删除
+export const deleteShophotkeywordrecord = params => { return http.delete(`${base}/shophotkeywordrecord`, params).then(res => res.data); };
+// 保存
+export const shophotkeywordrecordSave = params => { return http.post(`${base}/shophotkeywordrecord`, params).then(res => res.data); };
+// 修改
+export const editShophotkeywordrecord = params => { return http.put(`${base}/shophotkeywordrecord`, params).then(res => res.data); };
+// 分页
+export const shophotkeywordrecordPage = params => { return http.get(`${base}/shophotkeywordrecord/page`, params).then(res => res.data); };
+// 信息
+export const backScanShophotkeywordrecord = params => { return http.get(`${base}/shophotkeywordrecord/${params.id}`, params).then(res => res.data); };
+
+
+
+
+
+//热门搜索配置接口、搜索统计管理--------------------------------------------------------------------------------------------------------------------
+// 删除
+export const deleteShophotkeyword = params => { return http.delete(`${base}/shophotkeyword`, params).then(res => res.data); };
+// 保存
+export const shophotkeywordSave = params => { return http.post(`${base}/shophotkeyword`, params).then(res => res.data); };
+// 修改
+export const editShophotkeyword = params => { return http.put(`${base}/shophotkeyword`, params).then(res => res.data); };
+// 分页
+export const shophotkeywordPage = params => { return http.get(`${base}/shophotkeyword/page`, params).then(res => res.data); };
+// 信息
+export const backScanShophotkeyword = params => { return http.get(`${base}/shophotkeyword/${params.id}`, params).then(res => res.data); };

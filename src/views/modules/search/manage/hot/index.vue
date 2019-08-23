@@ -8,7 +8,7 @@
                 @keyup.enter.native="getDataList()"
         >
             <el-form-item label="关键字搜索：">
-                <el-input v-model="dataForm.idJp" placeholder="请输入关键词搜索" ></el-input>
+                <el-input v-model="dataForm.keyword" placeholder="请输入关键词搜索" ></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button class="btn" type="primary" @click="getDataList()">查询</el-button>
@@ -29,8 +29,8 @@
                     <!-- {{scope.$index+1+(parseInt(params.currentPage)-1)* parseInt(params.currentPageSize) }} -->
                 </template>
             </el-table-column>
-            <el-table-column prop="idJp" label="搜索词" align="center"></el-table-column>
-            <el-table-column prop="storeLogo" label="排序" align="center"></el-table-column>
+            <el-table-column prop="keyword" label="搜索词" align="center"></el-table-column>
+            <el-table-column prop="sort" label="排序" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button type="text" @click="addHandle(scope.$index, scope.row)" size="mini">编辑</el-button>
@@ -57,21 +57,22 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import addEditData from './model-add-edit-data'
+    import { shophotkeywordUrl,deleteShophotkeywordUrl } from '@/api/url'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
-                // mixinViewModuleOptions: {
-                //     getDataListURL: shopPageUrl,
-                //     getDataListIsPage: true,
-                //     exportURL: '/admin-api/shopStore',
-                //     deleteURL: '/admin-api/shopStore',
-                //     deleteIsBatch: true,
-                //     // deleteIsBatchKey: 'id'
-                // },
+                mixinViewModuleOptions: {
+                    getDataListURL: shophotkeywordUrl,
+                    getDataListIsPage: true,
+                    exportURL: '/admin-api/shopStore',
+                    deleteURL: deleteShophotkeywordUrl,
+                    deleteIsBatch: true,
+                    // deleteIsBatchKey: 'id'
+                },
                 breaddata: [ "搜索管理", "同义词管理"],
                 dataForm: {
-                    idJp: "",//关键字搜索
+                    keyword: "",//关键字搜索
                 },
                 dataList: [],
                 dataListLoading: false,
@@ -85,7 +86,7 @@
         methods: {
             // 重置
             reset() {
-                this.dataForm.idJp = "";//关键字搜索
+                this.dataForm.keyword = "";//关键字搜索
                 this.getDataList();
             },
             // 新建

@@ -266,3 +266,27 @@ export const deleteGoodsUrl = `${base}/goods`;
 // 京东分类管理--------------------------------------------------------------------------------------------------------------------
 // 商品管理列表
 export const jdCateUrl = `${base}/jdCate/page`;
+
+
+
+// 同义词管理--------------------------------------------------------------------------------------------------------------------
+// 列表
+export const shopsynonymUrl = `${base}/shopsynonym/page`;
+// 删除
+export const deleteShopsynonymUrl = `${base}/shopsynonym`;
+
+
+
+// 日志管理--------------------------------------------------------------------------------------------------------------------
+// 列表
+export const shophotkeywordrecordUrl = `${base}/shophotkeywordrecord/page`;
+// 删除
+export const deleteShophotkeywordrecordUrl = `${base}/shophotkeywordrecord`;
+
+
+
+// 热门搜索配置管理、搜索统计管理--------------------------------------------------------------------------------------------------------------------
+// 列表
+export const shophotkeywordUrl = `${base}/shophotkeyword/page`;
+// 删除
+export const deleteShophotkeywordUrl = `${base}/shophotkeyword`;

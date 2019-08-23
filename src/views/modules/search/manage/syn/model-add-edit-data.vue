@@ -14,7 +14,7 @@
                 label-width="120px"
         >
             <el-form-item label="同义词：">
-                <el-input type="textarea" v-model="dataForm.desc" placeholder="" :rows="4"></el-input>
+                <el-input type="textarea" v-model="dataForm.name" placeholder="" :rows="4"></el-input>
                 <span style="color: #999999;">多词请用英文逗号“,”隔开</span>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+    import { editShopsynonym,shopsynonymSave, backScanShopsynonym } from '@/api/api'
     export default {
         name: "model-add-edit-data",
         data () {
@@ -34,7 +35,7 @@
                 visible : false,
                 loading : false,
                 dataForm: {
-                    idJp: "",//同义词
+                    name: "",//同义词
                 },
                 title:'',
                 row:"",
@@ -47,7 +48,7 @@
                 this.row = row;
                 if(row){
                     this.title="编辑同义词";
-                    // this.backScan();
+                    this.backScan();
                 }else{
                     this.title="新建同义词"
 
@@ -57,6 +58,21 @@
                     // this.getApplyPullList();
                 })
             },
+            // 编辑回显
+            backScan(){
+                var obj  = {
+                    id:this.row.id,
+                    name:this.row.name,
+                }
+                backScanShopsynonym(obj).then((res)=>{
+                    if(res.code == 200){
+                        Object.assign(this.dataForm,res.data);
+
+                    }else{
+
+                    }
+                })
+            },
             // 提交
             dataFormSubmit(formName){
                 // alert([this.dataForm.name,this.dataForm.domainAddress]);
@@ -64,10 +80,10 @@
                     if (valid) {
                         this.loading = true;
                         var obj = {
-                            "idJp":  this.dataForm.idJp,
+                            "name":  this.dataForm.name,
                         }
                         if(this.row) obj.id = this.row.id
-                        var fn = updataShopBrand;
+                        var fn = this.row?editShopsynonym:shopsynonymSave;
                         fn(obj).then((res) => {
                             this.loading = false;
                             // alert(JSON.stringify(res));
