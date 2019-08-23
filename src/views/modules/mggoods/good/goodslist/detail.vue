@@ -125,12 +125,11 @@
             quillEditorImg,
             addEditData,
         },
-        props: [
-            "detdata",
-            "data"
-        ],
+        created(){
+
+        },
         methods: {
-            init (row) {
+            init () {
                 this.backScan();
                 this.$nextTick(() => {
                     this.$refs['addForm'].resetFields();
