@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Bread :breaddata="breaddata"></Bread>
+        <Bread :breaddata="breaddata" :index="'1'" @changePage="changePage"></Bread>
         <el-col :span="12" style="border-right: 1px solid #e6e6e6;">
             <el-form
                     ref="dataForm"
@@ -146,8 +146,8 @@
             <span>关联标签：</span>
             <span style="margin-left: 30px;">
                 <el-tag
-                        :key="tag"
-                        v-for="tag in dynamicTags"
+                        :key="index"
+                        v-for="(tag,index) in dynamicTags"
                         closable
                         :disable-transitions="false"
                         @close="handleClose(tag)">
@@ -161,14 +161,15 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
+    import { getlookfolderdetail } from '@/api/api'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
-                breaddata: [ "内容管理", "编辑搭配集合"],
+                breaddata: [ "内容管理", "搭配集合管理","搭配集合详情"],
                 dataList: [],
                 dataListLoading: false,
-                dynamicTags: ['清爽一夏', '泫雅风', '泫雅风'],
+                dynamicTags: ['清爽一夏', '泫雅风'],
                 dataForm: {}
             }
         },
@@ -185,23 +186,10 @@
                         var obj  = {
                             id:id
                         }
-                        storeNews(obj).then((res)=>{
+                        getlookfolderdetail(obj).then((res)=>{
                             console.log('详情',res.data)
                             if(res.code == 200){
-                                this.logo = res.data.storeDTO.storeLogo;
-                                this.electronicBusinessLicense = res.data.storeAuthDTO.electronicBusinessLicense;
-                                this.dataForm.storeClassId = res.data.storeClassDTOList.map(item=>{
-                                    return item.classId
-                                })
-                                this.storeId = res.data.storeDTO.id;
-                                this.dataForm.id = res.data.storeUserDTO.id;
-                                Object.assign(this.dataForm, res.data.storeUserDTO);
-                                Object.assign(this.dataForm.saveStoreDTO, res.data.storeDTO);
-                                if(res.data.storeAuthDTO){
-                                    Object.assign(this.dataForm.saveStoreAuthDTO,res.data.storeAuthDTO)
-                                }
-                                this.dataForm.isEnable = JSON.stringify(res.data.isEnable)
-
+                            	this.dataForm = res.data;
                             }
                         })
                     }

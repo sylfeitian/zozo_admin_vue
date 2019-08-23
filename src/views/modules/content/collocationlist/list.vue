@@ -3,20 +3,13 @@
         <Bread  :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
             <el-form-item label="ID：">
-                <el-input v-model="dataForm.id" ></el-input>
+                <el-input v-model="dataForm.idJp" ></el-input>
             </el-form-item>
             <el-form-item label="标题：">
-                <el-input v-model="dataForm.id" ></el-input>
+                <el-input v-model="dataForm.title" ></el-input>
             </el-form-item>
             <el-form-item label="用户：">
-                <el-input v-model="dataForm.name" ></el-input>
-            </el-form-item>
-            <el-form-item label="发布状态：" prop="paymentStatus">
-                <el-select v-model="dataForm.paymentStatus" placeholder="请选择">
-                    <el-option label="全部" value=""></el-option>
-                    <el-option label="已取消发布" value="0"></el-option>
-                    <el-option label="已发布" value="1"></el-option>
-                </el-select>
+                <el-input v-model="dataForm.userNickname" ></el-input>
             </el-form-item>
             <el-form-item label="日本发布时间：">
                 <el-date-picker
@@ -27,6 +20,7 @@
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
                         :default-time="['00:00:00', '23:59:59']"
+                        @blur='getData'
                 ></el-date-picker>
             </el-form-item>
             <el-form-item label="发布时间：">
@@ -38,11 +32,12 @@
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
                         :default-time="['00:00:00', '23:59:59']"
+                        @blur='getData'
                 ></el-date-picker>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="addOrAdit()">搜索</el-button>
-                <el-button  class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
+                <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
+                <el-button  class="btn"type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
         <el-radio-group v-model="activeName" @change="handleClick">
@@ -59,25 +54,30 @@
                 style="width: 100%;margin-top:20px;"
         >
             <el-table-column type="selection" width="70"></el-table-column>
-            <el-table-column prop="id" label="ID" align="center"></el-table-column>
-            <el-table-column prop="memberAvatar" label="封面图片" align="center">
+            <el-table-column prop="idJp" label="ID" align="center"></el-table-column>
+            <el-table-column prop="imageUrl" label="封面图片" width="100" align="center">
                 <template slot-scope="scope">
                     <img
-                            :src="$imgDomain + scope.row.memberAvatar"
-                            alt=""
-                            style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
+                        :src="scope.row.imageUrl"
+                        alt=""
+                        style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                     >
                 </template>
             </el-table-column>
-            <el-table-column prop="name" label="标题" align="center"></el-table-column>
-            <el-table-column prop="japanDesc" label="用户" align="center"></el-table-column>
-            <el-table-column prop="desc" label="搭配数量" align="center"></el-table-column>
-            <el-table-column prop="japanName" label="发布状态" align="center"></el-table-column>
-            <el-table-column prop="name" label="日本发布状态" align="center"></el-table-column>
-            <el-table-column prop="japanDesc" label="日本发布时间" align="center"></el-table-column>
-            <el-table-column prop="desc" label="发布时间" align="center"></el-table-column>
-            <el-table-column prop="desc" label="浏览量" align="center"></el-table-column>
-            <el-table-column label="操作" align="center">
+            <el-table-column prop="title" label="标题" align="center"></el-table-column>
+            <el-table-column prop="userNickname" label="用户" align="center"></el-table-column>
+            <el-table-column prop="lookItems " width="80" label="搭配数量" align="center">
+            	<template slot-scope="scope">
+            		{{scope.row.lookItems  && scope.row.lookItems .length || 0}}
+            	</template>
+            </el-table-column>
+            <el-table-column prop="" label="发布状态" align="center"></el-table-column>
+            <el-table-column prop="" label="日本发布状态" align="center"></el-table-column>
+            <el-table-column prop="publishTimeJp" label="日本发布时间" align="center"></el-table-column>
+            <el-table-column prop="publishTime" label="发布时间" align="center"></el-table-column>
+            <el-table-column prop="" label="风格标签" align="center"></el-table-column>
+            <el-table-column prop="totalViewsNum" label="浏览量" align="center"></el-table-column>
+            <el-table-column label="操作" width="150" align="center">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="showDetail(scope.$index, scope.row)"type="text"size="mini">查看</el-button>
                     <el-button @click.native.prevent="addOrAdit(scope.$index, scope.row)"type="text"size="mini">编辑</el-button>
@@ -113,13 +113,32 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
+    import { getlookfolderpage } from '@/api/url'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
+            	mixinViewModuleOptions: {
+			        getDataListURL: getlookfolderpage,
+			        getDataListIsPage: true,
+			        // exportURL: '/admin-api/log/login/export',
+			        deleteURL: '',
+			        dataListLoading: false, 
+			        deleteIsBatch: true,
+			        deleteIsBatchKey: 'id'
+			    },
                 activeName: "",
-                breaddata: [ "搭配集合管理"],
-                dataForm: {},
+                breaddata: [ "内容管理","搭配集合管理"],
+                dataForm: {
+                	idJp:null,
+                	title:null,
+                	userNickname:null,
+                	sate:null,
+                	publishStartTime:null,
+                	publishEndTime:null,
+                	publishStartTimeJp:null,
+                	publishEndTimeJp:null,
+                },
                 value: '',
                 dataList: [],
                 dataListLoading: false,
@@ -132,6 +151,7 @@
                 startPaymentTime: "",
                 isIndeterminate: false,
                 checkAll: false,
+                currentIndex:'',
             }
         },
         components: {
@@ -146,27 +166,29 @@
         },
         methods: {
 
-            showDetail(id){
-                this.$emit("showDetail",id);
+            showDetail(index,row){
+                this.$emit("showDetail",row);
             },
             addOrAdit(id){
                 this.$emit("addOrAdit",id);
             },
             getData() {
-                this.dataForm.startCreateDate = this.timeArr && this.timeArr[0];
-                this.dataForm.endCreateDate = this.timeArr && this.timeArr[1];
-                this.dataForm.startPaymentTime = this.timeArr2[0];
-                this.dataForm.endPaymentTime = this.timeArr2[1];
-                this.getDataList();
+                this.dataForm.publishStartTimeJp = this.timeArr && this.timeArr[0];
+                this.dataForm.publishEndTimeJp = this.timeArr && this.timeArr[1];
+                this.dataForm.publishStartTime = this.timeArr2[0];
+                this.dataForm.publishEndTime = this.timeArr2[1];
             },
             reset(formName) {
                 this.timeArr = [];
                 this.timeArr2 = [];
-                this.dataForm.startCreateDate = "";
-                this.dataForm.endtime = "";
+                this.dataForm.idJp = "";
+                this.dataForm.title = "";
+                this.dataForm.userNickname = "";
+                this.dataForm.sate = "";
+                this.dataForm.publishStartTimeJp = "";
+                this.dataForm.publishEndTimeJp = "";
                 this.dataForm.startPaymentTime = "";
-                this.dataForm.endPaymentTime = "";
-                this.$refs[formName].resetFields();
+                this.dataForm.publishStartTime = "";
                 this.getDataList();
             },
             handleClick(tab,val) {
