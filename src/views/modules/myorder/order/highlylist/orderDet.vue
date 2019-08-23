@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Bread :breaddata="orderDetData" @changePage="getList(1)" :index="'1'"></Bread>
+        <Bread :breaddata="orderDetData" @changePage="changePage" :index="'1'"></Bread>
         <el-form
                 :inline="true"
                 class="grayLine topGapPadding"
@@ -166,8 +166,12 @@
         props: ["data", "addressInfo", "orderLog", "orderData", "packageInfo"],
         methods: {
             //页面跳转 1-列表页
-            getList(nums) {
-                this.$emit("changePage", nums);
+            changePage(){
+                this.goList();
+            },
+            //页面跳转 1-列表页
+            goList() {
+                this.$emit("addoraditList");
             },
 
             //添加备注
