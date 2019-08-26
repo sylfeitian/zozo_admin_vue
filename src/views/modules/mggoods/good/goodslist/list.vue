@@ -59,7 +59,7 @@
             <el-radio-button label="lower">下架</el-radio-button>
             <el-radio-button label="not">待上架</el-radio-button>
         </el-radio-group>
-        <el-button @click="detShowChange()" class="btn" type="primary" style="float: right;">导出信息</el-button>
+        <el-button @click="editList()" class="btn" type="primary" style="float: right;">导出信息</el-button>
         <el-table
                 width="100%"
                 :data="dataList"
@@ -179,7 +179,7 @@
         </el-table>
         <div class="bottomFun">
             <div class="bottomFunLeft">
-<!--                <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>-->
+                <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
                 <el-button class="btn" type="success" @click="cotrolGoodsShow('batch',1)" style="margin-left: 20px;">批量上架</el-button>
                 <el-button class="btn" type="success" @click="cotrolGoodsShow('batch',0)">批量下架</el-button>
             </div>
@@ -201,7 +201,7 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import detail from "./detail";
-    import { goodsUrl, deleteGoodsUrl } from '@/api/url'
+    import { goodsUrl } from '@/api/url'
     import { showBatchGoods } from '@/api/api'
     export default {
         mixins: [mixinViewModule],
@@ -212,7 +212,6 @@
                     activatedIsNeed:true,
                     getDataListIsPage: true,
                     // exportURL: '/admin-api/log/login/export',
-                    deleteURL: deleteGoodsUrl,
                     deleteIsBatch: true,
                     deleteIsBatchKey: 'id'
                 },

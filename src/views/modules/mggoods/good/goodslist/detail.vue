@@ -14,7 +14,7 @@
                 <span>{{dataForm.firstCategory}}</span>
             </el-form-item>
             <el-form-item label="商品ID：" class="item">
-                <span>{{dataForm.id}}</span>
+                <span>{{dataForm.idJp}}</span>
                 <span style="margin-left:2%;color:green;cursor:pointer;" @click="logMore">查看备案信息</span>
             </el-form-item>
             <el-form-item label="日本商品名称：" class="item">
@@ -30,7 +30,11 @@
                 <span>{{dataForm.storeName}}</span>
             </el-form-item>
             <el-form-item label="性别：" class="item">
-                <span>{{dataForm.gender}}</span>
+                <templete>
+                    <span v-if="dataForm.genders==0">男</span>
+                    <span v-if="dataForm.genders==1">女</span>
+                    <span v-if="dataForm.genders==2">儿童</span>
+                </templete>
             </el-form-item>
             <el-form-item label="原产地：" class="item">
                 <span>{{dataForm.madeIn}}</span>
@@ -39,20 +43,25 @@
                 <span>{{dataForm.material}}</span>
             </el-form-item>
             <el-form-item label="上架状态：" class="item">
-                <span>{{dataForm.showWeb}}</span>
-<!--                <template slot-scope="scope">-->
-<!--                    <span v-if="scope.row.showWeb==0">下架</span>-->
-<!--                    <span v-if="scope.row.showWeb==1">上架</span>-->
-<!--                    <span v-if="scope.row.showWeb==2">未上架</span>-->
-<!--                </template>-->
+                <template>
+                    <span v-if="dataForm.showWeb==0">下架</span>
+                    <span v-if="dataForm.showWeb==1">上架</span>
+                    <span v-if="dataForm.showWeb==2">未上架</span>
+                </template>
             </el-form-item>
             <el-form-item label="日本上架状态：" class="item">
-                <span>{{dataForm.japanShowWeb}}</span>
+                <template>
+                    <span v-if="dataForm.japanShowWeb==0">可售</span>
+                    <span v-if="dataForm.japanShowWeb==1">不可售</span>
+                </template>
             </el-form-item>
             <el-form-item label="颜色尺码：">
-                <el-table border="" class="inforRight" style="display:inline-block;width: 80%">
+                <el-table
+                        border
+                        :data="skuVOList"
+                        class="inforRight"
+                        style="display:inline-block;width: 80%">
                     <el-table-column prop="goodsCsIdjp" label="SKU编码" align="center"></el-table-column>
-<!--                    <el-table-column prop="specId" label="备案编码" align="center"></el-table-column>-->
                     <el-table-column prop="colorName" label="颜色" align="center"></el-table-column>
                     <el-table-column prop="sizeName" label="尺码" align="center"></el-table-column>
                     <el-table-column prop="specId" label="尺码信息" align="center"></el-table-column>
@@ -69,7 +78,7 @@
                     <el-table-column prop="goodsNum" label="图片" align="center">
                         <template slot-scope="scope">
                             <div class="goodsImg">
-                                <img  :src="scope.row.imageUrl | filterImgUrl" style="width:60px;height:60px;object-fit: contain;" alt=""/>
+<!--                                <img  :src="scope.row.imageUrl | filterImgUrl" style="width:60px;height:60px;object-fit: contain;" alt=""/>-->
                             </div>
                         </template>
                     </el-table-column>
@@ -81,7 +90,7 @@
             <el-form-item label="商品图片：">
                 <template slot-scope="scope">
                     <div class="goodsImg">
-                        <img :src="scope.row.imageUrl | filterImgUrl" style="width:60px;height:60px;object-fit: contain;" alt=""/>
+<!--                        <img :src="scope.row.imageUrl | filterImgUrl" style="width:60px;height:60px;object-fit: contain;" alt=""/>-->
                     </div>
                 </template>
             </el-form-item>
@@ -94,7 +103,8 @@
             </el-form-item>
         </el-form>
         <!-- 弹窗, 新建 -->
-        <addEditData  v-if="addEditDataVisible" ref="addEditData" @searchDataList="getDataList"></addEditData>
+        <addEditData :idJp="dataForm.idJp" v-if="addEditDataVisible" ref="addEditData" @searchDataList="getDataList"></addEditData>
+        <operationallog :idJp="dataForm.idJp" v-if="operationallogVisible" ref="operationallogCompon" @searchDataList="getDataList" ></operationallog>
     </div>
 </template>
 
@@ -105,12 +115,13 @@
     import quillEditorImg from "@/components/quillEditor"
     //import addEditData from './model-show-data'
     import mixinViewModule from '@/mixins/view-module'
-    import { backScanGoods } from '@/api/api'
+    import { backScanZozogoods } from '@/api/api'
 
     import 'quill/dist/quill.core.css';
     import 'quill/dist/quill.snow.css';
     import 'quill/dist/quill.bubble.css';
     import Quill from 'quill'
+    import operationallog from "./operationalLog"
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -121,7 +132,11 @@
                     {key: '图案', value: '豹纹'},
                     {key: '衣长', value: '短长度'}
                 ],
+                dataForm:{},
                 addEditDataVisible: false,
+                data: {}, //总数据
+                skuVOList: [],
+                operationallogVisible:false,
             }
         },
         components: {
@@ -129,42 +144,36 @@
             Table,
             quillEditorImg,
             addEditData,
+            operationallog,
         },
         created(){
 
         },
         methods: {
+            operational (index=-1,row="") {
+                this.setOperationalVisible(true);
+                this.$nextTick(() => {
+                    this.$refs.operationallogCompon.init(row)
+                })
+            },
+            setOperationalVisible () {
+                this.operationallogVisible =  true;
+                this.idJp = this.dataForm.idJp;
+                console.log(this.dataForm.idJp)
+            },
+
             init(row){
                 this.$nextTick(()=>{
                     if(row){
                         var obj  = {
                             id:row.id
                         }
-                        backScanGoods(obj).then((res)=>{
+                        backScanZozogoods(obj).then((res)=>{
                             console.log('详情',res.data)
                             if(res.code == 200){
                                 this.dataForm = res.data;
                             }
                         })
-                    }
-                })
-            },
-            backScan(){
-                var obj  = {
-                    // firstCategory:this.row.firstCategory,
-                    id:this.row.id,
-                    nameJp:this.row.nameJp,
-                    name:this.row.name,
-                    brandName:this.row.brandName,
-                    storeName:this.row.storeName,
-                    gender:this.row.gender,
-                    madeIn:this.row.madeIn
-                }
-                backScanGoods(obj).then((res)=>{
-                    if(res.code == 200){
-                        Object.assign(this.dataForm,res.data);
-                    }else{
-
                     }
                 })
             },
@@ -190,19 +199,11 @@
             },
             setAddEditDataVisible(boolargu){
                 this.addEditDataVisible =  boolargu;
+                this.idJp = this.dataForm.idJp;
             },
-            operational () {
-                this.$emit("operational")
-            },
-            logMore(index=-1,row=""){
-                this.setAddEditDataVisible(true);
-                this.$nextTick(() => {
-                    this.$refs.addEditData.init(row)
-                })
-            },
-            setAddEditDataVisible(boolargu){
-                this.addEditDataVisible =  boolargu;
-            },
+            // operational () {
+            //     this.$emit("operational",this.dataForm.idJp)
+            // },
         }
     }
 </script>
