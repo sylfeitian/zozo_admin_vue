@@ -43,8 +43,8 @@
             <el-table-column prop="storeName" label="店铺中文名称" align="center"></el-table-column>
             <el-table-column label="营业状态" align="center">
                 <template slot-scope="scope">
-                    <span  v-if="scope.row.operateFlag==0">营业中</span>
-                    <span  v-if="scope.row.operateFlag==1">已停业</span>
+                    <el-tag v-if="scope.row.operateFlag==0" type="success">营业中</el-tag>
+                    <el-tag v-if="scope.row.operateFlag==1" type="info">已停业</el-tag>
                 </template>
             </el-table-column>
             <el-table-column prop="japanState" label="日本店铺状态" align="center"></el-table-column>
@@ -54,9 +54,11 @@
             <el-table-column prop="" label="设为推荐" align="center">
                 <template slot-scope="scope">
                     <el-switch
-                            v-model="value"
+                            v-model="scope.row.recommendFlag"
                             active-color="#13ce66"
-                            inactive-color="#ff4949">
+                            inactive-color="#ff4949"
+                            @click="switchHandle('singe',scope.row)"
+                    >
                     </el-switch>
                 </template>
             </el-table-column>
@@ -98,7 +100,7 @@
     import addEditData from './model-add-edit-data'
     import editData from './model-edit-data'
     import { shopPageUrl } from '@/api/url'
-    import { operateShopStore } from '@/api/api'
+    import { operateShopStore, recommendShopStore } from '@/api/api'
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -196,8 +198,8 @@
                     "operateFlag":row.operateFlag==1?2:1  //
                 }
                 var msg = ""
-                row.operateFlag==1?msg="禁用":msg="启用"
-                this.$confirm('是否'+msg+'该分组?', '提示', {
+                row.operateFlag==1?msg="停业":msg="营业"
+                this.$confirm('是否进行'+msg+'操作?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
@@ -223,7 +225,42 @@
                     })
 
                 }).catch(() => {});
-            }
+            },
+            switchHandle(index,row){
+                this.currentIndex = index;
+                var obj = {
+                    "id": row.id,
+                    "recommendFlag":row.recommendFlag==1?0:1  //0不推荐1推荐
+                }
+                var msg = ""
+                row.recommendFlag==1?msg="不推荐":msg="推荐"
+                this.$confirm('是否进行'+msg+'操作?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.forbitLoading = true;
+                    recommendShopStore(obj).then((res)=>{
+                        this.forbitLoading = false;
+                        // console.log(res);
+                        if(res.code==200){
+                            this.getDataList();
+                            this.$message({
+                                message:res.msg,
+                                type: 'success',
+                                duration: 1500,
+                            })
+                        }else{
+                            this.$message({
+                                message:res.msg,
+                                type: 'error',
+                                duration: 1500,
+                            })
+                        }
+                    })
+
+                }).catch(() => {});
+            },
         }
     }
 </script>

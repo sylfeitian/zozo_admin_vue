@@ -40,6 +40,11 @@
             </el-form-item>
             <el-form-item label="上架状态：" class="item">
                 <span>{{dataForm.showWeb}}</span>
+<!--                <template slot-scope="scope">-->
+<!--                    <span v-if="scope.row.showWeb==0">下架</span>-->
+<!--                    <span v-if="scope.row.showWeb==1">上架</span>-->
+<!--                    <span v-if="scope.row.showWeb==2">未上架</span>-->
+<!--                </template>-->
             </el-form-item>
             <el-form-item label="日本上架状态：" class="item">
                 <span>{{dataForm.japanShowWeb}}</span>
@@ -76,7 +81,7 @@
             <el-form-item label="商品图片：">
                 <template slot-scope="scope">
                     <div class="goodsImg">
-                        <img  :src="scope.row.imageUrl | filterImgUrl" style="width:60px;height:60px;object-fit: contain;" alt=""/>
+                        <img :src="scope.row.imageUrl | filterImgUrl" style="width:60px;height:60px;object-fit: contain;" alt=""/>
                     </div>
                 </template>
             </el-form-item>
@@ -129,11 +134,19 @@
 
         },
         methods: {
-            init () {
-                this.backScan();
-                this.$nextTick(() => {
-                    this.$refs['addForm'].resetFields();
-                    // this.getApplyPullList();
+            init(row){
+                this.$nextTick(()=>{
+                    if(row){
+                        var obj  = {
+                            id:row.id
+                        }
+                        backScanGoods(obj).then((res)=>{
+                            console.log('详情',res.data)
+                            if(res.code == 200){
+                                this.dataForm = res.data;
+                            }
+                        })
+                    }
                 })
             },
             backScan(){

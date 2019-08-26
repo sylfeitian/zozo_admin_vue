@@ -47,9 +47,9 @@
                 <el-table-column prop="role" label="角色" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="module" label="操作模块" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="" label="操作页面" header-align="center" align="center"></el-table-column>
-                <el-table-column prop="" label="对应ID" header-align="center" align="center"></el-table-column>
+                <el-table-column prop="id" label="对应ID" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="createDate" label="操作时间" header-align="center" align="center"></el-table-column>
-                <el-table-column prop="" label="操作内容" header-align="center" align="center"></el-table-column>
+                <el-table-column prop="operation" label="操作内容" header-align="center" align="center"></el-table-column>
             </el-table>
             <el-pagination
                     :current-page="page"
@@ -77,7 +77,7 @@
                     getDataListIsPage: true,
                     exportURL: '/admin-api/log/operation/export'
                 },
-                breaddata: ["网站设置", "日志", "操作日志"],
+                breaddata: [ "系统管理", "操作日志"],
                 dataForm: {
                     creator: '',
                     module: ''
