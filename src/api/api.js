@@ -3,6 +3,14 @@ import http from '@/utils/request'
 
 let base = "/admin-api";
 let requestType = { headers: { 'content-type': 'application/x-www-form-urlencoded' } };
+//首页  
+export const gethomepage = params => { return http.get(`${base}/homepage`, params).then(res => res.data); };
+//广告--------------------------------------------------------------------------------------------------------------
+//添加禁用词   
+export const addadvertisingban = params => { return http.post(`${base}/advertisingban/add`, params).then(res => res.data); };
+
+
+
 // 上传图片--------------------------------------------------------------------------------------------------------------------
 //Base64上传图片
 export const uploadPicBase64 = params => { return http.post(`${base}/picture/base64`, params).then(res => res.data); };
@@ -15,7 +23,7 @@ export const gettagdatalist = params => { return http.get(`${base}/tag/page`, pa
 //分类条件编辑
 export const uploadtag = params => { return http.put(`${base}/tag?name=${params.name}&id=${params.id}`, params).then(res => res.data); };
 //日本尺码管理关联  
-export const uploadsizejptag = params => { return http.put(`${base}/sizejp?cnSizeId=${params.cnSizeId}2&id=${params.id}1&name=${params.name}`, params).then(res => res.data); };
+export const uploadsizejptag = params => { return http.put(`${base}/sizejp?cnSizeId=${params.cnSizeId}&id=${params.id}&name=${params.name}`, params).then(res => res.data); };
 //获取中国尺码  
 export const getsizecn = params => { return http.get(`${base}/sizejp/getsizecn`, params).then(res => res.data); };
 
@@ -602,3 +610,51 @@ export const backScanGoods = params => { return http.get(`${base}/goods/${params
 //京东分类管理接口--------------------------------------------------------------------------------------------------------------------
 // 分页查询分类
 export const jdCatePage = params => { return http.get(`${base}/jdCate/page`, params).then(res => res.data); };
+
+
+
+
+
+//同义词管理接口--------------------------------------------------------------------------------------------------------------------
+// 删除
+export const deleteShopsynonym = params => { return http.delete(`${base}/shopsynonym`, params).then(res => res.data); };
+// 保存
+export const shopsynonymSave = params => { return http.post(`${base}/shopsynonym`, params).then(res => res.data); };
+// 修改
+export const editShopsynonym = params => { return http.put(`${base}/shopsynonym`, params).then(res => res.data); };
+// 分页
+export const shopsynonymPage = params => { return http.get(`${base}/shopsynonym/page`, params).then(res => res.data); };
+// 信息
+export const backScanShopsynonym = params => { return http.get(`${base}/shopsynonym/${params.id}`, params).then(res => res.data); };
+
+
+
+
+
+//搜索统计管理接口--------------------------------------------------------------------------------------------------------------------
+// 删除
+export const deleteShophotkeywordrecord = params => { return http.delete(`${base}/shophotkeywordrecord`, params).then(res => res.data); };
+// 保存
+export const shophotkeywordrecordSave = params => { return http.post(`${base}/shophotkeywordrecord`, params).then(res => res.data); };
+// 修改
+export const editShophotkeywordrecord = params => { return http.put(`${base}/shophotkeywordrecord`, params).then(res => res.data); };
+// 分页
+export const shophotkeywordrecordPage = params => { return http.get(`${base}/shophotkeywordrecord/page`, params).then(res => res.data); };
+// 信息
+export const backScanShophotkeywordrecord = params => { return http.get(`${base}/shophotkeywordrecord/${params.id}`, params).then(res => res.data); };
+
+
+
+
+
+//热门搜索配置接口、搜索统计管理--------------------------------------------------------------------------------------------------------------------
+// 删除
+export const deleteShophotkeyword = params => { return http.delete(`${base}/shophotkeyword`, params).then(res => res.data); };
+// 保存
+export const shophotkeywordSave = params => { return http.post(`${base}/shophotkeyword`, params).then(res => res.data); };
+// 修改
+export const editShophotkeyword = params => { return http.put(`${base}/shophotkeyword`, params).then(res => res.data); };
+// 分页
+export const shophotkeywordPage = params => { return http.get(`${base}/shophotkeyword/page`, params).then(res => res.data); };
+// 信息
+export const backScanShophotkeyword = params => { return http.get(`${base}/shophotkeyword/${params.id}`, params).then(res => res.data); };

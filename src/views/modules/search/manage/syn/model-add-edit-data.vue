@@ -9,61 +9,69 @@
     >
         <el-form
                 :model="dataForm"
-                :rules="dataRule"
-                ref="dataForm"
-                @keyup.enter.native="dataFormSubmit('dataForm')"
+                ref="addForm"
+                @keyup.enter.native="dataFormSubmit('addForm')"
                 label-width="120px"
         >
-            <el-form-item label="禁用词名称：" prop="name" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.name" auto-complete="off"></el-input>
+            <el-form-item label="同义词：">
+                <el-input type="textarea" v-model="dataForm.name" placeholder="" :rows="4"></el-input>
+                <span style="color: #999999;">多词请用英文逗号“,”隔开</span>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
-                <el-button  @click="dataFormCancel()">取消</el-button>
-                <el-button type="primary" @click="dataFormSubmit('dataForm')"
+                <el-button type="primary" @click="dataFormSubmit('addForm')"
                            :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
+                <el-button  @click="dataFormCancel()">返回</el-button>
             </el-form-item>
         </el-form>
     </el-dialog>
 </template>
 
 <script>
-	import { addadvertisingban } from '@/api/api'
+    import { editShopsynonym,shopsynonymSave, backScanShopsynonym } from '@/api/api'
     export default {
+        name: "model-add-edit-data",
         data () {
             return {
                 visible : false,
                 loading : false,
                 dataForm: {
-                	name:'',
+                    name: "",//同义词
                 },
-                optionsApplication: [],
-                optionsRight: [],
                 title:'',
-                formLabelWidth: '120px',
-                dataRule:{
-		          name: [
-		            { required: true, message: '请输入名称', trigger: 'blur' },
-		            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-		          ],
-                },
+                row:"",
+                formLabelWidth: '120px'
             }
         },
-        components:{
-        },
-        computed:{},
-        mounted(){},
         methods: {
             init (row) {
                 this.visible = true;
-                this.dataForm.name = '';
-                this.loading = false;
-                console.log(row)
+                this.row = row;
                 if(row){
-                    this.title="编辑禁用词语";
+                    this.title="编辑同义词";
+                    this.backScan();
                 }else{
-                    this.title="添加禁用词语"
-					this.dataForm = row;
+                    this.title="新建同义词"
+
                 }
+                this.$nextTick(() => {
+                    this.$refs['addForm'].resetFields();
+                    // this.getApplyPullList();
+                })
+            },
+            // 编辑回显
+            backScan(){
+                var obj  = {
+                    id:this.row.id,
+                    name:this.row.name,
+                }
+                backScanShopsynonym(obj).then((res)=>{
+                    if(res.code == 200){
+                        Object.assign(this.dataForm,res.data);
+
+                    }else{
+
+                    }
+                })
             },
             // 提交
             dataFormSubmit(formName){
@@ -71,7 +79,12 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.loading = true;
-                        addadvertisingban(this.dataForm).then((res) => {
+                        var obj = {
+                            "name":  this.dataForm.name,
+                        }
+                        if(this.row) obj.id = this.row.id
+                        var fn = this.row?editShopsynonym:shopsynonymSave;
+                        fn(obj).then((res) => {
                             this.loading = false;
                             // alert(JSON.stringify(res));
                             let status = null;
@@ -102,18 +115,17 @@
                 this.closeDialog();
             },
             closeDialog() {
-            	this.visible = false;
-                this.$parent.addEditDataVisible = false;
+                this.$parent.addDataVisible = false;
             },
         }
     }
 </script>
 
-<style scoped>
-    /*/deep/.el-form-item__content:nth-child(1) {*/
-    /*    margin-left: 50px!important;*/
-    /*}*/
-    .title {
-        margin-left: -70px;
+<style lang="scss" scoped>
+    /deep/ .el-form-item__label {
+        width: 60px!important;
+    }
+    /deep/ .el-form-item__content {
+        margin-left: 60px!important;
     }
 </style>

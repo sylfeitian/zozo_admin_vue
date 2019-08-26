@@ -2,7 +2,6 @@
   <div>
     <Bread :breaddata="breaddata"></Bread>
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
-         <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
         <el-form-item label="优惠券名称：">
             <el-input v-model="dataForm.storeId" placeholder="请输入优惠券名称" clearable></el-input>
         </el-form-item>
@@ -43,9 +42,9 @@
             <el-select v-model="dataForm.storeType" clearable  placeholder="请选择">
                 <el-option
                     v-for="item in storeTypes"
-                    :key="item.value"
+                    :key="item.id"
                     :label="item.label"
-                    :value="item.value">
+                    :value="item.id">
                 </el-option>
             </el-select>
         </el-form-item>
@@ -57,6 +56,7 @@
         <br />
         <el-form-item>
             <el-button type="primary"   @click="addCoupon()">新增优惠券</el-button>
+            <!-- <el-button type="primary"   @click="showDetail('asassasasasasa')">新增优惠券</el-button> -->
         </el-form-item>
     </el-form>
     <el-table
@@ -132,7 +132,7 @@
 	    	label="操作">
 		    <template slot-scope="scope">
 		    	<el-button type="text" size="small" @click="showDetail(scope.row.id)">查看</el-button>
-		    	<el-button type="text" size="small" @click="addOrAdit(scope.row.id)">编辑</el-button>
+		    	<el-button type="text" size="small" @click="addCoupon(scope.row.id,'普通优惠券')">编辑</el-button>
 		    	<el-button class="artdanger" type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
 		    </template>
 	  	</el-table-column>
@@ -170,9 +170,9 @@ export default {
       },
       dataForm: {},
       storeTypes:[
-          {value: '',label: '待审核'},
-          {value: '1',label: '审核通过'},
-          {value: '2',label: '审核不通过'}
+          {id: '',label: '待审核'},
+          {id: '1',label: '审核通过'},
+          {id: '2',label: '审核不通过'}
       ],
       couponKindList1: [{ id: '', name: "全部" },{ id: 1, name: "普通优惠券" },{ id: 2, name: "新会员优惠券" },{ id: 3, name: "积分优惠券" }],
       activitesstates: [{ id: '', name: "全部" },{ id: 1, name: "未开始" },{ id: 2, name: "进行中" },{ id: 3, name: "已结束" },{ id: 4, name: "待审核" }],
@@ -187,33 +187,22 @@ export default {
   	this.dataForm.messageType = this.couponKindList1[0].id;
   	this.dataForm.gradeId = this.activitesstates[0].id;
   	this.dataForm.storeType = this.storeTypes[0].id;
-      let obj = {
-            params:{
-                page:1,
-                limit:100,
-            }
-        }
-      storeGrade(obj).then((res)=>{
-          console.log('商家等级',res)
-            if(res.code == 200 && res.data.list){
-                this.storeGradeList = res.data.list
-            }
-      })
-      this.demo();
+    this.demo();
   },
   methods: {
         showDetail(id){
 	    	this.$emit("showDetail",id);
         },
-        addOrAdit(id){
-            this.$emit("addOrAdit",id);
-        },
         reset() {
             this.dataForm = {};
             this.getDataList();
         },
-        addCoupon(){
-        	this.$emit('artcoupon')
+        addCoupon(id){
+            if(id){
+        	    this.$emit('artcoupon',id,'普通优惠券')//编辑优惠券
+            }else{
+        	    this.$emit('artcoupon')//新增优惠券
+            }
         },
         demo(){
         	function placeholderPic(){
