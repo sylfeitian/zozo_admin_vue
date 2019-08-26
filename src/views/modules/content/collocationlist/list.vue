@@ -66,23 +66,33 @@
             </el-table-column>
             <el-table-column prop="title" label="标题" align="center"></el-table-column>
             <el-table-column prop="userNickname" label="用户" align="center"></el-table-column>
-            <el-table-column prop="lookItems " width="80" label="搭配数量" align="center">
-            	<template slot-scope="scope">
-            		{{scope.row.lookItems  && scope.row.lookItems .length || 0}}
-            	</template>
+            <el-table-column prop="lookCount" width="80" label="搭配数量" align="center"></el-table-column>
+            <el-table-column prop="sate" width="120" label="发布状态" align="center">
+                <template slot-scope="scope">
+                    <el-tag v-if="scope.row.sate == 1" type="success">已发布</el-tag>
+                    <el-tag v-else type="info">取消发布</el-tag>
+                </template>
             </el-table-column>
-            <el-table-column prop="" label="发布状态" align="center"></el-table-column>
-            <el-table-column prop="" label="日本发布状态" align="center"></el-table-column>
+            <el-table-column width="120" prop="jpPublishState"  label="日本发布状态" align="center">
+                <template slot-scope="scope">
+                    <el-tag v-if="scope.row.jpPublishState == 1" type="success">已发布</el-tag>
+                    <el-tag v-else type="info">取消发布</el-tag>
+                </template>
+            </el-table-column>
             <el-table-column prop="publishTimeJp" label="日本发布时间" align="center"></el-table-column>
             <el-table-column prop="publishTime" label="发布时间" align="center"></el-table-column>
-            <el-table-column prop="" label="风格标签" align="center"></el-table-column>
+            <el-table-column prop="styles" label="风格标签" align="center">
+                <template slot-scope="scope">
+                    <span v-for="(v,index) in scope.row.styles" :key="index">{{index==0?v.name:"、"+v.name}}</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="totalViewsNum" label="浏览量" align="center"></el-table-column>
             <el-table-column label="操作" width="150" align="center">
                 <template slot-scope="scope">
-                    <el-button @click.native.prevent="showDetail(scope.$index, scope.row)"type="text"size="mini">查看</el-button>
-                    <el-button @click.native.prevent="addOrAdit(scope.$index, scope.row)"type="text"size="mini">编辑</el-button>
+                    <el-button @click.native.prevent="showDetail(scope.row)"type="text"size="mini">查看</el-button>
+                    <el-button @click.native.prevent="addOrAdit(scope.row)"type="text"size="mini">编辑</el-button>
                     <el-button @click.native.prevent="forbitHandle(scope.$index,scope.row)"type="text"size="mini">
-                        <span v-if="scope.row.groupStatus==1" class="artdisable">{{scope.$index==currentIndex&&forbitLoading?"取消发布中..":"取消发布"}}</span>
+                        <span v-if="scope.row.sate==1" class="artdisable">{{scope.$index==currentIndex&&forbitLoading?"取消发布中..":"取消发布"}}</span>
                         <span v-else class="artstart">{{scope.$index==currentIndex && forbitLoading?"发布中..":"发布"}}</span>
                     </el-button>
                 </template>
@@ -114,6 +124,7 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import { getlookfolderpage } from '@/api/url'
+    import { folderPutoperating } from '@/api/api';   //发布/取消发布
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -216,17 +227,17 @@
                 this.currentIndex = index;
                 var obj = {
                     "id": row.id,
-                    "groupStatus":row.groupStatus==1?2:1  //
+                    "operating":row.sate==1?0:1  //
                 }
                 var msg = ""
-                row.groupStatus==1?msg="禁用":msg="启用"
+                row.sate==1?msg="禁用":msg="启用"
                 this.$confirm('是否'+msg+'该分组?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
                     this.forbitLoading = true;
-                    statusAttributegroup(obj).then((res)=>{
+                    folderPutoperating(obj).then((res)=>{
                         this.forbitLoading = false;
                         // console.log(res);
                         if(res.code==200){

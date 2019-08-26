@@ -28,12 +28,18 @@ export const uploadsizejptag = params => { return http.put(`${base}/sizejp?cnSiz
 export const getsizecn = params => { return http.get(`${base}/sizejp/getsizecn`, params).then(res => res.data); };
 
 //内容------------------------------------------------------------------------------------
-//内容搭配查看  
+//搭配信息详情
 export const getlookdetail = params => { return http.get(`${base}/look/${params.id}`, params).then(res => res.data); };
-//取消发布  
+//搭配信息发布/取消发布
 export const putoperating = params => { return http.put(`${base}/look/publish/${params.operating}/${params.id}?operating=${params.operating}&id=${params.id}`, params).then(res => res.data); };
-//搭配列表查看  
+//搭配集合发布/取消发布
+export const folderPutoperating = params => { return http.put(`${base}/look/folder/publish/${params.operating}/${params.id}?operating=${params.operating}&id=${params.id}`, params).then(res => res.data); };
+//搭配集合详情
 export const getlookfolderdetail = params => { return http.get(`${base}/look/folder/${params.id}`, params).then(res => res.data); };
+//搭配信息保存|保存并发布操作
+export const savelookdetail = params => { return http.post(`${base}/look`, params).then(res => res.data); };
+//搭配集合保存|保存并发布操作
+export const saveFolderdetail = params => { return http.post(`${base}/look/folder`, params).then(res => res.data); };
 
 
 //仓库管理--------------------------------------------------------------------------------------------------------
