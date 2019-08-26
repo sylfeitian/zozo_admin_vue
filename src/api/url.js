@@ -290,3 +290,6 @@ export const deleteShophotkeywordrecordUrl = `${base}/shophotkeywordrecord`;
 export const shophotkeywordUrl = `${base}/shophotkeyword/page`;
 // 删除
 export const deleteShophotkeywordUrl = `${base}/shophotkeyword`;
+
+
+

@@ -2,65 +2,83 @@
     <el-dialog
             title="添加黑名单"
             :visible.sync="outerVisible"
-            @click="goBack"
-            :show-close="false"
-            width="40%"
+            :before-close="closecancel"
+            width="50%"
     >
+    
         <el-form label-width="100px" :model="dataForm">
-            <el-form-item label="账号：">
-                <el-input v-model="memberInfo.memberName" :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="收货地址：">
-                <el-select
-                        disabled
-                        v-model="dataForm.memberAreaid"
-                        placeholder="请选择"
-                        loading-text="加载中···"
-                        @visible-change="getGoodsClass(0)"
-                >
-                    <!-- 市级 -->
-                    <el-option
-                            v-for="item in goodscalssOption0"
-                            :key="item.id"
-                            :label="item.areaName"
-                            :value="item.id"
-                    ></el-option>
-                </el-select>
-                <el-select
-                        disabled
-                        v-model="dataForm.memberCityid"
-                        placeholder="请选择"
-                        @visible-change="getGoodsClass(1)"
-                >
-                    <el-option
-                            v-for="item in goodscalssOption1"
-                            :key="item.id"
-                            :label="item.areaName"
-                            :value="item.id"
-                    ></el-option>
-                </el-select>
-                <el-select
-                        disabled
-                        v-model="dataForm.memberProvinceid"
-                        placeholder="请选择"
-                        @visible-change="getGoodsClass(2)"
-                >
-                    <el-option
-                            v-for="item in goodscalssOption2"
-                            :key="item.id"
-                            :label="item.areaName"
-                            :value="item.id"
-                    ></el-option>
-                </el-select>
-                <el-select disabled v-if="dataForm.stressId" v-model="dataForm.stressId" placeholder="请选择">
-                    <el-option
-                            v-for="item in goodscalssOption3"
-                            :key="item.id"
-                            :label="item.areaName"
-                            :value="item.id"
-                    ></el-option>
-                </el-select>
-            </el-form-item>
+        	<el-radio v-model="dataradio" label="0">
+        		<el-form-item label="账号：">
+            		<el-input v-model="dataForm.memberName" @focus="artfocus"></el-input>
+            	</el-form-item>
+    		</el-radio>
+            <el-radio v-model="dataradio" label="1">
+            	<el-form-item label="收货地址：">
+	                <el-select
+	                        v-model="dataForm.memberAreaid"
+	                        placeholder="省"
+	                        loading-text="加载中···"
+	                        @visible-change="getGoodsClass(0)"
+	                >
+	                    <!-- 市级 -->
+	                    <el-option
+	                            v-for="item in goodscalssOption0"
+	                            :key="item.id"
+	                            :label="item.areaName"
+	                            :value="item.id"
+	                    ></el-option>
+	                </el-select>
+	                <el-select
+	                        v-model="dataForm.memberCityid"
+	                        placeholder="市"
+	                        @visible-change="getGoodsClass(1)"
+	                >
+	                    <el-option
+	                            v-for="item in goodscalssOption1"
+	                            :key="item.id"
+	                            :label="item.areaName"
+	                            :value="item.id"
+	                    ></el-option>
+	                </el-select>
+	                <el-select
+	                        v-model="dataForm.memberProvinceid"
+	                        placeholder="县"
+	                        @visible-change="getGoodsClass(2)"
+	                >
+	                    <el-option
+	                            v-for="item in goodscalssOption2"
+	                            :key="item.id"
+	                            :label="item.areaName"
+	                            :value="item.id"
+	                    ></el-option>
+	                </el-select>
+	                <el-select v-if="dataForm.stressId" v-model="dataForm.stressId" placeholder="镇">
+	                    <el-option
+	                            v-for="item in goodscalssOption3"
+	                            :key="item.id"
+	                            :label="item.areaName"
+	                            :value="item.id"
+	                    ></el-option>
+	                </el-select>
+	            </el-form-item>
+    		</el-radio>
+            
+        	<el-form-item>
+	            <el-input
+				  type="textarea"
+				  :rows="3"
+				  placeholder="请输入详情地址"
+				  v-model="dataForm.address">
+				</el-input>
+			</el-form-item>
+			<el-form-item lable="封禁原因" >
+	            <el-input
+				  type="text"
+				  maxlength="20"
+				  placeholder="请输入内容"
+				  v-model="dataForm.remark">
+				</el-input>
+			</el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="cancel">取 消</el-button>
@@ -80,12 +98,15 @@
                 innerVisible: false,
                 dialogVisible: "",
                 form: {},
+                dataradio: '0',
                 dataForm: {
                     memberName: "",
                     memberAreaid: "",
                     memberCityid: "",
                     memberProvinceid: "",
-                    stressId: ""
+                    stressId: "",
+                    address:"",//详情地址
+                    remark:"",  //封禁原因
                 },
                 goodscalssOption0: [],
                 goodscalssOption1: [],
@@ -93,17 +114,19 @@
                 goodscalssOption3: [],
             };
         },
-        props: ["memberInfo", "memberInfoSourse"],
+        props: [],
+        created(){
+        	this.getCity();
+        	this.getAreaList();
+        	this.getProList();
+        	this.getStrList();
+        },
         methods: {
+        	artfocus(){
+        		this.dataradio = '0';
+        	},
             init() {
-                this.getCity("");
-                this.dataForm.memberAreaid = this.memberInfo.memberProvinceid;
-                this.dataForm.memberCityid = this.memberInfo.memberCityid;
-                this.dataForm.memberProvinceid = this.memberInfo.memberAreaid;
-                this.dataForm.stressId = this.memberInfo.stressId;
-                this.getAreaList(this.dataForm.memberAreaid);
-                this.getProList(this.dataForm.memberCityid);
-                this.getStrList(this.dataForm.memberProvinceid);
+            	this.outerVisible = true;
             },
             getCity() {
                 //所有一级区域
@@ -145,16 +168,14 @@
             handleChange(value) {
                 console.log(value);
             },
+            closecancel(done){
+            	done();
+            },
             //取消
             cancel() {
                 this.outerVisible = false;
                 this.$emit("changeWindow");
                 //回传主页面。false
-            },
-            //返回列表页
-            goBack() {
-                console.log("关闭");
-                this.$emit("changeWindow");
             },
             //重置密码
             restPass() {
@@ -217,7 +238,10 @@
     };
 </script>
 <style scoped>
-    .el-select {
+	.el-radio{
+		margin-left: 30px;
+	}
+	.el-select {
         width: 15%;
     }
     .header {
@@ -243,7 +267,7 @@
       width: 30% !important;
     } */
     .el-form {
-        width: 140%;
+        width: 100%;
     }
     /* .restPass{text-align: center;} */
 </style>

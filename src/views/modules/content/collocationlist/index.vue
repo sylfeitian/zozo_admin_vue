@@ -27,6 +27,8 @@
             showDetail(row){
                 this.dtailVisible = true;
                 this.mainVisible = false;
+                this.addoraditVisible = false;
+                console.log(row);
                 this.$nextTick(()=>{
                     this.$refs.detailCompon.init(row);
                 })
@@ -34,6 +36,7 @@
             addOrAdit(id){
                 this.addoraditVisible = true;
                 this.mainVisible = false;
+                this.dtailVisible = false;
                 this.$nextTick(()=>{
                     this.$refs.addoraditCompon.init(id);
                 })
@@ -41,6 +44,7 @@
             showList(){
                 this.dtailVisible = false;
                 this.mainVisible = true;
+                this.addoraditVisible = false;
                 this.$nextTick(()=>{
                     this.$refs.listCompon.getDataList();
                 })
