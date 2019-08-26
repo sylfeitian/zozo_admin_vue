@@ -40,6 +40,11 @@
             </el-form-item>
             <el-form-item label="上架状态：" class="item">
                 <span>{{dataForm.showWeb}}</span>
+<!--                <template slot-scope="scope">-->
+<!--                    <span v-if="scope.row.showWeb==0">下架</span>-->
+<!--                    <span v-if="scope.row.showWeb==1">上架</span>-->
+<!--                    <span v-if="scope.row.showWeb==2">未上架</span>-->
+<!--                </template>-->
             </el-form-item>
             <el-form-item label="日本上架状态：" class="item">
                 <span>{{dataForm.japanShowWeb}}</span>
