@@ -1,15 +1,15 @@
 <template>
     <div>
         <list v-if="mainVisible" ref="listCompon" @detShowChange="detShowChange" @editList="editList"></list>
-        <operationallog v-if="operationallogVisible" ref="operationallogCompon" @operationallogList="operationallogList" @more="more"></operationallog>
-        <detail v-if="detailVisible" ref="detailCompon" @logMore="logMore" @operational="operational"></detail>
+<!--        <operationallog v-if="operationallogVisible" ref="operationallogCompon" @operationallogList="operationallogList" @more="more"></operationallog>-->
+        <detail v-if="detailVisible" ref="detailCompon" @logMore="logMore"></detail>
         <edit v-if="editVisible" ref="editCompon" @showList="showList"></edit>
     </div>
 </template>
 
 <script>
     import list from "./list"
-    import operationallog from "./operationalLog"
+    // import operationallog from "./operationalLog"
     import detail from "./detail";
     import edit from "./edit";
     import Bread from "@/components/bread";
@@ -26,7 +26,7 @@
             Bread,
             detail,
             list,
-            operationallog,
+            // operationallog,
             edit
         },
         methods: {
@@ -52,10 +52,14 @@
                 this.detailVisible = false;
                 this.mainVisible = true;
             },
-            operational () {
-                this.detailVisible = false;
-                this.operationallogVisible = true;
-            },
+            // operational () {
+            //     this.detailVisible = false;
+            //     this.operationallogVisible = true;
+            //     this.$nextTick(()=>{
+            //         this.$refs.operationallogCompon.init();
+            //     })
+            //
+            // },
             more () {
                 this.detailVisible = true;
                 this.operationallogVisible = false;

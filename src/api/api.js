@@ -28,12 +28,18 @@ export const uploadsizejptag = params => { return http.put(`${base}/sizejp?cnSiz
 export const getsizecn = params => { return http.get(`${base}/sizejp/getsizecn`, params).then(res => res.data); };
 
 //内容------------------------------------------------------------------------------------
-//内容搭配查看  
+//搭配信息详情
 export const getlookdetail = params => { return http.get(`${base}/look/${params.id}`, params).then(res => res.data); };
-//取消发布  
+//搭配信息发布/取消发布
 export const putoperating = params => { return http.put(`${base}/look/publish/${params.operating}/${params.id}?operating=${params.operating}&id=${params.id}`, params).then(res => res.data); };
-//搭配列表查看  
+//搭配集合发布/取消发布
+export const folderPutoperating = params => { return http.put(`${base}/look/folder/publish/${params.operating}/${params.id}?operating=${params.operating}&id=${params.id}`, params).then(res => res.data); };
+//搭配集合详情
 export const getlookfolderdetail = params => { return http.get(`${base}/look/folder/${params.id}`, params).then(res => res.data); };
+//搭配信息保存|保存并发布操作
+export const savelookdetail = params => { return http.post(`${base}/look`, params).then(res => res.data); };
+//搭配集合保存|保存并发布操作
+export const saveFolderdetail = params => { return http.post(`${base}/look/folder`, params).then(res => res.data); };
 
 
 //仓库管理--------------------------------------------------------------------------------------------------------
@@ -143,7 +149,7 @@ export const backScanDetailGoods = params => { return http.get(`${base}/goods/de
 
 // 商品审核--------------------------------------
 //修改商品审核状态
-// export const checkGoods = params => { return http.put(`${base}/goods/check`, params).then(res => res.data); };
+export const checkGoods = params => { return http.put(`${base}/goods/check`, params).then(res => res.data); };
 //批量修改商品审核状态
 export const checkBatchGoods = params => { return http.put(`${base}/goods/check/batch?goodsStatus=${params.goodsStatus}&rejectReason=${params.rejectReason}`, params.ids).then(res => res.data); };
 
@@ -584,28 +590,20 @@ export const backScanShoplabel = params => { return http.get(`${base}/shoplabel/
 
 
 //商品管理接口--------------------------------------------------------------------------------------------------------------------
-// 修改商品
-export const deleteGoods = params => { return http.delete(`${base}/goods`, params).then(res => res.data); };
-// 商品保存
-export const goodsSave = params => { return http.post(`${base}/goods`, params).then(res => res.data); };
-// 商品修改
-export const editGoods = params => { return http.put(`${base}/goods`, params).then(res => res.data); };
-// 商品审核
-export const checkGoods = params => { return http.put(`${base}/goods/check`, params).then(res => res.data); };
-// 商品导出
-export const exportGoods = params => { return http.get(`${base}/goods/export`, params).then(res => res.data); };
-// 商品分页
-export const goodsPage = params => { return http.get(`${base}/goods/page`, params).then(res => res.data); };
-// 查看商品操作日志分页查询
-export const backScanGoodsLog = params => { return http.get(`${base}/goods/page/log/${params.spuId}`, params).then(res => res.data); };
-// 商品上下架状态批量修改
-export const showBatchGoods = params => { return http.put(`${base}/goods/show?ids=${params.ids}&showWeb=${params.showWeb}`, params).then(res => res.data); };
-// 单个商品上下架状态修改
-export const showGoods = params => { return http.put(`${base}/goods/show/${params.id}`, params).then(res => res.data); };
-// 获取商品尺码信息
-export const getGoodsSize = params => { return http.get(`${base}/goods/size/item`, params).then(res => res.data); };
 // 商品详细信息
-export const backScanGoods = params => { return http.get(`${base}/goods/${params.id}`, params).then(res => res.data); };
+export const backScanZozogoods = params => { return http.get(`${base}/zozogoods/${params.id}`, params).then(res => res.data); };
+// 商品保存
+export const saveZozogoods = params => { return http.post(`${base}/zozogoods`, params).then(res => res.data); };
+// 商品分页
+export const zozogoodsPage = params => { return http.get(`${base}/zozogoods/page`, params).then(res => res.data); };
+// 查看商品操作日志分页查询
+export const backScanZozogoodsLog = params => { return http.get(`${base}/zozogoods/page/log`, params).then(res => res.data); };
+// 商品上下架状态批量修改
+export const showBatchGoods = params => { return http.put(`${base}/zozogoods/show/?ids=${params.ids}&showWeb=${params.showWeb}`, params).then(res => res.data); };
+// 单个商品上下架状态修改
+export const showGoods = params => { return http.put(`${base}/zozogoods/show/${params.id}`, params).then(res => res.data); };
+// 获取商品尺码信息
+export const getZozogoodsSize = params => { return http.get(`${base}/zozogoods/size/item`, params).then(res => res.data); };
 
 
 
