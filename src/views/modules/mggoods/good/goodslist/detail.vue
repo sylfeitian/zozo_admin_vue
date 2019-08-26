@@ -30,11 +30,11 @@
                 <span>{{dataForm.storeName}}</span>
             </el-form-item>
             <el-form-item label="性别：" class="item">
-                <templete>
+                <template>
                     <span v-if="dataForm.genders==0">男</span>
                     <span v-if="dataForm.genders==1">女</span>
                     <span v-if="dataForm.genders==2">儿童</span>
-                </templete>
+                </template>
             </el-form-item>
             <el-form-item label="原产地：" class="item">
                 <span>{{dataForm.madeIn}}</span>
