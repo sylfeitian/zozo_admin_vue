@@ -309,6 +309,8 @@ export const paymentEdit = params => { return http.get(`${base}/payment/payment/
 export const paymentSave = params => { return http.post(`${base}/payment/update/config`, params).then(res => res.data); }
 //交易管理--查看订单
 export const paymentOrder= params => { return http.get(`${base}/order/orderSn/${params.orderSn}`, params).then(res => res.data); }
+//订单审核/order/audit/{operating}/{id}
+export const auditOperating  = params => { return http.get(`${base}/order/audit/${params.operating}/${params.id}`, params).then(res => res.data); }
 
 
 // 移动端首页菜单管理--------------------------------------------------------------------------------------------------------------------
@@ -429,8 +431,10 @@ export const updataGoodSetting = params => { return http.post(`${base}/setting/a
 //审核退换货
 export const examineGoods = params => { return http.post(`${base}/aftersale/apply/reason`, params).then(res => res.data); }
 
-
-
+// 根据物流单号查询订单物流信息
+export const logisticsInfo = params => { return http.get(`${base}/order/logistics/${params.logisticsSn}`, params).then(res => res.data); }
+// 修改收货人信息
+export const orderReceiver = params => { return http.put(`${base}/order/receiver`, params).then(res => res.data); }
 
 //店铺管理--------------------------------------------------------------------------------------------------------------------
 //修改店铺数据
@@ -447,6 +451,12 @@ export const recommendShopStore = params => { return http.put(`${base}/shopStore
 export const verifyShopStore = params => { return http.get(`${base}/shopStore/verify/name`, params).then(res => res.data); };
 // 根据中国ID获取信息
 export const backScanShopStore = params => { return http.get(`${base}/shopStore/${params.id}`, params).then(res => res.data); };
+// 
+//地区管理--------------------------------------------------------------------------------------------------------------------
+// 查询全部一级地区
+export const areaFirst = params => { return http.get(`${base}/area/first/list`, params).then(res => res.data); };
+// 根据父id查询地区
+export const areaByParentId = params => { return http.get(`${base}/area/parent/${params.id}`, params).then(res => res.data); };
 
 
 

@@ -16,9 +16,12 @@
             </el-form-item>
             <el-form-item label="订单状态：" prop="paymentStatus">
                 <el-select v-model="dataForm.paymentStatus" placeholder="请选择">
-                    <el-option label="全部" value=""></el-option>
-                    <el-option label="未付款" value="0"></el-option>
-                    <el-option label="已付款" value="1"></el-option>
+                    <el-option label="全部订单" value=""></el-option>
+                    <el-option label="待支付" value="10" ></el-option>
+                    <el-option label="待发货" value="20"></el-option>
+                    <el-option label="待收货" value="30" ></el-option>
+                    <el-option label="交易成功" value="40"></el-option>
+                    <el-option label="订单取消" value="0"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="下单时间：">
@@ -132,7 +135,8 @@
                     endCreateDate: "",
                     endPaymentTime: "",
                     startPaymentTime: "",
-                    orderType: ""
+                    orderType: "",//订单类型：bc,cc
+                    isWaitDeal:' 1',//是否为等待处理订单 0不是 1是 默认为不是
                 },
                 tableData: [],
                 timeArr: "", //下单时间数据
@@ -173,6 +177,7 @@
                 this.dataForm.endPaymentTime = this.timeArr2[1];
                 this.page = 1;
                 this.limit = 10;
+                this.dataForm.orderStatus  = this.dataForm.paymentStatus 
                 this.getDataList();
             },
             //订单支付方式
