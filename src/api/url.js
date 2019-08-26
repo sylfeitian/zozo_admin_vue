@@ -5,6 +5,23 @@
  */
 
 let base ="/admin-api";
+//首页历史汇率---------------------------------------------------------------------------------------
+export const gethistoryRate = `${base}/homepage/historyRate`; 
+
+//广告-------------------------------------------------------------------------------------------------------
+//广告分页  
+export const getadvertisingban = `${base}/advertisingban/page`; 
+//广告删除 
+export const advertisingban = `${base}/advertisingban`; 
+
+
+//系统-------------------------------------------------------------------------------------------------
+//黑名名单 
+export const getblacklist = `${base}/blacklist/page`; 
+//黑名单删除 
+export const delblacklist = `${base}/blacklist`; 
+
+
 
 //内容---------------------------------------------------------------------------------------
 //搭配分页
@@ -268,3 +285,6 @@ export const deleteGoodsUrl = `${base}/goods`;
 // 京东分类管理--------------------------------------------------------------------------------------------------------------------
 // 商品管理列表
 export const jdCateUrl = `${base}/jdCate/page`;
+
+
+

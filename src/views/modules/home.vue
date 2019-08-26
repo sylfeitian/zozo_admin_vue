@@ -4,8 +4,8 @@
     	 <span class='arttitle'>今日汇率：</span>
     	 <span class="artnumber">0.063</span>
     	 <span class="artmoney">1日元兑换{{}}人民币</span>
-    	 <span class="artgreen">查看历史汇率</span>
-    	 <span class="artRefresh">刷新</span>
+    	 <span class="artgreen artpointer" @click="artgethistoryRate">查看历史汇率</span>
+    	 <span class="artRefresh artpointer" @click="artrefresh"><i class="el-icon-refresh"></i> &nbsp;刷新</span>
     </div>
     <!-- secound -->
     <div class="artsecound">
@@ -13,28 +13,28 @@
     	 	 <img src="@/assets/img/avatar.png" alt="" />
     	 	 <div class="artcon">
     	 	 	<div>今日订单总数</div>
-    	 	 	<div>{{200}}</div>
+    	 	 	<div>{{ data && data.todayOrdersNum}}</div>
     	 	 </div>
     	 </div>
     	 <div class="artborder artsecoundson">
     	 	 <img src="@/assets/img/avatar.png" alt="" />
     	 	 <div class="artcon">
-    	 	 	<div>今日订单总数</div>
-    	 	 	<div>{{200}}</div>
+    	 	 	<div>今日销售总数</div>
+    	 	 	<div>{{ data && data.todayAmount}}</div>
     	 	 </div>
     	 </div>
     	 <div class="artborder artsecoundson">
     	 	 <img src="@/assets/img/avatar.png" alt="" />
     	 	 <div class="artcon">
-    	 	 	<div>今日订单总数</div>
-    	 	 	<div>{{200}}</div>
+    	 	 	<div>昨日销售总数</div>
+    	 	 	<div>{{ data && data.yesterdayAmount}}</div>
     	 	 </div>
     	 </div>
     	 <div class="artborder artsecoundson">
     	 	 <img src="@/assets/img/avatar.png" alt="" />
     	 	 <div class="artcon">
-    	 	 	<div>今日订单总数</div>
-    	 	 	<div>{{200}}</div>
+    	 	 	<div>近7天销售总数</div>
+    	 	 	<div>{{ data && data.sevenAmount}}</div>
     	 	 </div>
     	 </div>
     </div>
@@ -44,18 +44,18 @@
     	<div class="artcon">
 	    	<div class="artitem">
 	    		<div class="artitems">
-	    			待处理订单<span>（<em>10</em>）</span>
+	    			待处理订单<span>（<em>{{ data && data.toProcessOrdersNum  }}</em>）</span>
 	    		</div>
 	    		<div class="artitems">
-	    			待处理订单<span>（<em>10</em>）</span>
+	    			待备案商品<span>（<em>{{ data && data.toRecordGoodsNum }}</em>）</span>
 	    		</div>
 	    	</div>
 	    	<div class="artitem">
 	    		<div class="artitems">
-	    			待处理订单<span>（<em>10</em>）</span>
+	    			待付款订单<span>（<em>{{ data && data.toPayOrdersNum }}</em>）</span>
 	    		</div>
 	    		<div class="artitems">
-	    			待处理订单<span>（<em>10</em>）</span>
+	    			待发货订单<span>（<em>{{ data && data.toSendOrdersNum  }}</em>）</span>
 	    		</div>
 	    	</div>
     	</div>
@@ -66,20 +66,20 @@
     		<div class="arttitle">商品总览</div>
     			<div class="artitems">
     				<div class="artred">
-    					<div>100</div>
+    					<div>{{ data && data.toUpGoodsNum }}</div>
     					待上架
     				</div>
     				<div class="artred">
-    					<div>100</div>
-    					待上架
+    					<div>{{ data && data.upGoodsNum }}</div>
+    					已上架
     				</div>
     				<div class="artred">
-    					<div>100</div>
-    					待上架
+    					<div>{{ data && data.downGoodsNum }}</div>
+    					已下架
     				</div>
     				<div class="artred">
-    					<div>100</div>
-    					待上架
+    					<div>{{ data && data.allGoodsNum }}</div>
+    					全部商品
     				</div>
     			</div>
     	</div>
@@ -87,28 +87,85 @@
     		<div class="arttitle">用户总览</div>
     			<div class="artitems">
     				<div class="artred">
-    					<div>100</div>
-    					待上架
+    					<div>{{ data && data.todayNewMemberNum}}</div>
+    					今日新增
+    				</div>
+    				<div class="artred">
+    					<div>{{ data && data.yesterdayNewMemberNum }}</div>
+    					昨日新增
+    				</div>
+    				<div class="artred">
+    					<div>{{ data && data.monthNewMemberNum }}</div>
+    					本月新增
+    				</div>
+    				<div class="artred">
+    					<div>{{ data && data.memberNum }}</div>
+    					会员总数
     				</div>
     			</div>
     	</div>
     </div>
+    <el-dialog title="历史汇率" :visible.sync="dialogTableVisible" width="60%">
+    	<list ref="detailCompon"></list>
+		</el-dialog>
     
   </el-card>
 </template>
 
 <script>
-    
+    import { gethomepage } from '@/api/api'
+    import filter from '@/utils/filter'
+    import list from "./list"
     export default {
         data () {
             return {
+            	data:null,
+            	timer:null,
+            	dialogTableVisible: false,
             }
         },
-        components: {
-        },
+       	components: {
+		    	list,
+		  	},
         watch:{
 				},
+				created(){
+					this.getdata();
+				  this.timer = setInterval(()=>{
+				  	var currentTime = filter.dateToStr().substr(11,2);
+				  	if(currentTime == "06"){
+				  		this.getdata();
+				  	}
+//				  	 console.log(currentTime);
+				  },1000)
+				},
+				mounted(){
+					this.getdata();
+				},
+				beforeDestroy() {
+				    if(this.timer) {
+				        clearInterval(this.timer);
+				    }
+				},
         methods: {
+        	artgethistoryRate(){
+        		this.dialogTableVisible = true;
+        		this.$nextTick(()=>{
+							this.$refs.detailCompon.init();
+						})
+        	},
+        	artrefresh(){
+        		this.getdata();
+        	},
+        	getdata(){
+        		gethomepage().then((res)=>{
+        			if(res && res.code == 200){
+        				this.data = res.data;
+        			}
+        		}).catch(()=>{
+        			
+        		})
+        	},
         },
     }
 </script>
@@ -118,7 +175,9 @@
 		padding-left: 20px;
 		border: 1px solid #ccc;
 	}
-	
+	.artpointer{
+		cursor: pointer;
+	}
 	
 	.artfirst{
 		height: 50px;

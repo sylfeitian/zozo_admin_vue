@@ -3,6 +3,14 @@ import http from '@/utils/request'
 
 let base = "/admin-api";
 let requestType = { headers: { 'content-type': 'application/x-www-form-urlencoded' } };
+//首页  
+export const gethomepage = params => { return http.get(`${base}/homepage`, params).then(res => res.data); };
+//广告--------------------------------------------------------------------------------------------------------------
+//添加禁用词   
+export const addadvertisingban = params => { return http.post(`${base}/advertisingban/add`, params).then(res => res.data); };
+
+
+
 // 上传图片--------------------------------------------------------------------------------------------------------------------
 //Base64上传图片
 export const uploadPicBase64 = params => { return http.post(`${base}/picture/base64`, params).then(res => res.data); };
@@ -15,7 +23,7 @@ export const gettagdatalist = params => { return http.get(`${base}/tag/page`, pa
 //分类条件编辑
 export const uploadtag = params => { return http.put(`${base}/tag?name=${params.name}&id=${params.id}`, params).then(res => res.data); };
 //日本尺码管理关联  
-export const uploadsizejptag = params => { return http.put(`${base}/sizejp?cnSizeId=${params.cnSizeId}2&id=${params.id}1&name=${params.name}`, params).then(res => res.data); };
+export const uploadsizejptag = params => { return http.put(`${base}/sizejp?cnSizeId=${params.cnSizeId}&id=${params.id}&name=${params.name}`, params).then(res => res.data); };
 //获取中国尺码  
 export const getsizecn = params => { return http.get(`${base}/sizejp/getsizecn`, params).then(res => res.data); };
 
