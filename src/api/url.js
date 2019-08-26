@@ -1,24 +1,43 @@
 // import http from '@/utils/http'
 /**
  * 这里是查询的url，用了mixin里面封装的查询
- * 
+ *
  */
 
 let base ="/admin-api";
+//首页历史汇率---------------------------------------------------------------------------------------
+export const gethistoryRate = `${base}/homepage/historyRate`;
+
+//广告-------------------------------------------------------------------------------------------------------
+//广告分页
+export const getadvertisingban = `${base}/advertisingban/page`;
+//广告删除
+export const advertisingban = `${base}/advertisingban`;
+
+
+//系统-------------------------------------------------------------------------------------------------
+//黑名名单
+export const getblacklist = `${base}/blacklist/page`;
+//黑名单删除
+export const delblacklist = `${base}/blacklist`;
+
+
 
 //内容---------------------------------------------------------------------------------------
 //搭配分页
-export const getlookpage = `${base}/look/page`; 
+export const getlookpage = `${base}/look/page`;
+//搭配集合分页
+export const getlookfolderpage = `${base}/look/folder/page`;
 
 //基础数据--------------------------------------------------------------------------------------------
 //中国尺码分页
-export const getsizeCndata = `${base}/sizeCn/page`;    
+export const getsizeCndata = `${base}/sizeCn/page`;
 //中国尺码删除
 export const delsizeCndata = `${base}/sizeCn`;
 //中国尺码分页
-export const getshoplabel = `${base}/shoplabel/page`;    
+export const getshoplabel = `${base}/shoplabel/page`;
 //日本尺码分页      
-export const getsizeJPdata = `${base}/sizejp/page`;  
+export const getsizeJPdata = `${base}/sizejp/page`;
 
 
 
@@ -26,12 +45,12 @@ export const getsizeJPdata = `${base}/sizejp/page`;
 //出库单管理
 export const getstockdata = `${base}/wareHouse/odo/list/page`;
 //当前仓库的商品
-export const getallstock  = `${base}/wareHouse/odoGoods/stock/page`;  
+export const getallstock  = `${base}/wareHouse/odoGoods/stock/page`;
 //保存添加的商品
 export const addstock  = `${base}/wareHouse/odoGoods/add`;
 
 // 商品管理--------------------------------------------------------------------------------------------------------------------
- // 商品列表
+// 商品列表
 export const goodsPageUrl = `${base}/goods/page`;
 // 删除商品
 //export const deleteGoodsUrl = `${base}/goods`;
