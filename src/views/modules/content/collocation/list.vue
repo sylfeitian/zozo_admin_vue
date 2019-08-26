@@ -52,7 +52,7 @@
             <el-table-column prop="imageUrl" label="封面图片" width="150" align="center">
                 <template slot-scope="scope">
                     <img
-                        :src="scope.row.imageUrl"
+                        :src="scope.row.imageUrl320"
                         alt=""
                         style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                     >
@@ -64,19 +64,19 @@
             		{{scope.row.itemList && scope.row.itemList.length || 0}}
             	</template>
             </el-table-column>
-            <el-table-column prop="state" width="90" label="发布状态" align="center">
+            <el-table-column prop="state" width="120" label="发布状态" align="center">
             	<template slot-scope="scope">
                     <el-tag v-if="scope.row.state == 1" type="success">已发布</el-tag>
 					<el-tag v-else type="info">取消发布</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column width="90" prop="jpPublishState"  label="日本发布状态" align="center">
+            <el-table-column width="120" prop="jpPublishState"  label="日本发布状态" align="center">
             	<template slot-scope="scope">
                     <el-tag v-if="scope.row.jpPublishState == 1" type="success">已发布</el-tag>
 					<el-tag v-else type="info">取消发布</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column prop="'没有'" label="日本发布时间" width="95" align="center"></el-table-column>
+            <el-table-column prop="publishTimeJp" label="日本发布时间" width="120" align="center"></el-table-column>
             <el-table-column prop="publishTime" label="发布时间" width="95" align="center"></el-table-column>
             <el-table-column prop="favNumJp" label="收藏量" width="80" align="center">
             	<template slot-scope="scope">
