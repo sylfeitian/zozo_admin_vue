@@ -59,46 +59,31 @@
         },
         props:["idJp"],
         methods: {
-            init (row) {
+            init () {
                 this.visible = true;
-                this.row = row;
-                console.log(this.idJp);
-                this.backScan();
                 this.$nextTick(() => {
                     // this.$refs['addForm'].resetFields();
                     // this.getApplyPullList();
+                    this.backScan();
                 })
             },
             // 编辑回显
             backScan(){
                 var obj  = {
-                    idJp:this.row.idJp,
-                    goodsCsIdJp:this.row.goodsCsIdJp,
-                    barcodes:this.row.barcodes,
-                    goodsName:this.row.goodsName,
-                    goodsNameGlo:this.row.goodsNameGlo,
-                    brandName:this.row.brandName,
-                    spe:this.row.spe,
-                    declarationContractUnit:this.row.declarationContractUnit,
-                    hsCode:this.row.hsCode,
-                    generateBusinessName:this.row.generateBusinessName,
-                    supplier:this.row.supplier,
-                    madeIn:this.row.madeIn,
-                    sellPrice:this.row.sellPrice,
-                    grossWeight:this.row.grossWeight,
-                    netWeight:this.row.netWeight,
-                    safeDays:this.row.safeDays,
-                    imageUrl:this.row.imageUrl,
-                    shopStoreName:this.row.shopStoreName,
-                    storeName:this.row.storeName,
-                    storeContactInformation:this.row.storeContactInformation,
+                    spuid:this.idJp,
                 }
+                this.dataListLoading = true;
                 backScanRegister(obj).then((res)=>{
+                    this.dataListLoading = false;
                     if(res.code == 200){
-                        Object.assign(this.dataList,res.data);
+                        this.dataList = res.data;
 
                     }else{
-
+                        this.$message({
+                            message:res.msg,
+                            type: 'error',
+                            duration: 1500,
+                        })
                     }
                 })
             },

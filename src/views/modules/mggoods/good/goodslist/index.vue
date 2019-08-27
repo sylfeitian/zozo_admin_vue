@@ -64,9 +64,12 @@
                 this.detailVisible = true;
                 this.operationallogVisible = false;
             },
-            editList () {
+            editList (row) {
                 this.mainVisible = false;
                 this.editVisible = true;
+                this.$nextTick(()=>{
+                    this.$refs.editCompon.init(row);
+                })
             },
             showList () {
                 this.mainVisible = true;
