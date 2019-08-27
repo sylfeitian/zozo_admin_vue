@@ -67,7 +67,7 @@
                         <el-table-column prop="sizeName" label="尺码" align="center"></el-table-column>
                         <el-table-column prop="specId" label="尺码信息" align="center">
                             <template slot-scope="scope">
-                                <div @click="detShowChange(scope.row)" style="color: #2260D2;cursor:pointer;">
+                                <div @click="detShowChange(this.dataForm.skuVOList.sizeId)" style="color: #2260D2;cursor:pointer;">
                                     查看
                                 </div>
                             </template>
@@ -93,7 +93,11 @@
                     </el-table>
                 </el-form-item>
                 <el-form-item label="分类条件：">
-                    <Table class="inforRight" style="display: inline-block;" :tableData="tableData" :tableStyle="{ width:'600px' }"></Table>
+                    <el-row v-for="(item,index) in dataForm.tags" :key="index" class="info" style="width: 500px;">
+                        <el-col :span="12"><div class="grid-content"></div></el-col>
+                        <el-col :span="12"><div class="grid-content"></div></el-col>
+                    </el-row>
+<!--                    <Table class="inforRight" style="display: inline-block;" :tableData="tableData" :tableStyle="{ width:'600px' }"></Table>-->
                 </el-form-item>
                 <el-form-item label="商品图片：">
                     <template slot-scope="scope">
@@ -118,11 +122,14 @@
         <addEditData :idJp="dataForm.idJp" v-if="addEditDataVisible" ref="addEditData" @searchDataList="getDataList"></addEditData>
         <!-- 操作日志 -->
         <operationallog :idJp="dataForm.idJp" v-if="operationallogVisible" ref="operationallogCompon" @searchDataList="getDataList" ></operationallog>
+        <!-- 尺码信息 -->
+        <sizeData v-if="sizeDataVisible" ref="sizeData" @searchDataList="getDataList"></sizeData>
     </div>
 </template>
 
 <script>
     import addEditData from './recordList'
+    import sizeData from './model-size'
     import Bread from "@/components/bread";
     import Table from "@/components/table";
     import quillEditorImg from "@/components/quillEditor"
@@ -150,7 +157,9 @@
                 data: {}, //总数据
                 // skuVOList: [],
                 operationallogVisible:false,
-                mainVisible: true
+                sizeDataVisible: false,
+                mainVisible: true,
+                tags: []
             }
         },
         components: {
@@ -159,6 +168,7 @@
             quillEditorImg,
             addEditData,
             operationallog,
+            sizeData
         },
         created(){
 
@@ -218,9 +228,17 @@
                 this.idJp = this.dataForm.idJp;
                 console.log(this.dataForm.idJp)
             },
+            detShowChange () {
+                this.sizeDataVisible =  true;
+                console.log(this.dataForm);
+                this.$nextTick(() => {
+                    this.$refs.sizeData.init();
+                })
+            }
             // operational () {
             //     this.$emit("operational",this.dataForm.idJp)
             // },
+
         }
     }
 </script>
@@ -250,5 +268,14 @@
     }
     .grayLine {
         border-bottom: 0!important;
+    }
+    .grid-content {
+        border: 1px solid #ebeef5;
+        height: 54px;
+        line-height: 54px;
+        text-align: center
+    }
+    .info {
+        margin-left: 100px;
     }
 </style>
