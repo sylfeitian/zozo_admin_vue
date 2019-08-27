@@ -8,6 +8,10 @@ export const gethomepage = params => { return http.get(`${base}/homepage`, param
 //广告--------------------------------------------------------------------------------------------------------------
 //添加禁用词   
 export const addadvertisingban = params => { return http.post(`${base}/advertisingban/add`, params).then(res => res.data); };
+//编辑禁用词   
+export const updateadvertisingban = params => { return http.put(`${base}/advertisingban/update`, params).then(res => res.data); };
+//策略
+export const addsetting = params => { return http.post(`${base}/strategy/setting/add`, params).then(res => res.data); };
 
 
 

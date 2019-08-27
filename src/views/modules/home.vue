@@ -13,28 +13,28 @@
     	 	 <img src="@/assets/img/avatar.png" alt="" />
     	 	 <div class="artcon">
     	 	 	<div>今日订单总数</div>
-    	 	 	<div>{{ data && data.todayOrdersNum}}</div>
+    	 	 	<div>{{ data && data.todayOrdersNum || 0}}</div>
     	 	 </div>
     	 </div>
     	 <div class="artborder artsecoundson">
     	 	 <img src="@/assets/img/avatar.png" alt="" />
     	 	 <div class="artcon">
     	 	 	<div>今日销售总数</div>
-    	 	 	<div>{{ data && data.todayAmount}}</div>
+    	 	 	<div>{{ data && data.todayAmount || 0}}</div>
     	 	 </div>
     	 </div>
     	 <div class="artborder artsecoundson">
     	 	 <img src="@/assets/img/avatar.png" alt="" />
     	 	 <div class="artcon">
     	 	 	<div>昨日销售总数</div>
-    	 	 	<div>{{ data && data.yesterdayAmount}}</div>
+    	 	 	<div>{{ data && data.yesterdayAmount || 0}}</div>
     	 	 </div>
     	 </div>
     	 <div class="artborder artsecoundson">
     	 	 <img src="@/assets/img/avatar.png" alt="" />
     	 	 <div class="artcon">
     	 	 	<div>近7天销售总数</div>
-    	 	 	<div>{{ data && data.sevenAmount}}</div>
+    	 	 	<div>{{ data && data.sevenAmount || 0}}</div>
     	 	 </div>
     	 </div>
     </div>
@@ -44,18 +44,18 @@
     	<div class="artcon">
 	    	<div class="artitem">
 	    		<div class="artitems">
-	    			待处理订单<span>（<em>{{ data && data.toProcessOrdersNum  }}</em>）</span>
+	    			待处理订单<span>（<em>{{ data && data.toProcessOrdersNum || 0  }}</em>）</span>
 	    		</div>
 	    		<div class="artitems">
-	    			待备案商品<span>（<em>{{ data && data.toRecordGoodsNum }}</em>）</span>
+	    			待备案商品<span>（<em>{{ data && data.toRecordGoodsNum || 0 }}</em>）</span>
 	    		</div>
 	    	</div>
 	    	<div class="artitem">
 	    		<div class="artitems">
-	    			待付款订单<span>（<em>{{ data && data.toPayOrdersNum }}</em>）</span>
+	    			待付款订单<span>（<em>{{ data && data.toPayOrdersNum || 0}}</em>）</span>
 	    		</div>
 	    		<div class="artitems">
-	    			待发货订单<span>（<em>{{ data && data.toSendOrdersNum  }}</em>）</span>
+	    			待发货订单<span>（<em>{{ data && data.toSendOrdersNum || 0  }}</em>）</span>
 	    		</div>
 	    	</div>
     	</div>
@@ -66,19 +66,19 @@
     		<div class="arttitle">商品总览</div>
     			<div class="artitems">
     				<div class="artred">
-    					<div>{{ data && data.toUpGoodsNum }}</div>
+    					<div>{{ data && data.toUpGoodsNum || 0 }}</div>
     					待上架
     				</div>
     				<div class="artred">
-    					<div>{{ data && data.upGoodsNum }}</div>
+    					<div>{{ data && data.upGoodsNum || 0 }}</div>
     					已上架
     				</div>
     				<div class="artred">
-    					<div>{{ data && data.downGoodsNum }}</div>
+    					<div>{{ data && data.downGoodsNum || 0 }}</div>
     					已下架
     				</div>
     				<div class="artred">
-    					<div>{{ data && data.allGoodsNum }}</div>
+    					<div>{{ data && data.allGoodsNum || 0 }}</div>
     					全部商品
     				</div>
     			</div>
@@ -87,19 +87,19 @@
     		<div class="arttitle">用户总览</div>
     			<div class="artitems">
     				<div class="artred">
-    					<div>{{ data && data.todayNewMemberNum}}</div>
+    					<div>{{ data && data.todayNewMemberNum || 0}}</div>
     					今日新增
     				</div>
     				<div class="artred">
-    					<div>{{ data && data.yesterdayNewMemberNum }}</div>
+    					<div>{{ data && data.yesterdayNewMemberNum || 0 }}</div>
     					昨日新增
     				</div>
     				<div class="artred">
-    					<div>{{ data && data.monthNewMemberNum }}</div>
+    					<div>{{ data && data.monthNewMemberNum || 0 }}</div>
     					本月新增
     				</div>
     				<div class="artred">
-    					<div>{{ data && data.memberNum }}</div>
+    					<div>{{ data && data.memberNum || 0 }}</div>
     					会员总数
     				</div>
     			</div>

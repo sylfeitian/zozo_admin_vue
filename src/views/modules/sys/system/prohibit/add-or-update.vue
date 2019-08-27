@@ -15,7 +15,7 @@
                 label-width="120px"
         >
             <el-form-item label="禁用词名称：" prop="name" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.name" auto-complete="off"></el-input>
+                <el-input v-model="dataForm && dataForm.name" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
                 <el-button  @click="dataFormCancel()">取消</el-button>
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-	import { addadvertisingban } from '@/api/api'
+	import { addadvertisingban, updateadvertisingban } from '@/api/api'
     export default {
         data () {
             return {
@@ -39,6 +39,7 @@
                 optionsApplication: [],
                 optionsRight: [],
                 title:'',
+                adddata: true,
                 formLabelWidth: '120px',
                 dataRule:{
 		          name: [
@@ -50,19 +51,24 @@
         },
         components:{
         },
-        computed:{},
-        mounted(){},
+        computed:{
+        	
+        },
+        mounted(){
+        },
         methods: {
             init (row) {
+            	console.log(row);
                 this.visible = true;
-                this.dataForm.name = '';
                 this.loading = false;
-                console.log(row)
                 if(row){
                     this.title="编辑禁用词语";
+                    this.dataForm = row;
+                    this.adddata = false;
                 }else{
                     this.title="添加禁用词语"
-					this.dataForm = row;
+                    this.dataForm.name = "";
+                    this.adddata = true;
                 }
             },
             // 提交
@@ -71,7 +77,11 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.loading = true;
-                        addadvertisingban(this.dataForm).then((res) => {
+                        var fn = addadvertisingban;
+                        if(!this.adddata){
+                        	fn = updateadvertisingban;
+                        }
+                        fn(this.dataForm).then((res) => {
                             this.loading = false;
                             // alert(JSON.stringify(res));
                             let status = null;
@@ -90,7 +100,8 @@
                                 type: status,
                                 duration: 1500
                             })
-                        })
+                        })  
+                        
                     } else {
                         //console.log('error 添加失败!!');
                         return false;
