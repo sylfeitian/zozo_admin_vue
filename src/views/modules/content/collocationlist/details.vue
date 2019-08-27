@@ -28,7 +28,7 @@
                     <span>{{dataForm.totalViewsNum}}</span>
                 </el-form-item>
                 <el-form-item label="发布状态：">
-                    <span>{{dataForm.sate == 0?"未发布":dataForm.sate == 1?"已发布":""}}</span>
+                    <span>{{dataForm.jpPublishState == 0?"未发布":dataForm.jpPublishState == 1?"已发布":dataForm.jpPublishState == 2?"取消发布 ":""}}</span>
                 </el-form-item>
                 <el-form-item label="主图：" style="height: 100%!important;">
                     <template slot-scope="scope">
@@ -83,7 +83,7 @@
             >
                 <p class="title">中文</p>
                 <el-form-item label="搭配集合：">
-                    <span>{{dataForm.id}}</span>
+                    <span>{{dataForm.idJp}}</span>
                 </el-form-item>
                 <el-form-item label="用户昵称：">
                     <span>{{dataForm.userNickname}}</span>
@@ -101,7 +101,7 @@
                     <span>{{dataForm.totalViewsNum}}</span>
                 </el-form-item>
                 <el-form-item label="发布状态：">
-                    <span>{{dataForm.sate == 0?"未发布":dataForm.sate == 1?"已发布":""}}</span>
+                    <span>{{dataForm.sate == 0?"未发布":dataForm.sate == 1?"已发布":dataForm.sate == 2?"取消发布 ":""}}</span>
                 </el-form-item>
                 <el-form-item label="主图：" style="height: 100%!important;">
                     <template slot-scope="scope">
@@ -171,7 +171,6 @@
         data () {
             return {
                 breaddata: [ "内容管理", "搭配集合管理","搭配集合详情"],
-                dataList: [],
                 dataListLoading: false,
                 dataForm: {}
             }

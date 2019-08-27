@@ -42,9 +42,9 @@
         </el-form>
         <el-radio-group v-model="activeName" @change="handleClick">
             <el-radio-button label="">全部</el-radio-button>
-            <el-radio-button label="upper">待发布</el-radio-button>
-            <el-radio-button label="lower">已发布</el-radio-button>
-            <el-radio-button label="not">已取消发布</el-radio-button>
+            <el-radio-button label="0">待发布</el-radio-button>
+            <el-radio-button label="1">已发布</el-radio-button>
+            <el-radio-button label="2">已取消发布</el-radio-button>
         </el-radio-group>
         <el-table
                 width="100%"
@@ -177,15 +177,15 @@
         },
         methods: {
 
-            showDetail(index,row){
+            showDetail(row){
                 this.$emit("showDetail",row);
             },
             addOrAdit(id){
                 this.$emit("addOrAdit",id);
             },
             getData() {
-                this.dataForm.publishStartTimeJp = this.timeArr && this.timeArr[0];
-                this.dataForm.publishEndTimeJp = this.timeArr && this.timeArr[1];
+                this.dataForm.publishStartTimeJp =  this.timeArr[0];
+                this.dataForm.publishEndTimeJp = this.timeArr[1];
                 this.dataForm.publishStartTime = this.timeArr2[0];
                 this.dataForm.publishEndTime = this.timeArr2[1];
             },
@@ -199,21 +199,20 @@
                 this.dataForm.publishStartTimeJp = "";
                 this.dataForm.publishEndTimeJp = "";
                 this.dataForm.startPaymentTime = "";
-                this.dataForm.publishStartTime = "";
+                this.dataForm.publishEndTime = "";
                 this.getDataList();
             },
             handleClick(tab,val) {
                 if(tab== ""){
-                    this.dataForm.goodsShow = ""
-                }else if(tab== "upper"){
-                    this.dataForm.goodsShow = "1"
-                }else if(tab== "lower"){
-                    this.dataForm.goodsShow = "0"
-                }else if(tab== "not"){
-                    this.dataForm.goodsShow = "2"
+                    this.dataForm.sate = null
+                }else if(tab== "1"){
+                    this.dataForm.sate = "1"
+                }else if(tab== "0"){
+                    this.dataForm.sate = "0"
+                } else if(tab== "2"){
+                    this.dataForm.sate = "2"
                 }
                 this.changeVal = val;
-                console.log(this.changeVal)
                 this.getDataList();
             },
             // 新建和编辑

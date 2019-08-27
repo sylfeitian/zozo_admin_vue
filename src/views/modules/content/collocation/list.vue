@@ -157,8 +157,8 @@
                 startPaymentTime: "",
                 isIndeterminate: false,
                 checkAll: false,
-                valuetime1:'',   //发布时间
-                valuetime2:'',   //日本发布时间
+                valuetime1:'',   //日本发布时间
+                valuetime2:'',   //发布时间
                 currentIndex:'',
             }
         },
@@ -166,13 +166,13 @@
             Bread
         },
         watch:{
-			valuetime1(val){
+			valuetime2(val){
 		      if(!val){
 		      	this.dataForm.publishStartTime = '';
 		    	this.dataForm.publishEndTime = '';
 		      }
 		    },
-		    valuetime2(val){
+		    valuetime1(val){
 		      if(!val){
 		      	this.dataForm.publishStartTimeJp = '';
 		    	this.dataForm.publishEndTimeJp = '';
@@ -193,22 +193,15 @@
                 this.$emit("addOrAdit",id);
             },
             //发布开始结束时间
-		    acttime1(){
-		    	this.dataForm.publishStartTime = this.valuetime1[0];
+		    acttime2(){
+		    	this.dataForm.publishStartTime = this.valuetime2[0];
 		    	this.dataForm.publishEndTime = this.valuetime2[1];
 		    },
 		    //日本发布开始结束时间
-		    acttime2(){
+		    acttime1(){
 		    	this.dataForm.publishStartTimeJp = this.valuetime1[0];
-		    	this.dataForm.publishEndTimeJp = this.valuetime2[1];
+		    	this.dataForm.publishEndTimeJp = this.valuetime1[1];
 		    },
-            getData() {
-                this.dataForm.startCreateDate = this.timeArr && this.timeArr[0];
-                this.dataForm.endCreateDate = this.timeArr && this.timeArr[1];
-                this.dataForm.startPaymentTime = this.timeArr2[0];
-                this.dataForm.endPaymentTime = this.timeArr2[1];
-                this.getDataList();
-            },
             reset(formName) {
                 this.dataForm.id = null;
                 this.dataForm.state = null;
@@ -228,7 +221,6 @@
                     this.dataForm.state = "0"
                 }
                 this.changeVal = val;
-                console.log(this.changeVal)
                 this.getDataList();
             },
             forbitHandle(index,row){

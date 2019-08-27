@@ -28,6 +28,10 @@ export const delblacklist = `${base}/blacklist`;
 export const getlookpage = `${base}/look/page`;
 //搭配集合分页
 export const getlookfolderpage = `${base}/look/folder/page`;
+//时尚纪实分页
+export const getlookfashionpage = `${base}/fashion/page`;
+//店铺新闻分页
+export const getStoreNewspage = `${base}/store/news/page`;
 
 //基础数据--------------------------------------------------------------------------------------------
 //中国尺码分页
