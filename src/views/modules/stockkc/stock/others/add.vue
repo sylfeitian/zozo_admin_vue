@@ -117,6 +117,7 @@
         					message:'保存成功',
         					type:'success'
         				})
+        				this.dataList = [];
         			}else{
         				this.$message('服务器内部错误')
         			}

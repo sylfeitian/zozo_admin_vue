@@ -24,7 +24,7 @@
                 <el-input v-model="dataForm.name" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
-                <el-button type="primary" @click="dataFormSubmit()"
+                <el-button type="primary" @click="dataFormSubmit('addForm')"
                            :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
                 <el-button @click="dataFormCancel()">取消</el-button>
             </el-form-item>
@@ -33,6 +33,7 @@
 </template>
 
 <script>
+    import { editsizejptag } from '@/api/api'
     export default {
         name: "model-add-edit-data",
         data () {
@@ -91,19 +92,12 @@
             // },
             // 提交
             dataFormSubmit(formName){
-                // alert([this.dataForm.name,this.dataForm.domainAddress]);
-                this.$refs[formName].validate((valid) => {
+                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.loading = true;
-                        var obj = {
-                            "japanSize":  this.dataForm.japanSize,//日本尺码名称 ,
-                            "sizeName":  this.dataForm.sizeName,//尺码名称
-                        }
-                        if(this.row) obj.id = this.row.id
-                        //var fn = this.row?updateBrand:addBrand;
-                        fn(obj).then((res) => {
+                        console.log(this.dataForm);
+                        editsizejptag(this.dataForm).then((res) => {
                             this.loading = false;
-                            // alert(JSON.stringify(res));
                             let status = null;
                             if(res.code == "200"){
                                 status = "success";

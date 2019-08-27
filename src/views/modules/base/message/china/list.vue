@@ -3,8 +3,7 @@
     <Bread :breaddata="breaddata"></Bread>
     <el-form style="margin-top:20px;">
       <el-form-item>
-        <el-button type="primary" @click="addOrEditHandle()">新增展示分类</el-button>
-        <el-button type="danger"  plain @click="deletRowsFn()" >批量删除</el-button>
+        <el-button type="primary" @click="addRowFn()">新增展示分类</el-button>
       </el-form-item>
     </el-form>
     <!-- <el-table :data="table" empty-text style="width: 100%">
@@ -18,6 +17,7 @@
           :label="'name'"
           :mate="treeConfig" 
           ref="MyTree" 
+          @act-click="actshowFlag"
           @check-change="checkChange"
           @node-click="nodeClick"
           @current-change="currentChange">
@@ -121,11 +121,13 @@ import cloneDeep from 'lodash/cloneDeep'
 import mixinViewModule from "@/mixins/view-module";
 import TableTreeColumn from "@/components/table-tree-column";
 
+
 import { categoryUrl } from "@/api/url";
 import { deleteGoodsclasscustomUrl } from "@/api/url";
 
 import { goodsclasscustomUpdateShow } from '@/api/api'
 import { getdatalist,updataCategoryCn,uploadPicBase64} from '@/api/api'
+import { deleteCategoryCn,recommendCategoryCn,showCategoryCn } from '@/api/api'  //删除分类  设为推荐  是否显示
 import imgCropper from "@/components/model-photo-cropper";
 
 // import { backstageList,goodsclassPage } from "@/api/api";
@@ -230,22 +232,25 @@ export default {
               {    
                   type: "",//同el-button 的 type
                   prop: "新增下级",  //支持函数返回html 和 文本字符串
-                  action: this.addRowFn //按钮点击触发的函数 回调函数是该行的row
+                  action: this.addRowFn, //按钮点击触发的函数 回调函数是该行的row
+                  className: "artadd"
+              },{    
+                  type: "",//同el-button 的 type
+                  prop: "设为推荐",  //支持函数返回html 和 文本字符串
+                  action: this.artRecommend, //按钮点击触发的函数 回调函数是该行的row
+                  className: "arttuijian"
               },
               {
                   type: "",//同el-button 的 type
                   prop:  "编辑",  //支持函数返回html 和 文本字符串
-                  action: this.eidtRowFn //按钮点击触发的函数 回调函数是该行的row
+                  action: this.eidtRowFn, //按钮点击触发的函数 回调函数是该行的row
+                  className: "artedit"
               },{
                   type: "",//同el-button 的 type
                   prop: "删除",  //支持函数返回html 和 文本字符串
-                  action: this.deleteRowFn //按钮点击触发的函数 回调函数是该行的row
-              },{
-                  type: "",//同el-button 的 type
-                  prop: this.judgeStatusFn,  //支持函数返回html 和 文本字符串,
-                  action: this.forbitFn, //按钮点击触发的函数 回调函数是该行的row
-                  className: "forbitClass"
-              }
+                  action: this.deleteRowFn, //按钮点击触发的函数 回调函数是该行的row
+                  className: "artdel"
+              },
           ],
           //tree 的数据来源
           rows: [],
@@ -374,21 +379,29 @@ export default {
     // 新增下级
    addRowFn(row){
    		this.reset();     //清空弹窗内容
-      row.type="addNext"
-      this.dialogTableVisible = true;
-      if(row.label){
+   		this.dialogTableVisible = true;
+   		if(row){
+      	if(row.grade == 2){
+	   			this.$message('二级分类不可以新增下一级');
+	   			return;
+	   		}
+	      row.type="addNext"
+	      if(row.label){
+	      	this.dataForm.parentname = row.label;
+	      	console.log(this.dataForm.parentname)
+	      }
+	      updataCategoryCn().then(()=>{
+	      	
+	      })
+      }else{
       	
-      	this.dataForm.parentname = row.label;
-      	console.log(this.dataForm.parentname)
       }
-      updataCategoryCn().then(()=>{
-      	
-      })
-      
-      
-      
-      
+   		
    }, 
+   //是否显示
+   stopPropagation(row){
+   	console.log("是否显示" + row);
+   },
      // 编辑回调
     eidtRowFn(row){
       console.log(row);
@@ -397,11 +410,39 @@ export default {
     },
     // 删除回调
     deleteRowFn(row){
-        console.log(row);
+        console.log(row);   
+        if(row.children && row.children.length != 0){
+        	this.$message("请先删除子级分类，再删除父级分类");
+        	return;
+        }
         this.dataListSelections = [row]
-        this.deleteHandle("",false).then((res)=>{
+       	deleteCategoryCn(row,false).then((res)=>{
           console.log(res);
-            if(res=="ok"){this.getTree();}
+          if(res.code == 200){
+          	this.$message.success("删除成功");
+          	this.getTree();
+          }else{
+          	this.$message("服务器错误")
+          }
+        });
+    },
+    //设为推荐
+    artRecommend(row){  
+    	console.log(row);   
+    	alert(row.showFlag);
+       	recommendCategoryCn(row,false).then((res)=>{
+          console.log(res);
+          if(res.code == 200){
+          	if(row.showFlag == 1){
+          		this.$message.success("设为推荐成功");
+          	}else{
+          		this.$message("取消推荐成功");
+          	}
+          	
+          	this.getTree();
+          }else{
+          	this.$message("服务器错误")
+          }
         });
     },
     judgeStatusFn(data){
@@ -475,9 +516,22 @@ export default {
       console.log("node-click");
       console.log(event, list);
     },
+    //是否显示
+    actshowFlag(data){
+    	showCategoryCn(data,false).then((res)=>{
+          console.log(res);
+          if(res.code == 200){
+          	this.$message.success("设为显示成功")
+          	this.getTree();
+          }else{
+          	this.$message("服务器错误")
+          }
+        });
+    },
     currentChange(list){
       console.log("current-change");
       console.log(list);
+      
     }
 
   }
