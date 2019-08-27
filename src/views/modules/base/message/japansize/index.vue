@@ -42,7 +42,7 @@
         </el-pagination>
         <!-- 弹窗, 新建 -->
         <addEditData  v-if="addEditDataVisible" ref="addEditData" @searchDataList="getDataList"></addEditData>
-        <!-- 弹窗, 新建 -->
+        <!-- 弹窗, 修改关联 -->
         <addEdit  v-if="addEditisshow" ref="addEditref" @searchDataList="getDataList"></addEdit>
     </div>
 </template>
