@@ -80,8 +80,5 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "@/element-ui/theme-variables.scss";
-    .grayLine{
-        border-bottom: 0!important;
-    }
+    
 </style>
