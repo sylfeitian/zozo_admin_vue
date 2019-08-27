@@ -6,18 +6,18 @@
                 <el-input v-model="dataForm.id" ></el-input>
             </el-form-item>
             <el-form-item label="标题：">
-                <el-input v-model="dataForm.id" ></el-input>
+                <el-input v-model="dataForm.title" ></el-input>
             </el-form-item>
             <el-form-item label="店铺：">
-                <el-input v-model="dataForm.name" ></el-input>
+                <el-input v-model="dataForm.storeName" ></el-input>
             </el-form-item>
-            <el-form-item label="发布状态：" prop="paymentStatus">
-                <el-select v-model="dataForm.paymentStatus" placeholder="请选择">
-                    <el-option label="全部" value=""></el-option>
-                    <el-option label="已取消发布" value="0"></el-option>
-                    <el-option label="已发布" value="1"></el-option>
-                </el-select>
-            </el-form-item>
+            <!--<el-form-item label="发布状态：" prop="paymentStatus">-->
+                <!--<el-select v-model="dataForm.paymentStatus" placeholder="请选择">-->
+                    <!--<el-option label="全部" value=""></el-option>-->
+                    <!--<el-option label="已取消发布" value="0"></el-option>-->
+                    <!--<el-option label="已发布" value="1"></el-option>-->
+                <!--</el-select>-->
+            <!--</el-form-item>-->
             <el-form-item label="日本发布时间：">
                 <el-date-picker
                         v-model="timeArr"
@@ -27,6 +27,7 @@
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
                         :default-time="['00:00:00', '23:59:59']"
+                        @blur='getData'
                 ></el-date-picker>
             </el-form-item>
             <el-form-item label="发布时间：">
@@ -38,18 +39,19 @@
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
                         :default-time="['00:00:00', '23:59:59']"
+                        @blur='getData'
                 ></el-date-picker>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="addOrAdit()">搜索</el-button>
-                <el-button  class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
+                <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
+                <el-button  class="btn" type="primary" plain @click="reset()" >重置条件</el-button>
             </el-form-item>
         </el-form>
         <el-radio-group v-model="activeName" @change="handleClick">
             <el-radio-button label="">全部</el-radio-button>
-            <el-radio-button label="upper">待发布</el-radio-button>
-            <el-radio-button label="lower">已发布</el-radio-button>
-            <el-radio-button label="not">已取消发布</el-radio-button>
+            <el-radio-button label="0">待发布</el-radio-button>
+            <el-radio-button label="1">已发布</el-radio-button>
+            <el-radio-button label="2">已取消发布</el-radio-button>
         </el-radio-group>
         <el-table
                 width="100%"
@@ -59,29 +61,44 @@
                 style="width: 100%;margin-top:20px;"
         >
             <el-table-column type="selection" width="70"></el-table-column>
-            <el-table-column prop="id" label="编号" align="center"></el-table-column>
-            <el-table-column prop="memberAvatar" label="封面图片" align="center">
+            <el-table-column prop="idJp" label="ID" align="center"></el-table-column>
+            <el-table-column prop="imageUrl" label="封面图片" align="center">
                 <template slot-scope="scope">
                     <img
-                            :src="$imgDomain + scope.row.memberAvatar"
+                            :src="scope.row.imageUrl"
                             alt=""
                             style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                     >
                 </template>
             </el-table-column>
-            <el-table-column prop="name" label="标题" align="center"></el-table-column>
-            <el-table-column prop="japanDesc" label="店铺" align="center"></el-table-column>
-            <el-table-column prop="desc" label="相关商品" align="center"></el-table-column>
-            <el-table-column prop="japanName" label="发布状态" align="center"></el-table-column>
-            <el-table-column prop="name" label="日本发布状态" align="center"></el-table-column>
-            <el-table-column prop="japanDesc" label="日本发布时间" align="center"></el-table-column>
-            <el-table-column prop="desc" label="发布时间" align="center"></el-table-column>
+            <el-table-column prop="titleJp" label="标题" align="center"></el-table-column>
+            <el-table-column prop="shopName" label="店铺" align="center"></el-table-column>
+            <el-table-column prop="itemsIdList " label="相关商品" align="center">
+                <template slot-scope="scope">
+                    <span>{{scope.row.itemsIdList.length}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="showWeb" label="发布状态" align="center">
+                <template slot-scope="scope">
+                    <el-tag v-if="scope.row.showWeb == 1" type="success">已发布</el-tag>
+                    <el-tag v-else-if="scope.row.showWeb == 0" type="success">待发布</el-tag>
+                    <el-tag v-else type="info">取消发布</el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column prop="isOpen" label="日本发布状态" align="center">
+                <template slot-scope="scope">
+                    <el-tag v-if="scope.row.isOpen == 1" type="success">已发布</el-tag>
+                    <el-tag v-else type="info">取消发布</el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column prop="publishTimeJp" label="日本发布时间" align="center"></el-table-column>
+            <el-table-column prop="publishTime" label="发布时间" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button @click.native.prevent="showDetail(scope.$index, scope.row)"type="text"size="mini">查看</el-button>
-                    <el-button @click.native.prevent="addOrAdit(scope.$index, scope.row)"type="text"size="mini">编辑</el-button>
+                    <el-button @click.native.prevent="showDetail(scope.row)"type="text"size="mini">查看</el-button>
+                    <el-button @click.native.prevent="addOrAdit( scope.row)"type="text"size="mini">编辑</el-button>
                     <el-button @click.native.prevent="forbitHandle(scope.$index,scope.row)"type="text"size="mini">
-                        <span v-if="scope.row.groupStatus==1" class="artdisable">{{scope.$index==currentIndex&&forbitLoading?"取消发布中..":"取消发布"}}</span>
+                        <span v-if="scope.row.showWeb==1" class="artdisable">{{scope.$index==currentIndex&&forbitLoading?"取消发布中..":"取消发布"}}</span>
                         <span v-else class="artstart">{{scope.$index==currentIndex && forbitLoading?"发布中..":"发布"}}</span>
                     </el-button>
                 </template>
@@ -112,12 +129,23 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
+    import { getStoreNewspage } from '@/api/url';
+    import { storeNewsPutoperating } from '@/api/api';   //发布/取消发布
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
+                mixinViewModuleOptions: {
+                    getDataListURL: getStoreNewspage,
+                    getDataListIsPage: true,
+                    // exportURL: '/admin-api/log/login/export',
+                    deleteURL: '',
+                    dataListLoading: false,
+                    deleteIsBatch: true,
+                    deleteIsBatchKey: 'id'
+                },
                 activeName: "",
-                breaddata: [ "搭配集合管理"],
+                breaddata: [ "内容管理", "店铺新闻管理"],
                 dataForm: {},
                 value: '',
                 dataList: [],
@@ -151,34 +179,35 @@
                 this.$emit("addOrAdit",id);
             },
             getData() {
-                this.dataForm.startCreateDate = this.timeArr && this.timeArr[0];
-                this.dataForm.endCreateDate = this.timeArr && this.timeArr[1];
-                this.dataForm.startPaymentTime = this.timeArr2[0];
-                this.dataForm.endPaymentTime = this.timeArr2[1];
-                this.getDataList();
+                this.dataForm.publishJpStartTime =  this.timeArr[0];
+                this.dataForm.publishJpEndTime = this.timeArr[1];
+                this.dataForm.publishStartTime = this.timeArr2[0];
+                this.dataForm.publishEndTime = this.timeArr2[1];
             },
             reset(formName) {
                 this.timeArr = [];
                 this.timeArr2 = [];
-                this.dataForm.startCreateDate = "";
-                this.dataForm.endtime = "";
-                this.dataForm.startPaymentTime = "";
-                this.dataForm.endPaymentTime = "";
-                this.$refs[formName].resetFields();
+                this.dataForm.id = "";
+                this.dataForm.title = "";
+                this.dataForm.storeName = "";
+                this.dataForm.showWeb = "";
+                this.dataForm.publishJpStartTime = "";
+                this.dataForm.publishJpEndTime = "";
+                this.dataForm.publishStartTime = "";
+                this.dataForm.publishEndTime = "";
                 this.getDataList();
             },
             handleClick(tab,val) {
                 if(tab== ""){
-                    this.dataForm.goodsShow = ""
-                }else if(tab== "upper"){
-                    this.dataForm.goodsShow = "1"
-                }else if(tab== "lower"){
-                    this.dataForm.goodsShow = "0"
-                }else if(tab== "not"){
-                    this.dataForm.goodsShow = "2"
+                    this.dataForm.showWeb = null
+                }else if(tab== "1"){
+                    this.dataForm.showWeb = "1"
+                }else if(tab== "0"){
+                    this.dataForm.showWeb = "0"
+                } else if(tab== "2"){
+                    this.dataForm.showWeb = "2"
                 }
                 this.changeVal = val;
-                console.log(this.changeVal)
                 this.getDataList();
             },
             // 新建和编辑
@@ -192,17 +221,17 @@
                 this.currentIndex = index;
                 var obj = {
                     "id": row.id,
-                    "groupStatus":row.groupStatus==1?2:1  //
+                    "operating":row.showWeb==1?0:1  //
                 }
                 var msg = ""
-                row.groupStatus==1?msg="禁用":msg="启用"
+                row.showWeb==1?msg="禁用":msg="启用"
                 this.$confirm('是否'+msg+'该分组?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
                     this.forbitLoading = true;
-                    statusAttributegroup(obj).then((res)=>{
+                    storeNewsPutoperating(obj).then((res)=>{
                         this.forbitLoading = false;
                         // console.log(res);
                         if(res.code==200){

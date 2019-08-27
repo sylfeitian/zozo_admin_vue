@@ -10,8 +10,8 @@
                 v-loading="dataListLoading"
                 style="margin-top: 20px;">
             <el-table-column prop="createDate" label="时间" header-align="center" align="center"></el-table-column>
-            <el-table-column prop="creater" label="账户" header-align="center" align="center"></el-table-column>
-            <el-table-column prop="operation" label="操作内容" header-align="center" align="center"></el-table-column>
+            <el-table-column prop="creator" label="账户" header-align="center" align="center"></el-table-column>
+            <el-table-column prop="content" label="操作内容" header-align="center" align="center"></el-table-column>
         </el-table>
         <!-- 分页 -->
         <el-pagination
@@ -72,8 +72,9 @@
                 this.$emit("operationallogList");
             },
             more () {
-                this.$emit("more")
-            }
+                this.$parent.more()
+            },
+
         }
     }
 </script>

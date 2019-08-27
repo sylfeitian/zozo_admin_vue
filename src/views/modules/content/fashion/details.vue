@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Bread :breaddata="breaddata"></Bread>
+        <Bread :breaddata="breaddata" :index="'1'" @changePage="changePage"></Bread>
         <el-col :span="12" style="border-right: 1px solid #e6e6e6;">
             <el-form
                     ref="dataForm"
@@ -9,91 +9,77 @@
                     @keyup.enter.native="getDataList()"
             >
                 <p class="title">日文</p>
-                <el-form-item label="时尚编号：">
-                    <span>{{dataForm.id}}</span>
+                <el-form-item label="纪实编号：">
+                    <span>{{dataForm.idJp}}</span>
                 </el-form-item>
                 <el-form-item label="发布者：">
-                    <span>{{dataForm.name}}</span>
+                    <span>{{dataForm.publisher}}</span>
                 </el-form-item>
                 <el-form-item label="收藏数量：">
-                    <span>{{dataForm.id}}</span>
+                    <span>{{dataForm.totalFavNum}}</span>
                 </el-form-item>
                 <el-form-item label="浏览数量：">
-                    <span>{{dataForm.name}}</span>
+                    <span>{{dataForm.viewsNum}}</span>
                 </el-form-item>
-                <el-form-item label="发布日期：">
-                    <span>{{dataForm.id}}</span>
+                <el-form-item label="发布状态：">
+                    <span>{{dataForm.isOpen == 0?"发布":dataForm.isOpen == 1?"未发布":""}}</span>
                 </el-form-item>
-                <el-form-item label="日方发布状态：">
-                    <span>{{dataForm.id}}</span>
-                </el-form-item>
-                <el-form-item label="取消发布时间：">
-                    <span>{{dataForm.id}}</span>
-                </el-form-item>
-                <el-form-item label="背景图：">
+                <el-form-item label="背景图：" style="height: 100%!important;">
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg">
                                 <!--                                    <img :src="scope.row.pictureUrl | filterImgUrl" alt=""/>-->
-                                <img src="scope.row.pictureUrl | filterImgUrl" alt=""/>
+                                <img :src="dataForm.mainImageUrl" alt=""/>
                             </div>
                         </div>
                     </template>
                 </el-form-item>
-                <el-form-item label="标题：">
-                    <span>{{dataForm.id}}</span>
+                <el-form-item label="标题：" style="height: 100%!important;">
+                    <span>{{dataForm.title}}</span>
                 </el-form-item>
-                <el-form-item label="内容：">
-                    <span>{{dataForm.id}}</span>
+                <el-form-item label="详情：" style="height: 100%!important;">
+                    <span>{{dataForm.shopFashionContentsVOList}}</span>
                 </el-form-item>
             </el-form>
         </el-col>
-
-        <el-col :span="12">
+        <el-col :span="12" style="border-right: 1px solid #e6e6e6;">
             <el-form
                     ref="dataForm"
                     class="grayLine topGapPadding"
                     :model="dataForm"
-                    :rules="dataRule"
                     @keyup.enter.native="getDataList()"
             >
                 <p class="title">中文</p>
-                <el-form-item label="时尚编号：">
-                    <span>{{dataForm.id}}</span>
+                <el-form-item label="纪实编号：">
+                    <span>{{dataForm.idJp}}</span>
                 </el-form-item>
                 <el-form-item label="发布者：">
-                    <span>{{dataForm.name}}</span>
+                    <span>{{dataForm.publisher}}</span>
                 </el-form-item>
                 <el-form-item label="收藏数量：">
-                    <span>{{dataForm.id}}</span>
+                    <span>{{dataForm.totalFavNum}}</span>
                 </el-form-item>
                 <el-form-item label="浏览数量：">
-                    <span>{{dataForm.name}}</span>
+                    <span>{{dataForm.viewsNum}}</span>
                 </el-form-item>
-                <el-form-item label="发布日期：">
-                    <span>{{dataForm.id}}</span>
+                <el-form-item label="发布状态：">
+                    <span>{{dataForm.state == 0?"未发布":dataForm.state == 1?"已发布":dataForm.state == 2?"取消发布 ":""}}</span>
                 </el-form-item>
-                <el-form-item label="日方发布状态：">
-                    <span>{{dataForm.id}}</span>
-                </el-form-item>
-                <el-form-item label="取消发布时间：">
-                    <span>{{dataForm.id}}</span>
-                </el-form-item>
-                <el-form-item label="背景图：">
+                <el-form-item label="背景图：" style="height: 100%!important;">
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg">
                                 <!--                                    <img :src="scope.row.pictureUrl | filterImgUrl" alt=""/>-->
-                                <img src="scope.row.pictureUrl | filterImgUrl" alt=""/>
+                                <img :src="dataForm.mainImageUrl" alt=""/>
                             </div>
                         </div>
                     </template>
                 </el-form-item>
-                <el-form-item label="标题：" prop="title">
-                    <span>{{dataForm.id}}</span>
+                <el-form-item label="标题：" style="height: 100%!important;">
+                    <span>{{dataForm.title}}</span>
                 </el-form-item>
-                <el-form-item label="内容：" prop="con">
-                    <span>{{dataForm.id}}</span>
+                <el-form-item label="详情：" style="height: 100%!important;">
+                    <span>{{dataForm.shopFashionContentsVOList}}</span>
                 </el-form-item>
             </el-form>
         </el-col>
@@ -103,21 +89,13 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
+    import { getfashiondetail } from '@/api/api'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
-                breaddata: [ "内容管理", "搭配详情"],
-                dataList: [],
+                breaddata: [ "内容管理", "时尚记事","时尚记事详情"],
                 dataListLoading: false,
-                dataRule : {
-                    title : [
-                        { required: true, message: '必填项不能为空', trigger: 'blur' },
-                    ],
-                    con : [
-                        { required: true, message: '必填项不能为空', trigger: 'blur' },
-                    ]
-                },
                 dataForm: {}
             }
         },
@@ -125,29 +103,15 @@
             Bread
         },
         methods: {
-            init(id){
+            init(row){
                 this.$nextTick(()=>{
-                    if(id){
+                    if(row){
                         var obj  = {
-                            id:id
+                            id:row.id
                         }
-                        storeNews(obj).then((res)=>{
-                            console.log('详情',res.data)
+                        getfashiondetail(obj).then((res)=>{
                             if(res.code == 200){
-                                this.logo = res.data.storeDTO.storeLogo;
-                                this.electronicBusinessLicense = res.data.storeAuthDTO.electronicBusinessLicense;
-                                this.dataForm.storeClassId = res.data.storeClassDTOList.map(item=>{
-                                    return item.classId
-                                })
-                                this.storeId = res.data.storeDTO.id;
-                                this.dataForm.id = res.data.storeUserDTO.id;
-                                Object.assign(this.dataForm, res.data.storeUserDTO);
-                                Object.assign(this.dataForm.saveStoreDTO, res.data.storeDTO);
-                                if(res.data.storeAuthDTO){
-                                    Object.assign(this.dataForm.saveStoreAuthDTO,res.data.storeAuthDTO)
-                                }
-                                this.dataForm.isEnable = JSON.stringify(res.data.isEnable)
-
+                                this.dataForm = res.data;
                             }
                         })
                     }

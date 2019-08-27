@@ -157,7 +157,8 @@
             <span style="margin-left: 30px;">
                 <el-tag
                         :key="index"
-                        v-for="(tag,index) in dataForm.styles"
+                        style="margin-bottom: 10px;"
+                        v-for="(tag,index) in ac"
                         closable
                         :disable-transitions="false"
                         @close="handleClose(index)">
@@ -186,7 +187,8 @@
             return {
                 breaddata: [ "内容管理",  "搭配集合管理","编辑搭配集合"],
                 dataForm: {},
-                stylesName:""
+                stylesName:"",
+                ac:[]
             }
         },
         components: {
@@ -194,7 +196,6 @@
         },
         methods: {
             init(row){
-                console.log(row)
                 this.$nextTick(()=>{
                     if(row){
                         var obj  = {
@@ -203,6 +204,8 @@
                         getlookfolderdetail(obj).then((res)=>{
                             if(res.code == 200){
                                 this.dataForm = res.data;
+                                if(this.dataForm.styles) this.ac = this.dataForm.styles;
+                                else this.ac = [];
                             }
                         })
                     }
@@ -216,13 +219,18 @@
                     });
                 }else{
                     let obj = {id:"",name:this.stylesName};
-                    if(!this.dataForm.styles) this.dataForm.styles = [];
-                    this.dataForm.styles.unshift(obj)
-                    console.log(this.dataForm);
+                    if(this.ac.length>10) {
+                        this.$message({
+                            message: "新建标签不能超过10个!",
+                            type: 'error',
+                        });
+                    }else{
+                        this.ac.unshift(obj)
+                    }
                 }
             },
             handleClose(index) {
-                this.dataForm.styles.splice(index, 1);
+                this.ac.splice(index, 1);
             },
             changePage(){
                 this.$emit("addoraditList");
@@ -240,6 +248,7 @@
             getData(saveType){
                 let that = this;
                 this.dataForm.saveFlag = saveType;
+                this.dataForm.styles = this.ac;
                 saveFolderdetail({folderInfoDTO:this.dataForm}).then((res)=>{
                     if(res.code == 200){
                         this.$message({

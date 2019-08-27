@@ -43,12 +43,24 @@ export const getlookdetail = params => { return http.get(`${base}/look/${params.
 export const putoperating = params => { return http.put(`${base}/look/publish/${params.operating}/${params.id}?operating=${params.operating}&id=${params.id}`, params).then(res => res.data); };
 //搭配集合发布/取消发布
 export const folderPutoperating = params => { return http.put(`${base}/look/folder/publish/${params.operating}/${params.id}?operating=${params.operating}&id=${params.id}`, params).then(res => res.data); };
+//时尚记事发布/取消发布
+export const fashionPutoperating = params => { return http.put(`${base}/fashion/publish/${params.operating}/${params.id}?operating=${params.operating}&id=${params.id}`, params).then(res => res.data); };
+//店铺新闻发布/取消发布
+export const storeNewsPutoperating = params => { return http.put(`${base}/store/news/publish/${params.operating}/${params.id}?operating=${params.operating}&id=${params.id}`, params).then(res => res.data); };
 //搭配集合详情
 export const getlookfolderdetail = params => { return http.get(`${base}/look/folder/${params.id}`, params).then(res => res.data); };
+//时尚记事详情
+export const getfashiondetail = params => { return http.get(`${base}/fashion/${params.id}`, params).then(res => res.data); };
+//店铺新闻详情
+export const getStoreNewsdetail = params => { return http.get(`${base}/store/news/${params.id}`, params).then(res => res.data); };
 //搭配信息保存|保存并发布操作
 export const savelookdetail = params => { return http.post(`${base}/look`, params).then(res => res.data); };
 //搭配集合保存|保存并发布操作
 export const saveFolderdetail = params => { return http.post(`${base}/look/folder`, params).then(res => res.data); };
+//时尚记事保存|保存并发布操作
+export const savefashiondetail = params => { return http.post(`${base}/fashion`, params).then(res => res.data); };
+//店铺新闻保存|保存并发布操作
+export const saveStoreNewsdetail = params => { return http.post(`${base}/store/news`, params).then(res => res.data); };
 
 
 //仓库管理--------------------------------------------------------------------------------------------------------
@@ -488,7 +500,7 @@ export const importRegister = params => { return http.post(`${base}/goods/regist
 // 备案商品分页查询接口
 export const registerPage = params => { return http.get(`${base}/goods/register/page`, params).then(res => res.data); };
 // 根据商品的spuid查询商品的备案信息
-export const backScanRegister = params => { return http.post(`${base}/goods/register/${params.id}`, params).then(res => res.data); };
+export const backScanRegister = params => { return http.post(`${base}/goods/register/${params.spuid}`, params).then(res => res.data); };
 
 
 
@@ -600,7 +612,7 @@ export const backScanShoplabel = params => { return http.get(`${base}/shoplabel/
 
 //商品管理接口--------------------------------------------------------------------------------------------------------------------
 // 商品详细信息
-export const backScanZozogoods = params => { return http.get(`${base}/zozogoods/${params.id}`, params).then(res => res.data); };
+export const backScanZozogoods = params => { return http.get(`${base}/zozogoods/?id=${params.id}`, params).then(res => res.data); };
 // 商品保存
 export const saveZozogoods = params => { return http.post(`${base}/zozogoods`, params).then(res => res.data); };
 // 商品分页

@@ -29,7 +29,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="可售状态：">
-                <el-select v-model="dataForm.goodsStatus" placeholder="请选择">
+                <el-select v-model="dataForm.sellState" placeholder="请选择">
                     <el-option
                             v-for="item in stateOptions"
                             :key="item.id"
@@ -70,18 +70,18 @@
             <el-table-column type="selection" width="70"></el-table-column>
             <el-table-column label="商品ID" align="center" width="100">
                 <template slot-scope="scope" >
-                    <div @click="detShowChange(scope.row)">
+                    <div @click="detShowChange(scope.row)" style="cursor:pointer;">
                         {{scope.row.idJp}}
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column label="主图" align="center" width="160">
+            <el-table-column label="主图" prop="imageUrl" align="center" width="160">
                 <template slot-scope="scope">
-                    <div class="goodsPropsWrap">
-                        <div class="goodsImg">
-<!--                            <img :src="scope.row.imageUrl" alt=""/>-->
-                        </div>
-                    </div>
+                    <img
+                            :src="scope.row.mainImageUrl"
+                            alt=""
+                            style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
+                    >
                 </template>
             </el-table-column>
             <el-table-column prop="goodsName" label="商品名称" align="center">
@@ -222,7 +222,7 @@
                     categoryId: "",//分类
                     storeName: "",//店铺名称
                     brandName:"",//品牌名称
-                    goodsStatus: "",//是否可售
+                    sellState: "",//是否可售
                     showWeb:"",//上下架状态:0下架;1上架
                     priceState: "",//价格变更
                 },
