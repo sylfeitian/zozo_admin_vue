@@ -70,9 +70,13 @@
 		    label="活动标题"
 		    width="180">
 		</el-table-column>
+        <el-table-column
+		    prop="account"
+		    label="满减规则">
+		</el-table-column>
 		<el-table-column
 		    prop="account"
-		    label="折扣活动时间">
+		    label="活动时间">
 		</el-table-column>
 		<el-table-column
 		    prop="gradeName"
@@ -88,9 +92,9 @@
 	    	label="操作">
 		    <template slot-scope="scope">
 		    	<el-button type="text" size="small">审核</el-button>
-		    	<el-button type="text" size="small" @click="showDetail(scope.row.id)">查看商品</el-button>
-		    	<el-button type="text" size="small" @click="addAdit(scope.row.id)">添加商品</el-button>
 		    	<el-button type="text" size="small" @click="addActivity(scope.row.id)">编辑</el-button>
+		    	<el-button class="artdanger" type="text" size="small">停止</el-button>
+		    	<el-button type="text" size="small" @click="showDetail(scope.row.id)">查看</el-button>
 		    	<el-button class="artdanger" type="text" size="small">删除</el-button>
 		    </template>
 	  	</el-table-column>
@@ -118,26 +122,28 @@
             <el-form-item label="活动标题：" prop="sgName">
                 <el-input v-model="activiDataForm.sgName" placeholder="请输入50字以内的标题" :maxlength="50"></el-input>
             </el-form-item>
-            <el-form-item label="折扣开始时间：" prop="startTime">
+            <el-form-item label="满减规则：" prop="rule">
+                单笔订单满<el-input style="widt:70px" v-model="activiDataForm.rule" type="number" :maxlength="6"></el-input>元立减<el-input style="widt:70px" v-model="activiDataForm.rule" type="number" :maxlength="6"></el-input>元
+            </el-form-item>
+            <el-form-item label="开始时间：" prop="startTime">
                 <el-date-picker
                     v-model="activiDataForm.startTime"
                     type="datetime"
                     value-format="yyyy-MM-dd"
-                    placeholder="选择折扣开始时间">
+                    placeholder="选择开始时间">
                 </el-date-picker>
             </el-form-item>
-            <el-form-item label="折扣结束时间：" prop="endTime">
+            <el-form-item label="结束时间：" prop="endTime">
                 <el-date-picker
                     v-model="activiDataForm.endTime"
                     type="datetime"
                     value-format="yyyy-MM-dd"
-                    placeholder="选择折扣结束时间">
+                    placeholder="选择结束时间">
                 </el-date-picker>
             </el-form-item>
             <el-form-item label="活动限制：">
                 <el-checkbox-group v-model="activiDataForm.checkList">
-                    <el-checkbox :label="1">不可同时使用优惠券</el-checkbox>
-                    <el-checkbox :label="2">不可同时参加满减活动</el-checkbox>
+                    <el-checkbox :label="1">不可使用优惠券</el-checkbox>
                 </el-checkbox-group>
             </el-form-item>
         </el-form>
@@ -174,6 +180,7 @@ export default {
           sgName:'',
           startTime:'',
           endTime:'',
+          rule:'',
           checkList:'0'
       },
       dataForm: {
