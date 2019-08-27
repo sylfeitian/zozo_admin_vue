@@ -31,6 +31,33 @@
             <el-form-item label="性别：" class="item">
                 <span>{{dataForm.gender}}</span>
             </el-form-item>
+            <el-form-item label="主品牌：" class="item">
+                <span>{{}}</span>
+            </el-form-item>
+            <el-form-item label="副品牌：" class="item">
+                <span>{{}}</span>
+            </el-form-item>
+            <el-form-item label="主性别：" class="item">
+                <span>{{dataForm.genders}}</span>
+            </el-form-item>
+            <el-form-item label="副性别：" class="item">
+                <span>{{dataForm.viceGenders}}</span>
+            </el-form-item>
+            <el-form-item label="日本销售价：" class="item">
+                <span>{{dataForm.properPriceYen}}</span>
+            </el-form-item>
+            <el-form-item label="日本促销价：" class="item">
+                <span>{{dataForm.salePriceYen}}</span>
+            </el-form-item>
+            <el-form-item label="品牌销售价：" class="item">
+                <span>{{dataForm.properPrice}}</span>
+            </el-form-item>
+            <el-form-item label="品牌促销价：" class="item">
+                <span>{{dataForm.salePrice}}</span>
+            </el-form-item>
+            <el-form-item label="价格标识：" class="item">
+                <span>{{}}</span>
+            </el-form-item>
             <el-form-item label="原产地：" class="item">
                 <span>{{dataForm.madeInJp}}</span>
                 <el-input v-model="dataForm.madeIn" placeholder="请输入" maxlength="10"></el-input>&nbsp;&nbsp;
@@ -44,11 +71,18 @@
             <el-form-item label="上架状态：" class="item">
                 <span>{{dataForm.showWeb}}</span>
             </el-form-item>
+            <el-form-item label="日本上架状态：" class="item">
+                <span>{{dataForm.japanShowWeb}}</span>
+            </el-form-item>
             <el-form-item label="可售状态：" class="item">
                 <span>{{dataForm.japanShowWeb}}</span>
             </el-form-item>
             <el-form-item label="颜色尺码：">
-                <el-table border="" class="inforRight" style="display:inline-block;width: 80%">
+                <el-table
+                        border
+                        :data="dataForm.skuVOList"
+                        class="inforRight"
+                        style="display:inline-block;width: 80%">
                     <el-table-column prop="goodsCsIdjp" label="SKU编码" align="center"></el-table-column>
                     <!--                    <el-table-column prop="specId" label="备案编码" align="center"></el-table-column>-->
                     <el-table-column prop="colorName" label="颜色" align="center"></el-table-column>
@@ -66,9 +100,10 @@
                     </el-table-column>
                     <el-table-column prop="goodsNum" label="图片" align="center">
                         <template slot-scope="scope">
-                            <div class="goodsImg">
-                                <img  :src="scope.row.imageUrl | filterImgUrl" style="width:60px;height:60px;object-fit: contain;" alt=""/>
-                            </div>
+                            <img
+                                    :src="scope.row.itemsImageUrl"
+                                    style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
+                            >
                         </template>
                     </el-table-column>
                 </el-table>
@@ -80,6 +115,7 @@
                 <template slot-scope="scope">
                     <div class="goodsImg">
 <!--                        <img  :src="scope.row.imageUrl | filterImgUrl" style="width:60px;height:60px;object-fit: contain;" alt=""/>-->
+                        <img :src="dataForm.imageUrl320" alt=""/>
                     </div>
                 </template>
             </el-form-item>
@@ -93,9 +129,9 @@
         </el-form>
         <el-col :span="24">
             <div style="position: fixed;bottom: 0;margin: 0 auto;width: 86%;text-align: center;z-index: 999;background-color: #e6e6e6;padding: 10px 0;">
-                <el-button class="btn" @click="changePage()">取消</el-button>
-                <el-button class="btn" @click="save()">仅保存</el-button>
-                <el-button class="btn" type="primary" @click="getData()">保存并上架</el-button>
+                <el-button class="btn" @click="reset()">取消</el-button>
+                <el-button class="btn" @click="getData(0)">仅保存</el-button>
+                <el-button class="btn" type="primary" @click="getData(1)">保存并上架</el-button>
             </div>
         </el-col>
         <!-- 弹窗, 新建 -->
@@ -110,7 +146,7 @@
     import quillEditorImg from "@/components/quillEditor"
     import addEditData from './model-edit-data'
     import mixinViewModule from '@/mixins/view-module'
-    import { backScanZozogoods } from '@/api/api'
+    import { backScanZozogoods, saveZozogoods } from '@/api/api'
 
     import 'quill/dist/quill.core.css';
     import 'quill/dist/quill.snow.css';
@@ -127,6 +163,7 @@
                     {key: '衣长', value: '短长度'}
                 ],
                 addEditDataVisible: false,
+                dataForm: {}
             }
         },
         components: {
@@ -178,9 +215,37 @@
             setAddEditDataVisible(boolargu){
                 this.addEditDataVisible =  boolargu;
             },
-            // save () {
-            //     name: this.dataForm.name
-            // }
+            reset(){
+                let that = this;
+                this.$confirm('取消将不会保存页面数据', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    that.changePage();
+                }).catch();
+            },
+            getData(saveType){
+                let that = this;
+                this.dataForm.saveFlag = saveType;
+                saveZozogoods({saveLookDTO:this.dataForm}).then((res)=>{
+                    if(res.code == 200){
+                        this.$message({
+                            message: res.msg,
+                            type: 'success',
+                            onClose:function () {
+                                that.changePage();
+                            }
+                        });
+                    }else{
+                        this.$message({
+                            message: res.msg,
+                            type: 'error',
+                        });
+                    }
+                })
+            }
+
         }
     }
 </script>

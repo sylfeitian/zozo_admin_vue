@@ -60,7 +60,7 @@
                     @current-change="pageCurrentChangeHandle">
             </el-pagination>
             <!-- 弹窗, 新增 / 修改 -->
-            <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
+            <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @searchDataList="getDataList"></add-or-update>
         </div>
     </div>
 </template>
@@ -84,7 +84,8 @@
                 breaddata: ["系统管理", "禁用词管理"],
                 dataForm: {
                 	name:'',
-                }
+                },
+                addOrUpdateVisible: true,
             }
         },
         components: {
@@ -103,6 +104,10 @@
             },
             addOrUpdateHandle(row){
             	this.addOrUpdateVisible = true;
+            	this.$nextTick(()=>{
+            		this.$refs.addOrUpdate.init(row);
+            	})
+            	
             }
         }
     }

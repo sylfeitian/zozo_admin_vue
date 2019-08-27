@@ -8,6 +8,10 @@ export const gethomepage = params => { return http.get(`${base}/homepage`, param
 //广告--------------------------------------------------------------------------------------------------------------
 //添加禁用词   
 export const addadvertisingban = params => { return http.post(`${base}/advertisingban/add`, params).then(res => res.data); };
+//编辑禁用词   
+export const updateadvertisingban = params => { return http.put(`${base}/advertisingban/update`, params).then(res => res.data); };
+//策略
+export const addsetting = params => { return http.post(`${base}/strategy/setting/add`, params).then(res => res.data); };
 
 
 
@@ -491,7 +495,7 @@ export const importRegister = params => { return http.post(`${base}/goods/regist
 // 备案商品分页查询接口
 export const registerPage = params => { return http.get(`${base}/goods/register/page`, params).then(res => res.data); };
 // 根据商品的spuid查询商品的备案信息
-export const backScanRegister = params => { return http.post(`${base}/goods/register/${params.id}`, params).then(res => res.data); };
+export const backScanRegister = params => { return http.post(`${base}/goods/register/${params.spuid}`, params).then(res => res.data); };
 
 
 
@@ -603,7 +607,7 @@ export const backScanShoplabel = params => { return http.get(`${base}/shoplabel/
 
 //商品管理接口--------------------------------------------------------------------------------------------------------------------
 // 商品详细信息
-export const backScanZozogoods = params => { return http.get(`${base}/zozogoods/${params.id}`, params).then(res => res.data); };
+export const backScanZozogoods = params => { return http.get(`${base}/zozogoods/?id=${params.id}`, params).then(res => res.data); };
 // 商品保存
 export const saveZozogoods = params => { return http.post(`${base}/zozogoods`, params).then(res => res.data); };
 // 商品分页

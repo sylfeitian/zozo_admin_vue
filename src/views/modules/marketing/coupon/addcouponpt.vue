@@ -78,7 +78,7 @@ var validmoney =(rule, value,callback)=>{
     if (value/1 > 1000000){
       callback(new Error('请输入1000000以内的数字'))
     }else if(value <= 0){
-    	callback(new Error('只能输入大于的数'))
+    	callback(new Error('只能输入大于0的数'))
     }else if(value.indexOf('.') != -1 && value.substr(value.indexOf('.') + 1).length > 2){
     	callback(new Error('小数点后只能有两位'))
     }else {
