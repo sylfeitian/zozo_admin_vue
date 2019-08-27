@@ -8,21 +8,25 @@
                 @keyup.enter.native="getDataList()"
 
         >
-            <el-form-item style="margin-left: 60%;">
-                <el-button class="btn" type="primary" @click="orderDataHandle()">查看物流</el-button>
-                <el-button class="btn" type="primary" @click="reset()" >修改收货人信息</el-button>
-                <el-button class="btn" type="primary" @click="getDataList()">审核</el-button>
-                <el-button class="btn" type="primary" @click="reset()" >备注信息</el-button>
-                <el-button class="btn" type="primary" @click="getDataList()">取消订单</el-button>
+            <!-- 上层button组 -->
+            <el-form-item style="width: 100%;text-align: right;padding-right: 6%;">
+                <el-button class="btn" type="primary" @click="lookLogistics()">查看物流</el-button>
+                <el-button class="btn" type="primary" @click="modifyReciverInfo()" >修改收货人信息</el-button>
+                <el-button class="btn" type="primary" @click="exammineFn()">审核</el-button>
+                <el-button class="btn" type="primary" @click="" >备注信息</el-button>
+                <el-button class="btn" type="primary" @click="">取消订单</el-button>
             </el-form-item>
-            <el-steps align-center style="margin-top: 20px;">
+            <!-- step步骤 -->
+            <el-steps align-center :active="active" style="margin-top: 20px;" finish-status="success">
                 <el-step title="提交订单" icon="el-icon-document" description=""></el-step>
                 <el-step title="付款成功" icon="el-icon-mobile-phone" description=""></el-step>
                 <el-step title="代发货" icon="el-icon-goods" description=""></el-step>
                 <el-step title="待收货" icon="el-icon-time" description=""></el-step>
-                <el-step title="交易完成" icon="el-icon-circle-check-outline" description=""></el-step>
+                <el-step :title="orderBase.orderStatus==0?'订单取消':'交易完成'" icon="el-icon-circle-check-outline" description=""></el-step>
                 <el-step title="完成评价" icon="el-icon-star-on" description=""></el-step>
             </el-steps>
+
+             <!-- 订单信息 -->
             <p class="title">订单信息</p>
             <el-row>
                 <el-col :span="5"><div class="grid-content bg-purple-light">订单编号</div></el-col>
@@ -32,11 +36,18 @@
                 <el-col :span="5"><div class="grid-content bg-purple-light">会员账号</div></el-col>
             </el-row>
             <el-row>
-                <el-col :span="5"><div class="grid-content">{{}}</div></el-col>
-                <el-col :span="5"><div class="grid-content">{{}}</div></el-col>
-                <el-col :span="4"><div class="grid-content">{{}}</div></el-col>
-                <el-col :span="5"><div class="grid-content">{{}}</div></el-col>
-                <el-col :span="5"><div class="grid-content">{{}}</div></el-col>
+                <el-col :span="5"><div class="grid-content">{{orderBase.orderId}}</div></el-col>
+                <el-col :span="5"><div class="grid-content">{{orderBase.paymentName}}</div></el-col>
+                <el-col :span="4">
+                    <div class="grid-content">
+                         <span v-if="orderBase.orderStatus==10">待支付</span>
+                         <span v-else-if="orderBase.orderStatus==20">待发货</span>
+                         <span v-else-if="orderBase.orderStatus==30">待收货</span>
+                         <span v-else-if="orderBase.orderStatus==40">交易成功</span>
+                         <span v-else-if="orderBase.orderStatus==0">订单取消</span>
+                    </div></el-col>
+                <el-col :span="5"><div class="grid-content">{{orderBase.orderType}}</div></el-col>
+                <el-col :span="5"><div class="grid-content">{{orderBase.memberName}}</div></el-col>
             </el-row>
             <el-row>
                 <el-col :span="5"><div class="grid-content bg-purple-light">物流公司</div></el-col>
@@ -46,9 +57,19 @@
                 <el-col :span="5"><div class="grid-content bg-purple-light"></div></el-col>
             </el-row>
             <el-row>
-                <el-col :span="5"><div class="grid-content">{{}}</div></el-col>
-                <el-col :span="5"><div class="grid-content">{{}}</div></el-col>
-                <el-col :span="4"><div class="grid-content">{{}}</div></el-col>
+                <el-col :span="5"><div class="grid-content">{{orderBase.transportName}}</div></el-col>
+                <el-col :span="5"><div class="grid-content">{{orderBase.logisticsSn}}</div></el-col>
+                <el-col :span="4" v-if="authenticationInfo">
+                    <div class="grid-content" style="display:flex;flex-direction: column;align-items: center;line-height: 24px;">
+                        <span>{{authenticationInfo.memberRealName}}</span>
+                        <span>
+                            {{authenticationInfo.idCard&&authenticationInfo.idCard.length==18?
+                            authenticationInfo.idCard.substring(0,12)+"*******":
+                            authenticationInfo.idCard}}
+                            <span style="color:#02A7F0" @click="dialogVisible = true">查看</span>
+                        </span>
+                    </div>
+                </el-col>
                 <el-col :span="5"><div class="grid-content"></div></el-col>
                 <el-col :span="5"><div class="grid-content"></div></el-col>
             </el-row>
@@ -56,6 +77,18 @@
                 <el-col :span="5"><div class="grid-content bg-purple-light">描述</div></el-col>
                 <el-col :span="19"><div class="grid-content">{{}}</div></el-col>
             </el-row>
+            <el-dialog title="身份证信息" :visible.sync="dialogVisible" width="30%" v-if="authenticationInfo">
+                <h3>身份证号码： </h3>
+                <p>{{authenticationInfo.idCard}}</p>
+
+                <h3>身份证正反面：</h3>
+                <div class="idCardWarp"> 
+                    <img :src="authenticationInfo.idcartPositiveUrl | filterImgUrl" alt="">
+                    <img :src="authenticationInfo.idcartReverseUrl | filterImgUrl" alt="">
+                </div>
+            </el-dialog>
+
+            <!-- 收货人信息 -->
             <p>
                 <span class="title">收货人信息</span>
                 <span style="margin-left: 20px;color: #2260D2;">查看详情</span>
@@ -66,34 +99,72 @@
                 <el-col :span="8"><div class="grid-content bg-purple-light">收货地址</div></el-col>
             </el-row>
             <el-row>
-                <el-col :span="8"><div class="grid-content">{{}}</div></el-col>
-                <el-col :span="8"><div class="grid-content">{{}}</div></el-col>
-                <el-col :span="8"><div class="grid-content">{{}}</div></el-col>
+                <el-col :span="8"><div class="grid-content">{{receiverInfo.memberRealName}}</div></el-col>
+                <el-col :span="8"><div class="grid-content">{{receiverInfo.mobPhone}}</div></el-col>
+                <el-col :span="8"><div class="grid-content">{{receiverInfo.province}}{{receiverInfo.city}}{{receiverInfo.area}}{{receiverInfo.townArea}}{{receiverInfo.address}}</div></el-col>
             </el-row>
+
+              <!-- 订单信息 -->
             <p class="title">商品信息</p>
             <el-table
-                    width="100%"
-                    :data="dataList"
-                    border
-                    v-loading="dataListLoading"
-                    style="width: 90%;margin-left: 5%;"
+                width="100%"
+                :data="orderGoods"
+                border
+                v-loading="dataListLoading"
+                style="width: 90%;margin-left: 5%;"
             >
-                <el-table-column prop="" label="商品图片" align="center"></el-table-column>
-                <el-table-column prop="" label="商品名称" align="center"></el-table-column>
-                <el-table-column prop="" label="品牌" align="center"></el-table-column>
-                <el-table-column prop="" label="店铺" align="center"></el-table-column>
-                <el-table-column prop="" label="规格" align="center"></el-table-column>
-                <el-table-column prop="" label="数量" align="center"></el-table-column>
-                <el-table-column prop="" label="商品售价" align="center"></el-table-column>
-                <el-table-column prop="" label="折扣" align="center"></el-table-column>
-                <el-table-column prop="" label="优惠券" align="center"></el-table-column>
-                <el-table-column prop="" label="满减金额" align="center"></el-table-column>
-                <el-table-column prop="" label="实付金额" align="center"></el-table-column>
+                <el-table-column label="序号" width="70" align="center">
+                        <template slot-scope="scope">
+                            <span>{{scope.$index+1}}</span>
+                        </template>
+                </el-table-column>
+
+                <el-table-column prop="" label="商品图片" align="center">
+                    <template slot-scope="scope">
+                        {{scope.row.goodsImage}}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
+                <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
+                <el-table-column prop="storeName" label="店铺" align="center"></el-table-column>
+                <el-table-column prop="specName" label="规格" align="center"></el-table-column>
+                <el-table-column prop="goodsNum" label="数量" align="center"></el-table-column>
+                <el-table-column prop="sellPrice" label="商品售价" align="center">
+                     <template slot-scope="scope">
+                        ￥{{scope.row.sellPrice?scope.row.sellPrice:'0.00'}}
+                    </template>
+                </el-table-column>
+
+                <el-table-column prop="reduceAmount" label="折扣" align="center">
+                     <template slot-scope="scope">
+                        ￥{{scope.row.dicountAmount?scope.row.dicountAmount:'0.00'}}
+                    </template>
+                </el-table-column>
+
+                <el-table-column prop="couponAmount" label="优惠券" align="center">
+                     <template slot-scope="scope">
+                        ￥{{scope.row.couponAmount?scope.row.couponAmount:'0.00'}}
+                    </template>
+                </el-table-column>
+
+                <el-table-column prop="reduceAmount" label="满减金额" align="center">
+                      <template slot-scope="scope">
+                        ￥{{scope.row.reduceAmount?scope.row.reduceAmount:'0.00'}}
+                    </template>
+                </el-table-column>
+
+                <el-table-column prop="realSalePrice" label="实付金额" align="center">
+                    <template slot-scope="scope">
+                        ￥{{scope.row.realSalePrice?scope.row.realSalePrice:'0.00'}}
+                    </template>
+                </el-table-column>
             </el-table>
+
+            <!-- 优惠信息 -->
             <p class="title">优惠信息</p>
             <el-table
                     width="100%"
-                    :data="dataList"
+                    :data="preferInfo"
                     border
                     v-loading="dataListLoading"
                     style="width: 40%;margin-left: 5%;"
@@ -101,44 +172,88 @@
                 <el-table-column label="序号" width="140" align="center">
                     <template slot-scope="scope">
                         <span>{{scope.$index+1}}</span>
-                        <!-- {{scope.$index+1+(parseInt(params.currentPage)-1)* parseInt(params.currentPageSize) }} -->
                     </template>
                 </el-table-column>
-                <el-table-column prop="" label="优惠种类" align="center"></el-table-column>
-                <el-table-column prop="" label="优惠类型" align="center"></el-table-column>
+
+                <el-table-column prop="type" label="优惠种类" align="center">
+                </el-table-column>
+
+                <el-table-column prop="content" label="优惠内容" align="center">
+                </el-table-column>
             </el-table>
+
+            <!-- 费用信息 -->
             <p class="title">费用信息</p>
-            <el-row>
-                <el-col :span="5"><div class="grid-content bg-purple-light">商品总价</div></el-col>
-                <el-col :span="5"><div class="grid-content bg-purple-light">折扣金额</div></el-col>
-                <el-col :span="4"><div class="grid-content bg-purple-light">优惠券</div></el-col>
-                <el-col :span="5"><div class="grid-content bg-purple-light">满减优惠</div></el-col>
-                <el-col :span="5"><div class="grid-content bg-purple-light">应付款金额</div></el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="5"><div class="grid-content">{{}}</div></el-col>
-                <el-col :span="5"><div class="grid-content">{{}}</div></el-col>
-                <el-col :span="4"><div class="grid-content">{{}}</div></el-col>
-                <el-col :span="5"><div class="grid-content">{{}}</div></el-col>
-                <el-col :span="5"><div class="grid-content">{{}}</div></el-col>
-            </el-row>
+            <el-table
+                    width="100%"
+                    :data="orderGoods"
+                    border
+                    v-loading="dataListLoading"
+                    style="width: 40%;margin-left: 5%;"
+            >
+                <el-table-column prop="" label="商品总价" align="center">
+                    <template slot-scope="scope">
+                        ￥{{scope.row.sellPrice?scope.row.sellPrice:'0.00'}}
+                    </template>
+                </el-table-column>
+
+                <el-table-column prop="" label="折扣金额" align="center">
+                    <template slot-scope="scope">
+                        ￥{{scope.row.dicountAmount?scope.row.dicountAmount:'0.00'}}
+                    </template>
+                </el-table-column>
+
+                 <el-table-column prop="" label="优惠券" align="center">
+                    <template slot-scope="scope">
+                        ￥{{scope.row.couponAmount?scope.row.couponAmount:'0.00'}}
+                    </template>
+                </el-table-column>
+
+                 <el-table-column prop="" label="满减优惠" align="center">
+                     <template slot-scope="scope">
+                        ￥{{scope.row.reduceAmount?scope.row.reduceAmount:'0.00'}}
+                    </template>
+                </el-table-column>
+
+                 <el-table-column prop="realSalePrice" label="应付款金额" align="center">
+                    <template slot-scope="scope">
+                        ￥{{scope.row.realSalePrice?scope.row.realSalePrice:'0.00'}}
+                    </template>
+                </el-table-column>
+            </el-table>
+
+            <!-- 订单记录 -->
             <p class="title">订单记录</p>
             <el-table
                     width="100%"
-                    :data="dataList"
+                    :data="orderLogs"
                     border
                     v-loading="dataListLoading"
                     style="width: 90%;margin-left: 5%;"
             >
-                <el-table-column prop="" label="操作者" align="center" width="150"></el-table-column>
-                <el-table-column prop="" label="操作时间" align="center"></el-table-column>
-                <el-table-column prop="" label="操作时订单状态" align="center"></el-table-column>
-                <el-table-column prop="" label="操作内容" align="center"></el-table-column>
-                <el-table-column prop="" label="备注" align="center" width="600"></el-table-column>
+                <el-table-column prop="creator" label="操作者" align="center" width="150"></el-table-column>
+                <el-table-column prop="createDate" label="操作时间" align="center"></el-table-column>
+                <el-table-column prop="orderStatus" label="操作时订单状态" align="center">
+                     <template slot-scope="scope">
+                         <span v-if="scope.row.orderStatus==10">待支付</span>
+                         <span v-else-if="scope.row.orderStatus==20">待发货</span>
+                         <span v-else-if="scope.row.orderStatus==30">待收货</span>
+                         <span v-else-if="scope.row.orderStatus==40">交易成功</span>
+                         <span v-else-if="scope.row.orderStatus==0">订单取消</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="statusInfo" label="操作内容" align="center"></el-table-column>
+                <el-table-column prop="remark" label="备注" align="center" width="600"></el-table-column>
             </el-table>
         </el-form>
         <!-- 弹窗, 新建 -->
         <orderData  v-if="orderDataVisible" ref="addEditData" @searchDataList="getDataList"></orderData>
+        <!-- 查看物流 -->
+        <logistics v-if="logisticsVisible" ref="logisticsCompon"></logistics>
+        <!-- 修改收货人信息 -->
+        <reciverInfo v-if="reciverInfoVisible" ref="reciverInfoCompon" @searchDataList="getOrderDetail"></reciverInfo>
+         <!-- 审核 -->
+        <exammine v-if="exammineVisible" ref="exammineCompon" @searchDataList="getOrderDetail"></exammine>
     </div>
 </template>
 <script>
@@ -146,24 +261,92 @@
     import Bread from "@/components/bread";
     import Clipboard from "clipboard";
     import orderData from './model-order-data'
-
+    import logistics from './modules/model-logistics.vue'
+    import reciverInfo from './modules/model-reciverInfo.vue'
+     import exammine from './modules/model-exammine.vue'
+    import {orderDetail } from "@/api/api";
     export default {
         mixins: [mixinViewModule],
         data() {
             return {
+                dialogVisible:false,
+                active:0,
                 textarea: "",
                 dialogFormVisible: false,
+                logisticsVisible:false,
+                reciverInfoVisible:false,
+                exammineVisible:false,
                 orderDetData: ["订单管理", "BC订单管理", "订单详情"],
                 dataForm: {},
-                orderDataVisible: false
+                orderDataVisible: false,
+                authenticationInfo:"", //是个弹框
+                orderBase:{},
+                orderGoods:[],
+                orderLogs:[],
+                preferInfo:[],
+                receiverInfo:{},
+                row:"",
             };
         },
         components: {
             Bread,
-            orderData
+            orderData,
+            logistics,
+            reciverInfo,
+            exammine
         },
         props: ["data", "addressInfo", "orderLog","packageInfo"],
         methods: {
+            init(row){
+                console.log(row);
+                row.id = 123666;
+                this.row = row;
+                this.getOrderDetail();    
+            },
+            getOrderDetail(){
+                var obj = {
+                    id:this.row.id,
+                }
+                orderDetail(obj).then((res)=>{
+                    console.log(res);
+                    if(res.code==200 && res.data){
+                        this.authenticationInfo = res.data.authenticationInfo;
+                        this.orderBase = res.data.orderBase;
+                        this.orderGoods = res.data.orderGoods;
+                        this.orderLogs = res.data.orderLogs;
+                        this.preferInfo = res.data.preferInfo;
+                        this.receiverInfo = res.data.receiverInfo;
+                        switch(this.orderBase.orderStatus){
+                            case 10:
+                                // 待支付
+                                this.active = 0
+                                break;
+                            case 20:
+                                // 待发货
+                                this.active = 2
+                                break;
+                            case 30:
+                                // 待收货
+                                 this.active = 3
+                                break;
+                            case 40:
+                                // 交易成功
+                                 this.active = 4
+                                break;
+                            case 0:
+                                // 订单取消
+                                 this.active = 4
+                                break;
+                        }
+                    }else{
+                        this.$message({
+                            message:res.msg,
+                            type: 'error',
+                            duration: 800,
+                        })
+                    }
+                })
+            },
             changePage(){
                 this.goList();
             },
@@ -173,9 +356,9 @@
             },
 
             //添加备注
-            addRemarks() {
-                this.dialogFormVisible = !this.dialogFormVisible;
-            },
+            // addRemarks() {
+            //     this.dialogFormVisible = !this.dialogFormVisible;
+            // },
             // 物流信息
             orderDataHandle(index=-1,row=""){
                 this.setOrderDataVisible(true);
@@ -186,10 +369,40 @@
             setOrderDataVisible(boolargu){
                 this.orderDataVisible =  boolargu;
             },
+            // 查看物流弹框
+            lookLogistics(){
+                this.logisticsVisible = true;
+                 this.$nextTick(() => {
+                    this.$refs.logisticsCompon.init(this.orderBase.logisticsSn)
+                })
+            },
+            // 修改收货人信息
+            modifyReciverInfo(){
+                this.reciverInfoVisible = true;
+                 this.$nextTick(() => {
+                   this.$refs.reciverInfoCompon.init(this.receiverInfo,this.row)
+                })
+            },
+            // 审核
+            exammineFn(){
+                this.exammineVisible = true;
+                this.$nextTick(() => {
+                   this.$refs.exammineCompon.init(this.row)
+                })
+            },
+            
         }
     };
 </script>
-<style scoped>
+<style lang="scss" scoped>
+    .idCardWarp{
+        text-align: center;
+        img{
+            width:316px;
+            height: 200px;
+            margin-bottom: 10px;
+        }
+    }
     .creater {
         display: inline-block;
         width: 80px;

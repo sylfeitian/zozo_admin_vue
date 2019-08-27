@@ -50,7 +50,7 @@ import { allGoodsclass } from "@/api/api";
 // 根据分类id查询品牌，规格，
 import { goodsclasscustomById } from "@/api/api.js";
 
-  import imgCropper from "@/components/model-photo-cropper";
+import imgCropper from "@/components/model-photo-cropper";
 import { uploadPicBase64 } from '@/api/api'
 import Bread from "@/components/bread";
 

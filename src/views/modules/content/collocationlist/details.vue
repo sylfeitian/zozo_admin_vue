@@ -9,69 +9,71 @@
                     @keyup.enter.native="getDataList()"
             >
                 <p class="title">日文</p>
-                <el-form-item label="时尚编号：">
-                    <span>{{dataForm.id}}</span>
+                <el-form-item label="搭配集合：">
+                    <span>{{dataForm.idJp}}</span>
                 </el-form-item>
                 <el-form-item label="用户昵称：">
-                    <span>{{dataForm.name}}</span>
+                    <span>{{dataForm.userNickname}}</span>
                 </el-form-item>
                 <el-form-item label="用户身高：">
-                    <span>{{dataForm.id}}</span>
+                    <span>{{dataForm.userHeight}}</span>
                 </el-form-item>
                 <el-form-item label="用户地区：">
-                    <span>{{dataForm.name}}</span>
+                    <span>{{dataForm.contryNameJp}}</span>
                 </el-form-item>
                 <el-form-item label="性别：">
-                    <span>{{dataForm.id}}</span>
+                    <span>{{dataForm.gender == 0?"男":dataForm.gender == 1?"女":dataForm.gender == 2?"儿童":dataForm.gender == 3?"world":""}}</span>
                 </el-form-item>
                 <el-form-item label="浏览量：">
-                    <span>{{dataForm.id}}</span>
+                    <span>{{dataForm.totalViewsNum}}</span>
                 </el-form-item>
-                <el-form-item label="传输日期：">
-                    <span>{{dataForm.id}}</span>
+                <el-form-item label="发布状态：">
+                    <span>{{dataForm.jpPublishState == 0?"未发布":dataForm.jpPublishState == 1?"已发布":dataForm.jpPublishState == 2?"取消发布 ":""}}</span>
                 </el-form-item>
-                <el-form-item label="主图：">
+                <el-form-item label="主图：" style="height: 100%!important;">
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg">
                                 <!--                                    <img :src="scope.row.pictureUrl | filterImgUrl" alt=""/>-->
-                                <img src="scope.row.pictureUrl | filterImgUrl" alt=""/>
+                                <img :src="dataForm.imageUrl" alt=""/>
                             </div>
                         </div>
                     </template>
                 </el-form-item>
-                <el-form-item label="标题：">
-                    <span>{{dataForm.id}}</span>
+                <el-form-item label="标题：" style="height: 100%!important;">
+                    <span>{{dataForm.titleJp}}</span>
                 </el-form-item>
-                <el-form-item label="详情：">
-                    <span>{{dataForm.id}}</span>
+                <el-form-item label="详情：" style="height: 100%!important;">
+                    <span>{{dataForm.contentJp}}</span>
                 </el-form-item>
                 <div class="goods">
                     <span class="inforTit" style="vertical-align:top;">关联搭配：</span>
                     <el-table
                             width="100%"
-                            :data="dataList"
+                            :data="dataForm.lookItems"
                             border
                             v-loading="dataListLoading"
                             class="inforRight"
                             style="display:inline-block;width: 80%;"
                     >
-                        <el-table-column prop="" label="搭配ID" align="center"></el-table-column>
-                        <el-table-column prop="" label="主图" align="center">
+                        <el-table-column prop="idJp" label="搭配ID" align="center"></el-table-column>
+                        <el-table-column prop="imageUrl320" label="主图" align="center">
                             <template slot-scope="scope">
                                 <img
-                                        :src="$imgDomain + scope.row.memberAvatar"
-                                        alt=""
+                                        :src="scope.row.imageUrl320"
                                         style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                                 >
                             </template>
                         </el-table-column>
-                        <el-table-column prop="" label="同步状态" align="center"></el-table-column>
+                        <el-table-column prop="syncState" label="同步状态" align="center">
+                            <template slot-scope="scope">
+                                <div>{{scope.row.syncState == 1?"已同步":"未同步"}}}</div>
+                            </template>
+                        </el-table-column>
                     </el-table>
                 </div>
             </el-form>
         </el-col>
-
         <el-col :span="12">
             <el-form
                     ref="dataForm"
@@ -80,64 +82,67 @@
                     @keyup.enter.native="getDataList()"
             >
                 <p class="title">中文</p>
-                <el-form-item label="时尚编号：">
-                    <span>{{dataForm.id}}</span>
+                <el-form-item label="搭配集合：">
+                    <span>{{dataForm.idJp}}</span>
                 </el-form-item>
                 <el-form-item label="用户昵称：">
-                    <span>{{dataForm.name}}</span>
+                    <span>{{dataForm.userNickname}}</span>
                 </el-form-item>
                 <el-form-item label="用户身高：">
-                    <span>{{dataForm.id}}</span>
+                    <span>{{dataForm.userHeight}}</span>
                 </el-form-item>
                 <el-form-item label="用户地区：">
-                    <span>{{dataForm.name}}</span>
+                    <span>{{dataForm.contryName}}</span>
                 </el-form-item>
                 <el-form-item label="性别：">
-                    <span>{{dataForm.id}}</span>
+                    <span>{{dataForm.gender == 0?"男":dataForm.gender == 1?"女":dataForm.gender == 2?"儿童":dataForm.gender == 3?"world":""}}</span>
                 </el-form-item>
                 <el-form-item label="浏览量：">
-                    <span>{{dataForm.id}}</span>
+                    <span>{{dataForm.totalViewsNum}}</span>
                 </el-form-item>
-                <el-form-item label="传输日期：">
-                    <span>{{dataForm.id}}</span>
+                <el-form-item label="发布状态：">
+                    <span>{{dataForm.sate == 0?"未发布":dataForm.sate == 1?"已发布":dataForm.sate == 2?"取消发布 ":""}}</span>
                 </el-form-item>
-                <el-form-item label="主图：">
+                <el-form-item label="主图：" style="height: 100%!important;">
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg">
                                 <!--                                    <img :src="scope.row.pictureUrl | filterImgUrl" alt=""/>-->
-                                <img src="scope.row.pictureUrl | filterImgUrl" alt=""/>
+                                <img :src="dataForm.imageUrl" alt=""/>
                             </div>
                         </div>
                     </template>
                 </el-form-item>
-                <el-form-item label="标题：">
-                    <span>{{dataForm.id}}</span>
+                <el-form-item label="标题：" style="height: 100%!important;">
+                    <span>{{dataForm.title}}</span>
                 </el-form-item>
-                <el-form-item label="详情：">
-                    <span>{{dataForm.id}}</span>
+                <el-form-item label="详情：" style="height: 100%!important;">
+                    <span>{{dataForm.content}}</span>
                 </el-form-item>
                 <div class="goods">
                     <span class="inforTit" style="vertical-align:top;">关联搭配：</span>
                     <el-table
                             width="100%"
-                            :data="dataList"
+                            :data="dataForm.lookItems"
                             border
                             v-loading="dataListLoading"
                             class="inforRight"
                             style="display:inline-block;width: 80%;"
                     >
-                        <el-table-column prop="" label="搭配ID" align="center"></el-table-column>
-                        <el-table-column prop="" label="主图" align="center">
+                        <el-table-column prop="id" label="搭配ID" align="center"></el-table-column>
+                        <el-table-column prop="imageUrl320" label="主图" align="center">
                             <template slot-scope="scope">
                                 <img
-                                        :src="$imgDomain + scope.row.memberAvatar"
-                                        alt=""
+                                        :src="scope.row.imageUrl320"
                                         style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                                 >
                             </template>
                         </el-table-column>
-                        <el-table-column prop="" label="同步状态" align="center"></el-table-column>
+                        <el-table-column prop="syncState" label="同步状态" align="center">
+                            <template slot-scope="scope">
+                                <div>{{scope.row.syncState == 1?"已同步":"未同步"}}}</div>
+                            </template>
+                        </el-table-column>
                     </el-table>
                 </div>
             </el-form>
@@ -147,11 +152,10 @@
             <span style="margin-left: 30px;">
                 <el-tag
                         :key="index"
-                        v-for="(tag,index) in dynamicTags"
-                        closable
+                        v-for="(tag,index) in dataForm.styles"
                         :disable-transitions="false"
-                        @close="handleClose(tag)">
-                    {{tag}}
+                        @close="handleClose(index)">
+                    {{tag.name}}
                 </el-tag>
             </span>
         </div>
@@ -167,9 +171,7 @@
         data () {
             return {
                 breaddata: [ "内容管理", "搭配集合管理","搭配集合详情"],
-                dataList: [],
                 dataListLoading: false,
-                dynamicTags: ['清爽一夏', '泫雅风'],
                 dataForm: {}
             }
         },
@@ -177,17 +179,16 @@
             Bread
         },
         methods: {
-            handleClose(tag) {
-                this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+            handleClose(index) {
+                this.dataForm.styles.splice(index, 1);
             },
-            init(id){
+            init(row){
                 this.$nextTick(()=>{
-                    if(id){
+                    if(row){
                         var obj  = {
-                            id:id
+                            id:row.id
                         }
                         getlookfolderdetail(obj).then((res)=>{
-                            console.log('详情',res.data)
                             if(res.code == 200){
                             	this.dataForm = res.data;
                             }

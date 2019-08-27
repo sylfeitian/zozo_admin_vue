@@ -8,6 +8,10 @@ export const gethomepage = params => { return http.get(`${base}/homepage`, param
 //广告--------------------------------------------------------------------------------------------------------------
 //添加禁用词   
 export const addadvertisingban = params => { return http.post(`${base}/advertisingban/add`, params).then(res => res.data); };
+//编辑禁用词   
+export const updateadvertisingban = params => { return http.put(`${base}/advertisingban/update`, params).then(res => res.data); };
+//策略
+export const addsetting = params => { return http.post(`${base}/strategy/setting/add`, params).then(res => res.data); };
 
 
 
@@ -23,17 +27,40 @@ export const gettagdatalist = params => { return http.get(`${base}/tag/page`, pa
 //分类条件编辑
 export const uploadtag = params => { return http.put(`${base}/tag?name=${params.name}&id=${params.id}`, params).then(res => res.data); };
 //日本尺码管理关联  
-export const uploadsizejptag = params => { return http.put(`${base}/sizejp?cnSizeId=${params.cnSizeId}&id=${params.id}&name=${params.name}`, params).then(res => res.data); };
+export const uploadsizejptag = params => { return http.put(`${base}/sizejp/correlation?cnSizeId=${params.cnSizeId}&id=${params.id}`, params).then(res => res.data); };
 //获取中国尺码  
 export const getsizecn = params => { return http.get(`${base}/sizejp/getsizecn`, params).then(res => res.data); };
+//修改日本尺码  
+export const editsizejptag = params => { return http.put(`${base}/sizejp/edit?name=${params.name}&id=${params.id}`, params).then(res => res.data); };
+
+
+
 
 //内容------------------------------------------------------------------------------------
-//内容搭配查看  
+//搭配信息详情
 export const getlookdetail = params => { return http.get(`${base}/look/${params.id}`, params).then(res => res.data); };
-//取消发布  
+//搭配信息发布/取消发布
 export const putoperating = params => { return http.put(`${base}/look/publish/${params.operating}/${params.id}?operating=${params.operating}&id=${params.id}`, params).then(res => res.data); };
-//搭配列表查看  
+//搭配集合发布/取消发布
+export const folderPutoperating = params => { return http.put(`${base}/look/folder/publish/${params.operating}/${params.id}?operating=${params.operating}&id=${params.id}`, params).then(res => res.data); };
+//时尚记事发布/取消发布
+export const fashionPutoperating = params => { return http.put(`${base}/fashion/publish/${params.operating}/${params.id}?operating=${params.operating}&id=${params.id}`, params).then(res => res.data); };
+//店铺新闻发布/取消发布
+export const storeNewsPutoperating = params => { return http.put(`${base}/store/news/publish/${params.operating}/${params.id}?operating=${params.operating}&id=${params.id}`, params).then(res => res.data); };
+//搭配集合详情
 export const getlookfolderdetail = params => { return http.get(`${base}/look/folder/${params.id}`, params).then(res => res.data); };
+//时尚记事详情
+export const getfashiondetail = params => { return http.get(`${base}/fashion/${params.id}`, params).then(res => res.data); };
+//店铺新闻详情
+export const getStoreNewsdetail = params => { return http.get(`${base}/store/news/${params.id}`, params).then(res => res.data); };
+//搭配信息保存|保存并发布操作
+export const savelookdetail = params => { return http.post(`${base}/look`, params).then(res => res.data); };
+//搭配集合保存|保存并发布操作
+export const saveFolderdetail = params => { return http.post(`${base}/look/folder`, params).then(res => res.data); };
+//时尚记事保存|保存并发布操作
+export const savefashiondetail = params => { return http.post(`${base}/fashion`, params).then(res => res.data); };
+//店铺新闻保存|保存并发布操作
+export const saveStoreNewsdetail = params => { return http.post(`${base}/store/news`, params).then(res => res.data); };
 
 
 //仓库管理--------------------------------------------------------------------------------------------------------
@@ -48,7 +75,7 @@ export const addodoGoods = params => { return http.post(`${base}/wareHouse/odoGo
 // 获取一级分类
 export const categoryCn = params => { return http.get(`${base}/categoryCn`, params).then(res => res.data); };
 // 删除分类接口
-export const deleteCategoryCn = params => { return http.delete(`${base}/categoryCn/delete`, params).then(res => res.data); };
+export const deleteCategoryCn = params => { return http.delete(`${base}/categoryCn/delete/${params.id}`, params).then(res => res.data); };
 // 新增/修改分类
 export const updataCategoryCn = params => { return http.put(`${base}/categoryCn/edit`, params).then(res => res.data); };
 // 关联查询一级二级三级分类
@@ -56,11 +83,11 @@ export const categoryCnList = params => { return http.get(`${base}/categoryCn/li
 // 分页查询分类
 export const getdatalist = params => { return http.get(`${base}/categoryCn/page`, params).then(res => res.data); };
 // 设为推荐
-export const recommendCategoryCn = params => { return http.put(`${base}/categoryCn/recommend`, params).then(res => res.data); };
+export const recommendCategoryCn = params => { return http.put(`${base}/categoryCn/recommend/?recommendFlag=${params.recommendFlag}7&id=${params.id}`, params).then(res => res.data); };
 // 搜索用分类列表
 export const searchCategoryCn = params => { return http.get(`${base}/categoryCn/search/list`, params).then(res => res.data); };
 // 是否显示分类
-export const showCategoryCn = params => { return http.put(`${base}/categoryCn/show`, params).then(res => res.data); };
+export const showCategoryCn = params => { return http.put(`${base}/categoryCn/show/?showFlag=${params.showFlag}&id=${params.id}`, params).then(res => res.data); };
 // 修改排序号
 export const categoryCnSort = params => { return http.put(`${base}/categoryCn/sort`, params).then(res => res.data); };
 // 根据分类id查询中方分类
@@ -143,7 +170,7 @@ export const backScanDetailGoods = params => { return http.get(`${base}/goods/de
 
 // 商品审核--------------------------------------
 //修改商品审核状态
-// export const checkGoods = params => { return http.put(`${base}/goods/check`, params).then(res => res.data); };
+export const checkGoods = params => { return http.put(`${base}/goods/check`, params).then(res => res.data); };
 //批量修改商品审核状态
 export const checkBatchGoods = params => { return http.put(`${base}/goods/check/batch?goodsStatus=${params.goodsStatus}&rejectReason=${params.rejectReason}`, params.ids).then(res => res.data); };
 
@@ -309,6 +336,8 @@ export const paymentEdit = params => { return http.get(`${base}/payment/payment/
 export const paymentSave = params => { return http.post(`${base}/payment/update/config`, params).then(res => res.data); }
 //交易管理--查看订单
 export const paymentOrder= params => { return http.get(`${base}/order/orderSn/${params.orderSn}`, params).then(res => res.data); }
+//订单审核/order/audit/{operating}/{id}
+export const auditOperating  = params => { return http.get(`${base}/order/audit/${params.operating}/${params.id}`, params).then(res => res.data); }
 
 
 // 移动端首页菜单管理--------------------------------------------------------------------------------------------------------------------
@@ -429,8 +458,10 @@ export const updataGoodSetting = params => { return http.post(`${base}/setting/a
 //审核退换货
 export const examineGoods = params => { return http.post(`${base}/aftersale/apply/reason`, params).then(res => res.data); }
 
-
-
+// 根据物流单号查询订单物流信息
+export const logisticsInfo = params => { return http.get(`${base}/order/logistics/${params.logisticsSn}`, params).then(res => res.data); }
+// 修改收货人信息
+export const orderReceiver = params => { return http.put(`${base}/order/receiver`, params).then(res => res.data); }
 
 //店铺管理--------------------------------------------------------------------------------------------------------------------
 //修改店铺数据
@@ -447,6 +478,12 @@ export const recommendShopStore = params => { return http.put(`${base}/shopStore
 export const verifyShopStore = params => { return http.get(`${base}/shopStore/verify/name`, params).then(res => res.data); };
 // 根据中国ID获取信息
 export const backScanShopStore = params => { return http.get(`${base}/shopStore/${params.id}`, params).then(res => res.data); };
+// 
+//地区管理--------------------------------------------------------------------------------------------------------------------
+// 查询全部一级地区
+export const areaFirst = params => { return http.get(`${base}/area/first/list`, params).then(res => res.data); };
+// 根据父id查询地区
+export const areaByParentId = params => { return http.get(`${base}/area/parent/${params.id}`, params).then(res => res.data); };
 
 
 
@@ -463,7 +500,7 @@ export const importRegister = params => { return http.post(`${base}/goods/regist
 // 备案商品分页查询接口
 export const registerPage = params => { return http.get(`${base}/goods/register/page`, params).then(res => res.data); };
 // 根据商品的spuid查询商品的备案信息
-export const backScanRegister = params => { return http.post(`${base}/goods/register/${params.id}`, params).then(res => res.data); };
+export const backScanRegister = params => { return http.post(`${base}/goods/register/${params.spuid}`, params).then(res => res.data); };
 
 
 
@@ -574,28 +611,20 @@ export const backScanShoplabel = params => { return http.get(`${base}/shoplabel/
 
 
 //商品管理接口--------------------------------------------------------------------------------------------------------------------
-// 修改商品
-export const deleteGoods = params => { return http.delete(`${base}/goods`, params).then(res => res.data); };
-// 商品保存
-export const goodsSave = params => { return http.post(`${base}/goods`, params).then(res => res.data); };
-// 商品修改
-export const editGoods = params => { return http.put(`${base}/goods`, params).then(res => res.data); };
-// 商品审核
-export const checkGoods = params => { return http.put(`${base}/goods/check`, params).then(res => res.data); };
-// 商品导出
-export const exportGoods = params => { return http.get(`${base}/goods/export`, params).then(res => res.data); };
-// 商品分页
-export const goodsPage = params => { return http.get(`${base}/goods/page`, params).then(res => res.data); };
-// 查看商品操作日志分页查询
-export const backScanGoodsLog = params => { return http.get(`${base}/goods/page/log/${params.spuId}`, params).then(res => res.data); };
-// 商品上下架状态批量修改
-export const showBatchGoods = params => { return http.put(`${base}/goods/show?ids=${params.ids}&showWeb=${params.showWeb}`, params).then(res => res.data); };
-// 单个商品上下架状态修改
-export const showGoods = params => { return http.put(`${base}/goods/show/${params.id}`, params).then(res => res.data); };
-// 获取商品尺码信息
-export const getGoodsSize = params => { return http.get(`${base}/goods/size/item`, params).then(res => res.data); };
 // 商品详细信息
-export const backScanGoods = params => { return http.get(`${base}/goods/${params.id}`, params).then(res => res.data); };
+export const backScanZozogoods = params => { return http.get(`${base}/zozogoods/?id=${params.id}`, params).then(res => res.data); };
+// 商品保存
+export const saveZozogoods = params => { return http.post(`${base}/zozogoods`, params).then(res => res.data); };
+// 商品分页
+export const zozogoodsPage = params => { return http.get(`${base}/zozogoods/page`, params).then(res => res.data); };
+// 查看商品操作日志分页查询
+export const backScanZozogoodsLog = params => { return http.get(`${base}/zozogoods/page/log`, params).then(res => res.data); };
+// 商品上下架状态批量修改
+export const showBatchGoods = params => { return http.put(`${base}/zozogoods/show/?ids=${params.ids}&showWeb=${params.showWeb}`, params).then(res => res.data); };
+// 单个商品上下架状态修改
+export const showGoods = params => { return http.put(`${base}/zozogoods/show/${params.id}`, params).then(res => res.data); };
+// 获取商品尺码信息
+export const getZozogoodsSize = params => { return http.get(`${base}/zozogoods/size/item?spuId=${params.spuId}&sizeId=${params.sizeId}`, params).then(res => res.data); };
 
 
 
@@ -652,3 +681,21 @@ export const editShophotkeyword = params => { return http.put(`${base}/shophotke
 export const shophotkeywordPage = params => { return http.get(`${base}/shophotkeyword/page`, params).then(res => res.data); };
 // 信息
 export const backScanShophotkeyword = params => { return http.get(`${base}/shophotkeyword/${params.id}`, params).then(res => res.data); };
+
+
+//消息-------------------------------------------------------------------------------------------------------------
+//消息列表分页  
+export const getmessagepage = params => { return http.get(`${base}/shopmessagetemplate/messagepage`, params).then(res => res.data); };
+
+
+
+
+
+
+
+
+
+
+
+
+
