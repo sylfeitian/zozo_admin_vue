@@ -14,11 +14,14 @@
             <el-form-item label="会员账号：" prop="buyerName">
                 <el-input v-model="dataForm.buyerName" placeholder="请输入" clearable></el-input>
             </el-form-item>
-            <el-form-item label="订单状态：" prop="paymentStatus">
+            <el-form-item label="订单状态：" prop="paymentStatus" v-if="radio1==''|| radio1=='20'|| radio1=='30'">
                 <el-select v-model="dataForm.paymentStatus" placeholder="请选择">
-                    <el-option label="全部" value=""></el-option>
-                    <el-option label="未付款" value="0"></el-option>
-                    <el-option label="已付款" value="1"></el-option>
+                    <el-option label="全部订单" value=""></el-option>
+                    <el-option label="待支付" value="10" ></el-option>
+                    <el-option label="待发货" value="20" v-if="radio1!=20"></el-option>
+                    <el-option label="待收货" value="30" v-if="radio1!=30"></el-option>
+                    <el-option label="交易成功" value="40"></el-option>
+                    <el-option label="订单取消" value="0"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="下单时间：">
@@ -32,15 +35,15 @@
                         :default-time="['00:00:00', '23:59:59']"
                 ></el-date-picker>
             </el-form-item>
-            <el-form-item label="订单类型：" prop="orderType">
+            <!-- <el-form-item label="订单类型：" prop="orderType">
                 <el-select v-model="dataForm.orderType" placeholder="请选择">
                     <el-option label="全部" value=""></el-option>
                     <el-option label="未付款" value="0"></el-option>
                     <el-option label="已付款" value="1"></el-option>
                 </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item>
-                <el-button class="btn" type="primary" @click="addOrAdit()">搜索</el-button>
+                <el-button class="btn" type="primary" @click="getData()">搜索</el-button>
                 <el-button class="btn" type="primary" plain @click="reset('dataForm')">重置</el-button>
             </el-form-item>
             <br>
@@ -75,7 +78,7 @@
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <!-- <el-button type="primary" @click="submitStore()">{{ $t('confirm') }}</el-button> -->
-                    <el-button size="mini" type="text" @click="addOrAdit( scope.row)">查看</el-button>
+                    <el-button size="mini" type="text" @click="addOrAdit(scope.row)">查看</el-button>
                     <el-button size="mini" type="text" @click="handleEdit( scope.row)">取消订单</el-button>
                 </template>
             </el-table-column>
@@ -123,7 +126,7 @@
                 paymentList: "", //支付方式
                 formInline: {}, //订单优惠明细
                 textarea: "",
-                breaddata: ["订单系统", "订单管理", "订单列表"],
+                breaddata: ["订单系统", "BC订单管理", "订单列表"],
                 dataListLoading: false,
                 detailOrList: 1,
                 radio1: "",
@@ -139,7 +142,8 @@
                     endCreateDate: "",
                     endPaymentTime: "",
                     startPaymentTime: "",
-                    orderType: ""
+                    orderType: "cc",//订单类型：bc,cc
+                    isWaitDeal:' 0',//是否为等待处理订单 0不是 1是 默认为不是
                 },
                 tableData: [],
                 timeArr: "", //下单时间数据
@@ -180,8 +184,8 @@
             // discountDet
         },
         methods: {
-            addOrAdit(id){
-                this.$emit("addOrAdit",id);
+            addOrAdit(row){
+                this.$emit("addOrAdit",row);
             },
             getData() {
                 this.dataForm.startCreateDate = this.timeArr && this.timeArr[0];
@@ -190,8 +194,10 @@
                 this.dataForm.endPaymentTime = this.timeArr2[1];
                 this.page = 1;
                 this.limit = 10;
+                 this.dataForm.orderStatus  = this.dataForm.paymentStatus 
                 this.getDataList();
             },
+             
             //订单支付方式
             getPaymentList() {
                 paymentList().then(res => {
@@ -207,6 +213,7 @@
             },
             //订单状态筛选
             agreeChange(val) {
+                 this.dataForm.paymentStatus = ""
                 this.dataForm.page = 1;
                 this.dataForm.limit = 10;
                 this.params = {

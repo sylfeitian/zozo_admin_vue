@@ -4,6 +4,9 @@
         <el-form-item label="优惠券名称：" prop="gcName">
             <el-input v-model="dataForm.gcName" type="text" maxlength="50" placeholder="请输入50字以内的内容" show-word-limit style="width:400px;"></el-input>
         </el-form-item>
+        <el-form-item label="所需积分：" prop="totalnumber">
+            <el-input v-model="dataForm.totalnumber" type="number"  max="1000000" placeholder="1000"  style="width:400px;"></el-input>
+        </el-form-item>
         <el-form-item label="总发行量：" prop="totalnumber">
             <el-input v-model="dataForm.totalnumber" type="number"  max="1000000" placeholder="1000"  style="width:400px;"></el-input>
         </el-form-item>
@@ -91,9 +94,6 @@
 </template>
 
 <script>
-import mixinViewModule from '@/mixins/view-module'
-import { businessPageUrl } from '@/api/url'
-import { storeGrade } from '@/api/api'
 import vueFilter from '@/utils/filter'
 var validnumber =(rule, value,callback)=>{
     if (value/1 > 1000000){
@@ -118,18 +118,9 @@ var validmoney =(rule, value,callback)=>{
     }
 };
 export default {
-  mixins: [mixinViewModule],
+    props: ['type','editSatusId'],
   data () {
     return {
-      mixinViewModuleOptions: {
-          getDataListURL: businessPageUrl,
-          getDataListIsPage: true,
-          exportURL: '/admin-api/store/export',
-          deleteURL: '/admin-api/store',
-          deleteIsBatch: true,
-          // deleteIsBatchKey: 'id'
-      },
-      dataForm: {},
       saveLoading: false,
       activeName2: 'first',
       datatextarea:'',
@@ -212,18 +203,24 @@ export default {
   	
   },
   created(){
-      let obj = {
-            params:{
-                page:1,
-                limit:100,
+      if(!this.type){
+            this.getInfo();//判断为编辑时获取详情
+        }else{
+            this.dataForm = {
+                "gcName": "",//分类名称 ,
+                "totalnumber": "", //总发行量
+                "gcParentId": 0,//父ID ,
+                "gcSort": 0,// 排序 ,
+                "attrIds":[],//属性关联数组 ,
+                "specIds":[],//规格关联数组 ,
+                "storeId": 0,//店铺ID
+                "money":0,
+                startTime:'',
+                endTime:'',    
+                value1:'',
+                value2:''
             }
         }
-      storeGrade(obj).then((res)=>{
-          console.log('商家等级',res)
-            if(res.code == 200 && res.data.list){
-                this.storeGradeList = res.data.list
-            }
-      })
       this.demo();
   },
   watch:{
@@ -262,14 +259,22 @@ export default {
 	
   },
   methods: {
-  			artvalue1time(){
-		  		if(this.dataForm.value1){  
+      //编辑详情接口方法
+        getInfo(){
+
+        },
+        //返回
+        goList(){
+            this.$emit('changePage')
+        },
+  		artvalue1time(){
+		  	if(this.dataForm.value1){  
 						this.value2timedisabled = false;
 	      	}else{
 	      		this.value2timedisabled = true;
 	      	}
-		  	},
-		  	artvalue2time(){
+		},
+		artvalue2time(){
 		  		this.value2timedisabled = false;
 		  		if(this.dataForm.value1 && this.dataForm.startTime == this.dataForm.endTime){    //选择了开始时间      日期是同一天
 	      		this.value2Time = {
@@ -286,26 +291,7 @@ export default {
 	      		this.value2timedisabled = true;
 	      		this.$message('请先选择开始时间');
 	      	}
-		  	},
-	  		handleClick(tab, event) {
-	        console.log(tab, event);
-	     	},
-  			changePage(){
-  				this.$emit('artcouponno')
-  			},
-        showDetail(id){
-	    	this.$emit("showDetail",id);
-        },
-        addOrAdit(id){
-            this.$emit("addOrAdit",id);
-        },
-        reset() {
-            this.dataForm = {};
-            this.getDataList();
-        },
-        addCoupon(){
-        	this.$emit('artcoupon')
-        },
+		},
         demo(){
         	function placeholderPic(){
 						var w = document.documentElement.offsetWidth;
@@ -317,10 +303,10 @@ export default {
 					}
         },
         //开始结束时间
-		    acttime(){
-		    	this.dataForm.strTime = this.valuetime[0];
-		    	this.dataForm.endTime = this.valuetime[1];
-		    },
+        acttime(){
+            this.dataForm.strTime = this.valuetime[0];
+            this.dataForm.endTime = this.valuetime[1];
+        },
         
   }
 };

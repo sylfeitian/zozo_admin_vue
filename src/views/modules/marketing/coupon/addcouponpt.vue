@@ -13,16 +13,21 @@
 					  </el-input>
 					  <div>面值只能是数值，0.01-1000000，限2位小数</div>
         </el-form-item>
-        <el-form-item label="领取时间："  prop="startTime">
+        <el-form-item label="领取开始时间："  prop="startTime">
         	<el-date-picker
-			      v-model="dataForm.startTime"
-			      type="datetimerange"
-            :picker-options="pickerOptions0"
-			      range-separator="至"
-			      start-placeholder="开始日期"
-			      end-placeholder="结束日期">
-			    </el-date-picker>
-    		</el-form-item>
+                v-model="dataForm.startTime"
+                type="datetime"
+                placeholder="选择开始时间">
+            </el-date-picker>
+    	</el-form-item>
+
+        <el-form-item label="领取结束时间："  prop="endTime">
+        	<el-date-picker
+                v-model="dataForm.endTime"
+                type="datetime"
+                placeholder="选择日期时间">
+            </el-date-picker>
+    	</el-form-item>
       
         <el-form-item class="artfromitem" label="使用门槛：" prop="totalnumber">
         		<div>单笔订单满</div>
@@ -38,12 +43,12 @@
         </el-form-item>
         <el-form-item label="备注：" prop="datatextarea">
            <el-input
-						  type="textarea"
-						  placeholder="请输入内容"
-						  v-model="dataForm.datatextarea"
-						  maxlength="300"
-						  style="width:400px;">
-						</el-input>
+                type="textarea"
+                placeholder="请输入内容"
+                v-model="dataForm.datatextarea"
+                maxlength="300"
+                style="width:400px;">
+            </el-input>
         </el-form-item>
         <el-form-item>
             <el-button @click="goList()">返回</el-button>
@@ -81,135 +86,115 @@ var validmoney =(rule, value,callback)=>{
     }
 };
 export default {
-  mixins: [mixinViewModule],
-  data () {
-    return {
-      mixinViewModuleOptions: {
-          getDataListURL: businessPageUrl,
-          getDataListIsPage: true,
-          exportURL: '/admin-api/store/export',
-          deleteURL: '/admin-api/store',
-          deleteIsBatch: true,
-          // deleteIsBatchKey: 'id'
-      },
-      saveLoading: false,
-      activeName2: 'first',
-      datatextarea:'',
-      dataForm:{
-        "gcName": "",//分类名称 ,
-        "totalnumber": "", //总发行量
-        "gcParentId": 0,//父ID ,
-        "gcSort": 0,// 排序 ,
-        "attrIds":[],//属性关联数组 ,
-        "specIds":[],//规格关联数组 ,
-        "storeId": 0,//店铺ID
-        "money":0,
-        startTime:'',
-        endTime:'',    
-        value1:'',
-        value2:'',
-    	},
-    	dataRule : {
-        gcName : [
-            { required: true, message: '必填项不能为空', trigger: 'blur' },
-        ],
-        startTime : [
-        		{ required: true, message: '必填项不能为空', trigger: 'blur' },
-        ],
-        endTime : [
-        		{ required: true, message: '必填项不能为空', trigger: 'blur' },
-        ],
-        value1 : [
-        		{ required: true, message: '必填项不能为空', trigger: 'blur' },
-        ],
-        value2 : [
-        		{ required: true, message: '必填项不能为空', trigger: 'blur' },
-        ],
-        men: [
-        		{ required: true, message: '必填项不能为空', trigger: 'blur' },
-        ],
-        totalnumber :[
-        		{ required: true, message: '必填项不能为空', trigger: 'blur' },
-        		{ validator: validnumber, trigger: 'blur' },
-        ],
-        money :[
-        		{ required: true, message: '必填项不能为空', trigger: 'blur' },
-        		{ validator: validmoney, trigger: 'blur' },
-        ],
-        gcParentId : [
-            { required: true, message: '必填项不能为空', trigger: 'blur' },
-        ],
-        gcSort : [
-            { required: true, message: '必填项不能为空', trigger: 'blur' },
-        ],
-     },
-      pickerOptions0: {
-        disabledDate: (time) => {
-        	console.log(time.getTime() );
-        	console.log(Date.now());
-          return time.getTime() < Date.now() - 8.64e7
-        }
-      },
-    }
-  },
-  components:{
-  	
-  },
-  created(){
-      let obj = {
-            params:{
-                page:1,
-                limit:100,
+    props: ['type','editSatusId'],
+    data () {
+        return {
+            saveLoading: false,
+            datatextarea:'',
+            dataForm:{
+                gcName: "",//分类名称 ,
+                totalnumber: "", //总发行量
+                gcParentId: 0,//父ID ,
+                gcSort: 0,// 排序 ,
+                attrIds:[],//属性关联数组 ,
+                specIds:[],//规格关联数组 ,
+                storeId: 0,//店铺ID
+                money:0,
+                startTime:'',
+                endTime:'',    
+                value1:'',
+                value2:'',
+            },
+            dataRule : {
+                gcName : [
+                    { required: true, message: '必填项不能为空', trigger: 'blur' },
+                ],
+                startTime : [
+                        { required: true, message: '必填项不能为空', trigger: 'blur' },
+                ],
+                endTime : [
+                        { required: true, message: '必填项不能为空', trigger: 'blur' },
+                ],
+                value1 : [
+                        { required: true, message: '必填项不能为空', trigger: 'blur' },
+                ],
+                value2 : [
+                        { required: true, message: '必填项不能为空', trigger: 'blur' },
+                ],
+                men: [
+                        { required: true, message: '必填项不能为空', trigger: 'blur' },
+                ],
+                totalnumber :[
+                        { required: true, message: '必填项不能为空', trigger: 'blur' },
+                        { validator: validnumber, trigger: 'blur' },
+                ],
+                money :[
+                        { required: true, message: '必填项不能为空', trigger: 'blur' },
+                        { validator: validmoney, trigger: 'blur' },
+                ],
+                gcParentId : [
+                    { required: true, message: '必填项不能为空', trigger: 'blur' },
+                ],
+                gcSort : [
+                    { required: true, message: '必填项不能为空', trigger: 'blur' },
+                ],
+            },
+            pickerOptions0: {
+                disabledDate: (time) => {
+                    console.log(time.getTime() );
+                    console.log(Date.now());
+                  return time.getTime() < Date.now() - 8.64e7
+                }
+            },
+        }
+    },
+    components:{
+        
+    },
+    created(){
+        console.log('999999',this.type,this.editSatusId)
+        if(!this.type){
+            this.getInfo();//判断为编辑时获取详情
+        }else{
+            this.dataForm = {
+                gcName: "",//分类名称 ,
+                totalnumber: "", //总发行量
+                gcParentId: 0,//父ID ,
+                gcSort: 0,// 排序 ,
+                attrIds:[],//属性关联数组 ,
+                specIds:[],//规格关联数组 ,
+                storeId: 0,//店铺ID
+                money:0,
+                startTime:'',
+                endTime:'',    
+                value1:'',
+                value2:'',
             }
         }
-      storeGrade(obj).then((res)=>{
-          console.log('商家等级',res)
-            if(res.code == 200 && res.data.list){
-                this.storeGradeList = res.data.list
-            }
-      })
-      this.demo();
-  },
-  watch:{
+        this.demo();
+    },
+    methods: {
+        //编辑详情接口方法
+        getInfo(){
 
-  },
-  methods: {
-	  		handleClick(tab, event) {
-	        console.log(tab, event);
-	     	},
-  			changePage(){
-  				this.$emit('artcouponno')
-  			},
-        showDetail(id){
-	    	this.$emit("showDetail",id);
         },
-        addOrAdit(id){
-            this.$emit("addOrAdit",id);
-        },
-        reset() {
-            this.dataForm = {};
-            this.getDataList();
-        },
-        addCoupon(){
-        	this.$emit('artcoupon')
+        //返回
+        goList(){
+            console.log('=====',this.type)
+            this.$emit('changePage')
         },
         demo(){
-        	function placeholderPic(){
-						var w = document.documentElement.offsetWidth;
-						document.documentElement.style.fontSize=w/20+'px';
-					}
-						placeholderPic();
-					window.onresize=function(){
-						placeholderPic();
-					}
+            function placeholderPic(){
+                var w = document.documentElement.offsetWidth;
+                document.documentElement.style.fontSize=w/20+'px';
+            }
+                placeholderPic();
+            window.onresize=function(){
+                placeholderPic();
+            }
         },
-        //开始结束时间
-		    acttime(){
-		    	this.dataForm.strTime = this.valuetime[0];
-		    	this.dataForm.endTime = this.valuetime[1];
-		    },
-        
-  }
+            
+    }
 };
 </script>
 <style lang="scss" scoped>

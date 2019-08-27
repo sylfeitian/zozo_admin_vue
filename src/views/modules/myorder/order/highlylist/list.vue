@@ -15,10 +15,13 @@
                 <el-input v-model="dataForm.buyerName" placeholder="请输入" clearable></el-input>
             </el-form-item>
             <el-form-item label="订单状态：" prop="paymentStatus">
-                <el-select v-model="dataForm.paymentStatus" placeholder="请选择">
-                    <el-option label="全部" value=""></el-option>
-                    <el-option label="未付款" value="0"></el-option>
-                    <el-option label="已付款" value="1"></el-option>
+                <el-select v-model="dataForm.paymentStatus" placeholder="请选择"  v-if="radio1==''|| radio1=='20'|| radio1=='30'">
+                    <el-option label="全部订单" value=""></el-option>
+                    <el-option label="待支付" value="10" ></el-option>
+                    <el-option label="待发货" value="20" v-if="radio1!=20"></el-option>
+                    <el-option label="待收货" value="30" v-if="radio1!=30"></el-option>
+                    <el-option label="交易成功" value="40"></el-option>
+                    <el-option label="订单取消" value="0"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="下单时间：">
@@ -124,7 +127,7 @@
                 paymentList: "", //支付方式
                 formInline: {}, //订单优惠明细
                 textarea: "",
-                breaddata: ["订单系统", "订单管理", "订单列表"],
+                breaddata: ["订单系统", "CC订单管理", "订单列表"],
                 dataListLoading: false,
                 detailOrList: 1,
                 radio1: "",
@@ -140,7 +143,8 @@
                     endCreateDate: "",
                     endPaymentTime: "",
                     startPaymentTime: "",
-                    orderType: ""
+                    orderType: "cc",//订单类型：bc,cc
+                    isWaitDeal:' 0',//是否为等待处理订单 0不是 1是 默认为不是
                 },
                 tableData: [],
                 timeArr: "", //下单时间数据
@@ -186,6 +190,7 @@
                 this.dataForm.endPaymentTime = this.timeArr2[1];
                 this.page = 1;
                 this.limit = 10;
+                this.dataForm.orderStatus  = this.dataForm.paymentStatus 
                 this.getDataList();
             },
             //订单支付方式
@@ -203,6 +208,7 @@
             },
             //订单状态筛选
             agreeChange(val) {
+                this.dataForm.paymentStatus = ""
                 this.dataForm.page = 1;
                 this.dataForm.limit = 10;
                 this.params = {

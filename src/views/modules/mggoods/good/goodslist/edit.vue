@@ -6,7 +6,7 @@
                 class="grayLine topGapPadding"
                 :model="dataForm"
                 @keyup.enter.native="getDataList()"
-                style="margin-left: 20px;"
+                style="margin-left: 20px;margin-bottom: 100px;"
         >
             <el-form-item label="商品分类：" class="item" style="margin-top: 20px;">
                 <span>{{dataForm.firstCategory}}</span>
@@ -79,7 +79,7 @@
             <el-form-item label="商品图片：">
                 <template slot-scope="scope">
                     <div class="goodsImg">
-                        <img  :src="scope.row.imageUrl | filterImgUrl" style="width:60px;height:60px;object-fit: contain;" alt=""/>
+<!--                        <img  :src="scope.row.imageUrl | filterImgUrl" style="width:60px;height:60px;object-fit: contain;" alt=""/>-->
                     </div>
                 </template>
             </el-form-item>
@@ -91,6 +91,13 @@
                 <quill-editor-img class="inforRight" style="display: inline-block;"  @artmessageContent='artmessageContent' ref="refmessageContent"></quill-editor-img>
             </el-form-item>
         </el-form>
+        <el-col :span="24">
+            <div style="position: fixed;bottom: 0;margin: 0 auto;width: 86%;text-align: center;z-index: 999;background-color: #e6e6e6;padding: 10px 0;">
+                <el-button class="btn" @click="changePage()">取消</el-button>
+                <el-button class="btn" @click="save()">仅保存</el-button>
+                <el-button class="btn" type="primary" @click="getData()">保存并上架</el-button>
+            </div>
+        </el-col>
         <!-- 弹窗, 新建 -->
         <addEditData  v-if="addEditDataVisible" ref="addEditData" @searchDataList="getDataList"></addEditData>
     </div>
@@ -103,6 +110,7 @@
     import quillEditorImg from "@/components/quillEditor"
     import addEditData from './model-edit-data'
     import mixinViewModule from '@/mixins/view-module'
+    import { backScanZozogoods } from '@/api/api'
 
     import 'quill/dist/quill.core.css';
     import 'quill/dist/quill.snow.css';
@@ -112,7 +120,7 @@
         mixins: [mixinViewModule],
         data () {
             return {
-                breaddata: [ "商品管理","商品管理", "商品详情"],
+                breaddata: [ "商品管理","商品列表", "编辑商品"],
                 tableData: [
                     {key: '袖长', value: '短袖'},
                     {key: '图案', value: '豹纹'},
@@ -127,11 +135,26 @@
             quillEditorImg,
             addEditData,
         },
-        props: [
-            "detdata",
-            "data"
-        ],
+        // props: [
+        //     "detdata",
+        //     "data"
+        // ],
         methods: {
+            init(row){
+                this.$nextTick(()=>{
+                    if(row){
+                        var obj  = {
+                            id:row.id
+                        }
+                        backScanZozogoods(obj).then((res)=>{
+                            console.log('详情',res.data)
+                            if(res.code == 200){
+                                this.dataForm = res.data;
+                            }
+                        })
+                    }
+                })
+            },
             artmessageContent(messageContent){
                 this.dataForm.messageContent = messageContent;
             },
@@ -141,9 +164,6 @@
             // },
             // 返回上一级
             changePage() {
-                this.$emit("showList");
-            },
-            changePage(){
                 this.$emit("showList");
             },
             operational () {
@@ -158,6 +178,9 @@
             setAddEditDataVisible(boolargu){
                 this.addEditDataVisible =  boolargu;
             },
+            // save () {
+            //     name: this.dataForm.name
+            // }
         }
     }
 </script>

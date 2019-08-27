@@ -67,7 +67,7 @@
         		<div>元可用（输入“0”为无门槛优惠券）</div>
         </el-form-item>
         <el-form-item class="artfromitem" label="每人限领：" prop="men">
-            <el-input v-model="dataForm.totalnumber" type="number"  max="1000000" placeholder="1"  style="width:400px;"></el-input>
+            <el-input v-model="dataForm.onlyNum" :disabled="true" type="number"  max="1000000" placeholder="1"  style="width:400px;"></el-input>
             <div>张 &nbsp;&nbsp;&nbsp;&nbsp; 0代表不限制，每人最多限制5张</div>
         </el-form-item>
         <el-form-item label="有效期：" prop="totalnumber">
@@ -91,9 +91,6 @@
 </template>
 
 <script>
-import mixinViewModule from '@/mixins/view-module'
-import { businessPageUrl } from '@/api/url'
-import { storeGrade } from '@/api/api'
 import vueFilter from '@/utils/filter'
 var validnumber =(rule, value,callback)=>{
     if (value/1 > 1000000){
@@ -118,79 +115,69 @@ var validmoney =(rule, value,callback)=>{
     }
 };
 export default {
-  mixins: [mixinViewModule],
+    props: ['type','editSatusId'],
   data () {
     return {
-      mixinViewModuleOptions: {
-          getDataListURL: businessPageUrl,
-          getDataListIsPage: true,
-          exportURL: '/admin-api/store/export',
-          deleteURL: '/admin-api/store',
-          deleteIsBatch: true,
-          // deleteIsBatchKey: 'id'
-      },
-      dataForm: {},
-      saveLoading: false,
-      activeName2: 'first',
-      datatextarea:'',
-      dataForm:{
-        "gcName": "",//分类名称 ,
-        "totalnumber": "", //总发行量
-        "gcParentId": 0,//父ID ,
-        "gcSort": 0,// 排序 ,
-        "attrIds":[],//属性关联数组 ,
-        "specIds":[],//规格关联数组 ,
-        "storeId": 0,//店铺ID
-        "money":0,
-        startTime:'',
-        endTime:'',    
-        value1:'',
-        value2:'',
+        saveLoading: false,
+        datatextarea:'',
+        dataForm:{
+            "gcName": "",//分类名称 ,
+            "totalnumber": "", //总发行量
+            "gcParentId": 0,//父ID ,
+            "gcSort": 0,// 排序 ,
+            "attrIds":[],//属性关联数组 ,
+            "specIds":[],//规格关联数组 ,
+            "storeId": 0,//店铺ID
+            "money":0,
+            startTime:'',
+            endTime:'',    
+            value1:'',
+            value2:'',
     	},
     	dataRule : {
-        gcName : [
-            { required: true, message: '必填项不能为空', trigger: 'blur' },
-        ],
-        startTime : [
-        		{ required: true, message: '必填项不能为空', trigger: 'blur' },
-        ],
-        endTime : [
-        		{ required: true, message: '必填项不能为空', trigger: 'blur' },
-        ],
-        value1 : [
-        		{ required: true, message: '必填项不能为空', trigger: 'blur' },
-        ],
-        value2 : [
-        		{ required: true, message: '必填项不能为空', trigger: 'blur' },
-        ],
-        men: [
-        		{ required: true, message: '必填项不能为空', trigger: 'blur' },
-        ],
-        totalnumber :[
-        		{ required: true, message: '必填项不能为空', trigger: 'blur' },
-        		{ validator: validnumber, trigger: 'blur' },
-        ],
-        money :[
-        		{ required: true, message: '必填项不能为空', trigger: 'blur' },
-        		{ validator: validmoney, trigger: 'blur' },
-        ],
-        gcParentId : [
-            { required: true, message: '必填项不能为空', trigger: 'blur' },
-        ],
-        gcSort : [
-            { required: true, message: '必填项不能为空', trigger: 'blur' },
-        ],
-      },
-      pickerOptions0: {
-        disabledDate: (time) => {
-           if (this.dataForm.endTime) {   //先选的结束时间
-              return time.getTime() > new Date(this.dataForm.endTime).getTime()  || time.getTime() < Date.now() - 8.64e7;
-           }else{//还没有选择结束时间的时候，让他只能选择今天之后的时间包括今天
-               return time.getTime() < Date.now() - 8.64e7
-           } 
- 
-           }
-      },
+            gcName : [
+                { required: true, message: '必填项不能为空', trigger: 'blur' },
+            ],
+            startTime : [
+                    { required: true, message: '必填项不能为空', trigger: 'blur' },
+            ],
+            endTime : [
+                    { required: true, message: '必填项不能为空', trigger: 'blur' },
+            ],
+            value1 : [
+                    { required: true, message: '必填项不能为空', trigger: 'blur' },
+            ],
+            value2 : [
+                    { required: true, message: '必填项不能为空', trigger: 'blur' },
+            ],
+            men: [
+                    { required: true, message: '必填项不能为空', trigger: 'blur' },
+            ],
+            totalnumber :[
+                    { required: true, message: '必填项不能为空', trigger: 'blur' },
+                    { validator: validnumber, trigger: 'blur' },
+            ],
+            money :[
+                    { required: true, message: '必填项不能为空', trigger: 'blur' },
+                    { validator: validmoney, trigger: 'blur' },
+            ],
+            gcParentId : [
+                { required: true, message: '必填项不能为空', trigger: 'blur' },
+            ],
+            gcSort : [
+                { required: true, message: '必填项不能为空', trigger: 'blur' },
+            ],
+        },
+        pickerOptions0: {
+            disabledDate: (time) => {
+               if (this.dataForm.endTime) {   //先选的结束时间
+                  return time.getTime() > new Date(this.dataForm.endTime).getTime()  || time.getTime() < Date.now() - 8.64e7;
+               }else{//还没有选择结束时间的时候，让他只能选择今天之后的时间包括今天
+                   return time.getTime() < Date.now() - 8.64e7
+               } 
+     
+             }
+        },
          pickerOptions1: {
                 disabledDate: (time) => {
                     if(this.dataForm.startTime){
@@ -212,18 +199,25 @@ export default {
   	
   },
   created(){
-      let obj = {
-            params:{
-                page:1,
-                limit:100,
+      if(!this.type){
+            this.getInfo();//判断为编辑时获取详情
+        }else{
+            this.dataForm = {
+                onlyNum:'1',//限领数
+                "gcName": "",//分类名称 ,
+                "totalnumber": "", //总发行量
+                "gcParentId": 0,//父ID ,
+                "gcSort": 0,// 排序 ,
+                "attrIds":[],//属性关联数组 ,
+                "specIds":[],//规格关联数组 ,
+                "storeId": 0,//店铺ID
+                "money":0,
+                startTime:'',
+                endTime:'',    
+                value1:'',
+                value2:'',
             }
         }
-      storeGrade(obj).then((res)=>{
-          console.log('商家等级',res)
-            if(res.code == 200 && res.data.list){
-                this.storeGradeList = res.data.list
-            }
-      })
       this.demo();
   },
   watch:{
@@ -262,65 +256,54 @@ export default {
 	
   },
   methods: {
-  			artvalue1time(){
-		  		if(this.dataForm.value1){  
-						this.value2timedisabled = false;
-	      	}else{
-	      		this.value2timedisabled = true;
-	      	}
-		  	},
-		  	artvalue2time(){
-		  		this.value2timedisabled = false;
-		  		if(this.dataForm.value1 && this.dataForm.startTime == this.dataForm.endTime){    //选择了开始时间      日期是同一天
-	      		this.value2Time = {
-					      selectableRange: `${vueFilter.dateToStr(this.dataForm.value1).substr(10)} - 23:59:59`
-						};
-	      	}else if(this.dataForm.value1){
-	      		this.value2Time = {
-					      selectableRange: `00:00:00- 23:59:59`
-						};
-	      	}else{
-	      		this.value2Time = {
-					      selectableRange: `00:00:00- 23:59:59`
-						};
-	      		this.value2timedisabled = true;
-	      		this.$message('请先选择开始时间');
-	      	}
-		  	},
-	  		handleClick(tab, event) {
-	        console.log(tab, event);
-	     	},
-  			changePage(){
-  				this.$emit('artcouponno')
-  			},
-        showDetail(id){
-	    	this.$emit("showDetail",id);
+        //编辑详情接口方法
+        getInfo(){
+
         },
-        addOrAdit(id){
-            this.$emit("addOrAdit",id);
+        //返回
+        goList(){
+            this.$emit('changePage')
         },
-        reset() {
-            this.dataForm = {};
-            this.getDataList();
+        artvalue1time(){
+            if(this.dataForm.value1){  
+                this.value2timedisabled = false;
+            }else{
+                this.value2timedisabled = true;
+            }
         },
-        addCoupon(){
-        	this.$emit('artcoupon')
+        artvalue2time(){
+            this.value2timedisabled = false;
+            if(this.dataForm.value1 && this.dataForm.startTime == this.dataForm.endTime){    //选择了开始时间      日期是同一天
+                this.value2Time = {
+                    selectableRange: `${vueFilter.dateToStr(this.dataForm.value1).substr(10)} - 23:59:59`
+                };
+            }else if(this.dataForm.value1){
+                this.value2Time = {
+                    selectableRange: `00:00:00- 23:59:59`
+                };
+            }else{
+                this.value2Time = {
+                    selectableRange: `00:00:00- 23:59:59`
+                };
+                this.value2timedisabled = true;
+                this.$message('请先选择开始时间');
+            }
         },
         demo(){
         	function placeholderPic(){
-						var w = document.documentElement.offsetWidth;
-						document.documentElement.style.fontSize=w/20+'px';
-					}
-						placeholderPic();
-					window.onresize=function(){
-						placeholderPic();
-					}
+                var w = document.documentElement.offsetWidth;
+                document.documentElement.style.fontSize=w/20+'px';
+            }
+                placeholderPic();
+            window.onresize=function(){
+                placeholderPic();
+            }
         },
         //开始结束时间
-		    acttime(){
-		    	this.dataForm.strTime = this.valuetime[0];
-		    	this.dataForm.endTime = this.valuetime[1];
-		    },
+        acttime(){
+            this.dataForm.strTime = this.valuetime[0];
+            this.dataForm.endTime = this.valuetime[1];
+        },
         
   }
 };

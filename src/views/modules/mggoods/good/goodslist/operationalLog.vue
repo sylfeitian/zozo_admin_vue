@@ -29,18 +29,45 @@
 <script>
     import Bread from "@/components/bread";
     import mixinViewModule from '@/mixins/view-module'
-    import { backScanGoodsLog } from '@/api/api'
+    import { getGoodsUrl } from '@/api/url'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
-                breaddata: [ "商品管理","商品管理", "商品详情", "操作日志"],
+                mixinViewModuleOptions: {
+                    getDataListURL: getGoodsUrl,
+                    activatedIsNeed:true,
+                    getDataListIsPage: true,
+                    // exportURL: '/admin-api/log/login/export',
+                    // deleteURL: deleteGoodsUrl,
+                    deleteIsBatch: true,
+                    deleteIsBatchKey: 'id'
+                },
+                breaddata: [ "商品管理","商品列表", "商品详情", "操作日志"],
+                dataForm: {
+                    spuId:null,
+                    createDate:null,
+                    creater: null,
+                    operation: null,
+                },
             }
         },
         components: {
             Bread
         },
+        props:["idJp"],
         methods: {
+            init (row) {
+                this.visible = true;
+                this.row = row;
+                // this.dataForm.spuId = res.data.list.spuId;
+                console.log(this.idJp);
+                this.$nextTick(() => {
+                    this.getDataList();
+                    // this.$refs['addForm'].resetFields();
+                    // this.getApplyPullList();
+                })
+            },
             changePage(){
                 this.$emit("operationallogList");
             },

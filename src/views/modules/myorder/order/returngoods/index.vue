@@ -129,7 +129,9 @@
                     memberName: "",
                     goodnum: "",
                     startTime: "",
-                    endTime: ""
+                    endTime: "",
+                    orderType: "",//订单类型：bc,cc
+                    isWaitDeal:' 0',//是否为等待处理订单 0不是 1是 默认为不是
                 },
                 piclist: [],
                 changeVal: "",
