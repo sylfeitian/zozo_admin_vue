@@ -43,11 +43,17 @@
             <el-table-column prop="storeName" label="店铺中文名称" align="center"></el-table-column>
             <el-table-column label="营业状态" align="center">
                 <template slot-scope="scope">
-                    <el-tag v-if="scope.row.operateFlag==0" type="success">营业中</el-tag>
-                    <el-tag v-if="scope.row.operateFlag==1" type="info">已停业</el-tag>
+                    <el-tag v-if="scope.row.operateFlag==0" type="warning">待营业</el-tag>
+                    <el-tag v-if="scope.row.operateFlag==1" type="success">营业中</el-tag>
+                    <el-tag v-if="scope.row.operateFlag==2" type="info">已停业</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column prop="japanState" label="日本店铺状态" align="center"></el-table-column>
+            <el-table-column prop="japanState" label="日本店铺状态" align="center">
+                <template slot-scope="scope">
+                    <el-tag v-if="scope.row.operateFlagJp==0" type="success">营业中</el-tag>
+                    <el-tag v-if="scope.row.operateFlagJp==1" type="info">已停业</el-tag>
+                </template>
+            </el-table-column>
             <el-table-column prop="updateDate" label="更新时间" align="center"></el-table-column>
             <el-table-column prop="mainTag" label="店铺主风格标签" align="center"></el-table-column>
             <el-table-column prop="subTag" label="店铺副风格标签" align="center"></el-table-column>
@@ -64,7 +70,7 @@
             </el-table-column>
             <el-table-column label="售卖品牌" align="center">
                 <template slot-scope="scope">
-                    <el-button type="text" @click.native.prevent="editHandle" size="mini">查看</el-button>
+                    <el-button type="text" @click.native.prevent="addHandle" size="mini">查看</el-button>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center">
@@ -117,9 +123,11 @@
                 breaddata: [ "基础资料管理", "店铺管理"],
                 options: [],
                 dataForm: {
+                    id:"",
                     idJp: "",//店铺ID
                     storeName: "",//店铺名称
-                    operateFlag:""//营业状态:0营业;1停业
+                    operateFlag:"",//营业状态:0待营业;1营业中;2已停业
+                    operateFlagJp:"",//日本营业状态:0营业;1停业
                 },
                 dataList: [],
                 dataListLoading: false,
@@ -158,7 +166,7 @@
                 this.dataForm.operateFlag = "";//营业状态
                 this.getDataList();
             },
-            // 新建
+            // 查看
             addHandle(index=-1,row=""){
                 this.setAddDataVisible(true);
                 this.$nextTick(() => {
@@ -187,15 +195,17 @@
                 ids = [rowOrstatus.id]
                 operateFlag = rowOrstatus.operateFlag==1?0:1;
                 var obj = {
-                    ids:ids,
+                    storeId:storeId,
                     operateFlag:operateFlag,
                 }
             },
             forbitHandle(index,row){
+                console.log(row);
                 this.currentIndex = index;
+                console.log(obj)
                 var obj = {
-                    "id": row.id,
-                    "operateFlag":row.operateFlag==1?2:1  //
+                    "storeId": row.id,
+                    "operateFlag":row.operateFlag==1?0:1  //
                 }
                 var msg = ""
                 row.operateFlag==1?msg="停业":msg="营业"

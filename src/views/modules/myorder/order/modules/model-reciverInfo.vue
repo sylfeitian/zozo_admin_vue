@@ -79,6 +79,7 @@
 
 <script>
 import {orderReceiver,areaFirst,areaByParentId} from "@/api/api.js"
+import { isMobile,isPhone } from '@/utils/validate'
     export default {
         name: "model-order-data",
         data () {
@@ -108,6 +109,7 @@ import {orderReceiver,areaFirst,areaByParentId} from "@/api/api.js"
                     stressId: "",
                     townArea: "",
                  },
+                 orderBase:{},
                  row:{},
                 dataRule : {
 			        memberRealName : [
@@ -119,15 +121,16 @@ import {orderReceiver,areaFirst,areaByParentId} from "@/api/api.js"
 					province: [
 			          { required: true, message: '必填项不能为空', trigger: 'blur' },
 					],
-					province: [
+					address: [
 			          { required: true, message: '必填项不能为空', trigger: 'blur' },
 					],
 				},
             }
         },
         methods: {
-            init(receiverInfo,row) {
+            init(orderBase,receiverInfo,row) {
                 this.visible = true;
+                this.orderBase = orderBase;
                 Object.assign(this.dataForm,receiverInfo);
                 this.row = row;
                 this.preOptionsArea1 = [];
@@ -135,6 +138,9 @@ import {orderReceiver,areaFirst,areaByParentId} from "@/api/api.js"
                 this.optionsArea3[0] = {id:receiverInfo.areaId,name:receiverInfo.areaId} 
                 this.optionsArea4[0] =  {id:receiverInfo.stressId,name:receiverInfo.townArea}
                 this.getFirstData();
+                receiverInfo.provinceId && this.changeArea(receiverInfo.provinceId,1,false);
+                receiverInfo.cityId && this.changeArea(receiverInfo.cityId,2,false);
+                receiverInfo.areaId && this.changeArea(receiverInfo.areaId,3,false);
             },
             getFirstData(){
                 areaFirst().then((res)=>{
@@ -144,29 +150,29 @@ import {orderReceiver,areaFirst,areaByParentId} from "@/api/api.js"
                     }
                 })
             },
-            changeArea(id,argu2){
+            changeArea(id,argu2,reset=true){
                 if(!id){
                     return
                 }
                 var obj ={
                     id:id
                 }
-                if(argu2==1){
+                if(argu2==1 && reset){
                     this.dataForm.cityId = "";
                     this.dataForm.areaId = "";
                     this.dataForm.stressId = "";
                     this.optionsArea2 = []
                     this.optionsArea3 = []
                     this.optionsArea4 = []
-                }else if(argu2==2){
+                }else if(argu2==2 && reset){
                     this.dataForm.areaId = "";
                     this.dataForm.stressId = "";
                     this.optionsArea3 = []
                     this.optionsArea4 = []
-                }else if(argu2==3){
+                }else if(argu2==3 && reset){
                     this.dataForm.stressId = "";
                     this.optionsArea4 = []
-                }else if(argu2==4){
+                }else if(argu2==4 && reset){
                     // 选到最后一级了
                 }
                 areaByParentId(obj).then((res)=>{
@@ -194,12 +200,13 @@ import {orderReceiver,areaFirst,areaByParentId} from "@/api/api.js"
 								var obj={
                                     "address": this.dataForm.address,
                                     "areaId": this.dataForm.areaId,
-                                    "areaInfo": this.dataForm.area,
+                                    "area": this.dataForm.area,
+                                    "areaInfo": this.dataForm.province+""+ this.dataForm.city+""+this.dataForm.area+""+this.dataForm.townArea,
                                     "cityId": this.dataForm.cityId,
                                     "memberRealName": this.dataForm.memberRealName,
                                     "mobPhone": this.dataForm.mobPhone,
-                                    "orderAddressId": this.row.orderSn,// this.row.orderSn,
-                                    "orderId":  this.row.orderSn,// this.row.orderSn,
+                                    "orderAddressId": this.orderBase.orderAddressId,// this.row.orderSn,
+                                    "orderId":  this.row.id,// this.row.orderSn,
                                     "provinceId": this.dataForm.provinceId,
                                     "stressId":this.dataForm.stressId,
 								}

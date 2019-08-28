@@ -93,7 +93,11 @@
                     </el-table>
                 </el-form-item>
                 <el-form-item label="分类条件：">
-                    <Table class="inforRight" style="display: inline-block;" :tableData="tableData" :tableStyle="{ width:'600px' }"></Table>
+                    <el-row v-for="(item,index) in dataForm.tags" :key="index" class="info" style="width: 500px;">
+                        <el-col :span="12"><div class="grid-content"></div></el-col>
+                        <el-col :span="12"><div class="grid-content"></div></el-col>
+                    </el-row>
+<!--                    <Table class="inforRight" style="display: inline-block;" :tableData="tableData" :tableStyle="{ width:'600px' }"></Table>-->
                 </el-form-item>
                 <el-form-item label="商品图片：">
                     <template slot-scope="scope">
@@ -118,11 +122,14 @@
         <addEditData :idJp="dataForm.idJp" v-if="addEditDataVisible" ref="addEditData" @searchDataList="getDataList"></addEditData>
         <!-- 操作日志 -->
         <operationallog :idJp="dataForm.idJp" v-if="operationallogVisible" ref="operationallogCompon" @searchDataList="getDataList" ></operationallog>
+        <!-- 尺码信息 -->
+        <sizeData v-if="sizeDataVisible" ref="sizeDataCompon" @searchDataList="getDataList"></sizeData>
     </div>
 </template>
 
 <script>
     import addEditData from './recordList'
+    import sizeData from './model-size'
     import Bread from "@/components/bread";
     import Table from "@/components/table";
     import quillEditorImg from "@/components/quillEditor"
@@ -150,7 +157,10 @@
                 data: {}, //总数据
                 // skuVOList: [],
                 operationallogVisible:false,
-                mainVisible: true
+                sizeDataVisible: false,
+                mainVisible: true,
+                tags: [],
+                row:'',
             }
         },
         components: {
@@ -159,6 +169,7 @@
             quillEditorImg,
             addEditData,
             operationallog,
+            sizeData
         },
         created(){
 
@@ -185,6 +196,7 @@
                 // })
             },
             init(row){
+                this.row = row;
                 this.$nextTick(()=>{
                     if(row){
                         var obj  = {
@@ -218,9 +230,17 @@
                 this.idJp = this.dataForm.idJp;
                 console.log(this.dataForm.idJp)
             },
+            detShowChange (row2) {
+                this.sizeDataVisible =  true;
+                console.log(this.dataForm);
+                this.$nextTick(() => {
+                    this.$refs.sizeDataCompon.init(this.row,row2);
+                })
+            }
             // operational () {
             //     this.$emit("operational",this.dataForm.idJp)
             // },
+
         }
     }
 </script>
@@ -250,5 +270,14 @@
     }
     .grayLine {
         border-bottom: 0!important;
+    }
+    .grid-content {
+        border: 1px solid #ebeef5;
+        height: 54px;
+        line-height: 54px;
+        text-align: center
+    }
+    .info {
+        margin-left: 100px;
     }
 </style>

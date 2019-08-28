@@ -1,11 +1,11 @@
 <template>
   <div>
       <!-- 列表 -->
-      <activitylist v-if='showStatus&&!detailStatus'  @addAditFun='addAditFun(arguments)' @showDetail='showDetail'></activitylist>
+      <activitylist v-if='showStatus&&!detailStatus'  @addAditFun='addAditFun' @showDetail='showDetail'></activitylist>
       <!-- 添加商品 -->
-      <addgoods v-if='!showStatus&&!detailStatus'></addgoods>
+      <addgoods v-if='!showStatus&&!detailStatus' @addGoodsActivity="addGoodsActivity" @showDetail='showDetail' :activityId="activityId"></addgoods>
       <!-- 查看 -->
-      <detailgoods v-if="detailStatus"></detailgoods>
+      <detailgoods v-if="detailStatus&&!showStatus" @addAditFun='addAditFun' @detailno="detailno" :activityId="activityId"></detailgoods>
 
   </div>
 </template>
@@ -18,31 +18,32 @@ import detailgoods from "./detailgoods";
 export default {
   data () {
     return {
-      detailStatus:false,
-      showStatus: true,
+        activityId:'',
+        detailStatus:false,
+        showStatus: true,
     }
   },
   components:{
   	activitylist,addgoods,detailgoods
   },
   methods: {
-      addAditFun(vals){
+      addAditFun(id){
+        console.log('??????',id)
         this.showStatus = false;
-        // if(vals){
-        //   this.editSatusId = vals[0];
-        //   this.editType = vals[1]
-        // }
+        this.detailStatus = false;
+        this.activityId = id;
       },
       detailno(){
         this.detailStatus = false;
-      },
-      artcouponno(){
-      	this.showStatus = true;
+        this.showStatus = true;
       },
       showDetail(id){
-        // console.log('??????',id)
         this.detailStatus = true;
-        // this.detailId = id
+        this.showStatus = false;
+        this.activityId = id
+      },
+      addGoodsActivity(){
+          this.showStatus = true;
       }
   }
 };

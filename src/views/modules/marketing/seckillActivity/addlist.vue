@@ -1,5 +1,5 @@
 <template>
-  <div class="addGoodsPages">
+  <div class="addListGoodsPages">
     <Bread :breaddata="breaddata" :index = "'1'" @changePage = "changePage"></Bread>
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="商品名称：">
@@ -65,6 +65,10 @@
 		    prop="creator"
 		    label="品牌">
 		</el-table-column>
+        <el-table-column
+		    prop="creator"
+		    label="日本限购数量">
+		</el-table-column>
 	    <el-table-column
 	   		prop="address"
 	    	label="操作">
@@ -101,19 +105,9 @@
                     <div class="goodsTitle">施华洛初恋珍珠耳环</div>
                     <div class="goodsmoney">￥ {{moneyNum}}</div>
                     <div class="goodsClass">
-                        <el-form-item  label="折扣类型：" prop="type">
-                            <el-select v-model="editDataForm.type" clearable @change="changeType"  placeholder="请选择">
-                                <el-option
-                                    v-for="item in typeList1"
-                                    :key="item.id"
-                                    :label="item.name"
-                                    :value="item.id">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item class="number"  label="折扣值：" prop="number">
-                            <el-input v-model="editDataForm.number" :max="editDataForm.type=='1'?moneyNum:10" :min="0" type="number"></el-input>
-                            若选择折扣价，输入价格将作为折扣销售价
+                        <el-form-item class="number"  label="秒杀价格：" prop="number">
+                            <el-input v-model="editDataForm.number" :max="moneyNum" :min="0" type="number"></el-input>
+                            输入的价格将作为秒杀销售价
                         </el-form-item>
                     </div>
                 </div>
@@ -188,18 +182,13 @@
                     deleteIsBatch: true,
                 },
                 dataForm: {},
-                breaddata: ["营销管理", "单品折扣","添加商品"],
+                breaddata: ["营销管理", "秒杀活动","添加商品"],
                 editVisible:false,//弹框状态
                 buttonStatus:false,
                 moneyNum:99.9,
                 editDataForm:{
-                    type:'1',
                     number:'0'
                 },
-                typeList1:[
-                    {id:'1',name:'折扣价 （元）'},
-                    {id:'2',name:'折扣率 （折）'}
-                ],
                 kucun:'',
             }
         },
@@ -207,21 +196,14 @@
             dataRule(){
                 var validnumber =(rule, value,callback)=>{
                     if(!value){
-                        callback(new Error('折扣值不能为空'))
-                    }else if(this.editDataForm.type=='1'&&Number(value)>this.moneyNum){
-                        callback(new Error('折扣值不能超过售价'))
-                    }else if(this.editDataForm.type=='2'&&Number(value)>=10){
-                        callback(new Error('折扣率不能超过10折'))
-                    }else if(Number(value)<0){
-                        callback(new Error('折扣值不能低于0'))
+                        callback(new Error('必填项不能为空'))
+                    }else if(Number(value)>this.moneyNum){
+                        callback(new Error('秒杀价格不能超过销售价'))
                     }else{
                         callback()
                     }
                 }
                 return{
-                    type : [
-                        { required: true, message: '必填项不能为空', trigger: 'blur' },
-                    ],
                     number : [
                             { required: true, message: '必填项不能为空', trigger: 'blur' },
                             { validator: validnumber, trigger: 'change' },
@@ -236,7 +218,7 @@
         methods: {
                 //回调跳转查看商品页面
                 showDetail(id){
-                    this.$emit("showDetail",id);
+                    this.$emit("detailistFun",id);
                     // this.$router.push({'name': 'marketing-coupon',})
                 },
                 //重置
@@ -246,11 +228,7 @@
                 },
                 //回调返回列表
                 changePage(){
-                    this.$emit('addGoodsActivity')
-                },
-                //改变折扣类型
-                changeType(){
-                    this.editDataForm.number = '0';
+                    this.$emit('addshowList')
                 },
                 //弹出修改弹框
                 editGoods(id){
@@ -282,7 +260,7 @@
     };
 </script>
 <style lang="scss">
-    .addGoodsPages{
+    .addListGoodsPages{
         /deep/.el-input {
             width: 170px;
             height: 40px;

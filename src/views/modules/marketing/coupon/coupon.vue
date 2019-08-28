@@ -73,7 +73,7 @@
 		    <template slot-scope="scope">
           {{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}
         </template>
-		</el-table-column>
+	    </el-table-column>
 		<el-table-column
 		    prop="id"
 		    label="优惠券名称"
@@ -111,14 +111,12 @@
 		    	<span>{{scope.row.storeType==2?'普通商户':'自营商户'}}</span>
 		    </template>
 		</el-table-column>
-		</el-table-column>
         <el-table-column
 		    prop="creator"
 		    label="审核状态">
             <template slot-scope="scope">
 		    	<span>{{scope.row.storeType==2?'普通商户':'自营商户'}}</span>
 		    </template>
-		</el-table-column>
 		</el-table-column>
         <el-table-column
 		    prop="creator"

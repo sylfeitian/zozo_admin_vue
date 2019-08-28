@@ -11,17 +11,28 @@
             <el-form-item label="订单号搜索：" prop="orderSn">
                 <el-input v-model="dataForm.orderSn" placeholder="请输入" clearable></el-input>
             </el-form-item>
-            <el-form-item label="会员账号：" prop="buyerName">
-                <el-input v-model="dataForm.buyerName" placeholder="请输入" clearable></el-input>
+            <el-form-item label="会员账号：" prop="memberName">
+                <el-input v-model="dataForm.memberName" placeholder="请输入" clearable></el-input>
             </el-form-item>
             <el-form-item label="订单状态：" prop="paymentStatus">
-                <el-select v-model="dataForm.paymentStatus" placeholder="请选择"  v-if="radio1==''|| radio1=='20'|| radio1=='30'">
-                    <el-option label="全部订单" value=""></el-option>
-                    <el-option label="待支付" value="10" ></el-option>
-                    <el-option label="待发货" value="20" v-if="radio1!=20"></el-option>
-                    <el-option label="待收货" value="30" v-if="radio1!=30"></el-option>
-                    <el-option label="交易成功" value="40"></el-option>
-                    <el-option label="订单取消" value="0"></el-option>
+                <el-select v-model="dataForm.paymentStatus" placeholder="请选择" >
+                     <el-option label="全部订单" value=""></el-option>
+                    <!-- 待付款 -->
+                    <el-option label="待付款" value="10"  v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitpay'" ></el-option>
+                    <!-- 待发货 -->
+                    <el-option label="支付中" value="20"  v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option>
+                    <el-option label="待审核" value="30" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option>
+                    <!-- <el-option label="申报中" value="40" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option> -->
+                    <!-- <el-option label="申报失败" value="50" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option> -->
+                    <!-- <el-option label="待发货" value="60" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option> -->
+                    <!-- <el-option label="日本取消订单" value="70" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option> -->
+                    <!-- 待收货 -->
+                    <el-option label="清关中" value="80" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
+                    <el-option label="待收货" value="90" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
+                    <!-- 已完成 -->
+                    <el-option label="交易完成" value="100" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='complete'" ></el-option>
+                    <!-- 已取消 -->
+                    <el-option label="已取消" value="0" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='cancel'" ></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="下单时间：">
@@ -53,12 +64,12 @@
             </el-form-item>-->
         </el-form>
         <el-radio-group v-model="radio1" @change="agreeChange" v-if="isShow">
-            <el-radio-button label="">全部订单</el-radio-button>
-            <el-radio-button label="10">待支付</el-radio-button>
-            <el-radio-button label="20">待发货</el-radio-button>
-            <el-radio-button label="30">待收货</el-radio-button>
-            <el-radio-button label="40">交易成功</el-radio-button>
-            <el-radio-button label="0">订单取消</el-radio-button>
+             <el-radio-button label="all">全部订单</el-radio-button>
+            <el-radio-button label="waitpay">待支付</el-radio-button>
+            <el-radio-button label="waitshipped">待发货</el-radio-button>
+            <el-radio-button label="waitreceived">待收货</el-radio-button>
+            <el-radio-button label="complete">交易成功</el-radio-button>
+            <el-radio-button label="cancel">订单取消</el-radio-button>
         </el-radio-group>
         <el-table
                 width="100%"
@@ -69,18 +80,41 @@
         >
             <el-table-column prop="orderSn" label="订单编号" align="center" width="180"></el-table-column>
             <el-table-column prop="createDate" label="下单时间" align="center"></el-table-column>
-            <el-table-column prop="buyerName" label="会员账号" align="center"></el-table-column>
+            <el-table-column prop="memberName" label="会员账号" align="center"></el-table-column>
             <el-table-column prop="orderAmount" label="订单金额" align="center">
                 <template slot-scope="scope">￥{{scope.row.orderAmount}}</template>
             </el-table-column>
             <el-table-column prop="paymentName" label="支付方式" align="center"></el-table-column>
-            <el-table-column prop="orderState" label="订单状态" align="center"></el-table-column>
-            <el-table-column prop="orderType" label="订单类型" align="center" :formatter="orderState"></el-table-column>
+            <el-table-column prop="orderState" label="订单状态" align="center">
+                 <template slot-scope="scope">
+                    <!-- 待付款 -->
+                    <span v-if="scope.row.orderStatus==10">待付款</span>
+                    <!-- 待发货 -->
+                    <span v-else-if="scope.row.orderStatus==20">付款中</span>
+                    <span v-else-if="scope.row.orderStatus==30">待审核</span>
+                    <!-- <span v-else-if="scope.row.orderStatus==40">申报中</span>
+                    <span v-else-if="scope.row.orderStatus==50">申报失败</span>
+                    <span v-else-if="scope.row.orderStatus==60">待发货</span>
+                    <span v-else-if="scope.row.orderStatus==70">日本取消订单</span> -->
+                    <!-- 待收货 -->
+                    <span v-else-if="scope.row.orderStatus==80">清关中</span>
+                    <span v-else-if="scope.row.orderStatus==90">待收货</span>
+                    <!-- 已完成 -->
+                    <span v-else-if="scope.row.orderStatus==100">交易完成</span>
+                    <span v-else-if="scope.row.orderStatus==0">已取消</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="orderType" label="订单类型" align="center" >
+                <!-- :formatter="orderState" -->
+            </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <!-- <el-button type="primary" @click="submitStore()">{{ $t('confirm') }}</el-button> -->
-                    <el-button size="mini" type="text" @click="addOrAdit( scope.row)">查看</el-button>
-                    <el-button size="mini" type="text" @click="handleEdit( scope.row)">取消订单</el-button>
+
+                    <el-button size="mini" type="text" @click="orderDetFn(scope.row)">查看</el-button>
+                    <el-button size="mini" type="text" @click="exammineFn(scope.row)" v-if="scope.row.orderStatus==30">审核</el-button>
+                    <el-button size="mini" type="text"  @click="clearancFailureFn(scope.row)" v-if="scope.row.orderStatus==80">清关失败</el-button>
+                    <el-button size="mini" type="text"  @click="writeLogisticsInfo(scope.row)" v-if="scope.row.orderStatus==80">填写物流</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -93,16 +127,27 @@
                 :total="total"
                 layout="total, sizes, prev, pager, next, jumper"
         ></el-pagination>
+        
+       
+        <!-- 审核 -->
+        <exammine v-if="exammineVisible" ref="exammineCompon" @searchDataList="getDataList"></exammine>
+        <!-- 取消订单弹框 -->
+        <cancleOrder v-if="cancleOrderVisible" ref="cancleOrderCompon" @searchDataList="getDataList"></cancleOrder>
+         <!-- 清关失败 -->
+        <clearancFailure v-if="clearancFailureVisible" ref="clearancFailureCompon" @searchDataList="getDataList"></clearancFailure>
+         <!-- 填写物流 -->
+        <writeLogisticsInfo v-if="writeLogisticsInfoVisible" ref="writeLogisticsInfoCompon" @searchDataList="getDataList"></writeLogisticsInfo>
+
     </div>
-    <orderDet
+    <!-- <orderDet
             v-else-if="detailOrList==2"
             @changePage="changePage"
             :data="data"
             :addressInfo="addressInfo"
             :orderLog="orderLog"
             :orderData="orderData"
-    ></orderDet>
-    <discountDet v-else @changeState="changeState"></discountDet>
+    ></orderDet> -->
+    <!-- <discountDet v-else @changeState="changeState"></discountDet> -->
 </template>
 
 <script>
@@ -111,6 +156,10 @@
     import { orderDetail, paymentList } from "@/api/api";
     // import discountDet from "./discountDet";
     // import orderDet from "./orderDet";
+    import clearancFailure from '../modules/model-clearanc-failure.vue'
+    import writeLogisticsInfo from '../modules/model-write-logistics-info.vue'
+    import exammine from '../modules/model-exammine.vue'
+    import cancleOrder from '../modules/model-cancle-order.vue'
     import mixinViewModule from "@/mixins/view-module";
     export default {
         mixins: [mixinViewModule],
@@ -129,14 +178,18 @@
                 textarea: "",
                 breaddata: ["订单系统", "CC订单管理", "订单列表"],
                 dataListLoading: false,
+                clearancFailureVisible:false,
+                writeLogisticsInfoVisible:false,
+                exammineVisible:false,
+                cancleOrderVisible:false,
                 detailOrList: 1,
-                radio1: "",
+                radio1: "all",
                 tableData: [],
                 orderData: [],
                 dataForm: {
                     orderSn: "",
                     storeIdAndName: "",
-                    buyerName: "",
+                    memberName: "",
                     paymentId: "",
                     paymentStatus: "",
                     startCreateDate: "",
@@ -144,7 +197,7 @@
                     endPaymentTime: "",
                     startPaymentTime: "",
                     orderType: "cc",//订单类型：bc,cc
-                    isWaitDeal:' 0',//是否为等待处理订单 0不是 1是 默认为不是
+                    isWaitDeal:'0',//是否为等待处理订单 0不是 1是 默认为不是
                 },
                 tableData: [],
                 timeArr: "", //下单时间数据
@@ -172,16 +225,23 @@
             };
         },
         props: ["status"],
+        components: {
+            Bread,
+            // orderDet,
+            // discountDet,
+            clearancFailure,
+            writeLogisticsInfo,
+            cancleOrder,
+            exammine,
+        },
         created() {
             //处理不同状态
-            this.isShow = this.status !== undefined ? false : true;
-            this.radio1 = this.status == undefined ? "" : this.status;
-            this.dataForm.orderStatus = this.status == undefined ? "" : this.status;
+            this.isShow =  true;
             this.getPaymentList();
         },
         methods: {
-            addOrAdit(id){
-                this.$emit("addOrAdit",id);
+            orderDetFn(row){
+                this.$emit("orderDetFn",row);
             },
             getData() {
                 this.dataForm.startCreateDate = this.timeArr && this.timeArr[0];
@@ -208,14 +268,7 @@
             },
             //订单状态筛选
             agreeChange(val) {
-                this.dataForm.paymentStatus = ""
-                this.dataForm.page = 1;
-                this.dataForm.limit = 10;
-                this.params = {
-                    currentPage: 1, //当前页数
-                    currentPageSize: 10 //每页显示的条数
-                };
-                this.dataForm.orderStatus = val;
+                this.dataForm.topStatus = val;
                 this.page = 1;
                 this.limit = 10;
                 this.getDataList();
@@ -234,41 +287,65 @@
                 this.getDataList();
             },
             //返回页 1-列表  3-优惠详情
-            changePage(data) {
-                console.log(data);
-                this.detailOrList = data;
-                this.$emit("showListFn");
-            },
+            // changePage(data) {
+            //     console.log(data);
+            //     this.detailOrList = data;
+            //     this.$emit("showListFn");
+            // },
             //返回详情页 2-详情页
-            changeState(data) {
-                this.detailOrList = data;
-                this.$emit("showListFn");
+            // changeState(data) {
+            //     this.detailOrList = data;
+            //     this.$emit("showListFn");
+            // },
+            // //订单详情
+            // handleEdit(index) {
+            //     const obj = { id: index.id };
+            //     orderDetail(obj).then(res => {
+            //         if (res.code == 200) {
+            //             this.addressInfo = res.data.orderAddressDTO; //收货人信息
+            //             this.orderData = res.data.orderGoodsDTOList;
+            //             this.orderLog = res.data.orderLogisticsLogDTOList; //物流
+            //             this.packageInfo = res.data.orderLogDTOList; //订单状态
+            //             this.data = res.data;
+            //             this.detailOrList = 2;
+            //         } else {
+            //             this.$message({
+            //                 type: "warning",
+            //                 message: res.msg
+            //             });
+            //         }
+            //     });
+            // },
+             // 清关失败
+            clearancFailureFn(row){
+                this.clearancFailureVisible = true;
+                this.$nextTick(() => {
+                    this.$refs.clearancFailureCompon.init(row)
+                })
             },
-            //订单详情
-            handleEdit(index) {
-                const obj = { id: index.id };
-                orderDetail(obj).then(res => {
-                    if (res.code == 200) {
-                        this.addressInfo = res.data.orderAddressDTO; //收货人信息
-                        this.orderData = res.data.orderGoodsDTOList;
-                        this.orderLog = res.data.orderLogisticsLogDTOList; //物流
-                        this.packageInfo = res.data.orderLogDTOList; //订单状态
-                        this.data = res.data;
-                        this.detailOrList = 2;
-                    } else {
-                        this.$message({
-                            type: "warning",
-                            message: res.msg
-                        });
-                    }
-                });
-            }
+            // 填写物流信息
+            writeLogisticsInfo(row){
+                this.writeLogisticsInfoVisible = true;
+                this.$nextTick(() => {
+                    this.$refs.writeLogisticsInfoCompon.init(row)
+                })
+            },
+            // 审核
+             exammineFn(row){
+                this.exammineVisible = true;
+                this.$nextTick(() => {
+                   this.$refs.exammineCompon.init(row)
+                })
+            },
+            // 取消订单
+           cancleOrderFn(row){
+                this.cancleOrderVisible = true;
+                this.$nextTick(() => {
+                   this.$refs.cancleOrderCompon.init(row)
+                })
+            },
         },
-        components: {
-            Bread,
-            // orderDet,
-            // discountDet
-        }
+      
     };
 </script>
 <style scoped>

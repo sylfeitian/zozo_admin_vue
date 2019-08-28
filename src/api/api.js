@@ -337,8 +337,20 @@ export const paymentSave = params => { return http.post(`${base}/payment/update/
 //交易管理--查看订单
 export const paymentOrder= params => { return http.get(`${base}/order/orderSn/${params.orderSn}`, params).then(res => res.data); }
 //订单审核/order/audit/{operating}/{id}
-export const auditOperating  = params => { return http.get(`${base}/order/audit/${params.operating}/${params.id}`, params).then(res => res.data); }
+export const auditOperating  = params => { return http.post(`${base}/order/audit/${params.operating}/${params.id}?remark=${params.remarks}`, params).then(res => res.data); }
+// 修改订单运营备注
+export const managerRemark  = params => { return http.get(`${base}/order/${params.id}/manager/remark?remark=${params.remarks}`, params).then(res => res.data); }
+// 取消订单
+export const orderCancel = params => { return http.post(`${base}/order/cancel/${params.id}`, params).then(res => res.data); }
+// 订单申报
+export const orderRedeclare = params => { return http.post(`${base}/order/redeclare/${params.id}`, params).then(res => res.data); }
+// 清关失败
+export const clearCustomFail = params => { return http.post(`${base}/order/${params.id}/clear/custom/fail`, params).then(res => res.data); }
+// 填写物流信息
+export const orderLogistics = params => { return http.post(`${base}/order/logistics?orderId=${params.orderId}&companyId=${params.companyId}&logisticsSn=${params.logisticsSn}`, params).then(res => res.data); }
 
+// 物流公司--------------------------------------------------------------------------------------------------------------------
+export const logisticsCompany = params => { return http.get(`${base}/logistics/company/all`).then(res => res.data); }
 
 // 移动端首页菜单管理--------------------------------------------------------------------------------------------------------------------
 // 移动菜单回显
@@ -469,7 +481,7 @@ export const updateShopStore = params => { return http.put(`${base}/shopStore`, 
 //导入店铺信息
 export const importShopStore = params => { return http.post(`${base}/shopStore/import`, params).then(res => res.data); };
 //店铺停业营业操作
-export const operateShopStore = params => { return http.put(`${base}/shopStore/operate`, params).then(res => res.data); };
+export const operateShopStore = params => { return http.put(`${base}/shopStore/operate?operateFlag=${params.operateFlag}&storeId=${params.storeId}`, params).then(res => res.data); };
 // 分页查询信息
 export const shopStorePage = params => { return http.get(`${base}/shopStore/page`, params).then(res => res.data); };
 //店铺是否设为推荐
@@ -624,15 +636,9 @@ export const showBatchGoods = params => { return http.put(`${base}/zozogoods/sho
 // 单个商品上下架状态修改
 export const showGoods = params => { return http.put(`${base}/zozogoods/show/${params.id}`, params).then(res => res.data); };
 // 获取商品尺码信息
-export const getZozogoodsSize = params => { return http.get(`${base}/zozogoods/size/item`, params).then(res => res.data); };
+export const getZozogoodsSize = params => { return http.get(`${base}/zozogoods/size/item?spuId=${params.spuId}&sizeId=${params.sizeId}`, params).then(res => res.data); };
 
 
-
-
-
-//京东分类管理接口--------------------------------------------------------------------------------------------------------------------
-// 分页查询分类
-export const jdCatePage = params => { return http.get(`${base}/jdCate/page`, params).then(res => res.data); };
 
 
 
@@ -687,6 +693,21 @@ export const backScanShophotkeyword = params => { return http.get(`${base}/shoph
 //消息列表分页  
 export const getmessagepage = params => { return http.get(`${base}/shopmessagetemplate/messagepage`, params).then(res => res.data); };
 
+
+
+
+
+//京东分类-------------------------------------------------------------------------------------------------------------
+//导入京东分类
+export const importJdCate = params => { return http.post(`${base}/jdCate/import`, params).then(res => res.data); };
+// 分页
+export const jdCatePage = params => { return http.get(`${base}/jdCate/page`, params).then(res => res.data); };
+// 根据父分类id查询子分类集合
+export const jdCateSubcollection = params => { return http.get(`${base}/jdCate/subcollection/${params.id}`, params).then(res => res.data); };
+//更新京东分类关联的中国分类
+export const updateCategory = params => { return http.post(`${base}/jdCate/updateCategory`, params).then(res => res.data); };
+// 编辑页面信息回显
+export const backScanJdCate = params => { return http.get(`${base}/jdCate/${params.id}`, params).then(res => res.data); };
 
 
 

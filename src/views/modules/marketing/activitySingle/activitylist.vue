@@ -2,18 +2,8 @@
   <div>
     <Bread :breaddata="breaddata"></Bread>
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
-        <el-form-item label="优惠券名称：">
+        <el-form-item label="活动名称：">
             <el-input v-model="dataForm.storeId" placeholder="请输入优惠券名称" clearable></el-input>
-        </el-form-item>
-        <el-form-item  label="优惠券类型：">
-            <el-select v-model="dataForm.messageType" clearable  placeholder="请选择">
-                <el-option
-                    v-for="item in couponKindList1"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id">
-                </el-option>
-            </el-select>
         </el-form-item>
         <el-form-item  label="活动状态：">
             <el-select v-model="dataForm.gradeId" clearable  placeholder="请选择">
@@ -25,19 +15,6 @@
                 </el-option>
             </el-select>
         </el-form-item>
-         <el-form-item label="上传日期：">
-		        <el-date-picker
-			        v-model="valuetime"
-			        type="daterange"
-			        align="right"
-	      			unlink-panels
-				    	range-separator="-"
-				    	start-placeholder="开始日期"
-				    	end-placeholder="结束日期"
-				    	value-format="yyyy-MM-dd"
-			            @blur='acttime'>
-			    </el-date-picker>
-		    </el-form-item> 
         <el-form-item  label="审核状态：">
             <el-select v-model="dataForm.storeType" clearable  placeholder="请选择">
                 <el-option
@@ -48,15 +25,29 @@
                 </el-option>
             </el-select>
         </el-form-item>
-        <!-- </el-scrollbar> -->
+        <el-form-item label="活动时间：">
+            <el-date-picker
+                v-model="valuetime"
+                type="daterange"
+                align="right"
+                unlink-panels
+                range-separator="-"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                value-format="yyyy-MM-dd"
+                @blur='acttime'>
+			</el-date-picker>
+		    </el-form-item>
+        </el-form-item> 
+        
         <el-form-item>
             <el-button  class="btn" type="primary" @click="getDataList()">查询</el-button>
             <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
         </el-form-item>
         <br />
         <el-form-item>
-            <el-button type="primary"   @click="addAditFun()">新增优惠券</el-button>
-            <!-- <el-button type="primary"   @click="showDetail('asassasasasasa')">新增优惠券</el-button> -->
+            <el-button type="primary" @click="addActivity()">添加活动</el-button>
+            <!-- <el-button type="primary" @click="addAdit('31313121212')">添加活动</el-button> -->
         </el-form-item>
     </el-form>
     <el-table
@@ -64,76 +55,43 @@
       v-loading="dataListLoading"
       border
 	  style="width: 100%">
-	  <el-table-column
+	    <el-table-column
 	    	type="index"
 		    prop="$index"
 				align="center"
 		    label="序号"
 		    width="70">
 		    <template slot-scope="scope">
-          {{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}
-        </template>
+            {{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}
+            </template>
 		</el-table-column>
 		<el-table-column
 		    prop="id"
-		    label="优惠券名称"
+		    label="活动标题"
 		    width="180">
 		</el-table-column>
 		<el-table-column
-		    prop="storeName"
-		    label="优惠券类型">
-            <template slot-scope="scope">
-                <div style="float:left">
-                    <span style="width: 40px; height: 40px;margin-right:20px;" v-if="scope.row.storeLogo">
-                        <img :src="scope.row.storeLogo" alt="img" style=" object-fit: contain;width: 40px;border-radius:50%;">
-                    </span>
-                    <span>{{scope.row.storeName}}</span>
-                </div>
-		    </template>
-		</el-table-column>
-		<el-table-column
 		    prop="account"
-		    label="使用门槛">
+		    label="折扣活动时间">
 		</el-table-column>
 		<el-table-column
 		    prop="gradeName"
-		    label="面值">
+		    label="审核状态">
 		</el-table-column>
 		<el-table-column
 		    prop="createDate"
-		    label="活动时间"
+		    label="活动状态"
              width="180">
-		</el-table-column>
-        <el-table-column
-		    prop="creator"
-		    label="有效期">
-            <template slot-scope="scope">
-		    	<span>{{scope.row.storeType==2?'普通商户':'自营商户'}}</span>
-		    </template>
-		</el-table-column>
-		</el-table-column>
-        <el-table-column
-		    prop="creator"
-		    label="审核状态">
-            <template slot-scope="scope">
-		    	<span>{{scope.row.storeType==2?'普通商户':'自营商户'}}</span>
-		    </template>
-		</el-table-column>
-		</el-table-column>
-        <el-table-column
-		    prop="creator"
-		    label="活动状态">
-            <template slot-scope="scope">
-		    	<span>{{scope.row.storeType==2?'普通商户':'自营商户'}}</span>
-		    </template>
 		</el-table-column>
 	    <el-table-column
 	   		prop="address"
 	    	label="操作">
 		    <template slot-scope="scope">
-		    	<el-button type="text" size="small" @click="showDetail(scope.row.id)">查看</el-button>
-		    	<el-button type="text" size="small" @click="addAditFun(scope.row.id,'普通优惠券')">编辑</el-button>
-		    	<el-button class="artdanger" type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+		    	<el-button type="text" size="small">审核</el-button>
+		    	<el-button type="text" size="small" @click="showDetail(scope.row.id)">查看商品</el-button>
+		    	<el-button type="text" size="small" @click="addAdit(scope.row.id)">添加商品</el-button>
+		    	<el-button type="text" size="small" @click="addActivity(scope.row.id)">编辑</el-button>
+		    	<el-button class="artdanger" type="text" size="small">删除</el-button>
 		    </template>
 	  	</el-table-column>
 	</el-table>
@@ -147,6 +105,47 @@
 	    :total="total"
 	    layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
+
+    <!-- 新增编辑活动弹框 -->
+    <el-dialog
+        :title="activiTitle"
+        :visible.sync="activiVisible"
+        :close-on-click-modal = "false"
+        :show-close = "false"
+        class="activiDialog"
+        width="40%">
+        <el-form :model="activiDataForm" :rules="dataRule" ref="activiDataForm" @keyup.enter.native="subActivity()" label-width="120px">
+            <el-form-item label="活动标题：" prop="sgName">
+                <el-input v-model="activiDataForm.sgName" placeholder="请输入50字以内的标题" :maxlength="50"></el-input>
+            </el-form-item>
+            <el-form-item label="折扣开始时间：" prop="startTime">
+                <el-date-picker
+                    v-model="activiDataForm.startTime"
+                    type="datetime"
+                    value-format="yyyy-MM-dd"
+                    placeholder="选择折扣开始时间">
+                </el-date-picker>
+            </el-form-item>
+            <el-form-item label="折扣结束时间：" prop="endTime">
+                <el-date-picker
+                    v-model="activiDataForm.endTime"
+                    type="datetime"
+                    value-format="yyyy-MM-dd"
+                    placeholder="选择折扣结束时间">
+                </el-date-picker>
+            </el-form-item>
+            <el-form-item label="活动限制：">
+                <el-checkbox-group v-model="activiDataForm.checkList">
+                    <el-checkbox :label="1">不可同时使用优惠券</el-checkbox>
+                    <el-checkbox :label="2">不可同时参加满减活动</el-checkbox>
+                </el-checkbox-group>
+            </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="noCheck('activiDataForm')">取 消</el-button>
+            <el-button type="primary" @click="subActivity('activiDataForm')" :loading="buttonStatus">确 定</el-button>
+        </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -168,57 +167,104 @@ export default {
           deleteIsBatch: true,
           // deleteIsBatchKey: 'id'
       },
-      dataForm: {},
+      buttonStatus:false,
+      activiVisible:false,
+      activiTitle:'添加活动',
+      activiDataForm:{
+          sgName:'',
+          startTime:'',
+          endTime:'',
+          checkList:'0'
+      },
+      dataForm: {
+          gradeId:'',
+          storeType:'',
+      },
       storeTypes:[
           {id: '',label: '待审核'},
           {id: '1',label: '审核通过'},
           {id: '2',label: '审核不通过'}
       ],
-      couponKindList1: [{ id: '', name: "全部" },{ id: 1, name: "普通优惠券" },{ id: 2, name: "新会员优惠券" },{ id: 3, name: "积分优惠券" }],
       activitesstates: [{ id: '', name: "全部" },{ id: 1, name: "未开始" },{ id: 2, name: "进行中" },{ id: 3, name: "已结束" },{ id: 4, name: "待审核" }],
-      breaddata: ["营销管理", "优惠券"],
-       valuetime:"",
+      breaddata: ["营销管理", "单品折扣"],
+      valuetime:"",
+      dataRule : {
+            sgName : [
+                { required: true, message: '必填项不能为空', trigger: 'blur' },
+            ],
+            startTime : [
+                    { required: true, message: '必填项不能为空', trigger: 'blur' },
+            ],
+            endTime : [
+                    { required: true, message: '必填项不能为空', trigger: 'blur' },
+            ]
+        },
     }
   },
   components:{
   	Bread
   },
   created(){
-  	this.dataForm.messageType = this.couponKindList1[0].id;
-  	this.dataForm.gradeId = this.activitesstates[0].id;
-  	this.dataForm.storeType = this.storeTypes[0].id;
     this.demo();
   },
   methods: {
+        //回调跳到查看页面
         showDetail(id){
 	    	this.$emit("showDetail",id);
         },
+        //重置
         reset() {
             this.dataForm = {};
             this.getDataList();
         },
-        addAditFun(id){
+        //回调跳到添加商品页面
+        addAdit(id){                    //id:为活动id
+        	this.$emit('addAditFun',id)//添加商品
+        },
+        //打开新增编辑活动弹框
+        addActivity(id){
+            this.activiVisible = true;
             if(id){
-        	    this.$emit('artcoupon',id,'普通优惠券')//编辑优惠券
+                this.activiTitle = '编辑活动';
+                this.getInfo(id);//判断是编辑情况下调详情方法
             }else{
-        	    this.$emit('artcoupon')//新增优惠券
+                this.activiTitle = '添加活动';
             }
         },
+        //取消弹框
+        noCheck(formName){
+            this.$refs[formName].resetFields();
+            this.activiVisible = false;
+        },
+        //提交新增编辑活动
+        subActivity(formName){
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    
+                }
+            });
+        },
+
+
+
+
+
+
         demo(){
         	function placeholderPic(){
-						var w = document.documentElement.offsetWidth;
-						document.documentElement.style.fontSize=w/20+'px';
-					}
-						placeholderPic();
-					window.onresize=function(){
-						placeholderPic();
-					}
+                var w = document.documentElement.offsetWidth;
+                document.documentElement.style.fontSize=w/20+'px';
+            }
+                placeholderPic();
+            window.onresize=function(){
+                placeholderPic();
+            }
         },
         //开始结束时间
-		    acttime(){
-		    	this.dataForm.strTime = this.valuetime[0];
-		    	this.dataForm.endTime = this.valuetime[1];
-		    },
+        acttime(){
+            this.dataForm.strTime = this.valuetime[0];
+            this.dataForm.endTime = this.valuetime[1];
+        },
         
   }
 };
@@ -228,4 +274,10 @@ export default {
   width: 170px;
   height: 40px;
 }
+.activiDialog{
+    .el-input {
+        width: 300px;
+    }
+}
+
 </style>

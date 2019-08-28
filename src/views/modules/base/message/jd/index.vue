@@ -37,7 +37,7 @@
     import Bread from "@/components/bread";
     import addEditData from './model-add-edit-data'
     import { jdCateUrl } from '@/api/url'
-    import { jdCatePage } from '@/api/api'
+    import { jdCateSubcollection } from '@/api/api'
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -51,8 +51,13 @@
                     deleteIsBatch: true,
                     deleteIsBatchKey: 'id'
                 },
-                breaddata: [ "商品管理", "日本分类"],
+                breaddata: [ "商品管理", "京东分类"],
                 addEditDataVisible:false,
+                formData:{
+                    page:1,
+                    limit: 10,
+                    parentId:0
+                },
                 treeConfig: {
                     //等于 el-tree 的选项配置
                     options: {
@@ -97,29 +102,29 @@
         methods: {
             getTree() {
                 let obj = {
-                    params:this.formData
-                }
-                jdCatePage(obj).then(res => {
+                    id:this.formData.parentId
+                };
+                jdCateSubcollection(obj).then(res => {
                     //Promise后 对数据格式进行处理
                     if (res.code == 200) {
-                        var data = res.data.list;
-                        this.total = res.data.total;
+                        var data = res.data;
+                        // this.total = res.data.total;
                         console.log(data);
                         //处理树形数据
-                        // this.treeConfig.rows =  data;
+                        this.treeConfig.rows =  data;
                         var dataStr = JSON.stringify(data);
                         dataStr = dataStr.replace(/id/g,"label")
-                        dataStr = dataStr.replace(/list/g,"children")
+                        // dataStr = dataStr.replace(/list/g,"children")
                         this.treeConfig.rows = [].concat(JSON.parse(dataStr));
 
-                        console.log("treeTable数据:");
-                        console.log(this.treeConfig.rows);
+                        // console.log("treeTable数据:");
+                        // console.log(this.treeConfig.rows);
 
-                        var dataArray = JSON.stringify(this.treeConfig.rows);
-                        var dataArrayStr = dataArray.replace(/id/g,"value");
-                        dataArrayStr = dataArrayStr.replace(/\[]/g,'""');
-                        this.$parent.dataArray = JSON.parse(dataArrayStr);
-                        console.log( dataArrayStr );
+                        // var dataArray = JSON.stringify(this.treeConfig.rows);
+                        // var dataArrayStr = dataArray.replace(/id/g,"value");
+                        // dataArrayStr = dataArrayStr.replace(/\[]/g,'""');
+                        // this.$parent.dataArray = JSON.parse(dataArrayStr);
+                        // console.log( dataArrayStr );
                     }
                 });
             },
