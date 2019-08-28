@@ -181,7 +181,7 @@
                 textarea: "",
                 breaddata: ["订单系统", "BC订单管理", "订单列表"],
                 dataListLoading: false,
-                clearancFailureVisible:false,
+                 clearancFailureVisible:false,
                 writeLogisticsInfoVisible:false,
                 declareSthVisible:false,
                 exammineVisible:false,
@@ -215,19 +215,19 @@
                     currentPage: 1, //当前页数
                     currentPageSize: 10 //每页显示的条数
                 },
-                // orderState: function(row, column) {
-                //     return row.orderStatus == 0 ? (
-                //         <el-tag type="info">已取消</el-tag>
-                // ) : row.orderStatus == 10 ? (
-                //         <el-tag type="warning">待付款</el-tag>
-                // ) : row.orderStatus == 20 ? (
-                //         <el-tag type="warning">待发货</el-tag>
-                // ) : row.orderStatus == 30 ? (
-                //         <el-tag type="warning">待收货</el-tag>
-                // ) : (
-                //     <el-tag type="success">交易完成</el-tag>
-                // );
-                // }
+                orderState: function(row, column) {
+                    return row.orderStatus == 0 ? (
+                        <el-tag type="info">已取消</el-tag>
+                ) : row.orderStatus == 10 ? (
+                        <el-tag type="warning">待付款</el-tag>
+                ) : row.orderStatus == 20 ? (
+                        <el-tag type="warning">待发货</el-tag>
+                ) : row.orderStatus == 30 ? (
+                        <el-tag type="warning">待收货</el-tag>
+                ) : (
+                    <el-tag type="success">交易完成</el-tag>
+                );
+                }
             };
         },
         props: ["status"],

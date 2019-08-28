@@ -1,34 +1,35 @@
 <template>
     <div>
-        <list v-if="mainVisible" ref="listCompon" @addOrAdit="addOrAdit"></list>
-        <addoradit v-if="addoraditVisible" ref="addoraditCompon" @addoraditList="addoraditList"></addoradit>
+        <list v-if="mainVisible" ref="listCompon" @orderDetFn="orderDetFn"></list>
+        <orderDet v-if="orderDetVisible" ref="orderDetCompon" @orderDetListFn="orderDetListFn"  :breaddata="subBreaddata"></orderDet>
     </div>
 </template>
 
 <script>
     import list from "./list"
-    import addoradit from "./orderDet"
+    import orderDet from "../modules/orderDet"
     export default {
         data () {
             return {
                 mainVisible:true,
-                addoraditVisible:false
+                orderDetVisible:false,
+                subBreaddata:["订单管理", "CC订单管理", "订单列表","订单详情"],
             }
         },
         components:{
             list,
-            addoradit
+            orderDet
         },
         methods:{
-            addOrAdit(id){
-                this.addoraditVisible = true;
+            orderDetFn(row){
+                this.orderDetVisible = true;
                 this.mainVisible = false;
                 this.$nextTick(()=>{
-                    this.$refs.addoraditCompon.getDataList();
+                    this.$refs.orderDetCompon.init(row);
                 })
             },
-            addoraditList(){
-                this.addoraditVisible = false;
+            orderDetListFn(){
+                this.orderDetVisible = false;
                 this.mainVisible = true;
                 this.$nextTick(()=>{
                     this.$refs.listCompon.getDataList();

@@ -12,18 +12,23 @@
 		    		ref="addForm"
 		    		@keyup.enter.native="dataFormSubmit('addForm')"
 		    		>
+                        <el-form-item  label="审核结果：" prop="operating">
+                               <el-radio-group v-model="dataForm.operating">
+                                    <el-radio label="1">通过</el-radio>
+                                    <el-radio label="0">不通过</el-radio>
+                                </el-radio-group>
+                        </el-form-item>
 
-						<h3 v-if="row.inspectType==1" style="text-align:center">确定审核通过？</h3>
-
-						<el-input v-else
-							type="textarea"
-							:rows="2"
-							placeholder="请填写拒绝原因"
-							v-model="dataForm.rejectReason">
-						</el-input>
-							
+                        <el-form-item  label="备注："  prop="remarks">
+                            <el-input
+                                type="textarea"
+                                :rows="2"
+                                placeholder="请输入内容"
+                                v-model="dataForm.remarks">
+                            </el-input>
+                        </el-form-item>
 				</el-form>
-			    <span slot="footer" class="dialog-footer">
+			    <span slot="footer" class="dialog-footer"  >
 		     		    <el-button type="primary" @click="dataFormSubmit('addForm')"
 		     		    :loading="loading">{{loading ? "提交中···" : "提交"}}</el-button>
 		     		    <el-button @click="dataFormCancel()">返回</el-button>
@@ -41,13 +46,14 @@
 				visible : false,
 				loading : false,
 				dataForm : {
-					ids:[],
-					goodsStatus:'',//商品状态，默认10:待审核，20:审核未通过，30:审核通过,40:违规下架,50:未发布
-					rejectReason:'',//拒绝原因
+                    operating:"1",//操作 0不通过 1通过
+                    remarks:"",//备注
 				},
-			
 				dataRule : {
-			        // goodsStatus : [
+			        operating : [
+			          { required: true, message: '必填项不能为空', trigger: 'blur' },
+                    ],
+                    // remarks : [
 			        //   { required: true, message: '必填项不能为空', trigger: 'blur' },
 			        // ],
 				},
@@ -64,31 +70,24 @@
 			init (row) {
 				this.visible = true;
 				this.row = row;
-				if(row.inspectType==1){//通过
-					this.title = "审核提示";
-					this.dataForm.goodsStatus = 30;
-				}else{//拒绝
-					this.title = "确定拒绝审核通过？";
-					this.dataForm.goodsStatus = 20;
-				}
 			},
 			// 提交
 			dataFormSubmit(formName){
-				if(this.row.inspectType != 1  && this.dataForm.rejectReason.replace(/ /g,"")=="" ){
-					   this.$message({
-							message:"请填写拒绝原因",
-							type: "warning",
-							duration: 1500
-						})
-						return;
-				}
+				// if(this.row.inspectType != 1  && this.dataForm.operating.replace(/ /g,"")=="" ){
+				// 	   this.$message({
+				// 			message:"请填写拒绝原因",
+				// 			type: "warning",
+				// 			duration: 1500
+				// 		})
+				// 		return;
+				// }
 				this.$refs[formName].validate((valid) => {
 						if (valid) {
 								this.loading = true;
 								var obj=  {
-									goodState:this.dataForm.goodsStatus,
-									goodsIds:this.dataForm.ids,
-									remarks:this.dataForm.rejectReason, 
+									id:this.row.id,//订单id
+									operating:this.dataForm.operating,//操作 0不通过 1通过
+									remarks:this.dataForm.remarks,//备注
 								}
 								auditOperating(obj).then((res) => {
 									this.loading = false;
@@ -97,7 +96,7 @@
 									if(res.code == "200"){
 										status = "success";
 										this.visible = false;
-										this.$emit('searchDataList');
+										// this.$emit('searchDataList');
 					         			 this.closeDialog();
 									}else{
 										status = "error";
@@ -118,7 +117,8 @@
 					this.closeDialog();
 			},
 			closeDialog() {
-				this.$parent.addEditDataVisible = false;
+                this.visible = false;
+				this.$parent.exammineVisible = false;
 			},
 		},
 	}
