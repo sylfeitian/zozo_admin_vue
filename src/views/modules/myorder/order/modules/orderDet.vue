@@ -1,29 +1,31 @@
 <template>
     <div>
-        <Bread :breaddata="orderDetData" @changePage="changePage" :index="'1'"></Bread>
+        <Bread :breaddata="breaddata" @changePage="changePage" :index="'2'"></Bread>
         <el-form
                 :inline="true"
                 class="grayLine topGapPadding"
                 :model="dataForm"
                 @keyup.enter.native="getDataList()"
-
         >
             <!-- 上层button组 -->
             <el-form-item style="width: 100%;text-align: right;padding-right: 6%;">
+                <el-button class="btn" type="primary" @click="clearancFailureFn()"  v-if="orderBase.orderStatus==80">清关失败</el-button>
+                <el-button class="btn" type="primary" @click="writeLogisticsInfo()" v-if="orderBase.orderStatus==80">填写物流信息</el-button>
                 <el-button class="btn" type="primary" @click="lookLogistics()">查看物流</el-button>
                 <el-button class="btn" type="primary" @click="modifyReciverInfo()" >修改收货人信息</el-button>
-                <el-button class="btn" type="primary" @click="exammineFn()">审核</el-button>
-                <el-button class="btn" type="primary" @click="" >备注信息</el-button>
-                <el-button class="btn" type="primary" @click="">取消订单</el-button>
+                <el-button class="btn" type="primary" @click="exammineFn()" v-if="orderBase.orderStatus==30">审核</el-button>
+                <el-button class="btn" type="primary" @click="remarkInfoFn()" >备注信息</el-button>
+                <el-button class="btn" type="primary" @click="cancleOrderFn()"  v-if="orderBase.orderStatus==10 || orderBase.orderStatus==50 || orderBase.orderStatus==70">取消订单</el-button>
             </el-form-item>
             <!-- step步骤 -->
-            <el-steps align-center :active="active" style="margin-top: 20px;" finish-status="success">
-                <el-step title="提交订单" icon="el-icon-document" description=""></el-step>
+            <el-steps align-center :active="active" style="margin-top: 20px;">
+                <!-- <el-step title="提交订单" icon="el-icon-document" description=""></el-step>
                 <el-step title="付款成功" icon="el-icon-mobile-phone" description=""></el-step>
                 <el-step title="代发货" icon="el-icon-goods" description=""></el-step>
                 <el-step title="待收货" icon="el-icon-time" description=""></el-step>
                 <el-step :title="orderBase.orderStatus==0?'订单取消':'交易完成'" icon="el-icon-circle-check-outline" description=""></el-step>
-                <el-step title="完成评价" icon="el-icon-star-on" description=""></el-step>
+                <el-step title="完成评价" icon="el-icon-star-on" description=""></el-step> -->
+                <el-step :title="item.name" :description="item.time" v-for="(item,index) in scheduleList" :key="index"></el-step>
             </el-steps>
 
              <!-- 订单信息 -->
@@ -40,12 +42,23 @@
                 <el-col :span="5"><div class="grid-content">{{orderBase.paymentName}}</div></el-col>
                 <el-col :span="4">
                     <div class="grid-content">
-                         <span v-if="orderBase.orderStatus==10">待支付</span>
-                         <span v-else-if="orderBase.orderStatus==20">待发货</span>
-                         <span v-else-if="orderBase.orderStatus==30">待收货</span>
-                         <span v-else-if="orderBase.orderStatus==40">交易成功</span>
-                         <span v-else-if="orderBase.orderStatus==0">订单取消</span>
-                    </div></el-col>
+                        <!-- 待付款 -->
+                        <span v-if="orderBase.orderStatus==10">待付款</span>
+                         <!-- 待发货 -->
+                        <span v-else-if="orderBase.orderStatus==20">付款中</span>
+                        <span v-else-if="orderBase.orderStatus==30">待审核</span>
+                        <!-- <span v-else-if="orderBase.orderStatus==40">申报中</span>
+                        <span v-else-if="orderBase.orderStatus==50">申报失败</span>
+                        <span v-else-if="orderBase.orderStatus==60">待发货</span>
+                        <span v-else-if="orderBase.orderStatus==70">日本取消订单</span> -->
+                        <!-- 待收货 -->
+                        <span v-else-if="orderBase.orderStatus==80">清关中</span>
+                        <span v-else-if="orderBase.orderStatus==90">待收货</span>
+                        <!-- 已完成 -->
+                        <span v-else-if="orderBase.orderStatus==100">交易完成</span>
+                        <span v-else-if="orderBase.orderStatus==0">已取消</span>
+                    </div>
+                </el-col>
                 <el-col :span="5"><div class="grid-content">{{orderBase.orderType}}</div></el-col>
                 <el-col :span="5"><div class="grid-content">{{orderBase.memberName}}</div></el-col>
             </el-row>
@@ -75,7 +88,7 @@
             </el-row>
             <el-row>
                 <el-col :span="5"><div class="grid-content bg-purple-light">描述</div></el-col>
-                <el-col :span="19"><div class="grid-content">{{}}</div></el-col>
+                <el-col :span="19"><div class="grid-content">{{orderBase.orderMessage}}</div></el-col>
             </el-row>
             <el-dialog title="身份证信息" :visible.sync="dialogVisible" width="30%" v-if="authenticationInfo">
                 <h3>身份证号码： </h3>
@@ -235,48 +248,77 @@
                 <el-table-column prop="createDate" label="操作时间" align="center"></el-table-column>
                 <el-table-column prop="orderStatus" label="操作时订单状态" align="center">
                      <template slot-scope="scope">
-                         <span v-if="scope.row.orderStatus==10">待支付</span>
-                         <span v-else-if="scope.row.orderStatus==20">待发货</span>
-                         <span v-else-if="scope.row.orderStatus==30">待收货</span>
-                         <span v-else-if="scope.row.orderStatus==40">交易成功</span>
-                         <span v-else-if="scope.row.orderStatus==0">订单取消</span>
+                         <!-- 待付款 -->
+                        <span v-if="scope.row.orderStatus==10">待付款</span>
+                         <!-- 待发货 -->
+                        <span v-else-if="scope.row.orderStatus==20">付款中</span>
+                        <span v-else-if="scope.row.orderStatus==30">待审核</span>
+                        <!-- <span v-else-if="scope.row.orderStatus==40">申报中</span>
+                        <span v-else-if="scope.row.orderStatus==50">申报失败</span>
+                        <span v-else-if="scope.row.orderStatus==60">待发货</span>
+                        <span v-else-if="scope.row.orderStatus==70">日本取消订单</span> -->
+                        <!-- 待收货 -->
+                        <span v-else-if="scope.row.orderStatus==80">清关中</span>
+                        <span v-else-if="scope.row.orderStatus==90">待收货</span>
+                        <!-- 已完成 -->
+                        <span v-else-if="scope.row.orderStatus==100">交易完成</span>
+                        <span v-else-if="scope.row.orderStatus==0">已取消</span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="statusInfo" label="操作内容" align="center"></el-table-column>
                 <el-table-column prop="remark" label="备注" align="center" width="600"></el-table-column>
             </el-table>
         </el-form>
+
         <!-- 弹窗, 新建 -->
-        <orderData  v-if="orderDataVisible" ref="addEditData" @searchDataList="getDataList"></orderData>
+        <!-- <orderData  v-if="orderDataVisible" ref="addEditData" @searchDataList="getDataList"></orderData> -->
+        <!-- 清关失败 -->
+        <clearancFailure v-if="clearancFailureVisible" ref="clearancFailureCompon"></clearancFailure>
+         <!-- 填写物流 -->
+        <writeLogisticsInfo v-if="writeLogisticsInfoVisible" ref="writeLogisticsInfoCompon"></writeLogisticsInfo>
         <!-- 查看物流 -->
         <logistics v-if="logisticsVisible" ref="logisticsCompon"></logistics>
         <!-- 修改收货人信息 -->
         <reciverInfo v-if="reciverInfoVisible" ref="reciverInfoCompon" @searchDataList="getOrderDetail"></reciverInfo>
          <!-- 审核 -->
         <exammine v-if="exammineVisible" ref="exammineCompon" @searchDataList="getOrderDetail"></exammine>
+        <!-- 备注信息 -->
+        <remarkInfo v-if="remarkInfoVisible" ref="remarkInfoCompon" @searchDataList="getOrderDetail"></remarkInfo>
+         <!-- 取消订单弹框 -->  
+        <cancleOrder v-if="cancleOrderVisible" ref="cancleOrderCompon" @searchDataList="getOrderDetail"></cancleOrder>
     </div>
 </template>
 <script>
-    import mixinViewModule from '@/mixins/view-module'
+    // import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import Clipboard from "clipboard";
-    import orderData from './model-order-data'
-    import logistics from './modules/model-logistics.vue'
-    import reciverInfo from './modules/model-reciverInfo.vue'
-     import exammine from './modules/model-exammine.vue'
+    // import orderData from './model-order-data'
+    
+    import clearancFailure from '../modules/model-clearanc-failure.vue'
+    import writeLogisticsInfo from '../modules/model-write-logistics-info.vue'
+    import logistics from '../modules/model-logistics.vue'
+    import reciverInfo from '../modules/model-reciverInfo.vue'
+    import exammine from '../modules/model-exammine.vue'
+    import remarkInfo from '../modules/model-remark-info.vue'
+    import cancleOrder from '../modules/model-cancle-order.vue'
+     
     import {orderDetail } from "@/api/api";
     export default {
-        mixins: [mixinViewModule],
+        // mixins: [mixinViewModule],
         data() {
             return {
                 dialogVisible:false,
                 active:0,
                 textarea: "",
+                dataListLoading:false,
                 dialogFormVisible: false,
+                clearancFailureVisible:false,
+                writeLogisticsInfoVisible:false,
                 logisticsVisible:false,
                 reciverInfoVisible:false,
                 exammineVisible:false,
-                orderDetData: ["订单管理", "BC订单管理", "订单详情"],
+                remarkInfoVisible:false,
+                cancleOrderVisible:false,
                 dataForm: {},
                 orderDataVisible: false,
                 authenticationInfo:"", //是个弹框
@@ -285,17 +327,22 @@
                 orderLogs:[],
                 preferInfo:[],
                 receiverInfo:{},
+                scheduleList:[],
                 row:"",
             };
         },
         components: {
             Bread,
-            orderData,
+            // orderData,
+            clearancFailure,
+            writeLogisticsInfo,
             logistics,
             reciverInfo,
-            exammine
+            exammine,
+            remarkInfo,
+            cancleOrder
         },
-        props: ["data", "addressInfo", "orderLog","packageInfo"],
+        props: ["data", "addressInfo", "orderLog","packageInfo",'breaddata'],
         methods: {
             init(row){
                 console.log(row);
@@ -307,7 +354,9 @@
                 var obj = {
                     id:this.row.id,
                 }
+                this.dataListLoading = true;
                 orderDetail(obj).then((res)=>{
+                    this.dataListLoading = false;
                     console.log(res);
                     if(res.code==200 && res.data){
                         this.authenticationInfo = res.data.authenticationInfo;
@@ -316,6 +365,15 @@
                         this.orderLogs = res.data.orderLogs;
                         this.preferInfo = res.data.preferInfo;
                         this.receiverInfo = res.data.receiverInfo;
+                        if(res.data.scheduleList.length){
+                            this.active = res.data.scheduleList.length-1;
+                        }else{
+                            this.active = 0;
+                        }
+                        this.scheduleList = res.data.scheduleList;
+                        for(var i= res.data.scheduleList.length;i<6;i++){
+                             this.scheduleList.push({})
+                        }
                         switch(this.orderBase.orderStatus){
                             case 10:
                                 // 待支付
@@ -352,7 +410,7 @@
             },
             //页面跳转 1-列表页
             goList() {
-                this.$emit("addoraditList");
+                this.$emit("orderDetListFn");
             },
 
             //添加备注
@@ -369,6 +427,20 @@
             setOrderDataVisible(boolargu){
                 this.orderDataVisible =  boolargu;
             },
+            // 清关失败
+            clearancFailureFn(){
+                this.clearancFailureVisible = true;
+                this.$nextTick(() => {
+                    this.$refs.clearancFailureCompon.init(this.row)
+                })
+            },
+            // 填写物流信息
+            writeLogisticsInfo(){
+                this.writeLogisticsInfoVisible = true;
+                this.$nextTick(() => {
+                    this.$refs.writeLogisticsInfoCompon.init(this.row)
+                })
+            },
             // 查看物流弹框
             lookLogistics(){
                 this.logisticsVisible = true;
@@ -380,7 +452,7 @@
             modifyReciverInfo(){
                 this.reciverInfoVisible = true;
                  this.$nextTick(() => {
-                   this.$refs.reciverInfoCompon.init(this.receiverInfo,this.row)
+                   this.$refs.reciverInfoCompon.init(this.orderBase,this.receiverInfo,this.row)
                 })
             },
             // 审核
@@ -390,7 +462,20 @@
                    this.$refs.exammineCompon.init(this.row)
                 })
             },
-            
+            // 备注信息
+            remarkInfoFn(){
+                this.remarkInfoVisible = true;
+                this.$nextTick(() => {
+                   this.$refs.remarkInfoCompon.init(this.orderBase)
+                })
+            },
+             // 取消订单
+           cancleOrderFn(){
+                this.cancleOrderVisible = true;
+                this.$nextTick(() => {
+                   this.$refs.cancleOrderCompon.init(this.row)
+                })
+            },
         }
     };
 </script>
