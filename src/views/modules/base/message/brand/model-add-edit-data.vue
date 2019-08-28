@@ -47,6 +47,7 @@
                 visible : false,
                 loading : false,
                 dataForm: {
+                    id:"",
                     idJp: "",//品牌ID
                     brandNameJp: "",//日本品牌名称
                     descriptionJp: "",//日本品牌描述
@@ -73,6 +74,7 @@
             init (row) {
                 this.visible = true;
                 this.row = row;
+                console.log(row)
                 if(row){
                     this.title="编辑品牌";
                     this.backScan();
@@ -88,6 +90,7 @@
             // 编辑回显
             backScan(){
                 var obj  = {
+                    id:this.row.id,
                     idJp:this.row.idJp,
                     brandNameJp:this.row.brandNameJp,
                     descriptionJp:this.row.descriptionJp,
@@ -110,6 +113,7 @@
                     if (valid) {
                         this.loading = true;
                         var obj = {
+                            "id":  this.dataForm.id,
                             "idJp":  this.dataForm.idJp,
                             "brandNameJp":  this.dataForm.brandNameJp,
                             "descriptionJp":  this.dataForm.descriptionJp,
