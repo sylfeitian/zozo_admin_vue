@@ -67,7 +67,7 @@
                         <el-table-column prop="sizeName" label="尺码" align="center"></el-table-column>
                         <el-table-column prop="specId" label="尺码信息" align="center">
                             <template slot-scope="scope">
-                                <div @click="detShowChange(this.dataForm.skuVOList.sizeId)" style="color: #2260D2;cursor:pointer;">
+                                <div @click="detShowChange(scope.row)" style="color: #2260D2;cursor:pointer;">
                                     查看
                                 </div>
                             </template>
@@ -123,7 +123,7 @@
         <!-- 操作日志 -->
         <operationallog :idJp="dataForm.idJp" v-if="operationallogVisible" ref="operationallogCompon" @searchDataList="getDataList" ></operationallog>
         <!-- 尺码信息 -->
-        <sizeData v-if="sizeDataVisible" ref="sizeData" @searchDataList="getDataList"></sizeData>
+        <sizeData v-if="sizeDataVisible" ref="sizeDataCompon" @searchDataList="getDataList"></sizeData>
     </div>
 </template>
 
@@ -159,7 +159,8 @@
                 operationallogVisible:false,
                 sizeDataVisible: false,
                 mainVisible: true,
-                tags: []
+                tags: [],
+                row:'',
             }
         },
         components: {
@@ -195,6 +196,7 @@
                 // })
             },
             init(row){
+                this.row = row;
                 this.$nextTick(()=>{
                     if(row){
                         var obj  = {
@@ -228,11 +230,11 @@
                 this.idJp = this.dataForm.idJp;
                 console.log(this.dataForm.idJp)
             },
-            detShowChange () {
+            detShowChange (row2) {
                 this.sizeDataVisible =  true;
                 console.log(this.dataForm);
                 this.$nextTick(() => {
-                    this.$refs.sizeData.init();
+                    this.$refs.sizeDataCompon.init(this.row,row2);
                 })
             }
             // operational () {
