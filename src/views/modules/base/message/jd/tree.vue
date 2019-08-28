@@ -23,7 +23,7 @@
 
 <script>
     import MyButton from '@/components/treeTable/MyButton.vue';
-
+   import { jdCateSubcollection } from '@/api/api'
     export default {
         components: {
             MyButton
@@ -77,17 +77,66 @@
                     console.log("当前节点id值为："+node.data.id)
                     return resolve([])
                 };
+                let obj = {
+                    id:node.id
+                };
+                 jdCateSubcollection(obj).then(res => {
+                    //Promise后 对数据格式进行处理
+                    if (res.code == 200) {
+                        var data = res.data;
+                        // this.total = res.data.total;
+                        console.log(data);
+                        //  data = [
+                        //      {
+                        //         "id":"652123",
+                        //         "categoryName":"数码1",
+                        //         "parentId":"0",
+                        //         "grade":1,
+                        //         "sort":null,
+                        //         "pathId":null,
+                        //         "list":null,
+                        //         "relateList":[],
+                        //         "creator":null,
+                        //         "createDate":"2019-08-01 11:00:17",
+                        //         "updater":null,
+                        //         "updateDate":"2019-08-01 11:00:17",
+                        //         "delFlag":0,
+                        //         "version":null
+                        //     },
+                        //      {
+                        //         "id":"652124",
+                        //         "categoryName":"数码2",
+                        //         "parentId":"0",
+                        //         "grade":1,
+                        //         "sort":null,
+                        //         "pathId":null,
+                        //         "list":null,
+                        //         "relateList":[],
+                        //         "creator":null,
+                        //         "createDate":"2019-08-01 11:00:17",
+                        //         "updater":null,
+                        //         "updateDate":"2019-08-01 11:00:17",
+                        //         "delFlag":0,
+                        //         "version":null
+                        //     },
+                        //  ]
+                        //处理树形数据
+                        var dataStr = JSON.stringify(data);
+                        dataStr = dataStr.replace(/id/g,"label")
+                         dataStr = JSON.parse(dataStr);
+                        
+                         if(dataStr.length==0){
+                              return resolve([]);
+                         }else{
+                              return resolve(dataStr);
+                         }
+                        
+                    }else{
+                         return resolve([]);
+                    }
+                });
 
-                setTimeout(() => {
-                    const data = [{
-                        name: 'leaf',
-                        leaf: true
-                    }, {
-                        name: 'zone'
-                    }];
-
-                    resolve(data);
-                }, 500);
+              
             },
             // 计算按钮宽度
             execSpan () {
