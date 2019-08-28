@@ -56,22 +56,16 @@
                 </template>
             </el-table-column>
         </el-table>
-        <div class="bottomFun">
-            <div class="bottomFunLeft">
-                <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                <el-button class="btn" type="primary" @click="deleteHandle(scope.row.id)" style="margin-left: 20px;">批量删除</el-button>
-            </div>
-            <!-- 分页 -->
-            <el-pagination
-                    @size-change="pageSizeChangeHandle"
-                    @current-change="pageCurrentChangeHandle"
-                    :current-page="page"
-                    :page-sizes="[10, 20, 50, 100]"
-                    :page-size="limit"
-                    :total="total"
-                    layout="total, sizes, prev, pager, next, jumper">
-            </el-pagination>
-        </div>
+        <!-- 分页 -->
+        <el-pagination
+                @size-change="pageSizeChangeHandle"
+                @current-change="pageCurrentChangeHandle"
+                :current-page="page"
+                :page-sizes="[10, 20, 50, 100]"
+                :page-size="limit"
+                :total="total"
+                layout="total, sizes, prev, pager, next, jumper">
+        </el-pagination>
         <!-- 弹窗, 新建 -->
         <addEditData  v-if="addEditDataVisible" ref="addEditData" @searchDataList="getDataList"></addEditData>
         <!-- 弹窗, 副标签 -->
