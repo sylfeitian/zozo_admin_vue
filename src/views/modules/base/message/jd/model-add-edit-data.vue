@@ -33,7 +33,7 @@
 </template>
 
 <script>
-    import { backScanCategoryJp,updateCategoryJp } from '@/api/api'
+    import { backScanJdCate,updateCategory } from '@/api/api'
     export default {
         name: "model-add-edit-data",
         data () {
@@ -83,7 +83,7 @@
                     categoryName:this.row.categoryName,
                     name:this.row.name
                 }
-                backScanCategoryJp(obj).then((res)=>{
+                backScanJdCate(obj).then((res)=>{
                     if(res.code == 200){
                         Object.assign(this.dataForm,res.data);
                     }else{
@@ -101,7 +101,7 @@
                             "name":  this.dataForm.name,
                         }
                         if(this.row) obj.id = this.row.id
-                        var fn = updateCategoryJp;
+                        var fn = updateCategory;
                         fn(obj).then((res) => {
                             console.log(res)
                             this.loading = false;

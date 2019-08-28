@@ -40,12 +40,15 @@
                 loading : false,
                 dataList: [],
                 dataListLoading: false,
+                row:"",
+                row2:"",
             }
         },
         // props:["idJp"],
         methods: {
-            init () {
+            init (row,row2) {
                 this.visible = true;
+                this.row = row;
                 this.sizeId = this.dataList.sizeId;
                 this.spuid = this.dataList.idJp;
                 this.$nextTick(() => {
@@ -56,9 +59,18 @@
             },
             // 编辑回显
             backScan(){
+                if(!this.row.idJp){
+                    this.$message.error("后端返回的idJp为空")
+                    this.closeDialog();
+                    return;
+                }else if(!this.row2.sizeId){
+                    this.$message.error("后端返回的sizeId为空")
+                    this.closeDialog();
+                    return;;
+                }
                 var obj  = {
-                    spuid:this.idJp,
-                    sizeId: this.sizeId
+                    spuId:this.row.idJp,
+                    sizeId: this.row2.sizeId
                 }
                 this.dataListLoading = true;
                 getZozogoodsSize(obj).then((res)=>{
@@ -76,6 +88,7 @@
                 })
             },
             closeDialog() {
+                this.visible = false;
                 this.$parent.sizeDataVisible = false;
             },
             // changePage(){
