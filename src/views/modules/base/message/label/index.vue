@@ -50,7 +50,8 @@
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button type="text" @click="addOrEditHandle(scope.$index, scope.row)" size="mini">编辑</el-button>
-                    <el-button type="text" @click.native.prevent="addOrEditHandle" size="mini">管理副风格标签</el-button>
+                    <el-button v-if="scope.row.styleType==0" type="text" @click.native.prevent="showHandle" size="mini">管理副风格标签</el-button>
+                    <el-button v-if="scope.row.styleType==1" type="text" @click.native.prevent="showHandle" size="mini">管理主风格标签</el-button>
                     <el-button class="artdanger" @click.native.prevent="deleteHandle(scope.row.id)"type="text"size="mini">删除</el-button>
                 </template>
             </el-table-column>
@@ -73,6 +74,8 @@
         </div>
         <!-- 弹窗, 新建 -->
         <addEditData  v-if="addEditDataVisible" ref="addEditData" @searchDataList="getDataList"></addEditData>
+        <!-- 弹窗, 副标签 -->
+        <subData  v-if="subDataVisible" ref="subDataCompon" @searchDataList="getDataList"></subData>
     </div>
 </template>
 
@@ -80,6 +83,7 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import addEditData from './model-add-edit-data'
+    import subData from './model-sub-label'
     import { shopStyleUrl, deleteShopStyle } from '@/api/url'
     export default {
         mixins: [mixinViewModule],
@@ -109,12 +113,14 @@
                     styleType: ""//标签分类
                 },
                 addEditDataVisible:false,
+                subDataVisible:false,
                 isIndeterminate: false,
                 checkAll: false,
             }
         },
         components: {
             Bread,
+            subData,
             addEditData
         },
         created () {
@@ -142,6 +148,15 @@
             },
             setAddEditDataVisible(boolargu){
                 this.addEditDataVisible =  boolargu;
+            },
+            showHandle(index=-1,row=""){
+                this.setSubDataVisible(true);
+                this.$nextTick(() => {
+                    this.$refs.subDataCompon.init(row)
+                })
+            },
+            setSubDataVisible(boolargu){
+                this.subDataVisible =  boolargu;
             },
         }
     }

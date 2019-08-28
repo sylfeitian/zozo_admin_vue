@@ -115,7 +115,7 @@
             imgCropper
         },
         created () {
-            this.dataForm.styleType = this.options[0].id;
+            // this.dataForm.styleType = this.options[0].id;
         },
         methods: {
             init (row) {
