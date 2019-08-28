@@ -13,7 +13,7 @@
                 label-width="120px"
         >
             <el-form-item>
-                <el-input v-model="dataForm.labelName" placeholder="请输入品牌名称"></el-input>
+                <el-input v-model="dataForm.brandName" placeholder="请输入品牌名称"></el-input>
                 <el-button class="btn" type="primary" @click="handleClick()">搜索</el-button>
             </el-form-item>
             <el-table
@@ -23,8 +23,8 @@
                     v-loading="dataListLoading"
                     style="width: 100%"
             >
-                <el-table-column prop="labelName" label="品牌名称" align="center"></el-table-column>
-                <el-table-column prop="state" label="可售状态" width="200" align="center"></el-table-column>
+                <el-table-column prop="brandName" label="品牌名称" align="center"></el-table-column>
+                <el-table-column prop="enableCnFlag" label="可售状态" width="200" align="center"></el-table-column>
             </el-table>
         </el-form>
         <!-- 分页 -->
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+    import { pageByStore } from '@/api/api'
     import mixinViewModule from '@/mixins/view-module'
     export default {
         mixins: [mixinViewModule],
@@ -61,16 +62,26 @@
             init (row) {
                 this.visible = true;
                 this.row = row;
-                if(row){
-                    //this.title="编辑标签";
-                    this.backScan();
-                }else{
-                    //this.title="新建标签"
-
-                }
+                this.backScan();
                 this.$nextTick(() => {
                     this.$refs['addForm'].resetFields();
                     // this.getApplyPullList();
+                })
+            },
+            // 编辑回显
+            backScan(){
+                var obj  = {
+                    storeId:this.row.id,
+                    brandName:this.row.brandName,
+                    enableCnFlag:this.row.enableCnFlag,
+                }
+                pageByStore(obj).then((res)=>{
+                    if(res.code == 200){
+                        Object.assign(this.dataForm,res.data);
+
+                    }else{
+
+                    }
                 })
             },
             // closeDialog() {

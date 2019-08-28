@@ -65,7 +65,16 @@
                 </template>
             </el-form-item>
             <el-form-item label="选择风格标签：" prop="mainTag">
-                <el-select v-model="value" multiple :options="dataArray" @change="handleChange" clearable change-on-select></el-select>
+                <el-select v-model="styleName" multiple clearable change-on-select>
+                    <el-option
+                            v-for="item in labelOption"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id">
+                    </el-option>
+                </el-select>
+<!--                <el-input v-model="dataForm.description" placeholder="" style="width: 250px;"></el-input>&nbsp;-->
+<!--                <el-button class="btn" type="primary" @click="getDataList()">搜索</el-button>-->
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
                 <el-button  @click="dataFormCancel()">取消</el-button>
@@ -77,7 +86,7 @@
 </template>
 
 <script>
-    import { updateShopStore,backScanShopStore } from '@/api/api'
+    import { updateShopStore,backScanShopStore,searchShopStyle } from '@/api/api'
     import imgCropper from "@/components/model-photo-cropper";
     import { uploadPicBase64 } from '@/api/api'
     export default {
@@ -89,6 +98,7 @@
                 loading : false,
                 uploading:false,
                 dataForm: {
+                    id:"",
                     idJp: "",//店铺ID
                     storeNameGlo: "",//海外店铺名称
                     storeNameJp: "",//店铺日文名称
@@ -99,6 +109,7 @@
                     storeLogo:"",//店铺logo
                     mainTag:"",//标签分类
                 },
+                labelOption:[{ id: '0', name: '营业中' },{ id: '1', name: '已停业' }],
                 dataRule : {
                     storeName : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -140,6 +151,7 @@
             // 编辑回显
             backScan(){
                 var obj  = {
+                    id:this.row.id,
                     idJp:this.row.idJp,
                     storeNameGlo:this.row.storeNameGlo,
                     storeNameJp:this.row.storeNameJp,

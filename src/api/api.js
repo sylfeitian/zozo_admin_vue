@@ -481,7 +481,7 @@ export const updateShopStore = params => { return http.put(`${base}/shopStore`, 
 //导入店铺信息
 export const importShopStore = params => { return http.post(`${base}/shopStore/import`, params).then(res => res.data); };
 //店铺停业营业操作
-export const operateShopStore = params => { return http.put(`${base}/shopStore/operate`, params).then(res => res.data); };
+export const operateShopStore = params => { return http.put(`${base}/shopStore/operate?operateFlag=${params.operateFlag}&storeId=${params.storeId}`, params).then(res => res.data); };
 // 分页查询信息
 export const shopStorePage = params => { return http.get(`${base}/shopStore/page`, params).then(res => res.data); };
 //店铺是否设为推荐

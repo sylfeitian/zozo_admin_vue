@@ -64,7 +64,7 @@
             </el-table-column>
             <el-table-column label="售卖品牌" align="center">
                 <template slot-scope="scope">
-                    <el-button type="text" @click.native.prevent="editHandle" size="mini">查看</el-button>
+                    <el-button type="text" @click.native.prevent="addHandle" size="mini">查看</el-button>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center">
@@ -117,6 +117,7 @@
                 breaddata: [ "基础资料管理", "店铺管理"],
                 options: [],
                 dataForm: {
+                    id:"",
                     idJp: "",//店铺ID
                     storeName: "",//店铺名称
                     operateFlag:""//营业状态:0营业;1停业
@@ -158,7 +159,7 @@
                 this.dataForm.operateFlag = "";//营业状态
                 this.getDataList();
             },
-            // 新建
+            // 查看
             addHandle(index=-1,row=""){
                 this.setAddDataVisible(true);
                 this.$nextTick(() => {
@@ -187,15 +188,17 @@
                 ids = [rowOrstatus.id]
                 operateFlag = rowOrstatus.operateFlag==1?0:1;
                 var obj = {
-                    ids:ids,
+                    storeId:storeId,
                     operateFlag:operateFlag,
                 }
             },
             forbitHandle(index,row){
+                console.log(row);
                 this.currentIndex = index;
+                console.log(obj)
                 var obj = {
-                    "id": row.id,
-                    "operateFlag":row.operateFlag==1?2:1  //
+                    "storeId": row.id,
+                    "operateFlag":row.operateFlag==1?0:1  //
                 }
                 var msg = ""
                 row.operateFlag==1?msg="停业":msg="营业"
