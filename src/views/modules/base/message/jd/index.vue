@@ -37,7 +37,7 @@
     import Bread from "@/components/bread";
     import addEditData from './model-add-edit-data'
     import { jdCateUrl } from '@/api/url'
-    import { jdCatePage } from '@/api/api'
+    import { jdCateSubcollection } from '@/api/api'
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -53,6 +53,11 @@
                 },
                 breaddata: [ "商品管理", "日本分类"],
                 addEditDataVisible:false,
+                formData:{
+                    page:1,
+                    limit: 10,
+                    parentId:0
+                },
                 treeConfig: {
                     //等于 el-tree 的选项配置
                     options: {
@@ -98,8 +103,8 @@
             getTree() {
                 let obj = {
                     params:this.formData
-                }
-                jdCatePage(obj).then(res => {
+                };
+                jdCateSubcollection(obj).then(res => {
                     //Promise后 对数据格式进行处理
                     if (res.code == 200) {
                         var data = res.data.list;

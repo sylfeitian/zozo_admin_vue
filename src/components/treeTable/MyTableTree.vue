@@ -142,11 +142,15 @@
 								<el-switch 
 									value={node.data.showFlag == 1 ? true : false} 
 									on-change={ () => node.data.showFlag = node.data.showFlag == 0 ? 1 : 0 } 
-									nativeOnClick={(event) => event.stopPropagation()}
+									nativeOnClick={(event) => {
+										this.$emit("act-click", node.data)
+//										event.stopPropagation()
+									}}
                    				></el-switch>
 							</el-col>
 						)
 					};
+
 
                     return h('el-col', {props: {span: colSpan}, 'class': {'text-center': col.center, 'textIndex5': true}}, value);
                 });
@@ -243,4 +247,19 @@
             text-align: center;
         }
     }
+    
+    .el-tree-node__content .arttuijian{
+    	display: none;
+    }
+    .el-tree-node__children .artadd{
+    	display: none;
+    }
+    .el-tree-node__children .arttuijian{
+    	display: inline-block;
+    }
+    
+    .el-button + .el-button {
+	    margin-right: 20px;
+	    margin-left: 0px;
+	}
 </style>

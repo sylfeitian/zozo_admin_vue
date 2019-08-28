@@ -4,7 +4,7 @@
             :close-on-click-modal="false"
             :visible.sync="visible"
             :before-close="closeDialog"
-            width="100%"
+            width="30%"
     >
         <el-table
                 ref="addForm"
@@ -12,31 +12,16 @@
                 border=""
                 v-loading="dataListLoading"
                 style="width: 100%">
-            <el-table-column prop="goodsCsIdJp" label="SKU编码"></el-table-column>
-            <el-table-column prop="barcodes" label="商品条形码(UPC)"></el-table-column>
-            <el-table-column prop="goodsName" label="商品名称(中文)"></el-table-column>
-            <el-table-column prop="goodsNameGlo" label="商品英文名称"></el-table-column>
-            <el-table-column prop="brandName" label="品牌"></el-table-column>
-            <el-table-column prop="spe" label="规格型号"></el-table-column>
-            <el-table-column prop="declarationContractUnit" label="申报/合同单位"></el-table-column>
-            <el-table-column prop="hsCode" label="HScode"></el-table-column>
-            <el-table-column prop="generateBusinessName" label="生成企业名称"></el-table-column>
-            <el-table-column prop="supplier" label="供应商"></el-table-column>
-            <el-table-column prop="madeIn" label="原产地区"></el-table-column>
-            <el-table-column prop="sellPrice" label="商品单价(RMB)"></el-table-column>
-            <el-table-column prop="grossWeight" label="毛重(kg)"></el-table-column>
-            <el-table-column prop="netWeight" label="净重(kg)"></el-table-column>
-            <el-table-column prop="safeDays" label="保质期"></el-table-column>
-            <el-table-column prop="imageUrl" label="货物图片"></el-table-column>
-            <el-table-column prop="shopStoreName" label="店铺名称"></el-table-column>
-            <el-table-column prop="storeName" label="商家ID"></el-table-column>
-            <el-table-column prop="storeContactInformation" label="商家联系方式"></el-table-column>
+            <el-row class="info" style="width: 900px;">
+                <el-col :span="12"><div class="grid-content">{{dataList.name}}</div></el-col>
+                <el-col :span="12"><div class="grid-content">{{dataList.value}}</div></el-col>
+            </el-row>
         </el-table>
     </el-dialog>
 </template>
 
 <script>
-    import { backScanRegister } from '@/api/api'
+    import { getZozogoodsSize } from '@/api/api'
     // import { getGoodsUrl } from '@/api/url'
     export default {
         name: "list",
@@ -55,12 +40,17 @@
                 loading : false,
                 dataList: [],
                 dataListLoading: false,
+                row:"",
+                row2:"",
             }
         },
-        props:["idJp"],
+        // props:["idJp"],
         methods: {
-            init () {
+            init (row,row2) {
                 this.visible = true;
+                this.row = row;
+                this.sizeId = this.dataList.sizeId;
+                this.spuid = this.dataList.idJp;
                 this.$nextTick(() => {
                     // this.$refs['addForm'].resetFields();
                     // this.getApplyPullList();
@@ -69,11 +59,21 @@
             },
             // 编辑回显
             backScan(){
+                if(!this.row.idJp){
+                    this.$message.error("后端返回的idJp为空")
+                    this.closeDialog();
+                    return;
+                }else if(!this.row2.sizeId){
+                    this.$message.error("后端返回的sizeId为空")
+                    this.closeDialog();
+                    return;;
+                }
                 var obj  = {
-                    spuid:this.idJp,
+                    spuId:this.row.idJp,
+                    sizeId: this.row2.sizeId
                 }
                 this.dataListLoading = true;
-                backScanRegister(obj).then((res)=>{
+                getZozogoodsSize(obj).then((res)=>{
                     this.dataListLoading = false;
                     if(res.code == 200){
                         this.dataList = res.data;
@@ -88,7 +88,8 @@
                 })
             },
             closeDialog() {
-                this.$parent.addEditDataVisible = false;
+                this.visible = false;
+                this.$parent.sizeDataVisible = false;
             },
             // changePage(){
             //     this.$emit("recordlistList");
@@ -97,6 +98,11 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+    .grid-content {
+        border: 1px solid #ebeef5;
+        height: 54px;
+        line-height: 54px;
+        text-align: center
+    }
 </style>
