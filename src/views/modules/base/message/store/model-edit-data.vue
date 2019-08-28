@@ -64,12 +64,12 @@
                     </div>
                 </template>
             </el-form-item>
-            <el-form-item label="选择风格标签：" prop="mainTag">
-                <el-select v-model="styleName" multiple clearable change-on-select>
+            <el-form-item label="选择风格标签：">
+                <el-select v-model="mainTag" multiple>
                     <el-option
-                            v-for="item in labelOption"
+                            v-for="item in dataArray"
                             :key="item.id"
-                            :label="item.name"
+                            :label="item.styleName"
                             :value="item.id">
                     </el-option>
                 </el-select>
@@ -139,6 +139,7 @@
                 if(row){
                     this.title="编辑店铺";
                     this.backScan();
+                    this.backScan1();
                 }else{
                     this.title="新建店铺"
 
@@ -162,6 +163,21 @@
                     storeLogo:this.row.storeLogo,
                 }
                 backScanShopStore(obj).then((res)=>{
+                    if(res.code == 200){
+                        Object.assign(this.dataForm,res.data);
+
+                    }else{
+
+                    }
+                })
+            },
+            backScan1(){
+                var obj  = {
+                    id:this.row.id,
+                    idJp:this.row.idJp,
+                    styleName:this.row.styleName
+                }
+                searchShopStyle(obj).then((res)=>{
                     if(res.code == 200){
                         Object.assign(this.dataForm,res.data);
 

@@ -43,11 +43,17 @@
             <el-table-column prop="storeName" label="店铺中文名称" align="center"></el-table-column>
             <el-table-column label="营业状态" align="center">
                 <template slot-scope="scope">
-                    <el-tag v-if="scope.row.operateFlag==0" type="success">营业中</el-tag>
-                    <el-tag v-if="scope.row.operateFlag==1" type="info">已停业</el-tag>
+                    <el-tag v-if="scope.row.operateFlag==0" type="warning">待营业</el-tag>
+                    <el-tag v-if="scope.row.operateFlag==1" type="success">营业中</el-tag>
+                    <el-tag v-if="scope.row.operateFlag==2" type="info">已停业</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column prop="japanState" label="日本店铺状态" align="center"></el-table-column>
+            <el-table-column prop="japanState" label="日本店铺状态" align="center">
+                <template slot-scope="scope">
+                    <el-tag v-if="scope.row.operateFlagJp==0" type="success">营业中</el-tag>
+                    <el-tag v-if="scope.row.operateFlagJp==1" type="info">已停业</el-tag>
+                </template>
+            </el-table-column>
             <el-table-column prop="updateDate" label="更新时间" align="center"></el-table-column>
             <el-table-column prop="mainTag" label="店铺主风格标签" align="center"></el-table-column>
             <el-table-column prop="subTag" label="店铺副风格标签" align="center"></el-table-column>
@@ -120,7 +126,8 @@
                     id:"",
                     idJp: "",//店铺ID
                     storeName: "",//店铺名称
-                    operateFlag:""//营业状态:0营业;1停业
+                    operateFlag:"",//营业状态:0待营业;1营业中;2已停业
+                    operateFlagJp:"",//日本营业状态:0营业;1停业
                 },
                 dataList: [],
                 dataListLoading: false,
