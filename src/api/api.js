@@ -630,12 +630,6 @@ export const getZozogoodsSize = params => { return http.get(`${base}/zozogoods/s
 
 
 
-//京东分类管理接口--------------------------------------------------------------------------------------------------------------------
-// 分页查询分类
-export const jdCatePage = params => { return http.get(`${base}/jdCate/page`, params).then(res => res.data); };
-
-
-
 
 
 //同义词管理接口--------------------------------------------------------------------------------------------------------------------
@@ -687,6 +681,21 @@ export const backScanShophotkeyword = params => { return http.get(`${base}/shoph
 //消息列表分页  
 export const getmessagepage = params => { return http.get(`${base}/shopmessagetemplate/messagepage`, params).then(res => res.data); };
 
+
+
+
+
+//京东分类-------------------------------------------------------------------------------------------------------------
+//导入京东分类
+export const importJdCate = params => { return http.post(`${base}/jdCate/import`, params).then(res => res.data); };
+// 分页
+export const jdCatePage = params => { return http.get(`${base}/jdCate/page`, params).then(res => res.data); };
+// 根据父分类id查询子分类集合
+export const jdCateSubcollection = params => { return http.get(`${base}/jdCate/subcollection/${params.id}`, params).then(res => res.data); };
+//更新京东分类关联的中国分类
+export const updateCategory = params => { return http.post(`${base}/jdCate/updateCategory`, params).then(res => res.data); };
+// 编辑页面信息回显
+export const backScanJdCate = params => { return http.get(`${base}/jdCate/${params.id}`, params).then(res => res.data); };
 
 
 

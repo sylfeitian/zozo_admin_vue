@@ -13,8 +13,8 @@
                     </el-row>
                 </div>
                 <div class="myGridTree">
-                    <el-tree :data="mate.rows" node-key="id" :props="defaultProps" v-bind="mate.options" @check-change="handleCheckChange" :render-content='renderContent'
-                             @node-click="handleClick" @current-change="handleCurrentChange" ref="myTreeGrid"></el-tree>
+                    <el-tree :data="mate.rows" node-key="id" :props="defaultProps" :load="loadNode" v-bind="mate.options" @check-change="handleCheckChange" :render-content='renderContent'
+                             @node-click="handleClick" @current-change="handleCurrentChange" ref="myTreeGrid" lazy></el-tree>
                 </div>
             </el-col>
         </el-row>
@@ -50,7 +50,8 @@
             return {
                 defaultProps: {
                     children: "children",
-                    label: "label"
+                    label: "label",
+                    isLeaf: "leaf"
                     // children: this.children,
                     // label: this.label
                 },
@@ -66,6 +67,28 @@
             this.execSpan();
         },
         methods: {
+            loadNode(node, resolve) {
+                console.log(node);
+                if (node && node.level === 0) {
+                    return resolve([{ name: 'region' }]);
+
+                }
+                if (node.level > 1) {
+                    console.log("当前节点id值为："+node.data.id)
+                    return resolve([])
+                };
+
+                setTimeout(() => {
+                    const data = [{
+                        name: 'leaf',
+                        leaf: true
+                    }, {
+                        name: 'zone'
+                    }];
+
+                    resolve(data);
+                }, 500);
+            },
             // 计算按钮宽度
             execSpan () {
                 let sum = 0;
