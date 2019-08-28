@@ -17,7 +17,13 @@
                 <el-input v-model="dataForm.styleName" placeholder=""></el-input>
             </el-form-item>
             <el-form-item label="已关联副风格标签：" prop="styleName">
-                <el-tag closable>标签一</el-tag>
+                <el-tag closable
+                        v-for="item in dataArray"
+                        :key="item.id"
+                        :label="item.styleName"
+                        :value="item.id">
+                {{item.styleName}}
+                </el-tag>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
                 <el-button  @click="dataFormCancel()">取消</el-button>
@@ -29,7 +35,7 @@
 </template>
 
 <script>
-    import { backScanShopStyle,updateShopStyle,deleteShopStyle } from '@/api/api'
+    import { backScanShopStyleUnion, shopStyleUnion } from '@/api/api'
     export default {
         name: "model-add-edit-data",
         data () {
@@ -44,6 +50,8 @@
                 },
                 value:[],
                 value2:[],
+                dataArray:[],
+                row:"",
                 formLabelWidth: '120px'
             }
         },
@@ -68,8 +76,9 @@
                     styleName:this.row.styleName,
                     styleType:this.row.styleType,
                 }
-                backScanShopStyle(obj).then((res)=>{
+                backScanShopStyleUnion(obj).then((res)=>{
                     if(res.code == 200){
+                        this.dataArray = res.data;
                         Object.assign(this.dataForm,res.data);
 
                     }else{
@@ -84,14 +93,11 @@
                     if (valid) {
                         this.loading = true;
                         var obj = {
+                            "id":  this.dataForm.id,
                             "styleName":  this.dataForm.styleName,
-                            "styleType":  this.dataForm.styleType,
-                            "sex":  this.dataForm.sex,
-                            "imgUrl":  this.dataForm.imgUrl,
-                            "sort":  this.dataForm.sort,
                         }
                         if(this.row) obj.id = this.row.id
-                        var fn = updateShopStyle;
+                        var fn = shopStyleUnion;
                         fn(obj).then((res) => {
                             this.loading = false;
                             // alert(JSON.stringify(res));

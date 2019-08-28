@@ -50,7 +50,7 @@
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button type="text" @click="addOrEditHandle(scope.$index, scope.row)" size="mini">编辑</el-button>
-                    <el-button v-if="scope.row.styleType==0" type="text" @click.native.prevent="showHandle" size="mini">管理副风格标签</el-button>
+                    <el-button v-if="scope.row.styleType==0" type="text" @click="showHandle(scope.$index, scope.row)" size="mini">管理副风格标签</el-button>
                     <el-button v-if="scope.row.styleType==1" type="text" @click.native.prevent="showHandle" size="mini">管理主风格标签</el-button>
                     <el-button class="artdanger" @click.native.prevent="deleteHandle(scope.row.id)"type="text"size="mini">删除</el-button>
                 </template>

@@ -544,7 +544,7 @@ export const updateShopStyle = params => { return http.post(`${base}/shopstyle/s
 // 查询标签分页列表
 export const shopStylePage = params => { return http.get(`${base}/shopstyle/style/page`, params).then(res => res.data); };
 // 修改主标签关联副标签
-export const shopStyleUnion = params => { return http.post(`${base}/shopstyle/style/union`, params).then(res => res.data); };
+export const shopStyleUnion = params => { return http.post(`${base}/shopstyle/style/union?id=${params.id}&childrenIds=${params.childrenIds}`, params).then(res => res.data); };
 // 根据主标签id查询已关联副标签
 export const backScanShopStyleUnion = params => { return http.get(`${base}/shopstyle/style/union/${params.id}`, params).then(res => res.data); };
 // 根据id查询标签详情
