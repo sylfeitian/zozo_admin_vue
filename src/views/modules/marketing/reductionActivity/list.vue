@@ -47,7 +47,7 @@
         <br />
         <el-form-item>
             <el-button type="primary" @click="addActivity()">添加活动</el-button>
-            <!-- <el-button type="primary" @click="addAdit('31313121212')">添加活动</el-button> -->
+            <!-- <el-button type="primary" @click="showDetail('31313121212')">添加活动</el-button> -->
         </el-form-item>
     </el-form>
     <el-table
@@ -122,8 +122,8 @@
             <el-form-item label="活动标题：" prop="sgName">
                 <el-input v-model="activiDataForm.sgName" placeholder="请输入50字以内的标题" :maxlength="50"></el-input>
             </el-form-item>
-            <el-form-item label="满减规则：" prop="rule">
-                单笔订单满<el-input style="widt:70px" v-model="activiDataForm.rule" type="number" :maxlength="6"></el-input>元立减<el-input style="widt:70px" v-model="activiDataForm.rule" type="number" :maxlength="6"></el-input>元
+            <el-form-item label="满减规则：" :prop="ruleName">
+                单笔订单满<el-input style="width:70px" v-model="activiDataForm.rule1" type="number" @blur="bluerule1" :maxlength="6"></el-input>元立减<el-input style="width:70px" v-model="activiDataForm.rule2" @blur="bluerule2" type="number" :maxlength="6"></el-input>元
             </el-form-item>
             <el-form-item label="开始时间：" prop="startTime">
                 <el-date-picker
@@ -156,125 +156,145 @@
 </template>
 
 <script>
-import mixinViewModule from '@/mixins/view-module'
-import { businessPageUrl } from '@/api/url'
-import { storeGrade } from '@/api/api'
-import Bread from "@/components/bread";
-  
-export default {
-  mixins: [mixinViewModule],
-  data () {
-    return {
-      mixinViewModuleOptions: {
-          getDataListURL: businessPageUrl,
-          getDataListIsPage: true,
-          exportURL: '/admin-api/store/export',
-          deleteURL: '/admin-api/store',
-          deleteIsBatch: true,
-          // deleteIsBatchKey: 'id'
-      },
-      buttonStatus:false,
-      activiVisible:false,
-      activiTitle:'添加活动',
-      activiDataForm:{
-          sgName:'',
-          startTime:'',
-          endTime:'',
-          rule:'',
-          checkList:'0'
-      },
-      dataForm: {
-          gradeId:'',
-          storeType:'',
-      },
-      storeTypes:[
-          {id: '',label: '待审核'},
-          {id: '1',label: '审核通过'},
-          {id: '2',label: '审核不通过'}
-      ],
-      activitesstates: [{ id: '', name: "全部" },{ id: 1, name: "未开始" },{ id: 2, name: "进行中" },{ id: 3, name: "已结束" },{ id: 4, name: "待审核" }],
-      breaddata: ["营销管理", "单品折扣"],
-      valuetime:"",
-      dataRule : {
-            sgName : [
-                { required: true, message: '必填项不能为空', trigger: 'blur' },
+    import mixinViewModule from '@/mixins/view-module'
+    import { businessPageUrl } from '@/api/url'
+    import { storeGrade } from '@/api/api'
+    import Bread from "@/components/bread";
+    
+    export default {
+    mixins: [mixinViewModule],
+    components:{Bread},
+    data () {
+        return {
+            mixinViewModuleOptions: {
+                getDataListURL: businessPageUrl,
+                getDataListIsPage: true,
+                exportURL: '/admin-api/store/export',
+                deleteURL: '/admin-api/store',
+                deleteIsBatch: true,
+                // deleteIsBatchKey: 'id'
+            },
+            buttonStatus:false,
+            activiVisible:false,
+            activiTitle:'添加活动',
+            activiDataForm:{
+                sgName:'',
+                startTime:'',
+                endTime:'',
+                rule1:'',
+                rule2:'',
+                checkList:'0'
+            },
+            dataForm: {
+                gradeId:'',
+                storeType:'',
+            },
+            storeTypes:[
+                {id: '',label: '待审核'},
+                {id: '1',label: '审核通过'},
+                {id: '2',label: '审核不通过'}
             ],
-            startTime : [
-                    { required: true, message: '必填项不能为空', trigger: 'blur' },
-            ],
-            endTime : [
-                    { required: true, message: '必填项不能为空', trigger: 'blur' },
-            ]
-        },
-    }
-  },
-  components:{
-  	Bread
-  },
-  created(){
-    this.demo();
-  },
-  methods: {
-        //回调跳到查看页面
-        showDetail(id){
-	    	this.$emit("showDetail",id);
-        },
-        //重置
-        reset() {
-            this.dataForm = {};
-            this.getDataList();
-        },
-        //回调跳到添加商品页面
-        addAdit(id){                    //id:为活动id
-        	this.$emit('addAditFun',id)//添加商品
-        },
-        //打开新增编辑活动弹框
-        addActivity(id){
-            this.activiVisible = true;
-            if(id){
-                this.activiTitle = '编辑活动';
-                this.getInfo(id);//判断是编辑情况下调详情方法
-            }else{
-                this.activiTitle = '添加活动';
+            activitesstates: [{ id: '', name: "全部" },{ id: 1, name: "未开始" },{ id: 2, name: "进行中" },{ id: 3, name: "已结束" },{ id: 4, name: "待审核" }],
+            breaddata: ["营销管理", "满减活动"],
+            valuetime:"",
+            ruleName:'rule1'
+        }
+    },
+    computed:{
+        dataRule(){
+            return{
+                sgName : [
+                    { required: true, message: '活动标题不能为空', trigger: 'blur' },
+                ],
+                startTime : [
+                        { required: true, message: '开始时间不能为空', trigger: 'blur' },
+                ],
+                endTime : [
+                        { required: true, message: '结束时间不能为空', trigger: 'blur' },
+                ],
+                rule1 : [
+                        { required: true, message: '订单满多少元不能为空', trigger: 'blur' },
+                ],
+                rule2 : [
+                        { required: true, message: '立减多少元不能为空', trigger: 'blur' },
+                ],
             }
-        },
-        //取消弹框
-        noCheck(formName){
-            this.$refs[formName].resetFields();
-            this.activiVisible = false;
-        },
-        //提交新增编辑活动
-        subActivity(formName){
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    
+        }
+    },
+    created(){
+        this.demo();
+    },
+    methods: {
+            //回调跳到查看页面
+            showDetail(id){
+                this.$emit("showDetailFun",id);
+            },
+            //重置
+            reset() {
+                this.dataForm = {};
+                this.getDataList();
+            },
+            bluerule1(){
+                if(this.activiDataForm.rule1){
+                    this.ruleName = 'rule2';
                 }
-            });
-        },
+                console.log('====',this.ruleName)
+            },
+            bluerule2(){
+                if(this.activiDataForm.rule1){
+                    this.ruleName = 'rule1';
+                }
+                console.log('====',this.ruleName)
+            },
+            //打开新增编辑活动弹框
+            addActivity(id){
+                this.activiVisible = true;
+                if(id){
+                    this.activiTitle = '编辑活动';
+                    this.getInfo(id);//判断是编辑情况下调详情方法
+                }else{
+                    this.activiTitle = '添加活动';
+                }
+            },
+            //取消弹框
+            noCheck(formName){
+                this.activiDataForm.rule1 = '';
+                this.activiDataForm.rule2 = '';
+                this.$refs[formName].resetFields();
+                this.activiVisible = false;
+            },
+            //提交新增编辑活动
+            subActivity(formName){
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        
+                    }
+                });
+            },
 
 
 
 
 
 
-        demo(){
-        	function placeholderPic(){
-                var w = document.documentElement.offsetWidth;
-                document.documentElement.style.fontSize=w/20+'px';
-            }
-                placeholderPic();
-            window.onresize=function(){
-                placeholderPic();
-            }
-        },
-        //开始结束时间
-        acttime(){
-            this.dataForm.strTime = this.valuetime[0];
-            this.dataForm.endTime = this.valuetime[1];
-        },
-        
-  }
-};
+            demo(){
+                function placeholderPic(){
+                    var w = document.documentElement.offsetWidth;
+                    document.documentElement.style.fontSize=w/20+'px';
+                }
+                    placeholderPic();
+                window.onresize=function(){
+                    placeholderPic();
+                }
+            },
+            //开始结束时间
+            acttime(){
+                this.dataForm.strTime = this.valuetime[0];
+                this.dataForm.endTime = this.valuetime[1];
+            },
+            
+    }
+    };
 </script>
 <style lang="scss" scoped>
 .el-input {

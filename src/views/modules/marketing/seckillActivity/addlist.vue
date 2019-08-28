@@ -1,32 +1,45 @@
 <template>
-  <div class="detailGoodsPages">
+  <div class="addListGoodsPages">
     <Bread :breaddata="breaddata" :index = "'1'" @changePage = "changePage"></Bread>
-    <el-form :inline="true" :model="dataForm">
-        <el-form-item style="float: right;">
-            <el-button>批量删除</el-button>
-            <el-button type="primary">保存排序</el-button>
-            <el-button type="primary" @click="addGoods(activityId)">添加商品</el-button>
-            <!-- <el-button type="primary"   @click="lookShow('asassasasasasa')">修改</el-button> -->
+    <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
+        <el-form-item label="商品名称：">
+            <el-input v-model="dataForm.storeId" placeholder="请输入商品名称" clearable></el-input>
+        </el-form-item>
+        <el-form-item label="商品货号：">
+            <el-input v-model="dataForm.storeId" placeholder="请输入spu编号" clearable></el-input>
+        </el-form-item>
+         <el-form-item label="店铺名称：">
+            <el-input v-model="dataForm.storeId" placeholder="请输入店铺名称" clearable></el-input>
+        </el-form-item>
+         <el-form-item label="品牌名称：">
+            <el-input v-model="dataForm.storeId" placeholder="请输入品牌名称" clearable></el-input>
+        </el-form-item>
+        <el-form-item>
+            <el-button  class="btn" type="primary" @click="getDataList()">查询</el-button>
+            <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
+        </el-form-item>
+        <br />
+        <el-form-item>
+            <el-button type="primary" @click="showDetail(activityId)">查看商品</el-button>
+            <!-- <el-button type="primary"   @click="editGoods('asassasasasasa')">修改</el-button> -->
         </el-form-item>
     </el-form>
     <el-table
 	  :data="dataList"
       v-loading="dataListLoading"
-      @selection-change="dataListSelectionChangeHandle"
       border
 	  style="width: 100%">
-        <el-table-column 
-            type="selection" 
-            header-align="center" 
-            align="center" 
-            width="50">
-        </el-table-column>
-		
-        <el-table-column
-		    prop="storeName"
-		    label="排序">
-		</el-table-column>
-        <el-table-column
+	    <!-- <el-table-column
+	    	type="index"
+		    prop="$index"
+				align="center"
+		    label="序号"
+		    width="70">
+		    <template slot-scope="scope">
+                {{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}
+            </template>
+		</el-table-column> -->
+		<el-table-column
 		    prop="id"
 		    label="商品id"
 		    width="180">
@@ -36,32 +49,32 @@
 		    label="商品名称">
 		</el-table-column>
 		<el-table-column
-		    prop="gradeName"
+		    prop="account"
 		    label="销售价格">
 		</el-table-column>
 		<el-table-column
+		    prop="gradeName"
+		    label="所属分类">
+		</el-table-column>
+		<el-table-column
 		    prop="createDate"
-		    label="折扣价格"
+		    label="所属店铺"
              width="180">
 		</el-table-column>
         <el-table-column
 		    prop="creator"
-		    label="折扣类型">
+		    label="品牌">
 		</el-table-column>
         <el-table-column
-            prop="asassa"
-            label="活动库存">
-        </el-table-column>
-        <el-table-column
 		    prop="creator"
-		    label="每人限购">
+		    label="日本限购数量">
 		</el-table-column>
 	    <el-table-column
 	   		prop="address"
 	    	label="操作">
 		    <template slot-scope="scope">
-		    	<el-button type="text" size="small" @click="lookShow(scope.row.id)">查看</el-button>
-		    	<el-button type="text" size="small">删除</el-button>
+		    	<el-button type="text" size="small">取消选择</el-button>
+		    	<el-button type="text" size="small" @click="editGoods(scope.row.id)">修改</el-button>
 		    </template>
 	  	</el-table-column>
 	</el-table>
@@ -78,19 +91,24 @@
 
 
 
-    <!-- 查看弹框 -->
+    <!-- 修改弹框 -->
     <el-dialog
-        :visible.sync="lookVisible"
+        :visible.sync="editVisible"
+        :close-on-click-modal = "false"
+        :show-close = "false"
         class="editDialog"
-        width="50%">
+        width="70%">
+        <el-form :model="editDataForm" :rules="dataRule" ref="editDataForm" @keyup.enter.native="subEdit()" label-width="82px">
             <div class="goodsPresent">
                 <img src="@/assets/img/avatar.png" alt="" />
                 <div class="goodsPresentModle">
                     <div class="goodsTitle">施华洛初恋珍珠耳环</div>
                     <div class="goodsmoney">￥ {{moneyNum}}</div>
                     <div class="goodsClass">
-                        <div style="margin-right:20px">折扣类型：折扣价</div>
-                        <div>折扣值：212</div>
+                        <el-form-item class="number"  label="秒杀价格：" prop="number">
+                            <el-input v-model="editDataForm.number" :max="moneyNum" :min="0" type="number"></el-input>
+                            输入的价格将作为秒杀销售价
+                        </el-form-item>
                     </div>
                 </div>
             </div>
@@ -110,8 +128,10 @@
                     label="规格">
                 </el-table-column>
                 <el-table-column
-                    prop="storeName"
                     label="活动库存">
+                    <template slot-scope="scope">
+                            <el-input v-model="kucun" :maxlength="6" type="number"></el-input>
+                    </template>
                 </el-table-column>
                 <el-table-column
                     prop="gradeName"
@@ -119,9 +139,25 @@
                 </el-table-column>
                 <el-table-column
                     prop="createDate"
-                    label="每人限购">
+                    label="每人限购"
+                    width="180">
+                    <template slot-scope="scope">
+                            <el-input v-model="kucun" :maxlength="6" type="number"></el-input>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    prop="address"
+                    label="操作">
+                    <template slot-scope="scope">
+                        <el-button type="text" size="small">适用于全部规格</el-button>
+                    </template>
                 </el-table-column>
             </el-table>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="noCheck('editDataForm')">取 消</el-button>
+            <el-button type="primary" @click="subEdit('editDataForm')" :loading="buttonStatus">确 定</el-button>
+        </span>
     </el-dialog>
   </div>
 </template>
@@ -146,10 +182,33 @@
                     deleteIsBatch: true,
                 },
                 dataForm: {},
-                breaddata: ["营销管理", "单品折扣","查看商品"],
-                lookVisible:false,//弹框状态
+                breaddata: ["营销管理", "秒杀活动","添加商品"],
+                editVisible:false,//弹框状态
                 buttonStatus:false,
                 moneyNum:99.9,
+                editDataForm:{
+                    number:'0'
+                },
+                kucun:'',
+            }
+        },
+        computed:{
+            dataRule(){
+                var validnumber =(rule, value,callback)=>{
+                    if(!value){
+                        callback(new Error('必填项不能为空'))
+                    }else if(Number(value)>this.moneyNum){
+                        callback(new Error('秒杀价格不能超过销售价'))
+                    }else{
+                        callback()
+                    }
+                }
+                return{
+                    number : [
+                            { required: true, message: '必填项不能为空', trigger: 'blur' },
+                            { validator: validnumber, trigger: 'change' },
+                    ],
+                }
             }
         },
         created(){
@@ -157,9 +216,10 @@
             this.demo();
         },
         methods: {
-                //回调跳转添加商品页面
-                addGoods(id){
-                    this.$emit("addAditFun",id);
+                //回调跳转查看商品页面
+                showDetail(id){
+                    this.$emit("detailistFun",id);
+                    // this.$router.push({'name': 'marketing-coupon',})
                 },
                 //重置
                 reset() {
@@ -168,11 +228,24 @@
                 },
                 //回调返回列表
                 changePage(){
-                    this.$emit('detailno')
+                    this.$emit('addshowList')
                 },
-                lookShow(id){
-                    this.lookVisible = true;
+                //弹出修改弹框
+                editGoods(id){
+                    this.editVisible = true;
                 },
+                noCheck(){
+                    this.editVisible = false;
+                },
+                subEdit(){
+                    this.editVisible = false;
+                },
+
+
+
+
+
+
                 demo(){
                     function placeholderPic(){
                                 var w = document.documentElement.offsetWidth;
@@ -187,7 +260,7 @@
     };
 </script>
 <style lang="scss">
-    .detailGoodsPages{
+    .addListGoodsPages{
         /deep/.el-input {
             width: 170px;
             height: 40px;
