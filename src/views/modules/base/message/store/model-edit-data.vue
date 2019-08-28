@@ -126,6 +126,7 @@
                 },
                 value:[],
                 dataArray:[],
+                mainTag:[],
                 formLabelWidth: '100px'
             }
         },
@@ -172,6 +173,7 @@
                 })
             },
             backScan1(){
+
                 var obj  = {
                     id:this.row.id,
                     idJp:this.row.idJp,
@@ -179,6 +181,7 @@
                 }
                 searchShopStyle(obj).then((res)=>{
                     if(res.code == 200){
+                        this.dataArray = res.data;
                         Object.assign(this.dataForm,res.data);
 
                     }else{
