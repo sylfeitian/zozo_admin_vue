@@ -1,13 +1,10 @@
 <template>
   <div>
       <list v-if="showListVisible" @hiddenList="hiddenList"></list>
-      <addEditData ref="addEditData" v-if="!showListVisible" @showList="showList" :dataArray="dataArray"></addEditData>
-   
   </div>
 </template>
 <script>
 import list  from "./list";
-import addEditData from "./add-edit-data";
 
 
 export default {
@@ -18,7 +15,6 @@ export default {
     };
   },
   components: {
-    addEditData,
     list,
   },
   created () {

@@ -83,7 +83,7 @@ export const categoryCnList = params => { return http.get(`${base}/categoryCn/li
 // 分页查询分类
 export const getdatalist = params => { return http.get(`${base}/categoryCn/page`, params).then(res => res.data); };
 // 设为推荐
-export const recommendCategoryCn = params => { return http.put(`${base}/categoryCn/recommend/?recommendFlag=${params.recommendFlag}7&id=${params.id}`, params).then(res => res.data); };
+export const recommendCategoryCn = params => { return http.put(`${base}/categoryCn/recommend/?recommendFlag=${params.recommendFlag}&id=${params.id}`, params).then(res => res.data); };
 // 搜索用分类列表
 export const searchCategoryCn = params => { return http.get(`${base}/categoryCn/search/list`, params).then(res => res.data); };
 // 是否显示分类
