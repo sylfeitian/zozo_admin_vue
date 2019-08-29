@@ -50,29 +50,26 @@
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button type="text" @click="addOrEditHandle(scope.$index, scope.row)" size="mini">编辑</el-button>
-                    <el-button type="text" @click.native.prevent="addOrEditHandle" size="mini">管理副风格标签</el-button>
+                    <el-button v-if="scope.row.styleType==0" type="text" @click="showHandle(scope.$index, scope.row)" size="mini">管理副风格标签</el-button>
+                    <el-button v-if="scope.row.styleType==1" type="text" @click.native.prevent="showHandle" size="mini">管理主风格标签</el-button>
                     <el-button class="artdanger" @click.native.prevent="deleteHandle(scope.row.id)"type="text"size="mini">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
-        <div class="bottomFun">
-            <div class="bottomFunLeft">
-                <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                <el-button class="btn" type="primary" @click="deleteHandle(scope.row.id)" style="margin-left: 20px;">批量删除</el-button>
-            </div>
-            <!-- 分页 -->
-            <el-pagination
-                    @size-change="pageSizeChangeHandle"
-                    @current-change="pageCurrentChangeHandle"
-                    :current-page="page"
-                    :page-sizes="[10, 20, 50, 100]"
-                    :page-size="limit"
-                    :total="total"
-                    layout="total, sizes, prev, pager, next, jumper">
-            </el-pagination>
-        </div>
+        <!-- 分页 -->
+        <el-pagination
+                @size-change="pageSizeChangeHandle"
+                @current-change="pageCurrentChangeHandle"
+                :current-page="page"
+                :page-sizes="[10, 20, 50, 100]"
+                :page-size="limit"
+                :total="total"
+                layout="total, sizes, prev, pager, next, jumper">
+        </el-pagination>
         <!-- 弹窗, 新建 -->
         <addEditData  v-if="addEditDataVisible" ref="addEditData" @searchDataList="getDataList"></addEditData>
+        <!-- 弹窗, 副标签 -->
+        <subData  v-if="subDataVisible" ref="subDataCompon" @searchDataList="getDataList"></subData>
     </div>
 </template>
 
@@ -80,6 +77,7 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import addEditData from './model-add-edit-data'
+    import subData from './model-sub-label'
     import { shopStyleUrl, deleteShopStyle } from '@/api/url'
     export default {
         mixins: [mixinViewModule],
@@ -109,12 +107,14 @@
                     styleType: ""//标签分类
                 },
                 addEditDataVisible:false,
+                subDataVisible:false,
                 isIndeterminate: false,
                 checkAll: false,
             }
         },
         components: {
             Bread,
+            subData,
             addEditData
         },
         created () {
@@ -142,6 +142,15 @@
             },
             setAddEditDataVisible(boolargu){
                 this.addEditDataVisible =  boolargu;
+            },
+            showHandle(index=-1,row=""){
+                this.setSubDataVisible(true);
+                this.$nextTick(() => {
+                    this.$refs.subDataCompon.init(row)
+                })
+            },
+            setSubDataVisible(boolargu){
+                this.subDataVisible =  boolargu;
             },
         }
     }

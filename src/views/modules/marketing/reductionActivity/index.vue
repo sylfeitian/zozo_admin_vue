@@ -1,9 +1,9 @@
 <template>
   <div>
       <!-- 列表 -->
-      <list v-if='showStatus'  @addAditFun='addAditFun'></list>
+      <list v-if='showStatus'  @showDetailFun='showDetailFun'></list>
       <!-- 查看 -->
-      <detail v-else ></detail>
+      <detail v-else @showListFun='showListFun' :activityId="activityId"></detail>
   </div>
 </template>
 
@@ -22,7 +22,13 @@ export default {
   	list,detail
   },
   methods: {
-      
+      showDetailFun(id){
+          this.showStatus = false;
+          this.activityId = id;
+      },
+      showListFun(){
+          this.showStatus = true;
+      }
   }
 };
 </script>

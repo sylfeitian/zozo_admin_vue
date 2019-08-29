@@ -51,7 +51,7 @@
                     deleteIsBatch: true,
                     deleteIsBatchKey: 'id'
                 },
-                breaddata: [ "商品管理", "日本分类"],
+                breaddata: [ "商品管理", "京东分类"],
                 addEditDataVisible:false,
                 formData:{
                     page:1,

@@ -1,11 +1,11 @@
 <template>
-  <div class="detailGoodsPages">
+  <div class="detailListGoodsPages">
     <Bread :breaddata="breaddata" :index = "'1'" @changePage = "changePage"></Bread>
     <el-form :inline="true" :model="dataForm">
         <el-form-item style="float: right;">
             <el-button>批量删除</el-button>
             <el-button type="primary">保存排序</el-button>
-            <el-button type="primary" @click="addGoods(activityId)">添加商品</el-button>
+            <el-button type="primary" @click="addGoods(activityId)">查看商品</el-button>
             <!-- <el-button type="primary"   @click="lookShow('asassasasasasa')">修改</el-button> -->
         </el-form-item>
     </el-form>
@@ -21,15 +21,14 @@
             align="center" 
             width="50">
         </el-table-column>
-		
-        <el-table-column
-		    prop="storeName"
-		    label="排序">
-		</el-table-column>
-        <el-table-column
+		<el-table-column
 		    prop="id"
 		    label="商品id"
 		    width="180">
+		</el-table-column>
+        <el-table-column
+		    prop="storeName"
+		    label="排序">
 		</el-table-column>
 		<el-table-column
 		    prop="storeName"
@@ -41,12 +40,8 @@
 		</el-table-column>
 		<el-table-column
 		    prop="createDate"
-		    label="折扣价格"
+		    label="秒杀价格"
              width="180">
-		</el-table-column>
-        <el-table-column
-		    prop="creator"
-		    label="折扣类型">
 		</el-table-column>
         <el-table-column
             prop="asassa"
@@ -88,10 +83,7 @@
                 <div class="goodsPresentModle">
                     <div class="goodsTitle">施华洛初恋珍珠耳环</div>
                     <div class="goodsmoney">￥ {{moneyNum}}</div>
-                    <div class="goodsClass">
-                        <div style="margin-right:20px">折扣类型：折扣价</div>
-                        <div>折扣值：212</div>
-                    </div>
+                    <div class="goodsClass">秒杀价格：<span style="color:red">￥121</span></div>
                 </div>
             </div>
            <!-- scope.$index+1+(parseInt(page)-1)* parseInt(limit) -->
@@ -146,7 +138,7 @@
                     deleteIsBatch: true,
                 },
                 dataForm: {},
-                breaddata: ["营销管理", "单品折扣","查看商品"],
+                breaddata: ["营销管理", "秒杀活动","查看商品列表"],
                 lookVisible:false,//弹框状态
                 buttonStatus:false,
                 moneyNum:99.9,
@@ -159,16 +151,11 @@
         methods: {
                 //回调跳转添加商品页面
                 addGoods(id){
-                    this.$emit("addAditFun",id);
-                },
-                //重置
-                reset() {
-                    this.dataForm = {};
-                    this.getDataList();
+                    this.$emit("addlistFun",id);
                 },
                 //回调返回列表
                 changePage(){
-                    this.$emit('detailno')
+                    this.$emit('detailshowList')
                 },
                 lookShow(id){
                     this.lookVisible = true;
@@ -187,7 +174,7 @@
     };
 </script>
 <style lang="scss">
-    .detailGoodsPages{
+    .detailListGoodsPages{
         /deep/.el-input {
             width: 170px;
             height: 40px;
