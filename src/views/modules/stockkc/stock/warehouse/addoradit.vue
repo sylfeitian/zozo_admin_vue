@@ -23,7 +23,8 @@
             <el-form-item prop="isEnable" label="状态：">
                 <span>{{dataForm.isEnable}}</span>
             </el-form-item>
-            <br>
+        </el-form>
+        <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
             <el-form-item prop="skuId" label="skuID：">
                 <el-input v-model="dataForm.skuId" placeholder="请输入"></el-input>
             </el-form-item>
@@ -43,19 +44,17 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-form-item>
-                    <el-button class="btn" type="primary" @click="getData()">搜索</el-button>
-                    <el-button class="btn" @click="reset('dataForm')" type="primary" plain>重置</el-button>
-                    <el-button type="primary"  plain @click="exportHandle()">导出</el-button>
-                </el-form-item>
+                <el-button class="btn" type="primary" @click="getData()">搜索</el-button>
+                <el-button class="btn" @click="reset('dataForm')" type="primary" plain>重置</el-button>
             </el-form-item>
         </el-form>
+        <el-button type="primary"  plain @click="exportHandle()">导出</el-button>
         <el-table
                 width="100%"
                 :data="dataList"
                 border=""
                 v-loading="dataListLoading"
-                style="width: 100%;maigin-top:20px;"
+                style="width: 100%;margin-top:10px;"
         >
             <el-table-column prop="aftersaleSn" label="skuID" align="center"></el-table-column>
             <el-table-column prop="specSerial" label="图片" align="center">
@@ -73,7 +72,7 @@
             <el-table-column prop="spe" label="规格" align="center"></el-table-column>
             <el-table-column label="分类" align="center ">
                 <template slot-scope="scope">
-                    <span>{{dataForm.firstCategory}}</span>
+                    <span>{{dataForm.firstCategory}}</span>>
                     <span>{{dataForm.secondCategory}}</span>
                 </template>
             </el-table-column>
@@ -97,6 +96,7 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import { skuGoods } from '@/api/url'
+    import { warePage } from '@/api/api'
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -111,15 +111,56 @@
                     deleteIsBatchKey: 'id'
                 },
                 breaddata: [ "仓库管理", "仓库详情"],
+                row:"",
+                dataForm: {
+                    skuId: "",
+                    goodsName: "",
+                    storeName: "",
+                    brandName: "",
+
+                },
+                dataForm:{},
+                dataList: [],
+                dataListLoading: false,
             }
         },
         components: {
             Bread
         },
+        created () {
+            this.getDataList();
+        },
         methods: {
             init (row) {
                 this.visible = true;
                 this.row = row;
+                console.log(row);
+                this.backScan(row);
+                // this.$nextTick(() => {
+                //     this.$refs['addForm'].resetFields();
+                //     // this.getApplyPullList();
+                // })
+            },
+            // 编辑回显
+            backScan(row){
+                console.log(row);
+                // var obj  = {
+                //     id:this.row.id,
+                //     warehouseName:this.row.warehouseName,
+                //     addressInfo:this.row.addressInfo,
+                //     type:this.row.type,
+                //     name:this.row.name,
+                //     phone:this.row.phone
+                // }
+                // warePage(obj).then((res)=>{
+                //     if(res.code == 200){
+                //         Object.assign(this.form,res.data);
+                //
+                //     }else{
+                //
+                //     }
+                // })
+                this.dataForm = row;
             },
             changePage(){
                 this.goList();

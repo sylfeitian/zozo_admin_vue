@@ -55,7 +55,7 @@
             <el-table-column prop="" label="启用" align="center">
                 <template slot-scope="scope">
                     <el-switch
-                            v-model="isEnable"
+                            v-model="value"
                             active-color="#13ce66"
                             inactive-color="#ff4949">
                     </el-switch>
