@@ -539,14 +539,20 @@ export const backScanShopBrand = params => { return http.get(`${base}/shopBrand/
 export const deleteShopStyle = params => { return http.delete(`${base}/shopstyle`, params).then(res => res.data); };
 // 查询主标签列表(店铺和look folder)
 export const searchShopStyle = params => { return http.get(`${base}/shopstyle/style/check/mainList`, params).then(res => res.data); };
+// 查询副标签列表(店铺和look folder)
+export const searchShopStyleSubList = params => { return http.get(`${base}/shopstyle/style/check/subList`, params).then(res => res.data); };
 // 新增/修改标签信息
 export const updateShopStyle = params => { return http.post(`${base}/shopstyle/style/edit`, params).then(res => res.data); };
 // 查询标签分页列表
 export const shopStylePage = params => { return http.get(`${base}/shopstyle/style/page`, params).then(res => res.data); };
 // 修改主标签关联副标签
-export const shopStyleUnion = params => { return http.post(`${base}/shopstyle/style/union`, params).then(res => res.data); };
+export const shopStyleUnion = params => { return http.post(`${base}/shopstyle/style/union?id=${params.id}&childrenIds=${params.childrenIds}`, params).then(res => res.data); };
+// 修改副标签关联主标签
+export const shopStyleUnionSub = params => { return http.post(`${base}/shopstyle/style/union/sub?id=${params.id}&parentIds=${params.parentIds}`, params).then(res => res.data); };
 // 根据主标签id查询已关联副标签
 export const backScanShopStyleUnion = params => { return http.get(`${base}/shopstyle/style/union/${params.id}`, params).then(res => res.data); };
+// 根据副标签id查询已关联主标签
+export const backScanShopStyleSubUnion = params => { return http.get(`${base}/shopstyle/style/union/sub/${params.id}`, params).then(res => res.data); };
 // 根据id查询标签详情
 export const backScanShopStyle = params => { return http.get(`${base}/shopstyle/style/${params.id}`, params).then(res => res.data); };
 
@@ -634,7 +640,7 @@ export const backScanZozogoodsLog = params => { return http.get(`${base}/zozogoo
 // 商品上下架状态批量修改
 export const showBatchGoods = params => { return http.put(`${base}/zozogoods/show/?ids=${params.ids}&showWeb=${params.showWeb}`, params).then(res => res.data); };
 // 单个商品上下架状态修改
-export const showGoods = params => { return http.put(`${base}/zozogoods/show/${params.id}`, params).then(res => res.data); };
+export const showGoods = params => { return http.put(`${base}/zozogoods/show/${params.id}?showWeb=${params.showWeb}&showType=${params.showType}`, params).then(res => res.data); };
 // 获取商品尺码信息
 export const getZozogoodsSize = params => { return http.get(`${base}/zozogoods/size/item?spuId=${params.spuId}&sizeId=${params.sizeId}`, params).then(res => res.data); };
 
@@ -709,12 +715,9 @@ export const updateCategory = params => { return http.post(`${base}/jdCate/updat
 // 编辑页面信息回显
 export const backScanJdCate = params => { return http.get(`${base}/jdCate/${params.id}`, params).then(res => res.data); };
 
-
-
-
-
-
-
+// 售后-退货退款 仅退款 :-------------------------------------------------------------------------------------------------------------
+// 售后详情
+export const aftersaleReturnDetail = params => { return http.get(`${base}/aftersale/return/detail/${params.aftersaleSn}`, params).then(res => res.data); };
 
 
 

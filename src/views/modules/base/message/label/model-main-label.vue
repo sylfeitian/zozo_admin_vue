@@ -13,16 +13,16 @@
                 @keyup.enter.native="dataFormSubmit('addForm')"
                 label-width="120px"
         >
-            <el-form-item  label="关联副风格标签：">
+            <el-form-item  label="关联主风格标签：">
                 <el-input v-model="dataForm.styleName" placeholder=""></el-input>
             </el-form-item>
-            <el-form-item label="已关联副风格标签：" prop="styleName">
+            <el-form-item label="已关联主风格标签：" prop="styleName">
                 <el-tag closable
                         v-for="item in dataArray"
                         :key="item.id"
                         :label="item.styleName"
                         :value="item.id">
-                {{item.styleName}}
+                    {{item.styleName}}
                 </el-tag>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-    import { backScanShopStyleUnion, shopStyleUnion } from '@/api/api'
+    import { backScanShopStyleSubUnion, shopStyleUnionSub } from '@/api/api'
     export default {
         name: "model-add-edit-data",
         data () {
@@ -76,7 +76,7 @@
                     styleName:this.row.styleName,
                     styleType:this.row.styleType,
                 }
-                backScanShopStyleUnion(obj).then((res)=>{
+                backScanShopStyleSubUnion(obj).then((res)=>{
                     if(res.code == 200){
                         this.dataArray = res.data;
                         Object.assign(this.dataForm,res.data);
@@ -97,7 +97,7 @@
                             "styleName":  this.dataForm.styleName,
                         }
                         if(this.row) obj.id = this.row.id
-                        var fn = shopStyleUnion;
+                        var fn = shopStyleUnionSub;
                         fn(obj).then((res) => {
                             this.loading = false;
                             // alert(JSON.stringify(res));

@@ -14,7 +14,7 @@
                 <el-button  class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
             </el-form-item>
         </el-form>
-        <el-button  @click="uploadHandle()" class="btn" type="primary" style="float: right;margin-top: -64px;">导入信息</el-button>
+        <el-button  @click="uploadHandle()" class="btn" type="primary">导入信息</el-button>
         <el-table
                 width="100%"
                 :data="dataList"
@@ -22,7 +22,7 @@
                 v-loading="dataListLoading"
                 @sort-change="dataListSortChangeHandle"
                 @selection-change="dataListSelectionChangeHandle"
-                style="width: 100%;">
+                style="width: 100%;margin-top: 10px;">
             <el-table-column prop="idJp" label="品牌ID" align="center"></el-table-column>
             <el-table-column prop="brandNameJp" label="日本品牌名称" align="center"></el-table-column>
             <el-table-column prop="brandNameGlo" label="全球名称" align="center"></el-table-column>
@@ -121,7 +121,5 @@
 </script>
 
 <style scoped>
-    .grayLine{
-        border-bottom: 0!important;
-    }
+
 </style>

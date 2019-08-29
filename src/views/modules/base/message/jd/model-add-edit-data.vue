@@ -64,11 +64,8 @@
         methods: {
             init (row) {
                 this.visible = true;
-                // if (row) {
-                //     this.dataForm = row;
-                //
-                // }
                 this.row = row;
+                console.log(row)
                 this.title="编辑分类";
                 this.backScan();
                 this.$nextTick(() => {
@@ -79,7 +76,7 @@
             //编辑回显
             backScan(){
                 var obj  = {
-                    id:this.row.id,
+                    id:this.row.label,
                     categoryName:this.row.categoryName,
                     name:this.row.name
                 }
@@ -98,6 +95,7 @@
                     if (valid) {
                         this.loading = true;
                         var obj = {
+                            "id":  this.dataForm.id,
                             "name":  this.dataForm.name,
                         }
                         if(this.row) obj.id = this.row.id

@@ -121,7 +121,6 @@
 			VueCropper
 		},
 		created(){
-			
 		},
 		mounted(){
 			this.backScanImage(this.cropImg);	

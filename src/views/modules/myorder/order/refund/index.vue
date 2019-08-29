@@ -1,7 +1,8 @@
 <template>
     <div>
-        <list v-if="mainVisible" ref="listCompon" @orderDetFn="orderDetFn"></list>
-        <orderDet v-if="orderDetVisible" ref="orderDetCompon" @orderDetListFn="orderDetListFn" :breaddata="subBreaddata"></orderDet>
+        <list v-if="mainVisible" ref="listCompon" @orderDetFn="orderDetFn" @afterSaleDetailFn="afterSaleDetailFn"></list>
+        <orderDet v-if="orderDetVisible" ref="orderDetCompon" @orderDetListFn="orderDetListFn"  :breaddata="subBreaddata"></orderDet>
+        <afterSaleDetail v-if="afterSaleDetailVisible" ref="afterSaleDetailCompon" @orderDetListFn="orderDetListFn"  :breaddata="subBreaddata2"></afterSaleDetail>
     </div>
 </template>
 
@@ -13,7 +14,9 @@
             return {
                 mainVisible:true,
                 orderDetVisible:false,
-                subBreaddata:["订单管理", "订单管理", "订单列表","订单详情"],
+                afterSaleDetailVisible:false,
+                subBreaddata:["订单管理", "退货退款", "退货退款列表","订单详情"],
+                subBreaddata2:["订单管理", "退货退款", "退货退款列表","退货退款详情"],
             }
         },
         components:{
@@ -31,9 +34,19 @@
             orderDetListFn(){
                 this.orderDetVisible = false;
                 this.mainVisible = true;
+                this.afterSaleDetailVisible = false
                 this.$nextTick(()=>{
                     this.$refs.listCompon.getDataList();
                 })
+            },
+            afterSaleDetailFn(){
+                this.orderDetVisible = false;
+                this.mainVisible = false;
+                this.afterSaleDetailVisible = true;
+                this.$nextTick(()=>{
+                    this.$refs.afterSaleDetailCompon.init();
+                })
+
             }
 
         }
