@@ -20,12 +20,17 @@
                 <el-input v-model="dataForm.memberName" placeholder="请输入会员账号" clearable></el-input>
             </el-form-item>
             <el-form-item label="售后状态：" prop="status">
-                <!-- 110退款中、20退款完成、30退款失败 -->
+                <!-- 10待审核、20待退货、30待入库、40待退款、50退款中、60退款完成、70退款失败、80售后取消 -->
                 <el-select v-model="dataForm.status" placeholder="请选择">
                     <el-option label="全部" value=""></el-option>
-                    <el-option label="退款中" value="10"></el-option>
-                    <el-option label="退款完成" value="20"></el-option>
-                    <el-option label="退款失败" value="30"></el-option>
+                    <el-option label="待审核" value="10"></el-option>
+                    <el-option label="待退货" value="20"></el-option>
+                    <el-option label="待入库" value="30"></el-option>
+                    <el-option label="待退款" value="40"></el-option>
+                    <el-option label="退款中" value="50"></el-option>
+                    <el-option label="退款完成" value="60"></el-option>
+                    <el-option label="退款失败" value="70"></el-option>
+                    <el-option label="售后取消" value="80"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="申请时间：">
@@ -83,7 +88,10 @@
             <el-table-column label="操作" min-width="100" align="center">
                 <template slot-scope="scope">
                     <el-button size="mini" type="text" @click="afterSaleDetailFn(scope.row)">查看</el-button>
+                    <el-button size="mini" type="text" @click="handleGoodDet(scope.row)">审核</el-button>
+                    <el-button size="mini" type="text" @click="handleGoodDet(scope.row)">确认收货</el-button>
                     <el-button size="mini" type="text" @click="handleGoodDet(scope.row)">同意退款</el-button>
+                    <el-button size="mini" type="text" @click="handleGoodDet(scope.row)">查看</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -96,6 +104,12 @@
                 :total="total"
                 layout="total, sizes, prev, pager, next, jumper"
         ></el-pagination>
+         <!-- 确认收货 -->
+        <returnGoodsModel v-if="returnGoodsVisible" ref="returnGoodsCompon"></returnGoodsModel>
+        <!-- 退货 -->
+        <returnGoodsModel v-if="returnGoodsVisible" ref="returnGoodsCompon"></returnGoodsModel>
+        <!-- 退款 -->
+        <returnMoneyModel v-if="returnMoneyVisible" ref="returnMoneyCompon"></returnMoneyModel>
     </div>
 </template>
 <script>
@@ -103,6 +117,8 @@
     import { returngoods, exportsales } from "@/api/url";
     import { returnDetail } from "@/api/api";
     import mixinViewModule from "@/mixins/view-module";
+    import returnGoodsModel from "../modules-return/model-return-goods";
+    import returnMoneyModel from "../modules-return/model-return-money";
     export default {
         mixins: [mixinViewModule],
         data() {
@@ -128,13 +144,15 @@
                     status:"",//售后状态 退货退款（10待审核、20待退货、30待入库、40待退款、50退款中、60退款完成、70退款失败、80售后取消）；仅退款（10退款中、20退款完成、30退款失败）
                     startTime:"",//申请开始时间
                     endTime:"",//申请结束时间
-                    type:"1",//类型 0退货退款 1仅退款
+                    type:"0",//类型 0退货退款 1仅退款
                 },
                 piclist: [],
                 changeVal: "",
                 totalPage: 0,
                 dataListLoading: false,
-                detailOrList: true,
+                // detailOrList: true,
+                returnGoodsVisible:false,
+                returnMoneyVisible:false,
                 goodsData: [], //售后商品table
                 saleGoods: [], //售后申请数据
                 params: {
@@ -143,16 +161,31 @@
                 },
                 statusRules: function(row, column) {
                     return row.aftersaleStatus == 10 ? (
-                        <el-tag type="info">退款中</el-tag>
+                        <el-tag type="danger">待审核</el-tag>
                 ) : row.aftersaleStatus == 20 ? (
-                        <el-tag type="success">退款完成</el-tag>
+                        <el-tag type="info">待退货</el-tag>
                 ) : row.aftersaleStatus == 30 ? (
+                        <el-tag type="warning">待入库</el-tag>
+                ) : row.aftersaleStatus == 40 ? (
+                        <el-tag type="warning">待退款</el-tag>
+                ) : row.aftersaleStatus == 50 ? (
+                        <el-tag type="success">退款中</el-tag>
+                ) : row.aftersaleStatus == 60 ? (
+                        <el-tag type="info">退款完成</el-tag>
+                ) : row.aftersaleStatus == 70 ? (
                         <el-tag type="warning">退款失败</el-tag>
-                ) : (<span></span>)
+                ) : row.aftersaleStatus == 80 ? (
+                        <el-tag type="warning">售后取消</el-tag>
+                ) : (<span></span>);
                 }
             };
         },
-        components: { Bread },
+        components: { 
+            Bread,
+            returnGoodsModel,
+            returnMoneyModel,
+
+        },
         methods: {
              orderDetFn(row){
                 this.$emit("orderDetFn",row);
@@ -206,12 +239,9 @@
                     }
                 });
             },
-            //返回上一级
-            changePage() {
-                this.isOrderDet = !this.isOrderDet;
-                // console.log("列表页面");
-                this.$emit("showListFn");
-            }
+            // 审核
+            
+
         }
     };
 </script>

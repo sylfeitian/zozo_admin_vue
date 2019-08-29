@@ -715,11 +715,9 @@ export const updateCategory = params => { return http.post(`${base}/jdCate/updat
 // 编辑页面信息回显
 export const backScanJdCate = params => { return http.get(`${base}/jdCate/${params.id}`, params).then(res => res.data); };
 
-
-
-
-
-
+// 售后-退货退款 仅退款 :-------------------------------------------------------------------------------------------------------------
+// 售后详情
+export const aftersaleReturnDetail = params => { return http.get(`${base}/aftersale/return/detail/${params.aftersaleSn}`, params).then(res => res.data); };
 
 
 
