@@ -99,7 +99,7 @@
         mixins: [mixinViewModule],
         data () {
             return {
-                breaddata: [ "商品管理", "商品列表"],
+                breaddata: [ "商品管理", "查看库存"],
                 dataForm: {
                     goodsName: "",//商品名称/商品货号
                     brandName: "",//品牌名称
