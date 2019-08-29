@@ -1,16 +1,16 @@
 <template>
     <div>
         <Bread  :breaddata="breaddata"></Bread>
-        <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
+        <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" @keyup.enter.native="getDataList()" >
             <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
             <el-form-item label="品牌ID：">
-                <el-input v-model="dataForm.idJp" ></el-input>
+                <el-input v-model="dataFormShow.idJp" ></el-input>
             </el-form-item>
             <el-form-item label="品牌名称：">
-                <el-input v-model="dataForm.brandName" ></el-input>
+                <el-input v-model="dataFormShow.brandName" ></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="getDataList()">查询</el-button>
+                <el-button  class="btn" type="primary" @click="getdata">查询</el-button>
                 <el-button  class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
             </el-form-item>
         </el-form>
@@ -74,7 +74,7 @@
                     deleteIsBatchKey: 'id'
                 },
                 breaddata: [ "商品管理", "品牌"],
-                dataForm: {
+                dataFormShow: {
                     idJp: "",
                     brandName: "",
                 },
@@ -94,7 +94,17 @@
             this.getDataList();
         },
         methods: {
+            getdata(){
+                this.dataForm = {};
+                for(let key in this.dataFormShow){
+                    this.$set(this.dataForm,`${key}`,this.dataFormShow[key]);
+                }
+                console.log(this.dataForm);
+                this.getDataList()
+            },
             reset() {
+                this.dataFormShow.idJp = "";
+                this.dataFormShow.brandName = "";
                 this.dataForm.idJp = "";
                 this.dataForm.brandName = "";
                 this.getDataList();
