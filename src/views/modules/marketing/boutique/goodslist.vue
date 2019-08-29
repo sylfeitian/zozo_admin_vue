@@ -13,7 +13,6 @@
                 <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
             </el-form-item>
             <el-form-item style="float:right">
-                <el-checkbox v-model="dds" @change="changeCheck($event,'qwqwqwqw')"></el-checkbox>
                 <el-button type="primary">批量删除</el-button>
                 <el-button type="primary">保存排序</el-button>
                 <el-button type="primary" @click="activiVisible = true">添加商品</el-button>
@@ -130,7 +129,7 @@
                     prop="address"
                     label="操作">
                     <template slot-scope="scope">
-                        <!-- <el-checkbox v-model="scope.row.id" @change="changeCheck($event,scope.row.id)"></el-checkbox> -->
+                        <el-checkbox @change="changeCheck($event,scope.row.id)"></el-checkbox>
                     </template>
                 </el-table-column>
             </el-table>
@@ -197,6 +196,7 @@
                 this.getDataList();
             },
             changeCheck($event,id){
+                // $event当前状态值选中为true,未选中为false，id：为你要操作的分类id
                 console.log('??????',$event,id)
             }
         }
