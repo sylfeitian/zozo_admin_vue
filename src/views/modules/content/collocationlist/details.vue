@@ -67,7 +67,7 @@
                         </el-table-column>
                         <el-table-column prop="syncState" label="同步状态" align="center">
                             <template slot-scope="scope">
-                                <div>{{scope.row.syncState == 1?"已同步":"未同步"}}}</div>
+                                <div>{{scope.row.syncState == 1?"已同步":"未同步"}}</div>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -140,7 +140,7 @@
                         </el-table-column>
                         <el-table-column prop="syncState" label="同步状态" align="center">
                             <template slot-scope="scope">
-                                <div>{{scope.row.syncState == 1?"已同步":"未同步"}}}</div>
+                                <div>{{scope.row.syncState == 1?"已同步":"未同步"}}</div>
                             </template>
                         </el-table-column>
                     </el-table>

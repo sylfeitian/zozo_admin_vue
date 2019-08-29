@@ -71,13 +71,9 @@
                     >
                 </template>
             </el-table-column>
-            <el-table-column prop="titleJp" label="标题" align="center"></el-table-column>
-            <el-table-column prop="shopName" label="店铺" align="center"></el-table-column>
-            <el-table-column prop="itemsIdList " label="相关商品" align="center">
-                <template slot-scope="scope">
-                    <span>{{scope.row.itemsIdList.length}}</span>
-                </template>
-            </el-table-column>
+            <el-table-column prop="title" label="标题" align="center"></el-table-column>
+            <el-table-column prop="shopNameCn" label="店铺" align="center"></el-table-column>
+            <el-table-column prop="goodsCount" label="相关商品" align="center"></el-table-column>
             <el-table-column prop="showWeb" label="发布状态" align="center">
                 <template slot-scope="scope">
                     <el-tag v-if="scope.row.showWeb == 1" type="success">已发布</el-tag>
@@ -85,9 +81,9 @@
                     <el-tag v-else type="info">取消发布</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column prop="isOpen" label="日本发布状态" align="center">
+            <el-table-column prop="showWebJp" label="日本发布状态" align="center">
                 <template slot-scope="scope">
-                    <el-tag v-if="scope.row.isOpen == 1" type="success">已发布</el-tag>
+                    <el-tag v-if="scope.row.showWebJp == 1" type="success">已发布</el-tag>
                     <el-tag v-else type="info">取消发布</el-tag>
                 </template>
             </el-table-column>
