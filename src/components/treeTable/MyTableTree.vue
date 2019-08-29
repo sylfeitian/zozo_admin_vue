@@ -86,23 +86,38 @@
                 if (this.mate.actions) {
                     for (let btn of this.mate.actions) {
                         btn.text = typeof btn.prop === 'function' ? btn.prop(node.data) : btn.prop || '按钮';
-                        buttons.push(h(MyButton, {
-                            props: {
-                                name: btn.text,
-                                row: node.data,
-                                type: btn.type,
-                                className: btn.className || ''
-                            },
-                            on: {
-                                action: btn.action
-                            }
-                        }));
+                        if(btn.className == "arttuijian"){
+                        	buttons.push(h(MyButton, {
+	                            props: {
+	                                name: node.data.recommendFlag ? "取消推荐" : "设为推荐",
+	                                row: node.data,
+	                                type: btn.type,
+	                                className: btn.className || ''
+	                            },
+	                            on: {
+	                                action: btn.action
+	                            }
+	                        }));
+                        }else{
+                        	buttons.push(h(MyButton, {
+	                            props: {
+	                                name: btn.text,
+	                                row: node.data,
+	                                type: btn.type,
+	                                className: btn.className || ''
+	                            },
+	                            on: {
+	                                action: btn.action
+	                            }
+	                        }));
+                        }
+                        
                     }
                 }
 
                 // 单元格渲染
                 let colSpan = 0;
-                console.log(this.mate.columns);
+//              console.log(this.mate.columns);
                 let cols = this.mate.columns.map((col) => {
                     let value = '--',
                         key =  col.prop;

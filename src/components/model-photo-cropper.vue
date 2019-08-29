@@ -41,7 +41,6 @@
 		      class="upload-demo"
 		      drag
 		      :action="action"
-		      :auto-upload="false"
 			   v-if="!cropper.imgShow"
 		    >
 			      <i class="el-icon-upload" :style="{fontSize:fontSize,lineHeight:lineHeight}"></i>
@@ -122,7 +121,6 @@
 			VueCropper
 		},
 		created(){
-			
 		},
 		mounted(){
 			this.backScanImage(this.cropImg);	

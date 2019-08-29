@@ -34,85 +34,9 @@
 			  layout="total, sizes, prev, pager, next, jumper">
 			</el-pagination>
 			
-			<!--新增的弹窗-->
-			<el-dialog title="新增分类" :visible.sync="dialogTableVisible" width="50%" :before-close="handleClose">
-				<el-form :model="dataForm" label-width="140px" 	:rules="dataRule" class="demo-ruleForm" ref="addForm">
-			    <el-form-item v-if='dataForm.parentname' label="上级分类：" prop="gcName">
-	            <el-input v-model="dataForm.parentname" type="text" :disabled="true" placeholder="dataForm.parentname" show-word-limit style="width:400px;"></el-input>
-	        </el-form-item>
-	        <el-form-item v-else label="上级分类：">  
-		        <el-select
-		          v-model="dataForm.messageType"
-		          placeholder="请选择"
-		          loading-text="加载中···">
-		          <el-option
-		            v-for="item in goodKindList1"
-		            :key="item.id"
-		            :label="item.name"
-		            :value="item.id">
-		          </el-option>
-		        </el-select>
-			    </el-form-item>
-	        <el-form-item label="优惠券名称：" prop="name">
-	            <el-input v-model="dataForm.name " type="text" placeholder="请输入4个汉字/8个字符以内的内容" show-word-limit style="width:400px;"></el-input>
-	        </el-form-item>
-	        <el-form-item label="排序：" prop="sort">
-	            <el-input v-model="dataForm.sort" type="text" placeholder="0-255" show-word-limit style="width:200px;"></el-input>
-	        		<div class="grey">(数字越小越靠前)</div>
-	        </el-form-item>
-	        <el-form-item label="关联日本分类：">
-		        <el-select
-		          v-model="dataForm.messageType"
-		          placeholder="请选择"
-		          loading-text="加载中···">
-		          <el-option
-		            v-for="item in goodKindList1"
-		            :key="item.id"
-		            :label="item.name"
-		            :value="item.id">
-		          </el-option>
-		        </el-select>
-		        <br />
-		        <el-select
-		          v-model="dataForm.messageType"
-		          placeholder="请选择"
-		          loading-text="加载中···">
-		          <el-option
-		            v-for="item in goodKindList1"
-		            :key="item.id"
-		            :label="item.name"
-		            :value="item.id">
-		          </el-option>
-		        </el-select>
-		        <div class="grey">添加</div>
-					 </el-form-item>
-				 	<el-form-item label="评价类型：" prop="appraisal">
-            <el-input v-model="dataForm.appraisal" type="text" maxlength="6" placeholder="请输入6字以内的内容" show-word-limit style="width:400px;"></el-input>
-        	</el-form-item>
-        	{{dataForm.methodUrl}}
-        	<el-form-item label="测量方法：" prop="methodUrl">
-							<div class="pcCoverUrl imgUrl">
-								<!-- :aspectRatio="1 / 1" -->
-									<img-cropper
-											ref="cropperImg1"
-											:index="'1'"
-											:imgWidth='"100px"'
-											:imgHeight='"100px"'
-											@GiftUrlHandle="GiftUrlHandle"
-									></img-cropper>
-							</div>
-					</el-form-item>
-        	<el-form-item label="分类性别：" prop="appraisal">
-            <el-input v-model="dataForm.appraisal" type="text" maxlength="6" placeholder="请输入6字以内的内容" show-word-limit style="width:400px;"></el-input>
-        	</el-form-item>
-				</el-form>
-		  	
-		  	
-			  <span slot="footer" class="dialog-footer artFooter">
-			    <el-button @click="dialogTableVisible = false">取 消</el-button>
-			    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-			  </span>
-			</el-dialog>
+			<!--新增分类-->
+			<add-data v-if="dialogTableVisible" ref="addshow" @addshow="addshow"></add-data>
+			
   </div>
 </template>
 
@@ -134,39 +58,14 @@ import imgCropper from "@/components/model-photo-cropper";
 import { treeDataTranslate } from "@/utils";
 import Bread from "@/components/bread";
 import MyTableTree from "@/components/treeTable/MyTableTree.vue";
+
+import addData from "./add"
 let id = 1000;
 export default {
   mixins: [mixinViewModule],
   data() {
-  	//这里就是整个checkName啦，就是方法一的使用
-    var checkName = (rule, value, callback) => {
-            var len = 0;  
-            for (var i=0; i<value.length; i++) {   
-                var c = value.charCodeAt(i);   
-                //单字节加1   
-                if ((c >= 0x0001 && c <= 0x007e) || (0xff60<=c && c<=0xff9f)) {   
-                    len++;   
-                } else {   
-                    len+=2;   
-                }   
-            };   
-            if (len = 0 || len > 8) {
-                //重点重点，下面就是填写提示的文字
-                callback(new Error('名称长度不超过8个字符，一个中文字等于2个字符。'));
-            } else {
-                callback();
-            }
-    };
-    var sortminmax = (rule, value, callback) => {
-    	if(value > 0 && value < 255){
-    		callback();
-    	}else{
-    		callback('排序值在0-255之间');
-    	}
-    };
     return {
       table: [],
-      goodKindList1: [{ id: '', name: "全部" },{ id: 1, name: "系统信息" },{ id: 0, name: "私信" }],
       value: [],
       addForm: {},
       listOrAdd: true,
@@ -266,19 +165,7 @@ export default {
         appraisal:'', //评价管理 
         methodUrl:'', //测量方法
     	},
-    	dataRule : {
-        name : [
-            { required: true, message: '必填项不能为空', trigger: 'blur' },
-            { validator: checkName,trigger: 'blur' }
-        ],
-        sort: [
-         		{ required: true, message: '必填项不能为空', trigger: 'blur' },
-         		{ validator: sortminmax,trigger: 'blur'},
-        ],
-        appraisal: [
-       		 { required: true, message: '必填项不能为空', trigger: 'blur' },
-        ],
-     },
+    	
     };
   },
   components: {
@@ -286,6 +173,7 @@ export default {
     Bread,
     MyTableTree,
     imgCropper,
+    addData
   },
   created() {
       this.getTree();
@@ -303,34 +191,10 @@ export default {
     	this.dataForm.name = "";
     	this.dataForm.sort = "";
     },
-    GiftUrlHandle(val){
-			console.log("base64上传图片接口");
-			console.log(val);
-			this.uploadPic(val);
-		},
-		//上传图片
-		uploadPic(base64){
-				const params = { "imgStr": base64 };
-				const that = this;
-				this.uploading = true;
-				return new Promise(function(resolve){
-					uploadPicBase64(params).then(res =>{
-						that.uploading = false
-						if(res && res.code == "200"){
-							var url = res.data.url
-							that.dataForm.methodUrl  = url;
-							// that.currentIndex = -1;//不能这样写，防止网络延迟
-							resolve("true")
-						}else {
-							// that.currentIndex = -1;//不能这样写，防止网络延迟
-							resolve("false")
-						}
-					})
-				});
-			},
-    //新增关闭
-    handleClose(done) {
-      done();
+    //新增分类
+    addshow(){
+    	this.dialogTableVisible = false;
+    	this.getTree();
     },
     // 每页数
 		sizeChangeHandle (val) {
@@ -380,21 +244,22 @@ export default {
    addRowFn(row){
    		this.reset();     //清空弹窗内容
    		this.dialogTableVisible = true;
-   		if(row){
+   		if(row){ //添加下一级
       	if(row.grade == 2){
 	   			this.$message('二级分类不可以新增下一级');
 	   			return;
 	   		}
-	      row.type="addNext"
 	      if(row.label){
 	      	this.dataForm.parentname = row.label;
 	      	console.log(this.dataForm.parentname)
 	      }
-	      updataCategoryCn().then(()=>{
-	      	
-	      })
-      }else{
-      	
+	      this.$nextTick(()=>{
+	      	this.$refs.addshow.init(row);
+	    	})
+     	}else{ //新增
+      	this.$nextTick(()=>{
+	      	this.$refs.addshow.init();
+	    	})
       }
    		
    }, 
@@ -428,12 +293,12 @@ export default {
     },
     //设为推荐
     artRecommend(row){  
-    	console.log(row);   
-    	alert(row.showFlag);
-       	recommendCategoryCn(row,false).then((res)=>{
+    		console.log(row); 
+    		row.recommendFlag = row.recommendFlag ?  0 : 1;
+       	recommendCategoryCn(row).then((res)=>{
           console.log(res);
           if(res.code == 200){
-          	if(row.showFlag == 1){
+          	if(row.recommendFlag == 1){
           		this.$message.success("设为推荐成功");
           	}else{
           		this.$message("取消推荐成功");
