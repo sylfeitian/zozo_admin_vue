@@ -30,6 +30,7 @@ export default {
 	      },
 	    };
 	},
+	props:["index"],
 	components: {
     quillEditor
   },
@@ -127,8 +128,8 @@ export default {
     onEditorFocus(){}, // 获得焦点事件
     onEditorChange(){
     	let imgurl = window.SITE_CONFIG['imgURL'];
-			var re =new RegExp(imgurl ,"g"); 
-			this.$emit('artmessageContent',this.dataForm.messageContent.replace(re,''));
+			var re =new RegExp(imgurl ,"g");
+			this.$emit('artmessageContent',this.dataForm.messageContent.replace(re,''),this.index);
     }, // 内容改变事件
 
   }

@@ -32,13 +32,21 @@
             <el-form-item style="background-color: #f3f3f3;">
                 <div style="background-color: #f3f3f3;display: flex;align-items: center;">
                     <p style="margin-left: -100px;margin-right: 50px;">详细信息</p>
-                    <el-button type="primary" @click="">添加文字</el-button>
+                    <el-button type="primary" @click="addContent('text')">添加文字</el-button>
                     <el-button type="primary" @click="">添加图片</el-button>
                     <el-button type="primary" @click="">添加商品</el-button>
                 </div>
             </el-form-item>
             <el-form-item label="内容：" prop="con" :label-width="formLabelWidth" style="display: inline-block;vertical-align:top;">
-                <quill-editor-img class="inforRight" style="display: inline-block;"  @artmessageContent='artmessageContent' ref="refmessageContent"></quill-editor-img>
+
+                <template slot-scope="scope">
+                    <div id="content">
+                        <div class="contentChild" v-for="(v,i) in content" :key="i" v-if="content[i]&&v.typeId=='text'">
+                            <quill-editor-img class="inforRight" :index="i" ref="quillEditorCompon" style="display: inline-block;"  @artmessageContent='artmessageContent' ></quill-editor-img>
+                            <span @click="delContent(i)">删除</span>
+                        </div>
+                    </div>
+                </template>
             </el-form-item>
             <el-form-item label="上传封面图：" prop="img" :label-width="formLabelWidth">
                 <template slot-scope="scope">
@@ -86,6 +94,8 @@
                     idJp:"",
                     viewsNumCn: 0
                 },
+                content:[],
+                list:[],
                 dataRule : {
                     sizeName : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -110,8 +120,42 @@
             Bread
         },
         methods: {
-            artmessageContent(messageContent){
-                this.dataForm.messageContent = messageContent;
+            artmessageContent(messageContent,i){
+                if(this.content[i]) this.content[i].text = messageContent;
+            },
+            delContent(i){
+                this.content.splice(i,1);
+                window.this = this;
+                this.$nextTick(()=>{
+                    this.content.forEach((item,index)=>{
+                        this.$refs.quillEditorCompon[index].dataForm.messageContent = item.text;
+                    })
+                    this.content = [].concat(this.content)
+                },0)
+            },
+            addContent(type){
+                if(type == "text"){
+                    let obj = {
+                        colorId :"" ,//颜色id
+                        colorIdJp :"" ,// 颜色idJp
+                        contentsId :"" ,//时尚纪事内容
+                        createTime :"" ,//创建时间
+                        fashionMatomeId :"" ,// 时尚纪事的id
+                        fashionMatomeIdJp :"" ,// 日本时尚纪事的id
+                        goodCsId :"" ,// 商品的中国skuid
+                        goodCsIdJp :"" ,// 商品的日本skuid
+                        goodTypesId :"" ,// 商品类型id
+                        goodTypesIdJp :"" ,// 商品类型idJp
+                        goodsId :"" ,// 商品id
+                        goodsIdJp :"" ,// 商品idJp
+                        id :"" ,// 主键id
+                        imageUrl :"" ,// 图片url
+                        sortId :"" ,// 排序id
+                        text :"" ,// 内容
+                        typeId :"text" ,// 内容类型id
+                    };
+                    this.content.push(obj);
+                }
             },
             dataFormSubmit(type){
                 let that = this;
