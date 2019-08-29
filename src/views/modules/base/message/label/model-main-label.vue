@@ -5,68 +5,64 @@
             :close-on-click-modal="false"
             :visible.sync="visible"
             :before-close="closeDialog"
-            width="26%"
+            width="30%"
     >
         <el-form
                 :model="dataForm"
-                :rules="dataRule"
                 ref="addForm"
                 @keyup.enter.native="dataFormSubmit('addForm')"
                 label-width="120px"
         >
-            <el-form-item label="京东分类ID：">
-                <span>{{dataForm.id}}</span>
+            <el-form-item  label="关联主风格标签：">
+                <el-input v-model="dataForm.styleName" placeholder=""></el-input>
             </el-form-item>
-            <el-form-item label="京东分类名称：">
-                <span>{{dataForm.categoryName}}</span>
-            </el-form-item>
-            <el-form-item label="关联分类：" prop="name" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.name" auto-complete="off"></el-input>
+            <el-form-item label="已关联主风格标签：" prop="styleName">
+                <el-tag closable
+                        v-for="item in dataArray"
+                        :key="item.id"
+                        :label="item.styleName"
+                        :value="item.id">
+                    {{item.styleName}}
+                </el-tag>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
+                <el-button  @click="dataFormCancel()">取消</el-button>
                 <el-button type="primary" @click="dataFormSubmit('addForm')"
                            :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
-                <el-button  @click="dataFormCancel()">返回</el-button>
             </el-form-item>
         </el-form>
     </el-dialog>
 </template>
 
 <script>
-    import { backScanJdCate,updateCategory } from '@/api/api'
+    import { backScanShopStyleSubUnion, shopStyleUnionSub } from '@/api/api'
     export default {
         name: "model-add-edit-data",
         data () {
             return {
                 visible : false,
                 loading : false,
-                dataForm: {
-                    id:"",//分类ID
-                    categoryName: "",//京东分类名称
-                    name: "",//分类名称
-                },
-                dataRule : {
-                    name : [
-                        { required: true, message: '必填项不能为空', trigger: 'blur' },
-                    ]
-                },
-                optionsApplication: [],
-                optionsRight: [],
+                uploading:false,
                 title:'',
+                dataForm: {
+                    styleName: "",
+                    styleType: "",
+                },
+                value:[],
+                value2:[],
+                dataArray:[],
                 row:"",
                 formLabelWidth: '120px'
             }
         },
-        components:{
+        created () {
+            // this.dataForm.styleType = this.options[0].id;
         },
-        computed:{},
-        mounted(){},
         methods: {
             init (row) {
                 this.visible = true;
                 this.row = row;
-                console.log(row)
-                this.title="编辑分类";
+                this.title="管理副风格标签";
                 this.backScan();
                 this.$nextTick(() => {
                     this.$refs['addForm'].resetFields();
@@ -76,13 +72,15 @@
             //编辑回显
             backScan(){
                 var obj  = {
-                    id:this.row.label,
-                    categoryName:this.row.categoryName,
-                    name:this.row.name
+                    id:this.row.id,
+                    styleName:this.row.styleName,
+                    styleType:this.row.styleType,
                 }
-                backScanJdCate(obj).then((res)=>{
+                backScanShopStyleSubUnion(obj).then((res)=>{
                     if(res.code == 200){
+                        this.dataArray = res.data;
                         Object.assign(this.dataForm,res.data);
+
                     }else{
 
                     }
@@ -96,12 +94,11 @@
                         this.loading = true;
                         var obj = {
                             "id":  this.dataForm.id,
-                            "name":  this.dataForm.name,
+                            "styleName":  this.dataForm.styleName,
                         }
                         if(this.row) obj.id = this.row.id
-                        var fn = updateCategory;
+                        var fn = shopStyleUnionSub;
                         fn(obj).then((res) => {
-                            console.log(res)
                             this.loading = false;
                             // alert(JSON.stringify(res));
                             let status = null;
@@ -127,6 +124,7 @@
                     }
                 })
             },
+            //关闭弹窗
             dataFormCancel(){
                 this.visible = false;
                 this.closeDialog();
@@ -139,10 +137,10 @@
 </script>
 
 <style scoped>
-    /*/deep/.el-form-item__content:nth-child(1) {*/
-    /*    margin-left: 50px!important;*/
-    /*}*/
-    .title {
-        margin-left: -70px;
+    /deep/ .el-form-item__label {
+        width: 130px!important;
+    }
+    /deep/ .el-form-item__content {
+        margin-left: 130px!important;
     }
 </style>

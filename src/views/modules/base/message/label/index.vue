@@ -25,14 +25,14 @@
                 <el-button class="btn" type="primary" @click="getDataList()">查询</el-button>
                 <el-button class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
             </el-form-item>
-            <el-button @click="addOrEditHandle()" class="btn" type="primary" style="float: right;">新增标签</el-button>
         </el-form>
+        <el-button @click="addOrEditHandle()" class="btn" type="primary">新增标签</el-button>
         <el-table
             width="100%"
             :data="dataList"
             border
             v-loading="dataListLoading"
-            style="width: 100%"
+            style="width: 100%;margin-top: 10px;"
         >
             <el-table-column label="序号" width="140" align="center">
                 <template slot-scope="scope">
@@ -51,7 +51,7 @@
                 <template slot-scope="scope">
                     <el-button type="text" @click="addOrEditHandle(scope.$index, scope.row)" size="mini">编辑</el-button>
                     <el-button v-if="scope.row.styleType==0" type="text" @click="showHandle(scope.$index, scope.row)" size="mini">管理副风格标签</el-button>
-                    <el-button v-if="scope.row.styleType==1" type="text" @click.native.prevent="showHandle" size="mini">管理主风格标签</el-button>
+                    <el-button v-if="scope.row.styleType==1" type="text" @click="showHandleMain(scope.$index, scope.row)" size="mini">管理主风格标签</el-button>
                     <el-button class="artdanger" @click.native.prevent="deleteHandle(scope.row.id)"type="text"size="mini">删除</el-button>
                 </template>
             </el-table-column>
@@ -70,6 +70,8 @@
         <addEditData  v-if="addEditDataVisible" ref="addEditData" @searchDataList="getDataList"></addEditData>
         <!-- 弹窗, 副标签 -->
         <subData  v-if="subDataVisible" ref="subDataCompon" @searchDataList="getDataList"></subData>
+        <!-- 弹窗, 主标签 -->
+        <mainData  v-if="mainDataVisible" ref="mainDataCompon" @searchDataList="getDataList"></mainData>
     </div>
 </template>
 
@@ -78,6 +80,7 @@
     import Bread from "@/components/bread";
     import addEditData from './model-add-edit-data'
     import subData from './model-sub-label'
+    import mainData from './model-main-label'
     import { shopStyleUrl, deleteShopStyle } from '@/api/url'
     export default {
         mixins: [mixinViewModule],
@@ -108,6 +111,7 @@
                 },
                 addEditDataVisible:false,
                 subDataVisible:false,
+                mainDataVisible:false,
                 isIndeterminate: false,
                 checkAll: false,
             }
@@ -115,7 +119,8 @@
         components: {
             Bread,
             subData,
-            addEditData
+            addEditData,
+            mainData
         },
         created () {
             this.dataForm.styleType = this.options[0].id;
@@ -152,15 +157,21 @@
             setSubDataVisible(boolargu){
                 this.subDataVisible =  boolargu;
             },
+            showHandleMain(index=-1,row=""){
+                this.setMainDataVisible(true);
+                this.$nextTick(() => {
+                    this.$refs.mainDataCompon.init(row)
+                })
+            },
+            setMainDataVisible(boolargu){
+                this.mainDataVisible =  boolargu;
+            },
         }
     }
 </script>
 
 <style lang="scss" scoped>
     @import "@/element-ui/theme-variables.scss";
-    .grayLine{
-        border-bottom: 0!important;
-    }
     .bottomFun {
         display: flex;
         justify-content: space-between;

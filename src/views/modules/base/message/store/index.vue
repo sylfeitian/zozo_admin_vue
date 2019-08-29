@@ -28,16 +28,24 @@
                 <el-button class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
             </el-form-item>
         </el-form>
-        <el-button @click="" class="btn" type="primary" style="float: right;">导入店铺信息</el-button>
+        <el-button @click="" class="btn" type="primary">导入店铺信息</el-button>
         <el-table
                 width="100%"
                 :data="dataList"
                 border
                 v-loading="dataListLoading"
-                style="width: 100%;margin-top: 60px;"
+                style="width: 100%;margin-top: 10px;"
         >
             <el-table-column prop="idJp" label="店铺id" align="center"></el-table-column>
-            <el-table-column prop="storeLogo" label="店铺logo" align="center"></el-table-column>
+            <el-table-column prop="storeLogo" label="店铺logo" align="center">
+                <template slot-scope="scope">
+                    <img
+                            :src="scope.row.imageUrl | filterImgUrl"
+                            alt=""
+                            style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
+                    >
+                </template>
+            </el-table-column>
             <el-table-column prop="storeNameJp" label="店铺日本名称" align="center"></el-table-column>
             <el-table-column prop="storeNameGlo" label="全球名称" align="center"></el-table-column>
             <el-table-column prop="storeName" label="店铺中文名称" align="center"></el-table-column>
@@ -73,7 +81,7 @@
                     <el-button type="text" @click.native.prevent="addHandle" size="mini">查看</el-button>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center">
+            <el-table-column label="操作" align="center" width="110px">
                 <template slot-scope="scope">
                     <el-button type="text" @click="editHandle(scope.$index, scope.row)" size="mini">编辑</el-button>
                     <el-button  @click="forbitHandle('singe',scope.row)" type="text" size="mini" >
@@ -219,7 +227,7 @@
                         this.forbitLoading = false;
                         // console.log(res);
                         if(res.code==200){
-                            this.getDataList();
+                            this.reset();
                             this.$message({
                                 message:res.msg,
                                 type: 'success',
@@ -276,8 +284,5 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "@/element-ui/theme-variables.scss";
-    .grayLine {
-        border-bottom: 0!important;
-    }
+
 </style>
