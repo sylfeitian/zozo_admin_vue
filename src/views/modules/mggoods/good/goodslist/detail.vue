@@ -12,7 +12,8 @@
                     style="margin-left: 20px;"
             >
                 <el-form-item label="商品分类：" class="item" style="margin-top: 20px;">
-                    <span>{{dataForm.firstCategory}}</span>
+                    <span>{{dataForm.firstCategory}}</span>-->
+                    <span>{{dataForm.secondCategory}}</span>
                 </el-form-item>
                 <el-form-item label="商品ID：" class="item">
                     <span>{{dataForm.idJp}}</span>
@@ -94,8 +95,8 @@
                 </el-form-item>
                 <el-form-item label="分类条件：">
                     <el-row v-for="(item,index) in dataForm.tags" :key="index" class="info" style="width: 500px;">
-                        <el-col :span="12"><div class="grid-content"></div></el-col>
-                        <el-col :span="12"><div class="grid-content"></div></el-col>
+                        <el-col :span="12"><div class="grid-content">{{item.parentTagName}}</div></el-col>
+                        <el-col :span="12"><div class="grid-content">{{item.nameJp}}</div></el-col>
                     </el-row>
 <!--                    <Table class="inforRight" style="display: inline-block;" :tableData="tableData" :tableStyle="{ width:'600px' }"></Table>-->
                 </el-form-item>
@@ -131,7 +132,6 @@
     import addEditData from './recordList'
     import sizeData from './model-size'
     import Bread from "@/components/bread";
-    import Table from "@/components/table";
     import quillEditorImg from "@/components/quillEditor"
     //import addEditData from './model-show-data'
     import mixinViewModule from '@/mixins/view-module'
@@ -147,11 +147,6 @@
         data () {
             return {
                 breaddata: [ "商品管理","商品列表", "商品详情"],
-                tableData: [
-                    {key: '袖长', value: '短袖'},
-                    {key: '图案', value: '豹纹'},
-                    {key: '衣长', value: '短长度'}
-                ],
                 dataForm:{},
                 addEditDataVisible: false,
                 data: {}, //总数据
@@ -165,7 +160,6 @@
         },
         components: {
             Bread,
-            Table,
             quillEditorImg,
             addEditData,
             operationallog,

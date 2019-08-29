@@ -9,7 +9,8 @@
                 style="margin-left: 20px;margin-bottom: 100px;"
         >
             <el-form-item label="商品分类：" class="item" style="margin-top: 20px;">
-                <span>{{dataForm.firstCategory}}</span>
+                <span>{{dataForm.firstCategory}}</span>-->
+                <span>{{dataForm.secondCategory}}</span>
                 <span style="margin-left: 2%;color:green;cursor:pointer;" @click="logMore">修改</span>
             </el-form-item>
             <el-form-item label="商品编码：" class="item">
@@ -109,7 +110,11 @@
                 </el-table>
             </el-form-item>
             <el-form-item label="分类条件：">
-                <Table class="inforRight" style="display: inline-block;" :tableData="tableData" :tableStyle="{ width:'600px' }"></Table>
+                <el-row v-for="(item,index) in dataForm.tags" :key="index" class="info" style="width: 500px;">
+                    <el-col :span="12"><div class="grid-content">{{item.parentTagName}}</div></el-col>
+                    <el-col :span="12"><div class="grid-content">{{item.nameJp}}</div></el-col>
+                </el-row>
+<!--                <Table class="inforRight" style="display: inline-block;" :tableData="tableData" :tableStyle="{ width:'600px' }"></Table>-->
             </el-form-item>
             <el-form-item label="商品图片：">
                 <template slot-scope="scope">
@@ -142,7 +147,6 @@
 <script>
     //import addEditData from './recordList'
     import Bread from "@/components/bread";
-    import Table from "@/components/table";
     import quillEditorImg from "@/components/quillEditor"
     import addEditData from './model-edit-data'
     import mixinViewModule from '@/mixins/view-module'
@@ -157,18 +161,12 @@
         data () {
             return {
                 breaddata: [ "商品管理","商品列表", "编辑商品"],
-                tableData: [
-                    {key: '袖长', value: '短袖'},
-                    {key: '图案', value: '豹纹'},
-                    {key: '衣长', value: '短长度'}
-                ],
                 addEditDataVisible: false,
                 dataForm: {}
             }
         },
         components: {
             Bread,
-            Table,
             quillEditorImg,
             addEditData,
         },
@@ -271,10 +269,19 @@
         width: 100px!important;
     }
     .item {
-        height: 28px!important;
+        height: 26px!important;
     }
     .grayLine {
         border-bottom: 0!important;
+    }
+    .grid-content {
+        border: 1px solid #ebeef5;
+        height: 54px;
+        line-height: 54px;
+        text-align: center
+    }
+    .info {
+        margin-left: 100px;
     }
     /deep/ .el-input {
         width: 200px!important;

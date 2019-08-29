@@ -146,6 +146,7 @@
             // 编辑回显
             backScan(){
                 var obj  = {
+                    id:this.row.id,
                     warehouseName:this.row.warehouseName,
                     type:this.row.type,
                     name:this.row.name,
