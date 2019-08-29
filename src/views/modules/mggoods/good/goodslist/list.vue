@@ -202,7 +202,7 @@
     import Bread from "@/components/bread";
     import detail from "./detail";
     import { goodsUrl } from '@/api/url'
-    import { showBatchGoods } from '@/api/api'
+    import { showBatchGoods,showGoods } from '@/api/api'
     export default {
         mixins: [mixinViewModule],
         data () {
