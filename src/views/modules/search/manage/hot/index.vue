@@ -4,14 +4,14 @@
         <el-form
                 :inline="true"
                 class="grayLine topGapPadding"
-                :model="dataForm"
+                :model="dataFormShow"
                 @keyup.enter.native="getDataList()"
         >
             <el-form-item label="关键字搜索：">
-                <el-input v-model="dataForm.keyword" placeholder="请输入关键词搜索" ></el-input>
+                <el-input v-model="dataFormShow.keyword" placeholder="请输入关键词搜索" ></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button class="btn" type="primary" @click="getDataList()">查询</el-button>
+                <el-button class="btn" type="primary" @click="getData()">查询</el-button>
                 <el-button class="btn"type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
@@ -21,7 +21,7 @@
                 :data="dataList"
                 border
                 v-loading="dataListLoading"
-                style="width: 100%;margin-top: 20px;"
+                style="width: 100%;margin-top: 10px;"
         >
             <el-table-column label="序号" width="140" align="center">
                 <template slot-scope="scope">
@@ -71,7 +71,7 @@
                     // deleteIsBatchKey: 'id'
                 },
                 breaddata: [ "搜索管理", "同义词管理"],
-                dataForm: {
+                dataFormShow: {
                     keyword: "",//关键字搜索
                 },
                 dataList: [],
@@ -84,8 +84,17 @@
             addEditData
         },
         methods: {
+            getData(){
+                this.dataForm = {};
+                for(let key in this.dataFormShow){
+                    this.$set(this.dataForm,`${key}`,this.dataFormShow[key]);
+                }
+                console.log(this.dataForm);
+                this.getDataList()
+            },
             // 重置
             reset() {
+                this.dataFormShow.keyword = "";//关键字搜索
                 this.dataForm.keyword = "";//关键字搜索
                 this.getDataList();
             },
