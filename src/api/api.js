@@ -41,12 +41,20 @@ export const editsizejptag = params => { return http.put(`${base}/sizejp/edit?na
 export const getlookdetail = params => { return http.get(`${base}/look/${params.id}`, params).then(res => res.data); };
 //搭配信息发布/取消发布
 export const putoperating = params => { return http.put(`${base}/look/publish/${params.operating}/${params.id}?operating=${params.operating}&id=${params.id}`, params).then(res => res.data); };
+//搭配信息批量发布/取消发布
+export const putoperatingAll = params => { return http.put(`${base}/look/publish/${params.operating}?operating=${params.operating}&ids=${params.ids}`, params).then(res => res.data); };
 //搭配集合发布/取消发布
 export const folderPutoperating = params => { return http.put(`${base}/look/folder/publish/${params.operating}/${params.id}?operating=${params.operating}&id=${params.id}`, params).then(res => res.data); };
+//搭配集合批量发布/取消发布
+export const folderPutoperatingAll = params => { return http.put(`${base}/look/folder/publish/${params.operating}?operating=${params.operating}&ids=${params.ids}`, params).then(res => res.data); };
 //时尚记事发布/取消发布
 export const fashionPutoperating = params => { return http.put(`${base}/fashion/publish/${params.operating}/${params.id}?operating=${params.operating}&id=${params.id}`, params).then(res => res.data); };
+//时尚记事批量发布/取消发布
+export const fashionPutoperatingAll = params => { return http.put(`${base}/fashion/publish/${params.operating}?operating=${params.operating}&ids=${params.ids}`, params).then(res => res.data); };
 //店铺新闻发布/取消发布
 export const storeNewsPutoperating = params => { return http.put(`${base}/store/news/publish/${params.operating}/${params.id}?operating=${params.operating}&id=${params.id}`, params).then(res => res.data); };
+//店铺新闻批量发布/取消发布
+export const storeNewsPutoperatingAll = params => { return http.put(`${base}/store/news/publish/${params.operating}?operating=${params.operating}&ids=${params.ids}`, params).then(res => res.data); };
 //搭配集合详情
 export const getlookfolderdetail = params => { return http.get(`${base}/look/folder/${params.id}`, params).then(res => res.data); };
 //时尚记事详情
@@ -59,8 +67,10 @@ export const savelookdetail = params => { return http.post(`${base}/look`, param
 export const saveFolderdetail = params => { return http.post(`${base}/look/folder`, params).then(res => res.data); };
 //时尚记事保存|保存并发布操作
 export const savefashiondetail = params => { return http.post(`${base}/fashion`, params).then(res => res.data); };
-//店铺新闻保存|保存并发布操作
+//店铺新闻保存并发布操作
 export const saveStoreNewsdetail = params => { return http.post(`${base}/store/news`, params).then(res => res.data); };
+//店铺新闻保存
+export const saveStoreNewsdetailOne = params => { return http.post(`${base}/store/news/save`, params).then(res => res.data); };
 
 
 //仓库管理--------------------------------------------------------------------------------------------------------
