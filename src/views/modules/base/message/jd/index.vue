@@ -11,7 +11,7 @@
                 @check-change="checkChange"
                 @node-click="nodeClick"
                 @current-change="currentChange"
-                style="margin-top: 20px;"
+                style="margin-top: 10px;"
         >
         </MyTableTree>
 

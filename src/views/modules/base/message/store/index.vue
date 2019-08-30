@@ -4,17 +4,17 @@
         <el-form
                 :inline="true"
                 class="grayLine topGapPadding"
-                :model="dataForm"
+                :model="dataFormShow"
                 @keyup.enter.native="getDataList()"
         >
             <el-form-item label="店铺ID：">
-                <el-input v-model="dataForm.idJp" placeholder="请输入" ></el-input>
+                <el-input v-model="dataFormShow.idJp" placeholder="请输入" ></el-input>
             </el-form-item>
             <el-form-item label="店铺名称：">
-                <el-input v-model="dataForm.storeName" placeholder="请输入" ></el-input>
+                <el-input v-model="dataFormShow.storeName" placeholder="请输入" ></el-input>
             </el-form-item>
             <el-form-item  label="营业状态：">
-                <el-select v-model="dataForm.operateFlag" placeholder="请选择">
+                <el-select v-model="dataFormShow.operateFlag" placeholder="请选择">
                     <el-option
                             v-for="item in operateShopStore"
                             :key="item.id"
@@ -24,8 +24,8 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button class="btn" type="primary" @click="getDataList()">查询</el-button>
-                <el-button class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
+                <el-button class="btn" type="primary" @click="getData()">查询</el-button>
+                <el-button class="btn"type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
         <el-button @click="" class="btn" type="primary">导入店铺信息</el-button>
@@ -130,7 +130,7 @@
                 value: true,
                 breaddata: [ "基础资料管理", "店铺管理"],
                 options: [],
-                dataForm: {
+                dataFormShow: {
                     id:"",
                     idJp: "",//店铺ID
                     storeName: "",//店铺名称
@@ -167,8 +167,19 @@
             editData
         },
         methods: {
+            getData(){
+                this.dataForm = {};
+                for(let key in this.dataFormShow){
+                    this.$set(this.dataForm,`${key}`,this.dataFormShow[key]);
+                }
+                console.log(this.dataForm);
+                this.getDataList()
+            },
             // 重置
             reset() {
+                this.dataFormShow.idJp = "";//店铺ID
+                this.dataFormShow.storeName = "";//店铺名称
+                this.dataFormShow.operateFlag = "";//营业状态
                 this.dataForm.idJp = "";//店铺ID
                 this.dataForm.storeName = "";//店铺名称
                 this.dataForm.operateFlag = "";//营业状态
@@ -227,7 +238,7 @@
                         this.forbitLoading = false;
                         // console.log(res);
                         if(res.code==200){
-                            this.reset();
+                            this.getDataList();
                             this.$message({
                                 message:res.msg,
                                 type: 'success',

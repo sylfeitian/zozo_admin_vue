@@ -10,8 +10,8 @@
                 <el-input v-model="dataFormShow.brandName" ></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="getdata">查询</el-button>
-                <el-button  class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
+                <el-button  class="btn" type="primary" @click="getData">查询</el-button>
+                <el-button  class="btn" type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
         <el-button  @click="uploadHandle()" class="btn" type="primary">导入信息</el-button>
@@ -94,7 +94,7 @@
             this.getDataList();
         },
         methods: {
-            getdata(){
+            getData(){
                 this.dataForm = {};
                 for(let key in this.dataFormShow){
                     this.$set(this.dataForm,`${key}`,this.dataFormShow[key]);
