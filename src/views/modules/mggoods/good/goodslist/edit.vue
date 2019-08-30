@@ -30,10 +30,15 @@
                 <span>{{dataForm.storeName}}</span>
             </el-form-item>
             <el-form-item label="主品牌：" class="item">
-                <span>{{}}</span>
+<!--                <span>{{}}</span>-->
+                <template>
+                    <span v-if="dataForm.brands[0].isMainBrand==1">{{dataForm.brands[0].brandName}}</span>
+                </template>
             </el-form-item>
             <el-form-item label="副品牌：" class="item">
-                <span>{{}}</span>
+                <template>
+                    <span v-if="dataForm.brands[0].isMainBrand==0">{{dataForm.brands[0].brandName}}</span>
+                </template>
             </el-form-item>
             <el-form-item label="主性别：" class="item">
                 <template>
@@ -62,7 +67,16 @@
                 <span>{{dataForm.salePrice}}</span>
             </el-form-item>
             <el-form-item label="价格标识：" class="item">
-                <span>{{}}</span>
+<!--                <span>{{dataForm.salePlan}}</span>-->
+                <template>
+                    <span v-if="dataForm.salePlan==0">关税计算</span>
+                    <span v-if="dataForm.salePlan==1">品牌方设定</span>
+                </template>
+                <template>
+                    <span v-if="dataForm.priceType=='sale'">促销价</span>
+                    <span v-if="dataForm.priceType=='proper'">标准价</span>
+                </template>
+<!--                <span>{{dataForm.priceType}}</span>-->
             </el-form-item>
             <el-form-item label="原产地：" class="item">
                 <span>{{dataForm.madeInJp}}</span>

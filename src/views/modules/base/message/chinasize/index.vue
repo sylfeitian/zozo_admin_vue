@@ -1,12 +1,12 @@
 <template>
     <div>
         <Bread  :breaddata="breaddata"></Bread>
-        <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
+        <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" @keyup.enter.native="getDataList()" >
             <el-form-item label="中国尺码名称：">
-                <el-input v-model="dataForm.name" ></el-input>
+                <el-input v-model="dataFormShow.name" ></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="getDataList()">查询</el-button>
+                <el-button  class="btn" type="primary" @click="getData()">查询</el-button>
                 <el-button   class="btn"type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
@@ -18,7 +18,7 @@
             :data="dataList"
             border
             v-loading="dataListLoading"
-            style="width: 100%;"
+            style="width: 100%;margin-top: 10px;"
         >
             <el-table-column
                     label="序号"
@@ -64,7 +64,7 @@
                     layout="total, sizes, prev, pager, next, jumper">
             </el-pagination>
         </div>
-        
+
        	<!--查看关联尺码-->
         <el-dialog
 		  title="查看关联尺码"
@@ -82,7 +82,7 @@
     import Bread from "@/components/bread";
     import addEditData from './model-add-edit-data'
     import {updatasizeCn} from '@/api/api'
-    import {getsizeCndata,delsizeCndata} from '@/api/url'  	
+    import {getsizeCndata,delsizeCndata} from '@/api/url'
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -92,13 +92,13 @@
 		          getDataListIsPage: true,
 		          // exportURL: '/admin-api/log/login/export',
 		          deleteURL: delsizeCndata,
-		          dataListLoading: false, 
+		          dataListLoading: false,
 		          deleteIsBatch: true,
 		          deleteIsBatchKey: 'id'
 			    },
                 breaddata: [ "商品管理", "中国尺码"],
                 addEditDataVisible:false,
-                dataForm: {
+                dataFormShow: {
                     name: "",//中国尺码名称
                 },
                 addEditDataVisible:false,
@@ -113,7 +113,16 @@
             addEditData
         },
         methods: {
+            getData(){
+                this.dataForm = {};
+                for(let key in this.dataFormShow){
+                    this.$set(this.dataForm,`${key}`,this.dataFormShow[key]);
+                }
+                console.log(this.dataForm);
+                this.getDataList()
+            },
             reset() {
+                this.dataFormShow.name = "";
                 this.dataForm.name = "";
                 this.getDataList();
             },
