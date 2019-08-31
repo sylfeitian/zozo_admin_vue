@@ -32,7 +32,8 @@ export const getlookfolderpage = `${base}/look/folder/page`;
 export const getlookfashionpage = `${base}/fashion/page`;
 //店铺新闻分页
 export const getStoreNewspage = `${base}/store/news/page`;
-
+//分页获取上架的商品列表
+export const getGoodscspage = `${base}/fashion/goodscspage`;
 //基础数据--------------------------------------------------------------------------------------------
 //中国尺码分页
 export const getsizeCndata = `${base}/sizeCn/page`;
