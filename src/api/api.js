@@ -723,3 +723,32 @@ export const aftersaleReturnDetail = params => { return http.get(`${base}/afters
 
 
 
+
+//操作日志-------------------------------------------------------------------------------------------------------------
+// 导出
+export const exportOperation = params => { return http.get(`${base}/log/operation/export`, params).then(res => res.data); };
+// 操作模块列表
+export const listModule = params => { return http.get(`${base}/log/operation/listModule`, params).then(res => res.data); };
+// 分页
+export const operationPage = params => { return http.get(`${base}/log/operation/page`, params).then(res => res.data); };
+
+
+
+
+
+
+//中日词库-------------------------------------------------------------------------------------------------------------
+// 保存
+export const syslexiconSave = params => { return http.post(`${base}/syslexicon`, params).then(res => res.data); };
+// 修改
+export const editSyslexicon = params => { return http.put(`${base}/syslexicon`, params).then(res => res.data); };
+// 导出
+export const exportSyslexicon = params => { return http.get(`${base}/syslexicon/export`, params).then(res => res.data); };
+// 分页
+export const syslexiconPage = params => { return http.get(`${base}/syslexicon/page`, params).then(res => res.data); };
+// 删除
+export const deleteSyslexicon = params => { return http.delete(`${base}/syslexicon/${params.id}`, params).then(res => res.data); };
+// 信息
+export const backScanSyslexicon = params => { return http.get(`${base}/syslexicon/${params.id}`, params).then(res => res.data); };
+
+
