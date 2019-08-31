@@ -37,7 +37,7 @@
                     <el-button type="primary" @click="openDiog" >添加商品</el-button>
                 </div>
             </el-form-item>
-            <el-form-item label="内容：" prop="con" :label-width="formLabelWidth" style="display: inline-block;vertical-align:top;">
+            <el-form-item label="内容：" prop="con" :label-width="formLabelWidth" style="vertical-align:top;">
                 <template slot-scope="scope">
                     <div id="content" v-for="(v,i) in content" :key="i">
                         <div class="contentChild" v-if="content[i]&&v.typeId=='5'">
@@ -151,6 +151,9 @@
                     sizeName : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ],
+                    title : [
+                        { required: true, message: '必填项不能为空', trigger: 'blur' },
+                    ],
                     con : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ],
@@ -254,23 +257,36 @@
             },
             dataFormSubmit(type){
                 let that = this;
-                this.addDataForm.saveType = type;
-                savefashiondetail({saveFashionDTO:this.addDataForm}).then((res)=>{
-                    if(res.code == 200){
-                        this.$message({
-                            message: res.msg,
-                            type: 'success',
-                            onClose:function () {
-                                that.changePage();
-                            }
-                        });
-                    }else{
-                        this.$message({
-                            message: res.msg,
-                            type: 'error',
-                        });
+                this.$refs["addForm"].validate(valid => {
+                    if (valid) {
+                        this.$confirm(`确定提交表单信息?`, "提示", {
+                            confirmButtonText: "确定",
+                            cancelButtonText: "取消",
+                            type: "warning"
+                        })
+                            .then(() => {
+                                this.addDataForm.saveType = type;
+                                savefashiondetail({saveFashionDTO:this.addDataForm}).then((res)=>{
+                                    if(res.code == 200){
+                                        this.$message({
+                                            message: res.msg,
+                                            type: 'success',
+                                            onClose:function () {
+                                                that.changePage();
+                                            }
+                                        });
+                                    }else{
+                                        this.$message({
+                                            message: res.msg,
+                                            type: 'error',
+                                        });
+                                    }
+                                })
+                            })
+                            .catch(() => {});
                     }
-                })
+                });
+
             },
             GiftUrlHandle(val){
                 console.log("base64上传图片接口");
