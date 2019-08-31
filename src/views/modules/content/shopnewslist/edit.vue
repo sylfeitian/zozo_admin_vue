@@ -82,19 +82,20 @@
                     :model="dataForm"
                     @keyup.enter.native="getDataList()"
             >
-                <p class="title">日文</p>
+                <p class="title">中文</p>
                 <el-form-item label="新闻编号：">
                     <span>{{dataForm.idJp}}</span>
                 </el-form-item>
                 <el-form-item label="店铺ID：">
-                    <span>{{dataForm.shopIdJp}}</span>
+                    <span>{{dataForm.shopId}}</span>
                 </el-form-item>
                 <el-form-item label="店铺名称：">
-                    <span>{{dataForm.shopName}}</span>
+                    <span>{{dataForm.shopNameCn}}</span>
                 </el-form-item>
-                <el-form-item prop="showWebJp" label="发布状态">
+                <el-form-item prop="showWeb" label="发布状态">
                     <template slot-scope="scope">
-                        <el-tag v-if="scope.row.showWebJp == 1" type="success">已发布</el-tag>
+                        <el-tag v-if="scope.row.showWeb == 1" type="success">已发布</el-tag>
+                        <el-tag v-else-if="scope.row.showWeb == 0" type="success">待发布</el-tag>
                         <el-tag v-else type="info">取消发布</el-tag>
                     </template>
                 </el-form-item>
@@ -107,11 +108,11 @@
                         </div>
                     </template>
                 </el-form-item>
-                <el-form-item label="标题：">
-                    <span>{{dataForm.titleJp}}</span>
+                <el-form-item label="标题：" style="height: 100%!important;">
+                    <el-input v-model="dataForm.title" type="text" placeholder="请输入标题名称"></el-input>
                 </el-form-item>
-                <el-form-item label="详情：">
-                    <span>{{dataForm.contentJp}}</span>
+                <el-form-item label="详情：" style="height: 100%!important;">
+                    <el-input v-model="dataForm.content" type="textarea":rows="5" placeholder="请输入内容"></el-input>
                 </el-form-item>
                 <div class="goods">
                     <span class="inforTit" style="vertical-align:top;">关联商品：</span>
@@ -150,7 +151,7 @@
         </el-col>
         <el-col :span="24">
             <div style="position: fixed;bottom: 0;margin: 0 auto;width: 85%;text-align: center;z-index: 999;">
-                <span style="font-size: 20px;margin-right: 20px;">状态：{{dataForm.showWeb == 0?"未发布":dataForm.sate == 1?"已发布":""}}</span>
+                <span style="font-size: 20px;margin-right: 20px;">状态：{{dataForm.showWeb == 0?"未发布":dataForm.showWeb == 1?"已发布":dataForm.showWeb == 2?"取消发布":''}}</span>
                 <el-button class="btn" @click="reset()">取消</el-button>
                 <el-button class="btn" @click="getData(0)">保存</el-button>
                 <el-button class="btn" type="primary" @click="getData(1)">保存并发布</el-button>
@@ -162,7 +163,7 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
-    import { getStoreNewsdetail,saveStoreNewsdetail } from '@/api/api'
+    import { getStoreNewsdetail,saveStoreNewsdetail ,saveStoreNewsdetailOne} from '@/api/api'
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -191,6 +192,54 @@
             },
             changePage(){
                 this.$emit("addoraditList");
+            },
+            reset(){
+                let that = this;
+                this.$confirm('取消将不会保存页面数据', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    that.changePage();
+                }).catch();
+            },
+            getData(saveType){
+                let that = this;
+               if(saveType == 0){
+                   saveStoreNewsdetailOne({shopGoodsNewsDTO:this.dataForm}).then((res)=>{
+                       if(res.code == 200){
+                           this.$message({
+                               message: res.msg,
+                               type: 'success',
+                               onClose:function () {
+                                   that.changePage();
+                               }
+                           });
+                       }else{
+                           this.$message({
+                               message: res.msg,
+                               type: 'error',
+                           });
+                       }
+                   })
+               }else{
+                   saveStoreNewsdetail({shopAdminNewsDTO:this.dataForm}).then((res)=>{
+                       if(res.code == 200){
+                           this.$message({
+                               message: res.msg,
+                               type: 'success',
+                               onClose:function () {
+                                   that.changePage();
+                               }
+                           });
+                       }else{
+                           this.$message({
+                               message: res.msg,
+                               type: 'error',
+                           });
+                       }
+                   })
+               }
             }
         }
     }

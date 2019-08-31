@@ -32,17 +32,21 @@
             <el-form-item style="background-color: #f3f3f3;">
                 <div style="background-color: #f3f3f3;display: flex;align-items: center;">
                     <p style="margin-left: -100px;margin-right: 50px;">详细信息</p>
-                    <el-button type="primary" @click="addContent('text')">添加文字</el-button>
-                    <el-button type="primary" @click="">添加图片</el-button>
-                    <el-button type="primary" @click="">添加商品</el-button>
+                    <el-button type="primary" @click="addContent('5')" style="margin-right: 10px;">添加文字</el-button>
+                    <el-button type="primary" ><input accept="image/*" multiple type="file" @change="imgUpload" style="width:100%;height:100%;position:absolute;top: 0; opacity: 0;">添加图片</el-button>
+                    <el-button type="primary" @click="" style="margin-left: 10px;">添加商品</el-button>
                 </div>
             </el-form-item>
             <el-form-item label="内容：" prop="con" :label-width="formLabelWidth" style="display: inline-block;vertical-align:top;">
 
                 <template slot-scope="scope">
-                    <div id="content">
-                        <div class="contentChild" v-for="(v,i) in content" :key="i" v-if="content[i]&&v.typeId=='text'">
+                    <div id="content" v-for="(v,i) in content" :key="i">
+                        <div class="contentChild" v-if="content[i]&&v.typeId=='5'">
                             <quill-editor-img class="inforRight" :index="i" ref="quillEditorCompon" style="display: inline-block;"  @artmessageContent='artmessageContent' ></quill-editor-img>
+                            <span @click="delContent(i)">删除</span>
+                        </div>
+                        <div class="contentChild" v-if="content[i]&&v.typeId=='3'">
+                            <img width="100%" :src="$imgDomain+v.imageUrl" alt="">
                             <span @click="delContent(i)">删除</span>
                         </div>
                     </div>
@@ -133,8 +137,41 @@
                     this.content = [].concat(this.content)
                 },0)
             },
+            imgUpload(e){
+                console.log(e.target.files)
+                for (let i = 0; i < e.target.files.length; i++) {
+                    var reader = new FileReader();
+                    reader.readAsDataURL(e.target.files[i])
+                    reader.onload = function(){
+                        const params = { "imgStr": reader.result };
+                        uploadPicBase64(params).then(res =>{
+                            if(res && res.code == "200"){
+                                let obj = {
+                                    colorId :"" ,//颜色id
+                                    colorIdJp :"" ,// 颜色idJp
+                                    contentsId :"" ,//时尚纪事内容
+                                    createTime :"" ,//创建时间
+                                    fashionMatomeId :"" ,// 时尚纪事的id
+                                    fashionMatomeIdJp :"" ,// 日本时尚纪事的id
+                                    goodCsId :"" ,// 商品的中国skuid
+                                    goodCsIdJp :"" ,// 商品的日本skuid
+                                    goodTypesId :"" ,// 商品类型id
+                                    goodTypesIdJp :"" ,// 商品类型idJp
+                                    goodsId :"" ,// 商品id
+                                    goodsIdJp :"" ,// 商品idJp
+                                    id :"" ,// 主键id
+                                    imageUrl :res.data.url ,// 图片url
+                                    sortId :"" ,// 排序id
+                                    text :"" ,// 内容
+                                    typeId :type ,// 内容类型id
+                                };
+                                this.content.push(obj);
+                            }
+                        })
+                    }; //属性
+                }
+            },
             addContent(type){
-                if(type == "text"){
                     let obj = {
                         colorId :"" ,//颜色id
                         colorIdJp :"" ,// 颜色idJp
@@ -152,10 +189,9 @@
                         imageUrl :"" ,// 图片url
                         sortId :"" ,// 排序id
                         text :"" ,// 内容
-                        typeId :"text" ,// 内容类型id
+                        typeId :type ,// 内容类型id
                     };
                     this.content.push(obj);
-                }
             },
             dataFormSubmit(type){
                 let that = this;
