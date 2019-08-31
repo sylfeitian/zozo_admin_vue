@@ -11,7 +11,7 @@
                 @check-change="checkChange"
                 @node-click="nodeClick"
                 @current-change="currentChange"
-                style="margin-top: 20px;"
+                style="margin-top: 10px;"
         >
         </MyTableTree>
 
@@ -37,7 +37,7 @@
     import Bread from "@/components/bread";
     import addEditData from './model-add-edit-data'
     import { jdCateUrl } from '@/api/url'
-    import { jdCateSubcollection } from '@/api/api'
+    import { jdCateSubcollection,jdCatePage } from '@/api/api'
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -45,6 +45,7 @@
                 mixinViewModuleOptions: {
                     getDataListURL: jdCateUrl,
                     getDataListIsPage: true,
+                    activatedIsNeed:false,
                     // exportURL: '/admin-api/log/login/export',
                     // deleteURL: deleteShopStyle,
                     deleteIsBatch: false,
@@ -97,17 +98,21 @@
             addEditData
         },
         created() {
-            this.getTree();
+            this.getDataList().then((res)=>{
+                this.getTree(res);
+            })
+
         },
         methods: {
-            getTree() {
-                let obj = {
-                    id:this.formData.parentId
-                };
-                jdCateSubcollection(obj).then(res => {
+            getTree(res) {
+                // let obj = {
+                //     page:1,
+                //     limit:10
+                // };
+                // jdCatePage(obj).then(res => {
                     //Promise后 对数据格式进行处理
                     if (res.code == 200) {
-                        var data = res.data;
+                        var data = res.data.list;
                         // this.total = res.data.total;
                         console.log(data);
                         //处理树形数据
@@ -116,6 +121,7 @@
                         dataStr = dataStr.replace(/id/g,"label")
                         // dataStr = dataStr.replace(/list/g,"children")
                         this.treeConfig.rows = [].concat(JSON.parse(dataStr));
+
 
                         // console.log("treeTable数据:");
                         // console.log(this.treeConfig.rows);
@@ -126,7 +132,7 @@
                         // this.$parent.dataArray = JSON.parse(dataArrayStr);
                         // console.log( dataArrayStr );
                     }
-                });
+                // });
             },
             // 新建和编辑
             addOrEditHandle(row){

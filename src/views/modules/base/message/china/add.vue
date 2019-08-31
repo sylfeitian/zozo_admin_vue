@@ -7,15 +7,16 @@
         </el-form-item>
         <el-form-item v-else label="上级分类：">  
 	        <el-select
-	          v-model="dataForm.parentId"
-	          placeholder="请选择"
-	          loading-text="加载中···">
-	          <el-option
-	            v-for="item in goodKindList1"
-	            :key="item.id"
-	            :label="item.name"
-	            :value="item.id">
-	          </el-option>
+	        	:disabled="selectdisabled"
+	          	v-model="dataForm.parentId"
+	         	placeholder="请选择"
+	          	loading-text="加载中···">
+	          	<el-option
+	            	v-for="item in goodKindList1"
+	            	:key="item.id"
+	            	:label="item.name"
+	            	:value="item.id">
+	          	</el-option>
 	        </el-select>
 		    </el-form-item>
         <el-form-item label="分类名称：" prop="name">
@@ -46,8 +47,8 @@
 	    </el-form-item>
     
     
-    	<el-form-item label="测量方法：" prop="methodUrl">
-			<div class="pcCoverUrl imgUrl" v-for="(item,index) in dataForm.methodUrl" @click="imgtype = 'rule'">
+    	<el-form-item label="测量方法：" prop="methodUrlshow">
+			<div class="pcCoverUrl imgUrl" v-for="(item,index) in dataForm.methodUrlshow" @click="imgtype = 'rule'">
 				<img-cropper
 					ref="cropperImg1"
 					:index="'1'"
@@ -159,6 +160,7 @@
 	    	}
 	    };
 	    return {
+	    	selectdisabled: false, //是否可以选择一级分类
 	    	imgtype:'',  //img的类型
 	    	checkList:[],  //分类性别多选
 	        datacategory: '', //选择分类
@@ -172,7 +174,8 @@
 	        	sort:'', //排序
 		      	categoryJpId:['',],  //关联的日方分类id  
 		      	appraisal:'', //评价类型
-		      	methodUrl:['',], //测试方法
+		      	methodUrlshow:['',], //测试方法  不传
+		      	methodUrl:['',], //测试方法  传
 		      	genderMain:'' , //分类主图
 		      	genderMr:'', //分类男士图片 
 		      	genderMrs:'', //分类女士图片 
@@ -199,8 +202,17 @@
 	  created () {
 	  },
 	  methods: {
-	  	init(){
+	  	init(row){
 	  		this.showListVisible = true;
+	  		if(row){
+	  			this.selectdisabled = true;
+	  			console.log(row);
+	  			this.$nextTick(()=>{
+	  				this.goodKindList1 = [{ id: row.id, name: row.label }];
+	  				this.dataForm.parentId = row.id;
+	  			})
+	  			
+	  		}
 	  		categoryCn().then((res)=>{
 	  			if(res.code == 200){
 	  				console.log(res.data);
@@ -230,27 +242,28 @@
 	  		})
 	  	},
 	  	actuploaddata(){  //确定提交  
-	  		if(!this.dataForm.methodUrl[this.dataForm.methodUrl.length-1]){
-	  			this.dataForm.methodUrl.pop()
+	  		if(!this.dataForm.methodUrlshow[this.dataForm.methodUrlshow.length-1]){
+	  			this.dataForm.methodUrlshow.pop()
 	  		}
-	  		this.dataForm.methodUrl = JSON.stringify(this.dataForm.methodUrl);
+	  		this.dataForm.methodUrl = JSON.stringify(this.dataForm.methodUrlshow);
 	  		updataCategoryCn(this.dataForm).then((res)=>{
 	  			if(res.code == 200){
 	  				console.log(res.data);
-	  				res.data.forEach((item)=>{
-	  					this.goodKindList2.push(item);
-	  				})
+	  				this.closeadd();
 	  			}else{
-	  				this.$message("服务器错误1");
+	  				this.$message("服务器错误");
 	  			}
 	  		}).catch(()=>{
-	  			this.$message("服务器错误2");
+	  			this.$message("服务器错误");
 	  		})
 	  	},
 	  	GiftUrlHandle(val){
 			console.log("base64上传图片接口");
 			console.log(val);
 			this.uploadPic(val);
+			if(this.imgtype == 'rule'){
+				this.dataForm.methodUrlshow.push('');
+			}
 		},
 		//上传图片
 		uploadPic(base64){
@@ -263,12 +276,11 @@
 					if(res && res.code == "200"){
 						var url = res.data.url
 						if(that.imgtype == 'rule'){
-							if(that.dataForm.methodUrl.lenght >= 10){
+							if(that.dataForm.methodUrlshow.lenght >= 10){
 								this.$message("最多可上传10张图片");
 								return;
 							}
-							that.dataForm.methodUrl[that.dataForm.methodUrl.length-1] = url;
-							that.dataForm.methodUrl.push('');
+							that.dataForm.methodUrlshow[that.dataForm.methodUrlshow.length-1] = url;
 						}else if(that.imgtype == 'all'){
 							that.dataForm.genderMain = url;
 						}else if(that.imgtype == 'm'){
@@ -278,7 +290,6 @@
 						}else if(that.imgtype == 'c'){
 							that.dataForm.genderKid = url;
 						}
-						
 						// that.currentIndex = -1;//不能这样写，防止网络延迟
 						resolve("true")
 					}else {

@@ -1,25 +1,25 @@
 <template>
     <div>
         <Bread  :breaddata="breaddata"></Bread>
-        <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
+        <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" @keyup.enter.native="getDataList()" >
             <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
             <el-form-item label="商品名称：">
-                <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" ></el-input>
+                <el-input v-model="dataFormShow.goodsName" placeholder="请输入商品名称" ></el-input>
             </el-form-item>
             <el-form-item label="商品ID：">
-                <el-input v-model="dataForm.id" placeholder="请输入spuID" ></el-input>
+                <el-input v-model="dataFormShow.idJp" placeholder="请输入spuID" ></el-input>
             </el-form-item>
             <el-form-item label="分类：">
-                <el-input v-model="dataForm.categoryId" placeholder="请输入" ></el-input>
+                <el-input v-model="dataFormShow.categoryId" placeholder="请输入" ></el-input>
             </el-form-item>
             <el-form-item label="店铺名称：">
-                <el-input v-model="dataForm.storeName" placeholder="请输入店铺名称" ></el-input>
+                <el-input v-model="dataFormShow.storeName" placeholder="请输入店铺名称" ></el-input>
             </el-form-item>
             <el-form-item label="品牌名称：">
-                <el-input v-model="dataForm.brandName" placeholder="请输入品牌名称" ></el-input>
+                <el-input v-model="dataFormShow.brandName" placeholder="请输入品牌名称" ></el-input>
             </el-form-item>
             <el-form-item label="上架状态：">
-                <el-select v-model="dataForm.showWeb" placeholder="请选择">
+                <el-select v-model="dataFormShow.showWeb" placeholder="请选择">
                     <el-option
                             v-for="item in showOptions"
                             :key="item.id"
@@ -29,7 +29,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="可售状态：">
-                <el-select v-model="dataForm.sellState" placeholder="请选择">
+                <el-select v-model="dataFormShow.sellState" placeholder="请选择">
                     <el-option
                             v-for="item in stateOptions"
                             :key="item.id"
@@ -39,7 +39,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="价格变更：">
-                <el-select v-model="dataForm.priceState" placeholder="请选择">
+                <el-select v-model="dataFormShow.priceState" placeholder="请选择">
                     <el-option
                             v-for="item in priceOptions"
                             :key="item.id"
@@ -49,7 +49,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="getDataList()">查询</el-button>
+                <el-button  class="btn" type="primary" @click="getData()">查询</el-button>
                 <el-button   class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
             </el-form-item>
         </el-form>
@@ -65,7 +65,7 @@
                 :data="dataList"
                 border
                 v-loading="dataListLoading"
-                style="width: 100%;margin-top:20px;"
+                style="width: 100%;margin-top:10px;"
         >
             <el-table-column type="selection" width="70"></el-table-column>
             <el-table-column label="商品ID" align="center" width="100">
@@ -216,7 +216,7 @@
                     deleteIsBatchKey: 'id'
                 },
                 breaddata: [ "商品管理", "商品列表"],
-                dataForm: {
+                dataFormShow: {
                     goodsName: "",//商品名称/商品货号
                     id: "",//品牌名称
                     categoryId: "",//分类
@@ -253,26 +253,42 @@
             // 第一次请求数据
             this.handleClick();
             this.activeName =  this.status == undefined ? "" : this.status;
-            this.dataForm.showWeb = this.status == undefined ? "" : this.status;
+            this.dataFormShow.showWeb = this.status == undefined ? "" : this.status;
         },
         methods: {
             handleClick(tab,val) {
                 if(tab== ""){
-                    this.dataForm.showWeb = ""
+                    this.dataFormShow.showWeb = ""
                 }else if(tab== "upper"){
-                    this.dataForm.showWeb = "1"
+                    this.dataFormShow.showWeb = "1"
                 }else if(tab== "lower"){
-                    this.dataForm.showWeb = "0"
+                    this.dataFormShow.showWeb = "0"
                 }else if(tab== "not"){
-                    this.dataForm.showWeb = "2"
+                    this.dataFormShow.showWeb = "2"
                 }
                 this.changeVal = val;
                 console.log(this.changeVal)
                 this.getDataList();
             },
+            getData(){
+                this.dataForm = {};
+                for(let key in this.dataFormShow){
+                    this.$set(this.dataForm,`${key}`,this.dataFormShow[key]);
+                }
+                console.log(this.dataForm);
+                this.getDataList()
+            },
             reset() {
+                this.dataFormShow.goodsName = "";
+                this.dataFormShow.idJp = "";
+                this.dataFormShow.categoryId = "";
+                this.dataFormShow.storeName = "";
+                this.dataFormShow.brandName = "";
+                this.dataFormShow.goodsStatus = "";
+                this.dataFormShow.showWeb = "";
+                this.dataFormShow.priceState = "";
                 this.dataForm.goodsName = "";
-                this.dataForm.id = "";
+                this.dataForm.idJp = "";
                 this.dataForm.categoryId = "";
                 this.dataForm.storeName = "";
                 this.dataForm.brandName = "";
@@ -392,9 +408,6 @@
 
 <style lang="scss" scoped>
     @import "@/element-ui/theme-variables.scss";
-    .grayLine{
-        border-bottom: 0!important;
-    }
     .bottomFun {
         display: flex;
         justify-content: space-between;

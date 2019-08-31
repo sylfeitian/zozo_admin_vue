@@ -76,7 +76,7 @@
             //编辑回显
             backScan(){
                 var obj  = {
-                    id:this.row.id,
+                    id:this.row.label,
                     categoryName:this.row.categoryName,
                     name:this.row.name
                 }

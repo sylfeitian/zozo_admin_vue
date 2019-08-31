@@ -9,16 +9,16 @@
     >
         <el-form
                 :model="dataForm"
-                ref="addForm"
                 :rules="dataRule"
+                ref="addForm"
                 @keyup.enter.native="dataFormSubmit('addForm')"
                 label-width="120px"
         >
-            <el-form-item label="字典名称：" prop="dictName" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.dictName" auto-complete="off"></el-input>
+            <el-form-item label="中文词汇：" prop="brandName" :label-width="formLabelWidth">
+                <el-input v-model="dataForm.chineseVocabulary" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="字典编码：" prop="dictValue" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.dictValue" auto-complete="off"></el-input>
+            <el-form-item label="对照词汇：" prop="description" :label-width="formLabelWidth">
+                <el-input v-model="dataForm.japaneseWord" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
                 <el-button  @click="dataFormCancel()">取消</el-button>
@@ -30,24 +30,24 @@
 </template>
 
 <script>
-    import { backScanDict,dictSave,updateDict } from '@/api/api'
+    import { backScanSyslexicon,syslexiconSave,editSyslexicon } from '@/api/api'
     export default {
+        name: "model-add-edit-data",
         data () {
             return {
                 visible : false,
                 loading : false,
                 dataForm: {
-                    dictName: "",
-                    dictValue: ""
+                    chineseVocabulary :"",
+                    japaneseWord: "",
                 },
                 dataRule : {
-                    dictName : [
-                        { required: true, message: '必填项不能为空', trigger: 'blur' },
-                    ],
-                    dictValue : [
+                    name : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ]
                 },
+                optionsApplication: [],
+                optionsRight: [],
                 title:'',
                 row:"",
                 formLabelWidth: '120px'
@@ -63,10 +63,10 @@
                 this.row = row;
                 console.log(row)
                 if(row){
-                    this.title="编辑词典";
+                    this.title="编辑对照词";
                     this.backScan();
                 }else{
-                    this.title="添加词典"
+                    this.title="新建对照词"
 
                 }
                 this.$nextTick(() => {
@@ -77,12 +77,12 @@
             // 编辑回显
             backScan(){
                 var obj  = {
-                    pid:this.row.pid,
                     id:this.row.id,
-                    dictName:this.row.dictName,
-                    dictValue:this.row.dictValue,
+                    chineseVocabulary:this.row.chineseVocabulary,
+                    japaneseWord:this.row.japaneseWord,
+                    lexiconType:  this.dataForm.lexiconType
                 }
-                backScanDict(obj).then((res)=>{
+                backScanSyslexicon(obj).then((res)=>{
                     if(res.code == 200){
                         Object.assign(this.dataForm,res.data);
 
@@ -98,12 +98,12 @@
                     if (valid) {
                         this.loading = true;
                         var obj = {
-                            "pid":  this.dataForm.pid,
-                            "dictName":  this.dataForm.dictName,
-                            "dictValue":  this.dataForm.dictValue
+                            "chineseVocabulary":  this.dataForm.chineseVocabulary,
+                            "japaneseWord":  this.dataForm.japaneseWord,
+                            "lexiconType":  this.dataForm.lexiconType
                         }
                         if(this.row) obj.id = this.row.id
-                        var fn = this.row?updateDict:dictSave;
+                        var fn = this.row?editSyslexicon:syslexiconSave;
                         fn(obj).then((res) => {
                             this.loading = false;
                             // alert(JSON.stringify(res));
@@ -135,7 +135,7 @@
                 this.closeDialog();
             },
             closeDialog() {
-                this.$parent.addOrUpdateVisible = false;
+                this.$parent.addEditDataVisible = false;
             },
         }
     }
@@ -147,5 +147,8 @@
     /*}*/
     .title {
         margin-left: -70px;
+    }
+    /deep/.el-textarea {
+        width: 100%;
     }
 </style>

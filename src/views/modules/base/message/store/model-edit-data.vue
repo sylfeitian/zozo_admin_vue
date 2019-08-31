@@ -34,7 +34,7 @@
             </el-form-item>
             <el-form-item label="店铺主图：" prop="imageUrl" style="float: left;width:50%;">
                 <template slot-scope="scope">
-                    <div class="pcCoverUrl imgUrl" style="float: left;width:50%;">
+                    <div class="pcCoverUrl imgUrl" style="float: left;">
                         <img-cropper
                                 v-loading="uploading"
                                 ref="cropperImg"
@@ -65,7 +65,14 @@
                 </template>
             </el-form-item>
             <el-form-item label="选择风格标签：">
-                <el-select v-model="mainTag" multiple>
+                <el-select
+                        v-model="mainTag"
+                        filterable
+                        remote
+                        multiple
+                        :remote-method="remoteMethod"
+                        :loading="loading"
+                >
                     <el-option
                             v-for="item in dataArray"
                             :key="item.id"
@@ -127,11 +134,17 @@
                 value:[],
                 dataArray:[],
                 mainTag:[],
+                list: [],
                 formLabelWidth: '100px'
             }
         },
         components:{
             imgCropper
+        },
+        mounted() {
+            this.list = this.dataArray.map(item => {
+                return { value: item, label: item };
+            });
         },
         methods: {
             init (row) {
@@ -277,6 +290,20 @@
             closeDialog() {
                 this.$parent.editDataVisible = false;
             },
+            remoteMethod(query) {
+                if (query !== '') {
+                    this.loading = true;
+                    setTimeout(() => {
+                        this.loading = false;
+                        this.dataArray = this.list.filter(item => {
+                            return item.styleName.toLowerCase()
+                                .indexOf(query.toLowerCase()) > -1;
+                        });
+                    }, 200);
+                } else {
+                    this.dataArray = [];
+                }
+            }
         }
     }
 </script>

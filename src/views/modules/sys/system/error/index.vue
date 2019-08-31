@@ -64,6 +64,7 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
+    import { syslexiconUrl,deleteSyslexicon,exportSyslexicon } from '@/api/url'
 
     export default {
         mixins: [mixinViewModule],

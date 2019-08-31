@@ -194,6 +194,7 @@ export default {
     //新增分类
     addshow(){
     	this.dialogTableVisible = false;
+    	this.getTree();
     },
     // 每页数
 		sizeChangeHandle (val) {
@@ -243,24 +244,22 @@ export default {
    addRowFn(row){
    		this.reset();     //清空弹窗内容
    		this.dialogTableVisible = true;
-   		this.$nextTick(()=>{
-      	this.$refs.addshow.init();
-    	})
-   		if(row){
+   		if(row){ //添加下一级
       	if(row.grade == 2){
 	   			this.$message('二级分类不可以新增下一级');
 	   			return;
 	   		}
-	      row.type="addNext"
 	      if(row.label){
 	      	this.dataForm.parentname = row.label;
 	      	console.log(this.dataForm.parentname)
 	      }
-	      updataCategoryCn().then(()=>{
-	      	
-	      })
-      }else{
-      	console.log('一级分类');
+	      this.$nextTick(()=>{
+	      	this.$refs.addshow.init(row);
+	    	})
+     	}else{ //新增
+      	this.$nextTick(()=>{
+	      	this.$refs.addshow.init();
+	    	})
       }
    		
    }, 

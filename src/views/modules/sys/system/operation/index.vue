@@ -21,17 +21,18 @@
                 </el-form-item>
                 <el-form-item label="操作时间：">
                     <el-date-picker
-                            v-model="timeArr"
+                            v-model="valuetime"
                             type="datetimerange"
                             value-format="yyyy-MM-dd HH:mm:ss"
                             align="left"
                             start-placeholder="开始日期"
                             end-placeholder="结束日期"
+                            @blur='acttime'
                             :default-time="['00:00:00', '23:59:59']"
                     ></el-date-picker>
                 </el-form-item>
                 <el-form-item>
-                    <el-button @click="getData()" type="primary">查询</el-button>
+                    <el-button @click="getDataList()" type="primary">查询</el-button>
                     <el-button @click="reset()">重置</el-button>
                 </el-form-item>
                 <br />
@@ -43,10 +44,10 @@
 <!--            </el-form>-->
             <el-table v-loading="dataListLoading" :data="dataList" border @sort-change="dataListSortChangeHandle" style="width: 100%;">
                 <el-table-column prop="creator" label="操作账号" header-align="center" align="center"></el-table-column>
-                <el-table-column prop="name" label="姓名" header-align="center" align="center"></el-table-column>
-                <el-table-column prop="role" label="角色" header-align="center" align="center"></el-table-column>
+                <el-table-column prop="realName" label="姓名" header-align="center" align="center"></el-table-column>
+                <el-table-column prop="roleName" label="角色" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="module" label="操作模块" header-align="center" align="center"></el-table-column>
-                <el-table-column prop="" label="操作页面" header-align="center" align="center"></el-table-column>
+                <el-table-column prop="operatorInterface" label="操作页面" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="id" label="对应ID" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="createDate" label="操作时间" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="operation" label="操作内容" header-align="center" align="center"></el-table-column>
@@ -67,13 +68,14 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
+    import { operationUrl } from '@/api/url'
 
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
                 mixinViewModuleOptions: {
-                    getDataListURL: '/admin-api/log/operation/page',
+                    getDataListURL: operationUrl,
                     getDataListIsPage: true,
                     exportURL: '/admin-api/log/operation/export'
                 },
@@ -82,24 +84,35 @@
                     creator: '',
                     module: ''
                 },
-                timeArr: "", //操作时间数据
+                valuetime: "", //操作时间数据
             }
         },
         components: {
             Bread
         },
+        created() {
+            this.getDataList()
+        },
+        watch:{
+            valuetime(val){
+                if(!val){
+                    this.dataForm.strTime = '';
+                    this.dataForm.endTime = '';
+                }
+            }
+        },
         methods:{
-            getData(){
-                this.page = 1;
-                this.limit = 10;
-                this.getDataList();
+            //开始结束时间
+            acttime(){
+                this.dataForm.startTime = this.valuetime[0];
+                this.dataForm.endTime = this.valuetime[1];
             },
             reset(){
-                this.dataForm = {
-                    module: '',
-                    status: ''
-                };
-                this.getData();
+                this.dataForm.creator = null;
+                this.dataForm.module = null;
+                this.dataForm.startTime = null;
+                this.dataForm.endTime = null;
+                this.getDataList();
             }
         }
     }

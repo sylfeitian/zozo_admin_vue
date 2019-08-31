@@ -65,12 +65,12 @@
                         </el-table-column>
                         <el-table-column prop="goodsSyncState" label="同步状态" align="center">
                             <template slot-scope="scope">
-                                <div>{{scope.row.goodsSyncState == 1?"已同步":"未同步"}}}</div>
+                                <div>{{scope.row.goodsSyncState == 1?"已同步":"未同步"}}</div>
                             </template>
                         </el-table-column>
                         <el-table-column prop="goodsShowWeb" label="商品状态" align="center">
                             <template slot-scope="scope">
-                                <div>{{scope.row.goodsShowWeb == 0?"待上架":scope.row.goodsShowWeb == 1?"上架":scope.row.goodsShowWeb == 2?"下架":""}}}</div>
+                                <div>{{scope.row.goodsShowWeb == 0?"待上架":scope.row.goodsShowWeb == 1?"上架":scope.row.goodsShowWeb == 2?"下架":""}}</div>
                             </template>
                         </el-table-column>
                     </el-table>
