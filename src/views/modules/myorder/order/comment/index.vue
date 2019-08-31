@@ -6,48 +6,103 @@
       class="grayLine topGapPadding"
       :model="dataForm"
     >
+      <el-form-item label="会员账号：">
+          <el-input v-model="dataForm.memberName" placeholder="请输入售后单号" clearable></el-input>
+      </el-form-item>
+
+      <!-- <el-form-item label="订单号：">
+          <el-input v-model="dataForm.goodsCsIdJp" placeholder="请输入售后单号" clearable></el-input>
+      </el-form-item> -->
+
+      <el-form-item label="skuid：">
+          <el-input v-model="dataForm.goodsCsIdJp" placeholder="请输入售后单号" clearable></el-input>
+      </el-form-item>
+
+      <el-form-item label="商品名称：">
+          <el-input v-model="dataForm.goodsName" placeholder="请输入售后单号" clearable></el-input>
+      </el-form-item>
+
+      <el-form-item label="尺码感受：">
+          <el-input v-model="dataForm.sizeFeeling" placeholder="请输入售后单号" clearable></el-input>
+      </el-form-item>
+
       <el-form-item label="评价时间：">
-        <el-date-picker
-          v-model="timeArr"
-          type="datetimerange"
-          value-format="yyyy-MM-dd HH:mm:ss"
-          align="left"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          :default-time="['00:00:00', '23:59:59']"
-        ></el-date-picker>
+          <el-date-picker
+            v-model="timeArr"
+            type="datetimerange"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            align="left"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :default-time="['00:00:00', '23:59:59']"
+          ></el-date-picker>
       </el-form-item>
-      <el-form-item label="评价状态：">
-        <el-select v-model="dataForm.evaluateState" placeholder="请选择活动区域">
-          <el-option label="全部" value=""></el-option>
-          <el-option label="显示" value="0"></el-option>
-          <el-option label="隐藏" value="1"></el-option>
-        </el-select>
+
+      <el-form-item label="订单评价：">
+          <el-select
+		          v-model="dataForm.comfortGrade"
+		          placeholder="请选择"
+		          loading-text="加载中···">
+              <el-option label="全部" value=""></el-option>
+              <el-option label="1星" value="1"></el-option>
+              <el-option label="2星" value="2"></el-option>
+              <el-option label="3星" value="3"></el-option>
+              <el-option label="4星" value="4"></el-option>
+              <el-option label="5星" value="5"></el-option>
+		          </el-option>
+          </el-select>
       </el-form-item>
+
+      <el-form-item label="质量星级：">
+          <el-select
+		          v-model="dataForm.qualityGrade"
+		          placeholder="请选择"
+		          loading-text="加载中···">
+              <el-option label="全部" value=""></el-option>
+              <el-option label="1星" value="1"></el-option>
+              <el-option label="2星" value="2"></el-option>
+              <el-option label="3星" value="3"></el-option>
+              <el-option label="4星" value="4"></el-option>
+              <el-option label="5星" value="5"></el-option>
+		          </el-option>
+          </el-select>
+      </el-form-item>
+
+      <el-form-item label="颜值星级：">
+         <el-select
+		          v-model="dataForm.faceValueGrade"
+		          placeholder="请选择"
+		          loading-text="加载中···">
+              <el-option label="全部" value=""></el-option>
+              <el-option label="1星" value="1"></el-option>
+              <el-option label="2星" value="2"></el-option>
+              <el-option label="3星" value="3"></el-option>
+              <el-option label="4星" value="4"></el-option>
+              <el-option label="5星" value="5"></el-option>
+		          </el-option>
+          </el-select>
+      </el-form-item>
+
       <el-form-item>
         <el-button class="btn" type="primary" @click="getData()">查询</el-button>
         <el-button class="btn" type="primary" plain @click="reset()" >重置</el-button>
       </el-form-item>
-      <br />
-      
     </el-form>
     
-    <el-form>
+    <!-- <el-form>
     	<el-form-item style="display:block">
-        <el-button class="btn" @click="changeShow()" type="primary" plain>批量显示</el-button>
-        <el-button class="btn" @click="changeHide()" type="info" plain>批量隐藏</el-button>
-        <el-button class="btn" @click="deleteHandle()" type="danger" plain>批量删除</el-button>        
+          <el-button class="btn" @click="deleteHandle()" type="danger" plain>批量删除</el-button>        
       </el-form-item>
-    </el-form>
-    <el-table
+    </el-form> -->
+    <br>
+     <el-table
       width="100%"
       :data="dataList"
-      border=""
       @selection-change="dataListSelectionChangeHandle"
       v-loading="dataListLoading"
       style="width: 100%,maigin-top:20px;"
     > 
-    <el-table-column type="selection" width="70" align="center"></el-table-column>
+     <el-table-column type="selection" width="70" align="center"></el-table-column>
       <el-table-column
 	  		type='index'
 	  	  prop="$index"
@@ -58,30 +113,46 @@
           {{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}
         </template>
 	  	</el-table-column>      
-      <el-table-column prop="specInfo" label="商品信息" align="center"></el-table-column>
-      <el-table-column prop="evaluateContent" label="评价内容" align="center" min-width="150"></el-table-column>
-      <el-table-column prop="memberName" label="用户信息" align="center"></el-table-column>
-      <el-table-column prop="createDate" label="评价时间" align="center"></el-table-column>
-      <el-table-column prop="evaluateState" label="状态" align="center" :formatter="formatInviter"></el-table-column>
+      <el-table-column prop="specInfo" label="会员账号" align="center"></el-table-column>
+      <el-table-column prop="evaluateContent" label="订单号" align="center" min-width="150"></el-table-column>
+      <el-table-column prop="memberName" label="商品主图" align="center">
+          <template slot-scope="scope">
+            {{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}
+          </template>
+      </el-table-column>
+      <el-table-column prop="createDate" label="skuid" align="center"></el-table-column>
+      <el-table-column prop="evaluateState" label="商品名称" align="center" ></el-table-column>
+      <el-table-column prop="evaluateState" label="规格" align="center" ></el-table-column>
+      <el-table-column prop="evaluateState" label="订单评价" align="center" >
+          <template slot-scope="scope">
+           <span v-if="scope.row.access==0">超赞</span>
+           <span v-else-if="scope.row.access==1">一般</span>
+           <span v-else-if="scope.row.access==2">满意</span>
+          </template>
+      </el-table-column>
+
+       <el-table-column prop="evaluateState" label="评价星级" align="center" >
+          <template slot-scope="scope">
+           {{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}
+          </template>
+       </el-table-column>
+
+       <el-table-column prop="evaluateState" label="尺码感受" align="center" >
+          <template slot-scope="scope">
+            <span>{{scope.row.sizeFeeling}}</span>
+          </template>
+      </el-table-column>
+
+      <el-table-column prop="evaluateContent " label="评论内容" align="center"> </el-table-column>
+
+      <el-table-column prop="evaluateState" label="评论时间" align="center"> </el-table-column>
+
       <el-table-column label="操作" min-width="100" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="text" @click="handleEdit(scope.row)">详情</el-button>
-          <el-button
-            size="mini"
-            @click="changeHide( scope.row.id)"
-            v-if="scope.row.evaluateState==0"
-            type="text"
-          >隐藏</el-button>
-          <el-button
-            size="mini"
-            @click="changeShow( scope.row.id)"
-            type="text"
-            v-if="scope.row.evaluateState==1"
-          >显示</el-button>
-          <el-button size="mini" type="text" @click="reply( scope.row)">回复</el-button>
           <el-button class="artdanger" size="mini" type="text" @click="deleteHandle( scope.row.id)">删除</el-button>
         </template>
-      </el-table-column>
+      </el-table-column> 
+
     </el-table>
     <el-pagination
       @size-change="pageSizeChangeHandle"
@@ -113,9 +184,17 @@ export default {
         deleteIsBatch: true,
         deleteIsBatchKey: "id"
       },
-      breaddata: ["订单管理", "售后管理", "商品评价"],
+      breaddata: ["订单管理", "评论管理"],
       dataForm: {
-        evaluateState: ""
+        memberName: "",//会员账号
+        goodsCsIdJp: "",//skuId
+        goodsName: "",//商品名称
+        sizeFeeling: "",//尺码感受 0合适 1偏大 2偏小
+        startTime: "",//评价开始时间
+        endTime: "",//评价结束时间
+        qualityGrade: "",//	质量星级 1（1星） 2（2星） 3（3星） 4（4星） 5（5星）
+        comfortGrade: "",//	舒适度星级 1（1星） 2（2星） 3（3星） 4（4星） 5（5星）
+        faceValueGrade: "",//颜值星级 1（1星） 2（2星） 3（3星） 4（4星） 5（5星）
       },
       evaDetails: "", //评价详情
       dataListLoading: false,
@@ -127,9 +206,6 @@ export default {
       },
       timeArr: "", //下单时间
       dataList: [],
-      formatInviter: function(row, column) {
-        return row.evaluateState == 0 ? <el-tag type="success">显示</el-tag> : <el-tag type="info">隐藏</el-tag>;
-      }
     };
   },
   created() {},

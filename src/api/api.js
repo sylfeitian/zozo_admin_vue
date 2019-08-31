@@ -571,6 +571,9 @@ export const skuGoods = params => { return http.get(`${base}/ware/skugoods`, par
 export const verifyWare = params => { return http.get(`${base}/ware/verify/name`, params).then(res => res.data); };
 // 根据ID获取仓库信息
 export const backScanWare = params => { return http.get(`${base}/ware/${params.id}`, params).then(res => res.data); };
+// 根据类型查询仓库列表  
+export const wareListByType = params => { return http.get(`${base}/ware/${params.type}/list`, params).then(res => res.data); };
+
 
 
 
@@ -712,9 +715,9 @@ export const backScanJdCate = params => { return http.get(`${base}/jdCate/${para
 // 售后-退货退款 仅退款 :-------------------------------------------------------------------------------------------------------------
 // 售后详情
 export const aftersaleReturnDetail = params => { return http.get(`${base}/aftersale/return/detail/${params.aftersaleSn}`, params).then(res => res.data); };
-
-
-
-
-
-
+// 同意退款|拒绝退款
+export const returnReimburse = params => { return http.put(`${base}/aftersale/return/reimburse`, params).then(res => res.data); };
+// 确认收货|未收货
+export const aftersaleComfirm = params => { return http.put(`${base}/aftersale/return/${params.isComfirm}/receipt/${params.sn}`, params).then(res => res.data); };
+// 售后审核操作
+export const aftersaleReturnVerify = params => { return http.put(`${base}/aftersale/return/verify`, params).then(res => res.data); };

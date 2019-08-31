@@ -64,18 +64,18 @@
             <el-table-column prop="aftersaleSn" label="售后单号" align="center"></el-table-column>
             <el-table-column prop="orderSn" label="订单编号" align="center">
                  <template slot-scope="scope">
-                     <el-button size="mini" type="text" @click="orderDetFn(scope.row)">查看</el-button>
+                     <el-button size="mini" type="text" @click="orderDetFn(scope.row)">{{scope.row.orderSn}}</el-button>
                 </template>
             </el-table-column>
             <!--<el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>-->
             <el-table-column prop="memberName" label="会员账号" align="center"></el-table-column>
             <el-table-column prop="createDate" label="申请时间" align="center"></el-table-column>
-            <el-table-column prop="number" label="售后数量" align="center" width="100"></el-table-column>
+            <el-table-column prop="goodsNum" label="售后数量" align="center" width="100"></el-table-column>
             <el-table-column prop="refundAmount" label="退款金额" align="right">
                 <template slot-scope="scope">￥{{scope.row.refundAmount}}</template>
             </el-table-column>
             <el-table-column
-                    prop="aftersaleStatus"
+                    prop="status"
                     label="售后状态"
                     align="center"
                     :formatter="statusRules"
@@ -83,7 +83,7 @@
             <el-table-column label="操作" min-width="100" align="center">
                 <template slot-scope="scope">
                     <el-button size="mini" type="text" @click="afterSaleDetailFn(scope.row)">查看</el-button>
-                    <el-button size="mini" type="text" @click="handleGoodDet(scope.row)">同意退款</el-button>
+                    <el-button size="mini" type="text" @click="returnMoneyFn(scope.row)"   v-if="scope.row.status==40">同意退款</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -96,6 +96,9 @@
                 :total="total"
                 layout="total, sizes, prev, pager, next, jumper"
         ></el-pagination>
+
+        <!-- 退款 -->
+        <returnMoneyModel v-if="returnMoneyVisible" ref="returnMoneyCompon"></returnMoneyModel>
     </div>
 </template>
 <script>
@@ -103,6 +106,7 @@
     import { returngoods, exportsales } from "@/api/url";
     import { returnDetail } from "@/api/api";
     import mixinViewModule from "@/mixins/view-module";
+      import returnMoneyModel from "../modules-return/model-return-money";
     export default {
         mixins: [mixinViewModule],
         data() {
@@ -135,6 +139,7 @@
                 totalPage: 0,
                 dataListLoading: false,
                 detailOrList: true,
+                 returnMoneyVisible:false,
                 goodsData: [], //售后商品table
                 saleGoods: [], //售后申请数据
                 params: {
@@ -142,19 +147,23 @@
                     currentPageSize: 10 //每页显示的条数
                 },
                 statusRules: function(row, column) {
-                    return row.aftersaleStatus == 10 ? (
+                    return row.status== 10 ? (
                         <el-tag type="info">退款中</el-tag>
-                ) : row.aftersaleStatus == 20 ? (
+                ) : row.status == 20 ? (
                         <el-tag type="success">退款完成</el-tag>
-                ) : row.aftersaleStatus == 30 ? (
+                ) : row.status == 30 ? (
                         <el-tag type="warning">退款失败</el-tag>
                 ) : (<span></span>)
                 }
             };
         },
-        components: { Bread },
+        components: {
+             Bread,
+             returnMoneyModel
+        },
         methods: {
              orderDetFn(row){
+                  row.id = row.orderSn
                 this.$emit("orderDetFn",row);
             },
              afterSaleDetailFn(row){
@@ -207,11 +216,18 @@
                 });
             },
             //返回上一级
-            changePage() {
-                this.isOrderDet = !this.isOrderDet;
-                // console.log("列表页面");
-                this.$emit("showListFn");
-            }
+            // changePage() {
+            //     this.isOrderDet = !this.isOrderDet;
+            //     // console.log("列表页面");
+            //     this.$emit("showListFn");
+            // },
+             // 同意退货
+             returnMoneyFn(row){
+                this.returnMoneyVisible = true;
+                this.$nextTick(() => {
+                   this.$refs.returnMoneyCompon.init(row)
+                })
+            },
         }
     };
 </script>
