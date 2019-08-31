@@ -343,3 +343,14 @@ export const operationUrl = `${base}/log/operation/page`;
 //字典管理-------------------------------------------------------------------------------------------------------------
 // 列表
 export const dictUrl = `${base}/dict/page`;
+// 删除
+export const deleteDict = `${base}/dict/delete`;
+
+
+
+
+//异常日志-------------------------------------------------------------------------------------------------------------
+// 列表
+export const errorUrl = `${base}/log/error/page`;
+// 导出
+export const exportError= `${base}/log/error/export`;

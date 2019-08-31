@@ -762,3 +762,22 @@ export const deleteSyslexicon = params => { return http.delete(`${base}/syslexic
 export const backScanSyslexicon = params => { return http.get(`${base}/syslexicon/${params.id}`, params).then(res => res.data); };
 
 
+
+
+
+
+//字典管理-------------------------------------------------------------------------------------------------------------
+// 验证字典名称或字典编码已经存在
+export const existsDict = params => { return http.get(`${base}/dict/exists`, params).then(res => res.data); };
+// 字典分类数据
+export const dictList = params => { return http.get(`${base}/dict/list`, params).then(res => res.data); };
+// 分页
+export const dictPage = params => { return http.get(`${base}/dict/page`, params).then(res => res.data); };
+// 新增数据
+export const dictSave = params => { return http.post(`${base}/dict/save`, params).then(res => res.data); };
+// 修改
+export const updateDict = params => { return http.put(`${base}/dict/update`, params).then(res => res.data); };
+// 根据ID查询信息
+export const backScanDict = params => { return http.get(`${base}/dict/${params.id}`, params).then(res => res.data); };
+
+
