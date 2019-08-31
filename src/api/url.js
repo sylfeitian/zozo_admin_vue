@@ -320,3 +320,27 @@ export const deleteShophotkeywordUrl = `${base}/shophotkeyword`;
 //消息列表分页  
 export const getmessagepage = `${base}/shopmessagetemplate/messagepage`;
 
+
+
+
+//中日词库-------------------------------------------------------------------------------------------------------------
+// 列表
+export const syslexiconUrl = `${base}/syslexicon/page`;
+// 删除
+export const deleteSyslexicon = `${base}/syslexicon`;
+// 导出
+export const exportSyslexicon = `${base}/syslexicon/export`;
+
+
+
+
+//操作日志-------------------------------------------------------------------------------------------------------------
+// 列表
+export const operationUrl = `${base}/log/operation/page`;
+
+
+
+
+//字典管理-------------------------------------------------------------------------------------------------------------
+// 列表
+export const dictUrl = `${base}/dict/page`;
