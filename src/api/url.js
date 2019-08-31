@@ -190,7 +190,7 @@ export const returngoods = `${base}/aftersale/return/page`;
 //售后审核
 export const aftersales= `${base}/aftersale/apply/page`;
 //商品评价
-export const goodseva= `${base}/evaluate/page`;
+export const goodseva= `${base}/zozogoods/evaluate/page`;
 //商品评价--删除
 export const deleva= `${base}/evaluate`;
 //退货管理--导出
@@ -344,3 +344,14 @@ export const operationUrl = `${base}/log/operation/page`;
 //字典管理-------------------------------------------------------------------------------------------------------------
 // 列表
 export const dictUrl = `${base}/dict/page`;
+// 删除
+export const deleteDict = `${base}/dict/delete`;
+
+
+
+
+//异常日志-------------------------------------------------------------------------------------------------------------
+// 列表
+export const errorUrl = `${base}/log/error/page`;
+// 导出
+export const exportError= `${base}/log/error/export`;

@@ -71,6 +71,7 @@
                             v-model="scope.row.recommendFlag"
                             active-color="#13ce66"
                             inactive-color="#ff4949"
+                            on-value="1"
                             @click="switchHandle('singe',scope.row)"
                     >
                     </el-switch>

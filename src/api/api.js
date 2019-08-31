@@ -587,6 +587,9 @@ export const skuGoods = params => { return http.get(`${base}/ware/skugoods`, par
 export const verifyWare = params => { return http.get(`${base}/ware/verify/name`, params).then(res => res.data); };
 // 根据ID获取仓库信息
 export const backScanWare = params => { return http.get(`${base}/ware/${params.id}`, params).then(res => res.data); };
+// 根据类型查询仓库列表  
+export const wareListByType = params => { return http.get(`${base}/ware/${params.type}/list`, params).then(res => res.data); };
+
 
 
 
@@ -728,6 +731,12 @@ export const backScanJdCate = params => { return http.get(`${base}/jdCate/${para
 // 售后-退货退款 仅退款 :-------------------------------------------------------------------------------------------------------------
 // 售后详情
 export const aftersaleReturnDetail = params => { return http.get(`${base}/aftersale/return/detail/${params.aftersaleSn}`, params).then(res => res.data); };
+// 同意退款|拒绝退款
+export const returnReimburse = params => { return http.put(`${base}/aftersale/return/reimburse`, params).then(res => res.data); };
+// 确认收货|未收货
+export const aftersaleComfirm = params => { return http.put(`${base}/aftersale/return/${params.isComfirm}/receipt/${params.sn}`, params).then(res => res.data); };
+// 售后审核操作
+export const aftersaleReturnVerify = params => { return http.put(`${base}/aftersale/return/verify`, params).then(res => res.data); };
 
 
 
@@ -761,4 +770,22 @@ export const deleteSyslexicon = params => { return http.delete(`${base}/syslexic
 // 信息
 export const backScanSyslexicon = params => { return http.get(`${base}/syslexicon/${params.id}`, params).then(res => res.data); };
 
+
+
+
+
+
+//字典管理-------------------------------------------------------------------------------------------------------------
+// 验证字典名称或字典编码已经存在
+export const existsDict = params => { return http.get(`${base}/dict/exists`, params).then(res => res.data); };
+// 字典分类数据
+export const dictList = params => { return http.get(`${base}/dict/list`, params).then(res => res.data); };
+// 分页
+export const dictPage = params => { return http.get(`${base}/dict/page`, params).then(res => res.data); };
+// 新增数据
+export const dictSave = params => { return http.post(`${base}/dict/save`, params).then(res => res.data); };
+// 修改
+export const updateDict = params => { return http.put(`${base}/dict/update`, params).then(res => res.data); };
+// 根据ID查询信息
+export const backScanDict = params => { return http.get(`${base}/dict/${params.id}`, params).then(res => res.data); };
 
