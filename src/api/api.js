@@ -721,9 +721,12 @@ export const jdCatePage = params => { return http.get(`${base}/jdCate/page`, par
 // 根据父分类id查询子分类集合
 export const jdCateSubcollection = params => { return http.get(`${base}/jdCate/subcollection/${params.id}`, params).then(res => res.data); };
 //更新京东分类关联的中国分类
-export const updateCategory = params => { return http.post(`${base}/jdCate/updateCategory`, params).then(res => res.data); };
+export const updateCategory = params => { return http.post(`${base}/jdCate/updateCategory?id=${params.id}`, params.ids).then(res => res.data); };
 // 编辑页面信息回显
 export const backScanJdCate = params => { return http.get(`${base}/jdCate/${params.id}`, params).then(res => res.data); };
+// 查询中国分类，已经关联的中国分类不显示其中不包括该id关联的中国分
+export const categoryListById = params => { return http.get(`${base}/jdCate/category/${params.id}`, params).then(res => res.data); };
+
 
 // 售后-退货退款 仅退款 :-------------------------------------------------------------------------------------------------------------
 // 售后详情

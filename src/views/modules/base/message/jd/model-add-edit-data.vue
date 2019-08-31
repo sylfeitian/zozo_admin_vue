@@ -20,8 +20,16 @@
             <el-form-item label="京东分类名称：">
                 <span>{{dataForm.categoryName}}</span>
             </el-form-item>
-            <el-form-item label="关联分类：" prop="name" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.name" auto-complete="off"></el-input>
+            <el-form-item label="关联分类：" :label-width="formLabelWidth">
+                <el-tree
+                        ref="treeCategory"
+                        :data="data"
+                        show-checkbox
+                        node-key="id"
+                        :default-expanded-keys="expandedKeys"
+                        :default-checked-keys="checkedKeys"
+                        :props="defaultProps">
+                </el-tree>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
                 <el-button type="primary" @click="dataFormSubmit('addForm')"
@@ -33,7 +41,7 @@
 </template>
 
 <script>
-    import { backScanJdCate,updateCategory } from '@/api/api'
+    import { backScanJdCate,updateCategory,categoryListById } from '@/api/api'
     export default {
         name: "model-add-edit-data",
         data () {
@@ -54,7 +62,14 @@
                 optionsRight: [],
                 title:'',
                 row:"",
-                formLabelWidth: '120px'
+                formLabelWidth: '120px',
+                data:[],
+                defaultProps: {
+                    children: 'children',
+                    label: 'label'
+                },
+                expandedKeys:[],
+                checkedKeys:[],
             }
         },
         components:{
@@ -68,9 +83,10 @@
                 console.log(row)
                 this.title="编辑分类";
                 this.backScan();
+                this.getcategoryListById();
                 this.$nextTick(() => {
                     this.$refs['addForm'].resetFields();
-                    // this.getApplyPullList();
+                    // this.getApplyPullList()
                 })
             },
             //编辑回显
@@ -82,25 +98,62 @@
                 }
                 backScanJdCate(obj).then((res)=>{
                     if(res.code == 200){
+                        var ids= []
                         Object.assign(this.dataForm,res.data);
+                        res.data.relateList.forEach((item,index)=>{
+                            ids.push(item.id)
+                        })
+                        this.expandedKeys = ids;
+                        this.checkedKeys =  ids;
                     }else{
 
                     }
                 })
             },
+            getcategoryListById(){
+                var obj  = {
+                    id:this.row.label,
+                }
+                categoryListById(obj).then((res)=>{
+                    if(res.code == 200) {
+                        var level1=[];
+                        // level1 = res.data.find((item, index)=>{
+                        //     return item.parentId == 0
+                        // });
+                        res.data.forEach((item, index)=>{
+                            if( item.parentId == 0){
+                                item.label = item.name;
+                                item.children = [];
+                                level1.push(item);
+
+                            }
+                        });
+                        level1.forEach((item, index)=>{
+                            res.data.forEach((item2, index2)=>{
+                                if(item2.parentId == item.id){
+                                    item2.label = item2.name;
+                                    item2.children = "",
+                                    item.children.push(item2)
+                                }
+                            })
+                        })
+                       this.data = level1
+                    }
+                })
+            },
+
             // 提交
             dataFormSubmit(formName){
+                var ids = this.$refs.treeCategory.getCheckedKeys();
                 // alert([this.dataForm.name,this.dataForm.domainAddress]);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.loading = true;
                         var obj = {
-                            "id":  this.dataForm.id,
-                            "name":  this.dataForm.name,
+                            id:this.row.id,
+                            ids: ids
                         }
-                        if(this.row) obj.id = this.row.id
-                        var fn = updateCategory;
-                        fn(obj).then((res) => {
+                        updateCategory(obj).then((res) => {
                             console.log(res)
                             this.loading = false;
                             // alert(JSON.stringify(res));
