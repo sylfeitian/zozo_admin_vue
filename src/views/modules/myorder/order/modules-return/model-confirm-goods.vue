@@ -6,7 +6,8 @@
 		    :visible.sync="visible"
 			width="35%"
 				:before-close="closeDialog">
-		    	<h3>是否确定收货?</h3>
+		    	<h3 v-if="this.row.isComfirm==1">请确认商品已收到?</h3>
+				<h3 v-else>未收货将取消该售后单，请确认已于用户达成一致?</h3>
                 <!-- <p style="color:red">请确认已与用户沟通达成一致</p> -->
 			    <span slot="footer" class="dialog-footer"  >
 		     		    <el-button type="primary" @click="dataFormSubmit('addForm')"
@@ -17,7 +18,7 @@
 </template>
 <script>
 	
-	import { orderCancel} from '@/api/api'
+	import { aftersaleComfirm} from '@/api/api'
 
 	export default{
 		name: "model-add-edit-data",
@@ -25,18 +26,18 @@
 			return{
 				visible : false,
 				loading : false,
-				dataForm : {
-                    operating:1,//操作 0不通过 1通过
-                    remarks:"",//备注
-				},
-				dataRule : {
-			        operating : [
-			          { required: true, message: '必填项不能为空', trigger: 'blur' },
-                    ],
-                    remarks : [
-			          { required: true, message: '必填项不能为空', trigger: 'blur' },
-			        ],
-				},
+				// dataForm : {
+                //     operating:1,//操作 0不通过 1通过
+                //     remarks:"",//备注
+				// },
+				// dataRule : {
+			    //     operating : [
+			    //       { required: true, message: '必填项不能为空', trigger: 'blur' },
+                //     ],
+                //     remarks : [
+			    //       { required: true, message: '必填项不能为空', trigger: 'blur' },
+			    //     ],
+				// },
 				orderBase:'',
 				title:'',
                 row:'',
@@ -57,9 +58,10 @@
 						// if (valid) {
 								this.loading = true;
 								var obj=  {
-									id:this.row.id,//物流单号
+									isComfirm:this.row.isComfirm, //收货类型 0未收货 1确认收货
+									sn:this.row.aftersaleSn //售后单编号
 								}
-								orderCancel(obj).then((res) => {
+								aftersaleComfirm(obj).then((res) => {
 									this.loading = false;
 									// alert(JSON.stringify(res));
 									let status = null;
@@ -88,7 +90,7 @@
 			},
 			closeDialog() {
                 this.visible = false;
-				this.$parent.remarkInfoVisible = false;
+				this.$parent.confirmGoodsVisible = false;
 			},
 		},
 	}

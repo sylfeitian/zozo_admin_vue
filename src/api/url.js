@@ -190,7 +190,7 @@ export const returngoods = `${base}/aftersale/return/page`;
 //售后审核
 export const aftersales= `${base}/aftersale/apply/page`;
 //商品评价
-export const goodseva= `${base}/evaluate/page`;
+export const goodseva= `${base}/zozogoods/evaluate/page`;
 //商品评价--删除
 export const deleva= `${base}/evaluate`;
 //退货管理--导出

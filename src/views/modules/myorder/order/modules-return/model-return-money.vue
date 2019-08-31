@@ -6,8 +6,9 @@
 		    :visible.sync="visible"
 			width="35%"
 				:before-close="closeDialog">
-		    	<h3>是否确定退款?</h3>
-                <p style="color:red">请确认已与用户沟通达成一致</p>
+		    	<h3 v-if="this.row.isAgree==1">同意退款将直接退款给用户，请确认退货商品已收到?</h3>
+				<h3 v-else>拒绝退款将取消该售后单，请确认已于用户达成一致?</h3>
+                <!-- <p style="color:red">请确认已与用户沟通达成一致</p> -->
 			    <span slot="footer" class="dialog-footer"  >
 		     		    <el-button type="primary" @click="dataFormSubmit('addForm')"
 		     		    :loading="loading">{{loading ? "提交中···" : "提交"}}</el-button>
@@ -17,7 +18,7 @@
 </template>
 <script>
 	
-	import { orderCancel} from '@/api/api'
+	import { returnReimburse} from '@/api/api'
 
 	export default{
 		name: "model-add-edit-data",
@@ -25,18 +26,18 @@
 			return{
 				visible : false,
 				loading : false,
-				dataForm : {
-                    operating:1,//操作 0不通过 1通过
-                    remarks:"",//备注
-				},
-				dataRule : {
-			        operating : [
-			          { required: true, message: '必填项不能为空', trigger: 'blur' },
-                    ],
-                    remarks : [
-			          { required: true, message: '必填项不能为空', trigger: 'blur' },
-			        ],
-				},
+				// dataForm : {
+                //     operating:1,//操作 0不通过 1通过
+                //     remarks:"",//备注
+				// },
+				// dataRule : {
+			    //     operating : [
+			    //       { required: true, message: '必填项不能为空', trigger: 'blur' },
+                //     ],
+                //     remarks : [
+			    //       { required: true, message: '必填项不能为空', trigger: 'blur' },
+			    //     ],
+				// },
 				orderBase:'',
 				title:'',
                 row:'',
@@ -57,9 +58,10 @@
 						// if (valid) {
 								this.loading = true;
 								var obj=  {
-									id:this.row.id,//物流单号
+									isAgree:this.row.isAgree,//退款类型 1同意退款 0决绝退款
+									aftersaleSn:this.row.aftersaleSn,//物流单号
 								}
-								orderCancel(obj).then((res) => {
+								returnReimburse(obj).then((res) => {
 									this.loading = false;
 									// alert(JSON.stringify(res));
 									let status = null;
@@ -88,7 +90,7 @@
 			},
 			closeDialog() {
                 this.visible = false;
-				this.$parent.remarkInfoVisible = false;
+				this.$parent.returnMoneyVisible = false;
 			},
 		},
 	}
