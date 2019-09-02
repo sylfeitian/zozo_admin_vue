@@ -3,7 +3,7 @@
         <Bread :breaddata="breaddata"></Bread>
 
         <div class="mod-sys__log-error">
-            <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getData()">
+            <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getDataList()">
                 <el-form-item label="操作账号：">
                     <el-input v-model="dataForm.id" placeholder="请输入账号" clearable></el-input>
                 </el-form-item>
@@ -31,8 +31,8 @@
                     ></el-date-picker>
                 </el-form-item>
                 <el-form-item>
-                    <el-button @click="getData()" type="primary">查询</el-button>
-                    <el-button type="primary" plain @click="reset()">重置</el-button>
+                    <el-button  class="btn" type="primary" @click="getDataList">查询</el-button>
+                    <el-button  class="btn" type="primary" plain @click="reset()" >重置</el-button>
                 </el-form-item>
                 <br />
             </el-form>
@@ -44,9 +44,9 @@
             <el-table v-loading="dataListLoading" :data="dataList" border @sort-change="dataListSortChangeHandle" style="width: 100%;">
                 <el-table-column prop="id" label="操作账号" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="module" label="操作模块" header-align="center" align="center"></el-table-column>
-                <el-table-column prop="type" label="异常类型" header-align="center" align="center"></el-table-column>
+                <el-table-column prop="" label="异常类型" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="createDate" label="操作时间" header-align="center" align="center"></el-table-column>
-                <el-table-column prop="info" label="操作内容" fixed="right" header-align="center" align="center" width="500"></el-table-column>
+                <el-table-column prop="" label="操作内容" fixed="right" header-align="center" align="center" width="500"></el-table-column>
             </el-table>
             <el-pagination
                     :current-page="page"
@@ -64,15 +64,16 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
+    import { errorUrl,exportError } from '@/api/url'
 
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
                 mixinViewModuleOptions: {
-                    getDataListURL: '/admin-api/log/error/page',
+                    getDataListURL: errorUrl,
                     getDataListIsPage: true,
-                    exportURL: '/admin-api/log/error/export'
+                    exportURL: exportError
                 },
                 dataForm: {
                     module: ''
@@ -85,22 +86,10 @@
             Bread
         },
         methods: {
-            // 异常信息
-            infoHandle (info) {
-                this.$alert(info, this.$t('logError.errorInfo'), {
-                    customClass: 'mod-sys__log-error-view-info'
-                })
-            },
-            getData(){
-                this.page = 1;
-                this.limit = 10;
-                this.getDataList();
-            },
             reset(){
-                this.dataForm = {
-                    module: ''
-                };
-                this.getData();
+                this.dataForm.id = "";
+                this.dataForm.module = "";
+                this.getDataList();
             }
         }
     }

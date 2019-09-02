@@ -1,26 +1,26 @@
 <template>
     <div>
         <Bread  :breaddata="breaddata"></Bread>
-        <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
+        <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" @keyup.enter.native="getDataList()" >
             <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
             <el-form-item label="颜色ID：">
-                <el-input v-model="dataForm.idJp" ></el-input>
+                <el-input v-model="dataFormShow.idJp" ></el-input>
             </el-form-item>
             <el-form-item label="颜色名称：">
-                <el-input v-model="dataForm.name" ></el-input>
+                <el-input v-model="dataFormShow.name" ></el-input>
             </el-form-item>
             <el-form-item label="颜色组名称：">
-                <el-input v-model="dataForm.colorCategoryName" ></el-input>
+                <el-input v-model="dataFormShow.colorCategoryName" ></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button class="btn" type="primary" @click="getDataList()">查询</el-button>
+                <el-button class="btn" type="primary" @click="getData()">查询</el-button>
                 <el-button class="btn"type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
         <el-form>
             <el-button @click="addOrEditHandle()"  class="btn" type="primary">导入信息</el-button>
         </el-form>
-        <el-table width="100%" :data="dataList" border v-loading="dataListLoading" style="width: 100%;margin-top: 20px;">
+        <el-table width="100%" :data="dataList" border v-loading="dataListLoading" style="width: 100%;margin-top: 10px;">
             <el-table-column prop="idJp" label="颜色ID" align="center"></el-table-column>
             <el-table-column prop="nameJp" label="日本颜色名称" align="center"></el-table-column>
             <el-table-column prop="name" label="颜色名称" align="center"></el-table-column>
@@ -66,7 +66,7 @@
                     deleteIsBatchKey: 'id'
                 },
                 breaddata: [ "商品管理", "颜色"],
-                dataForm: {
+                dataFormShow: {
                     idJp: "",//颜色ID
                     name: "",//颜色名称
                     colorCategoryName: ""//颜色组名称
@@ -86,7 +86,18 @@
             this.getDataList();
         },
         methods: {
+            getData(){
+                this.dataForm = {};
+                for(let key in this.dataFormShow){
+                    this.$set(this.dataForm,`${key}`,this.dataFormShow[key]);
+                }
+                console.log(this.dataForm);
+                this.getDataList()
+            },
             reset() {
+                this.dataFormShow.idJp = "";
+                this.dataFormShow.name = "";
+                this.dataFormShow.colorCategoryName = "";
                 this.dataForm.idJp = "";
                 this.dataForm.name = "";
                 this.dataForm.colorCategoryName = "";

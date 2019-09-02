@@ -69,16 +69,19 @@
         methods: {
             loadNode(node, resolve) {
                 console.log(node);
+                if(node.level>2){
+                    return resolve([]);
+                }
                 if (node && node.level === 0) {
                     return resolve([{ name: 'region' }]);
 
                 }
-                if (node.level > 1) {
-                    console.log("当前节点id值为："+node.data.id)
-                    return resolve([])
-                };
+                // if (node.level > 1) {
+                //     console.log("当前节点id值为："+node.data.id)
+                //     return resolve([])
+                // };
                 let obj = {
-                    id:node.id
+                    id:node.data.id
                 };
                  jdCateSubcollection(obj).then(res => {
                     //Promise后 对数据格式进行处理
@@ -86,49 +89,61 @@
                         var data = res.data;
                         // this.total = res.data.total;
                         console.log(data);
-                        //  data = [
-                        //      {
-                        //         "id":"652123",
-                        //         "categoryName":"数码1",
-                        //         "parentId":"0",
-                        //         "grade":1,
-                        //         "sort":null,
-                        //         "pathId":null,
-                        //         "list":null,
-                        //         "relateList":[],
-                        //         "creator":null,
-                        //         "createDate":"2019-08-01 11:00:17",
-                        //         "updater":null,
-                        //         "updateDate":"2019-08-01 11:00:17",
-                        //         "delFlag":0,
-                        //         "version":null
-                        //     },
-                        //      {
-                        //         "id":"652124",
-                        //         "categoryName":"数码2",
-                        //         "parentId":"0",
-                        //         "grade":1,
-                        //         "sort":null,
-                        //         "pathId":null,
-                        //         "list":null,
-                        //         "relateList":[],
-                        //         "creator":null,
-                        //         "createDate":"2019-08-01 11:00:17",
-                        //         "updater":null,
-                        //         "updateDate":"2019-08-01 11:00:17",
-                        //         "delFlag":0,
-                        //         "version":null
-                        //     },
-                        //  ]
+                         // data = [
+                         //     {
+                         //        "id":"652123",
+                         //        "categoryName":"数码1",
+                         //        "parentId":"0",
+                         //        "grade":1,
+                         //        "sort":null,
+                         //        "pathId":null,
+                         //        "list":null,
+                         //        "relateList":[],
+                         //        "creator":null,
+                         //        "createDate":"2019-08-01 11:00:17",
+                         //        "updater":null,
+                         //        "updateDate":"2019-08-01 11:00:17",
+                         //        "delFlag":0,
+                         //        "version":null
+                         //    },
+                         //     {
+                         //        "id":"652124",
+                         //        "categoryName":"数码2",
+                         //        "parentId":"0",
+                         //        "grade":1,
+                         //        "sort":null,
+                         //        "pathId":null,
+                         //        "list":null,
+                         //        "relateList":[],
+                         //        "creator":null,
+                         //        "createDate":"2019-08-01 11:00:17",
+                         //        "updater":null,
+                         //        "updateDate":"2019-08-01 11:00:17",
+                         //        "delFlag":0,
+                         //        "version":null
+                         //    },
+                         // ]
                         //处理树形数据
-                        var dataStr = JSON.stringify(data);
-                        dataStr = dataStr.replace(/id/g,"label")
-                         dataStr = JSON.parse(dataStr);
-                        
-                         if(dataStr.length==0){
+                        data.forEach((item, index) => {
+                            console.log(item, index)
+                            item.label = item.id;
+                            item.name = "";
+                            if(node.level==1){
+                                item.level = 2;
+                            }
+                            if(node.level==2){
+                                item.level = 3;
+                                item.children = [];
+                            }
+                            item.relateList && item.relateList.forEach((item2, index2) => {
+                                item.name += item2.name;
+                            });
+
+                        })
+                         if(data.length==0){
                               return resolve([]);
                          }else{
-                              return resolve(dataStr);
+                              return resolve(data);
                          }
                         
                     }else{

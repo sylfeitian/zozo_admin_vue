@@ -1,16 +1,16 @@
 <template>
     <div>
         <Bread  :breaddata="breaddata"></Bread>
-        <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" style="margin-top: 20px;">
+        <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" @keyup.enter.native="getDataList()" style="margin-top: 20px;">
             <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
             <el-form-item label="商品名称：">
-                <el-input v-model="dataForm.goodsName" placeholder="商品名称" ></el-input>
+                <el-input v-model="dataFormShow.goodsName" placeholder="商品名称" ></el-input>
             </el-form-item>
             <el-form-item label="商品sku ID：">
-                <el-input v-model="dataForm.goodsCsIdJp" placeholder="商品skuid" ></el-input>
+                <el-input v-model="dataFormShow.goodsCsIdJp" placeholder="商品skuid" ></el-input>
             </el-form-item>
             <el-form-item label="分类：">
-                <el-select v-model="dataForm.firstCategory" placeholder="请选择">
+                <el-select v-model="dataFormShow.firstCategory" placeholder="请选择">
                     <el-option
                             v-for="item in stateOptions"
                             :key="item.id"
@@ -20,13 +20,13 @@
                 </el-select>
             </el-form-item>
             <el-form-item  label="所属店铺：">
-                <el-input v-model="dataForm.storeName" placeholder="请输入店铺名称" ></el-input>
+                <el-input v-model="dataFormShow.storeName" placeholder="请输入店铺名称" ></el-input>
             </el-form-item>
             <el-form-item  label="品牌：">
-                <el-input v-model="dataForm.brandName" placeholder="请输入品牌名称" ></el-input>
+                <el-input v-model="dataFormShow.brandName" placeholder="请输入品牌名称" ></el-input>
             </el-form-item>
-            <el-form-item  label="状态：" v-if="dataForm.goodsShow==''">
-                <el-select v-model="dataForm.transportFlag" placeholder="请选择">
+            <el-form-item  label="状态：" v-if="dataFormShow.goodsShow==''">
+                <el-select v-model="dataFormShow.transportFlag" placeholder="请选择">
                     <el-option
                             v-for="item in stateOptions"
                             :key="item.id"
@@ -35,8 +35,8 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item  label="备案状态：" v-if="dataForm.goodsShow=='1'">
-                <el-select v-model="dataForm.tofileFlag" placeholder="请选择">
+            <el-form-item  label="备案状态：" v-if="dataFormShow.goodsShow=='1'">
+                <el-select v-model="dataFormShow.tofileFlag" placeholder="请选择">
                     <el-option
                             v-for="item in alreadyOptions"
                             :key="item.id"
@@ -47,7 +47,7 @@
             </el-form-item>
             <br>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="getDataList()">查询</el-button>
+                <el-button  class="btn" type="primary" @click="getData()">查询</el-button>
                 <el-button   class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
             </el-form-item>
         </el-form>
@@ -62,7 +62,7 @@
                 :data="dataList"
                 border
                 v-loading="dataListLoading"
-                style="width: 100%;margin-top:20px;"
+                style="width: 100%;margin-top:10px;"
         >
 <!--            <el-table-column type="selection" width="70"></el-table-column>-->
             <el-table-column label="商品SKU ID" align="center">
@@ -135,7 +135,7 @@
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="jdThirdCategory" label="京东三级分类"  align="center" v-if="dataForm.goodsShow==''">
+            <el-table-column prop="jdThirdCategory" label="京东三级分类"  align="center" v-if="dataFormShow.goodsShow==''">
                 <template slot-scope="scope">
                     <div>
                         {{scope.row.jdThirdCategory}}
@@ -191,7 +191,7 @@
                 },
                 breaddata: [ "商品管理", "备案商品管理"],
                 activeName: "",
-                dataForm: {
+                dataFormShow: {
                     goodsName: "",// 商品名称
                     goodsCsIdJp: "",// 商品sku ID
                     firstCategory: "",// 分类
@@ -221,19 +221,31 @@
             //orderDet
         },
         created() {
-            this.dataForm.goodsShow = 0;
+            this.dataFormShow.goodsShow = 0;
             this.getDataList();
         },
         methods: {
             handleClick(tab) {
                 if(tab== ""){
-                    this.dataForm.goodsShow = ""
+                    this.dataFormShow.goodsShow = ""
                 }else if(tab== "upper"){
-                    this.dataForm.goodsShow = "1"
+                    this.dataFormShow.goodsShow = "1"
                 }
                 this.getDataList();
             },
+            getData(){
+                this.dataForm = {};
+                for(let key in this.dataFormShow){
+                    this.$set(this.dataForm,`${key}`,this.dataFormShow[key]);
+                }
+                console.log(this.dataForm);
+                this.getDataList()
+            },
             reset() {
+                this.dataFormShow.goodsName = "";//商品名称/商品货号
+                this.dataFormShow.brandName = "";//品牌名称
+                this.dataFormShow.conditionName = "";//分类名称
+                this.dataFormShow.storeName = "";//店铺名称
                 this.dataForm.goodsName = "";//商品名称/商品货号
                 this.dataForm.brandName = "";//品牌名称
                 this.dataForm.conditionName = "";//分类名称
@@ -246,9 +258,7 @@
 
 <style lang="scss" scoped>
     @import "@/element-ui/theme-variables.scss";
-    .grayLine{
-        border-bottom: 0!important;
-    }
+
     img {
         width: 100px;
         height: 100px;

@@ -10,64 +10,66 @@
             >
                 <p class="title">日文</p>
                 <el-form-item label="新闻编号：">
-                    <span>{{dataForm.id}}</span>
+                    <span>{{dataForm.idJp}}</span>
                 </el-form-item>
                 <el-form-item label="店铺ID：">
-                    <span>{{dataForm.name}}</span>
+                    <span>{{dataForm.shopIdJp}}</span>
                 </el-form-item>
                 <el-form-item label="店铺名称：">
-                    <span>{{dataForm.id}}</span>
+                    <span>{{dataForm.shopName}}</span>
                 </el-form-item>
-                <el-form-item label="发布时间：">
-                    <span>{{dataForm.id}}</span>
-                </el-form-item>
-                <el-form-item label="日方发布状态：">
-                    <span>{{dataForm.id}}</span>
-                </el-form-item>
-                <el-form-item label="取消发布时间：">
-                    <span>{{dataForm.name}}</span>
-                </el-form-item>
-                <el-form-item label="传输日期：">
-                    <span>{{dataForm.id}}</span>
+                <el-form-item prop="showWebJp" label="发布状态">
+                    <template slot-scope="scope">
+                        <el-tag v-if="scope.row.showWebJp == 1" type="success">已发布</el-tag>
+                        <el-tag v-else type="info">取消发布</el-tag>
+                    </template>
                 </el-form-item>
                 <el-form-item label="背景图：">
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg">
-                                <!--                                    <img :src="scope.row.pictureUrl | filterImgUrl" alt=""/>-->
-                                <img src="scope.row.pictureUrl | filterImgUrl" alt=""/>
+                                <img src="scope.row.imageUrl" alt=""/>
                             </div>
                         </div>
                     </template>
                 </el-form-item>
                 <el-form-item label="标题：">
-                    <span>{{dataForm.id}}</span>
+                    <span>{{dataForm.titleJp}}</span>
                 </el-form-item>
                 <el-form-item label="详情：">
-                    <span>{{dataForm.id}}</span>
+                    <span>{{dataForm.contentJp}}</span>
                 </el-form-item>
                 <div class="goods">
                     <span class="inforTit" style="vertical-align:top;">关联商品：</span>
                     <el-table
                             width="100%"
-                            :data="dataList"
+                            :data="dataForm.goodsList"
                             border
                             v-loading="dataListLoading"
                             class="inforRight"
                             style="display:inline-block;width: 80%;"
                     >
-                        <el-table-column prop="" label="商品ID" align="center"></el-table-column>
-                        <el-table-column prop="" label="商品名称" align="center"></el-table-column>
-                        <el-table-column prop="" label="图片" align="center">
+                        <el-table-column prop="id" label="商品ID" align="center"></el-table-column>
+                        <el-table-column prop="name" label="商品名称" align="center"></el-table-column>
+                        <el-table-column prop="imageUrl" label="图片" align="center">
                             <template slot-scope="scope">
                                 <img
-                                        :src="$imgDomain + scope.row.memberAvatar"
+                                        :src="scope.row.imageUrl"
                                         alt=""
                                         style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                                 >
                             </template>
                         </el-table-column>
-                        <el-table-column prop="" label="可售状态" align="center"></el-table-column>
+                        <el-table-column prop="syncState" label="同步状态" align="center">
+                            <template slot-scope="scope">
+                                <div>{{scope.row.syncState == 1?"已同步":"未同步"}}</div>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="showWeb" label="商品状态" align="center">
+                            <template slot-scope="scope">
+                                <div>{{scope.row.showWeb == 0?"待上架":scope.row.showWeb == 1?"上架":scope.row.showWeb == 2?"下架":""}}</div>
+                            </template>
+                        </el-table-column>
                     </el-table>
                 </div>
             </el-form>
@@ -82,64 +84,67 @@
             >
                 <p class="title">中文</p>
                 <el-form-item label="新闻编号：">
-                    <span>{{dataForm.id}}</span>
+                    <span>{{dataForm.idJp}}</span>
                 </el-form-item>
                 <el-form-item label="店铺ID：">
-                    <span>{{dataForm.name}}</span>
+                    <span>{{dataForm.shopId}}</span>
                 </el-form-item>
                 <el-form-item label="店铺名称：">
-                    <span>{{dataForm.id}}</span>
+                    <span>{{dataForm.shopNameCn}}</span>
                 </el-form-item>
-                <el-form-item label="发布时间：">
-                    <span>{{dataForm.id}}</span>
-                </el-form-item>
-                <el-form-item label="日方发布状态：">
-                    <span>{{dataForm.id}}</span>
-                </el-form-item>
-                <el-form-item label="取消发布时间：">
-                    <span>{{dataForm.name}}</span>
-                </el-form-item>
-                <el-form-item label="传输日期：">
-                    <span>{{dataForm.id}}</span>
+                <el-form-item prop="showWeb" label="发布状态">
+                    <template slot-scope="scope">
+                        <el-tag v-if="scope.row.showWeb == 1" type="success">已发布</el-tag>
+                        <el-tag v-else-if="scope.row.showWeb == 0" type="success">待发布</el-tag>
+                        <el-tag v-else type="info">取消发布</el-tag>
+                    </template>
                 </el-form-item>
                 <el-form-item label="背景图：">
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg">
-                                <!--                                    <img :src="scope.row.pictureUrl | filterImgUrl" alt=""/>-->
-                                <img src="scope.row.pictureUrl | filterImgUrl" alt=""/>
+                                <img src="scope.row.imageUrl" alt=""/>
                             </div>
                         </div>
                     </template>
                 </el-form-item>
                 <el-form-item label="标题：">
-                    <span>{{dataForm.id}}</span>
+                    <span>{{dataForm.title}}</span>
                 </el-form-item>
                 <el-form-item label="详情：">
-                    <span>{{dataForm.id}}</span>
+                    <span>{{dataForm.content}}</span>
                 </el-form-item>
                 <div class="goods">
                     <span class="inforTit" style="vertical-align:top;">关联商品：</span>
                     <el-table
                             width="100%"
-                            :data="dataList"
+                            :data="dataForm.goodsList"
                             border
                             v-loading="dataListLoading"
                             class="inforRight"
                             style="display:inline-block;width: 80%;"
                     >
-                        <el-table-column prop="" label="商品ID" align="center"></el-table-column>
-                        <el-table-column prop="" label="商品名称" align="center"></el-table-column>
-                        <el-table-column prop="" label="图片" align="center">
+                        <el-table-column prop="id" label="商品ID" align="center"></el-table-column>
+                        <el-table-column prop="name" label="商品名称" align="center"></el-table-column>
+                        <el-table-column prop="imageUrl" label="图片" align="center">
                             <template slot-scope="scope">
                                 <img
-                                        :src="$imgDomain + scope.row.memberAvatar"
+                                        :src="scope.row.imageUrl"
                                         alt=""
                                         style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                                 >
                             </template>
                         </el-table-column>
-                        <el-table-column prop="" label="可售状态" align="center"></el-table-column>
+                        <el-table-column prop="syncState" label="同步状态" align="center">
+                            <template slot-scope="scope">
+                                <div>{{scope.row.syncState == 1?"已同步":"未同步"}}</div>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="showWeb" label="商品状态" align="center">
+                            <template slot-scope="scope">
+                                <div>{{scope.row.showWeb == 0?"待上架":scope.row.showWeb == 1?"上架":scope.row.showWeb == 2?"下架":""}}</div>
+                            </template>
+                        </el-table-column>
                     </el-table>
                 </div>
             </el-form>

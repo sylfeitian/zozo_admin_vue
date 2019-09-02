@@ -46,6 +46,8 @@
                 border=""
                 v-loading="dataListLoading"
                 style="width: 100%;margin-top:20px;"
+                @selection-change="handleSelectionChange"
+                ref="multipleTable"
         >
             <el-table-column type="selection" width="70"></el-table-column>
             <el-table-column prop="idJp" width="100" label="ID" align="center"></el-table-column>
@@ -96,10 +98,10 @@
         </el-table>
         <div class="bottomFun">
             <div class="bottomFunLeft">
-                <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                <el-select v-model="dataForm.paymentStatus" placeholder="批量操作" style="margin-left: 10px;width: 140px;">
-                    <el-option label="批量发布" value="0"></el-option>
-                    <el-option label="取消批量发布" value="1"></el-option>
+                <el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+                <el-select v-model="selectVal" placeholder="批量操作" @change="cotrolGoodsShow(selectVal)" style="margin-left: 10px;width: 140px;">
+                    <el-option label="批量发布"  value="0"></el-option>
+                    <el-option label="取消批量发布"  value="1"></el-option>
                 </el-select>
             </div>
             <!-- 分页 -->
@@ -120,7 +122,7 @@
     import mixinViewModule from '@/mixins/view-module';
     import Bread from "@/components/bread";
     import { getlookpage } from '@/api/url';
-    import { putoperating, } from '@/api/api';   //发布/取消发布
+    import { putoperating,putoperatingAll } from '@/api/api';   //发布/取消发布
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -146,6 +148,8 @@
                 	publishEndTimeJp:null,  //日本发布结束时间
                 },
                 value: '',
+                selectVal:"",
+                multipleSelection:[],
                 dataList: [],
                 dataListLoading: false,
                 forbitLoading:false,
@@ -258,10 +262,58 @@
 
                 }).catch(() => {});
             },
+            cotrolGoodsShow(type){
+                var ids = this.getIds();
+                var obj = {
+                    ids:ids,
+                    operating:type==1?0:1,
+                }
+                var msg = ""
+                type==1?msg="取消发布":msg="发布"
+                this.$confirm('是否'+msg+'该分组?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    putoperatingAll(obj).then((res)=>{
+                        if(res.code==200){
+                            this.getDataList();
+                            this.$message({
+                                message:res.msg,
+                                type: 'success',
+                                duration: 1500,
+                            })
+                        }else{
+                            this.$message({
+                                message:res.msg,
+                                type: 'error',
+                                duration: 1500,
+                            })
+                        }
+                    })
+
+                }).catch(() => {});
+            },
+            getIds(){
+                var ids= [];
+                console.log(this.multipleSelection);
+                this.multipleSelection.forEach((item,index)=>{
+                    if("object" == typeof(item)){
+                        ids.push(item.id);
+                    }else{
+                        ids.push(id);
+                    }
+                })
+                return ids;
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+                if(this.multipleSelection.length == 10) this.checkAll = true;
+                else this.checkAll = false;
+            },
             handleCheckAllChange(val) {
-                this.checkednodeslist = val ? this.dataList : [];  //dataList  nodeslist
-                this.isIndeterminate = false;
-                console.log(this.checkednodeslist + '当前选中的复选框')
+                if(val) this.$refs.multipleTable.toggleAllSelection();
+                else this.$refs.multipleTable.clearSelection();
             },
         }
     }

@@ -5,20 +5,25 @@
             :close-on-click-modal="false"
             :visible.sync="visible"
             :before-close="closeDialog"
-            width="26%"
+            width="30%"
     >
         <el-form
                 :model="dataForm"
                 ref="addForm"
-                :rules="dataRule"
                 @keyup.enter.native="dataFormSubmit('addForm')"
                 label-width="120px"
         >
-            <el-form-item label="字典名称：" prop="dictName" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.dictName" auto-complete="off"></el-input>
+            <el-form-item  label="关联主风格标签：">
+                <el-input v-model="dataForm.styleName" placeholder=""></el-input>
             </el-form-item>
-            <el-form-item label="字典编码：" prop="dictValue" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.dictValue" auto-complete="off"></el-input>
+            <el-form-item label="已关联主风格标签：" prop="styleName">
+                <el-tag closable
+                        v-for="item in dataArray"
+                        :key="item.id"
+                        :label="item.styleName"
+                        :value="item.id">
+                    {{item.styleName}}
+                </el-tag>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
                 <el-button  @click="dataFormCancel()">取消</el-button>
@@ -30,60 +35,50 @@
 </template>
 
 <script>
-    import { backScanDict,dictSave,updateDict } from '@/api/api'
+    import { backScanShopStyleSubUnion, shopStyleUnionSub } from '@/api/api'
     export default {
+        name: "model-add-edit-data",
         data () {
             return {
                 visible : false,
                 loading : false,
-                dataForm: {
-                    dictName: "",
-                    dictValue: ""
-                },
-                dataRule : {
-                    dictName : [
-                        { required: true, message: '必填项不能为空', trigger: 'blur' },
-                    ],
-                    dictValue : [
-                        { required: true, message: '必填项不能为空', trigger: 'blur' },
-                    ]
-                },
+                uploading:false,
                 title:'',
+                dataForm: {
+                    styleName: "",
+                    styleType: "",
+                },
+                value:[],
+                value2:[],
+                dataArray:[],
                 row:"",
                 formLabelWidth: '120px'
             }
         },
-        components:{
+        created () {
+            // this.dataForm.styleType = this.options[0].id;
         },
-        computed:{},
-        mounted(){},
         methods: {
             init (row) {
                 this.visible = true;
                 this.row = row;
-                console.log(row)
-                if(row){
-                    this.title="编辑词典";
-                    this.backScan();
-                }else{
-                    this.title="添加词典"
-
-                }
+                this.title="管理副风格标签";
+                this.backScan();
                 this.$nextTick(() => {
                     this.$refs['addForm'].resetFields();
                     // this.getApplyPullList();
                 })
             },
-            // 编辑回显
+            //编辑回显
             backScan(){
                 var obj  = {
-                    pid:this.row.pid,
                     id:this.row.id,
-                    dictName:this.row.dictName,
-                    dictValue:this.row.dictValue,
+                    styleName:this.row.styleName,
+                    styleType:this.row.styleType,
                 }
-                backScanDict(obj).then((res)=>{
+                backScanShopStyleSubUnion(obj).then((res)=>{
                     if(res.code == 200){
+                        this.dataArray = res.data;
                         Object.assign(this.dataForm,res.data);
 
                     }else{
@@ -98,13 +93,11 @@
                     if (valid) {
                         this.loading = true;
                         var obj = {
-                            "pid":  this.row?this.row.pid:0,
-                            "dictName":  this.dataForm.dictName,
-                            "dictValue":  this.dataForm.dictValue
+                            "id":  this.dataForm.id,
+                            "styleName":  this.dataForm.styleName,
                         }
-                            alert(obj.pid);
                         if(this.row) obj.id = this.row.id
-                        var fn = this.row?updateDict:dictSave;
+                        var fn = shopStyleUnionSub;
                         fn(obj).then((res) => {
                             this.loading = false;
                             // alert(JSON.stringify(res));
@@ -131,22 +124,23 @@
                     }
                 })
             },
+            //关闭弹窗
             dataFormCancel(){
                 this.visible = false;
                 this.closeDialog();
             },
             closeDialog() {
-                this.$parent.addOrUpdateVisible = false;
+                this.$parent.addEditDataVisible = false;
             },
         }
     }
 </script>
 
 <style scoped>
-    /*/deep/.el-form-item__content:nth-child(1) {*/
-    /*    margin-left: 50px!important;*/
-    /*}*/
-    .title {
-        margin-left: -70px;
+    /deep/ .el-form-item__label {
+        width: 130px!important;
+    }
+    /deep/ .el-form-item__content {
+        margin-left: 130px!important;
     }
 </style>

@@ -69,29 +69,30 @@
             <el-table-column prop="aftersaleSn" label="售后单号" align="center"></el-table-column>
             <el-table-column prop="orderSn" label="订单编号" align="center">
                  <template slot-scope="scope">
-                     <el-button size="mini" type="text" @click="orderDetFn(scope.row)">查看</el-button>
+                     <el-button size="mini" type="text" @click="orderDetFn(scope.row)">{{scope.row.orderSn}}</el-button>
                 </template>
             </el-table-column>
             <!--<el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>-->
             <el-table-column prop="memberName" label="会员账号" align="center"></el-table-column>
             <el-table-column prop="createDate" label="申请时间" align="center"></el-table-column>
-            <el-table-column prop="number" label="售后数量" align="center" width="100"></el-table-column>
+            <el-table-column prop="goodsNum" label="售后数量" align="center" width="100"></el-table-column>
             <el-table-column prop="refundAmount" label="退款金额" align="right">
                 <template slot-scope="scope">￥{{scope.row.refundAmount}}</template>
             </el-table-column>
             <el-table-column
-                    prop="aftersaleStatus"
+                    prop="status"
                     label="售后状态"
                     align="center"
                     :formatter="statusRules"
-            ></el-table-column>
+            >
+            <!-- （退货退款 10待审核、20待退货、30待入库、40待退款、50退款中、60退款完成、70退款失败、80售后取消） 仅退款（10退款中、20退款完成、30退款失败） -->
+            </el-table-column>
             <el-table-column label="操作" min-width="100" align="center">
                 <template slot-scope="scope">
                     <el-button size="mini" type="text" @click="afterSaleDetailFn(scope.row)">查看</el-button>
-                    <el-button size="mini" type="text" @click="handleGoodDet(scope.row)">审核</el-button>
-                    <el-button size="mini" type="text" @click="handleGoodDet(scope.row)">确认收货</el-button>
-                    <el-button size="mini" type="text" @click="handleGoodDet(scope.row)">同意退款</el-button>
-                    <el-button size="mini" type="text" @click="handleGoodDet(scope.row)">查看</el-button>
+                    <!-- <el-button size="mini" type="text" @click="exammineFn(scope.row)" >审核</el-button> -->
+                    <el-button size="mini" type="text" @click="confirmGoodsFn(scope.row)" v-if="scope.row.status==30">确认收货</el-button>
+                    <el-button size="mini" type="text" @click="returnMoneyFn(scope.row)"  v-if="scope.row.status==40">同意退款</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -104,10 +105,13 @@
                 :total="total"
                 layout="total, sizes, prev, pager, next, jumper"
         ></el-pagination>
+
+        <!-- 审核 -->
+        <!-- <exammine v-if="exammineVisible" ref="exammineCompon" @searchDataList="getDataList"></exammine> -->
          <!-- 确认收货 -->
-        <returnGoodsModel v-if="returnGoodsVisible" ref="returnGoodsCompon"></returnGoodsModel>
+        <confirmGoodsModel v-if="confirmGoodsVisible" ref="confirmGoodsCompon"></confirmGoodsModel>
         <!-- 退货 -->
-        <returnGoodsModel v-if="returnGoodsVisible" ref="returnGoodsCompon"></returnGoodsModel>
+        <!-- <returnGoodsModel v-if="returnGoodsVisible" ref="returnGoodsCompon"></returnGoodsModel> -->
         <!-- 退款 -->
         <returnMoneyModel v-if="returnMoneyVisible" ref="returnMoneyCompon"></returnMoneyModel>
     </div>
@@ -117,8 +121,10 @@
     import { returngoods, exportsales } from "@/api/url";
     import { returnDetail } from "@/api/api";
     import mixinViewModule from "@/mixins/view-module";
-    import returnGoodsModel from "../modules-return/model-return-goods";
+    // import exammine from '../modules-return/model-exammine.vue'
+    import confirmGoodsModel from '../modules-return/model-confirm-goods.vue'
     import returnMoneyModel from "../modules-return/model-return-money";
+    
     export default {
         mixins: [mixinViewModule],
         data() {
@@ -151,7 +157,9 @@
                 totalPage: 0,
                 dataListLoading: false,
                 // detailOrList: true,
-                returnGoodsVisible:false,
+                // exammineVisible:false,
+                confirmGoodsVisible:false,
+                // returnGoodsVisible:false,
                 returnMoneyVisible:false,
                 goodsData: [], //售后商品table
                 saleGoods: [], //售后申请数据
@@ -160,21 +168,21 @@
                     currentPageSize: 10 //每页显示的条数
                 },
                 statusRules: function(row, column) {
-                    return row.aftersaleStatus == 10 ? (
+                    return row.status == 10 ? (
                         <el-tag type="danger">待审核</el-tag>
-                ) : row.aftersaleStatus == 20 ? (
+                ) : row.status == 20 ? (
                         <el-tag type="info">待退货</el-tag>
-                ) : row.aftersaleStatus == 30 ? (
+                ) : row.status == 30 ? (
                         <el-tag type="warning">待入库</el-tag>
-                ) : row.aftersaleStatus == 40 ? (
+                ) : row.status == 40 ? (
                         <el-tag type="warning">待退款</el-tag>
-                ) : row.aftersaleStatus == 50 ? (
+                ) : row.status == 50 ? (
                         <el-tag type="success">退款中</el-tag>
-                ) : row.aftersaleStatus == 60 ? (
+                ) : row.status == 60 ? (
                         <el-tag type="info">退款完成</el-tag>
-                ) : row.aftersaleStatus == 70 ? (
+                ) : row.status == 70 ? (
                         <el-tag type="warning">退款失败</el-tag>
-                ) : row.aftersaleStatus == 80 ? (
+                ) : row.status == 80 ? (
                         <el-tag type="warning">售后取消</el-tag>
                 ) : (<span></span>);
                 }
@@ -182,12 +190,13 @@
         },
         components: { 
             Bread,
-            returnGoodsModel,
+            // exammine,
+            confirmGoodsModel,
             returnMoneyModel,
-
         },
         methods: {
              orderDetFn(row){
+                 row.id = row.orderSn
                 this.$emit("orderDetFn",row);
             },
              afterSaleDetailFn(row){
@@ -216,31 +225,57 @@
                 this.getDataList();
             },
             //查看详情
-            handleGoodDet(id) {
-                const obj = {
-                    aftersaleSn: id
-                };
-                returnDetail(obj).then(res => {
-                    if (res.code == 200) {
-                        this.isOrderDet = false;
-                        console.log(res.data);
-                        this.aftersale = res.data.aftersaleApplyDTO;
-                        this.saleGoods = res.data.aftersaleGoodsDTOList;
-                        this.returnInfo = res.data.aftersaleReturnDTO;
-                        this.saleAuditLog = res.data.aftersaleAuditLogDTOList[0]; //商家审核数据
-                        this.adminAuditLog = res.data.aftersaleAuditLogDTOList[1] ||''; //平台审核数据
-                        this.logList = res.data.aftersaleLogListDTOList; //操作日志
-                        this.piclist = this.aftersale.aftersalePics.split(",");
-                    } else {
-                        this.$message({
-                            type: "warning",
-                            message: res.msg
-                        });
-                    }
-                });
-            },
+            // handleGoodDet(id) {
+            //     const obj = {
+            //         aftersaleSn: id
+            //     };
+            //     returnDetail(obj).then(res => {
+            //         if (res.code == 200) {
+            //             this.isOrderDet = false;
+            //             console.log(res.data);
+            //             this.aftersale = res.data.aftersaleApplyDTO;
+            //             this.saleGoods = res.data.aftersaleGoodsDTOList;
+            //             this.returnInfo = res.data.aftersaleReturnDTO;
+            //             this.saleAuditLog = res.data.aftersaleAuditLogDTOList[0]; //商家审核数据
+            //             this.adminAuditLog = res.data.aftersaleAuditLogDTOList[1] ||''; //平台审核数据
+            //             this.logList = res.data.aftersaleLogListDTOList; //操作日志
+            //             this.piclist = this.aftersale.aftersalePics.split(",");
+            //         } else {
+            //             this.$message({
+            //                 type: "warning",
+            //                 message: res.msg
+            //             });
+            //         }
+            //     });
+            // },
             // 审核
-            
+            // exammineFn(row){
+            //     this.exammineVisible = true;
+            //     this.$nextTick(() => {
+            //        this.$refs.exammineCompon.init(row)
+            //     })
+            // },
+            // 确认收货
+            confirmGoodsFn(row){
+                this.confirmGoodsVisible = true;
+                this.$nextTick(() => {
+                   this.$refs.confirmGoodsCompon.init(row)
+                })
+            },
+            // // 同意退款
+            // returnGoodsFn(row){
+                // this.returnGoodsVisible = true;
+                // this.$nextTick(() => {
+                //    this.$refs.returnGoodsCompon.init(row)
+                // })
+            // },
+            // 同意退货
+             returnMoneyFn(row){
+                this.returnMoneyVisible = true;
+                this.$nextTick(() => {
+                   this.$refs.returnMoneyCompon.init(row)
+                })
+            },
 
         }
     };

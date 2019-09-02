@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Bread :breaddata="breaddata"></Bread>
+        <Bread :breaddata="breaddata" @changePage="changePage" :index="'1'"></Bread>
         <div class="mod-sys__dict">
             <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getData()">
                 <el-form-item label="词典名称：">
@@ -9,24 +9,16 @@
                 <el-form-item>
                     <el-button type="primary" @click="getData()">搜索</el-button>
                     <el-button @click="reset()">重置</el-button>
-                    <el-button type="primary" @click="">添加词典</el-button>
                 </el-form-item>
-                <br />
             </el-form>
-
-            <!--            <el-form>-->
-            <!--                <el-form-item>-->
-            <!--                    <el-button v-if="$hasPermission('sys:dict:save')" type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>-->
-            <!--                    <el-button v-if="$hasPermission('sys:dict:delete')" type="danger"  plain @click="deleteHandle()">{{'批量' + $t('deleteBatch') }}</el-button>-->
-            <!--                </el-form-item>-->
-            <!--            </el-form>-->
+            <el-button type="primary" @click="">添加词典</el-button>
             <el-table
                     v-loading="dataListLoading"
                     :data="dataList"
                     border
                     @selection-change="dataListSelectionChangeHandle"
                     @sort-change="dataListSortChangeHandle"
-                    style="width: 100%;">
+                    style="width: 100%;margin-top: 10px;">
                 <el-table-column
                         type="index"
                         prop="$index"
@@ -158,7 +150,10 @@
                     dictName: ''
                 };
                 this.getData();
-            }
+            },
+            changePage(){
+                this.$emit("wordList");
+            },
         }
     }
 </script>

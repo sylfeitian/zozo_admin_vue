@@ -59,6 +59,8 @@
                 border=""
                 v-loading="dataListLoading"
                 style="width: 100%;margin-top:20px;"
+                @selection-change="handleSelectionChange"
+                ref="multipleTable"
         >
             <el-table-column type="selection" width="70"></el-table-column>
             <el-table-column prop="idJp" label="ID" align="center"></el-table-column>
@@ -71,13 +73,9 @@
                     >
                 </template>
             </el-table-column>
-            <el-table-column prop="titleJp" label="标题" align="center"></el-table-column>
-            <el-table-column prop="shopName" label="店铺" align="center"></el-table-column>
-            <el-table-column prop="itemsIdList " label="相关商品" align="center">
-                <template slot-scope="scope">
-                    <span>{{scope.row.itemsIdList.length}}</span>
-                </template>
-            </el-table-column>
+            <el-table-column prop="title" label="标题" align="center"></el-table-column>
+            <el-table-column prop="shopNameCn" label="店铺" align="center"></el-table-column>
+            <el-table-column prop="goodsCount" label="相关商品" align="center"></el-table-column>
             <el-table-column prop="showWeb" label="发布状态" align="center">
                 <template slot-scope="scope">
                     <el-tag v-if="scope.row.showWeb == 1" type="success">已发布</el-tag>
@@ -85,9 +83,9 @@
                     <el-tag v-else type="info">取消发布</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column prop="isOpen" label="日本发布状态" align="center">
+            <el-table-column prop="showWebJp" label="日本发布状态" align="center">
                 <template slot-scope="scope">
-                    <el-tag v-if="scope.row.isOpen == 1" type="success">已发布</el-tag>
+                    <el-tag v-if="scope.row.showWebJp == 1" type="success">已发布</el-tag>
                     <el-tag v-else type="info">取消发布</el-tag>
                 </template>
             </el-table-column>
@@ -106,9 +104,9 @@
         </el-table>
         <div class="bottomFun">
             <div class="bottomFunLeft">
-                <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                <el-select v-model="dataForm.paymentStatus" placeholder="批量操作" style="margin-left: 10px;width: 140px;">
-                    <el-option label="批量发布" value="0"></el-option>
+                <el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+                <el-select v-model="selectVal" @change="cotrolGoodsShow(selectVal)" placeholder="批量操作" style="margin-left: 10px;width: 140px;">
+                    <el-option label="批量发布"  value="0"></el-option>
                     <el-option label="取消批量发布" value="1"></el-option>
                 </el-select>
             </div>
@@ -130,7 +128,7 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import { getStoreNewspage } from '@/api/url';
-    import { storeNewsPutoperating } from '@/api/api';   //发布/取消发布
+    import { storeNewsPutoperating,storeNewsPutoperatingAll } from '@/api/api';   //发布/取消发布
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -147,6 +145,8 @@
                 activeName: "",
                 breaddata: [ "内容管理", "店铺新闻管理"],
                 dataForm: {},
+                selectVal:"",
+                multipleSelection:[],
                 value: '',
                 dataList: [],
                 dataListLoading: false,
@@ -159,6 +159,7 @@
                 startPaymentTime: "",
                 isIndeterminate: false,
                 checkAll: false,
+                currentIndex:'',
             }
         },
         components: {
@@ -252,10 +253,58 @@
 
                 }).catch(() => {});
             },
+            cotrolGoodsShow(type){
+                var ids = this.getIds();
+                var obj = {
+                    ids:ids,
+                    operating:type==1?0:1,
+                }
+                var msg = ""
+                type==1?msg="取消发布":msg="发布"
+                this.$confirm('是否'+msg+'该分组?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    storeNewsPutoperatingAll(obj).then((res)=>{
+                        if(res.code==200){
+                            this.getDataList();
+                            this.$message({
+                                message:res.msg,
+                                type: 'success',
+                                duration: 1500,
+                            })
+                        }else{
+                            this.$message({
+                                message:res.msg,
+                                type: 'error',
+                                duration: 1500,
+                            })
+                        }
+                    })
+
+                }).catch(() => {});
+            },
+            getIds(){
+                var ids= [];
+                console.log(this.multipleSelection);
+                this.multipleSelection.forEach((item,index)=>{
+                    if("object" == typeof(item)){
+                        ids.push(item.id);
+                    }else{
+                        ids.push(id);
+                    }
+                })
+                return ids;
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+                if(this.multipleSelection.length == 10) this.checkAll = true;
+                else this.checkAll = false;
+            },
             handleCheckAllChange(val) {
-                this.checkednodeslist = val ? this.dataList : [];  //dataList  nodeslist
-                this.isIndeterminate = false;
-                console.log(this.checkednodeslist + '当前选中的复选框')
+                if(val) this.$refs.multipleTable.toggleAllSelection();
+                else this.$refs.multipleTable.clearSelection();
             },
         }
     }
