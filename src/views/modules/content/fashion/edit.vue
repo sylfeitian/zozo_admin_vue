@@ -38,7 +38,22 @@
                     <span>{{dataForm.title}}</span>
                 </el-form-item>
                 <el-form-item label="详情：" style="height: 100%!important;">
-                    <span>{{dataForm.shopFashionContentsVOList}}</span>
+                    <template slot-scope="scope">
+                        <div v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
+                            <div style="height: 20px;"></div>
+                            <div class="contentChild" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
+                                {{v.text}}
+                            </div>
+                            <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
+                                <div class="goodsPropsWrap">
+                                    <div class="goodsImg">
+                                        <img :src="v.imageUrl" alt=""/>
+                                    </div>
+                                    <div v-if="v.typeId=='4'">{{v.text}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
                 </el-form-item>
             </el-form>
         </el-col>

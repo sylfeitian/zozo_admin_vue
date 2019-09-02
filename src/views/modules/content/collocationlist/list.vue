@@ -91,12 +91,27 @@
             <el-table-column prop="totalViewsNum" label="浏览量" align="center"></el-table-column>
             <el-table-column label="操作" width="150" align="center">
                 <template slot-scope="scope">
-                    <el-button @click.native.prevent="showDetail(scope.row)"type="text"size="mini">查看</el-button>
-                    <el-button @click.native.prevent="addOrAdit(scope.row)"type="text"size="mini">编辑</el-button>
+                    <el-button @click.native.prevent="showDetail(scope.row)" type="text" size="mini">查看</el-button>
+                    <el-button @click.native.prevent="addOrAdit(scope.row)" type="text" size="mini">编辑</el-button>
                     <el-button @click.native.prevent="forbitHandle(scope.$index,scope.row)"type="text"size="mini">
                         <span v-if="scope.row.sate==1" class="artdisable">{{scope.$index==currentIndex&&forbitLoading?"取消发布中..":"取消发布"}}</span>
                         <span v-else class="artstart">{{scope.$index==currentIndex && forbitLoading?"发布中..":"发布"}}</span>
                     </el-button>
+                    <el-button @click.native.prevent="dialogTableVisible = true" type="text" size="mini">管理风格标签</el-button>
+                    <el-dialog title="管理风格标签" :visible.sync="dialogTableVisible">
+                        <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
+                            <el-form-item label="关联风格标签：">
+                                <el-input v-model="styleName" ></el-input>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
+                            </el-form-item>
+                        </el-form>
+                        <div slot="footer" class="dialog-footer">
+                            <el-button @click="dialogTableVisible = false">取 消</el-button>
+                            <el-button type="primary" @click="dialogTableVisible = false">确 定</el-button>
+                        </div>
+                    </el-dialog>
                 </template>
             </el-table-column>
         </el-table>
@@ -141,7 +156,9 @@
 			        deleteIsBatchKey: 'id'
 			    },
                 activeName: "",
+                dialogTableVisible:false,
                 breaddata: [ "内容管理","搭配集合管理"],
+                styleName:"",
                 dataForm: {
                 	idJp:null,
                 	title:null,
