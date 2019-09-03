@@ -1,4 +1,4 @@
-\n// import http from '@/utils/http'
+// import http from '@/utils/http'
 /**
  * 这里是查询的url，用了mixin里面封装的查询
  *
