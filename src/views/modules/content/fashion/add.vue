@@ -113,7 +113,7 @@
 <script>
     import imgCropper from "@/components/model-photo-cropper";
     import Bread from "@/components/bread";
-    import { uploadPicBase64,savefashiondetail } from '@/api/api';
+    import { getfashiondetail,uploadPicBase64,savefashiondetail } from '@/api/api';
     import quillEditorImg from "@/components/quillEditor";
     import { getGoodscspage } from '@/api/url';
     import mixinViewModule from '@/mixins/view-module'
@@ -174,6 +174,20 @@
             Bread
         },
         methods: {
+            init(row){
+                this.$nextTick(()=>{
+                    if(row){
+                        var obj  = {
+                            id:row.id
+                        }
+                        getfashiondetail(obj).then((res)=>{
+                            if(res.code == 200){
+                                this.addDataForm = res.data;
+                            }
+                        })
+                    }
+                })
+            },
             artmessageContent(messageContent,i){
                 if(this.content[i]) this.content[i].text = messageContent;
             },
