@@ -114,5 +114,8 @@
 </script>
 
 <style scoped>
-   
+   .el-button + .el-button {
+	    margin-right: 0px;
+	    margin-left: 20px;
+	}
 </style>

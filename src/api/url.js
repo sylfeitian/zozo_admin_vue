@@ -319,3 +319,22 @@ export const deleteShophotkeywordUrl = `${base}/shophotkeyword`;
 //消息列表分页  
 export const getmessagepage = `${base}/shopmessagetemplate/messagepage`;
 
+//查看库存----------------------------------------------------------------------------------------------------
+//查看库存分类  
+export const getdatagoods = `${base}/stock/goods`;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

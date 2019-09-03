@@ -69,7 +69,7 @@
                 <p style="margin-left: -100px;">价格设置</p>
             </el-form-item>
             <el-form-item label="今日汇率：" prop="" :label-width="formLabelWidth">
-                <p style="margin-top: 10px;padding: 2px 15px;background: #f1deab;display: inline-block;">{{0.063}}</p>
+                <p style="margin-top: 10px;padding: 2px 15px;background: #f1deab;display: inline-block;">{{ratenum}}</p>
             </el-form-item>
             <el-form-item label="上调幅度：" prop="riseIn" :label-width="formLabelWidth">
                 <el-input type="number" v-model="dataForm.riseIn" auto-complete="off" placeholder="请输入" style="width: 250px;"></el-input>
@@ -110,7 +110,7 @@
     import imgCropper from "@/components/model-photo-cropper";
     import { uploadPicBase64 } from '@/api/api'
     import quillEditorImg from "@/components/quillEditor"
-    import { addsetting } from "@/api/api"
+    import { addsetting ,gethomepageRate} from "@/api/api"
     
 	
     export default {
@@ -174,6 +174,7 @@
                 	riseIn:'', //上调幅度
                 	addPriceRate:'', //加价符
                 },
+                ratenum:'',
                 rate:[{
                 	start: 0,
                 	end:'',
@@ -237,7 +238,22 @@
             imgCropper,
             Bread
         },
+        created(){
+        	this.getrate();
+        },
         methods: {
+        	getrate(){
+        		gethomepageRate().then((res)=>{
+        			if(res && res.code == 200){
+        				console.log(res);
+        				this.ratenum =res.data.rate;
+        			}else{
+        				this.$message(res.msg)
+        			}
+        		}).catch(()=>{
+        			this.$message("服务器错误")
+        		})
+        	},
         	actendnum(val,start){
         		this.actendnumflag = true;
         		if(val > 100000000){
