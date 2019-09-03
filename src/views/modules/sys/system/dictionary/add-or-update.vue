@@ -98,10 +98,11 @@
                     if (valid) {
                         this.loading = true;
                         var obj = {
-                            "pid":  this.dataForm.pid,
+                            "pid":  this.row?this.row.pid:0,
                             "dictName":  this.dataForm.dictName,
                             "dictValue":  this.dataForm.dictValue
                         }
+                            alert(obj.pid);
                         if(this.row) obj.id = this.row.id
                         var fn = this.row?updateDict:dictSave;
                         fn(obj).then((res) => {

@@ -1,4 +1,4 @@
-// import http from '@/utils/http'
+\n// import http from '@/utils/http'
 /**
  * 这里是查询的url，用了mixin里面封装的查询
  *
@@ -324,6 +324,15 @@ export const deleteShophotkeywordUrl = `${base}/shophotkeyword`;
 export const getmessagepage = `${base}/shopmessagetemplate/messagepage`;
 
 
+//查看库存----------------------------------------------------------------------------------------------------
+//查看库存分类  
+export const getdatagoods = `${base}/stock/goods`;
+
+
+
+
+
+
 
 
 //中日词库-------------------------------------------------------------------------------------------------------------
@@ -337,9 +346,12 @@ export const exportSyslexicon = `${base}/syslexicon/export`;
 
 
 
+
 //操作日志-------------------------------------------------------------------------------------------------------------
 // 列表
 export const operationUrl = `${base}/log/operation/page`;
+
+
 
 
 
@@ -353,8 +365,12 @@ export const deleteDict = `${base}/dict/delete`;
 
 
 
+
+
+
 //异常日志-------------------------------------------------------------------------------------------------------------
 // 列表
 export const errorUrl = `${base}/log/error/page`;
 // 导出
 export const exportError= `${base}/log/error/export`;
+

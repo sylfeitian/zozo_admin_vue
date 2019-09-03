@@ -23,7 +23,7 @@
             <el-form-item label="尺码名称：" prop="name" :label-width="formLabelWidth">
                 <el-input v-model="dataForm.name" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item style="text-align: center;margin-left: -120px!important;">
+            <el-form-item style="text-align: center;">
                 <el-button type="primary" @click="dataFormSubmit('addForm')"
                            :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
                 <el-button @click="dataFormCancel()">取消</el-button>
@@ -100,7 +100,7 @@
                             this.loading = false;
                             let status = null;
                             if(res.code == "200"){
-                                status = "success";
+                                status = "提交成功";
                                 this.visible = false;
                                 this.$emit('searchDataList');
                                 this.closeDialog();

@@ -20,7 +20,7 @@
             <el-form-item label="尺码名称：">
                 <span>{{dataForm.name}}</span>
             </el-form-item>
-            <el-form-item label="关联尺码：" prop="cnSizeId" :label-width="formLabelWidth">
+            <el-form-item label="关联尺码：" prop="cnSizeId">
             	<el-select
 		          v-model="dataForm.cnSizeId"
 		          placeholder="请选择"
@@ -33,7 +33,7 @@
 		          </el-option>
 		        </el-select>
             </el-form-item>
-            <el-form-item style="text-align: center;">
+            <el-form-item style="text-align: center; ">
                 <el-button type="primary" @click="dataFormSubmit('addForm')"
                            :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
                 <el-button @click="dataFormCancel()">取消</el-button>
@@ -109,7 +109,7 @@
                             this.loading = false;
                             let status = null;
                             if(res.code == "200"){
-                                status = "success";
+                                status = "修改成功";
                                 this.visible = false;
                                 this.$emit('searchDataList');
                                 this.closeDialog();

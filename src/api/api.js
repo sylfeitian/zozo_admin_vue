@@ -5,6 +5,8 @@ let base = "/admin-api";
 let requestType = { headers: { 'content-type': 'application/x-www-form-urlencoded' } };
 //首页  
 export const gethomepage = params => { return http.get(`${base}/homepage`, params).then(res => res.data); };
+export const gethomepageRate = params => { return http.get(`${base}/homepage/recentlyRate`, params).then(res => res.data); };
+
 //广告--------------------------------------------------------------------------------------------------------------
 //添加禁用词   
 export const addadvertisingban = params => { return http.post(`${base}/advertisingban/add`, params).then(res => res.data); };
@@ -724,9 +726,12 @@ export const jdCatePage = params => { return http.get(`${base}/jdCate/page`, par
 // 根据父分类id查询子分类集合
 export const jdCateSubcollection = params => { return http.get(`${base}/jdCate/subcollection/${params.id}`, params).then(res => res.data); };
 //更新京东分类关联的中国分类
-export const updateCategory = params => { return http.post(`${base}/jdCate/updateCategory`, params).then(res => res.data); };
+export const updateCategory = params => { return http.post(`${base}/jdCate/updateCategory?id=${params.id}`, params.ids).then(res => res.data); };
 // 编辑页面信息回显
 export const backScanJdCate = params => { return http.get(`${base}/jdCate/${params.id}`, params).then(res => res.data); };
+// 查询中国分类，已经关联的中国分类不显示其中不包括该id关联的中国分
+export const categoryListById = params => { return http.get(`${base}/jdCate/category/${params.id}`, params).then(res => res.data); };
+
 
 // 售后-退货退款 仅退款 :-------------------------------------------------------------------------------------------------------------
 // 售后详情
@@ -752,6 +757,15 @@ export const listModule = params => { return http.get(`${base}/log/operation/lis
 export const operationPage = params => { return http.get(`${base}/log/operation/page`, params).then(res => res.data); };
 
 
+//查看库存----------------------------------------------------------------------------------------------------
+//查看库存分类  
+export const getdatagoods = params => { return http.get(`${base}/stock/goods`, params).then(res => res.data); };
+//获取品牌列表   
+export const getdatabrands = params => { return http.get(`${base}/stock/brands`, params).then(res => res.data); };
+//获取中国分类  
+export const getdatacategory = params => { return http.get(`${base}/stock/category`, params).then(res => res.data); };
+//获取店铺列表  
+export const getdatastores = params => { return http.get(`${base}/stock/stores`, params).then(res => res.data); };
 
 
 

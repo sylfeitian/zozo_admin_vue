@@ -1,7 +1,10 @@
 <template>
     <div>
         <Bread  :breaddata="breaddata"></Bread>
+<<<<<<< HEAD
         {{treeConfig.rows.length}}
+=======
+>>>>>>> 3eada9f6a30c82400cdcfc5ed73aed61a50a59ed
         <MyTableTree
                 v-loading="dataListLoading"
                 :children="'list'"
@@ -26,7 +29,7 @@
                 layout="total, sizes, prev, pager, next, jumper">
         </el-pagination>
         <!-- 弹窗, 新建 -->
-        <addEditData  v-if="addEditDataVisible" ref="addEditData" @searchDataList="getTree"></addEditData>
+        <addEditData  v-if="addEditDataVisible" ref="addEditData" @searchDataList="getData"></addEditData>
     </div>
 </template>
 
@@ -56,7 +59,7 @@
                 addEditDataVisible:false,
                 formData:{
                     page:1,
-                    limit: 10,
+                    limit: 60,
                     parentId:0
                 },
                 treeConfig: {
@@ -73,7 +76,7 @@
                         },
                         {
                             label: "关联分类",
-                            prop: 'categoryName',
+                            prop: 'name',
                             span: 9
                         }
                     ],
@@ -82,7 +85,7 @@
                     actions: [
                         {
                             type: "",//同el-button 的 type
-                            prop:  "关联分类",  //支持函数返回html 和 文本字符串
+                            prop:  this.returnRelat,  //支持函数返回html 和 文本字符串
                             action: this.addOrEditHandle //按钮点击触发的函数 回调函数是该行的row
                         }
                     ],
@@ -100,7 +103,7 @@
         watch:{
             'limit' (val) {
                 this.getData();
-            },
+            }
         },
         created() {
             this.getData();
@@ -112,25 +115,32 @@
                 })
             },
             getTree(res) {
-                // let obj = {
-                //     page:1,
-                //     limit:10
-                // };
-                // jdCatePage(obj).then(res => {
-                    //Promise后 对数据格式进行处理
-                    if (res.code == 200) {
-                        var data = res.data.list;
-                        console.log("--------------------");
-                        // this.total = res.data.total;
-                        console.log(data);
-                        //处理树形数据
-                        this.treeConfig.rows =  data;
-                        var dataStr = JSON.stringify(data);
-                        dataStr = dataStr.replace(/id/g,"label")
-                        // dataStr = dataStr.replace(/list/g,"children")
-                        this.treeConfig.rows = [].concat(JSON.parse(dataStr));
-                    }
-                // });
+                if (res.code == 200) {
+                    var data = res.data.list;
+                    console.log(data);
+                    //处理树形数据
+                    // this.treeConfig.rows =  data;
+                    data.forEach((item, index) => {
+                        console.log(item, index)
+                        item.label = item.id;
+                        item.name = "",
+                        item.level=1
+                        item.relateList && item.relateList.forEach((item2, index2) => {
+                            item.name += (" "+item2.name);
+                        });
+                    })
+                    this.treeConfig.rows = data
+
+                }
+            },
+            returnRelat(row){
+                console.log("......//////");
+                console.log(row);
+                if(row.level==1|| row.level==2){
+                    return "";
+                } else{
+                    return "关联分类";
+                }
             },
             // 新建和编辑
             addOrEditHandle(row){

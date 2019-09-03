@@ -7,6 +7,7 @@
         </el-form-item>
         <el-form-item v-else label="上级分类：">  
 	        <el-select
+	        	:disabled="selectdisabled"
 	          	v-model="dataForm.parentId"
 	         	placeholder="请选择"
 	          	loading-text="加载中···"
@@ -162,7 +163,7 @@
 	    return {
 	    	erjishow: true,  //二级没有评价类型
 	    	yijishow: true,  //一级不用上传图片
-//	    	selectdisabled: false, //是否可以选择一级分类
+	    	selectdisabled: false, //是否可以选择一级分类
 	    	imgtype:'',  //img的类型
 	    	checkList:[],  //分类性别多选
 	        datacategory: '', //选择分类
@@ -208,7 +209,6 @@
 	  		if(this.dataForm.parentId == 0){   //添加一级
 	  			this.erjishow = true;
 	  			this.yijishow = false;
-	  			this.dataForm.appraisal = null;  //一级没有评价类型
 	  		}else{
 	  			this.erjishow = false;
 	  			this.yijishow = true;
@@ -216,7 +216,17 @@
 	  	},
 	  	init(row){
 	  		this.showListVisible = true;
-	  		
+	  		if(row){
+	  			this.selectdisabled = true;
+	  			this.dataForm.appraisal = null;
+	  			console.log(row);
+	  			this.$nextTick(()=>{
+	  				this.goodKindList1 = [{ id: row.id, name: row.label }];
+	  				this.dataForm.parentId = row.id;
+	  			})
+	  		}else{
+	  			
+	  		}
 	  		categoryCn().then((res)=>{
 	  			if(res.code == 200){
 	  				console.log(res.data);
@@ -226,7 +236,7 @@
 //	  				this.goodKindList1.concat(res.data);
 	  				console.log(this.goodKindList1);
 	  			}else{
-	  				this.$message(res.msg);
+	  				this.$message("服务器错误");
 	  			}
 	  		}).catch(()=>{
 	  			this.$message("服务器错误");
@@ -239,18 +249,11 @@
 	  					this.goodKindList2.push(item);
 	  				})
 	  			}else{
-	  				this.$message(res.msg);
+	  				this.$message("服务器错误");
 	  			}
 	  		}).catch(()=>{
 	  			this.$message("服务器错误");
 	  		})
-	  		
-	  		if(row){
-	  			console.log(row);
-	  			this.$nextTick(()=>{
-	  				this.dataForm.parentId = row.id;
-	  			})
-	  		}
 	  	},
 	  	actuploaddata(){  //确定提交  
 	  		if(!this.dataForm.methodUrlshow[this.dataForm.methodUrlshow.length-1]){
@@ -270,7 +273,7 @@
 	  				console.log(res.data);
 	  				this.closeadd();
 	  			}else{
-	  				this.$message(res.msg);
+	  				this.$message("服务器错误");
 	  			}
 	  		}).catch(()=>{
 	  			this.$message("服务器错误");

@@ -467,6 +467,91 @@ export default {
             "createDate":"2019-04-29 18:57:16",
             "resourceList":null,
             "parentName":null
+        },
+        {
+            "id":"1067246875800000011",
+            "pid":"0",
+            "children":[
+                {
+                    "id":"1067246875800000081",
+                    "pid":"1067246875800000011",
+                    "children":[],
+                    "name":"广告位配置",
+                    "url":"collocation/adsense/adsenseList",
+                    "type":0,
+                    "icon":"icon-medicinebox",
+                    "permissions":"",
+                    "sort":0,
+                    "createDate":"2019-04-29 18:57:16",
+                    "resourceList":null,
+                    "parentName":null
+                },
+                {
+                    "id":"1067246875800000082",
+                    "pid":"1067246875800000011",
+                    "children":[],
+                    "name":"icon配置",
+                    "url":"collocation/iconConfig/index",
+                    "type":0,
+                    "icon":"icon-medicinebox",
+                    "permissions":"",
+                    "sort":0,
+                    "createDate":"2019-04-29 18:57:16",
+                    "resourceList":null,
+                    "parentName":null
+                },
+                {
+                    "id":"1067246875800000083",
+                    "pid":"1067246875800000011",
+                    "children":[],
+                    "name":"固定显示配置",
+                    "url":"collocation/flexedConfig/index",
+                    "type":0,
+                    "icon":"icon-medicinebox",
+                    "permissions":"",
+                    "sort":0,
+                    "createDate":"2019-04-29 18:57:16",
+                    "resourceList":null,
+                    "parentName":null
+                },
+                {
+                    "id":"1067246875800000084",
+                    "pid":"1067246875800000011",
+                    "children":[],
+                    "name":"购物车推荐商品配置",
+                    "url":"collocation/addCarGoods/index",
+                    "type":0,
+                    "icon":"icon-medicinebox",
+                    "permissions":"",
+                    "sort":0,
+                    "createDate":"2019-04-29 18:57:16",
+                    "resourceList":null,
+                    "parentName":null
+                },
+                {
+                    "id":"1067246875800000085",
+                    "pid":"1067246875800000011",
+                    "children":[],
+                    "name":"Q&A配置",
+                    "url":"collocation/QAconfig/index",
+                    "type":0,
+                    "icon":"icon-medicinebox",
+                    "permissions":"",
+                    "sort":0,
+                    "createDate":"2019-04-29 18:57:16",
+                    "resourceList":null,
+                    "parentName":null
+                }
+            ],
+            "name":"配置",
+            "url":"",
+            "type":0,
+            "icon":"icon-desktop",
+            "permissions":"",
+            "sort":5,
+            "createDate":"2019-04-29 18:57:16",
+            "resourceList":null,
+            "parentName":null
         }
     ]
 }
