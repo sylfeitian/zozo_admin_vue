@@ -1,7 +1,7 @@
 <template>
     <div>
         <Bread  :breaddata="breaddata"></Bread>
-
+        {{treeConfig.rows.length}}
         <MyTableTree
                 v-loading="dataListLoading"
                 :children="'list'"
@@ -97,13 +97,20 @@
             TableTreeColumn,
             addEditData
         },
+        watch:{
+            'limit' (val) {
+                this.getData();
+            },
+        },
         created() {
-            this.getDataList().then((res)=>{
-                this.getTree(res);
-            })
-
+            this.getData();
         },
         methods: {
+            getData(){
+                this.getDataList().then((res)=>{
+                    this.getTree(res);
+                })
+            },
             getTree(res) {
                 // let obj = {
                 //     page:1,
@@ -113,6 +120,7 @@
                     //Promise后 对数据格式进行处理
                     if (res.code == 200) {
                         var data = res.data.list;
+                        console.log("--------------------");
                         // this.total = res.data.total;
                         console.log(data);
                         //处理树形数据
@@ -121,16 +129,6 @@
                         dataStr = dataStr.replace(/id/g,"label")
                         // dataStr = dataStr.replace(/list/g,"children")
                         this.treeConfig.rows = [].concat(JSON.parse(dataStr));
-
-
-                        // console.log("treeTable数据:");
-                        // console.log(this.treeConfig.rows);
-
-                        // var dataArray = JSON.stringify(this.treeConfig.rows);
-                        // var dataArrayStr = dataArray.replace(/id/g,"value");
-                        // dataArrayStr = dataArrayStr.replace(/\[]/g,'""');
-                        // this.$parent.dataArray = JSON.parse(dataArrayStr);
-                        // console.log( dataArrayStr );
                     }
                 // });
             },

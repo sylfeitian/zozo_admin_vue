@@ -78,7 +78,7 @@
                     return resolve([])
                 };
                 let obj = {
-                    id:node.id
+                    id:node.data.id
                 };
                  jdCateSubcollection(obj).then(res => {
                     //Promise后 对数据格式进行处理

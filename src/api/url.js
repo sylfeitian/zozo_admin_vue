@@ -154,6 +154,9 @@ export const loginLog = `${base}/memberloginlog/page`;
 //会员等级删除
 export const gradeDel= `${base}/membergrade`;
 
+// zozo会员管理-------------------------------------------------------------------------------------------------------------------
+// zozo会员列表
+export const zozomemberPageUrl= `${base}/zozomember/page`;
 
 
 //财务管理
