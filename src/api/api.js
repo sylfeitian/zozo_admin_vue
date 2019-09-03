@@ -35,7 +35,8 @@ export const getsizecn = params => { return http.get(`${base}/sizejp/getsizecn`,
 //修改日本尺码  
 export const editsizejptag = params => { return http.put(`${base}/sizejp/edit?name=${params.name}&id=${params.id}`, params).then(res => res.data); };
 
-
+// 中国尺码-ZOZO
+export const sizeCnAddAndUpdate = params => { return http.put(`${base}/sizeCn`, params).then(res => res.data); };
 
 
 //内容------------------------------------------------------------------------------------
