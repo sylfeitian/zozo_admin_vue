@@ -80,7 +80,6 @@ export default {
       if (!route.meta.isTab) {
         return false
       }
-      alert(this.$store.state.contentTabs);
       var tab = this.$store.state.contentTabs.filter(item => item.name === route.name)[0]
       if (!tab) {
         tab = {
