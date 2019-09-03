@@ -15,7 +15,7 @@
                 label-width="120px"
         >
             <el-form-item label="选择一级分类：">
-                <el-select v-model="dataForm.conditionName" placeholder="请选择">
+                <el-select v-model="dataForm.firstCategory" placeholder="请选择">
                     <el-option
                             v-for="item in options"
                             :key="item.value"
@@ -25,7 +25,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="选择二级分类：">
-                <el-select v-model="dataForm.conditionName" placeholder="请选择">
+                <el-select v-model="dataForm.secondCategory" placeholder="请选择">
                     <el-option
                             v-for="item in options"
                             :key="item.value"

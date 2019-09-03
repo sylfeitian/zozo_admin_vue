@@ -1,4 +1,4 @@
-// import http from '@/utils/http'
+\n// import http from '@/utils/http'
 /**
  * 这里是查询的url，用了mixin里面封装的查询
  *
@@ -32,7 +32,8 @@ export const getlookfolderpage = `${base}/look/folder/page`;
 export const getlookfashionpage = `${base}/fashion/page`;
 //店铺新闻分页
 export const getStoreNewspage = `${base}/store/news/page`;
-
+//分页获取上架的商品列表
+export const getGoodscspage = `${base}/fashion/goodscspage`;
 //基础数据--------------------------------------------------------------------------------------------
 //中国尺码分页
 export const getsizeCndata = `${base}/sizeCn/page`;
@@ -189,7 +190,7 @@ export const returngoods = `${base}/aftersale/return/page`;
 //售后审核
 export const aftersales= `${base}/aftersale/apply/page`;
 //商品评价
-export const goodseva= `${base}/evaluate/page`;
+export const goodseva= `${base}/zozogoods/evaluate/page`;
 //商品评价--删除
 export const deleva= `${base}/evaluate`;
 //退货管理--导出
@@ -319,6 +320,7 @@ export const deleteShophotkeywordUrl = `${base}/shophotkeyword`;
 //消息列表分页  
 export const getmessagepage = `${base}/shopmessagetemplate/messagepage`;
 
+
 //查看库存----------------------------------------------------------------------------------------------------
 //查看库存分类  
 export const getdatagoods = `${base}/stock/goods`;
@@ -330,6 +332,32 @@ export const getdatagoods = `${base}/stock/goods`;
 
 
 
+//中日词库-------------------------------------------------------------------------------------------------------------
+// 列表
+export const syslexiconUrl = `${base}/syslexicon/page`;
+// 删除
+export const deleteSyslexicon = `${base}/syslexicon`;
+// 导出
+export const exportSyslexicon = `${base}/syslexicon/export`;
+
+
+
+
+
+//操作日志-------------------------------------------------------------------------------------------------------------
+// 列表
+export const operationUrl = `${base}/log/operation/page`;
+
+
+
+
+
+
+//字典管理-------------------------------------------------------------------------------------------------------------
+// 列表
+export const dictUrl = `${base}/dict/page`;
+// 删除
+export const deleteDict = `${base}/dict/delete`;
 
 
 
@@ -337,4 +365,9 @@ export const getdatagoods = `${base}/stock/goods`;
 
 
 
+//异常日志-------------------------------------------------------------------------------------------------------------
+// 列表
+export const errorUrl = `${base}/log/error/page`;
+// 导出
+export const exportError= `${base}/log/error/export`;
 

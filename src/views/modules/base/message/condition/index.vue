@@ -1,20 +1,20 @@
 <template>
     <div>
         <Bread :breaddata="breaddata"></Bread>
-        <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
+        <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" @keyup.enter.native="getDataList()" >
             <el-form-item label="分类条件ID：">
-                <el-input v-model="dataForm.conditionId" ></el-input>
+                <el-input v-model="dataFormShow.conditionId" ></el-input>
             </el-form-item>
             <el-form-item label="分类条件名称：">
-                <el-input v-model="dataForm.conditionName" ></el-input>
+                <el-input v-model="dataFormShow.conditionName" ></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="getDataList()">查询</el-button>
-                <el-button   class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
-                <el-button @click="addOrEditHandle()"  class="btn" type="primary" style="float: right;">导入信息</el-button>
+                <el-button  class="btn" type="primary" @click="getData()">查询</el-button>
+                <el-button   class="btn"type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
-        <el-table width="100%" :data="dataList" border v-loading="dataListLoading" style="width: 100%;">
+        <el-button @click="addOrEditHandle()"  class="btn" type="primary">导入信息</el-button>
+        <el-table width="100%" :data="dataList" border v-loading="dataListLoading" style="width: 100%;margin-top: 10px;">
             <el-table-column prop="conditionId" label="分类条件ID" align="center"></el-table-column>
             <el-table-column prop="japanCondition" label="日本分类条件名称" align="center"></el-table-column>
             <el-table-column prop="conditionName" label="分类条件名称" align="center"></el-table-column>
@@ -48,7 +48,7 @@
         data () {
             return {
                 breaddata: [ "商品管理", "分类条件信息"],
-                dataForm: {
+                dataFormShow: {
                     conditionId: "",//分类条件ID
                     conditionName: "",//分类条件信息名称
                 },
@@ -62,7 +62,16 @@
             addEditData
         },
         methods: {
+            getData(){
+                this.dataForm = {};
+                for(let key in this.dataFormShow){
+                    this.$set(this.dataForm,`${key}`,this.dataFormShow[key]);
+                }
+                console.log(this.dataForm);
+                this.getDataList()
+            },
             reset() {
+                this.dataFormShow.conditionName = "";//分类条件信息名称
                 this.dataForm.conditionName = "";//分类条件信息名称
                 this.getDataList();
             },
@@ -81,7 +90,5 @@
 </script>
 
 <style scoped>
-    .grayLine{
-        border-bottom: 0!important;
-    }
+
 </style>

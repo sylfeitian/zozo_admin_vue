@@ -38,7 +38,22 @@
                     <span>{{dataForm.title}}</span>
                 </el-form-item>
                 <el-form-item label="详情：" style="height: 100%!important;">
-                    <span>{{dataForm.shopFashionContentsVOList}}</span>
+                    <template slot-scope="scope">
+                        <div v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
+                            <div style="height: 20px;"></div>
+                            <div class="contentChild" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
+                                {{v.text}}
+                            </div>
+                            <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
+                                <div class="goodsPropsWrap">
+                                    <div class="goodsImg">
+                                        <img :src="v.imageUrl" alt=""/>
+                                    </div>
+                                    <div v-if="v.typeId=='4'">{{v.text}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
                 </el-form-item>
             </el-form>
         </el-col>
@@ -87,9 +102,9 @@
         <el-col :span="24">
             <div style="position: fixed;bottom: 0;margin: 0 auto;width: 85%;text-align: center;margin-top: 200px;">
                 <span style="font-size: 20px;margin-right: 20px;">状态：{{dataForm.state == 0?"未发布":dataForm.state == 1?"已发布":dataForm.state == 2?"取消发布 ":""}}</span>
-                <el-button class="btn" @click="reset('dataForm')">取消</el-button>
-                <el-button class="btn" @click="reset('dataForm')">保存</el-button>
-                <el-button class="btn" type="primary" @click="reset('dataForm')">保存并发布</el-button>
+                <el-button class="btn" @click="reset()">取消</el-button>
+                <el-button class="btn" @click="getData(0)">保存</el-button>
+                <el-button class="btn" type="primary" @click="getData(1)">保存并发布</el-button>
             </div>
         </el-col>
     </div>
@@ -153,7 +168,7 @@
             },
             getData(saveType){
                 let that = this;
-                this.dataForm.saveFlag = saveType;
+                this.dataForm.saveType = saveType;
                 this.dataForm.styles = this.ac;
                 savefashiondetail({saveFashionDTO:this.dataForm}).then((res)=>{
                     if(res.code == 200){

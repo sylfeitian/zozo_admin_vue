@@ -4,14 +4,14 @@
         <el-form
                 :inline="true"
                 class="grayLine topGapPadding"
-                :model="dataForm"
+                :model="dataFormShow"
                 @keyup.enter.native="getDataList()"
         >
             <el-form-item label="关键字搜索：">
-                <el-input v-model="dataForm.hotKeyword" placeholder="请输入关键词搜索" ></el-input>
+                <el-input v-model="dataFormShow.hotKeyword" placeholder="请输入关键词搜索" ></el-input>
             </el-form-item>
             <el-form-item label="搜索会员账号：">
-                <el-input v-model="dataForm.memberId" placeholder="请输入会员账号搜索" ></el-input>
+                <el-input v-model="dataFormShow.memberId" placeholder="请输入会员账号搜索" ></el-input>
             </el-form-item>
             <el-form-item label="搜索时间：">
                 <el-date-picker
@@ -34,7 +34,7 @@
                 :data="dataList"
                 border
                 v-loading="dataListLoading"
-                style="width: 100%;margin-top: 20px;"
+                style="width: 100%;margin-top: 10px;"
         >
             <el-table-column label="序号" width="140" align="center">
                 <template slot-scope="scope">
@@ -78,7 +78,7 @@
                     // deleteIsBatchKey: 'id'
                 },
                 breaddata: [ "搜索管理", "同义词管理"],
-                dataForm: {
+                dataFormShow: {
                     hotKeyword: "",//关键字搜索
                     memberId: "",
                     createDate: ""
@@ -96,13 +96,22 @@
         },
         methods: {
             getData() {
-                this.dataForm.startCreateDate = this.timeArr && this.timeArr[0];
-                this.dataForm.endCreateDate = this.timeArr && this.timeArr[1];
+                this.dataForm = {};
+                for(let key in this.dataFormShow){
+                    this.$set(this.dataForm,`${key}`,this.dataFormShow[key]);
+                }
+                console.log(this.dataForm);
+                this.dataFormShow.startCreateDate = this.timeArr && this.timeArr[0];
+                this.dataFormShow.endCreateDate = this.timeArr && this.timeArr[1];
                 this.getDataList();
             },
             // 重置
             reset() {
                 this.timeArr = [];
+                this.dataFormShow.startCreateDate = "";
+                this.dataFormShow.endCreateDate = "";
+                this.dataFormShow.hotKeyword = "";//关键字搜索
+                this.dataFormShow.memberId = "";
                 this.dataForm.startCreateDate = "";
                 this.dataForm.endCreateDate = "";
                 this.dataForm.hotKeyword = "";//关键字搜索

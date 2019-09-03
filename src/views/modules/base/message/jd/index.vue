@@ -1,7 +1,6 @@
 <template>
     <div>
         <Bread  :breaddata="breaddata"></Bread>
-
         <MyTableTree
                 v-loading="dataListLoading"
                 :children="'list'"
@@ -11,7 +10,7 @@
                 @check-change="checkChange"
                 @node-click="nodeClick"
                 @current-change="currentChange"
-                style="margin-top: 20px;"
+                style="margin-top: 10px;"
         >
         </MyTableTree>
 
@@ -26,7 +25,7 @@
                 layout="total, sizes, prev, pager, next, jumper">
         </el-pagination>
         <!-- 弹窗, 新建 -->
-        <addEditData  v-if="addEditDataVisible" ref="addEditData" @searchDataList="getTree"></addEditData>
+        <addEditData  v-if="addEditDataVisible" ref="addEditData" @searchDataList="getData"></addEditData>
     </div>
 </template>
 
@@ -37,7 +36,7 @@
     import Bread from "@/components/bread";
     import addEditData from './model-add-edit-data'
     import { jdCateUrl } from '@/api/url'
-    import { jdCateSubcollection } from '@/api/api'
+    import { jdCateSubcollection,jdCatePage } from '@/api/api'
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -45,6 +44,7 @@
                 mixinViewModuleOptions: {
                     getDataListURL: jdCateUrl,
                     getDataListIsPage: true,
+                    activatedIsNeed:false,
                     // exportURL: '/admin-api/log/login/export',
                     // deleteURL: deleteShopStyle,
                     deleteIsBatch: false,
@@ -55,7 +55,7 @@
                 addEditDataVisible:false,
                 formData:{
                     page:1,
-                    limit: 10,
+                    limit: 60,
                     parentId:0
                 },
                 treeConfig: {
@@ -72,7 +72,7 @@
                         },
                         {
                             label: "关联分类",
-                            prop: 'categoryName',
+                            prop: 'name',
                             span: 9
                         }
                     ],
@@ -81,7 +81,7 @@
                     actions: [
                         {
                             type: "",//同el-button 的 type
-                            prop:  "关联分类",  //支持函数返回html 和 文本字符串
+                            prop:  this.returnRelat,  //支持函数返回html 和 文本字符串
                             action: this.addOrEditHandle //按钮点击触发的函数 回调函数是该行的row
                         }
                     ],
@@ -96,37 +96,47 @@
             TableTreeColumn,
             addEditData
         },
+        watch:{
+            'limit' (val) {
+                this.getData();
+            }
+        },
         created() {
-            this.getTree();
+            this.getData();
         },
         methods: {
-            getTree() {
-                let obj = {
-                    id:this.formData.parentId
-                };
-                jdCateSubcollection(obj).then(res => {
-                    //Promise后 对数据格式进行处理
-                    if (res.code == 200) {
-                        var data = res.data;
-                        // this.total = res.data.total;
-                        console.log(data);
-                        //处理树形数据
-                        this.treeConfig.rows =  data;
-                        var dataStr = JSON.stringify(data);
-                        dataStr = dataStr.replace(/id/g,"label")
-                        // dataStr = dataStr.replace(/list/g,"children")
-                        this.treeConfig.rows = [].concat(JSON.parse(dataStr));
+            getData(){
+                this.getDataList().then((res)=>{
+                    this.getTree(res);
+                })
+            },
+            getTree(res) {
+                if (res.code == 200) {
+                    var data = res.data.list;
+                    console.log(data);
+                    //处理树形数据
+                    // this.treeConfig.rows =  data;
+                    data.forEach((item, index) => {
+                        console.log(item, index)
+                        item.label = item.id;
+                        item.name = "",
+                        item.level=1
+                        item.relateList && item.relateList.forEach((item2, index2) => {
+                            item.name += (" "+item2.name);
+                        });
+                    })
+                    this.treeConfig.rows = data
 
-                        // console.log("treeTable数据:");
-                        // console.log(this.treeConfig.rows);
-
-                        // var dataArray = JSON.stringify(this.treeConfig.rows);
-                        // var dataArrayStr = dataArray.replace(/id/g,"value");
-                        // dataArrayStr = dataArrayStr.replace(/\[]/g,'""');
-                        // this.$parent.dataArray = JSON.parse(dataArrayStr);
-                        // console.log( dataArrayStr );
-                    }
-                });
+                }
+            },
+            returnRelat(row){
+                console.log("......//////");
+                console.log(row);
+                if(row.level==1|| row.level==2){
+                    return "";
+                } else{
+                    return "关联分类";
+                }
             },
             // 新建和编辑
             addOrEditHandle(row){

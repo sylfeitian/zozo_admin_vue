@@ -9,6 +9,7 @@
 <script>
     import list from "./list"
     import orderDet from "../modules/orderDet"
+    import afterSaleDetail from "./afterSaleDetail"
     export default {
         data () {
             return {
@@ -21,7 +22,8 @@
         },
         components:{
             list,
-            orderDet
+            orderDet,
+            afterSaleDetail
         },
         methods:{
             orderDetFn(row){
@@ -39,12 +41,12 @@
                     this.$refs.listCompon.getDataList();
                 })
             },
-            afterSaleDetailFn(){
+            afterSaleDetailFn(row){
                 this.orderDetVisible = false;
                 this.mainVisible = false;
                 this.afterSaleDetailVisible = true;
                 this.$nextTick(()=>{
-                    this.$refs.afterSaleDetailCompon.init();
+                    this.$refs.afterSaleDetailCompon.init(row);
                 })
 
             }

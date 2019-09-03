@@ -4,17 +4,17 @@
         <el-form
                 :inline="true"
                 class="grayLine topGapPadding"
-                :model="dataForm"
+                :model="dataFormShow"
                 @keyup.enter.native="getDataList()"
         >
             <el-form-item label="店铺ID：">
-                <el-input v-model="dataForm.idJp" placeholder="请输入" ></el-input>
+                <el-input v-model="dataFormShow.idJp" placeholder="请输入" ></el-input>
             </el-form-item>
             <el-form-item label="店铺名称：">
-                <el-input v-model="dataForm.storeName" placeholder="请输入" ></el-input>
+                <el-input v-model="dataFormShow.storeName" placeholder="请输入" ></el-input>
             </el-form-item>
             <el-form-item  label="营业状态：">
-                <el-select v-model="dataForm.operateFlag" placeholder="请选择">
+                <el-select v-model="dataFormShow.operateFlag" placeholder="请选择">
                     <el-option
                             v-for="item in operateShopStore"
                             :key="item.id"
@@ -24,20 +24,28 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button class="btn" type="primary" @click="getDataList()">查询</el-button>
-                <el-button class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
+                <el-button class="btn" type="primary" @click="getData()">查询</el-button>
+                <el-button class="btn"type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
-        <el-button @click="" class="btn" type="primary" style="float: right;">导入店铺信息</el-button>
+        <el-button @click="" class="btn" type="primary">导入店铺信息</el-button>
         <el-table
                 width="100%"
                 :data="dataList"
                 border
                 v-loading="dataListLoading"
-                style="width: 100%;margin-top: 60px;"
+                style="width: 100%;margin-top: 10px;"
         >
             <el-table-column prop="idJp" label="店铺id" align="center"></el-table-column>
-            <el-table-column prop="storeLogo" label="店铺logo" align="center"></el-table-column>
+            <el-table-column prop="storeLogo" label="店铺logo" align="center">
+                <template slot-scope="scope">
+                    <img
+                            :src="scope.row.imageUrl | filterImgUrl"
+                            alt=""
+                            style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
+                    >
+                </template>
+            </el-table-column>
             <el-table-column prop="storeNameJp" label="店铺日本名称" align="center"></el-table-column>
             <el-table-column prop="storeNameGlo" label="全球名称" align="center"></el-table-column>
             <el-table-column prop="storeName" label="店铺中文名称" align="center"></el-table-column>
@@ -63,6 +71,7 @@
                             v-model="scope.row.recommendFlag"
                             active-color="#13ce66"
                             inactive-color="#ff4949"
+                            on-value="1"
                             @click="switchHandle('singe',scope.row)"
                     >
                     </el-switch>
@@ -73,7 +82,7 @@
                     <el-button type="text" @click.native.prevent="addHandle" size="mini">查看</el-button>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center">
+            <el-table-column label="操作" align="center" width="110px">
                 <template slot-scope="scope">
                     <el-button type="text" @click="editHandle(scope.$index, scope.row)" size="mini">编辑</el-button>
                     <el-button  @click="forbitHandle('singe',scope.row)" type="text" size="mini" >
@@ -122,7 +131,7 @@
                 value: true,
                 breaddata: [ "基础资料管理", "店铺管理"],
                 options: [],
-                dataForm: {
+                dataFormShow: {
                     id:"",
                     idJp: "",//店铺ID
                     storeName: "",//店铺名称
@@ -159,8 +168,19 @@
             editData
         },
         methods: {
+            getData(){
+                this.dataForm = {};
+                for(let key in this.dataFormShow){
+                    this.$set(this.dataForm,`${key}`,this.dataFormShow[key]);
+                }
+                console.log(this.dataForm);
+                this.getDataList()
+            },
             // 重置
             reset() {
+                this.dataFormShow.idJp = "";//店铺ID
+                this.dataFormShow.storeName = "";//店铺名称
+                this.dataFormShow.operateFlag = "";//营业状态
                 this.dataForm.idJp = "";//店铺ID
                 this.dataForm.storeName = "";//店铺名称
                 this.dataForm.operateFlag = "";//营业状态
@@ -276,8 +296,5 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "@/element-ui/theme-variables.scss";
-    .grayLine {
-        border-bottom: 0!important;
-    }
+
 </style>

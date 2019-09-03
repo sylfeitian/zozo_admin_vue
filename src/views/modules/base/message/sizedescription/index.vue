@@ -1,16 +1,16 @@
 <template>
     <div>
         <Bread  :breaddata="breaddata"></Bread>
-        <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
+        <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" @keyup.enter.native="getDataList()" >
             <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
             <el-form-item label="尺码项目名称：">
-                <el-input v-model="dataForm.name"></el-input>
+                <el-input v-model="dataFormShow.name"></el-input>
             </el-form-item>
             <el-form-item label="尺码ID：">
-                <el-input v-model="dataForm.idJp"></el-input>
+                <el-input v-model="dataFormShow.idJp"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button class="btn" type="primary" @click="getDataList()">查询</el-button>
+                <el-button class="btn" type="primary" @click="getData()">查询</el-button>
                 <el-button class="btn"type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
@@ -63,7 +63,7 @@
 		          deleteIsBatchKey: 'id'
 			    },
                 breaddata: [ "商品管理", "尺码项目名称信息"],
-                dataForm: {
+                dataFormShow: {
                     name: "",//尺码项目名称
                     idJp: "", //ID
                 },
@@ -79,8 +79,19 @@
             addEditData
         },
         methods: {
+            getData(){
+                this.dataForm = {};
+                for(let key in this.dataFormShow){
+                    this.$set(this.dataForm,`${key}`,this.dataFormShow[key]);
+                }
+                console.log(this.dataForm);
+                this.getDataList()
+            },
             reset() {
-                this.dataForm.sizeName = "";
+                this.dataFormShow.name = "";
+                this.dataFormShow.idJp = "";
+                this.dataForm.name = "";
+                this.dataForm.idJp = "";
                 this.getDataList();
             },
             // 新建和编辑

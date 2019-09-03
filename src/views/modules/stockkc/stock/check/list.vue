@@ -103,6 +103,7 @@
         mixins: [mixinViewModule],
         data () {
             return {
+
             	mixinViewModuleOptions: {
 		          getDataListURL: getdatagoods,
 		          getDataListIsPage: true,
@@ -113,7 +114,7 @@
 		          deleteIsBatchKey: 'id'
 			    },
                 breaddata: [ "商品管理", "商品列表"],
-                dataFormShow: {
+                dataFormShow: {  
                     goodsName: "",//商品名称/商品货号
                     idJp:"",  //商品id
                     brandName: "",//品牌名称
@@ -121,6 +122,8 @@
                     goodsTypeId: "",//中国分类id
                     isSoldOut: "",//是否可售
                 },
+                 dataForm: {
+				},
                 storeName:[],  //店铺名称
                 goodsTypeId: [],//中国分类id
                 brandName: [],//品牌名称

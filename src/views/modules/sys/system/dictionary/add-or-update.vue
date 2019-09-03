@@ -17,8 +17,8 @@
             <el-form-item label="字典名称：" prop="dictName" :label-width="formLabelWidth">
                 <el-input v-model="dataForm.dictName" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item label="字典编码：" prop="dictCode" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.dictCode" auto-complete="off"></el-input>
+            <el-form-item label="字典编码：" prop="dictValue" :label-width="formLabelWidth">
+                <el-input v-model="dataForm.dictValue" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
                 <el-button  @click="dataFormCancel()">取消</el-button>
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+    import { backScanDict,dictSave,updateDict } from '@/api/api'
     export default {
         data () {
             return {
@@ -37,18 +38,16 @@
                 loading : false,
                 dataForm: {
                     dictName: "",
-                    dictCode: ""
+                    dictValue: ""
                 },
                 dataRule : {
                     dictName : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ],
-                    dictCode : [
+                    dictValue : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ]
                 },
-                optionsApplication: [],
-                optionsRight: [],
                 title:'',
                 row:"",
                 formLabelWidth: '120px'
@@ -62,6 +61,7 @@
             init (row) {
                 this.visible = true;
                 this.row = row;
+                console.log(row)
                 if(row){
                     this.title="编辑词典";
                     this.backScan();
@@ -74,23 +74,23 @@
                     // this.getApplyPullList();
                 })
             },
-            //编辑回显
-            // backScan(){
-            //     var obj  = {
-            //         id:this.row.id,
-            //         colorsId:this.row.colorsId,
-            //         colorGroup:this.row.colorGroup,
-            //         colorsName:this.row.colorsName,
-            //     }
-            //     backScanAftertemplate(obj).then((res)=>{
-            //         if(res.code == 200){
-            //             Object.assign(this.dataForm,res.data);
-            //
-            //         }else{
-            //
-            //         }
-            //     })
-            // },
+            // 编辑回显
+            backScan(){
+                var obj  = {
+                    pid:this.row.pid,
+                    id:this.row.id,
+                    dictName:this.row.dictName,
+                    dictValue:this.row.dictValue,
+                }
+                backScanDict(obj).then((res)=>{
+                    if(res.code == 200){
+                        Object.assign(this.dataForm,res.data);
+
+                    }else{
+
+                    }
+                })
+            },
             // 提交
             dataFormSubmit(formName){
                 // alert([this.dataForm.name,this.dataForm.domainAddress]);
@@ -98,13 +98,13 @@
                     if (valid) {
                         this.loading = true;
                         var obj = {
-                            "japanGroup":  this.dataForm.japanGroup,
-                            "colorGroup":  this.dataForm.colorGroup,
-                            "japanName":  this.dataForm.japanName,
-                            "colorsName":  this.dataForm.colorsName,
+                            "pid":  this.row?this.row.pid:0,
+                            "dictName":  this.dataForm.dictName,
+                            "dictValue":  this.dataForm.dictValue
                         }
+                            alert(obj.pid);
                         if(this.row) obj.id = this.row.id
-                        //var fn = this.row?updateBrand:addBrand;
+                        var fn = this.row?updateDict:dictSave;
                         fn(obj).then((res) => {
                             this.loading = false;
                             // alert(JSON.stringify(res));
@@ -136,7 +136,7 @@
                 this.closeDialog();
             },
             closeDialog() {
-                this.$parent.addEditDataVisible = false;
+                this.$parent.addOrUpdateVisible = false;
             },
         }
     }
