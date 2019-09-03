@@ -3,10 +3,10 @@
         <Bread :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
             <el-form-item label="ID：">
-                <el-input v-model="dataForm.id" ></el-input>
+                <el-input v-model="dataForm.idJp" ></el-input>
             </el-form-item>
             <el-form-item label="用户：">
-                <el-input v-model="dataForm.nickname" ></el-input>
+                <el-input v-model="dataForm.nickName" ></el-input>
             </el-form-item>
             <el-form-item label="日本发布时间：">
                 <el-date-picker

@@ -71,6 +71,9 @@ export const savefashiondetail = params => { return http.post(`${base}/fashion`,
 export const saveStoreNewsdetail = params => { return http.post(`${base}/store/news`, params).then(res => res.data); };
 //店铺新闻保存
 export const saveStoreNewsdetailOne = params => { return http.post(`${base}/store/news/save`, params).then(res => res.data); };
+//获取风格标签名称
+export const getStyleName = params => { return http.get(`${base}/look/folder/stylename`, params).then(res => res.data); };
+
 
 
 //仓库管理--------------------------------------------------------------------------------------------------------
@@ -709,9 +712,14 @@ export const backScanShophotkeyword = params => { return http.get(`${base}/shoph
 
 
 //消息-------------------------------------------------------------------------------------------------------------
-//消息列表分页  
-export const getmessagepage = params => { return http.get(`${base}/shopmessagetemplate/messagepage`, params).then(res => res.data); };
-
+//模板分页列表
+export const getmessagepage = params => { return http.get(`${base}/shopmessagetemplate/page`, params).then(res => res.data); };
+//修改模板列表状态
+export const putMessageState = params => { return http.put(`${base}/shopmessagetemplate`, params).then(res => res.data); };
+//消息列表删除
+export const deleteMessage = params => { return http.delete(`${base}/shopmessagetemplate`, params).then(res => res.data); };
+//接收人保存
+export const saveMessage = params => { return http.post(`${base}/shopmessagetemplate/recesave`, params).then(res => res.data); };
 
 
 
