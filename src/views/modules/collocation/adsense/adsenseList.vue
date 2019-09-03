@@ -195,7 +195,7 @@
                     prop="address"
                     label="操作">
                     <template slot-scope="scope">
-                        <el-radio :label="scope.row.id" @change="gettem($event,scope.row)">备选项</el-radio>
+                        <el-radio @change="gettem($event,scope.row)"></el-radio>
                     </template>
                 </el-table-column>
             </el-table>

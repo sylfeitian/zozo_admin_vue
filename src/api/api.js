@@ -5,6 +5,8 @@ let base = "/admin-api";
 let requestType = { headers: { 'content-type': 'application/x-www-form-urlencoded' } };
 //首页  
 export const gethomepage = params => { return http.get(`${base}/homepage`, params).then(res => res.data); };
+export const gethomepageRate = params => { return http.get(`${base}/homepage/recentlyRate`, params).then(res => res.data); };
+
 //广告--------------------------------------------------------------------------------------------------------------
 //添加禁用词   
 export const addadvertisingban = params => { return http.post(`${base}/advertisingban/add`, params).then(res => res.data); };
@@ -763,6 +765,15 @@ export const listModule = params => { return http.get(`${base}/log/operation/lis
 export const operationPage = params => { return http.get(`${base}/log/operation/page`, params).then(res => res.data); };
 
 
+//查看库存----------------------------------------------------------------------------------------------------
+//查看库存分类  
+export const getdatagoods = params => { return http.get(`${base}/stock/goods`, params).then(res => res.data); };
+//获取品牌列表   
+export const getdatabrands = params => { return http.get(`${base}/stock/brands`, params).then(res => res.data); };
+//获取中国分类  
+export const getdatacategory = params => { return http.get(`${base}/stock/category`, params).then(res => res.data); };
+//获取店铺列表  
+export const getdatastores = params => { return http.get(`${base}/stock/stores`, params).then(res => res.data); };
 
 
 

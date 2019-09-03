@@ -2,36 +2,36 @@
   <el-card shadow="never" class="aui-card--fill">
     <div class="artborder artfirst">
     	 <span class='arttitle'>今日汇率：</span>
-    	 <span class="artnumber">0.063</span>
-    	 <span class="artmoney">1日元兑换{{}}人民币</span>
+    	 <span class="artnumber">{{rate}}</span>
+    	 <span class="artmoney">1日元兑换{{rate}}人民币</span>
     	 <span class="artgreen artpointer" @click="artgethistoryRate">查看历史汇率</span>
     	 <span class="artRefresh artpointer" @click="artrefresh"><i class="el-icon-refresh"></i> &nbsp;刷新</span>
     </div>
     <!-- secound -->
     <div class="artsecound">
     	 <div class="artborder artsecoundson">
-    	 	 <img src="@/assets/img/avatar.png" alt="" />
+    	 	 <img src="@/assets/img/order.png" alt="" />
     	 	 <div class="artcon">
     	 	 	<div>今日订单总数</div>
     	 	 	<div>{{ data && data.todayOrdersNum || 0}}</div>
     	 	 </div>
     	 </div>
     	 <div class="artborder artsecoundson">
-    	 	 <img src="@/assets/img/avatar.png" alt="" />
+    	 	 <img src="@/assets/img/moneytoday.png" alt="" />
     	 	 <div class="artcon">
     	 	 	<div>今日销售总数</div>
     	 	 	<div>{{ data && data.todayAmount || 0}}</div>
     	 	 </div>
     	 </div>
     	 <div class="artborder artsecoundson">
-    	 	 <img src="@/assets/img/avatar.png" alt="" />
+    	 	 <img src="@/assets/img/money.png" alt="" />
     	 	 <div class="artcon">
     	 	 	<div>昨日销售总数</div>
     	 	 	<div>{{ data && data.yesterdayAmount || 0}}</div>
     	 	 </div>
     	 </div>
     	 <div class="artborder artsecoundson">
-    	 	 <img src="@/assets/img/avatar.png" alt="" />
+    	 	 <img src="@/assets/img/trend.png" alt="" />
     	 	 <div class="artcon">
     	 	 	<div>近7天销售总数</div>
     	 	 	<div>{{ data && data.sevenAmount || 0}}</div>
@@ -113,7 +113,7 @@
 </template>
 
 <script>
-    import { gethomepage } from '@/api/api'
+    import { gethomepage, gethomepageRate } from '@/api/api'
     import filter from '@/utils/filter'
     import list from "./list"
     export default {
@@ -122,6 +122,7 @@
             	data:null,
             	timer:null,
             	dialogTableVisible: false,
+            	rate:'',
             }
         },
        	components: {
@@ -161,9 +162,21 @@
         		gethomepage().then((res)=>{
         			if(res && res.code == 200){
         				this.data = res.data;
+        			}else{
+        				this.$message(res.msg)
         			}
         		}).catch(()=>{
-        			
+        				this.$message(res.msg)
+        		})
+        		gethomepageRate().then((res)=>{
+        			if(res && res.code == 200){
+        				console.log(res);
+        				this.rate =res.data.rate;
+        			}else{
+        				this.$message(res.msg)
+        			}
+        		}).catch(()=>{
+        			this.$message(res.msg)
         		})
         	},
         },

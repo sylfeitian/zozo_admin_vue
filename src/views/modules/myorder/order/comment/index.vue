@@ -113,39 +113,43 @@
           {{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}
         </template>
 	  	</el-table-column>      
-      <el-table-column prop="specInfo" label="会员账号" align="center"></el-table-column>
-      <el-table-column prop="evaluateContent" label="订单号" align="center" min-width="150"></el-table-column>
+      <el-table-column prop="memberId" label="会员账号" align="center"></el-table-column>
+      <el-table-column prop="orderSn" label="订单号" align="center" min-width="150"></el-table-column>
       <el-table-column prop="memberName" label="商品主图" align="center">
           <template slot-scope="scope">
-            {{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}
+            <img :src="scope.row.imgUrl | filterImgUrl"  style="width:60px;height:60px" alt="">
           </template>
       </el-table-column>
-      <el-table-column prop="createDate" label="skuid" align="center"></el-table-column>
-      <el-table-column prop="evaluateState" label="商品名称" align="center" ></el-table-column>
-      <el-table-column prop="evaluateState" label="规格" align="center" ></el-table-column>
-      <el-table-column prop="evaluateState" label="订单评价" align="center" >
+      <el-table-column prop="goodsCsId " label="skuid" align="center"></el-table-column>
+      <el-table-column prop="goodsName " label="商品名称" align="center" ></el-table-column>
+      <el-table-column prop="" label="规格" align="center" ></el-table-column>
+      <el-table-column prop="access " label="订单评价" align="center" >
           <template slot-scope="scope">
-           <span v-if="scope.row.access==0">超赞</span>
-           <span v-else-if="scope.row.access==1">一般</span>
-           <span v-else-if="scope.row.access==2">满意</span>
+            <span v-if="scope.row.access==0">超赞</span>
+            <span v-else-if="scope.row.access==1">一般</span>
+            <span v-else-if="scope.row.access==2">满意</span>
           </template>
       </el-table-column>
 
        <el-table-column prop="evaluateState" label="评价星级" align="center" >
           <template slot-scope="scope">
-           {{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}
+            <span v-if="scope.row.sizeFeeling==0">合适</span>
+            <span v-else-if="scope.row.sizeFeeling==1">偏大</span>
+            <span v-else-if="scope.row.sizeFeeling==2">偏小</span>
           </template>
        </el-table-column>
 
-       <el-table-column prop="evaluateState" label="尺码感受" align="center" >
-          <template slot-scope="scope">
-            <span>{{scope.row.sizeFeeling}}</span>
+       <el-table-column prop="sizeFeeling" label="尺码感受" align="center" >
+           <template slot-scope="scope">
+            <span v-if="scope.row.sizeFeeling==0">合适</span>
+            <span v-else-if="scope.row.sizeFeeling==1">偏大</span>
+            <span v-else-if="scope.row.sizeFeeling==2">偏小</span>
           </template>
       </el-table-column>
 
       <el-table-column prop="evaluateContent " label="评论内容" align="center"> </el-table-column>
 
-      <el-table-column prop="evaluateState" label="评论时间" align="center"> </el-table-column>
+      <el-table-column prop="commentEndDate" label="评论时间" align="center"> </el-table-column>
 
       <el-table-column label="操作" min-width="100" align="center">
         <template slot-scope="scope">
@@ -164,11 +168,11 @@
       layout="total, sizes, prev, pager, next, jumper"
     ></el-pagination>
   </div>
-  <evaDet v-else @changeState="changeModel" :evaDetails="evaDetails"></evaDet>
+  <!-- <evaDet v-else @changeState="changeModel" :evaDetails="evaDetails"></evaDet> -->
 </template>
 <script>
 import Bread from "@/components/bread";
-import evaDet from "./evaDet.vue";
+// import evaDet from "./evaDet.vue";
 import { goodseva, deleva } from "@/api/url";
 import { msgReply, changeStatus, evaDets } from "@/api/api";
 import mixinViewModule from "@/mixins/view-module";
@@ -209,7 +213,10 @@ export default {
     };
   },
   created() {},
-  components: { Bread, evaDet },
+  components: { 
+    Bread, 
+    // evaDet 
+  },
   methods: {
     //详情
     handleEdit(index) {

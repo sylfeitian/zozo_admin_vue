@@ -113,6 +113,7 @@ export default {
     getCaptcha () {
       this.dataForm.uuid = getUUID()
       this.captchaPath = `${window.SITE_CONFIG['apiURL']}/auth/captcha?uuid=${this.dataForm.uuid}`
+      //  this.captchaPath = `${window.SITE_CONFIG['apiURL']}/${this.dataForm.uuid}`
     },
     // 表单提交
     dataFormSubmitHandle: debounce(function () {

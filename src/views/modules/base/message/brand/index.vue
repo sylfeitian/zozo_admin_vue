@@ -4,7 +4,7 @@
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" @keyup.enter.native="getDataList()" >
             <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
             <el-form-item label="品牌ID：">
-                <el-input v-model="dataFormShow.idJp" :change="check()"></el-input>
+                <el-input v-model="dataFormShow.idJp"></el-input>
             </el-form-item>
             <el-form-item label="品牌名称：">
                 <el-input v-model="dataFormShow.brandName" ></el-input>
@@ -94,11 +94,11 @@
         created () {
             this.getDataList();
         },
-        watch:{
-            check: function(){
-                this.idJp = this.idJp.replace(/[^\a-\z\A-\Z0-9]/g, '');
-            }
-        },
+        // watch:{
+        //     check: function(){
+        //         this.idJp = this.idJp.replace(/[^\a-\z\A-\Z0-9]/g, '');
+        //     }
+        // },
         methods: {
             getData(){
                 this.dataForm = {};
