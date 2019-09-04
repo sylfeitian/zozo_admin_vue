@@ -20,11 +20,11 @@
             word
         },
         methods:{
-            addWord(id){
+            addWord(row){
                 this.wordVisible = true;
                 this.mainVisible = false;
                 this.$nextTick(()=>{
-                    this.$refs.wordCompon.init(id);
+                    this.$refs.wordCompon.init(row);
                 })
             },
             wordList(){

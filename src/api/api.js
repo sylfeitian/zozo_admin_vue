@@ -802,7 +802,7 @@ export const backScanSyslexicon = params => { return http.get(`${base}/syslexico
 // 验证字典名称或字典编码已经存在
 export const existsDict = params => { return http.get(`${base}/dict/exists`, params).then(res => res.data); };
 // 字典分类数据
-export const dictList = params => { return http.get(`${base}/dict/list`, params).then(res => res.data); };
+export const getDictList = params => { return http.get(`${base}/dict/list`, params).then(res => res.data); };
 // 分页
 export const dictPage = params => { return http.get(`${base}/dict/page`, params).then(res => res.data); };
 // 新增数据
@@ -812,3 +812,9 @@ export const updateDict = params => { return http.put(`${base}/dict/update`, par
 // 根据ID查询信息
 export const backScanDict = params => { return http.get(`${base}/dict/${params.id}`, params).then(res => res.data); };
 
+
+
+
+//异常日志-------------------------------------------------------------------------------------------------------------
+// 操作模块列表
+export const errorListModule = params => { return http.get(`${base}/log/error/listModule`, params).then(res => res.data); };
