@@ -51,6 +51,7 @@
 			<div class="pcCoverUrl imgUrl" v-for="(item,index) in dataForm.methodUrlshow" @click="imgtype = 'rule'">
 				<img-cropper
 					ref="cropperImg1"
+					:cropImg = "item"
 					:index="'1'"
 					:imgWidth='"100px"'
 					:imgHeight='"100px"'
@@ -65,6 +66,7 @@
 				<img-cropper
 					ref="cropperImg1"
 					:index="'1'"
+					:cropImg = "dataForm.genderMain"
 					:imgWidth='"100px"'
 					:imgHeight='"100px"'
 					@GiftUrlHandle="GiftUrlHandle"
@@ -81,6 +83,7 @@
 						<img-cropper
 							ref="cropperImg1"
 							:index="'1'"
+							:cropImg = "dataForm.genderMr"
 							:imgWidth='"100px"'
 							:imgHeight='"100px"'
 							@GiftUrlHandle="GiftUrlHandle"
@@ -95,6 +98,7 @@
 							ref="cropperImg1"
 							:index="'1'"
 							:imgWidth='"100px"'
+							:cropImg = "dataForm.genderMrs"
 							:imgHeight='"100px"'
 							@GiftUrlHandle="GiftUrlHandle"
 						></img-cropper>
@@ -108,6 +112,7 @@
 							ref="cropperImg1"
 							:index="'1'"
 							:imgWidth='"100px"'
+							:cropImg = "dataForm.genderKid"
 							:imgHeight='"100px"'
 							@GiftUrlHandle="GiftUrlHandle"
 						></img-cropper>
@@ -130,7 +135,8 @@
 
 <script>
 	import imgCropper from "@/components/model-photo-cropper";
-	import { categoryCn,searchCategoryJp,uploadPicBase64 ,updataCategoryCn} from '@/api/api'   //查询一级分类   查询日本分类  图片   提交
+	//查询一级分类   查询日本分类  图片   提交   编辑查询回显
+	import { categoryCn,searchCategoryJp,uploadPicBase64 ,updataCategoryCn ,backScanCategoryCn} from '@/api/api'  
 	export default {
 	  data() {
 	  	//这里就是整个checkName啦，就是方法一的使用
@@ -162,7 +168,6 @@
 	    return {
 	    	erjishow: true,  //二级没有评价类型
 	    	yijishow: true,  //一级不用上传图片
-//	    	selectdisabled: false, //是否可以选择一级分类
 	    	imgtype:'',  //img的类型
 	    	checkList:[],  //分类性别多选
 	        datacategory: '', //选择分类
@@ -170,12 +175,12 @@
 	        goodKindList1: [{ id: '0', name: "一级分类" }],
 	        goodKindList2: [],
 	        dataArray:[],
-	        dataForm:{   
+	        dataForm:{     
 	        	parentId:'', //父级分类id
 	        	name:'', //分类名称
 	        	sort:'', //排序
 		      	categoryJpId:['',],  //关联的日方分类id  
-		      	appraisal:'', //评价类型
+		      	appraisal:'', //评价类型   
 		      	methodUrlshow:['',], //测试方法  不传
 		      	methodUrl:['',], //测试方法  传
 		      	genderMain:'' , //分类主图
@@ -205,18 +210,30 @@
 	  },
 	  methods: {
 	  	actselectchange(){
-	  		if(this.dataForm.parentId == 0){   //添加一级
+	  		if(this.dataForm.parentId == 0){   //添加一级	  			
 	  			this.erjishow = true;
 	  			this.yijishow = false;
-	  			this.dataForm.appraisal = null;  //一级没有评价类型
 	  		}else{
+	  			this.dataForm.methodUrlshow = ['',];
 	  			this.erjishow = false;
 	  			this.yijishow = true;
 	  		}
 	  	},
 	  	init(row){
 	  		this.showListVisible = true;
+	  		backScanCategoryCn(row).then((res)=>{
+	  			if(res.code == 200){
+	  				this.dataForm = res.data;
+	  				this.dataForm.methodUrlshow = res.data.methodUrl;
+	  				this.actselectchange();
+	  			}else{
+	  				this.$message(res.msg);
+	  			}
+	  		}).catch(()=>{
+	  			this.$message("服务器错误");
+	  		})
 	  		
+	  		//获取一级分类
 	  		categoryCn().then((res)=>{
 	  			if(res.code == 200){
 	  				console.log(res.data);
@@ -232,6 +249,7 @@
 	  			this.$message("服务器错误");
 	  		})
 	  		
+	  		//获取关联日本分类
 	  		searchCategoryJp().then((res)=>{
 	  			if(res.code == 200){
 	  				console.log(res.data);
@@ -245,18 +263,24 @@
 	  			this.$message("服务器错误");
 	  		})
 	  		
-	  		if(row){
-	  			console.log(row);
-	  			this.$nextTick(()=>{
-	  				this.dataForm.parentId = row.id;
-	  			})
-	  		}
+	  		
 	  	},
 	  	actuploaddata(){  //确定提交  
 	  		if(!this.dataForm.methodUrlshow[this.dataForm.methodUrlshow.length-1]){
 	  			this.dataForm.methodUrlshow.pop()
 	  		}
+	  		
+	  		if(this.dataForm.methodUrlshow.length){
+	  			this.dataForm.methodUrlshow.forEach((item)=>{
+		  			if(item.indexOf(this.$imgDomain) != -1){
+			  			item.substr(this.$imgDomain.length)
+			  		}
+		  		})
+	  		}
+	  		console.log(this.dataForm.methodUrlshow);
+	  		// 测量尺寸是一个json
 	  		this.dataForm.methodUrl = JSON.stringify(this.dataForm.methodUrlshow);
+	  		
 	  		//处理男士/女士/儿童     是否传数据
 	  		if(this.checkList.indexOf('男士') == -1){
 	  			this.dataForm.genderMr = '';
@@ -265,6 +289,21 @@
 	  		}else if(this.checkList.indexOf('儿童') == -1){
 	  			this.dataForm.genderKid = '';
 	  		}	
+	  		
+	  		//img有前缀得去掉前缀
+	  		if(this.dataForm.genderMr && this.dataForm.genderMr.indexOf(this.$imgDomain) != -1){
+	  			file.url.substr(this.$imgDomain.length)
+	  		}
+	  		if(this.dataForm.genderMrs && this.dataForm.genderMrs.indexOf(this.$imgDomain) != -1){
+	  			file.url.substr(this.$imgDomain.length)
+	  		}
+	  		if(this.dataForm.genderKid && this.dataForm.genderKid.indexOf(this.$imgDomain) != -1){
+	  			file.url.substr(this.$imgDomain.length)
+	  		}
+	  		
+	  		
+	  		
+	  		//确定提交
 	  		updataCategoryCn(this.dataForm).then((res)=>{
 	  			if(res.code == 200){
 	  				console.log(res.data);
@@ -342,11 +381,11 @@
 		//新增关闭
 	    handleClose(done) {
 	      done();
-	      this.$emit("addshow")
+	      this.$emit("editshow")
 	    },
 	    closeadd(){
 	    	this.showListVisible = false;
-	    	this.$emit("addshow")
+	    	this.$emit("editshow")
 	    },
 	  }
 	}

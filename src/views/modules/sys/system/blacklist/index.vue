@@ -146,6 +146,7 @@
             },
             reset(){
                 this.dataForm = {};
+                this.timeArr = "";
                 this.getDataList();
             },
             addOrUpdateHandle(){

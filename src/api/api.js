@@ -5,6 +5,8 @@ let base = "/admin-api";
 let requestType = { headers: { 'content-type': 'application/x-www-form-urlencoded' } };
 //首页  
 export const gethomepage = params => { return http.get(`${base}/homepage`, params).then(res => res.data); };
+export const gethomepageRate = params => { return http.get(`${base}/homepage/recentlyRate`, params).then(res => res.data); };
+
 //广告--------------------------------------------------------------------------------------------------------------
 //添加禁用词   
 export const addadvertisingban = params => { return http.post(`${base}/advertisingban/add`, params).then(res => res.data); };
@@ -33,7 +35,8 @@ export const getsizecn = params => { return http.get(`${base}/sizejp/getsizecn`,
 //修改日本尺码  
 export const editsizejptag = params => { return http.put(`${base}/sizejp/edit?name=${params.name}&id=${params.id}`, params).then(res => res.data); };
 
-
+// 中国尺码-ZOZO
+export const sizeCnAddAndUpdate = params => { return http.put(`${base}/sizeCn`, params).then(res => res.data); };
 
 
 //内容------------------------------------------------------------------------------------
@@ -71,6 +74,9 @@ export const savefashiondetail = params => { return http.post(`${base}/fashion`,
 export const saveStoreNewsdetail = params => { return http.post(`${base}/store/news`, params).then(res => res.data); };
 //店铺新闻保存
 export const saveStoreNewsdetailOne = params => { return http.post(`${base}/store/news/save`, params).then(res => res.data); };
+//获取风格标签名称
+export const getStyleName = params => { return http.get(`${base}/look/folder/stylename`, params).then(res => res.data); };
+
 
 
 //仓库管理--------------------------------------------------------------------------------------------------------
@@ -709,9 +715,14 @@ export const backScanShophotkeyword = params => { return http.get(`${base}/shoph
 
 
 //消息-------------------------------------------------------------------------------------------------------------
-//消息列表分页  
-export const getmessagepage = params => { return http.get(`${base}/shopmessagetemplate/messagepage`, params).then(res => res.data); };
-
+//模板分页列表
+export const getmessagepage = params => { return http.get(`${base}/shopmessagetemplate/page`, params).then(res => res.data); };
+//修改模板列表状态
+export const putMessageState = params => { return http.put(`${base}/shopmessagetemplate`, params).then(res => res.data); };
+//消息列表删除
+export const deleteMessage = params => { return http.delete(`${base}/shopmessagetemplate`, params).then(res => res.data); };
+//接收人保存
+export const saveMessage = params => { return http.post(`${base}/shopmessagetemplate/recesave`, params).then(res => res.data); };
 
 
 
@@ -755,6 +766,15 @@ export const listModule = params => { return http.get(`${base}/log/operation/lis
 export const operationPage = params => { return http.get(`${base}/log/operation/page`, params).then(res => res.data); };
 
 
+//查看库存----------------------------------------------------------------------------------------------------
+//查看库存分类  
+export const getdatagoods = params => { return http.get(`${base}/stock/goods`, params).then(res => res.data); };
+//获取品牌列表   
+export const getdatabrands = params => { return http.get(`${base}/stock/brands`, params).then(res => res.data); };
+//获取中国分类  
+export const getdatacategory = params => { return http.get(`${base}/stock/category`, params).then(res => res.data); };
+//获取店铺列表  
+export const getdatastores = params => { return http.get(`${base}/stock/stores`, params).then(res => res.data); };
 
 
 

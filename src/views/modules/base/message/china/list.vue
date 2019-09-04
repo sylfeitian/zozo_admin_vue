@@ -37,6 +37,8 @@
 			<!--新增分类-->
 			<add-data v-if="dialogTableVisible" ref="addshow" @addshow="addshow"></add-data>
 			
+			<!--编辑分类-->
+			<edit-data v-if="editdialogTableVisible" ref="editshow" @editshow="editshow"></edit-data>
   </div>
 </template>
 
@@ -60,6 +62,7 @@ import Bread from "@/components/bread";
 import MyTableTree from "@/components/treeTable/MyTableTree.vue";
 
 import addData from "./add"
+import editData from "./edit"
 let id = 1000;
 export default {
   mixins: [mixinViewModule],
@@ -154,7 +157,8 @@ export default {
           //tree 的数据来源
           rows: [],
       },
-      dialogTableVisible: false,
+      dialogTableVisible: false,  //添加
+      editdialogTableVisible: false, //编辑
       dataForm:{
         gcName: "",//分类名称 ,
         messageType:'',
@@ -173,7 +177,8 @@ export default {
     Bread,
     MyTableTree,
     imgCropper,
-    addData
+    addData,
+    editData
   },
   created() {
       this.getTree();
@@ -194,6 +199,11 @@ export default {
     //新增分类
     addshow(){
     	this.dialogTableVisible = false;
+    	this.getTree();
+    },
+    //编辑分类
+    editshow(){
+    	this.editdialogTableVisible = false;
     	this.getTree();
     },
     // 每页数
@@ -269,9 +279,10 @@ export default {
    },
      // 编辑回调
     eidtRowFn(row){
-      console.log(row);
-      row.type="edit"
-       this.addOrEditHandle(row)
+    	this.editdialogTableVisible = true;
+    	this.$nextTick(()=>{
+      	this.$refs.editshow.init(row);
+    	})
     },
     // 删除回调
     deleteRowFn(row){
@@ -287,7 +298,7 @@ export default {
           	this.$message.success("删除成功");
           	this.getTree();
           }else{
-          	this.$message("服务器错误")
+          	this.$message(res.msg);
           }
         });
     },
@@ -306,7 +317,7 @@ export default {
           	
           	this.getTree();
           }else{
-          	this.$message("服务器错误")
+          	this.$message(res.msg);
           }
         });
     },
@@ -389,7 +400,7 @@ export default {
           	this.$message.success("设为显示成功")
           	this.getTree();
           }else{
-          	this.$message("服务器错误")
+          	this.$message(res.msg);
           }
         });
     },

@@ -119,6 +119,7 @@
                     isEnable: "",
 
                 },
+                isEnable:'',
                 value: '',
                 dataList: [],
                 dataListLoading: false,
