@@ -15,7 +15,7 @@
             label-width="120px"
         >
             <el-form-item label="颜色组ID：">
-                <span>{{dataForm.id}}</span>
+                <span>{{dataForm.idJp}}</span>
             </el-form-item>
             <el-form-item label="日本颜色组名称：">
                 <span>{{dataForm.nameJp}}</span>
