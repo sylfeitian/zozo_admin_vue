@@ -723,6 +723,13 @@ export const putMessageState = params => { return http.put(`${base}/shopmessaget
 export const deleteMessage = params => { return http.delete(`${base}/shopmessagetemplate`, params).then(res => res.data); };
 //接收人保存
 export const saveMessage = params => { return http.post(`${base}/shopmessagetemplate/recesave`, params).then(res => res.data); };
+//模板标签信息
+export const getShopmessagetemplate = params => { return http.get(`${base}/shopmessagetemplate/${params.id}`, params).then(res => res.data); };
+//模板保存
+export const saveShopmessagetemplate = params => { return http.post(`${base}/shopmessagetemplate`, params).then(res => res.data); };
+//消息详情
+export const getMessageDetail = params => { return http.get(`${base}/shopmessagetemplate/messageDetails/${params.id}`, params).then(res => res.data); };
+
 
 
 

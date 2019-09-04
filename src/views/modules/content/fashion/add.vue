@@ -101,9 +101,21 @@
                     <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
 
                 </el-table>
+                <div class="bottomFun">
+                    <!-- 分页 -->
+                    <el-pagination
+                            @size-change="pageSizeChangeHandle"
+                            @current-change="pageCurrentChangeHandle"
+                            :current-page="page"
+                            :page-sizes="[10, 20, 50, 100]"
+                            :page-size="limit"
+                            :total="total"
+                            layout="total, sizes, prev, pager, next, jumper">
+                    </el-pagination>
+                </div>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="dialogTableVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="dialogTableVisible = false">确 定</el-button>
+                    <el-button type="primary" @click="saveGoods">确 定</el-button>
                 </div>
             </el-dialog>
         </el-form>
@@ -187,6 +199,9 @@
                         })
                     }
                 })
+            },
+            saveGoods(){
+                this.dialogTableVisible = false;
             },
             artmessageContent(messageContent,i){
                 if(this.content[i]) this.content[i].text = messageContent;
