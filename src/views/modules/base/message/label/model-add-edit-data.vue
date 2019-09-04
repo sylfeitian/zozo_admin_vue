@@ -143,7 +143,8 @@
                 backScanShopStyle(obj).then((res)=>{
                     if(res.code == 200){
                         Object.assign(this.dataForm,res.data);
-
+                        this.dataForm.styleType =this.dataForm.styleType+"";
+                        this.dataForm.gender =this.dataForm.gender+"";
                     }else{
 
                     }
