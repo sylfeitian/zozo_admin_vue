@@ -103,7 +103,6 @@
                 var obj  = {
                     id:this.row.id,
                     styleName:this.row.styleName,
-                    styleType:this.row.styleType,
                 }
                 searchShopStyleSubList(obj).then((res)=>{
                     if(res.code == 200){

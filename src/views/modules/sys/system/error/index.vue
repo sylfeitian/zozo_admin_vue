@@ -5,7 +5,7 @@
         <div class="mod-sys__log-error">
             <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getDataList()">
                 <el-form-item label="操作账号：">
-                    <el-input v-model="dataForm.id" placeholder="请输入账号" clearable></el-input>
+                    <el-input v-model="dataForm.creator" placeholder="请输入账号" clearable></el-input>
                 </el-form-item>
                 <el-form-item label="操作模块：">
                     <el-select v-model="dataForm.module" placeholder="请选择操作模块" clearable>
@@ -74,7 +74,8 @@
                 dataForm: {
                     module: "",
                     startTime:"",
-                    endTime:""
+                    endTime:"",
+                    creator:""
                 },
                 breaddata: ["系统管理", "异常日志"],
                 timeArr: "", //操作时间数据
@@ -110,8 +111,10 @@
                 })
             },
             reset(){
-                this.dataForm.id = "";
+                this.dataForm.creator = "";
                 this.dataForm.module = "";
+                this.dataForm.startTime = "";
+                this.dataForm.endTime = "";
                 this.getDataList();
             },
             acttime(){

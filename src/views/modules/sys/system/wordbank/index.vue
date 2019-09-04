@@ -79,7 +79,6 @@
                     getDataListIsPage: true,
                     deleteURL: deleteSyslexicon,
                     exportURL: exportSyslexicon,
-                    deleteIsBatch: false,
                     deleteIsBatch: true,
                     deleteIsBatchKey: 'id'
                 },
