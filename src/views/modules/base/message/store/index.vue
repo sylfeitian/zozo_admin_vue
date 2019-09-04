@@ -69,10 +69,10 @@
                 <template slot-scope="scope">
                     <el-switch
                             v-model="scope.row.recommendFlag"
+                            :active-value="1"
                             active-color="#13ce66"
                             inactive-color="#ff4949"
-                            on-value="1"
-                            @click="switchHandle('singe',scope.row)"
+                            @change="switchHandle('singe',scope.row)"
                     >
                     </el-switch>
                 </template>
@@ -85,9 +85,13 @@
             <el-table-column label="操作" align="center" width="110px">
                 <template slot-scope="scope">
                     <el-button type="text" @click="editHandle(scope.$index, scope.row)" size="mini">编辑</el-button>
-                    <el-button  @click="forbitHandle('singe',scope.row)" type="text" size="mini" >
-                        <span  v-if="scope.row.operateFlag==0">营业</span>
-                        <span  v-if="scope.row.operateFlag==1" class="artclose">停业</span>
+<!--                    <el-button  @click="forbitHandle('singe',scope.row)" type="text" size="mini" >-->
+<!--                        <span  v-if="scope.row.operateFlag==0">营业</span>-->
+<!--                        <span  v-if="scope.row.operateFlag==1" class="artclose">停业</span>-->
+<!--                    </el-button>-->
+                    <el-button v-if="scope.row.operateFlagJp == 0" @click.native.prevent="forbitHandle(scope.$index,scope.row)"type="text"size="mini">
+                        <span v-if="scope.row.operateFlag==1" class="artdisable">{{scope.$index==currentIndex&&forbitLoading?"停业中..":"停业"}}</span>
+                        <span v-else class="artstart">{{scope.$index==currentIndex && forbitLoading?"营业中..":"营业"}}</span>
                     </el-button>
                 </template>
             </el-table-column>
@@ -103,9 +107,9 @@
                 layout="total, sizes, prev, pager, next, jumper">
         </el-pagination>
         <!-- 弹窗, 查看 -->
-        <addEditData  v-if="addDataVisible" ref="addEditData" @searchDataList="getDataList"></addEditData>
+        <addEditData  v-if="addDataVisible" ref="addEditData" @searchDataList="getAndHandleDataList"></addEditData>
         <!-- 弹窗, 编辑 -->
-        <editData  v-if="editDataVisible" ref="editData" @searchDataList="getDataList"></editData>
+        <editData  v-if="editDataVisible" ref="editData" @searchDataList="getAndHandleDataList"></editData>
     </div>
 </template>
 
@@ -143,7 +147,11 @@
                 addDataVisible:false,
                 editDataVisible:false,
                 multipleSelection:[],
+                row:"",
                 operateShopStore:[{ id: '0', name: '营业中' },{ id: '1', name: '已停业' }],//营业状态
+                currentIndex:'',
+                forbitLoading:false,
+                recommendFlag:""
             }
         },
         created(){
@@ -160,7 +168,7 @@
             //         this.dataList = res.data.list;
             //     }
             // })
-            this.getDataList();
+            this.getAndHandleDataList();
         },
         components: {
             Bread,
@@ -174,6 +182,9 @@
                     this.$set(this.dataForm,`${key}`,this.dataFormShow[key]);
                 }
                 console.log(this.dataForm);
+                this.getAndHandleDataList()
+            },
+            getAndHandleDataList(){
                 this.getDataList()
             },
             // 重置
@@ -184,7 +195,7 @@
                 this.dataForm.idJp = "";//店铺ID
                 this.dataForm.storeName = "";//店铺名称
                 this.dataForm.operateFlag = "";//营业状态
-                this.getDataList();
+                this.getAndHandleDataList();
             },
             // 查看
             addHandle(index=-1,row=""){
@@ -206,30 +217,53 @@
             setEditDataVisible(boolargu){
                 this.editDataVisible =  boolargu;
             },
-            // 控制营业状态
-            cotrolOperateFlag(type,rowOrstatus){
-                var ids= [];
-                var operateFlag = 0;
-                console.log(this.rowOrstatus)
-                 //单个
-                ids = [rowOrstatus.id]
-                operateFlag = rowOrstatus.operateFlag==1?0:1;
-                var obj = {
-                    storeId:storeId,
-                    operateFlag:operateFlag,
-                }
-            },
+            // forbitHandle(index,row){
+            //     console.log(row);
+            //     this.currentIndex = index;
+            //     console.log(obj)
+            //     var obj = {
+            //         "storeId": row.id,
+            //         "operateFlag":row.operateFlag==1?0:1  //
+            //     }
+            //     var msg = ""
+            //     row.operateFlag==1?msg="停业":msg="营业"
+            //     this.$confirm('是否进行'+msg+'操作?', '提示', {
+            //         confirmButtonText: '确定',
+            //         cancelButtonText: '取消',
+            //         type: 'warning'
+            //     }).then(() => {
+            //         this.forbitLoading = true;
+            //         operateShopStore(obj).then((res)=>{
+            //             this.forbitLoading = false;
+            //             // console.log(res);
+            //             if(res.code==200){
+            //                 this.getDataList();
+            //                 this.$message({
+            //                     message:res.msg,
+            //                     type: 'success',
+            //                     duration: 1500,
+            //                 })
+            //             }else{
+            //                 this.$message({
+            //                     message:res.msg,
+            //                     type: 'error',
+            //                     duration: 1500,
+            //                 })
+            //             }
+            //         })
+            //
+            //     }).catch(() => {});
+            // },
             forbitHandle(index,row){
                 console.log(row);
                 this.currentIndex = index;
-                console.log(obj)
                 var obj = {
                     "storeId": row.id,
-                    "operateFlag":row.operateFlag==1?0:1  //
+                    "operateFlag":row.operateFlag==1?0:1  //1发布   0取消发布
                 }
                 var msg = ""
-                row.operateFlag==1?msg="停业":msg="营业"
-                this.$confirm('是否进行'+msg+'操作?', '提示', {
+                row.state==1?msg="停业":msg="营业"
+                this.$confirm('是否'+msg+'该分组?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
@@ -237,9 +271,8 @@
                     this.forbitLoading = true;
                     operateShopStore(obj).then((res)=>{
                         this.forbitLoading = false;
-                        // console.log(res);
                         if(res.code==200){
-                            this.getDataList();
+                            this.getAndHandleDataList();
                             this.$message({
                                 message:res.msg,
                                 type: 'success',
@@ -257,11 +290,14 @@
                 }).catch(() => {});
             },
             switchHandle(index,row){
+                console.log(row);
                 this.currentIndex = index;
                 var obj = {
-                    "id": row.id,
-                    "recommendFlag":row.recommendFlag==1?0:1  //0不推荐1推荐
+                    "storeId": row.id,
+                    "recommendFlag":row.recommendFlag?1:0
                 }
+
+
                 var msg = ""
                 row.recommendFlag==1?msg="不推荐":msg="推荐"
                 this.$confirm('是否进行'+msg+'操作?', '提示', {
@@ -274,7 +310,7 @@
                         this.forbitLoading = false;
                         // console.log(res);
                         if(res.code==200){
-                            this.getDataList();
+                            this.getAndHandleDataList();
                             this.$message({
                                 message:res.msg,
                                 type: 'success',

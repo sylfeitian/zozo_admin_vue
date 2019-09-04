@@ -1,34 +1,34 @@
 <template>
     <div>
-        <list v-if="mainVisible" ref="listCompon" @addoraditList="addoraditList"></list>
-        <addoradit v-if="addoraditVisible" ref="addoraditCompon" @showList="showList"></addoradit>
+        <list v-if="mainVisible" ref="listCompon" @showDetail="showDetail"></list>
+        <detail v-if="detailVisible" ref="detailCompon" @showList="showList"></detail>
     </div>
 </template>
 
 <script>
     import list from "./list"
-    import addoradit from "./addoradit"
+    import detail from "./detail"
     export default {
         data () {
             return {
                 mainVisible:true,
-                addoraditVisible:false
+                detailVisible:false
             }
         },
         components:{
             list,
-            addoradit
+            detail
         },
         methods: {
-            addoraditList(row){
-                this.addoraditVisible = true;
+            showDetail(row){
+                this.detailVisible = true;
                 this.mainVisible = false;
                 this.$nextTick(()=>{
-                    this.$refs.addoraditCompon.init(row);
+                    this.$refs.detailCompon.init(row);
                 })
             },
             showList(){
-                this.addoraditVisible = false;
+                this.detailVisible = false;
                 this.mainVisible = true;
                 this.$nextTick(()=>{
                     this.$refs.listCompon.getDataList();

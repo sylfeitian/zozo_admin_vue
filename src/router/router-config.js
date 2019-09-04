@@ -9,6 +9,63 @@ export default {
                 {
                     "id":"1067246875800000003",
                     "pid":"1067246875800000002",
+                    "children":[],
+                    "name":"业绩统计",
+                    "url":"report/achievement",
+                    "type":0,
+                    "icon":"icon-user",
+                    "permissions":"",
+                    "sort":0,
+                    "createDate":"2019-04-29 18:57:13",
+                    "resourceList":null,
+                    "parentName":null
+                },
+                {
+                    "id":"1067246875800000003",
+                    "pid":"1067246875800000002",
+                    "children":[],
+                    "name":"店铺销量统计",
+                    "url":"report/shopsales",
+                    "type":0,
+                    "icon":"icon-user",
+                    "permissions":"",
+                    "sort":0,
+                    "createDate":"2019-04-29 18:57:13",
+                    "resourceList":null,
+                    "parentName":null
+                },
+                {
+                    "id":"1067246875800000003",
+                    "pid":"1067246875800000002",
+                    "children":[],
+                    "name":"商品销量统计",
+                    "url":"report/goodssales",
+                    "type":0,
+                    "icon":"icon-user",
+                    "permissions":"",
+                    "sort":0,
+                    "createDate":"2019-04-29 18:57:13",
+                    "resourceList":null,
+                    "parentName":null
+                },
+            ],
+            "name":"报表",
+            "url":"",
+            "type":0,
+            "icon":"icon-lock",
+            "permissions":"",
+            "sort":0,
+            "createDate":"2019-04-29 18:57:13",
+            "resourceList":null,
+            "parentName":null
+        },
+        {
+            "id":"1067246875800000002",
+            "pid":"0",
+            "children":[
+                {
+                    "id":"1067246875800000003",
+                    "pid":"1067246875800000002",
                     "children":[
                         {
                             "id":"1131083931625664513",

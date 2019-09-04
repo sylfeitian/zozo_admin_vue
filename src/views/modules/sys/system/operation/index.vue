@@ -9,14 +9,12 @@
                 </el-form-item>
                 <el-form-item label="操作模块：">
                     <el-select v-model="dataForm.module" placeholder="请选择操作模块" clearable>
-                        <el-option label="全部" :value="0"></el-option>
-                        <el-option label="登录" :value="1"></el-option>
-                        <el-option label="商品管理" :value="2"></el-option>
-                        <el-option label="订单管理" :value="3"></el-option>
-                        <el-option label="财务管理" :value="4"></el-option>
-                        <el-option label="权限管理" :value="5"></el-option>
-                        <el-option label="内容管理" :value="6"></el-option>
-                        <el-option label="一级菜单" :value="7"></el-option>
+                        <el-option
+                                v-for="item in moduleOption"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                        </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="操作时间：">
@@ -37,11 +35,6 @@
                 </el-form-item>
                 <br />
             </el-form>
-<!--            <el-form>-->
-<!--                <el-form-item>-->
-<!--                    <el-button type="primary" plain @click="exportHandle()">{{ $t('export') }}</el-button>-->
-<!--                </el-form-item>-->
-<!--            </el-form>-->
             <el-table v-loading="dataListLoading" :data="dataList" border @sort-change="dataListSortChangeHandle" style="width: 100%;">
                 <el-table-column prop="creator" label="操作账号" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="realName" label="姓名" header-align="center" align="center"></el-table-column>
@@ -69,6 +62,7 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import { operationUrl } from '@/api/url'
+    import { listModule } from '@/api/api'
 
     export default {
         mixins: [mixinViewModule],
@@ -82,38 +76,64 @@
                 breaddata: [ "系统管理", "操作日志"],
                 dataForm: {
                     creator: '',
-                    module: ''
+                    module: '',
+                    startTime:'',
+                    endTime:''
                 },
                 valuetime: "", //操作时间数据
+                dataList: [],
+                dataListLoading: false,
+                row:"",
+                module:"",
+                moduleOption:[
+                    {id:1,name:"逍遥江湖"},
+                    {id:2,name:"辟邪剑谱"},
+                ],
             }
         },
         components: {
             Bread
         },
         created() {
-            this.getDataList()
+            this.getDataList();
+            this.listModule()
         },
         watch:{
             valuetime(val){
                 if(!val){
-                    this.dataForm.strTime = '';
+                    this.dataForm.startTime = '';
                     this.dataForm.endTime = '';
                 }
             }
         },
         methods:{
+            listModule(){
+                var obj  = {
+                    id:this.row.id,
+                    module:this.row.module
+                }
+                listModule(obj).then((res)=>{
+                    if(res.code == 200 && res.data){
+                        // Object.assign(this.dataForm,res.data);
+                        this.moduleOption = res.data
+
+                    }else{
+                        // this.$message.error(res.msg)
+                    }
+                })
+            },
             //开始结束时间
             acttime(){
                 this.dataForm.startTime = this.valuetime[0];
                 this.dataForm.endTime = this.valuetime[1];
             },
             reset(){
-                this.dataForm.creator = null;
-                this.dataForm.module = null;
-                this.dataForm.startTime = null;
-                this.dataForm.endTime = null;
+                this.dataForm.creator = "";
+                this.dataForm.module = "";
+                this.dataForm.startTime = "";
+                this.dataForm.endTime = "";
                 this.getDataList();
-            }
+            },
         }
     }
 </script>

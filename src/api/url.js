@@ -346,6 +346,8 @@ export const operationUrl = `${base}/log/operation/page`;
 export const dictUrl = `${base}/dict/page`;
 // 删除
 export const deleteDict = `${base}/dict/delete`;
+// 词典列表
+export const dictList = `${base}/dict/list`;
 
 
 

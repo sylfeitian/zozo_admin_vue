@@ -82,6 +82,8 @@
                 },
                 addOrUpdateVisible: false,
                 row:"",
+                dataList: [],
+                dataListLoading: false,
             }
         },
         components: {

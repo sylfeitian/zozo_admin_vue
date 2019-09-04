@@ -14,7 +14,18 @@
                 label-width="120px"
         >
             <el-form-item  label="关联副风格标签：">
-                <el-input v-model="dataForm.styleName" placeholder=""></el-input>
+                <el-select
+                        v-model="dataForm.styleName"
+                        filterable
+                        placeholder="请输入关键词"
+                        :loading="loading">
+                    <el-option
+                            v-for="item in dataArray"
+                            :key="item.id"
+                            :label="item.styleName"
+                            :value="item.id">
+                    </el-option>
+                </el-select>
             </el-form-item>
             <el-form-item label="已关联副风格标签：" prop="styleName">
                 <el-tag closable
@@ -36,6 +47,7 @@
 
 <script>
     import { backScanShopStyleUnion, shopStyleUnion } from '@/api/api'
+    import cloneDeep from 'lodash/cloneDeep'
     export default {
         name: "model-add-edit-data",
         data () {
@@ -50,8 +62,8 @@
                 },
                 value:[],
                 value2:[],
-                dataArray:[],
                 row:"",
+                dataArray:[],
                 formLabelWidth: '120px'
             }
         },
@@ -132,6 +144,20 @@
             closeDialog() {
                 this.$parent.addEditDataVisible = false;
             },
+            // remoteMethod(query) {
+            //     if (query !== '') {
+            //         this.loading = true;
+            //         setTimeout(() => {
+            //             this.loading = false;
+            //             this.dataArray = this.list.filter(item => {
+            //                 return item.styleName.toLowerCase()
+            //                     .indexOf(query.toLowerCase()) > -1;
+            //             });
+            //         }, 200);
+            //     } else {
+            //         this.dataArray = cloneDeep(this.list);
+            //     }
+            // }
         }
     }
 </script>

@@ -3,7 +3,7 @@
         <Bread :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
             <el-form-item label="仓库名称/ID：">
-                <el-input v-model="dataForm.warehouseName" ></el-input>
+                <el-input v-model="dataForm.warehousename" ></el-input>
             </el-form-item>
             <el-form-item label="仓库种类：">
                 <el-select v-model="dataForm.type" placeholder="请选择">
@@ -20,6 +20,10 @@
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
                 <el-button  class="btn" type="primary" plain @click="reset()" >重置</el-button>
+            </el-form-item>
+        </el-form>
+        <el-form>
+            <el-form-item>
                 <el-button  class="btn" type="primary" plain @click="addOrAdit()" >添加仓库</el-button>
             </el-form-item>
         </el-form>
@@ -28,7 +32,7 @@
                 :data="dataList"
                 border=""
                 v-loading="dataListLoading"
-                style="width: 100%;margin-top:20px;"
+                style="width: 100%;"
         >
             <el-table-column label="序号" width="140" align="center">
                 <template slot-scope="scope">
@@ -52,19 +56,22 @@
                     <span  v-if="scope.row.isEnable==1">启用</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="" label="启用" align="center">
+            <el-table-column prop="isEnable" label="启用" align="center">
                 <template slot-scope="scope">
                     <el-switch
-                            v-model="value"
+                            v-model="scope.row.isEnable"
+                            :active-value="1"
                             active-color="#13ce66"
-                            inactive-color="#ff4949">
+                            inactive-color="#ff4949"
+                            @change="switchHandle('singe',scope.row)"
+                    >
                     </el-switch>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="addOrAdit(scope.$index, scope.row)"type="text"size="mini">编辑</el-button>
-                    <el-button @click.native.prevent="addoraditList(scope.$index, scope.row)"type="text"size="mini">查看</el-button>
+                    <el-button @click.native.prevent="showDetail(scope.row)"type="text"size="mini">查看</el-button>
                     <el-button class="artdanger" @click.native.prevent="deleteHandle(scope.row.id)"type="text"size="mini">删除</el-button>
                 </template>
             </el-table-column>
@@ -107,7 +114,7 @@
                 // activeName: "",
                 breaddata: [ "仓库管理"],
                 dataForm: {
-                    warehouseName: "",
+                    warehousename: "",
                     type: "",
                     isEnable: "",
 
@@ -138,8 +145,8 @@
             this.getDataList();
         },
         methods: {
-            addoraditList(id){
-                this.$emit("addoraditList",id);
+            showDetail(row){
+                this.$emit("showDetail",row);
             },
             // showDetail(index=-1,row=""){
             //     this.setShowDataVisible(true);
@@ -163,12 +170,49 @@
             setAddEditDataVisible(boolargu){
                 this.addEditDataVisible =  boolargu;
             },
-            reset(formName) {
-                this.dataForm.warehouseName = "";
+            reset() {
+                this.dataForm.warehousename = "";
                 this.dataForm.type = "";
                 this.dataForm.isEnable = "";
-                this.$refs[formName].resetFields();
                 this.getDataList();
+            },
+            switchHandle(index,row){
+                console.log(row);
+                this.currentIndex = index;
+                var obj = {
+                    "storeId": row.id,
+                    "isEnable":row.isEnable?1:0
+                }
+
+
+                var msg = ""
+                row.isEnable==1?msg="不启用":msg="启用"
+                this.$confirm('是否进行'+msg+'操作?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.forbitLoading = true;
+                    deleteWare(obj).then((res)=>{
+                        this.forbitLoading = false;
+                        // console.log(res);
+                        if(res.code==200){
+                            this.getDataList();
+                            this.$message({
+                                message:res.msg,
+                                type: 'success',
+                                duration: 1500,
+                            })
+                        }else{
+                            this.$message({
+                                message:res.msg,
+                                type: 'error',
+                                duration: 1500,
+                            })
+                        }
+                    })
+
+                }).catch(() => {});
             },
         }
     }
