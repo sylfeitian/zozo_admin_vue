@@ -322,6 +322,8 @@ export const deleteShophotkeywordUrl = `${base}/shophotkeyword`;
 //消息-------------------------------------------------------------------------------------------------------------
 //消息列表分页  
 export const getmessagepage = `${base}/shopmessagetemplate/messagepage`;
+//用户信息
+export const getUser = `${base}/shopmessagetemplate/messageuser`;
 
 
 //查看库存----------------------------------------------------------------------------------------------------
