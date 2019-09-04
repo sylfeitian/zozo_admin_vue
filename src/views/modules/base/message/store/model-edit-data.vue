@@ -34,7 +34,7 @@
             </el-form-item>
             <el-form-item label="店铺主图：" prop="imageUrl" style="float: left;width:50%;">
                 <template slot-scope="scope">
-                    <div class="pcCoverUrl imgUrl" style="float: left;">
+                    <div class="pcCoverUrl imgUrl" style="float: left;width:50%;">
                         <img-cropper
                                 v-loading="uploading"
                                 ref="cropperImg"
@@ -64,20 +64,37 @@
                     </div>
                 </template>
             </el-form-item>
-            <el-form-item label="选择风格标签：">
+            <el-form-item label="选择风格标签：" prop="mainTag">
                 <el-select
-                        v-model="mainTag"
+                        v-model="dataForm.mainTag"
+                        multiple
                         filterable
                         remote
-                        multiple
+                        reserve-keyword
+                        placeholder="请输入关键词"
                         :remote-method="remoteMethod"
-                        :loading="loading"
-                >
+                        :loading="loading">
                     <el-option
                             v-for="item in dataArray"
                             :key="item.id"
-                            :label="item.styleName"
+                            :label="item.label"
                             :value="item.id">
+                    </el-option>
+                </el-select>
+                <el-select
+                        v-model="value"
+                        multiple
+                        filterable
+                        remote
+                        reserve-keyword
+                        placeholder="请输入关键词"
+                        :remote-method="remoteMethod"
+                        :loading="loading">
+                    <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
                     </el-option>
                 </el-select>
 <!--                <el-input v-model="dataForm.description" placeholder="" style="width: 250px;"></el-input>&nbsp;-->
@@ -96,6 +113,7 @@
     import { updateShopStore,backScanShopStore,searchShopStyle } from '@/api/api'
     import imgCropper from "@/components/model-photo-cropper";
     import { uploadPicBase64 } from '@/api/api'
+    import cloneDeep from 'lodash/cloneDeep'
     export default {
         name: "model-add-edit-data",
         data () {
@@ -104,6 +122,7 @@
                 visible : false,
                 loading : false,
                 uploading:false,
+
                 dataForm: {
                     id:"",
                     idJp: "",//店铺ID
@@ -142,9 +161,10 @@
             imgCropper
         },
         mounted() {
-            this.list = this.dataArray.map(item => {
-                return { value: item, label: item };
-            });
+            // this.list = this.dataArray.map(item => {
+            //     return { value: item, label: item };
+            // });
+            // this.list = cloneDeep(this.dataArray);
         },
         methods: {
             init (row) {
@@ -186,7 +206,6 @@
                 })
             },
             backScan1(){
-
                 var obj  = {
                     id:this.row.id,
                     idJp:this.row.idJp,
@@ -195,7 +214,11 @@
                 searchShopStyle(obj).then((res)=>{
                     if(res.code == 200){
                         this.dataArray = res.data;
-                        Object.assign(this.dataForm,res.data);
+                        this.dataArray.forEach((item,index)=>{
+                            item.label = item.styleName;
+                        })
+                        this.list = cloneDeep(this.dataArray);
+                        // Object.assign(this.dataForm,res.data);
 
                     }else{
 
@@ -229,10 +252,13 @@
             },
             // 提交
             dataFormSubmit(formName){
+
                 // alert([this.dataForm.name,this.dataForm.domainAddress]);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.loading = true;
+                        var mainTag = this.dataForm.mainTag?this.dataForm.mainTag.join(","):'';
+                        console.log(this.dataForm.mainTag);
                         var obj = {
                             "idJp":  this.dataForm.idJp,
                             "storeNameGlo":  this.dataForm.storeNameGlo,
@@ -242,7 +268,7 @@
                             "description":  this.dataForm.description,
                             "imageUrl":  this.dataForm.imageUrl,
                             "storeLogo":  this.dataForm.storeLogo,
-                            "mainTag":  this.dataForm.mainTag,
+                            "mainTag":  mainTag,
                         }
                         if(this.row) obj.id = this.row.id
                         var fn = updateShopStore;
@@ -275,7 +301,6 @@
             handleChange() {
                 var value = this.value;
                 console.log(value);
-                console.log(value[value.length-1]);
                 if(value.length >0){
                     this.dataForm.labelSort =value[value.length-1]
                 }else{
@@ -296,12 +321,12 @@
                     setTimeout(() => {
                         this.loading = false;
                         this.dataArray = this.list.filter(item => {
-                            return item.styleName.toLowerCase()
+                            return item.label.toLowerCase()
                                 .indexOf(query.toLowerCase()) > -1;
                         });
                     }, 200);
                 } else {
-                    this.dataArray = [];
+                    this.dataArray = cloneDeep(this.list);
                 }
             }
         }

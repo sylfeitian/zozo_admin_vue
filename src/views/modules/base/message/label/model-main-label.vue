@@ -14,7 +14,18 @@
                 label-width="120px"
         >
             <el-form-item  label="关联主风格标签：">
-                <el-input v-model="dataForm.styleName" placeholder=""></el-input>
+                <el-select
+                        v-model="dataForm.styleName"
+                        filterable
+                        placeholder="请输入关键词"
+                        :loading="loading">
+                    <el-option
+                            v-for="item in dataArray"
+                            :key="item.id"
+                            :label="item.styleName"
+                            :value="item.id">
+                    </el-option>
+                </el-select>
             </el-form-item>
             <el-form-item label="已关联主风格标签：" prop="styleName">
                 <el-tag closable
@@ -50,8 +61,8 @@
                 },
                 value:[],
                 value2:[],
-                dataArray:[],
                 row:"",
+                dataArray:[],
                 formLabelWidth: '120px'
             }
         },

@@ -501,7 +501,7 @@ export const operateShopStore = params => { return http.put(`${base}/shopStore/o
 // 分页查询信息
 export const shopStorePage = params => { return http.get(`${base}/shopStore/page`, params).then(res => res.data); };
 //店铺是否设为推荐
-export const recommendShopStore = params => { return http.put(`${base}/shopStore/recommend`, params).then(res => res.data); };
+export const recommendShopStore = params => { return http.put(`${base}/shopStore/recommend?recommendFlag=${params.recommendFlag}&storeId=${params.storeId}`, params).then(res => res.data); };
 // 验证店铺名称是否重复
 export const verifyShopStore = params => { return http.get(`${base}/shopStore/verify/name`, params).then(res => res.data); };
 // 根据中国ID获取信息

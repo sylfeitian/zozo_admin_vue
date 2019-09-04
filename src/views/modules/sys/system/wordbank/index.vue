@@ -7,8 +7,8 @@
                     <el-input v-model="dataForm.chineseVocabulary" placeholder="请输入中文搜索" clearable></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button  class="btn" type="primary" @click="getDataList">查询</el-button>
-                    <el-button  class="btn" type="primary" plain @click="reset()" >重置</el-button>
+                    <el-button class="btn" type="primary" @click="getDataList">查询</el-button>
+                    <el-button class="btn" type="primary" plain @click="reset()" >重置</el-button>
                 </el-form-item>
             </el-form>
             <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getDataList()">
@@ -27,7 +27,6 @@
                     :data="dataList"
                     border
                     @selection-change="dataListSelectionChangeHandle"
-                    @sort-change="dataListSortChangeHandle"
                     style="width: 100%;margin-top: 10px;">
                 <el-table-column
                         type="index"
@@ -91,6 +90,8 @@
                 addEditDataVisible: false,
                 changeVal: "",
                 activeName: "",
+                dataList: [],
+                dataListLoading: false,
             }
         },
         components: {

@@ -98,6 +98,7 @@
                     if (valid) {
                         this.loading = true;
                         var obj = {
+                            "id":  this.row.id,
                             "pid":  this.row?this.row.pid:0,
                             "dictName":  this.dataForm.dictName,
                             "dictValue":  this.dataForm.dictValue

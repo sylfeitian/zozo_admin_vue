@@ -1,10 +1,6 @@
 <template>
     <div>
         <Bread  :breaddata="breaddata"></Bread>
-<<<<<<< HEAD
-        {{treeConfig.rows.length}}
-=======
->>>>>>> 3eada9f6a30c82400cdcfc5ed73aed61a50a59ed
         <MyTableTree
                 v-loading="dataListLoading"
                 :children="'list'"
