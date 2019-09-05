@@ -228,7 +228,6 @@
                 this.getDataList();
             },
             forbitHandle(index,row){
-            console.log(row);
                 this.currentIndex = index;
                 var obj = {
                     "id": row.id,
@@ -308,7 +307,7 @@
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
-                if(this.multipleSelection.length == 10) this.checkAll = true;
+                if(this.multipleSelection.length == this.dataList.length) this.checkAll = true;
                 else this.checkAll = false;
             },
             handleCheckAllChange(val) {

@@ -212,7 +212,7 @@
             getData(saveType){
                 let that = this;
                 this.dataForm.saveFlag = saveType;
-                savelookdetail({saveLookDTO:this.dataForm}).then((res)=>{
+                savelookdetail(this.dataForm).then((res)=>{
                     if(res.code == 200){
                         this.$message({
                             message: res.msg,
@@ -259,7 +259,7 @@
         width: 500px!important;
     }
     /deep/ .el-textarea {
-        width: 500px!important;
+        width: 50%!important;
     }
     /deep/ .el-button {
         width: 150px;
@@ -268,7 +268,7 @@
         width: 100px!important;
     }
     /deep/ .el-form-item--default {
-        height: 30px!important;
+        /*height: 30px!important;*/
     }
     .grayLine {
         border-bottom: 0!important;

@@ -38,7 +38,7 @@
             </el-form-item>
             <el-form-item label="消息内容：" prop="messageContent" :label-width="formLabelWidth" style="vertical-align:top;">
                 <template slot-scope="scope">
-                    <quill-editor-img class="inforRight" :index="i" ref="quillEditorCompon" style="display: inline-block;"  @artmessageContent='artmessageContent' ></quill-editor-img>
+                    <quill-editor-img class="inforRight"  ref="quillEditorCompon" style="display: inline-block;"  @artmessageContent='artmessageContent' ></quill-editor-img>
                 </template>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
@@ -229,7 +229,7 @@
                                     list.push(v.memberName)
                                 })
                                 that.addDataForm.receiver = list.join(",");
-                                saveMessage({shopMessageTextDTO:that.addDataForm}).then((res)=>{
+                                saveMessage(that.addDataForm).then((res)=>{
                                     if(res.code == 200){
                                         this.$message({
                                             message: res.msg,
