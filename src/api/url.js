@@ -154,6 +154,9 @@ export const loginLog = `${base}/memberloginlog/page`;
 //会员等级删除
 export const gradeDel= `${base}/membergrade`;
 
+// zozo会员管理-------------------------------------------------------------------------------------------------------------------
+// zozo会员列表
+export const zozomemberPageUrl= `${base}/zozomember/page`;
 
 
 //财务管理
@@ -319,6 +322,17 @@ export const deleteShophotkeywordUrl = `${base}/shophotkeyword`;
 //消息-------------------------------------------------------------------------------------------------------------
 //消息列表分页  
 export const getmessagepage = `${base}/shopmessagetemplate/messagepage`;
+//用户信息
+export const getUser = `${base}/shopmessagetemplate/messageuser`;
+
+
+//查看库存----------------------------------------------------------------------------------------------------
+//查看库存分类  
+export const getdatagoods = `${base}/stock/goods`;
+
+
+
+
 
 
 
@@ -327,9 +341,10 @@ export const getmessagepage = `${base}/shopmessagetemplate/messagepage`;
 // 列表
 export const syslexiconUrl = `${base}/syslexicon/page`;
 // 删除
-export const deleteSyslexicon = `${base}/syslexicon`;
+export const deleteSyslexicon = `${base}/syslexicon/batchdelete`;
 // 导出
 export const exportSyslexicon = `${base}/syslexicon/export`;
+
 
 
 
@@ -341,11 +356,18 @@ export const operationUrl = `${base}/log/operation/page`;
 
 
 
+
+
 //字典管理-------------------------------------------------------------------------------------------------------------
 // 列表
 export const dictUrl = `${base}/dict/page`;
 // 删除
 export const deleteDict = `${base}/dict/delete`;
+// 词典列表
+export const dictList = `${base}/dict/list`;
+
+
+
 
 
 

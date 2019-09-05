@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!-- <button @click="getData">123132</button> -->
         <list v-if="mainVisible" ref="listCompon" @orderDetFn="orderDetFn" @afterSaleDetailFn="afterSaleDetailFn"></list>
         <orderDet v-if="orderDetVisible" ref="orderDetCompon" @orderDetListFn="orderDetListFn"  :breaddata="subBreaddata"></orderDet>
         <afterSaleDetail v-if="afterSaleDetailVisible" ref="afterSaleDetailCompon" @orderDetListFn="orderDetListFn"  :breaddata="subBreaddata2"></afterSaleDetail>
@@ -10,6 +11,7 @@
     import list from "./list"
     import orderDet from "../modules/orderDet"
     import afterSaleDetail from "./afterSaleDetail"
+    import {getDataApi} from "@/api/api.js"
     export default {
         data () {
             return {
@@ -49,7 +51,22 @@
                     this.$refs.afterSaleDetailCompon.init(row);
                 })
 
-            }
+            },
+            // getData(){
+            //     var obj = {
+            //         marginLever: 100,
+            //         price: "9069.00",
+            //         priceType: 1,//0是立即，1是委托
+            //         side: 0,//0 duo   1 shao
+            //         stopLossPrice: null,
+            //         stopProfitPrice: null,
+            //         symbol: "BTC/USDT",
+            //         volume: 1, //
+            //     }
+            //     getDataApi(obj).then(res => {
+                    
+            //     });
+            // }
 
         }
     }

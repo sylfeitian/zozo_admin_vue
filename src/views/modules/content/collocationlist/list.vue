@@ -99,17 +99,30 @@
                     </el-button>
                     <el-button @click.native.prevent="dialogTableVisible = true" type="text" size="mini">管理风格标签</el-button>
                     <el-dialog title="管理风格标签" :visible.sync="dialogTableVisible">
-                        <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
+                        <el-form :inline="true" style="text-align:left;" class="grayLine topGapPadding"  >
                             <el-form-item label="关联风格标签：">
-                                <el-input v-model="styleName" ></el-input>
+                                <el-input v-model="name" ></el-input>
                             </el-form-item>
                             <el-form-item>
-                                <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
+                                <el-button  class="btn" type="primary" @click="getStyle">搜索</el-button>
+                            </el-form-item>
+                            <el-form-item style="width:100%;" label="已关联风格标签：">
+                                <div style="margin-left: 20px;">
+                                        <el-tag
+                                                :key="index"
+                                                v-for="(tag,index) in styleList"
+                                                style="margin-bottom: 10px;margin-right: 5px"
+                                                :disable-transitions="false"
+                                                closable
+                                                @close="handleClose(index)">
+                                            {{tag.styleName}}
+                                        </el-tag>
+                                </div>
                             </el-form-item>
                         </el-form>
                         <div slot="footer" class="dialog-footer">
-                            <el-button @click="dialogTableVisible = false">取 消</el-button>
-                            <el-button type="primary" @click="dialogTableVisible = false">确 定</el-button>
+                            <el-button @click="res">取 消</el-button>
+                            <el-button type="primary" @click="saveStyle(scope.row.id)">确 定</el-button>
                         </div>
                     </el-dialog>
                 </template>
@@ -141,7 +154,7 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import { getlookfolderpage } from '@/api/url'
-    import { folderPutoperating,folderPutoperatingAll } from '@/api/api';   //发布/取消发布
+    import { folderPutoperating,folderPutoperatingAll,getStyleName ,saveFolderdetail,getlookfolderdetail} from '@/api/api';   //发布/取消发布
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -158,7 +171,7 @@
                 activeName: "",
                 dialogTableVisible:false,
                 breaddata: [ "内容管理","搭配集合管理"],
-                styleName:"",
+                name:"",
                 dataForm: {
                 	idJp:null,
                 	title:null,
@@ -170,6 +183,7 @@
                 	publishEndTimeJp:null,
                 },
                 value: '',
+                styleList:[],
                 dataList: [],
                 dataListLoading: false,
                 forbitLoading:false,
@@ -197,7 +211,47 @@
             this.getDataList();
         },
         methods: {
-
+            getStyle(){
+                getStyleName({
+                    params:{styleName:this.name}
+                }).then((res)=>{
+                    this.styleList = res;
+                })
+            },
+            res(){
+              this.dialogTableVisible = false;
+              this.name = "";
+              this.styleList = [];
+            },
+            saveStyle(id){
+                let that = this;
+                getlookfolderdetail({
+                    id:id
+                }).then((res)=>{
+                   let data = res.data;
+                   data.styles = that.styleList;
+                    saveFolderdetail({folderInfoDTO:data}).then((res)=>{
+                        if(res.code == 200){
+                            this.$message({
+                                message: res.msg,
+                                type: 'success',
+                                onClose:function () {
+                                    that.res();
+                                    that.getDataList();
+                                }
+                            });
+                        }else{
+                            this.$message({
+                                message: res.msg,
+                                type: 'error',
+                            });
+                        }
+                    })
+                })
+            },
+            handleClose(index) {
+                this.styleList.splice(index, 1);
+            },
             showDetail(row){
                 this.$emit("showDetail",row);
             },

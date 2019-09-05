@@ -7,10 +7,10 @@
         </el-form-item>
         <el-form-item v-else label="上级分类：">  
 	        <el-select
-	        	:disabled="selectdisabled"
 	          	v-model="dataForm.parentId"
 	         	placeholder="请选择"
-	          	loading-text="加载中···">
+	          	loading-text="加载中···"
+	          	@change="actselectchange">
 	          	<el-option
 	            	v-for="item in goodKindList1"
 	            	:key="item.id"
@@ -26,7 +26,7 @@
             <el-input v-model="dataForm.sort" type="text" placeholder="0-255" show-word-limit style="width:200px;"></el-input>
         		<div class="grey">(数字越小越靠前)</div>
         </el-form-item>
-        <el-form-item v-for="(item, index) in dataForm.categoryJpId" :key="index" :label="index == 0 ? '关联日本分类：' : '' ">
+        <el-form-item v-if="yijishow" v-for="(item, index) in dataForm.categoryJpId" :key="index" :label="index == 0 ? '关联日本分类：' : '' ">
 	        <el-select
 	          v-model="dataForm.categoryJpId[index]"
 	          placeholder="请选择"
@@ -42,12 +42,12 @@
 	        <el-button v-if="index+1 == dataForm.categoryJpId.length" @click="actadd" type="primary" style="margin-left: 20px;">添加</el-button>
 		</el-form-item>
 		 
-	 	<el-form-item label="评价类型：" prop="appraisal">
+	 	<el-form-item label="评价类型：" prop="appraisal" v-if="erjishow">
 	        <el-input v-model="dataForm.appraisal" type="text" maxlength="6" placeholder="请输入6字以内的内容" show-word-limit style="width:400px;"></el-input>
 	    </el-form-item>
     
     
-    	<el-form-item label="测量方法：" prop="methodUrlshow">
+    	<el-form-item label="测量方法：" prop="methodUrlshow" v-if="yijishow">
 			<div class="pcCoverUrl imgUrl" v-for="(item,index) in dataForm.methodUrlshow" @click="imgtype = 'rule'">
 				<img-cropper
 					ref="cropperImg1"
@@ -59,7 +59,7 @@
 			</div>
 		</el-form-item>
 		
-    	<el-form-item label="分类性别：" prop="">
+    	<el-form-item label="分类性别：" prop=""  v-if="yijishow">
     		<div class="pcCoverUrl imgUrl"  @click="imgtype = 'all'" style="display: flex;">
     			<div class="artmwc artall">全部</div>
 				<img-cropper
@@ -73,7 +73,7 @@
     	</el-form-item>
     	
     	
-    	<el-form-item label="" prop="">
+    	<el-form-item label="" prop=""  v-if="yijishow">
     		<el-checkbox-group v-model="checkList">
     			<div class="artmwc">
     				<el-checkbox label="男士" ></el-checkbox>
@@ -160,16 +160,18 @@
 	    	}
 	    };
 	    return {
-	    	selectdisabled: false, //是否可以选择一级分类
+	    	erjishow: true,  //二级没有评价类型
+	    	yijishow: true,  //一级不用上传图片
+//	    	selectdisabled: false, //是否可以选择一级分类
 	    	imgtype:'',  //img的类型
 	    	checkList:[],  //分类性别多选
 	        datacategory: '', //选择分类
 	        showListVisible:true,
-	        goodKindList1: [{ id: '0', name: "一级分类" }],
+	        goodKindList1: [{ id: '0', name: "无" }],
 	        goodKindList2: [],
 	        dataArray:[],
-	        dataForm:{
-	        	parentId:'', //父级分类id
+	        dataForm:{   
+	        	parentId:'0', //父级分类id
 	        	name:'', //分类名称
 	        	sort:'', //排序
 		      	categoryJpId:['',],  //关联的日方分类id  
@@ -202,17 +204,18 @@
 	  created () {
 	  },
 	  methods: {
+	  	actselectchange(){
+	  		if(this.dataForm.parentId == 0){   //添加一级
+	  			this.erjishow = true;
+	  			this.yijishow = false;
+	  			this.dataForm.appraisal = null;  //一级没有评价类型
+	  		}else{
+	  			this.erjishow = false;
+	  			this.yijishow = true;
+	  		}
+	  	},
 	  	init(row){
 	  		this.showListVisible = true;
-	  		if(row){
-	  			this.selectdisabled = true;
-	  			console.log(row);
-	  			this.$nextTick(()=>{
-	  				this.goodKindList1 = [{ id: row.id, name: row.label }];
-	  				this.dataForm.parentId = row.id;
-	  			})
-	  			
-	  		}
 	  		categoryCn().then((res)=>{
 	  			if(res.code == 200){
 	  				console.log(res.data);
@@ -222,7 +225,7 @@
 //	  				this.goodKindList1.concat(res.data);
 	  				console.log(this.goodKindList1);
 	  			}else{
-	  				this.$message("服务器错误");
+	  				this.$message(res.msg);
 	  			}
 	  		}).catch(()=>{
 	  			this.$message("服务器错误");
@@ -235,23 +238,37 @@
 	  					this.goodKindList2.push(item);
 	  				})
 	  			}else{
-	  				this.$message("服务器错误");
+	  				this.$message(res.msg);
 	  			}
 	  		}).catch(()=>{
 	  			this.$message("服务器错误");
 	  		})
+	  		this.$nextTick(()=>{
+				if(row){
+					this.dataForm.parentId = row.id;
+				}
+			   this.actselectchange();
+			})
 	  	},
 	  	actuploaddata(){  //确定提交  
 	  		if(!this.dataForm.methodUrlshow[this.dataForm.methodUrlshow.length-1]){
 	  			this.dataForm.methodUrlshow.pop()
 	  		}
 	  		this.dataForm.methodUrl = JSON.stringify(this.dataForm.methodUrlshow);
+	  		//处理男士/女士/儿童     是否传数据
+	  		if(this.checkList.indexOf('男士') == -1){
+	  			this.dataForm.genderMr = '';
+	  		}else if(this.checkList.indexOf('女士') == -1){
+	  			this.dataForm.genderMrs = '';
+	  		}else if(this.checkList.indexOf('儿童') == -1){
+	  			this.dataForm.genderKid = '';
+	  		}	
 	  		updataCategoryCn(this.dataForm).then((res)=>{
 	  			if(res.code == 200){
 	  				console.log(res.data);
 	  				this.closeadd();
 	  			}else{
-	  				this.$message("服务器错误");
+	  				this.$message(res.msg);
 	  			}
 	  		}).catch(()=>{
 	  			this.$message("服务器错误");

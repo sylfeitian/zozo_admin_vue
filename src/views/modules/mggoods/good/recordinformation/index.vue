@@ -68,7 +68,7 @@
             <el-table-column label="商品SKU ID" align="center">
                 <template slot-scope="scope">
                     <div>
-                        {{scope.row.skuId}}
+                        {{scope.row.skuIdJp}}
                     </div>
                 </template>
             </el-table-column>

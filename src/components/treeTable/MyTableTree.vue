@@ -130,6 +130,7 @@
                     colSpan = Number(col.span);
                     if (colSpan <= 0) colSpan = 3;
                     
+                    //
                 	// 分类图片(插入图片)
                 	if(key == 'genderMain' && value != '--'){
                 		return h(
@@ -137,7 +138,7 @@
                     		{
 	                    		'props': {span: colSpan},
 	                    		'class': {'text-center': col.center, 'textIndex5': true},
-	                    		'domProps': { innerHTML: `<img src=${value} width=100%>` },// DOM 属性
+	                    		'domProps': { innerHTML: `<img src=${this.$imgDomain}${value} width=100%>` },// DOM 属性
                 			},   
 						);
                 	};
@@ -274,7 +275,7 @@
     }
     
     .el-button + .el-button {
-	    margin-right: 20px;
-	    margin-left: 0px;
+	    margin-right: 0px;
+	    margin-left: 20px;
 	}
 </style>

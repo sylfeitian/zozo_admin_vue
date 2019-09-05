@@ -1,46 +1,46 @@
 <template>
     <div>
         <Bread  :breaddata="breaddata"></Bread>
-        <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
+        <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" @keyup.enter.native="getDataList()" >
             <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
             <el-form-item label="商品名称：">
-                <el-input v-model="dataForm.goodsName" placeholder="商品名称/商品编号" ></el-input>
+                <el-input v-model="dataFormShow.goodsName" placeholder="商品名称/商品编号" ></el-input>
             </el-form-item>
             <el-form-item label="商品ID：">
-                <el-input v-model="dataForm.goodsId" placeholder="商品名称/商品编号" ></el-input>
+                <el-input v-model="dataFormShow.idJp" placeholder="商品名称/商品编号" ></el-input>
             </el-form-item>
             <el-form-item label="分类：">
-                <el-select v-model="dataForm.conditionName" placeholder="请选择">
+                <el-select v-model="dataFormShow.goodsTypeId" placeholder="请选择">
                     <el-option
-                            v-for="item in options"
-                            :key="item.value"
+                            v-for="item in goodsTypeId"
+                            :key="item.id"
                             :label="item.label"
-                            :value="item.value">
+                            :value="item.id">
                     </el-option>
                 </el-select>
             </el-form-item>
             <el-form-item  label="品牌：">
-                <el-select v-model="dataForm.brandName" placeholder="请选择">
+                <el-select v-model="dataFormShow.brandName" placeholder="请选择">
                     <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
+                            v-for="item in brandName"
+                            :key="item.id"
+                            :label="item.brandName"
+                            :value="item.brandName">
                     </el-option>
                 </el-select>
             </el-form-item>
             <el-form-item  label="所属店铺：">
-                <el-select v-model="dataForm.storeName" placeholder="请选择">
+                <el-select v-model="dataFormShow.storeName" placeholder="请选择">
                     <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
+                            v-for="item in storeName"
+                            :key="item.id"
+                            :label="item.storeName"
+                            :value="item.storeName">
                     </el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="是否已售完：">
-                <el-select v-model="dataForm.state" placeholder="请选择">
+                <el-select v-model="dataFormShow.isSoldOut" placeholder="请选择">
                     <el-option
                             v-for="item in options"
                             :key="item.value"
@@ -49,8 +49,10 @@
                     </el-option>
                 </el-select>
             </el-form-item>
+            <!--//showDetail()-->
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="showDetail()">搜索</el-button>
+                <el-button  class="btn" type="primary" @click="getData">搜索</el-button>
+                <el-button   class="btn"type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
         <el-table
@@ -94,28 +96,45 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
+    import { getdatagoods,} from "@/api/url"
+    import { getdatabrands, getdatacategory, getdatastores} from "@/api/api"
     //import detail from "./detail";
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
-                breaddata: [ "商品管理", "查看库存"],
-                dataForm: {
+
+            	mixinViewModuleOptions: {
+		          getDataListURL: getdatagoods,
+		          getDataListIsPage: true,
+		          // exportURL: '/admin-api/log/login/export',
+		          deleteURL: '',
+		          dataListLoading: false, 
+		          deleteIsBatch: true,
+		          deleteIsBatchKey: 'id'
+			    },
+                breaddata: [ "商品管理", "商品列表"],
+                dataFormShow: {  
                     goodsName: "",//商品名称/商品货号
+                    idJp:"",  //商品id
                     brandName: "",//品牌名称
-                    conditionName: "",//分类名称
                     storeName: "",//店铺名称
-                    state: "",//是否可售
-                    goodsShow:"",//上下架状态:0下架;1上架
+                    goodsTypeId: "",//中国分类id
+                    isSoldOut: "",//是否可售
                 },
-                options: [{
-                    value: '选项1',
+                 dataForm: {
+				},
+                storeName:[],  //店铺名称
+                goodsTypeId: [],//中国分类id
+                brandName: [],//品牌名称
+                options: [{  //是否可售
+                    value: '',
                     label: '全部'
                 }, {
-                    value: '选项2',
+                    value: '1',
                     label: '已售完'
                 }, {
-                    value: '选项3',
+                    value: '0',
                     label: '未售完'
                 }],
                 activeName: "",
@@ -142,20 +161,74 @@
         created () {
             // 第一次请求数据
             this.activeName =  this.status == undefined ? "" : this.status;
-            this.dataForm.goodsShow = this.status == undefined ? "" : this.status;
-            this.getDataList();
+            this.dataFormShow.goodsShow = this.status == undefined ? "" : this.status;
+            
+            this.dataFormShow.isSoldOut = this.options[0].value;
+            this.getselectdata();
         },
         methods: {
+        	//获取select  下拉内容
+        	getselectdata(){
+        		//获取品牌列表
+        		getdatabrands().then((res)=>{
+		  			if(res.code == 200){
+		  				console.log(res);
+		  				this.brandName = res.data;
+		  			}else{
+		  				this.$message(res.msg);
+		  			}
+		  		}).catch(()=>{
+		  			this.$message("服务器错误");
+		  		})
+	  		
+	  		//获取中国分类
+	  		getdatacategory().then((res)=>{
+	  			if(res.code == 200){
+	  				console.log(res);
+	  				this.goodsTypeId = res.data;
+	  			}else{
+	  				this.$message(res.msg);
+	  			}
+	  		}).catch(()=>{
+	  			this.$message("服务器错误");
+	  		})
+	  		
+	  		//获取点铺列表
+	  		getdatastores().then((res)=>{
+	  			if(res.code == 200){
+	  				this.storeName = res.data;
+	  			}else{
+	  				this.$message(res.msg);
+	  			}
+	  		}).catch(()=>{
+	  			this.$message("服务器错误");
+	  		})
+        	},
             showDetail(id){
                 this.$emit("showDetail",id);
             },
+            getData(){  //查询
+            	this.dataForm = {};
+                for(let key in this.dataFormShow){
+                    this.$set(this.dataForm,`${key}`,this.dataFormShow[key]);
+                }
+                this.getDataList()
+            },
             reset() {
+                this.dataFormShow.goodsName = "";//商品名称/商品货号
+                this.dataFormShow.idJp = "";//商品id
+                this.dataFormShow.brandName = "";//品牌名称
+                this.dataFormShow.goodsTypeId = "";//分类id
+                this.dataFormShow.storeName = "";//店铺名称
+                this.dataFormShow.isSoldOut = "";//是否可售
+                
                 this.dataForm.goodsName = "";//商品名称/商品货号
+                this.dataForm.idJp = "";//商品id
                 this.dataForm.brandName = "";//品牌名称
-                this.dataForm.conditionName = "";//分类名称
+                this.dataForm.goodsTypeId = "";//分类id
                 this.dataForm.storeName = "";//店铺名称
-                this.dataForm.state = "";//是否可售
-                this.handleClick();
+                this.dataForm.isSoldOut = "";//是否可售
+                this.getDataList();
             },
             // 编辑
             goEidt(row){

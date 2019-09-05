@@ -18,13 +18,13 @@
                 <span>{{dataForm.idJp}}</span>
             </el-form-item>
             <el-form-item label="日本尺码项目名称：">
-                <span>{{dataForm.nameJp}}</span>
+                <span>{{dataForm.japanSize}}</span>
             </el-form-item>
-            <el-form-item label="尺码项目名称：" prop="sizeName" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.name" auto-complete="off"></el-input>
+            <el-form-item label="尺码项目名称：" prop="sizeName" >
+                <el-input v-model="dataForm.sizeName" ></el-input>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
-                <el-button type="primary" @click="dataFormSubmit()"
+                <el-button type="primary" @click="dataFormSubmit('addForm')"
                            :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
                 <el-button @click="dataFormCancel()">取消</el-button>
             </el-form-item>
@@ -33,6 +33,7 @@
 </template>
 
 <script>
+    import { editSizeLabel } from '@/api/api.js'
     export default {
         name: "model-add-edit-data",
         data () {
@@ -40,7 +41,7 @@
                 visible : false,
                 loading : false,
                 dataForm: {
-                    sizeId:"",//尺码项目ID
+                    idJp:"",//尺码项目ID
                     japanSize: "",//日本尺码项目名称
                     sizeName: "",//尺码项目名称
                 },
@@ -53,7 +54,6 @@
                 optionsRight: [],
                 title:'',
                 row:"",
-                formLabelWidth: '120px'
             }
         },
         components:{
@@ -78,8 +78,10 @@
             },
             //编辑回显
                backScan(row){
-                   this.dataForm = row;
-                   console.log(row)
+                    this.dataForm.idJp = row.idJp;
+                    this.dataForm.japanSize = row.nameJp;
+                    this.dataForm.sizeName = row.name;
+                    console.log(row)
                },
             // 提交
             dataFormSubmit(formName){
@@ -88,12 +90,12 @@
                     if (valid) {
                         this.loading = true;
                         var obj = {
-                            "japanSize":  this.dataForm.japanSize,//日本尺码名称 ,
-                            "sizeName":  this.dataForm.sizeName,//尺码名称
+                            "id":  this.row.id,//日本尺码名称 ,
+                            "name": this.dataForm.sizeName,//尺码名称
                         }
                         if(this.row) obj.id = this.row.id
                         //var fn = this.row?updateBrand:addBrand;
-                        fn(obj).then((res) => {
+                        editSizeLabel(obj).then((res) => {
                             this.loading = false;
                             // alert(JSON.stringify(res));
                             let status = null;

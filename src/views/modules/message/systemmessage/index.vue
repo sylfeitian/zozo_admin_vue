@@ -1,92 +1,293 @@
 <template>
   <div>
   	<Bread :breaddata="breaddata" ></Bread>
-		<el-table
-		  	:data="dataList"
+	  <el-table
+		  	:data="dataForm"
 		  	ref='dataList'
 		  	border
 		  	style="width: 100%"
 		  	v-loading="dataListLoading">
+
 			<el-table-column
-			    prop="storeName"
+			    prop="messageTypeName"
 			    label="推送类型"
 			    align="center">
-			    <template slot-scope="scope">
-			        <span style="margin-left: 10px">{{ "推送类型" }}</span>
-			    </template>
 			</el-table-column>
 			<el-table-column
-			    prop="account"
+			    prop="isSendInner"
 			    label="站内信"
 			    align="center">
 			    <template slot-scope="scope">
 			        <el-switch
-					  v-model="value2"
-					  active-color="#13ce66"
-					  inactive-color="#ff4949">
+					  v-model="scope.row.isSendInner"
+					  @change="putState(scope.row.id,scope.row.isSendInner,1)"
+					  >
 					</el-switch>
-					<span class="artblue">模板设置</span>
+					<span class="artblue" @click="show(0,scope.row.messageTypeId)">模板设置</span>
 			    </template>
 			</el-table-column>
 			<el-table-column
-			    prop="createDate"
+			    prop="isSendUmeng"
 			    label="APP推送"
 			    align="center">
+				<template slot-scope="scope">
+					<el-switch
+							v-model="scope.row.isSendUmeng"
+							@change="putState(scope.row.id,scope.row.isSendUmeng,2)"
+							>
+					</el-switch>
+					<span class="artblue" @click="show(1,scope.row.messageTypeId)">模板设置</span>
+				</template>
 			</el-table-column>
 			<el-table-column
-			    prop="gradeName"
+			    prop="isSendSms"
 			    label="短信 "
 			    align="center">
+				<template slot-scope="scope">
+					<el-switch v-model="scope.row.isSendSms"
+							@change="putState(scope.row.id,scope.row.isSendSms,3)"
+							>
+					</el-switch>
+					<span class="artblue" @click="show(2,scope.row.messageTypeId)">模板设置</span>
+				</template>
 			</el-table-column>
 		</el-table>
-			
-   </div>
+		  <el-dialog title="消息模板设置" :visible.sync="dialogTableVisible">
+			  <el-form>
+				  <el-form-item label="消息类型：">
+					  <span>{{ShopmessagetemplateList.messageTypeName}}</span>
+				  </el-form-item>
+				  <el-form-item label="推送方式：">
+					  <span>{{ShopmessagetemplateList.templateType == 0?"站内信":"APP推送"}}</span>
+				  </el-form-item>
+				  <el-form-item label="标签说明：">
+					  <span>
+						   <el-tag
+								   :key="index"
+								   v-for="(tag,index) in ShopmessagetemplateList.labelList"
+								   :disable-transitions="false"
+								   style="margin-right:5px;"
+								   @click="handleClose(tag)">
+                    {{tag}}
+                </el-tag>
+					  </span>
+				  </el-form-item>
+				  <el-form-item label="消息标题：" style="height: 100%!important;">
+					  <el-input type="text" v-model="ShopmessagetemplateList.messageTitle" placeholder="请输入标题名称"></el-input>
+				  </el-form-item>
+				  <el-form-item label="消息内容：" style="height: 100%!important;">
+					  <el-input  type="textarea" v-model="ShopmessagetemplateList.messageContent" :rows="5" placeholder="请输入内容"></el-input>
+				  </el-form-item>
+			  </el-form>
+			  <div slot="footer" class="dialog-footer">
+				  <el-button @click="rest(0)">取 消</el-button>
+				  <el-button type="primary" @click="saveTemplate(0)">确 定</el-button>
+			  </div>
+		  </el-dialog>
+
+	  <el-dialog title="短信模板设置" :visible.sync="dialogTableVisibleOne">
+		  <el-form>
+			  <el-form-item label="消息类型：">
+				  <span>{{ShopmessagetemplateList.messageTypeName}}</span>
+			  </el-form-item>
+			  <el-form-item label="模板编码：" style="height: 100%!important;">
+				  <el-input type="text" maxlength="30" v-model="ShopmessagetemplateList.messageCode" placeholder="请输入短信模板编码"></el-input>
+				  <p style="color: #bebebe;line-height: 14px;">请填写在阿里短信后台配置的短信模板编码</p>
+			  </el-form-item>
+		  </el-form>
+		  <div slot="footer" class="dialog-footer">
+			  <el-button @click="rest(1)">取 消</el-button>
+			  <el-button type="primary" @click="saveTemplate(1)">确 定</el-button>
+		  </div>
+	  </el-dialog>
   </div>
 </template>
 
 <script>
 import mixinViewModule from '@/mixins/view-module'
 import Bread from "@/components/bread";
-import { getmessagepage, addmessagevipshop } from '@/api/url'
+import { getmessagepage, putMessageState,getShopmessagetemplate,saveShopmessagetemplate } from '@/api/api'
   
 export default {
   	mixins: [mixinViewModule],
 	data () {
 	    return {
-	      mixinViewModuleOptions: {
-	          getDataListURL: getmessagepage,
-	          getDataListIsPage: true,
-	          // exportURL: '/admin-api/log/login/export',
-	          deleteURL: '',
-	          dataListLoading: false, 
-	          deleteIsBatch: true,
-	          deleteIsBatchKey: 'id'
-	      },
-	      breaddata: ["消息中心", "系统消息设置"],
-	      goodKind2loading:false,
-	      goodKind3loading:false,
-	      vipData:[],
-	      shopData: [],
-	      isshop: false,
-	      dataListSelections:[],
+	      	breaddata: ["消息中心", "系统消息设置"],
+            dataList: [],
+            dataListLoading: false,
+            dialogTableVisible: false,
+            dialogTableVisibleOne: false,
+            ShopmessagetemplateList:{
+                messageTypeName:"",
+                labelList:"",
+                templateType:"",
+                messageTitle:"",
+                messageContent:"",
+                messageId:"",
+                messageCode:""
+			},
+            dataForm: {},
+            selectVal:""
 	    };
 	},
-	props:['showdata'],
 	created() {
-		
+        getmessagepage().then((res)=>{
+            if(res.code == 200){
+                this.dataForm = res.data;
+                this.dataForm.map((v,i)=>{
+                    if(v.isSendInner) v.isSendInner = false;
+                    else v.isSendInner = true;
+                    if(v.isSendSms) v.isSendSms = false;
+                    else v.isSendSms  = true;
+                    if(v.isSendUmeng) v.isSendUmeng = false;
+                    else v.isSendUmeng  = true;
+				})
+            }
+        })
 	},
 	components: {
 		Bread
 	},
-	mounted() {
-	},
-	methods: {}
+	methods: {
+  	    rest(type){
+            if(type == 0) this.dialogTableVisible = false;
+            else this.dialogTableVisibleOne = false;
+            this.ShopmessagetemplateList = {
+                messageTypeName:"",
+                    labelList:"",
+                    templateType:"",
+                    messageTitle:"",
+                    messageContent:"",
+                    messageId:"",
+                    messageCode:""
+            }
+		},
+        saveTemplate(type){
+            let that = this;
+            let obj = {};
+            if(type == 0){
+                obj = {
+                    templateType:this.ShopmessagetemplateList.templateType,
+                    messageTitle:this.ShopmessagetemplateList.messageTitle,
+                    messageContent:this.ShopmessagetemplateList.messageContent,
+                    messageId:this.ShopmessagetemplateList.messageId
+                }
+			}else{
+                var res =  /^[0-9A-Z_]+$/g
+                if(!res.test(this.ShopmessagetemplateList.messageCode)){
+                    this.$message({
+                        message:"请输入正确格式的模板编码",
+                        type: 'error',
+                        duration: 1500,
+                    })
+					return
+				}
+                obj = {
+                    templateType:this.ShopmessagetemplateList.templateType,
+                    messageId:this.ShopmessagetemplateList.messageId,
+                    messageCode:this.ShopmessagetemplateList.messageCode
+                }
+			}
+
+            saveShopmessagetemplate(obj).then((res)=>{
+                if(res.code==200){
+                    if(type == 0) that.dialogTableVisible = false;
+                    else that.dialogTableVisibleOne = false;
+                    getmessagepage().then((res)=>{
+                        if(res.code == 200){
+                            that.dataForm = res.data;
+                            that.dataForm.map((v,i)=>{
+                                if(v.isSendInner) v.isSendInner = false;
+                                else v.isSendInner = true;
+                                if(v.isSendSms) v.isSendSms = false;
+                                else v.isSendSms  = true;
+                                if(v.isSendUmeng) v.isSendUmeng = false;
+                                else v.isSendUmeng  = true;
+                            })
+                        }
+                    })
+                    this.$message({
+                        message:res.msg,
+                        type: 'success',
+                        duration: 1500,
+                    })
+                }else{
+                    this.$message({
+                        message:res.msg,
+                        type: 'error',
+                        duration: 1500,
+                    })
+                }
+            })
+		},
+        handleClose(val){
+            this.ShopmessagetemplateList.messageContent = this.ShopmessagetemplateList.messageContent+val;
+		},
+  	    show(name,id){
+  	        if(name == 2) {
+                this.dialogTableVisibleOne = true;
+			} else{
+                this.dialogTableVisible = true;
+			}
+            getShopmessagetemplate({id:id}).then((res)=>{
+                if(res.code == 200){
+                    this.ShopmessagetemplateList.labelList = res.data.labelList;
+                    this.ShopmessagetemplateList.messageTypeName = res.data.messageTypeName;
+                    this.ShopmessagetemplateList.templateType = name;
+                    this.ShopmessagetemplateList.messageId = id;
+                    if(name == 0){
+                        this.ShopmessagetemplateList.messageTitle = res.data.messAgeTemplate.tempTitle;
+                        this.ShopmessagetemplateList.messageContent = res.data.messAgeTemplate.tempInnerContent;
+                    }else if(name == 1){
+                        this.ShopmessagetemplateList.messageTitle = res.data.messAgeTemplate.umengTitle;
+                        this.ShopmessagetemplateList.messageContent = res.data.messAgeTemplate.tempUmentContent;
+                    }else if(name == 2){
+                        this.ShopmessagetemplateList.messageCode = res.data.messAgeTemplate.tempSmsCode;
+					}
+                }
+            })
+		},
+  	    putState(id,isCheck,type){
+            let that = this;
+                putMessageState({
+					id:id,
+					isSendInner: type==1?isCheck?0:1:"",
+                    isSendUmeng:type==2?isCheck?0:1:"",
+                    isSendSms:type==3?isCheck?0:1:"",
+				}).then((res)=>{
+                    if(res.code == 200){
+                        this.$message({
+                            message: res.msg,
+                            type: 'success',
+                            onClose:function () {
+                                getmessagepage().then((res)=>{
+                                    if(res.code == 200){
+                                        that.dataForm = res.data;
+                                        that.dataForm.map((v,i)=>{
+                                            if(v.isSendInner) v.isSendInner = false;
+                                            else v.isSendInner = true;
+                                            if(v.isSendSms) v.isSendSms = false;
+                                            else v.isSendSms  = true;
+                                            if(v.isSendUmeng) v.isSendUmeng = false;
+                                            else v.isSendUmeng  = true;
+                                        })
+                                    }
+                                })
+                            }
+                        });
+                    }else{
+                        this.$message({
+                            message: res.msg,
+                            type: 'error',
+                        });
+                    }
+                })
+		}
+	}
 };
 </script>
 <style lang="scss" scoped>
- .el-dialog__wrapper{
- 	display: block !important; 
- }
+
  .grayBtnWarp{
  	overflow: hidden;
  	.grayBtnWarp-right{
@@ -105,10 +306,11 @@ export default {
  	width: auto !important;
  }
 .grayLine{
-	margin-top: 0px;
+	border-bottom: 0!important;
 }
 .artblue{
 	color: blue;
+	margin-left: 10px;
 }
 </style>
 

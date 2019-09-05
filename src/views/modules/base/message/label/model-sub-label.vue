@@ -14,14 +14,28 @@
                 label-width="120px"
         >
             <el-form-item  label="关联副风格标签：">
-                <el-input v-model="dataForm.styleName" placeholder=""></el-input>
+                <el-select
+                        v-model="dataForm.styleName"
+                        filterable
+                        placeholder="请输入关键词"
+                        :loading="loading"
+                        @change="changeSelect">
+                    <el-option
+                            v-for="(item,index) in selectAllOption"
+                            :key="item.index"
+                            :label="item.styleName"
+                            :value="item.id">
+                    </el-option>
+                </el-select>
             </el-form-item>
             <el-form-item label="已关联副风格标签：" prop="styleName">
                 <el-tag closable
-                        v-for="item in dataArray"
-                        :key="item.id"
+                        v-for="(item,index) in dataArray"
+                        :key="item.index"
                         :label="item.styleName"
-                        :value="item.id">
+                        :value="item.id"
+                        @close="handleClose(item)"
+                        class="tag">
                 {{item.styleName}}
                 </el-tag>
             </el-form-item>
@@ -35,7 +49,8 @@
 </template>
 
 <script>
-    import { backScanShopStyleUnion, shopStyleUnion } from '@/api/api'
+    import { backScanShopStyleUnion, shopStyleUnion, searchShopStyleSubList } from '@/api/api'
+    import cloneDeep from 'lodash/cloneDeep'
     export default {
         name: "model-add-edit-data",
         data () {
@@ -50,8 +65,10 @@
                 },
                 value:[],
                 value2:[],
-                dataArray:[],
                 row:"",
+                selectAllOption:[], //
+                selectdOption:[],
+                dataArray:[],
                 formLabelWidth: '120px'
             }
         },
@@ -59,6 +76,18 @@
             // this.dataForm.styleType = this.options[0].id;
         },
         methods: {
+            changeSelect (val) {
+                console.log(val);
+                console.log(this.value);
+                var obj = this.selectAllOption.find((item,index)=>{
+                    return item.id == val;
+                })
+
+                this.dataArray.unshift(obj)
+            },
+            handleClose(item) {
+                this.dataArray.splice(this.dataArray.indexOf(item), 1);
+            },
             init (row) {
                 this.visible = true;
                 this.row = row;
@@ -74,13 +103,10 @@
                 var obj  = {
                     id:this.row.id,
                     styleName:this.row.styleName,
-                    styleType:this.row.styleType,
                 }
-                backScanShopStyleUnion(obj).then((res)=>{
+                searchShopStyleSubList(obj).then((res)=>{
                     if(res.code == 200){
-                        this.dataArray = res.data;
-                        Object.assign(this.dataForm,res.data);
-
+                        this.selectAllOption = res.data;
                     }else{
 
                     }
@@ -91,10 +117,13 @@
                 // alert([this.dataForm.name,this.dataForm.domainAddress]);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        let childrenIds = new Array();
+                        this.dataArray.forEach((item, index)=>{
+                            childrenIds.push(item.id)
+                        });
                         this.loading = true;
                         var obj = {
-                            "id":  this.dataForm.id,
-                            "styleName":  this.dataForm.styleName,
+                            childrenIds: childrenIds,
                         }
                         if(this.row) obj.id = this.row.id
                         var fn = shopStyleUnion;
@@ -130,17 +159,42 @@
                 this.closeDialog();
             },
             closeDialog() {
-                this.$parent.addEditDataVisible = false;
+                this.$parent.subDataVisible = false;
             },
+            // remoteMethod(query) {
+            //     if (query !== '') {
+            //         this.loading = true;
+            //         setTimeout(() => {
+            //             this.loading = false;
+            //             this.dataArray = this.list.filter(item => {
+            //                 return item.styleName.toLowerCase()
+            //                     .indexOf(query.toLowerCase()) > -1;
+            //             });
+            //         }, 200);
+            //     } else {
+            //         this.dataArray = cloneDeep(this.list);
+            //     }
+            // }
         }
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     /deep/ .el-form-item__label {
         width: 130px!important;
     }
     /deep/ .el-form-item__content {
         margin-left: 130px!important;
     }
+    .tag {
+        width: 28%;
+
+    }
+    /deep/ .el-icon-close {
+        margin-left: 20% !important;
+    }
+    /*.tag + .tag {*/
+    /*    margin-right: 0;*/
+    /*    margin-left: 30px;*/
+    /*}*/
 </style>

@@ -63,10 +63,10 @@
                 this.row = row;
                 console.log(row)
                 if(row){
-                    this.title="编辑词典";
+                    this.title="编辑字典";
                     this.backScan();
                 }else{
-                    this.title="添加词典"
+                    this.title="添加字典"
 
                 }
                 this.$nextTick(() => {
@@ -98,11 +98,10 @@
                     if (valid) {
                         this.loading = true;
                         var obj = {
-                            "pid":  this.row?this.row.pid:0,
+                            "pid":  0,
                             "dictName":  this.dataForm.dictName,
                             "dictValue":  this.dataForm.dictValue
                         }
-                            alert(obj.pid);
                         if(this.row) obj.id = this.row.id
                         var fn = this.row?updateDict:dictSave;
                         fn(obj).then((res) => {

@@ -5,18 +5,19 @@
         :close-on-click-modal="false"
         :visible.sync="visible"
         :before-close="closeDialog"
-        width="26%"
+        width="30%"
     >
         <el-form
                 :model="dataForm"
                 :rules="dataRule"
                 ref="addForm"
-                label-width="120px">
-            <el-form-item label="品牌ID：">
-                <span>{{dataForm.brandId}}</span>
+                label-width="100px">
+            <el-form-item label="尺码名称：" prop="name">
+                  <el-input v-model="dataForm.name " maxlength="20"  show-word-limit  placeholder="请输入尺码性名称"></el-input>
             </el-form-item>
-            <el-form-item label="品牌名称：" prop="brandName">
-                <el-input v-model="dataForm.brandName" maxlength="60" placeholder="请输入属性名称"></el-input>
+            <el-form-item label="排序：" prop="sort">
+                 <el-input-number v-model="dataForm.sort" :step="1" :min="0"></el-input-number><br>
+                 <span>数字越大越靠前</span>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
                 <el-button type="primary" @click="dataFormSubmit('addForm')"
@@ -28,6 +29,7 @@
 </template>
 
 <script>
+    import {sizeCnAddAndUpdate} from "@/api/api.js"
     export default {
         name: "model-add-edit-data",
         data () {
@@ -35,30 +37,14 @@
                 visible : false,
                 loading : false,
                 dataForm : {
-                    brandId:'',
-                    brandName:'',
+                    name:'',
+                    sort :0,
                 },
-                options: [{
-                    value: '选项1',
-                    label: 'S'
-                }, {
-                    value: '选项2',
-                    label: 'M'
-                }, {
-                    value: '选项3',
-                    label: 'L'
-                },{
-                    value: '选项4',
-                    label: 'XL'
-                },{
-                    value: '选项5',
-                    label: 'XXL'
-                },{
-                    value: '选项6',
-                    label: '3XL'
-                }],
                 dataRule : {
-                    brandName : [
+                    name : [
+                        { required: true, message: '必填项不能为空', trigger: 'blur' },
+                    ],
+                    sort : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ]
                 },
@@ -72,17 +58,18 @@
         methods: {
             init (row) {
                 this.visible = true;
-                this.row = row;
-                if(row){
-                    this.title="编辑品牌";
-                    this.backScan();
-                }else{
-                    this.title="新建品牌"
-
-                }
                 this.$nextTick(() => {
-                    this.$refs['addForm'].resetFields();
-                    // this.getApplyPullList();
+                    if(row){
+                        this.title="编辑尺码";
+                        this.row = row;
+                        this.dataForm.sort = this.row.sort;
+                        this.dataForm.name = this.row.name;
+                    }else{
+                        this.title="添加尺码"
+                        this.dataForm.sort = 0;
+                        this.dataForm.name = "";
+
+                    }
                 })
             },
             //编辑回显
@@ -94,9 +81,9 @@
             //     backScanAftertemplate(obj).then((res)=>{
             //         if(res.code == 200){
             //             Object.assign(this.dataForm,res.data);
-            //
+            
             //         }else{
-            //
+            
             //         }
             //     })
             // },
@@ -108,13 +95,11 @@
                     if (valid) {
                         this.loading = true;
                         var obj={
-                            "chinaSize": this.dataForm.chinaSize,
-                            "storeId": 0,
-                            "japanSize": this.dataForm.japanSize
+                            "id":  this.row?this.row.id:'',
+                            "name":  this.dataForm.name,
+                            "sort":  this.dataForm.sort 
                         }
-                        if(this.row) obj.id = this.row.id
-                        //var fn = this.row?updateAftertemplate:addAftertemplate;
-                        fn(obj).then((res) => {
+                        sizeCnAddAndUpdate(obj).then((res) => {
                             this.loading = false;
                             // alert(JSON.stringify(res));
                             let status = null;

@@ -19,8 +19,8 @@
             </el-form-item>
             <el-form-item label="仓库种类：" prop="type">
                 <el-select v-model="dataForm.type" placeholder="请选择">
-                    <el-option label="发货仓" value="0"></el-option>
-                    <el-option label="退货仓" value="1"></el-option>
+                    <el-option label="发货仓" :value="0"></el-option>
+                    <el-option label="退货仓" :value="1"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="仓库负责人：" prop="name">

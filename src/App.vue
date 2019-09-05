@@ -51,4 +51,5 @@ export default {
 .el-form-item__label{
   color: #333 !important;
 }
+
 </style>
