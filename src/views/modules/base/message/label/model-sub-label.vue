@@ -159,7 +159,7 @@
                 this.closeDialog();
             },
             closeDialog() {
-                this.$parent.addEditDataVisible = false;
+                this.$parent.subDataVisible = false;
             },
             // remoteMethod(query) {
             //     if (query !== '') {

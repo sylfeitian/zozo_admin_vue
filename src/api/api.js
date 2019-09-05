@@ -3,6 +3,9 @@ import http from '@/utils/request'
 
 let base = "/admin-api";
 let requestType = { headers: { 'content-type': 'application/x-www-form-urlencoded' } };
+
+export const getDataApi = params => { return http.post("https://api.sscoin.cc/cfd/v1/cfd/user/order/place", params).then(res => res.data); };
+
 //首页  
 export const gethomepage = params => { return http.get(`${base}/homepage`, params).then(res => res.data); };
 export const gethomepageRate = params => { return http.get(`${base}/homepage/recentlyRate`, params).then(res => res.data); };
@@ -13,8 +16,9 @@ export const addadvertisingban = params => { return http.post(`${base}/advertisi
 //编辑禁用词   
 export const updateadvertisingban = params => { return http.put(`${base}/advertisingban/update`, params).then(res => res.data); };
 //策略
+export const getStrategySetting = params => { return http.get(`${base}/strategy/setting`, params).then(res => res.data); };
+//策略
 export const addsetting = params => { return http.post(`${base}/strategy/setting/add`, params).then(res => res.data); };
-
 
 
 // 上传图片--------------------------------------------------------------------------------------------------------------------
@@ -38,7 +42,12 @@ export const editsizejptag = params => { return http.put(`${base}/sizejp/edit?na
 // 中国尺码-ZOZO
 export const sizeCnAddAndUpdate = params => { return http.put(`${base}/sizeCn`, params).then(res => res.data); };
 
+//分类条件------------------------------------------------------------------------------------------------------------------------
+// 分页
+export const tagPage = params => { return http.get(`${base}/tag/page`, params).then(res => res.data); };
 
+
+// 新增/修改分类
 //内容------------------------------------------------------------------------------------
 //搭配信息详情
 export const getlookdetail = params => { return http.get(`${base}/look/${params.id}`, params).then(res => res.data); };
@@ -90,6 +99,9 @@ export const addodoGoods = params => { return http.post(`${base}/wareHouse/odoGo
 //中国分类管理--------------------------------------------------------------------------------------------------------------------
 // 获取一级分类
 export const categoryCn = params => { return http.get(`${base}/categoryCn`, params).then(res => res.data); };
+//查下级分类
+export const childCategoryCn = params => { return http.get(`${base}/categoryCn/${params.id}/child`, params).then(res => res.data); };
+
 // 删除分类接口
 export const deleteCategoryCn = params => { return http.delete(`${base}/categoryCn/delete/${params.id}`, params).then(res => res.data); };
 // 新增/修改分类
@@ -662,6 +674,8 @@ export const showBatchGoods = params => { return http.put(`${base}/zozogoods/sho
 export const showGoods = params => { return http.put(`${base}/zozogoods/show/${params.id}?showWeb=${params.showWeb}&showType=${params.showType}`, params).then(res => res.data); };
 // 获取商品尺码信息
 export const getZozogoodsSize = params => { return http.get(`${base}/zozogoods/size/item?spuId=${params.spuId}&sizeId=${params.sizeId}`, params).then(res => res.data); };
+// 查询中国分类列表
+export const backScanCategorys = params => { return http.get(`${base}/zozogoods/categorys`, params).then(res => res.data); };
 
 
 
@@ -818,6 +832,21 @@ export const dictSave = params => { return http.post(`${base}/dict/save`, params
 export const updateDict = params => { return http.put(`${base}/dict/update`, params).then(res => res.data); };
 // 根据ID查询信息
 export const backScanDict = params => { return http.get(`${base}/dict/${params.id}`, params).then(res => res.data); };
+
+// 修改底部Icon配置
+export const iconEdit = params => { return http.put(`${base}/icon`, params).then(res => res.data); };
+//查询所有配置
+export const settingAll = params => { return http.get(`${base}/setting/all`).then(res => res.data); };
+//保存默认搜索词配置
+export const settingSearch = params => { return http.post(`${base}/setting/default/search/term`,params).then(res => res.data); };
+//保存库存显示配置
+export const settingStock = params => { return http.post(`${base}/setting/inventory/display`,params).then(res => res.data); };
+//保存订单页面提示配置
+export const settingPage = params => { return http.post(`${base}/setting/order/confirm/page`,params).then(res => res.data); };
+//保存订单弹窗提示配置
+export const settingPopup = params => { return http.post(`${base}/setting/order/confirm/popup`,params).then(res => res.data); };
+
+
 
 
 

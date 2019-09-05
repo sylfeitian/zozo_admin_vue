@@ -158,7 +158,7 @@
                 this.closeDialog();
             },
             closeDialog() {
-                this.$parent.addEditDataVisible = false;
+                this.$parent.mainDataVisible = false;
             },
         }
     }

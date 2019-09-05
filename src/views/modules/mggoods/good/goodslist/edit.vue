@@ -32,12 +32,12 @@
             <el-form-item label="主品牌：" class="item">
 <!--                <span>{{}}</span>-->
                 <template>
-                    <span v-if="dataForm.brands[0].isMainBrand==1">{{dataForm.brands[0].brandName}}</span>
+                    <span v-if="dataForm.brands && dataForm.brands.length!=0 && dataForm.brands[0].isMainBrand==1">{{dataForm.brands[0].brandName}}</span>
                 </template>
             </el-form-item>
             <el-form-item label="副品牌：" class="item">
                 <template>
-                    <span v-if="dataForm.brands[0].isMainBrand==0">{{dataForm.brands[0].brandName}}</span>
+                    <span v-if="dataForm.brands && dataForm.brands.length!=0 &&dataForm.brands[0].isMainBrand==0">{{dataForm.brands[0].brandName}}</span>
                 </template>
             </el-form-item>
             <el-form-item label="主性别：" class="item">
@@ -149,12 +149,12 @@
                 <template slot-scope="scope">
                     <div class="goodsImg">
 <!--                        <img  :src="scope.row.imageUrl | filterImgUrl" style="width:60px;height:60px;object-fit: contain;" alt=""/>-->
-                        <img :src="dataForm.imageUrl320" alt=""/>
+                        <img :src="dataForm.imageUrl | filterImgUrl" alt=""/>
                     </div>
                 </template>
             </el-form-item>
-            <el-form-item label="日本商品详情：" class="item">
-                <span>{{dataForm.descriptionJp}}</span>
+            <el-form-item label="日本商品详情：" class="item" style="height: auto!important;">
+                <span v-html="dataForm.descriptionJp"></span>
             </el-form-item>
             <el-form-item label="商品详情：">
                 <!-- 富文本编辑器, 容器 -->

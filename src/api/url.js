@@ -378,3 +378,12 @@ export const errorUrl = `${base}/log/error/page`;
 // 导出
 export const exportError= `${base}/log/error/export`;
 
+//配置管理-------------------------------------------------------------------------------------------------------------
+// 广告位列表
+export const advList = `${base}/adv/page`;
+// 广告位批量删除
+export const advDelete = `${base}/adv/batch`;
+
+// 底部iCon配置
+export const iconCinfigList = `${base}/icon/list`;
+

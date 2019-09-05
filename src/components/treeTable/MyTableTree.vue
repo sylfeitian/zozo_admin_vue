@@ -189,7 +189,7 @@
     };
 </script>
 
-<style lang="scss" scoped="scoped">
+<style lang="scss">
     $textIn: 8px;
     $borderColor: #e6ebf5;
     $lineH: 53px;
