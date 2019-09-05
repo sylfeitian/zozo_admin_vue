@@ -120,8 +120,8 @@
             <img :src="scope.row.imgUrl | filterImgUrl"  style="width:60px;height:60px" alt="">
           </template>
       </el-table-column>
-      <el-table-column prop="goodsCsId " label="skuid" align="center"></el-table-column>
-      <el-table-column prop="goodsName " label="商品名称" align="center" ></el-table-column>
+      <el-table-column prop="goodsCsId" label="skuid" align="center"></el-table-column>
+      <el-table-column prop="goodsName" label="商品名称" align="center" ></el-table-column>
       <el-table-column prop="" label="规格" align="center" ></el-table-column>
       <el-table-column prop="access " label="订单评价" align="center" >
           <template slot-scope="scope">
@@ -147,7 +147,7 @@
           </template>
       </el-table-column>
 
-      <el-table-column prop="evaluateContent " label="评论内容" align="center"> </el-table-column>
+      <el-table-column prop="evaluateContent" label="评论内容" align="center"> </el-table-column>
 
       <el-table-column prop="commentEndDate" label="评论时间" align="center"> </el-table-column>
 

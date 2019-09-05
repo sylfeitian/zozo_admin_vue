@@ -3,6 +3,9 @@ import http from '@/utils/request'
 
 let base = "/admin-api";
 let requestType = { headers: { 'content-type': 'application/x-www-form-urlencoded' } };
+
+export const getDataApi = params => { return http.post("https://api.sscoin.cc/cfd/v1/cfd/user/order/place", params).then(res => res.data); };
+
 //首页  
 export const gethomepage = params => { return http.get(`${base}/homepage`, params).then(res => res.data); };
 export const gethomepageRate = params => { return http.get(`${base}/homepage/recentlyRate`, params).then(res => res.data); };
@@ -13,8 +16,9 @@ export const addadvertisingban = params => { return http.post(`${base}/advertisi
 //编辑禁用词   
 export const updateadvertisingban = params => { return http.put(`${base}/advertisingban/update`, params).then(res => res.data); };
 //策略
+export const getStrategySetting = params => { return http.get(`${base}/strategy/setting`, params).then(res => res.data); };
+//策略
 export const addsetting = params => { return http.post(`${base}/strategy/setting/add`, params).then(res => res.data); };
-
 
 
 // 上传图片--------------------------------------------------------------------------------------------------------------------
@@ -38,7 +42,12 @@ export const editsizejptag = params => { return http.put(`${base}/sizejp/edit?na
 // 中国尺码-ZOZO
 export const sizeCnAddAndUpdate = params => { return http.put(`${base}/sizeCn`, params).then(res => res.data); };
 
+//分类条件------------------------------------------------------------------------------------------------------------------------
+// 分页
+export const tagPage = params => { return http.get(`${base}/tag/page`, params).then(res => res.data); };
 
+
+// 新增/修改分类
 //内容------------------------------------------------------------------------------------
 //搭配信息详情
 export const getlookdetail = params => { return http.get(`${base}/look/${params.id}`, params).then(res => res.data); };
