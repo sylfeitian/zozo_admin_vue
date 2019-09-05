@@ -86,7 +86,7 @@
                         <el-table-column prop="goodsNum" label="图片" align="center">
                             <template slot-scope="scope">
                                 <img
-                                        :src="scope.row.itemsImageUrl"
+                                        :src="scope.row.itemsImageUrl | filterImgUrl"
                                         style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                                 >
                             </template>
@@ -108,8 +108,8 @@
                         </div>
                     </template>
                 </el-form-item>
-                <el-form-item label="日本商品详情：" class="item">
-                    <span>{{dataForm.descriptionJp}}</span>
+                <el-form-item label="日本商品详情：" class="item" style="height: auto!important;">
+                    <span v-html="dataForm.descriptionJp"></span>
                 </el-form-item>
                 <el-form-item label="商品详情：">
                     <el-input type="textarea" class="inforRight" v-model="dataForm.description" placeholder="" :rows="4"  style="display: inline-block;width: 600px;"></el-input>

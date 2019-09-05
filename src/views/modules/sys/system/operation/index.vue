@@ -85,10 +85,7 @@
                 dataListLoading: false,
                 row:"",
                 module:"",
-                moduleOption:[
-                    {id:1,name:"逍遥江湖"},
-                    {id:2,name:"辟邪剑谱"},
-                ],
+                moduleOption:[],
             }
         },
         components: {

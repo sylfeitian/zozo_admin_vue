@@ -18,7 +18,7 @@
             return {
                 mainVisible:true,
                 detailVisible:false,
-                operationallogVisible:false,
+                // operationallogVisible:false,
                 editVisible: false
             }
         },

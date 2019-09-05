@@ -78,7 +78,7 @@
             <el-table-column label="主图" prop="imageUrl" align="center" width="160">
                 <template slot-scope="scope">
                     <img
-                            :src="scope.row.mainImageUrl"
+                            :src="scope.row.mainImageUrl | filterImgUrl"
                             alt=""
                             style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                     >
