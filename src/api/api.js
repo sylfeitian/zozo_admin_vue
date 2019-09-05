@@ -593,7 +593,7 @@ export const allWare = params => { return http.get(`${base}/ware/all`, params).t
 // 导出数据
 export const importWare = params => { return http.get(`${base}/ware/import`, params).then(res => res.data); };
 // 修改仓库启用状态
-export const deleteWare = params => { return http.delete(`${base}/ware/isenable`, params).then(res => res.data); };
+export const editWare = params => { return http.delete(`${base}/ware/isenable`, params).then(res => res.data); };
 // 仓库列表
 export const warePage = params => { return http.get(`${base}/ware/list`, params).then(res => res.data); };
 // 仓库sku商品
@@ -604,6 +604,8 @@ export const verifyWare = params => { return http.get(`${base}/ware/verify/name`
 export const backScanWare = params => { return http.get(`${base}/ware/${params.id}`, params).then(res => res.data); };
 // 根据类型查询仓库列表  
 export const wareListByType = params => { return http.get(`${base}/ware/${params.type}/list`, params).then(res => res.data); };
+// 删除
+export const deleteWare = params => { return http.delete(`${base}/ware`, params).then(res => res.data); };
 
 
 
@@ -673,7 +675,10 @@ export const showGoods = params => { return http.put(`${base}/zozogoods/show/${p
 export const getZozogoodsSize = params => { return http.get(`${base}/zozogoods/size/item?spuId=${params.spuId}&sizeId=${params.sizeId}`, params).then(res => res.data); };
 // 查询中国分类列表
 export const backScanCategorys = params => { return http.get(`${base}/zozogoods/categorys`, params).then(res => res.data); };
-
+// 查询品牌列表
+export const searchBrandName = params => { return http.get(`${base}/zozogoods/brandname`, params).then(res => res.data); };
+// 查询店铺列表
+export const searchStoreName = params => { return http.get(`${base}/zozogoods/storename`, params).then(res => res.data); };
 
 
 

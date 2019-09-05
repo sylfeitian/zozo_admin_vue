@@ -73,8 +73,8 @@
                 },
                 dataForm: {
                     module: "",
-                    startTime:"",
-                    endTime:"",
+                    createDateStart:"",
+                    createDateEnd:"",
                     creator:""
                 },
                 breaddata: ["系统管理", "异常日志"],
@@ -89,8 +89,8 @@
         watch:{
             timeArr(val){
                 if(!val){
-                    this.dataForm.startTime = '';
-                    this.dataForm.endTime = '';
+                    this.dataForm.createDateStart = '';
+                    this.dataForm.createDateEnd = '';
                 }
             },
         },
@@ -111,15 +111,16 @@
                 })
             },
             reset(){
+                this.timeArr = [];
                 this.dataForm.creator = "";
                 this.dataForm.module = "";
-                this.dataForm.startTime = "";
-                this.dataForm.endTime = "";
+                this.dataForm.createDateStart = "";
+                this.dataForm.createDateEnd = "";
                 this.getDataList();
             },
             acttime(){
-                this.dataForm.startTime = this.timeArr[0];
-                this.dataForm.endTime = this.timeArr[1];
+                this.dataForm.createDateStart = this.timeArr[0];
+                this.dataForm.createDateEnd = this.timeArr[1];
             },
         }
     }

@@ -246,7 +246,7 @@ export const deleteShopStyle = `${base}/shopstyle`;
 // 仓库列表
 export const wareUrl = `${base}/ware/list`;
 // 修改仓库启用状态
-export const deleteWare = `${base}/ware/isenable`;
+export const deleteWare = `${base}/ware`;
 // 仓库sku商品
 export const skuGoods = `${base}/ware/skugoods`;
 

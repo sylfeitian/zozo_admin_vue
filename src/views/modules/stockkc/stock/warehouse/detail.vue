@@ -12,7 +12,10 @@
                 <span>{{dataForm.addressInfo}}</span>
             </el-form-item>
             <el-form-item prop="type" label="仓库种类：">
-                <span>{{dataForm.type}}</span>
+                <template slot-scope="scope">
+                    <span  v-if="dataForm.type==0">发货仓</span>
+                    <span  v-if="dataForm.type==1">退货仓</span>
+                </template>
             </el-form-item>
             <el-form-item prop="name" label="负责人：">
                 <span>{{dataForm.name}}</span>
@@ -21,7 +24,10 @@
                 <span>{{dataForm.phone}}</span>
             </el-form-item>
             <el-form-item prop="isEnable" label="状态：">
-                <span>{{dataForm.isEnable}}</span>
+                <template slot-scope="scope">
+                    <span  v-if="dataForm.isEnable==0">不启用</span>
+                    <span  v-if="dataForm.isEnable==1">启用</span>
+                </template>
             </el-form-item>
         </el-form>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >

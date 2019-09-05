@@ -24,7 +24,7 @@
         </el-form>
         <el-form>
             <el-form-item>
-                <el-button  class="btn" type="primary" plain @click="addOrAdit()" >添加仓库</el-button>
+                <el-button  class="btn" type="primary" @click="addOrAdit()" >添加仓库</el-button>
             </el-form-item>
         </el-form>
         <el-table
@@ -68,7 +68,7 @@
                     </el-switch>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center">
+            <el-table-column label="操作" align="center" width="200">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="addOrAdit(scope.$index, scope.row)"type="text"size="mini">编辑</el-button>
                     <el-button @click.native.prevent="showDetail(scope.row)"type="text"size="mini">查看</el-button>
@@ -97,7 +97,8 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import addEditData from './model-add-edit-data'
-    import { wareUrl,deleteWare } from '@/api/url'
+    import { wareUrl, deleteWare } from '@/api/url'
+    import { editWare } from '@/api/api'
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -105,7 +106,6 @@
                 mixinViewModuleOptions: {
                     getDataListURL: wareUrl,
                     getDataListIsPage: true,
-                    // exportURL: '/admin-api/log/login/export',
                     deleteURL: deleteWare,
                     deleteIsBatch: false,
                     deleteIsBatch: true,
@@ -194,7 +194,7 @@
                     type: 'warning'
                 }).then(() => {
                     this.forbitLoading = true;
-                    deleteWare(obj).then((res)=>{
+                    editWare(obj).then((res)=>{
                         this.forbitLoading = false;
                         // console.log(res);
                         if(res.code==200){
