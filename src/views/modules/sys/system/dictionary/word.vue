@@ -37,7 +37,6 @@
                 </el-table-column>
             </el-table>
             <el-pagination
-                    v-if="dataForm.pid === '0'"
                     :current-page="page"
                     :page-sizes="[10, 20, 50, 100]"
                     :page-size="limit"
@@ -56,7 +55,7 @@
     import mixinViewModule from '@/mixins/view-module'
     import addEditData from './model-add-edit-data'
     import Bread from "@/components/bread";
-    import { dictList,deleteDict } from '@/api/url'
+    import { dictUrl,deleteDict } from '@/api/url'
 
     export default {
         mixins: [mixinViewModule],
@@ -64,7 +63,7 @@
             return {
                 mixinViewModuleOptions: {
                     activatedIsNeed: false,
-                    getDataListURL: dictList,
+                    getDataListURL: dictUrl,
                     getDataListIsPage: true,
                     deleteURL: deleteDict,
                     deleteIsBatch: true,
@@ -72,36 +71,38 @@
                 },
                 breaddata: ["系统设置", "字典管理", "词典管理"],
                 dataForm: {
-                    pid: '0',
                     dictName: '',
                     dictType: '',
-                    dictValue: ''
+                    dictValue: '',
+                    pid:''
                 },
                 addEditDataVisible:false,
-                dataList: [],
                 dataListLoading: false,
+                row:""
             }
         },
         components: {
             addEditData,
             Bread
         },
-        created() {
-            this.getDataList()
-        },
+        // created() {
+        //     this.getDataList()
+        // },
         methods: {
-            init (id ){
-              console.log(this.id)
+            init (row){
+                this.row = row;
+                this.dataForm.pid = row.id;
+                this.getDataList()
             },
             wordList(id){
                 this.$emit("wordList",id);
             },
 
             // 新增 / 修改
-            addOrUpdateHandle (row = {}) {
-                this.addEditDataVisible = true
+            addOrUpdateHandle (row2) {
+                this.addEditDataVisible = true;
                 this.$nextTick(() => {
-                    this.$refs.addEditData.init(row)
+                    this.$refs.addEditData.init(this.row,row2)
                 })
             },
             reset(){
@@ -117,7 +118,5 @@
 
 
 <style scoped>
-    .grayLine{
-        border-bottom: 0!important;
-    }
+
 </style>

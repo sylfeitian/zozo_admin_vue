@@ -322,6 +322,8 @@ export const deleteShophotkeywordUrl = `${base}/shophotkeyword`;
 //消息-------------------------------------------------------------------------------------------------------------
 //消息列表分页  
 export const getmessagepage = `${base}/shopmessagetemplate/messagepage`;
+//用户信息
+export const getUser = `${base}/shopmessagetemplate/messageuser`;
 
 
 //查看库存----------------------------------------------------------------------------------------------------
@@ -339,7 +341,7 @@ export const getdatagoods = `${base}/stock/goods`;
 // 列表
 export const syslexiconUrl = `${base}/syslexicon/page`;
 // 删除
-export const deleteSyslexicon = `${base}/syslexicon`;
+export const deleteSyslexicon = `${base}/syslexicon/batchdelete`;
 // 导出
 export const exportSyslexicon = `${base}/syslexicon/export`;
 

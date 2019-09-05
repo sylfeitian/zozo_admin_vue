@@ -732,6 +732,13 @@ export const putMessageState = params => { return http.put(`${base}/shopmessaget
 export const deleteMessage = params => { return http.delete(`${base}/shopmessagetemplate`, params).then(res => res.data); };
 //接收人保存
 export const saveMessage = params => { return http.post(`${base}/shopmessagetemplate/recesave`, params).then(res => res.data); };
+//模板标签信息
+export const getShopmessagetemplate = params => { return http.get(`${base}/shopmessagetemplate/${params.id}`, params).then(res => res.data); };
+//模板保存
+export const saveShopmessagetemplate = params => { return http.post(`${base}/shopmessagetemplate`, params).then(res => res.data); };
+//消息详情
+export const getMessageDetail = params => { return http.get(`${base}/shopmessagetemplate/messageDetails/${params.id}`, params).then(res => res.data); };
+
 
 
 
@@ -811,7 +818,7 @@ export const backScanSyslexicon = params => { return http.get(`${base}/syslexico
 // 验证字典名称或字典编码已经存在
 export const existsDict = params => { return http.get(`${base}/dict/exists`, params).then(res => res.data); };
 // 字典分类数据
-export const dictList = params => { return http.get(`${base}/dict/list`, params).then(res => res.data); };
+export const getDictList = params => { return http.get(`${base}/dict/list`, params).then(res => res.data); };
 // 分页
 export const dictPage = params => { return http.get(`${base}/dict/page`, params).then(res => res.data); };
 // 新增数据
@@ -821,3 +828,9 @@ export const updateDict = params => { return http.put(`${base}/dict/update`, par
 // 根据ID查询信息
 export const backScanDict = params => { return http.get(`${base}/dict/${params.id}`, params).then(res => res.data); };
 
+
+
+
+//异常日志-------------------------------------------------------------------------------------------------------------
+// 操作模块列表
+export const errorListModule = params => { return http.get(`${base}/log/error/listModule`, params).then(res => res.data); };

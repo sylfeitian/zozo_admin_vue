@@ -50,6 +50,7 @@
                 },
                 title:'',
                 row:"",
+                row2:"",
                 formLabelWidth: '120px'
             }
         },
@@ -58,11 +59,12 @@
         computed:{},
         mounted(){},
         methods: {
-            init (row) {
+            init (row,row2) {
                 this.visible = true;
                 this.row = row;
+                this.row2 = row2;
                 console.log(row)
-                if(row){
+                if(row2){
                     this.title="编辑词典";
                     this.backScan();
                 }else{
@@ -77,10 +79,9 @@
             // 编辑回显
             backScan(){
                 var obj  = {
-                    pid:this.row.pid,
-                    id:this.row.id,
-                    dictName:this.row.dictName,
-                    dictValue:this.row.dictValue,
+                    id:this.row2.id,
+                    dictName:this.row2.dictName,
+                    dictValue:this.row2.dictValue,
                 }
                 backScanDict(obj).then((res)=>{
                     if(res.code == 200){
@@ -98,13 +99,13 @@
                     if (valid) {
                         this.loading = true;
                         var obj = {
-                            "pid":  this.row?this.row.pid:0,
-                            "dictName":  this.dataForm.dictName,
-                            "dictValue":  this.dataForm.dictValue
+                            "pid":  this.row.id,//: 上级ID，一级为0 ,
+                            "dictName":  this.dataForm.dictName,// 字典名称 ,
+                            "dictValue":  this.dataForm.dictValue,//字典编号 ,
+                            "sort ":0,
                         }
-                        alert(obj.pid);
-                        if(this.row) obj.id = this.row.id
-                        var fn = this.row?updateDict:dictSave;
+                        if(this.row2) obj.id = this.row2.id
+                        var fn = this.row2?updateDict:dictSave;
                         fn(obj).then((res) => {
                             this.loading = false;
                             // alert(JSON.stringify(res));

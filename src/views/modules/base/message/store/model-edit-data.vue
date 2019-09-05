@@ -81,22 +81,6 @@
                             :value="item.id">
                     </el-option>
                 </el-select>
-                <el-select
-                        v-model="value"
-                        multiple
-                        filterable
-                        remote
-                        reserve-keyword
-                        placeholder="请输入关键词"
-                        :remote-method="remoteMethod"
-                        :loading="loading">
-                    <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
 <!--                <el-input v-model="dataForm.description" placeholder="" style="width: 250px;"></el-input>&nbsp;-->
 <!--                <el-button class="btn" type="primary" @click="getDataList()">搜索</el-button>-->
             </el-form-item>
@@ -133,7 +117,7 @@
                     description: "",//店铺中文描述
                     imageUrl:"",//店铺主图
                     storeLogo:"",//店铺logo
-                    mainTag:"",//标签分类
+                    mainTag:[],//标签分类
                 },
                 labelOption:[{ id: '0', name: '营业中' },{ id: '1', name: '已停业' }],
                 dataRule : {
@@ -152,7 +136,6 @@
                 },
                 value:[],
                 dataArray:[],
-                mainTag:[],
                 list: [],
                 formLabelWidth: '100px'
             }
@@ -168,6 +151,8 @@
         },
         methods: {
             init (row) {
+                this.dataArray = [];
+                this.list = [];
                 this.visible = true;
                 this.row = row;
                 if(row){
@@ -199,7 +184,7 @@
                 backScanShopStore(obj).then((res)=>{
                     if(res.code == 200){
                         Object.assign(this.dataForm,res.data);
-
+                        this.dataForm.mainTag = res.data.mainTag.split(",");
                     }else{
 
                     }

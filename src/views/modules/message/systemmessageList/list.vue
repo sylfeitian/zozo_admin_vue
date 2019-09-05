@@ -23,7 +23,7 @@
                 <el-button  class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
             </el-form-item>
         </el-form>
-        <el-button @click="add()" type="primary" style="float: right;margin-bottom: 10px;">推送消息</el-button>
+        <el-button @click="add()" type="primary" style="float: left;margin-bottom: 10px;">推送消息</el-button>
         <el-table
                 width="100%"
                 ref="multipleTable"
@@ -32,12 +32,18 @@
                 v-loading="dataListLoading"
                 style="width: 100%;maigin-top:10px;"
                 @selection-change="handleSelectionChange"
+                @sort-change="sortChange"
         >
             <el-table-column type="selection" width="70"></el-table-column>
             <el-table-column prop="messageTitle" label="消息标题" align="center"></el-table-column>
-            <el-table-column prop="sendTime" label="发送时间" align="center"></el-table-column>
-            <el-table-column prop="" label="发送人" align="center"></el-table-column>
-            <el-table-column prop="receiver" label="推送对象" align="center"></el-table-column>
+            <el-table-column prop="sendTime" sortable="custom" label="发送时间" align="center"></el-table-column>
+            <el-table-column prop="creator" label="发送人" align="center"></el-table-column>
+            <el-table-column prop="receiverPeople" label="推送对象" align="center">
+                <template slot-scope="scope">
+                    <div v-if="scope.row.receiverPeople == 0" >全部</div>
+                    <div v-else-if="scope.row.receiverPeople == 1" >{{scope.row.messageCount}}人</div>
+                </template>
+            </el-table-column>
             <el-table-column prop="sendMode" label="推送方式" align="center">
                 <template slot-scope="scope">
                     <div v-if="scope.row.sendMode == 1" >友盟</div>
@@ -53,11 +59,27 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button @click.native.prevent="showDetail(scope.row)" type="text"size="mini">查看</el-button>
+                    <el-button @click.native.prevent="showDetail(scope.row.id)" type="text"size="mini">查看</el-button>
                     <el-button @click.native.prevent="deleteList(scope.row.id)" type="text"size="mini">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
+        <el-dialog title="查看消息" :visible.sync="dialogTableVisible">
+            <el-form>
+                <el-form-item label="推送类型：">
+                    <span>{{messageDetail.sendMode == 1?"友盟":messageDetail.sendMode == 0?"站内信":"短信"}}</span>
+                </el-form-item>
+                <el-form-item label="推送对象：">
+                    <span>{{messageDetail.receiverPeople == 0?"全部":messageDetail.messageCount+"人"}}</span>
+                </el-form-item>
+                <el-form-item label="消息标题：">
+                    <span>{{messageDetail.messageTitle}}</span>
+                </el-form-item>
+                <el-form-item label="消息内容：">
+                    <span>{{messageDetail.messageCount}}</span>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
         <div class="bottomFun">
             <div class="bottomFunLeft">
                 <el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
@@ -81,7 +103,7 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import { getmessagepage } from '@/api/url';
-    import { deleteMessage } from '@/api/api';
+    import { deleteMessage,getMessageDetail } from '@/api/api';
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -95,10 +117,12 @@
                     deleteIsBatch: true,
                     deleteIsBatchKey: 'id'
                 },
+                dialogTableVisible:false,
                 activeName: "",
                 selectVal:"",
                 breaddata: [ "消息中心", "消息列表"],
                 dataForm: {},
+                messageDetail:{},
                 value: '',
                 multipleSelection:[],
                 dataList: [],
@@ -126,8 +150,23 @@
             this.getDataList();
         },
         methods: {
+            sortChange(val){
+                console.log(val)
+                if(val.order == "descending") this.dataForm.descOrAsc = 0;
+                else if(val.order == "ascending") this.dataForm.descOrAsc = 1;
+                this.getDataList();
+            },
             add(){
                 this.$emit("add");
+            },
+            showDetail(id){
+                this.dialogTableVisible = true;
+                let that = this;
+                getMessageDetail({id:id}).then((res)=>{
+                    if(res.code == 200){
+                        that.messageDetail = res.data;
+                    }
+                })
             },
             reset(formName) {
                 this.dataForm.messageTitle = "";

@@ -8,22 +8,35 @@
                 label-width="120px"
 
         >
-            <el-form-item label="推送方式：" prop="sizeName" :label-width="formLabelWidth">
-                <el-select v-model="addDataForm.messageType" placeholder="请选择"  style="margin-left: 10px;width: 140px;">
+            <el-form-item label="推送方式：" prop="sendMode" :label-width="formLabelWidth">
+                <el-select v-model="addDataForm.sendMode" placeholder="请选择"  style="margin-left: 10px;width: 140px;">
                     <el-option label="站内信"  value="0"></el-option>
                     <el-option label="APP推送" value="1"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="消息接收人：" prop="img" :label-width="formLabelWidth">
-                <el-radio-group v-model="addDataForm.messageType">
-                    <el-radio :label="3">全部用户</el-radio>
-                    <el-radio :label="6">指定用户</el-radio>
+            <el-form-item label="消息接收人：" prop="receiverPeople" :label-width="formLabelWidth">
+                <el-radio-group style="margin-top: 13px;" @change="receiver" v-model="addDataForm.receiverPeople">
+                    <el-radio :label="0">全部用户</el-radio>
+                    <el-radio :label="1">指定用户</el-radio>
                 </el-radio-group>
             </el-form-item>
-            <el-form-item label="消息标题：" prop="title" :label-width="formLabelWidth">
+            <el-form-item label="指定用户：" v-if="addDataForm.receiverPeople == 1" :label-width="formLabelWidth">
+                <span>
+						   <el-tag
+                                   :key="index"
+                                   v-for="(tag,index) in userLsit"
+                                   :disable-transitions="false"
+                                   style="margin-right:5px;"
+                                   closable
+                                   @close="handleClose(index)">
+                    {{tag.memberName}}
+                </el-tag>
+					  </span>
+            </el-form-item>
+            <el-form-item label="消息标题：" prop="messageTitle" :label-width="formLabelWidth">
                 <el-input v-model="addDataForm.messageTitle" maxlength="100" auto-complete="off" placeholder="请填写标题" style="width: 1200px;"></el-input>
             </el-form-item>
-            <el-form-item label="消息内容：" prop="con" :label-width="formLabelWidth" style="vertical-align:top;">
+            <el-form-item label="消息内容：" prop="messageContent" :label-width="formLabelWidth" style="vertical-align:top;">
                 <template slot-scope="scope">
                     <quill-editor-img class="inforRight" :index="i" ref="quillEditorCompon" style="display: inline-block;"  @artmessageContent='artmessageContent' ></quill-editor-img>
                 </template>
@@ -31,16 +44,27 @@
             <el-form-item style="text-align: center;margin-left: -120px!important;">
                 <el-button  @click="dataFormSubmit()">推送消息</el-button>
             </el-form-item>
-            <el-dialog title="添加商品" :visible.sync="dialogTableVisible">
+            <el-dialog title="选择接收用户" :visible.sync="dialogTableVisible">
                 <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
-                    <el-form-item label="ID：">
-                        <el-input v-model="dataForm.params" ></el-input>
+                    <el-form-item label="会员账号：">
+                        <el-input v-model="dataForm.memberName" ></el-input>
+                    </el-form-item>
+                    <el-form-item label="消费金额：">
+                        <el-input-number v-model="dataForm.minAmount" controls-position="right"  :min="0" :max="dataForm.maxAmount-1"></el-input-number>
+                        --
+                        <el-input-number v-model="dataForm.maxAmount" controls-position="right"  :min="dataForm.minAmount" :max="100000"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="订单数量：">
+                        <el-input-number v-model="dataForm.minCount" controls-position="right"  :min="0" :max="dataForm.maxCount-1"></el-input-number>
+                        --
+                        <el-input-number v-model="dataForm.maxCount" controls-position="right"  :min="dataForm.minCount" :max="100000"></el-input-number>
                     </el-form-item>
                     <el-form-item>
                         <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
-                        <el-button  class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
+                        <el-button  class="btn"type="primary" plain @click="reset()" >重置</el-button>
                     </el-form-item>
                 </el-form>
+                <el-button @click="all" type="primary" style="float: left;margin-bottom: 10px;">选择全部</el-button>
                 <el-table
                         width="100%"
                         ref="multipleTable"
@@ -51,15 +75,32 @@
                         @selection-change="handleSelectionChange"
                 >
                     <el-table-column type="selection" width="70"></el-table-column>
-                    <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
-                    <el-table-column prop="goodsId" label="商品ID" align="center"></el-table-column>
-                    <el-table-column prop="sellPrice" label="价格" align="center"></el-table-column>
-                    <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
-
+                    <el-table-column prop="id" label="用户ID" align="center"></el-table-column>
+                    <el-table-column prop="memberName" label="会员账号" align="center"></el-table-column>
+                    <el-table-column prop="nickName" label="用户姓名" align="center"></el-table-column>
+                    <el-table-column prop="memberName" label="手机号" align="center"></el-table-column>
+                    <el-table-column prop="orderAmount" label="消费金额" align="center"></el-table-column>
+                    <el-table-column prop="orderCount" label="订单数量" align="center"></el-table-column>
+                    <el-table-column prop="memberLoginTime" label="最近登录时间" align="center"></el-table-column>
                 </el-table>
+                <div class="bottomFun" style="margin-top: 10px;">
+                    <div class="bottomFunLeft">
+                        <el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+                    </div>
+                    <!-- 分页 -->
+                    <el-pagination
+                            @size-change="pageSizeChangeHandle"
+                            @current-change="pageCurrentChangeHandle"
+                            :current-page="page"
+                            :page-sizes="[10, 20, 50, 100]"
+                            :page-size="limit"
+                            :total="total"
+                            layout="total, sizes, prev, pager, next, jumper">
+                    </el-pagination>
+                </div>
                 <div slot="footer" class="dialog-footer">
-                    <el-button @click="dialogTableVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="dialogTableVisible = false">确 定</el-button>
+                    <el-button @click="decl">取 消</el-button>
+                    <el-button type="primary" @click="saveUser">确 定</el-button>
                 </div>
             </el-dialog>
         </el-form>
@@ -71,14 +112,14 @@
     import Bread from "@/components/bread";
     import { getfashiondetail,saveMessage } from '@/api/api';
     import quillEditorImg from "@/components/quillEditor";
-    import { getGoodscspage } from '@/api/url';
+    import { getUser } from '@/api/url';
     import mixinViewModule from '@/mixins/view-module'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
                 mixinViewModuleOptions: {
-                    getDataListURL: getGoodscspage,
+                    getDataListURL: getUser,
                     getDataListIsPage: true,
                     // exportURL: '/admin-api/log/login/export',
                     deleteURL: '',
@@ -86,34 +127,33 @@
                     deleteIsBatch: true,
                     deleteIsBatchKey: 'id'
                 },
+                userLsit:[],
+                checkAll: false,
                 dataListLoading: false,
                 dialogTableVisible: false,
                 dataForm:{},
                 addDataForm: {
                     messageContent: "",
                     messageTitle: "",
-                    messageType: "",
-                    receiver: "",
                     receiverPeople: "",
                     sendMode: "",
-                    sendTime: "",
-                    umengToken: 0
+                    receiver:"",
                 },
                 multipleSelection:[],
                 dataList: [],
                 content:[],
                 list:[],
                 dataRule : {
-                    sizeName : [
+                    sendMode : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ],
-                    title : [
+                    messageTitle : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ],
-                    con : [
+                    messageContent : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ],
-                    img : [
+                    receiverPeople : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ]
                 },
@@ -130,6 +170,31 @@
             Bread
         },
         methods: {
+            decl(){
+                this.dataForm = {};
+                this.dialogTableVisible = false;
+                this.addDataForm.receiverPeople = 0;
+            },
+            all(){
+                this.$refs.multipleTable.toggleAllSelection()
+            },
+            handleCheckAllChange(val) {
+                if(val) this.$refs.multipleTable.toggleAllSelection();
+                else this.$refs.multipleTable.clearSelection();
+            },
+            handleClose(index){
+                this.multipleSelection.splice(index, 1);
+            },
+            saveUser(){
+                this.dialogTableVisible = false;
+                this.userLsit = this.multipleSelection;
+            },
+            receiver(val){
+                if(val == 1) {
+                    this.dialogTableVisible = true;
+                    this.getDataList();
+                };
+            },
             artmessageContent(messageContent,i){
                 this.addDataForm.messageContent = messageContent;
             },
@@ -141,7 +206,12 @@
                 this.getDataList();
             },
             reset() {
-                this.dataForm.params = "";
+                this.dataForm.maxCount = "";
+                this.dataForm.minCount = "";
+                this.dataForm.minAmount = "";
+                this.dataForm.maxAmount = "";
+                this.dataForm.maxAmount = "";
+                this.dataForm.memberName = "";
                 this.getDataList();
             },
             dataFormSubmit(){
@@ -154,7 +224,12 @@
                             type: "warning"
                         })
                             .then(() => {
-                                saveMessage({shopMessageTextDTO:this.addDataForm}).then((res)=>{
+                                var list = [];
+                                that.userLsit.map((v)=>{
+                                    list.push(v.memberName)
+                                })
+                                that.addDataForm.receiver = list.join(",");
+                                saveMessage({shopMessageTextDTO:that.addDataForm}).then((res)=>{
                                     if(res.code == 200){
                                         this.$message({
                                             message: res.msg,
