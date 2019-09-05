@@ -7,13 +7,17 @@
     >
     
         <el-form label-width="100px" :model="dataForm">
-        	<el-radio v-model="dataradio" label="0">
-        		<el-form-item label="账号：">
-            		<el-input v-model="dataForm.memberName" @focus="artfocus"></el-input>
-            	</el-form-item>
-    		</el-radio>
-            <el-radio v-model="dataradio" label="1">
-            	<el-form-item label="收货地址：">
+        	<div class="formItemWarp">
+                <el-radio v-model="dataradio">
+                </el-radio>
+                <el-form-item label="账号：">
+                        <el-input v-model="dataForm.memberName" @focus="artfocus"></el-input>
+                </el-form-item>
+            </div>
+
+            <div class="formItemWarp">
+                <el-radio v-model="dataradio"></el-radio>
+                <el-form-item label="收货地址：">
 	                <el-select
 	                        v-model="dataForm.memberAreaid"
 	                        placeholder="省"
@@ -61,24 +65,24 @@
 	                    ></el-option>
 	                </el-select>
 	            </el-form-item>
-    		</el-radio>
+            </div>
             
-        	<el-form-item>
-	            <el-input
-				  type="textarea"
-				  :rows="3"
-				  placeholder="请输入详情地址"
-				  v-model="dataForm.address">
-				</el-input>
-			</el-form-item>
-			<el-form-item lable="封禁原因" >
-	            <el-input
-				  type="text"
-				  maxlength="20"
-				  placeholder="请输入内容"
-				  v-model="dataForm.remark">
-				</el-input>
-			</el-form-item>
+            <el-form-item>
+                    <el-input
+                    type="textarea"
+                    :rows="3"
+                    placeholder="请输入详情地址"
+                    v-model="dataForm.address">
+                    </el-input>
+            </el-form-item>
+            <el-form-item lable="封禁原因" >
+                <el-input
+                type="text"
+                maxlength="20"
+                placeholder="请输入内容"
+                v-model="dataForm.remark">
+                </el-input>
+            </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="cancel">取 消</el-button>
@@ -237,7 +241,7 @@
         }
     };
 </script>
-<style scoped>
+<style lang="scss" scoped>
 	.el-radio{
 		margin-left: 30px;
 	}
@@ -270,4 +274,13 @@
         width: 100%;
     }
     /* .restPass{text-align: center;} */
+
+    .formItemWarp{
+        display:flex;
+        align-items: center;
+        .el-form-item{
+            margin-top: 14 !important;
+            margin-bottom: 14 !important;
+        }
+    }
 </style>

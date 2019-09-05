@@ -167,11 +167,11 @@
 	    	checkList:[],  //分类性别多选
 	        datacategory: '', //选择分类
 	        showListVisible:true,
-	        goodKindList1: [{ id: '0', name: "一级分类" }],
+	        goodKindList1: [{ id: '0', name: "无" }],
 	        goodKindList2: [],
 	        dataArray:[],
 	        dataForm:{   
-	        	parentId:'', //父级分类id
+	        	parentId:'0', //父级分类id
 	        	name:'', //分类名称
 	        	sort:'', //排序
 		      	categoryJpId:['',],  //关联的日方分类id  
@@ -216,7 +216,6 @@
 	  	},
 	  	init(row){
 	  		this.showListVisible = true;
-	  		
 	  		categoryCn().then((res)=>{
 	  			if(res.code == 200){
 	  				console.log(res.data);
@@ -244,13 +243,12 @@
 	  		}).catch(()=>{
 	  			this.$message("服务器错误");
 	  		})
-	  		
-	  		if(row){
-	  			console.log(row);
-	  			this.$nextTick(()=>{
-	  				this.dataForm.parentId = row.id;
-	  			})
-	  		}
+	  		this.$nextTick(()=>{
+				if(row){
+					this.dataForm.parentId = row.id;
+				}
+			   this.actselectchange();
+			})
 	  	},
 	  	actuploaddata(){  //确定提交  
 	  		if(!this.dataForm.methodUrlshow[this.dataForm.methodUrlshow.length-1]){

@@ -1,6 +1,6 @@
 <template>
 	<!--新增的弹窗-->
-		<el-dialog title="新增分类" :visible.sync="showListVisible" width="50%" :before-close="handleClose">
+		<el-dialog title="编辑分类" :visible.sync="showListVisible" width="50%" :before-close="handleClose">
 			<el-form :model="dataForm" label-width="140px" 	:rules="dataRule" class="demo-ruleForm" ref="addForm">
 		    <el-form-item v-if='dataForm.parentname' label="上级分类：" prop="gcName">
             <el-input v-model="dataForm.parentname" type="text" :disabled="true" placeholder="dataForm.parentname" show-word-limit style="width:400px;"></el-input>
@@ -124,7 +124,6 @@
     	</el-form-item>
 	</el-form>
 		  	
-		  	
 	  <span slot="footer" class="dialog-footer artFooter">
 	    <el-button @click="closeadd" style="margin-right: 20px;">取 消</el-button>
 	    <el-button type="primary" @click="actuploaddata">确 定</el-button>
@@ -172,7 +171,7 @@
 	    	checkList:[],  //分类性别多选
 	        datacategory: '', //选择分类
 	        showListVisible:true,
-	        goodKindList1: [{ id: '0', name: "一级分类" }],
+	        goodKindList1: [{ id: '0', name: "无" }],
 	        goodKindList2: [],
 	        dataArray:[],
 	        dataForm:{     
@@ -181,7 +180,7 @@
 	        	sort:'', //排序
 		      	categoryJpId:['',],  //关联的日方分类id  
 		      	appraisal:'', //评价类型   
-		      	methodUrlshow:['',], //测试方法  不传
+		      	methodUrlshow:[''], //测试方法  不传
 		      	methodUrl:['',], //测试方法  传
 		      	genderMain:'' , //分类主图
 		      	genderMr:'', //分类男士图片 
@@ -214,7 +213,7 @@
 	  			this.erjishow = true;
 	  			this.yijishow = false;
 	  		}else{
-	  			this.dataForm.methodUrlshow = ['',];
+	  			this.dataForm.methodUrlshow = [''];
 	  			this.erjishow = false;
 	  			this.yijishow = true;
 	  		}
@@ -265,11 +264,13 @@
 	  		
 	  		
 	  	},
-	  	actuploaddata(){  //确定提交  
+		actuploaddata(){  //确定提交 
+		  if(typeof this.dataForm.methodUrlshow =="string"){
+			  	this.dataForm.methodUrlshow = JSON.parse(this.dataForm.methodUrlshow);
+		  } 
 	  		if(!this.dataForm.methodUrlshow[this.dataForm.methodUrlshow.length-1]){
 	  			this.dataForm.methodUrlshow.pop()
 	  		}
-	  		
 	  		if(this.dataForm.methodUrlshow.length){
 	  			this.dataForm.methodUrlshow.forEach((item)=>{
 		  			if(item.indexOf(this.$imgDomain) != -1){
@@ -277,7 +278,7 @@
 			  		}
 		  		})
 	  		}
-	  		console.log(this.dataForm.methodUrlshow);
+	  	
 	  		// 测量尺寸是一个json
 	  		this.dataForm.methodUrl = JSON.stringify(this.dataForm.methodUrlshow);
 	  		

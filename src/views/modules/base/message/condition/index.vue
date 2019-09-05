@@ -47,6 +47,16 @@
         mixins: [mixinViewModule],
         data () {
             return {
+                mixinViewModuleOptions: {
+                    getDataListURL: jdCateUrl,
+                    getDataListIsPage: true,
+                    activatedIsNeed:false,
+                    // exportURL: '/admin-api/log/login/export',
+                    // deleteURL: deleteShopStyle,
+                    deleteIsBatch: false,
+                    deleteIsBatch: true,
+                    deleteIsBatchKey: 'id'
+                },
                 breaddata: [ "商品管理", "分类条件信息"],
                 dataFormShow: {
                     conditionId: "",//分类条件ID
