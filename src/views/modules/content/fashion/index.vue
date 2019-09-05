@@ -45,9 +45,6 @@
             add(){
                 this.addVisible = true;
                 this.mainVisible = false;
-                this.$nextTick(()=>{
-                    this.$refs.addoraditCompon.init();
-                })
             },
             showList(){
                 this.dtailVisible = false;

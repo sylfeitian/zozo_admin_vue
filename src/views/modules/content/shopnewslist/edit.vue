@@ -18,17 +18,14 @@
                 <el-form-item label="店铺名称：">
                     <span>{{dataForm.shopName}}</span>
                 </el-form-item>
-                <el-form-item prop="showWebJp" label="发布状态">
-                    <template slot-scope="scope">
-                        <el-tag v-if="scope.row.showWebJp == 1" type="success">已发布</el-tag>
-                        <el-tag v-else type="info">取消发布</el-tag>
-                    </template>
+                <el-form-item label="发布状态：">
+                    <span>{{dataForm.showWebJp == 1?"已发布":"未发布"}}</span>
                 </el-form-item>
                 <el-form-item label="背景图：">
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg">
-                                <img src="scope.row.imageUrl" alt=""/>
+                                <img :src="dataForm.imageUrl" alt=""/>
                             </div>
                         </div>
                     </template>
@@ -92,18 +89,14 @@
                 <el-form-item label="店铺名称：">
                     <span>{{dataForm.shopNameCn}}</span>
                 </el-form-item>
-                <el-form-item prop="showWeb" label="发布状态">
-                    <template slot-scope="scope">
-                        <el-tag v-if="scope.row.showWeb == 1" type="success">已发布</el-tag>
-                        <el-tag v-else-if="scope.row.showWeb == 0" type="success">待发布</el-tag>
-                        <el-tag v-else type="info">取消发布</el-tag>
-                    </template>
+                <el-form-item label="发布状态：">
+                    <span>{{dataForm.showWeb == 1?"已发布":dataForm.showWeb == 0?"待发布":"取消发布"}}</span>
                 </el-form-item>
                 <el-form-item label="背景图：">
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg">
-                                <img src="scope.row.imageUrl" alt=""/>
+                                <img :src="dataForm.imageUrl" alt=""/>
                             </div>
                         </div>
                     </template>
@@ -271,7 +264,7 @@
         width: 500px!important;
     }
     /deep/ .el-textarea {
-        width: 500px!important;
+        width: 50%!important;
     }
     /deep/ .el-button {
         width: 150px;
@@ -280,7 +273,7 @@
         width: 120px!important;
     }
     /deep/ .el-form-item--default {
-        height: 30px!important;
+        /*height: 30px!important;*/
     }
     .grayLine {
         border-bottom: 0!important;
