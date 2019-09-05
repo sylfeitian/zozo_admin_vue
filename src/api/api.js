@@ -84,6 +84,9 @@ export const addodoGoods = params => { return http.post(`${base}/wareHouse/odoGo
 //中国分类管理--------------------------------------------------------------------------------------------------------------------
 // 获取一级分类
 export const categoryCn = params => { return http.get(`${base}/categoryCn`, params).then(res => res.data); };
+//查下级分类
+export const childCategoryCn = params => { return http.get(`${base}/categoryCn/${params.id}/child`, params).then(res => res.data); };
+
 // 删除分类接口
 export const deleteCategoryCn = params => { return http.delete(`${base}/categoryCn/delete/${params.id}`, params).then(res => res.data); };
 // 新增/修改分类
@@ -791,4 +794,19 @@ export const dictSave = params => { return http.post(`${base}/dict/save`, params
 export const updateDict = params => { return http.put(`${base}/dict/update`, params).then(res => res.data); };
 // 根据ID查询信息
 export const backScanDict = params => { return http.get(`${base}/dict/${params.id}`, params).then(res => res.data); };
+
+// 修改底部Icon配置
+export const iconEdit = params => { return http.put(`${base}/icon`, params).then(res => res.data); };
+//查询所有配置
+export const settingAll = params => { return http.get(`${base}/setting/all`).then(res => res.data); };
+//保存默认搜索词配置
+export const settingSearch = params => { return http.post(`${base}/setting/default/search/term`,params).then(res => res.data); };
+//保存库存显示配置
+export const settingStock = params => { return http.post(`${base}/setting/inventory/display`,params).then(res => res.data); };
+//保存订单页面提示配置
+export const settingPage = params => { return http.post(`${base}/setting/order/confirm/page`,params).then(res => res.data); };
+//保存订单弹窗提示配置
+export const settingPopup = params => { return http.post(`${base}/setting/order/confirm/popup`,params).then(res => res.data); };
+
+
 
