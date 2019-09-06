@@ -16,7 +16,7 @@
         >
             <el-form-item label="选择一级分类：">
                 <el-select
-                        v-model="dataForm.firstCategory"
+                        v-model="dataForm.firstCategoryId"
                         filterable
                         placeholder="请输入关键词"
                         :loading="loading"
@@ -31,10 +31,11 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="选择二级分类：">
-                <el-select v-model="dataForm.secondCategory"
+                <el-select v-model="dataForm.secondCategoryId"
                            filterable
                            placeholder="请输入关键词"
                            :loading="loading"
+                           @change="changeSecondCategoryFn"
                 >
                     <el-option
                             v-for="item in selectSecondCategory"
@@ -63,7 +64,9 @@
                 loading : false,
                 dataForm: {
                     firstCategory: "",
+                    firstCategoryId: "",
                     secondCategory: "",
+                    secondCategoryId: "",
                 },
                 dataRule : {
                     selectName : [
@@ -71,19 +74,20 @@
                     ]
                 },
                 title:'',
-                row:"",
                 selectFirstCategory:[],
                 selectSecondCategory:[],
-                formLabelWidth: '120px'
+                formLabelWidth: '120px',
             }
         },
         props:["id"],
         methods: {
             init (row) {
                 this.visible = true;
-                this.row = row;
-                console.log(row)
                 this.title="选择分类";
+                //回显第一二级数据
+                this.dataForm.firstCategoryId =  this.$parent.dataForm.firstCategoryId
+                this.dataForm.secondCategoryId =  this.$parent.dataForm.secondCategoryId
+
                 this.backScan();
                 this.$nextTick(() => {
                     this.$refs['addForm'].resetFields();
@@ -92,58 +96,51 @@
             },
             //编辑回显
             backScan(){
-                var obj  = {
-                    id:this.dataForm.id,
-                    name:this.dataForm.name,
-                }
+                var obj  = {}
                 backScanCategorys(obj).then((res)=>{
-                    this.selectFirstCategory = res;
-                    this.selectSecondCategory = res.list.name;
+                    //找第一级下拉
+                    this.selectFirstCategory = res.data;
+                    var itemObj = this.selectFirstCategory.find((item,index)=>{
+                        return item.id ==this.dataForm.firstCategoryId;
+                    })
+                    //找第二级下拉
+                    this.selectSecondCategory = itemObj.list;
                 })
             },
+            //切换第一级
             changeFirstCategoryFn(val){
                 var itemObj = this.selectFirstCategory.find((item,index)=>{
                     return item.id == val;
                 })
+                 console.log(itemObj);
+                //找到第一级选中的数据
+                this.dataForm.firstCategoryId = itemObj.id;
+                this.dataForm.firstCategory = itemObj.name;
+                //清空第二级数据
+                this.dataForm.secondCategoryId = "";
                 this.dataForm.secondCategory = "";
-                this.selectSecondCategory = itemObj.list;
+                //找第二级下拉
+                this.selectSecondCategory = itemObj.list? itemObj.list:[]
+            },
+            //切换第二级
+            changeSecondCategoryFn(val){
+                var itemObj = this.selectSecondCategory.find((item,index)=>{
+                    return item.id == val;
+                })
+                 // 找到第二级选中的数据
+                this.dataForm.secondCategoryId = itemObj.id;
+                this.dataForm.secondCategory = itemObj.name;
             },
             // 提交
             dataFormSubmit(formName){
                 // alert([this.dataForm.name,this.dataForm.domainAddress]);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.loading = true;
-                        var obj = {
-                            "id":  this.dataForm.id,
-                            "firstCategory":  this.dataForm.firstCategory,
-                            "secondCategory":  this.dataForm.secondCategory,
-                        }
-                        // if(this.row) obj.id = this.row.id
-                        var fn = saveZozogoods;
-                        fn(obj).then((res) => {
-                            this.loading = false;
-                            // alert(JSON.stringify(res));
-                            let status = null;
-                            if(res.code == "200"){
-                                status = "success";
-                                this.visible = false;
-                                this.$emit('searchDataList');
-                                this.closeDialog();
-
-                            }else{
-                                status = "error";
-                            }
-
-                            this.$message({
-                                message: res.msg,
-                                type: status,
-                                duration: 1500
-                            })
-                        })
-                    } else {
-                        //console.log('error 添加失败!!');
-                        return false;
+                        this.$parent.dataForm.firstCategory = this.dataForm.firstCategory;
+                        this.$parent.dataForm.firstCategoryId =this.dataForm.firstCategoryId;
+                        this.$parent.dataForm.secondCategoryId = this.dataForm.secondCategoryId;
+                        this.$parent.dataForm.secondCategory = this.dataForm.secondCategory;
+                        this.closeDialog();
                     }
                 })
             },

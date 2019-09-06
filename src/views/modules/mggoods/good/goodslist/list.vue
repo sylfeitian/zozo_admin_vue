@@ -113,7 +113,7 @@
             <el-table-column prop="goodsName" label="商品名称" align="center">
                 <template slot-scope="scope">
                     <div>
-                        {{scope.row.goodsName}}
+                        {{scope.row.name}}
                     </div>
                 </template>
             </el-table-column>

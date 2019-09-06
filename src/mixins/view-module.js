@@ -30,8 +30,7 @@ export default {
     }
     /* eslint-enable */
   },
-  activated() {
-  
+  created() {
     if (this.mixinViewModuleOptions.activatedIsNeed) {
       this.getDataList()
     }
