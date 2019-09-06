@@ -225,7 +225,7 @@
         width: 100px!important;
     }
     /deep/ .el-form-item--default {
-        height: 30px!important;
+        /*height: 30px!important;*/
     }
     .grayLine {
         border-bottom: 0!important;

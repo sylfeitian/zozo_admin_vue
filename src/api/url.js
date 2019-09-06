@@ -246,7 +246,7 @@ export const deleteShopStyle = `${base}/shopstyle`;
 // 仓库列表
 export const wareUrl = `${base}/ware/list`;
 // 修改仓库启用状态
-export const deleteWare = `${base}/ware/isenable`;
+export const deleteWare = `${base}/ware`;
 // 仓库sku商品
 export const skuGoods = `${base}/ware/skugoods`;
 
@@ -293,6 +293,12 @@ export const getGoodsUrl = `${base}/zozogoods/page/log`;
 // 京东分类管理--------------------------------------------------------------------------------------------------------------------
 // 商品管理列表
 export const jdCateUrl = `${base}/jdCate/page`;
+
+// 分类条件接口--------------------------------------------------------------------------------------------------------------------
+// 商品管理列表
+export const tagPage = `${base}/tag/page`;
+
+
 
 
 
