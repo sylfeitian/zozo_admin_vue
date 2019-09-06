@@ -42,9 +42,12 @@
                     this.$refs.addoraditCompon.init(id);
                 })
             },
-            add(){
+            add(id){
                 this.addVisible = true;
                 this.mainVisible = false;
+                this.$nextTick(()=>{
+                    this.$refs.addCompon.init(id);
+                })
             },
             showList(){
                 this.dtailVisible = false;
