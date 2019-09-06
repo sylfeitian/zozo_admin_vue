@@ -190,7 +190,17 @@
                     memberCityid: this.dataForm.memberCityid,
                     memberPasswd: "string",
                     stressId: this.dataForm.stressId,
-                    memberProvinceid: this.dataForm.memberProvinceid
+                    memberProvinceid: this.dataForm.memberProvinceid,
+                    // "address": "string",
+                    // "addressIds": "string",
+                    // "createDateEnd": "string",
+                    // "createDateStart": "string",
+                    // "id": 0,
+                    // "limit": "string",
+                    // "memberName": "string",
+                    // "page": "string",
+                    // "remark": "string",
+                    // "type": 0
                 };
                 setMemberPass(obj).then(res => {
                     if (res.code == 200) {

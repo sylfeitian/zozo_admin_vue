@@ -69,8 +69,7 @@
         <!-- <el-menu-item index="3" @click="fullscreenHandle()">
           <svg class="icon-svg aui-navbar__icon-menu" aria-hidden="true"><use xlink:href="#icon-fullscreen"></use></svg>
         </el-menu-item>-->
-        <el-menu-item index="2">
-          <!-- trigger="click" -->
+        <!-- <el-menu-item index="2">
           <el-dropdown :show-timeout="0" placement="bottom" trigger="click">
             <span class="el-dropdown-link">
               <img
@@ -94,37 +93,36 @@
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-        </el-menu-item>
-        <el-menu-item index="3">
-          <!--  trigger="click" -->
-          <el-dropdown :show-timeout="0" placement="bottom">
-            <span class="el-dropdown-link">
-              <img
-                style="width:20px;height:20px;"
-                src="http://morefun.image.alimmdn.com/leiming/message.png"
-              >
-            </span>
-            <el-dropdown-menu slot="dropdown" class="messageBox">
-              <div class="messageTop">消息通知:4条</div>
-              <el-dropdown-item class="messageItem">
-                <div class="messageItemTitle cyanColor">系统通知</div>
-                <div class="messageItemContent">恭喜您!本月订单突破本月订单突破本月订单突破</div>
-              </el-dropdown-item>
-              <el-dropdown-item class="messageItem">
-                <div class="messageItemTitle redColor">系统通知</div>
-                <div class="messageItemContent">恭喜您!本月订单突破本月订单突破本月订单突破</div>
-              </el-dropdown-item>
-              <el-dropdown-item class="messageItem">
-                <div class="messageItemTitle greenColor">系统通知</div>
-                <div class="messageItemContent">恭喜您!本月订单突破本月订单突破本月订单突破</div>
-              </el-dropdown-item>
-              <el-dropdown-item class="messageItem">
-                <div class="messageItemTitle blackColor">系统通知</div>
-                <div class="messageItemContent">恭喜您!本月订单突破本月订单突破本月订单突破</div>
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </el-menu-item>
+        </el-menu-item> -->
+          <!-- <el-menu-item index="3">
+            <el-dropdown :show-timeout="0" placement="bottom">
+              <span class="el-dropdown-link">
+                <img
+                  style="width:20px;height:20px;"
+                  src="http://morefun.image.alimmdn.com/leiming/message.png"
+                >
+              </span>
+              <el-dropdown-menu slot="dropdown" class="messageBox">
+                <div class="messageTop">消息通知:4条</div>
+                <el-dropdown-item class="messageItem">
+                  <div class="messageItemTitle cyanColor">系统通知</div>
+                  <div class="messageItemContent">恭喜您!本月订单突破本月订单突破本月订单突破</div>
+                </el-dropdown-item>
+                <el-dropdown-item class="messageItem">
+                  <div class="messageItemTitle redColor">系统通知</div>
+                  <div class="messageItemContent">恭喜您!本月订单突破本月订单突破本月订单突破</div>
+                </el-dropdown-item>
+                <el-dropdown-item class="messageItem">
+                  <div class="messageItemTitle greenColor">系统通知</div>
+                  <div class="messageItemContent">恭喜您!本月订单突破本月订单突破本月订单突破</div>
+                </el-dropdown-item>
+                <el-dropdown-item class="messageItem">
+                  <div class="messageItemTitle blackColor">系统通知</div>
+                  <div class="messageItemContent">恭喜您!本月订单突破本月订单突破本月订单突破</div>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </el-menu-item> -->
         <el-menu-item index="4" class="aui-navbar__avatar">
           <el-dropdown placement="bottom" :show-timeout="0">
             <span class="el-dropdown-link">
@@ -332,7 +330,7 @@ export default {
 }
 .arrow {
   ul {
-    /*display: flex;*/
+    display: flex;
 		justify-content: space-around;
     border-bottom: solid 0px #e6e6e6;
     li {
