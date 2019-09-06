@@ -137,7 +137,7 @@
                 this.$nextTick(()=>{
                     if(row){
                         var obj  = {
-                            id:1
+                            id:row.id
                         }
                         getfashiondetail(obj).then((res)=>{
                             if(res.code == 200){
