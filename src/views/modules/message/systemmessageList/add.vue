@@ -183,7 +183,7 @@
                 else this.$refs.multipleTable.clearSelection();
             },
             handleClose(index){
-                this.multipleSelection.splice(index, 1);
+                this.userLsit.splice(index, 1);
             },
             saveUser(){
                 this.dialogTableVisible = false;
