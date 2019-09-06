@@ -30,11 +30,12 @@ export default {
 	      },
 	    };
 	},
-	props:["index"],
+	props:["index","value"],
 	components: {
     quillEditor
   },
   created () {
+	    if(this.value) this.dataForm.messageContent = this.value;
   	var that = this;
   	/*富文本编辑图片上传配置*/
 		const uploadConfig = {

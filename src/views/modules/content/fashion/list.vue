@@ -94,7 +94,7 @@
             <el-table-column prop="publishTime" label="发布时间" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button @click.native.prevent="showDetail( scope.row)"type="text"size="mini">查看</el-button>
+                    <el-button @click.native.prevent="showDetail(scope.row)"type="text"size="mini">查看</el-button>
                     <el-button @click.native.prevent="addOrAdit(scope.row)"type="text"size="mini">编辑</el-button>
                     <el-button @click.native.prevent="forbitHandle(scope.$index,scope.row)"type="text"size="mini">
                         <span v-if="scope.row.state==1" class="artdisable">{{scope.$index==currentIndex&&forbitLoading?"取消发布中..":"取消发布"}}</span>
@@ -177,11 +177,12 @@
             showDetail(id){
                 this.$emit("showDetail",id);
             },
-            addOrAdit(id){
-                this.$emit("addOrAdit",id);
+            addOrAdit(row){
+                if(row.fashionFlag == 0) this.$emit("addOrAdit",row);
+                else if(row.fashionFlag == 1) this.$emit("add",row);
             },
-            add(){
-                this.$emit("add");
+            add(id){
+                this.$emit("add",id);
             },
             getData() {
                 this.dataForm.publishJpStartTime =  this.timeArr[0];

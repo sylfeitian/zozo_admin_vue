@@ -84,7 +84,6 @@
         data () {
             return {
                 dataForm1:{
-                    id:'',
                     inventory:'',//库存数
                 },
                 dataForm2:{
@@ -115,7 +114,26 @@
                 settingAll({}).then((res)=>{
                     console.log('所有配置',res)
                     if(res.code == 200){
-
+                        res.data.map((item)=>{
+                            if(item.name == 'inventoryDisplay'){
+                                this.dataForm1.id = item.id;
+                                JSON.parse(item.value).inventory?this.dataForm1.inventory = JSON.parse(item.value).inventory:'';
+                            }else if(item.name == 'orderConfirmPage'){
+                                this.dataForm2.id = item.id;
+                                JSON.parse(item.value).copywriting?this.dataForm2.copywriting = JSON.parse(item.value).copywriting:'';
+                                JSON.parse(item.value).isShow?this.dataForm2.isShow = JSON.parse(item.value).isShow:'';
+                            }else if(item.name == 'orderConfirmPopup'){
+                                this.dataForm3.id = item.id;
+                                JSON.parse(item.value).copywriting?this.dataForm3.copywriting = JSON.parse(item.value).copywriting:'';
+                                JSON.parse(item.value).isShow?this.dataForm3.isShow = JSON.parse(item.value).isShow:'';
+                            }else if(item.name == 'defaultSearchTerm'){
+                                this.dataForm4.id = item.id;
+                                JSON.parse(item.value).all?this.dataForm4.all = JSON.parse(item.value).all:'';
+                                JSON.parse(item.value).woman?this.dataForm4.woman = JSON.parse(item.value).woman:'';
+                                JSON.parse(item.value).man?this.dataForm4.man = JSON.parse(item.value).man:'';
+                                JSON.parse(item.value).child?this.dataForm4.child = JSON.parse(item.value).child:'';
+                            }
+                        })
                     }
                 })
             },
@@ -125,6 +143,7 @@
                         console.log('库存显示配置',res)
                         if(res.code == 200){
                             this.$message.success('库存显示配置成功');
+                            this.getSettingAll();
                         }else{
                             this.$message.success(res.msg);
                         }
@@ -138,6 +157,7 @@
                     console.log('订单页面提示配置',res)
                     if(res.code == 200){
                         this.$message.success('确认订单页面提示配置成功');
+                        this.getSettingAll();
                     }else{
                         this.$message.success(res.msg);
                     }
@@ -148,6 +168,7 @@
                     console.log('确认订单弹窗提示配置',res)
                     if(res.code == 200){
                         this.$message.success('确认订单弹窗提示配置成功');
+                        this.getSettingAll();
                     }else{
                         this.$message.success(res.msg);
                     }
@@ -161,6 +182,7 @@
                         console.log('默认搜索词配置',res)
                         if(res.code == 200){
                             this.$message.success('默认搜索词配置成功');
+                            this.getSettingAll();
                         }else{
                             this.$message.success(res.msg);
                         }

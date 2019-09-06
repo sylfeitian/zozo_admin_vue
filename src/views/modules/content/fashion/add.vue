@@ -37,22 +37,33 @@
                     <el-button type="primary" @click="openDiog" >添加商品</el-button>
                 </div>
             </el-form-item>
-            <el-form-item label="内容：" prop="con" :label-width="formLabelWidth" style="vertical-align:top;">
+            <el-form-item :label-width="formLabelWidth" style="vertical-align:top;">
                 <template slot-scope="scope">
-                    <div id="content" v-for="(v,i) in content" :key="i">
-                        <div class="contentChild" v-if="content[i]&&v.typeId=='5'">
-                            <quill-editor-img class="inforRight" :index="i" ref="quillEditorCompon" style="display: inline-block;"  @artmessageContent='artmessageContent' ></quill-editor-img>
+                    <div style="float:left;margin-left: -55px;">
+                        <span style="color:#f56c6c;margin-right: 4px;">*</span>内容：</div>
+                        <div id="content" v-for="(v,i) in content" :key="i">
+                        <div class="contentChild" v-if="content[i]&&v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
+                            <quill-editor-img class="inforRight" :value="v.text" :index="i" ref="quillEditorCompon" style="display: inline-block;"  @artmessageContent='artmessageContent' ></quill-editor-img>
                             <span style="margin-left: 10px;color:#2260d2;" @click="delContent(i)">删除</span>
                         </div>
                         <div class="contentChild" v-if="content[i]&&v.typeId=='3'">
                             <img style="width:600px;" :src="$imgDomain+v.imageUrl" alt="">
                             <span style="margin-left: 10px;color:#2260d2;" @click="delContent(i)">删除</span>
                         </div>
+                        <div class="contentChild" v-if="content[i]&&v.typeId=='4'">
+                            <div style="display: inline-block;">
+                                <img style="width:600px;margin-bottom: 10px;" :src="$imgDomain+v.imageUrl" alt="">
+                                <div>{{v.text}}</div>
+                            </div>
+                            <span style="margin-left: 10px;color:#2260d2;" @click="delContent(i)">删除</span>
+                        </div>
                     </div>
                 </template>
             </el-form-item>
-            <el-form-item label="上传封面图：" prop="img" :label-width="formLabelWidth">
+            <el-form-item  :label-width="formLabelWidth">
                 <template slot-scope="scope">
+                    <div style="float: left;margin-left: -95px;">
+                        <span style="color:#f56c6c;margin-right: 4px;">*</span>上传封面图：</div>
                     <div class="pcCoverUrl imgUrl" style="float: left;width:50%;">
                         <img-cropper
                                 v-loading="uploading"
@@ -91,7 +102,7 @@
                         :data="dataList"
                         border=""
                         v-loading="dataListLoading"
-                        style="width: 100%;maigin-top:10px;"
+                        style="width: 100%;margin-top:10px;"
                         @selection-change="handleSelectionChange"
                 >
                     <el-table-column type="selection" width="70"></el-table-column>
@@ -169,7 +180,7 @@
                     con : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ],
-                    img : [
+                    mainImageUrl : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ]
                 },
@@ -195,6 +206,7 @@
                         getfashiondetail(obj).then((res)=>{
                             if(res.code == 200){
                                 this.addDataForm = res.data;
+                                this.content = res.data.shopFashionContentsVOList;
                             }
                         })
                     }
@@ -202,6 +214,28 @@
             },
             saveGoods(){
                 this.dialogTableVisible = false;
+                this.multipleSelection.map((v,i)=>{
+                    let obj = {
+                        colorId :v.colorId ,//颜色id
+                        colorIdJp :"" ,// 颜色idJp
+                        contentsId :"" ,//时尚纪事内容
+                        createTime :"" ,//创建时间
+                        fashionMatomeId :"" ,// 时尚纪事的id
+                        fashionMatomeIdJp :"" ,// 日本时尚纪事的id
+                        goodCsId :"" ,// 商品的中国skuid
+                        goodCsIdJp :v.goodsCsIdJp ,// 商品的日本skuid
+                        goodTypesId :"" ,// 商品类型id
+                        goodTypesIdJp :"" ,// 商品类型idJp
+                        goodsId :v.goodsId ,// 商品id
+                        goodsIdJp :v.goodsIdJp ,// 商品idJp
+                        id :v.id ,// 主键id
+                        imageUrl :v.imageUrl ,// 图片url
+                        sortId :"" ,// 排序id
+                        text :v.goodsName ,// 内容
+                        typeId :"4" ,// 内容类型id
+                    };
+                    this.content.push(obj);
+                })
             },
             artmessageContent(messageContent,i){
                 if(this.content[i]) this.content[i].text = messageContent;
@@ -222,7 +256,7 @@
                 window.this = this;
                 this.$nextTick(()=>{
                     this.content.forEach((item,index)=>{
-                        this.$refs.quillEditorCompon[index].addDataForm.messageContent = item.text;
+                        this.$refs.quillEditorCompon[index].dataForm.messageContent = item.text;
                     })
                     this.content = [].concat(this.content)
                 },0)
@@ -286,6 +320,19 @@
             },
             dataFormSubmit(type){
                 let that = this;
+                if(!that.content[0]){
+                    this.$message({
+                        message: "请输入内容!",
+                        type: 'error',
+                    });
+                    return
+                }else if(!that.addDataForm.mainImageUrl){
+                    this.$message({
+                        message: "请选择封面图!",
+                        type: 'error',
+                    });
+                    return
+                }
                 this.$refs["addForm"].validate(valid => {
                     if (valid) {
                         this.$confirm(`确定提交表单信息?`, "提示", {
@@ -294,8 +341,9 @@
                             type: "warning"
                         })
                             .then(() => {
-                                this.addDataForm.saveType = type;
-                                savefashiondetail({saveFashionDTO:this.addDataForm}).then((res)=>{
+                                that.addDataForm.fashionContents = that.content;
+                                that.addDataForm.saveType = type;
+                                savefashiondetail({saveFashionDTO:that.addDataForm}).then((res)=>{
                                     if(res.code == 200){
                                         this.$message({
                                             message: res.msg,

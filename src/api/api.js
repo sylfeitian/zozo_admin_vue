@@ -850,6 +850,10 @@ export const settingStock = params => { return http.post(`${base}/setting/invent
 export const settingPage = params => { return http.post(`${base}/setting/order/confirm/page`,params).then(res => res.data); };
 //保存订单弹窗提示配置
 export const settingPopup = params => { return http.post(`${base}/setting/order/confirm/popup`,params).then(res => res.data); };
+//设置首页集合推荐
+export const sethomeIndexPage = params => { return http.post(`${base}/folderrecommend/setrecommend`, params).then(res => res.data); };
+
+
 
 
 
