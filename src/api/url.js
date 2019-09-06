@@ -246,7 +246,7 @@ export const deleteShopStyle = `${base}/shopstyle`;
 // 仓库列表
 export const wareUrl = `${base}/ware/list`;
 // 修改仓库启用状态
-export const deleteWare = `${base}/ware/isenable`;
+export const deleteWare = `${base}/ware`;
 // 仓库sku商品
 export const skuGoods = `${base}/ware/skugoods`;
 
@@ -383,4 +383,13 @@ export const dictList = `${base}/dict/list`;
 export const errorUrl = `${base}/log/error/page`;
 // 导出
 export const exportError= `${base}/log/error/export`;
+
+//配置管理-------------------------------------------------------------------------------------------------------------
+// 广告位列表
+export const advList = `${base}/adv/page`;
+// 广告位批量删除
+export const advDelete = `${base}/adv/batch`;
+
+// 底部iCon配置
+export const iconCinfigList = `${base}/icon/list`;
 

@@ -104,12 +104,10 @@
 </template>
 
 <script>
-import mixinViewModule from '@/mixins/view-module'
 import Bread from "@/components/bread";
 import { getmessagepage, putMessageState,getShopmessagetemplate,saveShopmessagetemplate } from '@/api/api'
   
 export default {
-  	mixins: [mixinViewModule],
 	data () {
 	    return {
 	      	breaddata: ["消息中心", "系统消息设置"],

@@ -53,8 +53,19 @@
             </el-table-column>
             <el-table-column prop="messageType" label="消息类型" align="center">
                 <template slot-scope="scope">
-                    <div v-if="scope.row.messageType == 1" >系统信息</div>
-                    <div v-else-if="scope.row.messageType == 0" >私信</div>
+                    <div v-if="scope.row.messageType == 0" >活动推送</div>
+                    <div v-else-if="scope.row.messageType == 1" >购物车内商品降价</div>
+                    <div v-else-if="scope.row.messageType == 2" > 到货通知</div>
+                    <div v-else-if="scope.row.messageType == 3" > 退款通知</div>
+                    <div v-else-if="scope.row.messageType == 4" > 优惠券到期通知</div>
+                    <div v-else-if="scope.row.messageType == 5" > 收藏的商品降价</div>
+                    <div v-else-if="scope.row.messageType == 6" > 发货通知</div>
+                    <div v-else-if="scope.row.messageType == 7" > 清关失败</div>
+                    <div v-else-if="scope.row.messageType == 8" > 秒杀活动提醒</div>
+                    <div v-else-if="scope.row.messageType == 9" > 限量商品提醒</div>
+                    <div v-else-if="scope.row.messageType == 10" > 收藏的店铺上新</div>
+                    <div v-else-if="scope.row.messageType == 11" > 收藏的品牌上新</div>
+                    <div v-else-if="scope.row.messageType == 12" > 售后审核通过</div>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center">
@@ -111,31 +122,19 @@
                 mixinViewModuleOptions: {
                     getDataListURL: getmessagepage,
                     getDataListIsPage: true,
-                    // exportURL: '/admin-api/log/login/export',
                     deleteURL: '',
                     dataListLoading: false,
                     deleteIsBatch: true,
                     deleteIsBatchKey: 'id'
                 },
                 dialogTableVisible:false,
-                activeName: "",
-                selectVal:"",
                 breaddata: [ "消息中心", "消息列表"],
                 dataForm: {},
                 messageDetail:{},
                 value: '',
                 multipleSelection:[],
                 dataList: [],
-                currentIndex:"",
                 dataListLoading: false,
-                forbitLoading:false,
-                timeArr: "", //日本发布时间数据
-                timeArr2: "", //发布时间数据
-                startCreateDate: "",
-                endCreateDate: "",
-                endPaymentTime: "",
-                startPaymentTime: "",
-                isIndeterminate: false,
                 checkAll: false,
             }
         },
@@ -143,10 +142,6 @@
             Bread
         },
         created () {
-            // 第一次请求数据
-            // this.handleClick();
-            this.activeName =  this.status == undefined ? "" : this.status;
-            this.dataForm.goodsShow = this.status == undefined ? "" : this.status;
             this.getDataList();
         },
         methods: {
@@ -247,7 +242,7 @@
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
-                if(this.multipleSelection.length == 10) this.checkAll = true;
+                if(this.multipleSelection.length == this.dataList.length) this.checkAll = true;
                 else this.checkAll = false;
             },
             handleCheckAllChange(val) {

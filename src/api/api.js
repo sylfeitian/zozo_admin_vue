@@ -99,6 +99,9 @@ export const addodoGoods = params => { return http.post(`${base}/wareHouse/odoGo
 //中国分类管理--------------------------------------------------------------------------------------------------------------------
 // 获取一级分类
 export const categoryCn = params => { return http.get(`${base}/categoryCn`, params).then(res => res.data); };
+//查下级分类
+export const childCategoryCn = params => { return http.get(`${base}/categoryCn/${params.id}/child`, params).then(res => res.data); };
+
 // 删除分类接口
 export const deleteCategoryCn = params => { return http.delete(`${base}/categoryCn/delete/${params.id}`, params).then(res => res.data); };
 // 新增/修改分类
@@ -593,7 +596,7 @@ export const allWare = params => { return http.get(`${base}/ware/all`, params).t
 // 导出数据
 export const importWare = params => { return http.get(`${base}/ware/import`, params).then(res => res.data); };
 // 修改仓库启用状态
-export const deleteWare = params => { return http.delete(`${base}/ware/isenable`, params).then(res => res.data); };
+export const editWare = params => { return http.delete(`${base}/ware/isenable`, params).then(res => res.data); };
 // 仓库列表
 export const warePage = params => { return http.get(`${base}/ware/list`, params).then(res => res.data); };
 // 仓库sku商品
@@ -604,6 +607,8 @@ export const verifyWare = params => { return http.get(`${base}/ware/verify/name`
 export const backScanWare = params => { return http.get(`${base}/ware/${params.id}`, params).then(res => res.data); };
 // 根据类型查询仓库列表  
 export const wareListByType = params => { return http.get(`${base}/ware/${params.type}/list`, params).then(res => res.data); };
+// 删除
+export const deleteWare = params => { return http.delete(`${base}/ware`, params).then(res => res.data); };
 
 
 
@@ -671,7 +676,12 @@ export const showBatchGoods = params => { return http.put(`${base}/zozogoods/sho
 export const showGoods = params => { return http.put(`${base}/zozogoods/show/${params.id}?showWeb=${params.showWeb}&showType=${params.showType}`, params).then(res => res.data); };
 // 获取商品尺码信息
 export const getZozogoodsSize = params => { return http.get(`${base}/zozogoods/size/item?spuId=${params.spuId}&sizeId=${params.sizeId}`, params).then(res => res.data); };
-
+// 查询中国分类列表
+export const backScanCategorys = params => { return http.get(`${base}/zozogoods/categorys`, params).then(res => res.data); };
+// 查询品牌列表
+export const searchBrandName = params => { return http.get(`${base}/zozogoods/brandname`, params).then(res => res.data); };
+// 查询店铺列表
+export const searchStoreName = params => { return http.get(`${base}/zozogoods/storename`, params).then(res => res.data); };
 
 
 
@@ -827,6 +837,21 @@ export const dictSave = params => { return http.post(`${base}/dict/save`, params
 export const updateDict = params => { return http.put(`${base}/dict/update`, params).then(res => res.data); };
 // 根据ID查询信息
 export const backScanDict = params => { return http.get(`${base}/dict/${params.id}`, params).then(res => res.data); };
+
+// 修改底部Icon配置
+export const iconEdit = params => { return http.put(`${base}/icon`, params).then(res => res.data); };
+//查询所有配置
+export const settingAll = params => { return http.get(`${base}/setting/all`).then(res => res.data); };
+//保存默认搜索词配置
+export const settingSearch = params => { return http.post(`${base}/setting/default/search/term`,params).then(res => res.data); };
+//保存库存显示配置
+export const settingStock = params => { return http.post(`${base}/setting/inventory/display`,params).then(res => res.data); };
+//保存订单页面提示配置
+export const settingPage = params => { return http.post(`${base}/setting/order/confirm/page`,params).then(res => res.data); };
+//保存订单弹窗提示配置
+export const settingPopup = params => { return http.post(`${base}/setting/order/confirm/popup`,params).then(res => res.data); };
+
+
 
 
 

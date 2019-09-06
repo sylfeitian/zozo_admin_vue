@@ -217,7 +217,7 @@
         width: 500px!important;
     }
     /deep/ .el-textarea {
-        width: 500px!important;
+        width: 50%!important;
     }
     /deep/ .el-button {
         width: 150px;
@@ -226,7 +226,7 @@
         width: 120px!important;
     }
     /deep/ .el-form-item--default {
-        height: 30px!important;
+        /*height: 30px!important;*/
     }
     .grayLine {
         border-bottom: 0!important;

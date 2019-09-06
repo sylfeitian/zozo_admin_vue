@@ -14,13 +14,13 @@
                 <span style="margin-left: 2%;color:green;cursor:pointer;" @click="logMore">修改</span>
             </el-form-item>
             <el-form-item label="商品编码：" class="item">
-                <span>{{dataForm.goodsName}}</span>
+                <span>{{dataForm.idJp}}</span>
             </el-form-item>
             <el-form-item label="日本商品名称：" class="item">
                 <span>{{dataForm.nameJp}}</span>
             </el-form-item>
             <el-form-item label="商品名称：" class="item">
-                <el-input v-model="dataForm.name" placeholder="请输入" maxlength="60"></el-input>&nbsp;&nbsp;
+                <el-input v-model="dataForm.goodsName" placeholder="请输入" maxlength="60" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
                 <span style="color: #bebebe;">最多可输入60个文字</span>
             </el-form-item>
             <el-form-item label="品牌：" class="item">
@@ -32,12 +32,12 @@
             <el-form-item label="主品牌：" class="item">
 <!--                <span>{{}}</span>-->
                 <template>
-                    <span v-if="dataForm.brands[0].isMainBrand==1">{{dataForm.brands[0].brandName}}</span>
+                    <span v-if="dataForm.brands && dataForm.brands.length!=0 && dataForm.brands[0].isMainBrand==1">{{dataForm.brands[0].brandName}}</span>
                 </template>
             </el-form-item>
             <el-form-item label="副品牌：" class="item">
                 <template>
-                    <span v-if="dataForm.brands[0].isMainBrand==0">{{dataForm.brands[0].brandName}}</span>
+                    <span v-if="dataForm.brands && dataForm.brands.length!=0 &&dataForm.brands[0].isMainBrand==0">{{dataForm.brands[0].brandName}}</span>
                 </template>
             </el-form-item>
             <el-form-item label="主性别：" class="item">
@@ -85,7 +85,7 @@
             </el-form-item>
             <el-form-item label="材质：" class="item">
                 <span>{{dataForm.materialJp}}</span>
-                <el-input v-model="dataForm.material" placeholder="请输入" maxlength="10"></el-input>&nbsp;&nbsp;
+                <el-input v-model="dataForm.material" placeholder="请输入" maxlength="10" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
                 <span style="color: #bebebe;">最多可输入10个文字</span>
             </el-form-item>
             <el-form-item label="上架状态：" class="item">
@@ -114,24 +114,29 @@
                         class="inforRight"
                         style="display:inline-block;width: 80%">
                     <el-table-column prop="goodsCsIdjp" label="SKU编码" align="center"></el-table-column>
-                    <!--                    <el-table-column prop="specId" label="备案编码" align="center"></el-table-column>-->
                     <el-table-column prop="colorName" label="颜色" align="center"></el-table-column>
                     <el-table-column prop="sizeName" label="尺码" align="center"></el-table-column>
-                    <el-table-column prop="specId" label="尺码信息" align="center"></el-table-column>
+                    <el-table-column prop="specId" label="尺码信息" align="center">
+                        <template slot-scope="scope">
+                            <div @click="detShowChange(scope.row)" style="color: #2260D2;cursor:pointer;">
+                                查看
+                            </div>
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
-                    <el-table-column prop="specName" label="是否可售" align="center"></el-table-column>
+                    <el-table-column prop="sellState" label="是否可售" align="center"></el-table-column>
                     <el-table-column prop="sellStartDate" label="售卖开始时间" align="center"></el-table-column>
                     <el-table-column prop="sellEndDate" label="售卖结束时间" align="center"></el-table-column>
                     <el-table-column prop="sellPrice" label="售价(RMB)" align="center">
                         <template
                                 slot-scope="scope"
                                 v-if="scope.row.specSellPrice!==''&&scope.row.specSellPrice!==null"
-                        >￥{{scope.row.sellPrice.toFixed(2)}}</template>
+                        >￥{{scope.row.sellPrice}}</template>
                     </el-table-column>
                     <el-table-column prop="goodsNum" label="图片" align="center">
                         <template slot-scope="scope">
                             <img
-                                    :src="scope.row.itemsImageUrl"
+                                    :src="scope.row.itemsImageUrl | filterImgUrl"
                                     style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                             >
                         </template>
@@ -149,12 +154,12 @@
                 <template slot-scope="scope">
                     <div class="goodsImg">
 <!--                        <img  :src="scope.row.imageUrl | filterImgUrl" style="width:60px;height:60px;object-fit: contain;" alt=""/>-->
-                        <img :src="dataForm.imageUrl320" alt=""/>
+                        <img :src="dataForm.imageUrl | filterImgUrl" alt=""/>
                     </div>
                 </template>
             </el-form-item>
-            <el-form-item label="日本商品详情：" class="item">
-                <span>{{dataForm.descriptionJp}}</span>
+            <el-form-item label="日本商品详情：" class="item" style="height: auto!important;">
+                <span v-html="dataForm.descriptionJp"></span>
             </el-form-item>
             <el-form-item label="商品详情：">
                 <!-- 富文本编辑器, 容器 -->
@@ -169,7 +174,9 @@
             </div>
         </el-col>
         <!-- 弹窗, 新建 -->
-        <addEditData  v-if="addEditDataVisible" ref="addEditData" @searchDataList="getDataList"></addEditData>
+        <addEditData :id="dataForm.id" v-if="addEditDataVisible" ref="addEditData" @searchDataList="getDataList"></addEditData>
+        <!-- 尺码信息 -->
+        <sizeData v-if="sizeDataVisible" ref="sizeDataCompon" @searchDataList="getDataList"></sizeData>
     </div>
 </template>
 
@@ -180,6 +187,7 @@
     import addEditData from './model-edit-data'
     import mixinViewModule from '@/mixins/view-module'
     import { backScanZozogoods, saveZozogoods } from '@/api/api'
+    import sizeData from './model-size'
 
     import 'quill/dist/quill.core.css';
     import 'quill/dist/quill.snow.css';
@@ -191,13 +199,19 @@
             return {
                 breaddata: [ "商品管理","商品列表", "编辑商品"],
                 addEditDataVisible: false,
-                dataForm: {}
+                dataForm: {
+                    goodsName:"",
+                    madeIn:"",
+                    material:"",
+                },
+                sizeDataVisible: false,
             }
         },
         components: {
             Bread,
             quillEditorImg,
             addEditData,
+            sizeData
         },
         // props: [
         //     "detdata",
@@ -233,14 +247,22 @@
             operational () {
                 this.$emit("operational")
             },
-            logMore(index=-1,row=""){
+            logMore(){
                 this.setAddEditDataVisible(true);
                 this.$nextTick(() => {
-                    this.$refs.addEditData.init(row)
+                    this.$refs.addEditData.init()
                 })
             },
             setAddEditDataVisible(boolargu){
                 this.addEditDataVisible =  boolargu;
+                this.id = this.dataForm.id;
+            },
+            detShowChange (row2) {
+                this.sizeDataVisible =  true;
+                console.log(this.dataForm);
+                this.$nextTick(() => {
+                    this.$refs.sizeDataCompon.init(this.row,row2);
+                })
             },
             reset(){
                 let that = this;
@@ -252,9 +274,9 @@
                     that.changePage();
                 }).catch();
             },
-            getData(saveType){
+            getData(saveFlag){
                 let that = this;
-                this.dataForm.saveFlag = saveType;
+                this.dataForm.saveFlag = saveFlag;
                 saveZozogoods({saveLookDTO:this.dataForm}).then((res)=>{
                     if(res.code == 200){
                         this.$message({
@@ -305,8 +327,8 @@
     }
     .grid-content {
         border: 1px solid #ebeef5;
-        height: 54px;
-        line-height: 54px;
+        height: 50px;
+        line-height: 50px;
         text-align: center
     }
     .info {
