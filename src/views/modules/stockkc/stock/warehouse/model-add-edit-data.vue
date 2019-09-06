@@ -69,7 +69,7 @@
                             :value="item.id">
                     </el-option>
                 </el-select>
-                <el-input type="textarea" v-model="dataForm.desc" placeholder="请输入详细地址" :rows="4" style="margin-top: 20px;"></el-input>
+                <el-input type="textarea" v-model="dataForm.addressInfo" placeholder="请输入详细地址" :rows="4" style="margin-top: 20px;"></el-input>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
                 <el-button  @click="dataFormCancel()">取消</el-button>
@@ -101,6 +101,8 @@
                     warehouseName:"",
                     name:"",
                     phone:"",
+                    type:"",
+                    addressInfo:""
 
                 },
                 optionsArea1:[],
@@ -243,18 +245,19 @@
                     if (valid) {
                         this.loading = true;
                         var obj={
-                            "warehouseName": this.dataForm.warehouseName,
-                            "type": this.dataForm.type,
-                            "name": this.dataForm.name,
-                            "phone":this.dataForm.phone,
-                            "areaId": this.dataForm.areaId,
-                            "cityId": this.dataForm.cityId,
-                            "provinceId": this.dataForm.provinceId,
-                            "streetId": this.dataForm.streetId,
-                            "addressInfo": this.dataForm.addressInfo,
+                            warehouseName: this.dataForm.warehouseName,
+                            type: this.dataForm.type,
+                            name: this.dataForm.name,
+                            phone:this.dataForm.phone,
+                            areaId: this.dataForm.areaId,
+                            cityId: this.dataForm.cityId,
+                            provinceId: this.dataForm.provinceId,
+                            streetId: this.dataForm.streetId,
+                            addressInfo: this.dataForm.addressInfo ,
+                            // isEnable: 1
                         }
-
-                        if(this.row) obj.id = this.row.id
+                        console.log(obj)
+                        if(this.row) obj.id = this.row.id;
                         var fn = this.row?updataWare:addWare;
                         fn(obj).then((res) => {
                             this.loading = false;

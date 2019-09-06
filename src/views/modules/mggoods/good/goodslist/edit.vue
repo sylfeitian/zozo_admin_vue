@@ -11,7 +11,7 @@
             <el-form-item label="商品分类：" class="item" style="margin-top: 20px;">
                 <span>{{dataForm.firstCategory}}</span>-->
                 <span>{{dataForm.secondCategory}}</span>
-                <span style="margin-left: 2%;color:green;cursor:pointer;" @click="logMore">修改</span>
+                <span style="margin-left: 2%;color:green;cursor:pointer;" @click="logMore">修改1</span>
             </el-form-item>
             <el-form-item label="商品编码：" class="item">
                 <span>{{dataForm.idJp}}</span>
@@ -203,8 +203,13 @@
                     goodsName:"",
                     madeIn:"",
                     material:"",
+                    firstCategory:'',//
+                    firstCategoryId:'',
+                    secondCategoryId:'',
+                    secondCategory:'',
                 },
                 sizeDataVisible: false,
+                row:'',
             }
         },
         components: {
@@ -219,6 +224,7 @@
         // ],
         methods: {
             init(row){
+                this.row = row;
                 this.$nextTick(()=>{
                     if(row){
                         var obj  = {
@@ -250,7 +256,7 @@
             logMore(){
                 this.setAddEditDataVisible(true);
                 this.$nextTick(() => {
-                    this.$refs.addEditData.init()
+                    this.$refs.addEditData.init(this.row)
                 })
             },
             setAddEditDataVisible(boolargu){
@@ -299,7 +305,7 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     /*.inforTit {*/
     /*    width: 100px;*/
     /*    font-weight: 600;*/
