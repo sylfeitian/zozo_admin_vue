@@ -392,4 +392,12 @@ export const advDelete = `${base}/adv/batch`;
 
 // 底部iCon配置
 export const iconCinfigList = `${base}/icon/list`;
+//首页集合列表
+export const homeIndexPage = `${base}/folderrecommend/page`;
+//首页集合列表批量删除
+export const homeIndexDelete = `${base}/folderrecommend/delete`;
+
+
+
+
 

@@ -28,34 +28,52 @@
             </template>
 		</el-table-column> -->
 		<el-table-column
-		    prop="id"
+		    prop="idJp"
+            align="center"
 		    label="搭配集合ID">
 		</el-table-column>
         <el-table-column
-		    prop="account"
+		    prop="imageUrl"
+            align="center"
 		    label="封面图片"
-		    width="160">
+		    width="260">
+            <template slot-scope="scope">
+		    	<img style="width:200px;height:100px;object-fit: contain" :src="scope.row.imageUrl" alt="">
+		    </template>
 		</el-table-column>
 		<el-table-column
-		    prop="account"
+		    prop="title"
             width="240"
+            show-overflow-tooltip
 		    label="搭配集合标题">
+            <template slot-scope="scope">
+                <div class="words">{{scope.row.title}}</div>
+		    </template>
 		</el-table-column>
         <el-table-column
-		    prop="account"
+		    prop="gender"
             width="70"
+            align="center"
 		    label="性别">
+            <template slot-scope="scope">
+                <span v-if="scope.row.gender == 0">男</span>
+                <span v-if="scope.row.gender == 1">女</span>
+                <span v-if="scope.row.gender == 2">儿童</span>
+                <span v-if="scope.row.gender == 3">worlder</span>
+		    </template>
 		</el-table-column>
         <el-table-column
-		    prop="account"
+		    prop="createDate"
+            align="center"
 		    label="添加时间">
 		</el-table-column>		
 	    <el-table-column
 	   		prop="address"
+            align="center"
 	    	label="操作"
             width="220">
 		    <template slot-scope="scope">
-		    	<el-button type="text" size="small">删除</el-button>
+		    	<el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
 		    </template>
 	  	</el-table-column>
 	</el-table>
@@ -74,7 +92,7 @@
 
 <script>
     import mixinViewModule from '@/mixins/view-module'
-    import { businessPageUrl } from '@/api/url'
+    import { homeIndexPage,homeIndexDelete } from '@/api/url'
     import { zozogoodsPage } from '@/api/api'
     import Bread from "@/components/bread";
     
@@ -84,12 +102,15 @@
         data () {
             return {
                 mixinViewModuleOptions: {
-                    getDataListURL: businessPageUrl,
+                    activatedIsNeed: true,
+                    getDataListURL: homeIndexPage,
                     getDataListIsPage: true,
-                    exportURL: '/admin-api/store/export',
-                    deleteURL: '/admin-api/store',
+                    deleteURL: homeIndexDelete,
                     deleteIsBatch: true,
                     // deleteIsBatchKey: 'id'
+                },
+                dataForm:{
+                    recommendFlag:1,
                 },
                 helpTitle:'新增帮助类型',
                 dataListLoading:false,
@@ -164,6 +185,15 @@
     .el-input {
         width: 240px;
         height: 40px;
+        // background: 
+    }
+    .words{
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp:2;
+        -webkit-box-orient: vertical;
     }
 
 </style>
