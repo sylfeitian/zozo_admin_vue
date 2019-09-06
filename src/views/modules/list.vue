@@ -7,12 +7,12 @@
 			  	style="width: 100%"
 			  	v-loading="dataListLoading">
 				<el-table-column
-				    prop="createDate"
+				    prop="rateGetDate"
 				    label="日期"
 				    align="center">
 				</el-table-column>
 				<el-table-column
-				    prop="rateJp"
+				    prop="rate"
 				    label="汇率"
 				    align="center">
 				</el-table-column>

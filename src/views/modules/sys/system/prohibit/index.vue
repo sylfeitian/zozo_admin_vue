@@ -13,7 +13,7 @@
             </el-form>
             <el-form>
             	<el-form-item>
-                    <el-button v-if="$hasPermission('sys:role:save')" type="primary" @click="addOrUpdateHandle()" >添加禁用词</el-button>
+                    <el-button type="primary" @click="addOrUpdateHandle()" >添加禁用词</el-button>
                     <el-button type="primary" @click="">导入</el-button>
                 </el-form-item>
             </el-form>
@@ -44,9 +44,9 @@
                 <el-table-column prop="name" label="禁用词名称" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="createDate" label="添加时间" header-align="center" align="center"></el-table-column>
                 <el-table-column label="操作" fixed="right" header-align="center" align="center">
-                    <template slot-scope="scope" v-if="scope.row.roleFlag!==1">
-                        <el-button v-if="$hasPermission('sys:role:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row)">编辑</el-button>
-                        <el-button v-if="$hasPermission('sys:role:delete')" type="text" class="artdanger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+                    <template slot-scope="scope" >
+                        <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row)">编辑</el-button>
+                        <el-button  type="text" class="artdanger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
