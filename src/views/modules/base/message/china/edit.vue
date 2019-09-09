@@ -1,7 +1,7 @@
 <template>
 	<!--新增的弹窗-->
 		<el-dialog title="编辑分类" :visible.sync="showListVisible" width="50%" :before-close="handleClose">
-			<el-form :model="dataForm" label-width="140px" 	:rules="dataRule" class="demo-ruleForm" ref="addForm">
+			<el-form :model="dataForm" label-width="140px" 	:rules="dataRule" class="demo-ruleForm" ref="editForm">
 		    <el-form-item v-if='dataForm.parentname' label="上级分类：" prop="gcName">
             <el-input v-model="dataForm.parentname" type="text" :disabled="true" placeholder="dataForm.parentname" show-word-limit style="width:400px;"></el-input>
         </el-form-item>
@@ -126,7 +126,7 @@
 		  	
 	  <span slot="footer" class="dialog-footer artFooter">
 	    <el-button @click="closeadd" style="margin-right: 20px;">取 消</el-button>
-	    <el-button type="primary" @click="actuploaddata">确 定</el-button>
+	    <el-button type="primary" @click="actuploaddata('editForm')">确 定</el-button>
 	  </span>
 </el-dialog>
 
@@ -178,7 +178,7 @@
 	        	parentId:'', //父级分类id
 	        	name:'', //分类名称
 	        	sort:'', //排序
-		      	categoryJpId:['',],  //关联的日方分类id  
+		      	categoryJpId:[''],  //关联的日方分类id  
 		      	appraisal:'', //评价类型   
 		      	methodUrlshow:[''], //测试方法  不传
 		      	methodUrl:['',], //测试方法  传
@@ -198,7 +198,7 @@
 	        	],
 	        	appraisal: [
 	       			{ required: true, message: '必填项不能为空', trigger: 'blur' },
-	        	],
+				],
 	     	},
 	    };
 	  },
@@ -213,17 +213,18 @@
 	  			this.erjishow = true;
 	  			this.yijishow = false;
 	  		}else{
-	  			this.dataForm.methodUrlshow = [''];
+	  			this.dataForm.methodUrlshow.push('');
 	  			this.erjishow = false;
 	  			this.yijishow = true;
 	  		}
 	  	},
 	  	init(row){
+			  this.row = row;
 	  		this.showListVisible = true;
 	  		backScanCategoryCn(row).then((res)=>{
 	  			if(res.code == 200){
-	  				this.dataForm = res.data;
-	  				this.dataForm.methodUrlshow = res.data.methodUrl;
+					this.dataForm = res.data;
+					if(res.data.methodUrl) this.dataForm.methodUrlshow =JSON.parse(res.data.methodUrl);
 	  				this.actselectchange();
 	  			}else{
 	  				this.$message(res.msg);
@@ -264,7 +265,7 @@
 	  		
 	  		
 	  	},
-		actuploaddata(){  //确定提交 
+		actuploaddata(formName){  //确定提交 
 		  if(typeof this.dataForm.methodUrlshow =="string"){
 			  	this.dataForm.methodUrlshow = JSON.parse(this.dataForm.methodUrlshow);
 		  } 
@@ -301,20 +302,24 @@
 	  		if(this.dataForm.genderKid && this.dataForm.genderKid.indexOf(this.$imgDomain) != -1){
 	  			file.url.substr(this.$imgDomain.length)
 	  		}
-	  		
-	  		
-	  		
-	  		//确定提交
-	  		updataCategoryCn(this.dataForm).then((res)=>{
-	  			if(res.code == 200){
-	  				console.log(res.data);
-	  				this.closeadd();
-	  			}else{
-	  				this.$message(res.msg);
-	  			}
-	  		}).catch(()=>{
-	  			this.$message("服务器错误");
-	  		})
+			this.$refs[formName].validate((valid) => {
+				if (valid) {
+					//确定提交
+					updataCategoryCn(this.dataForm).then((res)=>{
+						if(res.code == 200){
+							console.log(res.data);
+							this.closeadd();
+						}else{
+							this.$message(res.msg);
+						}
+					}).catch(()=>{
+						this.$message("服务器错误");
+					})
+				} else {
+					//console.log('error 添加失败!!');
+					return false;
+				}
+			})
 	  	},
 	  	GiftUrlHandle(val){
 			console.log("base64上传图片接口");

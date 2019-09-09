@@ -1,131 +1,130 @@
 <template>
 	<!--新增的弹窗-->
-		<el-dialog title="新增分类" :visible.sync="showListVisible" width="50%" :before-close="handleClose">
-			<el-form :model="dataForm" label-width="140px" 	:rules="dataRule" class="demo-ruleForm" ref="addForm">
-		    <el-form-item v-if='dataForm.parentname' label="上级分类：" prop="gcName">
-            <el-input v-model="dataForm.parentname" type="text" :disabled="true" placeholder="dataForm.parentname" show-word-limit style="width:400px;"></el-input>
-        </el-form-item>
-        <el-form-item v-else label="上级分类：">  
-	        <el-select
-	          	v-model="dataForm.parentId"
-	         	placeholder="请选择"
-	          	loading-text="加载中···"
-	          	@change="actselectchange">
-	          	<el-option
-	            	v-for="item in goodKindList1"
-	            	:key="item.id"
-	            	:label="item.name"
-	            	:value="item.id">
-	          	</el-option>
-	        </el-select>
-		    </el-form-item>
-        <el-form-item label="分类名称：" prop="name">
-            <el-input v-model="dataForm.name " type="text" placeholder="请输入4个汉字/8个字符以内的内容" show-word-limit style="width:400px;"></el-input>
-        </el-form-item>
-        <el-form-item label="排序：" prop="sort">
-            <el-input v-model="dataForm.sort" type="text" placeholder="0-255" show-word-limit style="width:200px;"></el-input>
-        		<div class="grey">(数字越小越靠前)</div>
-        </el-form-item>
-        <el-form-item v-if="yijishow" v-for="(item, index) in dataForm.categoryJpId" :key="index" :label="index == 0 ? '关联日本分类：' : '' ">
-	        <el-select
-	          v-model="dataForm.categoryJpId[index]"
-	          placeholder="请选择"
-	          loading-text="加载中···"
-	          @change ='actdatacategory'>
-	          <el-option
-	            v-for="item in goodKindList2"
-	            :key="item.id"
-	            :label="item.name || item.nameJp"
-	            :value="item.id">
-	          </el-option>
-	        </el-select>
-	        <el-button v-if="index+1 == dataForm.categoryJpId.length" @click="actadd" type="primary" style="margin-left: 20px;">添加</el-button>
-		</el-form-item>
-		 
-	 	<el-form-item label="评价类型：" prop="appraisal" v-if="erjishow">
-	        <el-input v-model="dataForm.appraisal" type="text" maxlength="6" placeholder="请输入6字以内的内容" show-word-limit style="width:400px;"></el-input>
-	    </el-form-item>
-    
-    
-    	<el-form-item label="测量方法：" prop="methodUrlshow" v-if="yijishow">
-			<div class="pcCoverUrl imgUrl" v-for="(item,index) in dataForm.methodUrlshow" @click="imgtype = 'rule'">
-				<img-cropper
-					ref="cropperImg1"
-					:index="'1'"
-					:imgWidth='"100px"'
-					:imgHeight='"100px"'
-					@GiftUrlHandle="GiftUrlHandle"
-				></img-cropper>
-			</div>
-		</el-form-item>
+	<el-dialog title="新增分类" :visible.sync="showListVisible" width="50%" :before-close="handleClose">
+		<el-form :model="dataForm" label-width="140px" 	:rules="dataRule" class="demo-ruleForm" ref="addForm">
+			<el-form-item v-if='dataForm.parentname' label="上级分类：" prop="gcName">
+				<el-input v-model="dataForm.parentname" type="text" :disabled="true" placeholder="dataForm.parentname" show-word-limit style="width:400px;"></el-input>
+			</el-form-item>
+			<el-form-item v-else label="上级分类：">  
+				<el-select
+					v-model="dataForm.parentId"
+					placeholder="请选择"
+					loading-text="加载中···"
+					@change="actselectchange">
+					<el-option
+						v-for="item in goodKindList1"
+						:key="item.id"
+						:label="item.name"
+						:value="item.id">
+					</el-option>
+				</el-select>
+				</el-form-item>
+			<el-form-item label="分类名称：" prop="name">
+				<el-input v-model="dataForm.name " type="text" placeholder="请输入4个汉字/8个字符以内的内容" show-word-limit style="width:400px;"></el-input>
+			</el-form-item>
+			<el-form-item label="排序：" prop="sort">
+				<el-input v-model="dataForm.sort" type="text" placeholder="0-255" show-word-limit style="width:200px;"></el-input>
+					<div class="grey">(数字越小越靠前)</div>
+			</el-form-item>
+			<el-form-item v-if="yijishow" v-for="(item, index) in dataForm.categoryJpId" :key="index" :label="index == 0 ? '关联日本分类：' : '' ">
+				<el-select
+				v-model="dataForm.categoryJpId[index]"
+				placeholder="请选择"
+				loading-text="加载中···"
+				@change ='actdatacategory'>
+				<el-option
+					v-for="item in goodKindList2"
+					:key="item.id"
+					:label="item.name || item.nameJp"
+					:value="item.id">
+				</el-option>
+				</el-select>
+				<el-button v-if="index+1 == dataForm.categoryJpId.length" @click="actadd" type="primary" style="margin-left: 20px;">添加</el-button>
+			</el-form-item>
+			
+			<el-form-item label="评价类型：" prop="appraisal" v-if="erjishow">
+				<el-input v-model="dataForm.appraisal" type="text" maxlength="6" placeholder="请输入6字以内的内容" show-word-limit style="width:400px;"></el-input>
+			</el-form-item>
 		
-    	<el-form-item label="分类性别：" prop=""  v-if="yijishow">
-    		<div class="pcCoverUrl imgUrl"  @click="imgtype = 'all'" style="display: flex;">
-    			<div class="artmwc artall">全部</div>
-				<img-cropper
-					ref="cropperImg1"
-					:index="'1'"
-					:imgWidth='"100px"'
-					:imgHeight='"100px"'
-					@GiftUrlHandle="GiftUrlHandle"
-				></img-cropper>
-			</div>
-    	</el-form-item>
-    	
-    	
-    	<el-form-item label="" prop=""  v-if="yijishow">
-    		<el-checkbox-group v-model="checkList">
-    			<div class="artmwc">
-    				<el-checkbox label="男士" ></el-checkbox>
-    				<div v-if="checkList.indexOf('男士') != -1" class="pcCoverUrl imgUrl"  @click="imgtype = 'm'">
-						<img-cropper
-							ref="cropperImg1"
-							:index="'1'"
-							:imgWidth='"100px"'
-							:imgHeight='"100px"'
-							@GiftUrlHandle="GiftUrlHandle"
-						></img-cropper>
+		
+			<el-form-item label="测量方法：" prop="methodUrl" v-if="yijishow">
+				<div class="pcCoverUrl imgUrl" v-for="(item,index) in dataForm.methodUrlshow" @click="imgtype = 'rule'">
+					<img-cropper
+						ref="cropperImg1"
+						:index="'1'"
+						:imgWidth='"100px"'
+						:imgHeight='"100px"'
+						@GiftUrlHandle="GiftUrlHandle"
+					></img-cropper>
+				</div>
+			</el-form-item>
+			
+			<el-form-item label="分类性别：" prop="genderMain"   v-if="yijishow">
+				<div class="pcCoverUrl imgUrl"  @click="imgtype = 'all'" style="display: flex;">
+					<div class="artmwc artall">全部</div>
+					<img-cropper
+						ref="cropperImg1"
+						:index="'1'"
+						:imgWidth='"100px"'
+						:imgHeight='"100px"'
+						@GiftUrlHandle="GiftUrlHandle"
+					></img-cropper>
+				</div>
+			</el-form-item>
+			
+			
+			<el-form-item label=""  v-if="yijishow">
+				<el-checkbox-group v-model="checkList">
+					<div class="artmwc">
+						<el-checkbox label="男士" ></el-checkbox>
+						<div v-if="checkList.indexOf('男士') != -1" class="pcCoverUrl imgUrl"  @click="imgtype = 'm'">
+							<img-cropper
+								ref="cropperImg1"
+								:index="'1'"
+								:imgWidth='"100px"'
+								:imgHeight='"100px"'
+								@GiftUrlHandle="GiftUrlHandle"
+							></img-cropper>
+						</div>
+						<div v-else class="artuploadimg">上传图片</div>
 					</div>
-    				<div v-else class="artuploadimg">上传图片</div>
-    			</div>
-    			<div class="artmwc">
-    				<el-checkbox label="女士"></el-checkbox>
-				    <div v-if="checkList.indexOf('女士') != -1" class="pcCoverUrl imgUrl"  @click="imgtype = 'w'">
-						<img-cropper
-							ref="cropperImg1"
-							:index="'1'"
-							:imgWidth='"100px"'
-							:imgHeight='"100px"'
-							@GiftUrlHandle="GiftUrlHandle"
-						></img-cropper>
+					<div class="artmwc">
+						<el-checkbox label="女士"></el-checkbox>
+						<div v-if="checkList.indexOf('女士') != -1" class="pcCoverUrl imgUrl"  @click="imgtype = 'w'">
+							<img-cropper
+								ref="cropperImg1"
+								:index="'1'"
+								:imgWidth='"100px"'
+								:imgHeight='"100px"'
+								@GiftUrlHandle="GiftUrlHandle"
+							></img-cropper>
+						</div>
+						<div  v-else  class="artuploadimg">上传图片</div>
 					</div>
-					<div  v-else  class="artuploadimg">上传图片</div>
-    			</div>
-			    <div class="artmwc">
-    				<el-checkbox label="儿童"></el-checkbox>
-				    <div v-if="checkList.indexOf('儿童') != -1"  class="pcCoverUrl imgUrl"  @click="imgtype = 'c'">
-						<img-cropper
-							ref="cropperImg1"
-							:index="'1'"
-							:imgWidth='"100px"'
-							:imgHeight='"100px"'
-							@GiftUrlHandle="GiftUrlHandle"
-						></img-cropper>
+					<div class="artmwc">
+						<el-checkbox label="儿童"></el-checkbox>
+						<div v-if="checkList.indexOf('儿童') != -1"  class="pcCoverUrl imgUrl"  @click="imgtype = 'c'">
+							<img-cropper
+								ref="cropperImg1"
+								:index="'1'"
+								:imgWidth='"100px"'
+								:imgHeight='"100px"'
+								@GiftUrlHandle="GiftUrlHandle"
+							></img-cropper>
+						</div>
+						<div  v-else class="artuploadimg">上传图片</div>
 					</div>
-					<div  v-else class="artuploadimg">上传图片</div>
-    			</div>
-			</el-checkbox-group>
+				</el-checkbox-group>
     		
-    	</el-form-item>
-	</el-form>
+    		</el-form-item>
+		</el-form>
 		  	
 		  	
 	  <span slot="footer" class="dialog-footer artFooter">
 	    <el-button @click="closeadd" style="margin-right: 20px;">取 消</el-button>
-	    <el-button type="primary" @click="actuploaddata">确 定</el-button>
+	    <el-button type="primary" @click="actuploaddata('addForm')">确 定</el-button>
 	  </span>
-</el-dialog>
-
+	</el-dialog>
 </template>
 
 <script>
@@ -174,10 +173,10 @@
 	        	parentId:'0', //父级分类id
 	        	name:'', //分类名称
 	        	sort:'', //排序
-		      	categoryJpId:['',],  //关联的日方分类id  
+		      	categoryJpId:[''],  //关联的日方分类id  
 		      	appraisal:'', //评价类型
-		      	methodUrlshow:['',], //测试方法  不传
-		      	methodUrl:['',], //测试方法  传
+		      	methodUrlshow:[''], //测试方法  不传
+		      	methodUrl:[], //测试方法  传
 		      	genderMain:'' , //分类主图
 		      	genderMr:'', //分类男士图片 
 		      	genderMrs:'', //分类女士图片 
@@ -191,10 +190,16 @@
 	        	sort: [
          			{ required: true, message: '必填项不能为空', trigger: 'blur' },
          			{ validator: sortminmax,trigger: 'blur'},
-	        	],
+				],
+				methodUrl:[
+					{ required: true, message: '必填项不能为空', trigger: 'blur' }
+				],
 	        	appraisal: [
 	       			{ required: true, message: '必填项不能为空', trigger: 'blur' },
-	        	],
+				],
+				genderMain: [
+	       			{ required: true, message: '必填项不能为空', trigger: 'blur' },
+				],
 	     	},
 	    };
 	  },
@@ -250,11 +255,23 @@
 			   this.actselectchange();
 			})
 	  	},
-	  	actuploaddata(){  //确定提交  
-	  		if(!this.dataForm.methodUrlshow[this.dataForm.methodUrlshow.length-1]){
-	  			this.dataForm.methodUrlshow.pop()
-	  		}
-	  		this.dataForm.methodUrl = JSON.stringify(this.dataForm.methodUrlshow);
+		  actuploaddata(formName){  //确定提交  
+		  	if(this.yijishow && this.dataForm.methodUrlshow.length==0){
+				this.$message("测量方法至少上传一张图片");
+				return
+			}
+			// 处理"测试方法"数据
+			var methodUrlshow = this.dataForm.methodUrlshow.filter((item,index)=>{
+				return  item;
+			})
+				this.dataForm.methodUrl = JSON.stringify(methodUrlshow);
+		
+			var categoryJpId = this.dataForm.categoryJpId.filter((item,index)=>{
+				return  item;
+			})
+		
+			 this.dataForm.categoryJpId = categoryJpId;
+	
 	  		//处理男士/女士/儿童     是否传数据
 	  		if(this.checkList.indexOf('男士') == -1){
 	  			this.dataForm.genderMr = '';
@@ -262,17 +279,24 @@
 	  			this.dataForm.genderMrs = '';
 	  		}else if(this.checkList.indexOf('儿童') == -1){
 	  			this.dataForm.genderKid = '';
-	  		}	
-	  		updataCategoryCn(this.dataForm).then((res)=>{
-	  			if(res.code == 200){
-	  				console.log(res.data);
-	  				this.closeadd();
-	  			}else{
-	  				this.$message(res.msg);
-	  			}
-	  		}).catch(()=>{
-	  			this.$message("服务器错误");
-	  		})
+			  }	
+			this.$refs[formName].validate((valid) => {
+				if (valid) {
+					updataCategoryCn(this.dataForm).then((res)=>{
+						if(res.code == 200){
+							console.log(res.data);
+							this.closeadd();
+						}else{
+							this.$message(res.msg);
+						}
+					}).catch(()=>{
+						this.$message("服务器错误");
+					})
+				} else {
+					//console.log('error 添加失败!!');
+					return false;
+				}
+			})
 	  	},
 	  	GiftUrlHandle(val){
 			console.log("base64上传图片接口");
