@@ -107,7 +107,7 @@
     </div>
     <el-dialog title="历史汇率" :visible.sync="dialogTableVisible" width="60%">
     	<list ref="detailCompon"></list>
-		</el-dialog>
+	</el-dialog>
     
   </el-card>
 </template>

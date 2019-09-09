@@ -13,10 +13,34 @@
                 <el-input v-model="dataFormShow.categoryId" placeholder="请输入" ></el-input>
             </el-form-item>
             <el-form-item label="店铺名称：">
-                <el-input v-model="dataFormShow.storeName" placeholder="请输入店铺名称" ></el-input>
+                <el-select
+                        v-model="dataFormShow.storeName"
+                        filterable
+                        placeholder="请输入店铺名称"
+                        :loading="loading"
+                >
+                    <el-option
+                            v-for="(item,index) in selectStoreOption"
+                            :key="item.index"
+                            :label="item.storeName"
+                            :value="item.id">
+                    </el-option>
+                </el-select>
             </el-form-item>
             <el-form-item label="品牌名称：">
-                <el-input v-model="dataFormShow.brandName" placeholder="请输入品牌名称" ></el-input>
+                <el-select
+                        v-model="dataFormShow.brandName"
+                        filterable
+                        placeholder="请输入品牌名称"
+                        :loading="loading"
+                >
+                    <el-option
+                            v-for="(item,index) in selectBrandOption"
+                            :key="item.index"
+                            :label="item.brandName"
+                            :value="item.id">
+                    </el-option>
+                </el-select>
             </el-form-item>
             <el-form-item label="上架状态：">
                 <el-select v-model="dataFormShow.showWeb" placeholder="请选择">
@@ -50,7 +74,7 @@
             </el-form-item>
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="getData()">查询</el-button>
-                <el-button   class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
+                <el-button   class="btn"type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
         <el-radio-group v-model="activeName" @change="handleClick">
@@ -65,6 +89,8 @@
                 :data="dataList"
                 border
                 v-loading="dataListLoading"
+                @selection-change="handleSelectionChange"
+                ref="multipleTable"
                 style="width: 100%;margin-top:10px;"
         >
             <el-table-column type="selection" width="70"></el-table-column>
@@ -78,7 +104,7 @@
             <el-table-column label="主图" prop="imageUrl" align="center" width="160">
                 <template slot-scope="scope">
                     <img
-                            :src="scope.row.mainImageUrl"
+                            :src="scope.row.mainImageUrl | filterImgUrl"
                             alt=""
                             style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                     >
@@ -87,7 +113,7 @@
             <el-table-column prop="goodsName" label="商品名称" align="center">
                 <template slot-scope="scope">
                     <div>
-                        {{scope.row.goodsName}}
+                        {{scope.row.name}}
                     </div>
                 </template>
             </el-table-column>
@@ -125,8 +151,8 @@
             </el-table-column>
             <el-table-column label="状态" align="center">
                 <template slot-scope="scope">
-                    <el-tag v-if="scope.row.showWeb==0" type="success">可售</el-tag>
-                    <el-tag v-if="scope.row.showWeb==1" type="info">不可售</el-tag>
+                    <el-tag v-if="scope.row.sellState==0" type="info">不可售</el-tag>
+                    <el-tag v-if="scope.row.sellState==1" type="success">可售</el-tag>
                 </template>
             </el-table-column>
 <!--            <el-table-column label="日本状态" align="center">-->
@@ -202,7 +228,7 @@
     import Bread from "@/components/bread";
     import detail from "./detail";
     import { goodsUrl } from '@/api/url'
-    import { showBatchGoods,showGoods } from '@/api/api'
+    import { showBatchGoods,showGoods, searchStoreName, searchBrandName } from '@/api/api'
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -223,7 +249,7 @@
                     storeName: "",//店铺名称
                     brandName:"",//品牌名称
                     sellState: "",//是否可售
-                    showWeb:"",//上下架状态:0下架;1上架
+                    showWeb:"",//上下架状态:0：待上架，1：已上架，2：下架 ,
                     priceState: "",//价格变更
                 },
                 showOptions: [{id: '0', label: '已下架'}, {id: '1', label: '已上架'}, {id: '2', label: '待上架'}],
@@ -232,6 +258,7 @@
                 activeName: "",
                 data: {}, //总数据
                 dataListLoading: false,
+                loading: false,
                 detailOrList: 1,
                 addressInfo: [], //地址数据
                 // orderLog: [], //操作日志
@@ -242,7 +269,10 @@
                 isIndeterminate: false,
                 checkednodeslist: [],
                 checkAll: false,
-                checked:false
+                selectVal:"",
+                checked:false,
+                selectStoreOption:[],
+                selectBrandOption:[]
             }
         },
         components: {
@@ -254,6 +284,8 @@
             this.handleClick();
             this.activeName =  this.status == undefined ? "" : this.status;
             this.dataFormShow.showWeb = this.status == undefined ? "" : this.status;
+            this.backScan();
+            this.backScan1();
         },
         methods: {
             handleClick(tab,val) {
@@ -262,11 +294,12 @@
                 }else if(tab== "upper"){
                     this.dataFormShow.showWeb = "1"
                 }else if(tab== "lower"){
-                    this.dataFormShow.showWeb = "0"
-                }else if(tab== "not"){
                     this.dataFormShow.showWeb = "2"
+                }else if(tab== "not"){
+                    this.dataFormShow.showWeb = "0"
                 }
                 this.changeVal = val;
+                this.dataForm.showWeb =  this.dataFormShow.showWeb
                 console.log(this.changeVal)
                 this.getDataList();
             },
@@ -297,6 +330,33 @@
                 this.dataForm.priceState = "";
                 this.handleClick();
             },
+            //回显
+            backScan(){
+                var obj  = {
+                    id:this.dataForm.id,
+                    brandName:this.dataForm.brandName,
+                }
+                searchStoreName(obj).then((res)=>{
+                    if(res.code == 200){
+                        this.selectStoreOption = res.data;
+                    }else{
+
+                    }
+                })
+            },
+            backScan1(){
+                var obj  = {
+                    id:this.dataForm.id,
+                    storeName:this.dataForm.storeName,
+                }
+                searchBrandName(obj).then((res)=>{
+                    if(res.code == 200){
+                        this.selectBrandOption = res.data;
+                    }else{
+
+                    }
+                })
+            },
             // 编辑
             goEidt(row){
                 console.log(row);
@@ -312,10 +372,6 @@
                 this.isChange = !this.isChange;
                // this.getDataList(); //刷新页面数据
             },
-            //详情页展示判断
-            // detShowChange() {
-            //     this.$emit("detShowChange");
-            // },
             //编辑页展示判断
             editList(id) {
                 this.$emit("editList", id);
@@ -323,17 +379,6 @@
             //详情页展示判断
             detShowChange(row) {
                 this.$emit("detShowChange", row);
-            },
-            //查看详情
-            getSalesDet(index, statue) {
-                if (res.code == 200) {
-                    console.log("123")
-                } else {
-                    this.$message({
-                        type: "warning",
-                        message: res.msg
-                    });
-                }
             },
             // 控制上下架
             cotrolGoodsShow(type,rowOrstatus){
@@ -354,15 +399,6 @@
                     ids = [rowOrstatus.id]
                     showWeb = rowOrstatus.showWeb==1?0:1;
                 }
-
-                // if(ids.length==0){
-                //    this.$message({
-                //       message: "请先选择商品",
-                //       type: 'warning',
-                //       duration: 500
-                //     })
-                //     return;
-                // }
                 var obj = {
                     ids:ids,
                     showWeb:showWeb,
@@ -397,10 +433,14 @@
                 })
                 return ids;
             },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+                if(this.multipleSelection.length == this.dataList.length) this.checkAll = true;
+                else this.checkAll = false;
+            },
             handleCheckAllChange(val) {
-                this.checkednodeslist = val ? this.dataList : [];  //dataList  nodeslist
-                this.isIndeterminate = false;
-                console.log(this.checkednodeslist + '当前选中的复选框')
+                if(val) this.$refs.multipleTable.toggleAllSelection();
+                else this.$refs.multipleTable.clearSelection();
             },
         },
     }

@@ -246,7 +246,7 @@ export const deleteShopStyle = `${base}/shopstyle`;
 // 仓库列表
 export const wareUrl = `${base}/ware/list`;
 // 修改仓库启用状态
-export const deleteWare = `${base}/ware/isenable`;
+export const deleteWare = `${base}/ware`;
 // 仓库sku商品
 export const skuGoods = `${base}/ware/skugoods`;
 
@@ -294,6 +294,12 @@ export const getGoodsUrl = `${base}/zozogoods/page/log`;
 // 商品管理列表
 export const jdCateUrl = `${base}/jdCate/page`;
 
+// 分类条件接口--------------------------------------------------------------------------------------------------------------------
+// 商品管理列表
+export const tagPage = `${base}/tag/page`;
+
+
+
 
 
 // 同义词管理--------------------------------------------------------------------------------------------------------------------
@@ -322,6 +328,8 @@ export const deleteShophotkeywordUrl = `${base}/shophotkeyword`;
 //消息-------------------------------------------------------------------------------------------------------------
 //消息列表分页  
 export const getmessagepage = `${base}/shopmessagetemplate/messagepage`;
+//用户信息
+export const getUser = `${base}/shopmessagetemplate/messageuser`;
 
 
 //查看库存----------------------------------------------------------------------------------------------------
@@ -339,7 +347,7 @@ export const getdatagoods = `${base}/stock/goods`;
 // 列表
 export const syslexiconUrl = `${base}/syslexicon/page`;
 // 删除
-export const deleteSyslexicon = `${base}/syslexicon`;
+export const deleteSyslexicon = `${base}/syslexicon/batchdelete`;
 // 导出
 export const exportSyslexicon = `${base}/syslexicon/export`;
 
@@ -375,4 +383,21 @@ export const dictList = `${base}/dict/list`;
 export const errorUrl = `${base}/log/error/page`;
 // 导出
 export const exportError= `${base}/log/error/export`;
+
+//配置管理-------------------------------------------------------------------------------------------------------------
+// 广告位列表
+export const advList = `${base}/adv/page`;
+// 广告位批量删除
+export const advDelete = `${base}/adv/batch`;
+
+// 底部iCon配置
+export const iconCinfigList = `${base}/icon/list`;
+//首页集合列表
+export const homeIndexPage = `${base}/folderrecommend/page`;
+//首页集合列表批量删除
+export const homeIndexDelete = `${base}/folderrecommend/delete`;
+
+
+
+
 

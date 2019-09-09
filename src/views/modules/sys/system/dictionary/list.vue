@@ -34,7 +34,7 @@
                 <el-table-column  label="操作" header-align="center" align="center">
                     <template slot-scope="scope">
                         <el-button type="text" size="small" @click="addOrUpdateHandle(scope.$index, scope.row)">编辑</el-button>
-                        <el-button type="text" size="small" @click="addWord(scope.id)">词典列表</el-button>
+                        <el-button type="text" size="small" @click="addWord(scope.row)">词典列表</el-button>
                         <el-button class="artdanger" type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
                     </template>
                 </el-table-column>

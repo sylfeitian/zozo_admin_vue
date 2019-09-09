@@ -9,7 +9,8 @@
                 <el-form-item>
                     <el-button @click="getData()" type="primary">搜索</el-button>
                     <el-button  @click="reset()">重置</el-button>
-                    <el-button v-if="$hasPermission('sys:role:save')" type="primary" @click="addOrUpdateHandle()">添加角色</el-button>
+                    <!--<el-button v-if="$hasPermission('sys:role:save')" type="primary" @click="addOrUpdateHandle()">添加角色</el-button>-->
+                    <el-button type="primary" @click="addOrUpdateHandle()">添加角色</el-button>
                 </el-form-item>
             </el-form>
 
@@ -39,11 +40,13 @@
                 <el-table-column prop="name" label="角色名称" header-align="center" align="center" width="320"></el-table-column>
                 <el-table-column prop="remark" label="角色说明" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="createDate" label="创建时间" header-align="center" align="center" width="240"></el-table-column>
-                <el-table-column prop="" label="账号数量" header-align="center" align="center" width="240"></el-table-column>
-                <el-table-column label="操作" fixed="right" header-align="center" align="center" width="240">
-                    <template slot-scope="scope" v-if="scope.row.roleFlag!==1">
-                        <el-button v-if="$hasPermission('sys:role:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">编辑</el-button>
-                        <el-button v-if="$hasPermission('sys:role:delete')" type="text" class="artdanger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+                <el-table-column prop="number" label="账号数量" header-align="center" align="center" width="240"></el-table-column>
+                <el-table-column label="操作" prop="roleFlag" fixed="right" header-align="center" align="center" width="240">
+                    <template slot-scope="scope" v-if="scope.row.roleFlag==0">
+                        <!--<el-button v-if="$hasPermission('sys:role:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">编辑</el-button>-->
+                        <!--<el-button v-if="$hasPermission('sys:role:delete')" type="text" class="artdanger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>-->
+                        <el-button  type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">编辑</el-button>
+                        <el-button  type="text" class="artdanger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>

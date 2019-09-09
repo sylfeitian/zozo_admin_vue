@@ -137,7 +137,7 @@
                 this.$nextTick(()=>{
                     if(row){
                         var obj  = {
-                            id:1
+                            id:row.id
                         }
                         getfashiondetail(obj).then((res)=>{
                             if(res.code == 200){
@@ -184,7 +184,7 @@
         width: 120px!important;
     }
     /deep/ .el-form-item--default {
-        height: 30px!important;
+        /*height: 30px!important;*/
     }
     .grayLine {
         border-bottom: 0!important;

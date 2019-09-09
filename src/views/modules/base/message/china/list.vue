@@ -3,7 +3,7 @@
     <Bread :breaddata="breaddata"></Bread>
     <el-form style="margin-top:20px;">
       <el-form-item>
-        <el-button type="primary" @click="addRowFn()">新增展示分类</el-button>
+        <el-button type="primary" @click="addRowFn()">新增分类</el-button>
       </el-form-item>
     </el-form>
     <!-- <el-table :data="table" empty-text style="width: 100%">
@@ -45,7 +45,7 @@
 <script>
 import cloneDeep from 'lodash/cloneDeep'
 import mixinViewModule from "@/mixins/view-module";
-import TableTreeColumn from "@/components/table-tree-column";
+// import TableTreeColumn from "@/components/table-tree-column";
 
 
 import { categoryUrl } from "@/api/url";
@@ -173,7 +173,7 @@ export default {
     };
   },
   components: {
-    TableTreeColumn,
+    // TableTreeColumn,
     Bread,
     MyTableTree,
     imgCropper,

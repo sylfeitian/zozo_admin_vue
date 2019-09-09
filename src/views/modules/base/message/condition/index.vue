@@ -1,7 +1,7 @@
 <template>
     <div>
         <Bread :breaddata="breaddata"></Bread>
-        <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" @keyup.enter.native="getDataList()" >
+        <!-- <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" @keyup.enter.native="getDataList()" >
             <el-form-item label="分类条件ID：">
                 <el-input v-model="dataFormShow.conditionId" ></el-input>
             </el-form-item>
@@ -12,12 +12,12 @@
                 <el-button  class="btn" type="primary" @click="getData()">查询</el-button>
                 <el-button   class="btn"type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
-        </el-form>
+        </el-form> -->
         <el-button @click="addOrEditHandle()"  class="btn" type="primary">导入信息</el-button>
         <el-table width="100%" :data="dataList" border v-loading="dataListLoading" style="width: 100%;margin-top: 10px;">
-            <el-table-column prop="conditionId" label="分类条件ID" align="center"></el-table-column>
-            <el-table-column prop="japanCondition" label="日本分类条件名称" align="center"></el-table-column>
-            <el-table-column prop="conditionName" label="分类条件名称" align="center"></el-table-column>
+            <el-table-column prop="idJp" label="分类条件ID" align="center"></el-table-column>
+            <el-table-column prop="nameJp" label="日本分类条件名称" align="center"></el-table-column>
+            <el-table-column prop="name" label="分类条件名称" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="addOrEditHandle(scope.$index, scope.row)"type="text"size="mini">编辑</el-button>
@@ -43,11 +43,22 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import addEditData from './model-add-edit-data'
+    import {tagPage} from "@/api/url.js"
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
-                breaddata: [ "商品管理", "分类条件信息"],
+                mixinViewModuleOptions: {
+                    getDataListURL: tagPage,
+                    getDataListIsPage: true,
+                    activatedIsNeed:false,
+                    // exportURL: '/admin-api/log/login/export',
+                    // deleteURL: deleteShopStyle,
+                    deleteIsBatch: false,
+                    deleteIsBatch: true,
+                    deleteIsBatchKey: 'id'
+                },
+                breaddata: [ "基础资料管理", "分类条件信息"],
                 dataFormShow: {
                     conditionId: "",//分类条件ID
                     conditionName: "",//分类条件信息名称
@@ -60,6 +71,9 @@
         components: {
             Bread,
             addEditData
+        },
+        created(){
+            this.getData();
         },
         methods: {
             getData(){

@@ -3,13 +3,13 @@
         <Bread :breaddata="breaddata"></Bread>
         <!--:inline="true"-->
         <el-form
+            v-loading="loading"
             :model="dataForm"
             :rules="dataRule"
             ref="addForm"
             @keyup.enter.native="dataFormSubmit('addForm')"
             label-width="120px"
              class="demo-form-inline"
-
         >
             <el-form-item style="background-color: #f3f3f3;">
                 <p style="margin-left: -100px;">客服审单设置</p>
@@ -98,8 +98,8 @@
             		第一区间最小值默认为0且不可修改
             	</div>
             </el-form-item>
-            <el-form-item style="text-align: center;margin-left: -120px!important; margin-top: 50px; margin-bottom: 50px;">
-                <el-button type="primary" @click="dataFormSubmit('addForm')">保存</el-button>
+            <el-form-item  v-if="!loading" style="text-align: center;margin-left: -120px!important; margin-top: 50px; margin-bottom: 50px;">
+                <el-button type="primary" @click="dataFormSubmit('addForm')">{{saveLoading?"保存中...":"保存"}}</el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -110,7 +110,7 @@
     import imgCropper from "@/components/model-photo-cropper";
     import { uploadPicBase64 } from '@/api/api'
     import quillEditorImg from "@/components/quillEditor"
-    import { addsetting ,gethomepageRate} from "@/api/api"
+    import { addsetting ,gethomepageRate,getStrategySetting } from "@/api/api"
     
 	
     export default {
@@ -120,7 +120,7 @@
 			      callback(new Error('请输入1000000以内的数字'))
 			    }else if(value <= 0){
 			    	callback(new Error('只能输入大于0的数'))
-			    }else if(value.indexOf('.') != -1 && value.substr(value.indexOf('.') + 1).length > 2){
+			    }else if(value.toString().indexOf('.') != -1 && value.toString().substr(value.indexOf('.') + 1).length > 2){
 			    	callback(new Error('小数点后只能有两位'))
 			    }else if(this.dataForm.maxAmount && value/1 > this.dataForm.maxAmount){
 			      callback(new Error('最小值应该小于最大值'))
@@ -129,7 +129,7 @@
 			    }
 			};
 			var valid =(rule, value,callback)=>{
-			    if(value.indexOf('.') != -1 && value.substr(value.indexOf('.') + 1).length > 2){
+			    if(value.toString().indexOf('.') != -1 && value.toString().substr(value.indexOf('.') + 1).length > 2){
 			    	callback(new Error('小数点后只能有两位'))
 			    }else {
 			      callback()
@@ -143,7 +143,7 @@
 			    }
 			};
 			var validriseIn =(rule, value,callback)=>{
-			    if(value.indexOf('.') != -1 && value.substr(value.indexOf('.') + 1).length > 4){
+			    if(value.toString().indexOf('.') != -1 && value.toString().substr(value.indexOf('.') + 1).length > 4){
 			    	callback(new Error('小数点后只能有四位'))
 			    }else if(value/1 > 100){
 			      callback('最大值100')
@@ -159,7 +159,9 @@
 			    }
 			};
             return {
-            	datadisabled: true,
+                datadisabled: true,
+                loading:false,
+                saveLoading:false,
                 breaddata: ["系统管理", "策略设置"],
                 dataForm: {
                 	isLeaveMessage: 0, //留言审核开关    0关  1开
@@ -184,38 +186,38 @@
                 dataRule : {
                     minAmount : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
-                        { min:0, max:1000000, message: '最大可输入1000000', trigger: 'blur' },
+                        // { min:0, max:1000000, message: '最大可输入1000000', trigger: 'blur' },
                         { validator: validmoney, trigger: 'blur' },
                     ],
                     maxAmount : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
-                        { min:0, max:1000000, message: '最大可输入1000000', trigger: 'blur' },
+                        // { min:0, max:1000000, message: '最大可输入1000000', trigger: 'blur' },
                         { validator: validmoney, trigger: 'blur' },
                         { validator: maxvalidmoney, trigger: 'blur' },
                     ],
                     expirationTimeMinute : [   
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
-                        { min: 1, max: 2, message: '最大长度是2位', trigger: 'blur' },
+                        // { min: 1, max: 2, message: '最大长度是2位', trigger: 'blur' },
                         { validator: validnum0, trigger: 'blur' },
                     ],
                     expirationTimeSecond : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
-                        { min: 1, max: 2, message: '最大长度是2位', trigger: 'blur' },
+                        // { min: 1, max: 2, message: '最大长度是2位', trigger: 'blur' },
                         { validator: validnum0, trigger: 'blur' },
                     ],
                     autoConfirmReceiptTime : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
-                        { min: 1, max: 3, message: '最大长度是3位', trigger: 'blur' },
+                        // { min: 1, max: 3, message: '最大长度是3位', trigger: 'blur' },
                         { validator: validnum0, trigger: 'blur' },
                     ],
                     saleafterStopTime : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
-                        { min: 1, max: 3, message: '最大长度是3位', trigger: 'blur' },
+                        // { min: 1, max: 3, message: '最大长度是3位', trigger: 'blur' },
                         { validator: validnum0, trigger: 'blur' },
                     ],
                     auditOrderMinAmount: [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
-                       	{ min: 2, max: 6, message: '最大长度是6位', trigger: 'blur' },
+                       	// { min: 2, max: 6, message: '最大长度是6位', trigger: 'blur' },
                        	{ validator: valid, trigger: 'blur' },
                        	{ validator: validnum0, trigger: 'blur' },
                     ],
@@ -239,9 +241,13 @@
             Bread
         },
         created(){
-        	this.getrate();
+            // 获取汇率
+            this.getrate();
+            // 回显数据
+            this.backScandata();
         },
         methods: {
+            // 获取汇率
         	getrate(){
         		gethomepageRate().then((res)=>{
         			if(res && res.code == 200){
@@ -253,7 +259,22 @@
         		}).catch(()=>{
         			this.$message("服务器错误")
         		})
-        	},
+            },
+            // 回显数据
+            backScandata(){
+                this.loading = true;
+                getStrategySetting({}).then((res)=>{
+                    this.loading = false;
+                    // console.log(res);
+                    if(res.code==200){
+                        // this.dataForm = res.data;
+                        this.dataForm = JSON.parse(res.data.value);
+                        this.rate = JSON.parse(this.dataForm.addPriceRate);
+                        console.log("回显数据");
+                        console.log(this.dataForm);
+                    }
+                })
+            },
         	actendnum(val,start){
         		this.actendnumflag = true;
         		if(val > 100000000){
@@ -337,15 +358,20 @@
 	        		return;
 	        	}
             	if( !(this.rate[this.rate.length-1].end * this.rate[this.rate.length-1].rate) ){
-            		this.$message("加价率是必填项");
+                    this.$message("加价率是必填项");
+                    return;
             	}
             	this.$refs[formName].validate((valid) => {
 			        if (valid) {
-			        	this.dataForm.addPriceRate = JSON.stringify(this.rate);
+                        this.dataForm.addPriceRate = JSON.stringify(this.rate);
+                        this.saveLoading = true;
 			            addsetting(this.dataForm).then((res)=>{
-			            	console.log(res);
+                            this.saveLoading = false;
+                            console.log(res);
+                            this.$message(res.msg);
 			            }).catch(()=>{
-			            	this.$message("服务器错误");
+                            this.saveLoading = false;
+			            	this.$message(res.msg);
 			            })
 			        } else  {
 			          setTimeout(()=>{

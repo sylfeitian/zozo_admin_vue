@@ -14,12 +14,13 @@
                 @keyup.enter.native="dataFormSubmit('addForm')"
                 label-width="120px"
         >
-            <el-form-item label="中文词汇：" prop="brandName" :label-width="formLabelWidth">
+            <el-form-item label="中文词汇：" prop="chineseVocabulary" :label-width="formLabelWidth">
                 <el-input v-model="dataForm.chineseVocabulary" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="对照词汇：" prop="description" :label-width="formLabelWidth">
+            <el-form-item label="对照词汇：" prop="japaneseWord" :label-width="formLabelWidth">
                 <el-input v-model="dataForm.japaneseWord" placeholder="请输入"></el-input>
             </el-form-item>
+
             <el-form-item style="text-align: center;margin-left: -120px!important;">
                 <el-button  @click="dataFormCancel()">取消</el-button>
                 <el-button type="primary" @click="dataFormSubmit('addForm')"
@@ -42,7 +43,10 @@
                     japaneseWord: "",
                 },
                 dataRule : {
-                    name : [
+                    chineseVocabulary : [
+                        { required: true, message: '必填项不能为空', trigger: 'blur' },
+                    ],
+                    japaneseWord : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ]
                 },
@@ -50,7 +54,8 @@
                 optionsRight: [],
                 title:'',
                 row:"",
-                formLabelWidth: '120px'
+                formLabelWidth: '120px',
+                lexiconType:'1',
             }
         },
         components:{
@@ -58,15 +63,16 @@
         computed:{},
         mounted(){},
         methods: {
-            init (row) {
+            init (row,lexiconType) {
                 this.visible = true;
                 this.row = row;
+                this.lexiconType = lexiconType;
                 console.log(row)
                 if(row){
                     this.title="编辑对照词";
                     this.backScan();
                 }else{
-                    this.dataForm.lexiconType = this.status == undefined ? "" : this.status;
+
                     this.title="新建对照词"
 
                 }
@@ -81,7 +87,7 @@
                     id:this.row.id,
                     chineseVocabulary:this.row.chineseVocabulary,
                     japaneseWord:this.row.japaneseWord,
-                    lexiconType:  this.dataForm.lexiconType
+                    lexiconType:  this.lexiconType
                 }
                 backScanSyslexicon(obj).then((res)=>{
                     if(res.code == 200){
@@ -101,7 +107,7 @@
                         var obj = {
                             "chineseVocabulary":  this.dataForm.chineseVocabulary,
                             "japaneseWord":  this.dataForm.japaneseWord,
-                            "lexiconType":  this.dataForm.lexiconType
+                            "lexiconType":  this.lexiconType
                         }
                         if(this.row) obj.id = this.row.id
                         var fn = this.row?editSyslexicon:syslexiconSave;

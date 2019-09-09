@@ -12,16 +12,16 @@
             :rules="dataRule"
             ref="addForm"
             @keyup.enter.native="dataFormSubmit('addForm')"
-            label-width="120px"
+            label-width="140px"
         >
             <el-form-item label="日本分类条件ID：">
-                <span>{{dataForm.conditionId}}</span>
+                <span>{{dataForm.idJp}}</span>
             </el-form-item>
             <el-form-item label="日本分类条件信息：">
-                <span>{{dataForm.japanCondition}}</span>
+                <span>{{dataForm.nameJp}}</span>
             </el-form-item>
-            <el-form-item label="分类条件信息：" prop="conditionName" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.conditionName" auto-complete="off"></el-input>
+            <el-form-item label="分类条件信息：" prop="name" :label-width="formLabelWidth">
+                <el-input v-model="dataForm.name" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
                 <el-button type="primary" @click="dataFormSubmit('addForm')"
@@ -33,6 +33,7 @@
 </template>
 
 <script>
+    import { getTagInfo,uploadtag}  from '@/api/api.js'
     export default {
         name: "model-add-edit-data",
         data () {
@@ -40,9 +41,12 @@
                 visible : false,
                 loading : false,
                 dataForm: {
-                    conditionId: "",//日本分类条件ID
-                    japanCondition: "",//日本分类条件信息
-                    conditionName: "",//分类条件信息
+                    // conditionId: "",//日本分类条件ID
+                    // japanCondition: "",//日本分类条件信息
+                    // conditionName: "",//分类条件信息
+                    idJp: "",
+                    nameJp: "",
+                    name: "",
                 },
                 dataRule : {
                     conditionName : [
@@ -80,14 +84,10 @@
             backScan(){
                 var obj  = {
                     id:this.row.id,
-                    conditionId:this.row.conditionId,
-                    japanCondition:this.row.japanCondition,
-                    conditionName:this.row.conditionName,
                 }
-                backScanAftertemplate(obj).then((res)=>{
+                getTagInfo(obj).then((res)=>{
                     if(res.code == 200){
                         Object.assign(this.dataForm,res.data);
-
                     }else{
 
                     }
@@ -100,12 +100,10 @@
                     if (valid) {
                         this.loading = true;
                         var obj = {
-                            "japanCondition":  this.dataForm.japanCondition,
-                            "conditionName":  this.dataForm.conditionName,
+                            "id":  this.row.id,
+                            "name":  this.dataForm.name,
                         }
-                        if(this.row) obj.id = this.row.id
-                        //var fn = this.row?updateBrand:addBrand;
-                        fn(obj).then((res) => {
+                        uploadtag(obj).then((res) => {
                             this.loading = false;
                             // alert(JSON.stringify(res));
                             let status = null;

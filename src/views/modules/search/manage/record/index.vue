@@ -4,14 +4,14 @@
         <el-form
                 :inline="true"
                 class="grayLine topGapPadding"
-                :model="dataFormShow"
+                :model="dataForm"
                 @keyup.enter.native="getDataList()"
         >
             <el-form-item label="关键字搜索：">
-                <el-input v-model="dataFormShow.hotKeyword" placeholder="请输入关键词搜索" ></el-input>
+                <el-input v-model="dataForm.hotKeyword" placeholder="请输入关键词搜索" ></el-input>
             </el-form-item>
             <el-form-item label="搜索会员账号：">
-                <el-input v-model="dataFormShow.memberId" placeholder="请输入会员账号搜索" ></el-input>
+                <el-input v-model="dataForm.memberId" placeholder="请输入会员账号搜索" ></el-input>
             </el-form-item>
             <el-form-item label="搜索时间：">
                 <el-date-picker
@@ -78,42 +78,46 @@
                     // deleteIsBatchKey: 'id'
                 },
                 breaddata: [ "搜索管理", "同义词管理"],
-                dataFormShow: {
+                dataForm: {
                     hotKeyword: "",//关键字搜索
                     memberId: "",
-                    createDate: ""
+                    createDate: "",
+                    startTime: "",
+                    endTime: "",
                 },
                 dataList: [],
                 dataListLoading: false,
                 addDataVisible: false,
                 timeArr: "", //搜索时间数据
-                startCreateDate: "",
-                endCreateDate: "",
             }
         },
         components: {
             Bread,
         },
+        watch:{
+            timeArr(val){
+                if(!val){
+                    this.dataForm.startTime = '';
+                    this.dataForm.endTime = '';
+                }
+            }
+        },
         methods: {
             getData() {
-                this.dataForm = {};
-                for(let key in this.dataFormShow){
-                    this.$set(this.dataForm,`${key}`,this.dataFormShow[key]);
-                }
+                // this.dataForm = {};
+                // for(let key in this.dataForm){
+                //     this.$set(this.dataForm,`${key}`,this.dataForm[key]);
+                // }
                 console.log(this.dataForm);
-                this.dataFormShow.startCreateDate = this.timeArr && this.timeArr[0];
-                this.dataFormShow.endCreateDate = this.timeArr && this.timeArr[1];
+                this.dataForm.startTime = this.timeArr && this.timeArr[0];
+                this.dataForm.endTime = this.timeArr && this.timeArr[1];
                 this.getDataList();
             },
             // 重置
             reset() {
                 this.timeArr = [];
-                this.dataFormShow.startCreateDate = "";
-                this.dataFormShow.endCreateDate = "";
-                this.dataFormShow.hotKeyword = "";//关键字搜索
-                this.dataFormShow.memberId = "";
-                this.dataForm.startCreateDate = "";
-                this.dataForm.endCreateDate = "";
+                this.dataForm.startTime = "";
+                this.dataForm.endTime = "";
                 this.dataForm.hotKeyword = "";//关键字搜索
                 this.dataForm.memberId = "";
                 this.page = 1;

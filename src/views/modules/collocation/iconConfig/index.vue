@@ -1,16 +1,17 @@
 <template>
   <div>
     <Bread :breaddata="breaddata"></Bread>
-    <el-button type="primary" @click="editConfig()">添加商品</el-button>
+		    	<el-button type="text" size="small" @click="editConfig()">编辑</el-button>
+
     <el-table
-	  :data="dataList"
-      v-loading="dataListLoading"
-      border
-	  style="width: 100%">
+        :data="dataList"
+        v-loading="dataListLoading"
+        border
+        style="width: 100%">
 	    <el-table-column
 	    	type="index"
 		    prop="$index"
-				align="center"
+			align="center"
 		    label="序号"
 		    width="70">
 		    <template slot-scope="scope">
@@ -18,25 +19,34 @@
             </template>
 		</el-table-column>
 		<el-table-column
-		    prop="id"
+		    prop="menuName"
 		    label="模块名称">
 		</el-table-column>
         <el-table-column
-		    prop="account"
+		    prop="selectedIcon"
 		    label="选中图标"
-		    width="220">
+            align="center"
+            width="320">
+            <template slot-scope="scope">
+		    	<img style="width:200px;height:100px;object-fit: contain" :src="scope.row.selectedIcon" alt="">
+		    </template>
 		</el-table-column>
 		<el-table-column
-		    prop="account"
+		    prop="unselectedIcon"
+            align="center"
 		    label="未选中图标"
-		    width="220">
+		    width="320">
+            <template slot-scope="scope">
+                <img style="width:200px;height:100px;object-fit: contain" :src="scope.row.unselectedIcon" alt="">
+		    </template>
 		</el-table-column>		
 	    <el-table-column
 	   		prop="address"
+            align="center"
 	    	label="操作"
-            width="220">
+            width="140">
 		    <template slot-scope="scope">
-		    	<el-button type="text" size="small" @click="addActivity(scope.row.id)">编辑</el-button>
+		    	<el-button type="text" size="small" @click="editConfig(scope.row)">编辑</el-button>
 		    </template>
 	  	</el-table-column>
 	</el-table>
@@ -60,20 +70,21 @@
         class="activiDialog"
         width="40%">
         <el-form :model="editDataForm" :rules="dataRule" ref="editDataForm" @keyup.enter.native="subActivity()" label-width="120px">
-            <el-form-item label="轮播图名称：" prop="sgName">
-                <el-input v-model="editDataForm.sgName" placeholder="请输入30字以内的名称" :maxlength="30"></el-input>
+            <el-form-item label="名称：" prop="menuName">
+                <el-input v-model="editDataForm.menuName" placeholder="请输入5字以内的名称" :maxlength="5"></el-input>
             </el-form-item>
             <div class="imgConfig">
-                <el-form-item label="上传轮播图：" :prop="editDataForm.imageUrl1?'imageUrl2':'imageUrl1'">
+                <el-form-item label="上传图片：" :prop="editDataForm.selectedIcon?'unselectedIcon':'selectedIcon'">
                     <div class="imgItem">
                         <el-upload
                             style="margin-right:30px;"
                             class="avatar-uploader"
-                            action="https://jsonplaceholder.typicode.com/posts/"
+                            action="123"
+                            :http-request="upLoad1"
                             :show-file-list="false"
                             :on-success="handleAvatarSuccess1"
                             :before-upload="beforeAvatarUpload1">
-                            <img v-if="editDataForm.imageUrl1" :src="editDataForm.imageUrl1" class="avatar">
+                            <img v-if="editDataForm.selectedIcon" :src="editDataForm.selectedIcon" class="avatar">
                             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
                         <span style="width:100px;text-align:center;">选中状态</span>
@@ -82,11 +93,11 @@
                     <div class="imgItem">
                         <el-upload
                             class="avatar-uploader"
-                            action="/admin-api/picture/base64"
+                            action="123"
+                            :http-request="upLoad2"
                             :show-file-list="false"
-                            :on-success="handleAvatarSuccess2"
                             :before-upload="beforeAvatarUpload2">
-                            <img v-if="editDataForm.imageUrl2" :src="editDataForm.imageUrl2" class="avatar">
+                            <img v-if="editDataForm.unselectedIcon" :src="editDataForm.unselectedIcon" class="avatar">
                             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
                         <span style="width:100px;text-align:center;">未选中状态</span>
@@ -107,32 +118,29 @@
 
 <script>
     import mixinViewModule from '@/mixins/view-module'
-    import { businessPageUrl } from '@/api/url'
-    import { zozogoodsPage } from '@/api/api'
+    import { iconCinfigList } from '@/api/url'
+    import { uploadPicBase64,iconEdit } from '@/api/api'
     import Bread from "@/components/bread";
-    import { constants } from 'fs';
+    import { getUrlBase64 } from '@/utils'
+
     
     export default {
-    mixins: [mixinViewModule],
-    components:{Bread},
+        mixins: [mixinViewModule],
+        components:{Bread},
         data () {
             return {
                 mixinViewModuleOptions: {
-                    getDataListURL: businessPageUrl,
-                    getDataListIsPage: true,
-                    exportURL: '/admin-api/store/export',
-                    deleteURL: '/admin-api/store',
-                    deleteIsBatch: true,
-                    // deleteIsBatchKey: 'id'
+                    getDataListURL: iconCinfigList,
                 },
                 dataListLoading:false,
                 dataList:[],
                 buttonStatus:false,
                 editVisible:false,
                 editDataForm:{
-                    sgName:'',
-                    imageUrl1:'',
-                    imageUrl2:''
+                    id: "",
+                    menuName: "",
+                    selectedIcon: "",
+                    unselectedIcon: ""
                 },
                 breaddata: ["配置管理", "底部icon配置"],
             }
@@ -140,13 +148,13 @@
         computed:{
             dataRule(){
                 return{
-                    sgName : [
+                    menuName : [
                         { required: true, message: '名称不能为空', trigger: 'blur' },
                     ],
-                    imageUrl1 : [
+                    selectedIcon : [
                             { required: true, message: '选中状态不能为空', trigger: 'blur' },
                     ],
-                    imageUrl2: [
+                    unselectedIcon: [
                             { required: true, message: '未选中状态不能为空', trigger: 'blur' },
                     ]
                 }
@@ -156,11 +164,38 @@
             this.demo();
         },
         methods: {
-            editConfig(){
+            upLoad1(file) {
+                const that = this;
+                that.getBease64(URL.createObjectURL(file.file),file.file.type,'1')
+            },
+            upLoad2(file) {
+                const that = this;
+                that.getBease64(URL.createObjectURL(file.file),file.file.type,'2')
+            },
+            editConfig(item){
                 this.editVisible = true;
+                Object.assign(this.editDataForm,item)
+            },
+            getBease64(obj,type,who){
+                const that = this;
+                getUrlBase64(obj,type,function (base) {
+                    uploadPicBase64({"imgStr": base}).then(res =>{
+                        console.log(res)
+                        if(res.code == 200){
+                            if(who == '1'){
+                                that.editDataForm.selectedIcon = that.$imgDomain + res.data.url;
+                            }else{
+                                that.editDataForm.unselectedIcon = that.$imgDomain + res.data.url;
+                            }
+                        }else{
+                            that.$message.error('上传失败');
+                        }
+                    })
+                })
             },
             handleAvatarSuccess1(res, file) {
-                this.editDataForm.imageUrl1 = URL.createObjectURL(file.raw);
+                const that = this;
+                that.getBease64(URL.createObjectURL(file.raw),file.raw.type,'1')
             },
             beforeAvatarUpload1(file) {
                 let isJPG = false;
@@ -178,15 +213,16 @@
                 return isJPG && isLt2M;
             },
             handleAvatarSuccess2(res, file) {
-                this.editDataForm.imageUrl2 = URL.createObjectURL(file.raw);
+                const that = this;
+                that.getBease64(URL.createObjectURL(file.raw),file.raw.type,'2')
             },
             beforeAvatarUpload2(file) {
                 let isJPG = false;
-                if(file.type == 'image/jpg'||file.type=='image/png'){
+                if(file.type == 'image/jpeg'||file.type=='image/png'){
                     isJPG = true;
                 }
                 let isLt2M = file.size / 1024 / 1024 < 5;
-
+                console.log(file.type,isJPG)
                 if (!isJPG) {
                     this.$message.error('上传头像图片只能是jpg/png格式!');
                 }
@@ -198,13 +234,24 @@
             noCheck(formName){
                 this.$refs[formName].resetFields();
                 this.editVisible = false;
-                this.editDataForm.imageUrl1='';
-                this.editDataForm.imageUrl2='';
+                this.editDataForm.selectedIcon='';
+                this.editDataForm.unselectedIcon='';
             },
             subActivity(formName){
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        
+                        iconEdit(this.editDataForm).then((res)=>{
+                            console.log('编辑结果',res)
+                            if(res.code == 200){
+                                this.$refs[formName].resetFields();
+                                this.editVisible = false;
+                                this.editDataForm.selectedIcon='';
+                                this.editDataForm.unselectedIcon='';
+                                this.getDataList();
+                            }else{
+                                this.$message.error(res.msg);
+                            }
+                        })
                     }
                 });
             },
@@ -225,6 +272,9 @@
     };
 </script>
 <style lang="scss" scoped>
+    img{
+        object-fit: contain;
+    }
     .el-input {
     width: 170px;
     height: 40px;

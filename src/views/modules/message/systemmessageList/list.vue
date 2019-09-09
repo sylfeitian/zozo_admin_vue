@@ -23,7 +23,7 @@
                 <el-button  class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
             </el-form-item>
         </el-form>
-        <el-button @click="add()" type="primary" style="float: right;margin-bottom: 10px;">推送消息</el-button>
+        <el-button @click="add()" type="primary" style="float: left;margin-bottom: 10px;">推送消息</el-button>
         <el-table
                 width="100%"
                 ref="multipleTable"
@@ -32,12 +32,18 @@
                 v-loading="dataListLoading"
                 style="width: 100%;maigin-top:10px;"
                 @selection-change="handleSelectionChange"
+                @sort-change="sortChange"
         >
             <el-table-column type="selection" width="70"></el-table-column>
             <el-table-column prop="messageTitle" label="消息标题" align="center"></el-table-column>
-            <el-table-column prop="sendTime" label="发送时间" align="center"></el-table-column>
-            <el-table-column prop="" label="发送人" align="center"></el-table-column>
-            <el-table-column prop="receiver" label="推送对象" align="center"></el-table-column>
+            <el-table-column prop="sendTime" sortable="custom" label="发送时间" align="center"></el-table-column>
+            <el-table-column prop="creator" label="发送人" align="center"></el-table-column>
+            <el-table-column prop="receiverPeople" label="推送对象" align="center">
+                <template slot-scope="scope">
+                    <div v-if="scope.row.receiverPeople == 0" >全部</div>
+                    <div v-else-if="scope.row.receiverPeople == 1" >{{scope.row.messageCount}}人</div>
+                </template>
+            </el-table-column>
             <el-table-column prop="sendMode" label="推送方式" align="center">
                 <template slot-scope="scope">
                     <div v-if="scope.row.sendMode == 1" >友盟</div>
@@ -47,17 +53,44 @@
             </el-table-column>
             <el-table-column prop="messageType" label="消息类型" align="center">
                 <template slot-scope="scope">
-                    <div v-if="scope.row.messageType == 1" >系统信息</div>
-                    <div v-else-if="scope.row.messageType == 0" >私信</div>
+                    <div v-if="scope.row.messageType == 0" >活动推送</div>
+                    <div v-else-if="scope.row.messageType == 1" >购物车内商品降价</div>
+                    <div v-else-if="scope.row.messageType == 2" > 到货通知</div>
+                    <div v-else-if="scope.row.messageType == 3" > 退款通知</div>
+                    <div v-else-if="scope.row.messageType == 4" > 优惠券到期通知</div>
+                    <div v-else-if="scope.row.messageType == 5" > 收藏的商品降价</div>
+                    <div v-else-if="scope.row.messageType == 6" > 发货通知</div>
+                    <div v-else-if="scope.row.messageType == 7" > 清关失败</div>
+                    <div v-else-if="scope.row.messageType == 8" > 秒杀活动提醒</div>
+                    <div v-else-if="scope.row.messageType == 9" > 限量商品提醒</div>
+                    <div v-else-if="scope.row.messageType == 10" > 收藏的店铺上新</div>
+                    <div v-else-if="scope.row.messageType == 11" > 收藏的品牌上新</div>
+                    <div v-else-if="scope.row.messageType == 12" > 售后审核通过</div>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button @click.native.prevent="showDetail(scope.row)" type="text"size="mini">查看</el-button>
+                    <el-button @click.native.prevent="showDetail(scope.row.id)" type="text"size="mini">查看</el-button>
                     <el-button @click.native.prevent="deleteList(scope.row.id)" type="text"size="mini">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
+        <el-dialog title="查看消息" :visible.sync="dialogTableVisible">
+            <el-form>
+                <el-form-item label="推送类型：">
+                    <span>{{messageDetail.sendMode == 1?"友盟":messageDetail.sendMode == 0?"站内信":"短信"}}</span>
+                </el-form-item>
+                <el-form-item label="推送对象：">
+                    <span>{{messageDetail.receiverPeople == 0?"全部":messageDetail.messageCount+"人"}}</span>
+                </el-form-item>
+                <el-form-item label="消息标题：">
+                    <span>{{messageDetail.messageTitle}}</span>
+                </el-form-item>
+                <el-form-item label="消息内容：">
+                    <span>{{messageDetail.messageCount}}</span>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
         <div class="bottomFun">
             <div class="bottomFunLeft">
                 <el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
@@ -81,7 +114,7 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import { getmessagepage } from '@/api/url';
-    import { deleteMessage } from '@/api/api';
+    import { deleteMessage,getMessageDetail } from '@/api/api';
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -89,29 +122,19 @@
                 mixinViewModuleOptions: {
                     getDataListURL: getmessagepage,
                     getDataListIsPage: true,
-                    // exportURL: '/admin-api/log/login/export',
                     deleteURL: '',
                     dataListLoading: false,
                     deleteIsBatch: true,
                     deleteIsBatchKey: 'id'
                 },
-                activeName: "",
-                selectVal:"",
+                dialogTableVisible:false,
                 breaddata: [ "消息中心", "消息列表"],
                 dataForm: {},
+                messageDetail:{},
                 value: '',
                 multipleSelection:[],
                 dataList: [],
-                currentIndex:"",
                 dataListLoading: false,
-                forbitLoading:false,
-                timeArr: "", //日本发布时间数据
-                timeArr2: "", //发布时间数据
-                startCreateDate: "",
-                endCreateDate: "",
-                endPaymentTime: "",
-                startPaymentTime: "",
-                isIndeterminate: false,
                 checkAll: false,
             }
         },
@@ -119,15 +142,26 @@
             Bread
         },
         created () {
-            // 第一次请求数据
-            // this.handleClick();
-            this.activeName =  this.status == undefined ? "" : this.status;
-            this.dataForm.goodsShow = this.status == undefined ? "" : this.status;
             this.getDataList();
         },
         methods: {
+            sortChange(val){
+                console.log(val)
+                if(val.order == "descending") this.dataForm.descOrAsc = 0;
+                else if(val.order == "ascending") this.dataForm.descOrAsc = 1;
+                this.getDataList();
+            },
             add(){
                 this.$emit("add");
+            },
+            showDetail(id){
+                this.dialogTableVisible = true;
+                let that = this;
+                getMessageDetail({id:id}).then((res)=>{
+                    if(res.code == 200){
+                        that.messageDetail = res.data;
+                    }
+                })
             },
             reset(formName) {
                 this.dataForm.messageTitle = "";
@@ -208,7 +242,7 @@
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
-                if(this.multipleSelection.length == 10) this.checkAll = true;
+                if(this.multipleSelection.length == this.dataList.length) this.checkAll = true;
                 else this.checkAll = false;
             },
             handleCheckAllChange(val) {

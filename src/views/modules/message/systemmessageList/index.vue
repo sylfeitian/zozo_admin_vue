@@ -1,6 +1,6 @@
 <template>
     <div>
-        <list v-if="mainVisible" ref="listCompon" @showDetail="showDetail" @addOrAdit="addOrAdit" @add="add"></list>
+        <list v-if="mainVisible" ref="listCompon" @add="add"></list>
         <add v-if="addVisible" ref="addCompon" @addList="addList"></add>
     </div>
 </template>
@@ -25,9 +25,6 @@
             add(){
                 this.addVisible = true;
                 this.mainVisible = false;
-                this.$nextTick(()=>{
-                    this.$refs.addoraditCompon.init();
-                })
             },
             showList(){
                 this.dtailVisible = false;
@@ -43,7 +40,6 @@
                     this.$refs.listCompon.getDataList();
                 })
             }
-
         }
     }
 </script>

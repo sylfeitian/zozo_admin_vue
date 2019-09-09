@@ -142,6 +142,7 @@ import { isMobile,isPhone } from '@/utils/validate'
                 receiverInfo.cityId && this.changeArea(receiverInfo.cityId,2,false);
                 receiverInfo.areaId && this.changeArea(receiverInfo.areaId,3,false);
             },
+            // 获取第一级地区数据
             getFirstData(){
                 areaFirst().then((res)=>{
                     console.log(res);
@@ -150,6 +151,7 @@ import { isMobile,isPhone } from '@/utils/validate'
                     }
                 })
             },
+            // 切换地区获取下级联动地区数据
             changeArea(id,argu2,reset=true){
                 if(!id){
                     return

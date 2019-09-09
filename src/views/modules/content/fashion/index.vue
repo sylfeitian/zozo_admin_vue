@@ -42,11 +42,11 @@
                     this.$refs.addoraditCompon.init(id);
                 })
             },
-            add(){
+            add(id){
                 this.addVisible = true;
                 this.mainVisible = false;
                 this.$nextTick(()=>{
-                    this.$refs.addoraditCompon.init();
+                    this.$refs.addCompon.init(id);
                 })
             },
             showList(){

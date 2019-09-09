@@ -30,8 +30,8 @@
                     ></el-date-picker>
                 </el-form-item>
                 <el-form-item>
-                    <el-button @click="getDataList()" type="primary">查询</el-button>
-                    <el-button @click="reset()">重置</el-button>
+                    <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
+                    <el-button  class="btn" type="primary" plain @click="reset()" >重置</el-button>
                 </el-form-item>
                 <br />
             </el-form>
@@ -77,18 +77,15 @@
                 dataForm: {
                     creator: '',
                     module: '',
-                    startTime:'',
-                    endTime:''
+                    createDateStart:'',
+                    createDateEnd:''
                 },
                 valuetime: "", //操作时间数据
                 dataList: [],
                 dataListLoading: false,
                 row:"",
                 module:"",
-                moduleOption:[
-                    {id:1,name:"逍遥江湖"},
-                    {id:2,name:"辟邪剑谱"},
-                ],
+                moduleOption:[],
             }
         },
         components: {
@@ -101,8 +98,8 @@
         watch:{
             valuetime(val){
                 if(!val){
-                    this.dataForm.startTime = '';
-                    this.dataForm.endTime = '';
+                    this.dataForm.createDateStart = '';
+                    this.dataForm.createDateEnd = '';
                 }
             }
         },
@@ -124,14 +121,15 @@
             },
             //开始结束时间
             acttime(){
-                this.dataForm.startTime = this.valuetime[0];
-                this.dataForm.endTime = this.valuetime[1];
+                this.dataForm.createDateStart = this.valuetime[0];
+                this.dataForm.createDateEnd = this.valuetime[1];
             },
             reset(){
+                this.valuetime = [];
                 this.dataForm.creator = "";
                 this.dataForm.module = "";
-                this.dataForm.startTime = "";
-                this.dataForm.endTime = "";
+                this.dataForm.createDateStart = "";
+                this.dataForm.createDateEnd = "";
                 this.getDataList();
             },
         }

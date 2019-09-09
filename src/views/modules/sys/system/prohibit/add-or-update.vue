@@ -114,7 +114,7 @@
             },
             closeDialog() {
             	this.visible = false;
-                this.$parent.addEditDataVisible = false;
+                this.$parent.addOrUpdateVisible = false;
             },
         }
     }
