@@ -67,7 +67,7 @@
                 treeConfig: {
                     //等于 el-tree 的选项配置
                     options: {
-                        'show-checkbox': true
+                        // 'show-checkbox': true
                     },
                     //自定义表格列 目前只支持文本渲染
                     columns: [

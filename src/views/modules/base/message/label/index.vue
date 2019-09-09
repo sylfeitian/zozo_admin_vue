@@ -44,7 +44,7 @@
             <el-table-column label="风格标签类型" align="center">
                 <template slot-scope="scope">
                     <span  v-if="scope.row.styleType==0">主标签</span>
-                    <span  v-if="scope.row.styleType==1">副标签</span>
+                    <span  v-else-if="scope.row.styleType==1">副标签</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center">
@@ -88,6 +88,7 @@
             return {
                 mixinViewModuleOptions: {
                     getDataListURL: shopStyleUrl,
+                    activatedIsNeed: false,
                     getDataListIsPage: true,
                     // exportURL: '/admin-api/log/login/export',
                     deleteURL: deleteShopStyle,
@@ -123,8 +124,8 @@
             mainData
         },
         created () {
-            this.dataForm.styleType = this.options[0].id;
-            this.dataFormShow.styleType = this.options[0].id;
+            this.dataFormShow.styleType = this.options && this.options[0].id;
+            this.dataForm.styleType = this.options && this.options[0].id;
             this.getDataList();
         },
         methods: {
@@ -143,11 +144,6 @@
                 this.dataForm.styleName = "";//标签名称
                 this.dataForm.styleType = this.options[0].id;//标签分类
                 this.getDataList();
-            },
-            handleCheckAllChange(val) {
-                this.checkednodeslist = val ? this.dataList : [];  //dataList  nodeslist
-                this.isIndeterminate = false;
-                console.log(this.checkednodeslist + '当前选中的复选框')
             },
             // 新建和编辑
             addOrEditHandle(index=-1,row=""){

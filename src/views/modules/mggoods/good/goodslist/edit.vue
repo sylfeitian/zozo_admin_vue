@@ -11,7 +11,7 @@
             <el-form-item label="商品分类：" class="item" style="margin-top: 20px;">
                 <span>{{dataForm.firstCategory}}</span>-->
                 <span>{{dataForm.secondCategory}}</span>
-                <span style="margin-left: 2%;color:green;cursor:pointer;" @click="logMore">修改1</span>
+                <span style="margin-left: 2%;color:green;cursor:pointer;" @click="logMore">修改</span>
             </el-form-item>
             <el-form-item label="商品编码：" class="item">
                 <span>{{dataForm.idJp}}</span>
@@ -280,10 +280,10 @@
                     that.changePage();
                 }).catch();
             },
-            getData(saveFlag){
+            getData(saveType){
                 let that = this;
-                this.dataForm.saveFlag = saveFlag;
-                saveZozogoods({saveLookDTO:this.dataForm}).then((res)=>{
+                this.dataForm.saveFlag = saveType;
+                saveZozogoods(this.dataForm).then((res)=>{
                     if(res.code == 200){
                         this.$message({
                             message: res.msg,

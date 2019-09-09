@@ -2,22 +2,30 @@
     <el-dialog :visible.sync="visible" :title="!pageId ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
         <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmitHandle()" label-width="120px">
             <el-form-item prop="username" label="账号：">
-                <el-input v-model="dataForm.username" placeholder="请输入账号"></el-input>
+                <el-input v-model="dataForm.username" placeholder="请输入账号" :disabled="!pageId ? false : true" maxlength="20"></el-input>
             </el-form-item>
             <el-form-item prop="realName" label="姓名：">
-                <el-input v-model="dataForm.realName" placeholder="请输入姓名"></el-input>
+                <el-input v-model="dataForm.realName" placeholder="请输入姓名" maxlength="10"></el-input>
             </el-form-item>
             <el-form-item prop="mobile" label="手机号：">
                 <el-input v-model="dataForm.mobile" placeholder="请输入手机号"></el-input>
             </el-form-item>
             <el-form-item prop="password" label="密码：" :class="{ 'is-required': !pageId }">
-                <el-input v-model="dataForm.password" type="password" placeholder="请输入6-12位的密码"></el-input>
+                <el-input v-model="dataForm.password" show-password placeholder="请输入6-12位的密码" minlength="6" maxlength="12"></el-input>
             </el-form-item>
             <el-form-item prop="comfirmPassword" label="确认密码：" :class="{ 'is-required': !pageId }">
-                <el-input v-model="dataForm.comfirmPassword" type="password" placeholder="请确认密码"></el-input>
+                <el-input v-model="dataForm.comfirmPassword" show-password placeholder="请确认密码" minlength="6" maxlength="12"></el-input>
             </el-form-item>
-            <el-form-item prop="roleId" label="角色：" class="role-list">
-                <el-select v-model="dataForm.roleId" :placeholder="$t('user.roleIdList')">
+            <el-form-item
+                    :label="'角色' + (index+1) + '：'"
+                    v-for="(roleItem, index) in dataForm.roleIds"
+                    :key="roleItem.key"
+                    :prop="'roleIds.' + index + '.value'"
+                    :rules="{
+      required: true, message: '必填项不能为空', trigger: 'change'
+    }"
+            >
+                <el-select v-model="roleItem.value" :placeholder="$t('user.roleIdList')" class="distance-btn">
                     <el-option
                             v-for="item in roleList"
                             :key="item.id"
@@ -25,6 +33,8 @@
                             :value="item.id">
                     </el-option>
                 </el-select>
+                <el-button v-if="index>0" type="text" @click.prevent="removeRoleItem(roleItem)">删除</el-button>
+                <el-button type="text" @click="addRoleItem">添加</el-button>
             </el-form-item>
         </el-form>
         <template slot="footer">
@@ -43,10 +53,13 @@
                 visible: false,
                 deptList: [],
                 deptListVisible: false,
-                pageId:null,
+                pageId:null,// 有值的话代表是编辑
                 roleList: [],
                 // roleIdListDefault: [],
                 dataForm: {
+                    roleIds: [{
+                        value: ''
+                    }],
                     id: '',
                     username: '',
                     deptId: '0',
@@ -57,16 +70,34 @@
                     gender: 0,
                     email: '',
                     mobile: '',
-                    roleId: '',
                     status: 1
                 }
             }
         },
         computed: {
             dataRule () {
+                var validateUsername = (rule, value, callback) => {
+                    if (!/\S/.test(value)) {
+                        return callback(new Error(this.$t('validate.required')))
+                    }
+                    if (!/^[a-zA-Z0-9]{0,20}$/.test(value)) {
+                        return callback(new Error('仅可输入英文、数字，最大可输入20个字符'))
+                    }
+                    callback()
+                }
+                var validateRealName = (rule, value, callback) => {
+                    if (!/\S/.test(value)) {
+                        return callback(new Error(this.$t('validate.required')))
+                    }
+                    callback()
+                }
+                // 密码校验
                 var validatePassword = (rule, value, callback) => {
                     if (!this.pageId && !/\S/.test(value)) {
                         return callback(new Error(this.$t('validate.required')))
+                    }
+                    if (!this.pageId && !/^[a-zA-Z0-9]{6,12}$/.test(value)) {
+                        return callback(new Error('仅可输入英文数字，至少6位字符，至多12位字符'))
                     }
                     callback()
                 }
@@ -74,23 +105,41 @@
                     if (!this.pageId && !/\S/.test(value)) {
                         return callback(new Error(this.$t('validate.required')))
                     }
+                    if (!this.pageId && !/^[a-zA-Z0-9]{6,12}$/.test(value)) {
+                        return callback(new Error('仅可输入英文数字，至少6位字符，至多12位字符'))
+                    }
                     if (this.dataForm.password !== value) {
                         return callback(new Error(this.$t('user.validate.comfirmPassword')))
                     }
                     callback()
+
                 }
+                var validateRoleId = (rule, value, callback) => {
+                    if (!/\S/.test(value)) {
+                        return callback(new Error(this.$t('validate.required')))
+                    }
+                    callback()
+                }
+                // 手机验证 去空格，控制位数
                 var validateMobile = (rule, value, callback) => {
-                    if (!isMobile(value)) {
-                        return callback(new Error(this.$t('validate.format', { 'attr': this.$t('user.mobile') })))
+                    if (!/\S/.test(value)) {
+                        return callback(new Error(this.$t('validate.required')))
+                    }
+                    if (!this.pageId) {
+                        value=value.replace(/\s*/g, '')
+                        if(!/^1[3-9][0-9]{9}$/.test(value))
+                        {
+                            return callback(new Error(this.$t('validate.format', { 'attr': this.$t('user.mobile') })))
+                        }
                     }
                     callback()
                 }
                 return {
                     username: [
-                        { required: true, message: "请输入账号", trigger: 'blur' }
+                        { required: true, validator: validateUsername, trigger: 'blur' }
                     ],
                     realName: [
-                        { required: true, message: "请输入姓名", trigger: 'change' }
+                        { required: true, validator: validateRealName, trigger: 'blur' }
                     ],
                     password: [
                         { required: true, validator: validatePassword, trigger: 'blur' }
@@ -98,29 +147,46 @@
                     comfirmPassword: [
                         { required: true, validator: validateComfirmPassword, trigger: 'blur' }
                     ],
-                    roleId: [
-                        { required: true, message: "请输入角色", trigger: 'blur' }
+                    roleIds: [
+                        { required: true, validator: validateRoleId, trigger: 'change' }
                     ],
                     mobile: [
-                        { required: true, message: "请输入手机号", trigger: 'blur' },
-                        { validator: validateMobile, trigger: 'blur' }
+                        { required: true, validator: validateMobile, trigger: 'blur' }
                     ]
                 }
             }
         },
         methods: {
-            init (id) {
-                console.log('666666',id)
-                this.visible = true;
-                if(id){
-                    this.pageId = id;
-                    this.getInfo(id);
-                }else{
-                    this.pageId = '';
+            // 删除角色
+            removeRoleItem(roleItem) {
+                var index = this.dataForm.roleIds.indexOf(roleItem)
+                if (index > 0) {
+                    this.dataForm.roleIds.splice(index, 1)
                 }
+            },
+            // 新增角色
+            addRoleItem() {
+                debugger
+                this.dataForm.roleIds.push({
+                    value: '',
+                    key: Date.now()
+                });
+            },
+            init (id) {
+                console.log('有id代表编辑，无id代表新增',id)
+                this.visible = true;
                 this.$nextTick(() => {
                     this.$refs['dataForm'].resetFields()
-                    // this.roleIdListDefault = []
+                    this.dataForm.roleIds=[{
+                        value: ''
+                    }]
+                    if(id){
+                        this.pageId = id;
+                        this.getInfo(id);
+                    }else{
+                        this.pageId = '';
+                    }
+                    // 有必要？
                     this.getRoleList()
                 })
             },
@@ -142,7 +208,7 @@
                     this.roleList = res.data
                 }).catch(() => {})
             },
-            // 获取信息
+            // 获取信息 反填
             getInfo (id) {
                 this.$http.get(`/admin-api/user/${id}`).then(({ data: res }) => {
                     if (res.code !== 200) {
@@ -198,6 +264,9 @@
 </script>
 
 <style lang="scss">
+    .distance-btn{
+        margin-right: 15px;
+    }
     .mod-sys__user {
         .dept-list {
             .el-input__inner,
