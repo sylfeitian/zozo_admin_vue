@@ -67,14 +67,19 @@
             <el-table-column prop="subTag" label="店铺副风格标签" align="center"></el-table-column>
             <el-table-column prop="" label="设为推荐" align="center">
                 <template slot-scope="scope">
-                    <el-switch
+                   <div style="position: relative;">
+                        <el-switch
                             v-model="scope.row.recommendFlag"
                             :active-value="1"
                             active-color="#13ce66"
                             inactive-color="#ff4949"
-                            @change="switchHandle('singe',scope.row)"
-                    >
-                    </el-switch>
+                        >
+                        </el-switch>
+                        <div  @click="switchHandle('singe',scope.row)" class="hiddenSwitch">
+                                <!-- 遮罩层 -->
+                                <!-- {{scope.row.recommendFlag}} -->
+                        </div>
+                   </div>
                 </template>
             </el-table-column>
             <el-table-column label="售卖品牌" align="center">
@@ -294,9 +299,8 @@
                 this.currentIndex = index;
                 var obj = {
                     "storeId": row.id,
-                    "recommendFlag":row.recommendFlag?1:0
+                    "recommendFlag":row.recommendFlag?0:1
                 }
-
 
                 var msg = ""
                 row.recommendFlag==1?msg="不推荐":msg="推荐"
@@ -336,5 +340,12 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+    .hiddenSwitch{
+        position: absolute;
+        width:100%;
+        height:100%;
+        top:0px;
+        left:0px;
     }
 </style>
