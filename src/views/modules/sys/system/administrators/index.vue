@@ -10,9 +10,9 @@
                     <el-select v-model="dataForm.roleName" placeholder="请选择">
                         <el-option
                                 v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -54,7 +54,7 @@
                 </el-table-column>
                 <el-table-column :label="$t('handle')" header-align="center" align="center">
                     <template slot-scope="scope" v-if="scope.row.superAdmin!==1">
-                        <el-button v-if="$hasPermission('sys:user:update')" type="text" size="small" @click="changeNumber(scope.row.id)">重置密码</el-button>
+                        <el-button v-if="$hasPermission('sys:user:update')" type="text" size="small" @click="changeNumber(scope.row.username)">重置密码</el-button>
                         <el-button v-if="$hasPermission('sys:user:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">编辑</el-button>
                         <el-button v-if="$hasPermission('sys:user:delete')" type="text" class="artdanger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
                     </template>
@@ -76,18 +76,18 @@
                     title="修改密码"
                     :visible.sync="centerDialogVisible"
                     :close-on-click-modal = "false"
-                    :show-close = "false"
+                    :show-close = "true"
                     class="storedialog"
                     width="30%">
-                <el-form :model="numberDataForm" ref="numberDataForm" @keyup.enter.native="numberSubmitHandle()" label-width="120px">
+                <el-form :model="numberDataForm" ref="numberDataForm" :rules="dataRule" @keyup.enter.native="numberSubmitHandle()" label-width="120px">
                     <el-form-item style="margin-left: -42px!important;">
-                        <span>账号：</span><span>{{dataForm.username}}</span>
+                        <span>账号：</span><span>{{numberDataForm.username}}</span>
                     </el-form-item>
                     <el-form-item label="密码：" prop="newPassword">
-                        <el-input v-model="numberDataForm.newPassword" type="password"></el-input>
+                        <el-input v-model="numberDataForm.newPassword" placeholder="请输入6-12位的密码" show-password minlength="6" maxlength="12"></el-input>
                     </el-form-item>
                     <el-form-item label="确认密码：" prop="confirmPassword">
-                        <el-input v-model="numberDataForm.confirmPassword" type="password"></el-input>
+                        <el-input v-model="numberDataForm.confirmPassword" placeholder="请确认密码" show-password minlength="6" maxlength="12"></el-input>
                     </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
@@ -115,16 +115,7 @@
                     deleteIsBatch: true,
                     exportURL: '/admin-api/user/export'
                 },
-                options: [{
-                    value: '选项1',
-                    label: '角色1'
-                }, {
-                    value: '选项2',
-                    label: '角色2'
-                }, {
-                    value: '选项3',
-                    label: '角色3'
-                }],
+                options: [],
                 breaddata: ["系统管理", "管理员管理"],
                 dataForm: {},
                 addOrUpdateVisible: false,
@@ -141,20 +132,57 @@
             AddOrUpdate,
             Bread
         },
+        created(){
+            this.getRoleList()
+        },
+        computed: {
+            dataRule () {
+                // 验证是否输入为空
+                var validatePassword = (rule, value, callback) => {
+                    if (!/^[a-zA-Z0-9]{6,12}$/.test(value)) {
+                        return callback(new Error('仅可输入英文数字，至少6位字符，至多12位字符'))
+                    }
+                    callback()
+                }
+                var validateComfirmPassword = (rule, value, callback) => {
+                    if (this.numberDataForm.newPassword !== value) {
+                        return callback(new Error(this.$t('user.validate.comfirmPassword')))
+                    }
+                    if (!/^[a-zA-Z0-9]{6,12}$/.test(value)) {
+                        return callback(new Error('仅可输入英文数字，至少6位字符，至多12位字符'))
+                    }
+                    callback()
+                }
+                return {
+                    newPassword: [
+                        { required: false, validator: validatePassword, trigger: 'blur' }
+                    ],
+                    confirmPassword: [
+                        { required: false, validator: validateComfirmPassword, trigger: 'blur' }
+                    ]
+                }
+            }
+        },
         methods:{
-            changeNumber(id){
+            // 重置密码 获取账户名
+            changeNumber(username){
                 this.centerDialogVisible = true;
-                this.numberDataForm.username = id;
+                this.$nextTick(()=> {
+                    this.$refs['numberDataForm'].resetFields()
+                })
+                this.numberDataForm.username = username;
             },
             getData(){
                 this.page = 1;
                 this.limit = 10;
                 this.getDataList();
             },
+            // 表单重置
             reset(){
                 this.dataForm = {};
                 this.getData();
             },
+            // 重置密码 提交
             numberSubmitHandle(){
                 this.$refs['numberDataForm'].validate((valid) => {
                     if (!valid) {
@@ -175,9 +203,19 @@
                     })
                 })
             },
+            // 重置密码 取消
             noCheck(){
                 this.centerDialogVisible = false
                 this.$refs['numberDataForm'].resetFields();//校验隐藏
+            },
+            // 获取角色列表
+            getRoleList () {
+                return this.$http.get('/admin-api/role/list').then(({ data: res }) => {
+                    if (res.code !== 200) {
+                        return this.$message.error(res.msg)
+                    }
+                    this.options = res.data
+                }).catch(() => {})
             },
         }
     }
