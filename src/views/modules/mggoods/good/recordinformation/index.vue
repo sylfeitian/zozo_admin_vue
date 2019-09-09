@@ -76,7 +76,7 @@
                 <template slot-scope="scope">
                     <div class="goodsPropsWrap">
                         <div class="goodsImg">
-                            <img :src="scope.row.imageUrl" alt=""/>
+                            <img :src="scope.row.imageUrl | filterImgUrl" alt=""/>
                         </div>
                     </div>
                 </template>
@@ -149,15 +149,6 @@
                     </div>
                 </template>
             </el-table-column>
-<!--            <el-table-column label="操作" align="center" width="150">-->
-<!--                <template slot-scope="scope">-->
-<!--                    <el-button  @click="cotrolGoodsShow('singe',scope.row)" type="text" size="mini" >-->
-<!--                        <span  v-if="scope.row.goodsShow==0">已上架</span>-->
-<!--                        <span  v-if="scope.row.goodsShow==1" class="artclose">已下架</span>-->
-<!--                        <span  v-if="scope.row.goodsShow==2"   style="color:#FF0000">未上架</span>-->
-<!--                    </el-button>-->
-<!--                </template>-->
-<!--            </el-table-column>-->
         </el-table>
         <!-- 分页 -->
         <el-pagination
@@ -181,6 +172,7 @@
         data () {
             return {
                 mixinViewModuleOptions: {
+                    activatedIsNeed: false,
                     getDataListURL: registerUrl,
                     getDataListIsPage: true,
                     // exportURL: '/admin-api/log/login/export',
@@ -198,8 +190,10 @@
                     storeName: "",// 店铺名称
                     brandName:"",// 品牌
                     tofileFlag:"",// 状态
+                    isTofile:"",
                     transportFlag: ""
                 },
+                changeVal: "",
                 alreadyOptions: [{
                     id: '0',
                     label: '待备案'
@@ -221,16 +215,20 @@
             //orderDet
         },
         created() {
-            this.dataFormShow.goodsShow = 0;
-            this.getDataList();
+            // 第一次请求数据
+            this.activeName =  this.status == undefined ? "" : this.status;
+            this.dataFormShow.isTofile = "1";
+            this.getData();
         },
         methods: {
             handleClick(tab) {
                 if(tab== ""){
-                    this.dataFormShow.goodsShow = ""
+                    this.dataFormShow.isTofile  = "1"
                 }else if(tab== "upper"){
-                    this.dataFormShow.goodsShow = "1"
+                    this.dataFormShow.isTofile  = "0"
                 }
+                // this.changeVal = val;
+                this.dataForm.isTofile =  this.dataFormShow.isTofile;
                 this.getDataList();
             },
             getData(){

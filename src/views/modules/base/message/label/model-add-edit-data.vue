@@ -202,11 +202,12 @@
                     if (valid) {
                         this.loading = true;
                         var obj = {
-                            "styleName":  this.dataForm.styleName,
-                            "styleType":  this.dataForm.styleType,
-                            "sex":  this.dataForm.sex,
-                            "imgUrl":  this.dataForm.imgUrl,
-                            "sort":  this.dataForm.sort,
+                            styleName:  this.dataForm.styleName,
+                            styleType:  this.dataForm.styleType,
+                            gender:  this.dataForm.gender,
+                            imgUrl:  this.dataForm.imgUrl,
+                            sort:  this.dataForm.sort,
+                            description: this.dataForm.description,
                         }
                         if(this.row) obj.id = this.row.id
                         var fn = updateShopStyle;
