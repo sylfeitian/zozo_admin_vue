@@ -221,6 +221,7 @@ export default {
     	  let obj = {
             params:this.formData
         }
+        // 获取表格数据
        getdatalist(obj).then(res => {
           //Promise后 对数据格式进行处理
           if (res.code == 200) {
@@ -253,7 +254,7 @@ export default {
     // 新增下级
    addRowFn(row){
    		this.reset();     //清空弹窗内容
-   		this.dialogTableVisible = true;
+   		this.dialogTableVisible = true;   //新增分类弹窗
    		if(row){ //添加下一级
       	if(row.grade == 2){
 	   			this.$message('二级分类不可以新增下一级');

@@ -216,7 +216,7 @@
 	  	},
 	  	init(row){
 	  		this.showListVisible = true;
-	  		
+	  		// 上级分类数据
 	  		categoryCn().then((res)=>{
 	  			if(res.code == 200){
 	  				console.log(res.data);
@@ -231,7 +231,7 @@
 	  		}).catch(()=>{
 	  			this.$message("服务器错误");
 	  		})
-	  		
+	  		// 关联日本分类数据
 	  		searchCategoryJp().then((res)=>{
 	  			if(res.code == 200){
 	  				console.log(res.data);
@@ -252,7 +252,8 @@
 	  			})
 	  		}
 	  	},
-	  	actuploaddata(){  //确定提交  
+	  	actuploaddata(){  //确定提交
+	  		debugger
 	  		if(!this.dataForm.methodUrlshow[this.dataForm.methodUrlshow.length-1]){
 	  			this.dataForm.methodUrlshow.pop()
 	  		}
@@ -264,11 +265,12 @@
 	  			this.dataForm.genderMrs = '';
 	  		}else if(this.checkList.indexOf('儿童') == -1){
 	  			this.dataForm.genderKid = '';
-	  		}	
+	  		}
 	  		updataCategoryCn(this.dataForm).then((res)=>{
+	  			debugger
 	  			if(res.code == 200){
 	  				console.log(res.data);
-	  				this.closeadd();
+	  				this.closeadd();// 关闭弹窗之后调用获取表格数据方法
 	  			}else{
 	  				this.$message(res.msg);
 	  			}
