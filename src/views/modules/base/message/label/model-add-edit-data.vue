@@ -180,7 +180,7 @@
                         that.uploading = false
                         if(res && res.code == "200"){
                             var url = res.data.url
-                            that.dataForm.gcPic = url;
+                            that.dataForm.imgUrl = url;
                             // that.currentIndex = -1;//不能这样写，防止网络延迟
                             resolve("true")
                         }else {

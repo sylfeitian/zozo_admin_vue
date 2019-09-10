@@ -82,6 +82,9 @@
                 var obj = this.selectAllOption.find((item,index)=>{
                     return item.id == val;
                 })
+                // varthis.selectAllOption.findIndex((item,index)=>{
+                //     return item.id == val;
+                // })
 
                 this.dataArray.unshift(obj)
             },
@@ -93,6 +96,7 @@
                 this.row = row;
                 this.title="管理副风格标签";
                 this.backScan();
+                this.backScan1();
                 this.$nextTick(() => {
                     this.$refs['addForm'].resetFields();
                     // this.getApplyPullList();
@@ -112,6 +116,22 @@
                     }
                 })
             },
+            backScan1(){
+                var obj  = {
+                    id:this.row.id,
+                    styleName:this.row.styleName
+                }
+                backScanShopStyleUnion(obj).then((res)=>{
+                    if(res.code == 200){
+                        this.dataArray = res.data;
+                        // this.dataArray.forEach((item,index)=>{
+                        //     item.styleName = item.name;
+                        // })
+                    }else{
+
+                    }
+                })
+            },
             // 提交
             dataFormSubmit(formName){
                 // alert([this.dataForm.name,this.dataForm.domainAddress]);
@@ -123,7 +143,7 @@
                         });
                         this.loading = true;
                         var obj = {
-                            childrenIds: childrenIds,
+                            ids: childrenIds,
                         }
                         if(this.row) obj.id = this.row.id
                         var fn = shopStyleUnion;

@@ -32,38 +32,44 @@
             <el-form-item label="店铺中文描述：" prop="description">
                 <el-input type="textarea" v-model="dataForm.description" placeholder=""></el-input>
             </el-form-item>
-            <el-form-item label="店铺主图：" prop="imageUrl" style="float: left;width:50%;">
-                <template slot-scope="scope">
-                    <div class="pcCoverUrl imgUrl" style="float: left;width:50%;">
-                        <img-cropper
-                                v-loading="uploading"
-                                ref="cropperImg"
-                                :index="'1'"
-                                :cropImg="dataForm.imageUrl"
-                                :imgWidth='"100px"'
-                                :imgHeight='"100px"'
-                                @GiftUrlHandle="GiftUrlHandle"
-                                style="display: inline-block;"
-                        ></img-cropper>
-                    </div>
-                </template>
-            </el-form-item>
-            <el-form-item label="店铺logo：" prop="storeLogo" style="float: right;width:50%;">
-                <template slot-scope="scope">
-                    <div class="pcCoverUrl imgUrl" style="float: left;width:50%;">
-                        <img-cropper
-                                v-loading="uploading"
-                                ref="cropperImg"
-                                :index="'1'"
-                                :cropImg="dataForm.storeLogo"
-                                :imgWidth='"100px"'
-                                :imgHeight='"100px"'
-                                @GiftUrlHandle="GiftUrlHandle"
-                                style="display: inline-block;"
-                        ></img-cropper>
-                    </div>
-                </template>
-            </el-form-item>
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="店铺主图：" prop="imageUrl">
+                        <template slot-scope="scope">
+                            <div class="pcCoverUrl imgUrl">
+                                <img-cropper
+                                        v-loading="uploading"
+                                        ref="cropperImg"
+                                        :index="'1'"
+                                        :cropImg="dataForm.imageUrl"
+                                        :imgWidth='"100px"'
+                                        :imgHeight='"100px"'
+                                        @GiftUrlHandle="GiftUrlHandle"
+                                        style="display: inline-block;"
+                                ></img-cropper>
+                            </div>
+                        </template>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="店铺logo：" prop="storeLogo">
+                        <template slot-scope="scope">
+                            <div class="pcCoverUrl imgUrl">
+                                <img-cropper
+                                        v-loading="uploading"
+                                        ref="cropperImg"
+                                        :index="'2'"
+                                        :cropImg="dataForm.storeLogo"
+                                        :imgWidth='"100px"'
+                                        :imgHeight='"100px"'
+                                        @GiftUrlHandle="GiftUrlHandle"
+                                        style="display: inline-block;"
+                                ></img-cropper>
+                            </div>
+                        </template>
+                    </el-form-item>
+                </el-col>
+            </el-row>
             <el-form-item label="选择风格标签：" prop="mainTag">
                 <el-select
                         v-model="dataForm.mainTag"
@@ -178,8 +184,8 @@
                     // storeName:this.row.storeName,
                     descriptionJp:this.row.descriptionJp,
                     // description:this.row.description,
-                    imageUrl:this.row.imageUrl,
-                    storeLogo:this.row.storeLogo,
+                    imageUrl:this.dataForm.imageUrl,
+                    storeLogo:this.dataForm.storeLogo,
                 }
                 backScanShopStore(obj).then((res)=>{
                     if(res.code == 200){
@@ -211,7 +217,7 @@
                 })
             },
             //上传图片
-            uploadPic(base64){
+            uploadPic(base64,index){
                 const params = { "imgStr": base64 };
                 const that = this;
                 this.uploading = true;
@@ -220,7 +226,12 @@
                         that.uploading = false
                         if(res && res.code == "200"){
                             var url = res.data.url
-                            that.dataForm.gcPic = url;
+                            if(index == 1){
+                                that.dataForm.imageUrl = url;
+                            }else if(index == 2){
+                                that.dataForm.storeLogo = url;
+                            }
+
                             // that.currentIndex = -1;//不能这样写，防止网络延迟
                             resolve("true")
                         }else {
@@ -230,10 +241,10 @@
                     })
                 });
             },
-            GiftUrlHandle(val){
+            GiftUrlHandle(val,index){
                 console.log("base64上传图片接口");
                 console.log(val);
-                this.uploadPic(val);
+                this.uploadPic(val,index);
             },
             // 提交
             dataFormSubmit(formName){
