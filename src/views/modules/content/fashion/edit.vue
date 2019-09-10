@@ -99,14 +99,14 @@
                         <div v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
                             <div style="height: 20px;"></div>
                             <div class="contentChild" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
-                                <el-input v-model="v.text" type="textarea" :rows="5" ></el-input>
+                                <el-input v-model="v.textCn" type="textarea" :rows="5" ></el-input>
                             </div>
                             <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
                                 <div class="goodsPropsWrap" style="text-align: center;">
                                     <div class="goodsImg">
                                         <img :src="v.imageUrl" alt=""/>
                                     </div>
-                                    <div v-if="v.typeId=='4'">{{v.text}}</div>
+                                    <div v-if="v.typeId=='4'">{{v.textCn}}</div>
                                 </div>
                             </div>
                         </div>
@@ -127,11 +127,9 @@
 
 <script>
     import quillEditorImg from "@/components/quillEditor"
-    import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import { getfashiondetail,savefashiondetail } from '@/api/api'
     export default {
-        mixins: [mixinViewModule],
         data () {
             return {
                 breaddata: [ "内容管理", "时尚记事","编辑时尚记事"],
@@ -181,8 +179,7 @@
             getData(saveType){
                 let that = this;
                 this.dataForm.saveType = saveType;
-                this.dataForm.styles = this.ac;
-                savefashiondetail({saveFashionDTO:this.dataForm}).then((res)=>{
+                savefashiondetail(this.dataForm).then((res)=>{
                     if(res.code == 200){
                         this.$message({
                             message: res.msg,

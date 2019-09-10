@@ -15,11 +15,10 @@
                 <el-date-picker
                         v-model="timeArr"
                         type="datetimerange"
-                        value-format="yyyy-MM-dd HH:mm:ss"
+                        value-format="yyyy-MM-dd"
                         align="left"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
-                        :default-time="['00:00:00', '23:59:59']"
                         @blur='getData'
                 ></el-date-picker>
             </el-form-item>
@@ -72,7 +71,8 @@
             <el-table-column prop="sate" width="120" label="发布状态" align="center">
                 <template slot-scope="scope">
                     <el-tag v-if="scope.row.sate == 1" type="success">已发布</el-tag>
-                    <el-tag v-else type="info">取消发布</el-tag>
+                    <el-tag v-if="scope.row.sate == 2" type="success">取消发布</el-tag>
+                    <el-tag v-else type="info">未发布</el-tag>
                 </template>
             </el-table-column>
             <el-table-column width="120" prop="jpPublishState"  label="日本发布状态" align="center">
@@ -229,8 +229,12 @@
                     id:id
                 }).then((res)=>{
                    let data = res.data;
-                   data.styles = that.styleList;
-                    saveFolderdetail({folderInfoDTO:data}).then((res)=>{
+                    let list = [];
+                    that.styleList.map((v,i)=>{
+                        list.push(parseInt(v.id))
+                    })
+                   data.styleIds = list;
+                    saveFolderdetail(data).then((res)=>{
                         if(res.code == 200){
                             this.$message({
                                 message: res.msg,

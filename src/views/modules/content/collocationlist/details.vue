@@ -19,7 +19,7 @@
                     <span>{{dataForm.userHeight}}</span>
                 </el-form-item>
                 <el-form-item label="用户地区：">
-                    <span>{{dataForm.contryNameJp}}</span>
+                    <span>日本</span>
                 </el-form-item>
                 <el-form-item label="性别：">
                     <span>{{dataForm.gender == 0?"男":dataForm.gender == 1?"女":dataForm.gender == 2?"儿童":dataForm.gender == 3?"world":""}}</span>
@@ -44,7 +44,7 @@
                     <span>{{dataForm.titleJp}}</span>
                 </el-form-item>
                 <el-form-item label="详情：" style="height: 100%!important;">
-                    <span>{{dataForm.contentJp}}</span>
+                    <span>{{dataForm.descriptionJp}}</span>
                 </el-form-item>
                 <div class="goods">
                     <span class="inforTit" style="vertical-align:top;">关联搭配：</span>
@@ -92,7 +92,7 @@
                     <span>{{dataForm.userHeight}}</span>
                 </el-form-item>
                 <el-form-item label="用户地区：">
-                    <span>{{dataForm.contryName}}</span>
+                    <span>日本</span>
                 </el-form-item>
                 <el-form-item label="性别：">
                     <span>{{dataForm.gender == 0?"男":dataForm.gender == 1?"女":dataForm.gender == 2?"儿童":dataForm.gender == 3?"world":""}}</span>
@@ -117,7 +117,7 @@
                     <span>{{dataForm.title}}</span>
                 </el-form-item>
                 <el-form-item label="详情：" style="height: 100%!important;">
-                    <span>{{dataForm.content}}</span>
+                    <span>{{dataForm.description}}</span>
                 </el-form-item>
                 <div class="goods">
                     <span class="inforTit" style="vertical-align:top;">关联搭配：</span>
@@ -163,11 +163,9 @@
 </template>
 
 <script>
-    import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import { getlookfolderdetail } from '@/api/api'
     export default {
-        mixins: [mixinViewModule],
         data () {
             return {
                 breaddata: [ "内容管理", "搭配集合管理","搭配集合详情"],

@@ -19,7 +19,7 @@
                     <span>{{dataForm.shopName}}</span>
                 </el-form-item>
                 <el-form-item label="发布状态：">
-                    <span>{{dataForm.showWebJp == 1?"已发布":"未发布"}}</span>
+                    <span>{{dataForm.showWeb == 1?"已发布":dataForm.showWeb == 0?"待发布":"取消发布"}}</span>
                 </el-form-item>
                 <el-form-item label="背景图：">
                     <template slot-scope="scope">
@@ -84,7 +84,7 @@
                     <span>{{dataForm.idJp}}</span>
                 </el-form-item>
                 <el-form-item label="店铺ID：">
-                    <span>{{dataForm.shopId}}</span>
+                    <span>{{dataForm.shopIdJp}}</span>
                 </el-form-item>
                 <el-form-item label="店铺名称：">
                     <span>{{dataForm.shopNameCn}}</span>
@@ -154,11 +154,9 @@
 </template>
 
 <script>
-    import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import { getStoreNewsdetail,saveStoreNewsdetail ,saveStoreNewsdetailOne} from '@/api/api'
     export default {
-        mixins: [mixinViewModule],
         data () {
             return {
                 breaddata: [ "内容管理","店铺新闻管理", "编辑店铺新闻"],
@@ -199,7 +197,7 @@
             getData(saveType){
                 let that = this;
                if(saveType == 0){
-                   saveStoreNewsdetailOne({shopGoodsNewsDTO:this.dataForm}).then((res)=>{
+                   saveStoreNewsdetailOne(this.dataForm).then((res)=>{
                        if(res.code == 200){
                            this.$message({
                                message: res.msg,
@@ -216,7 +214,7 @@
                        }
                    })
                }else{
-                   saveStoreNewsdetail({shopAdminNewsDTO:this.dataForm}).then((res)=>{
+                   saveStoreNewsdetail(this.dataForm).then((res)=>{
                        if(res.code == 200){
                            this.$message({
                                message: res.msg,
