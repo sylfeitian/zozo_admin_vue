@@ -7,7 +7,7 @@
                     <el-input v-model="dataForm.username" placeholder="请输入账号" clearable></el-input>
                 </el-form-item>
                 <el-form-item label="角色：">
-                    <el-select v-model="dataForm.roleIds" placeholder="请选择">
+                    <el-select v-model="dataForm.roleId" placeholder="请选择">
                         <el-option
                                 v-for="item in options"
                                 :key="item.id"
