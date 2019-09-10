@@ -87,6 +87,7 @@
         },
         methods: {
             getData(){
+                this.page =1;
                 this.dataForm = {};
                 for(let key in this.dataFormShow){
                     this.$set(this.dataForm,`${key}`,this.dataFormShow[key]);

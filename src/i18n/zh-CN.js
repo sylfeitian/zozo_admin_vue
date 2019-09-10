@@ -3,8 +3,8 @@ const t = {}
 t.loading = '加载中...'
 
 t.brand = {}
-t.brand.lg = '雷铭商城7.0'
-t.brand.mini = '雷铭'
+t.brand.lg = '上海ZOZO跨境电商平台'
+t.brand.mini = 'ZOZO'
 
 t.add = '新增'
 t.delete = '删除'
