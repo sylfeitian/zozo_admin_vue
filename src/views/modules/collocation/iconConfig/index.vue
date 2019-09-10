@@ -51,7 +51,7 @@
 	  	</el-table-column>
 	</el-table>
 	<!-- 分页 -->
-    <el-pagination
+    <!-- <el-pagination
 	    @size-change="pageSizeChangeHandle"
 	    @current-change="pageCurrentChangeHandle"
 	    :current-page="page"
@@ -59,7 +59,7 @@
 	    :page-size="limit"
 	    :total="total"
 	    layout="total, sizes, prev, pager, next, jumper">
-    </el-pagination>
+    </el-pagination> -->
 
 
     <el-dialog

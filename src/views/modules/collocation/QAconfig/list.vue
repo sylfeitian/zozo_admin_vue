@@ -80,7 +80,7 @@
 
 <script>
     import mixinViewModule from '@/mixins/view-module'
-    import { businessPageUrl } from '@/api/url'
+    import { QamainList } from '@/api/url'
     import { zozogoodsPage } from '@/api/api'
     import Bread from "@/components/bread";
     
@@ -90,11 +90,11 @@
         data () {
             return {
                 mixinViewModuleOptions: {
-                    getDataListURL: businessPageUrl,
+                    getDataListURL: QamainList,
                     getDataListIsPage: true,
-                    exportURL: '/admin-api/store/export',
-                    deleteURL: '/admin-api/store',
-                    deleteIsBatch: true,
+                    // exportURL: '/admin-api/store/export',
+                    // deleteURL: '/admin-api/store',
+                    // deleteIsBatch: true,
                     // deleteIsBatchKey: 'id'
                 },
                 helpTitle:'新增帮助类型',
