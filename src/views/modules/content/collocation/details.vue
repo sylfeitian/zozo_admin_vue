@@ -28,7 +28,7 @@
                     <span>{{dataForm.totalFavNum}}</span>
                 </el-form-item>
                 <el-form-item label="发布状态：">
-                    <span>{{dataForm.jpPublishState == 0?"未发布":dataForm.jpPublishState == 1?"已发布":""}}</span>
+                    <span>{{dataForm.state == 2?"取消发布":dataForm.state == 1?"已发布":""}}</span>
                 </el-form-item>
                 <el-form-item label="主图：" style="height: 100%!important;">
                     <template slot-scope="scope">
@@ -54,7 +54,11 @@
                             style="display:inline-block;width: 80%;"
                     >
                         <el-table-column prop="idJp" label="商品ID" align="center"></el-table-column>
-                        <el-table-column prop="nameJp" label="商品名称" align="center" width="200"></el-table-column>
+                        <el-table-column prop="name" label="商品名称" align="center" width="200">
+                            <template slot-scope="scope">
+                                {{scope.row.name?scope.row.name:scope.row.nameJp}}
+                            </template>
+                        </el-table-column>
                         <el-table-column prop="itemsImageUrl" label="图片" align="center">
                             <template slot-scope="scope">
                                 <img
@@ -105,7 +109,7 @@
                     <span>{{dataForm.totalFavNum}}</span>
                 </el-form-item>
                 <el-form-item label="发布状态：">
-                    <span>{{dataForm.state == 0?"未发布":dataForm.state == 1?"已发布":""}}</span>
+                    <span>{{dataForm.state == 2?"取消发布":dataForm.state == 1?"已发布":""}}</span>
                 </el-form-item>
                 <el-form-item label="主图：" style="height: 100%!important;">
                     <template slot-scope="scope">
@@ -130,8 +134,12 @@
                             class="inforRight"
                             style="display:inline-block;width: 80%;"
                     >
-                        <el-table-column prop="id" label="商品ID" align="center"></el-table-column>
-                        <el-table-column prop="name" label="商品名称" align="center" width="200"></el-table-column>
+                        <el-table-column prop="idJp" label="商品ID" align="center"></el-table-column>
+                        <el-table-column prop="name" label="商品名称" align="center" width="200">
+                            <template slot-scope="scope">
+                                {{scope.row.name?scope.row.name:scope.row.nameJp}}
+                            </template>
+                        </el-table-column>
                         <el-table-column prop="itemsImageUrl" label="图片" align="center">
                             <template slot-scope="scope">
                                 <img
@@ -158,11 +166,9 @@
 </template>
 
 <script>
-    import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import { getlookdetail } from '@/api/api'
     export default {
-        mixins: [mixinViewModule],
         data () {
             return {
                 breaddata: [ "内容管理", "搭配管理","搭配详情"],
