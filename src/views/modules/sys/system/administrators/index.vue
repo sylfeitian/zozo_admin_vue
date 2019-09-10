@@ -7,7 +7,7 @@
                     <el-input v-model="dataForm.username" placeholder="请输入账号" clearable></el-input>
                 </el-form-item>
                 <el-form-item label="角色：">
-                    <el-select v-model="dataForm.roleName" placeholder="请选择">
+                    <el-select v-model="dataForm.roleIds" placeholder="请选择">
                         <el-option
                                 v-for="item in options"
                                 :key="item.id"
@@ -210,11 +210,11 @@
             },
             // 获取角色列表
             getRoleList () {
-                return this.$http.get('/admin-api/role/list').then(({ data: res }) => {
+                return this.$http.get('/admin-api/role/page').then(({ data: res }) => {
                     if (res.code !== 200) {
                         return this.$message.error(res.msg)
                     }
-                    this.options = res.data
+                    this.options = res.data.list
                 }).catch(() => {})
             },
         }
