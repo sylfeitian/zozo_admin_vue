@@ -16,48 +16,51 @@
 
         <!-- 分页 -->
         <el-pagination
-                @size-change="pageSizeChangeHandle"
-                @current-change="pageCurrentChangeHandle"
-                :current-page="page"
+                @size-change="sizeChangeHandle"
+                @current-change="currentChangeHandle"
+                :current-page="formData.page"
                 :page-sizes="[10, 20, 50, 100]"
-                :page-size="limit"
+                :page-size="formData.limit"
                 :total="total"
                 layout="total, sizes, prev, pager, next, jumper">
         </el-pagination>
         <!-- 弹窗, 新建 -->
-        <addEditData  v-if="addEditDataVisible" ref="addEditData" @searchDataList="getData"></addEditData>
+        <addEditData  v-if="addEditDataVisible" ref="addEditData" @searchDataList="getTree"></addEditData>
     </div>
 </template>
 
 <script>
-    import mixinViewModule from '@/mixins/view-module'
+    // import mixinViewModule from '@/mixins/view-module'
     import MyTableTree from "./tree.vue";
     import TableTreeColumn from "@/components/table-tree-column";
     import Bread from "@/components/bread";
     import addEditData from './model-add-edit-data'
     import { jdCateUrl } from '@/api/url'
     import { jdCateSubcollection,jdCatePage } from '@/api/api'
+    
     export default {
-        mixins: [mixinViewModule],
+        // mixins: [mixinViewModule],
         data () {
             return {
-                mixinViewModuleOptions: {
-                    getDataListURL: jdCateUrl,
-                    getDataListIsPage: true,
-                    activatedIsNeed:false,
-                    // exportURL: '/admin-api/log/login/export',
-                    // deleteURL: deleteShopStyle,
-                    deleteIsBatch: false,
-                    deleteIsBatch: true,
-                    deleteIsBatchKey: 'id'
-                },
+                  dataListLoading:false,
+                // mixinViewModuleOptions: {
+                //     getDataListURL: jdCateUrl,
+                //     getDataListIsPage: true,
+                //     activatedIsNeed:false,
+                //     // exportURL: '/admin-api/log/login/export',
+                //     // deleteURL: deleteShopStyle,
+                //     deleteIsBatch: false,
+                //     deleteIsBatch: true,
+                //     deleteIsBatchKey: 'id'
+                // },
                 breaddata: [ "商品管理", "京东分类"],
                 addEditDataVisible:false,
                 formData:{
                     page:1,
-                    limit: 60,
+                    limit:10,
                     parentId:0
                 },
+                total: 0,
                 treeConfig: {
                     //等于 el-tree 的选项配置
                     options: {
@@ -96,38 +99,52 @@
             TableTreeColumn,
             addEditData
         },
-        watch:{
-            'limit' (val) {
-                this.getData();
-            }
-        },
+        // watch:{
+        //     'limit' (val) {
+        //         this.getData();
+        //     }
+        // },
         created() {
-            this.getData();
+            this.getTree();
         },
         methods: {
-            getData(){
-                this.getDataList().then((res)=>{
-                    this.getTree(res);
-                })
+             // 每页数
+            sizeChangeHandle (val) {
+                this.formData.page= 1;
+                this.formData.limit = val;
+                this.getTree();
             },
-            getTree(res) {
-                if (res.code == 200) {
-                    var data = res.data.list;
-                    console.log(data);
-                    //处理树形数据
-                    // this.treeConfig.rows =  data;
-                    data.forEach((item, index) => {
-                        console.log(item, index)
-                        item.label = item.id;
-                        item.name = "",
-                        item.level=1
-                        item.relateList && item.relateList.forEach((item2, index2) => {
-                            item.name += (" "+item2.name);
-                        });
-                    })
-                    this.treeConfig.rows = data
-
+            // 当前页
+            currentChangeHandle (val) {
+                this.formData.page = val;
+                this.getTree();
+            },
+            getTree() {
+                 let obj = {
+                    params:this.formData
                 }
+                this.dataListLoading = true;
+                jdCatePage(obj).then(res => {
+                     this.dataListLoading = false;
+                    if (res.code == 200) {
+                        var data = res.data.list;
+                        this.total = res.data.total;
+                        console.log(data);
+                        //处理树形数据
+                        // this.treeConfig.rows =  data;
+                        data.forEach((item, index) => {
+                            console.log(item, index)
+                            item.label = item.id;
+                            item.name = "",
+                            item.level=1
+                            item.relateList && item.relateList.forEach((item2, index2) => {
+                                item.name += (" "+item2.name);
+                            });
+                        })
+                        this.treeConfig.rows = data
+
+                    }
+                });
             },
             returnRelat(row){
                 console.log("......//////");

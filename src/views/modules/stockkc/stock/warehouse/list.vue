@@ -58,14 +58,20 @@
             </el-table-column>
             <el-table-column prop="isEnable" label="启用" align="center">
                 <template slot-scope="scope">
-                    <el-switch
-                            v-model="scope.row.isEnable"
-                            :active-value="1"
-                            active-color="#13ce66"
-                            inactive-color="#ff4949"
-                            @change="switchHandle('singe',scope.row)"
-                    >
-                    </el-switch>
+                    <div style="position: relative;">
+                        <el-switch
+                                v-model="scope.row.isEnable"
+                                :active-value="1"
+                                active-color="#13ce66"
+                                inactive-color="#ff4949"
+                        >
+                        </el-switch>
+                        <div  @click="switchHandle('singe',scope.row)" class="hiddenSwitch">
+                            <!-- 遮罩层 -->
+                            <!-- {{scope.row.recommendFlag}} -->
+                        </div>
+                    </div>
+
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center" width="200">
@@ -182,7 +188,7 @@
                 this.currentIndex = index;
                 var obj = {
                     "storeId": row.id,
-                    "isEnable":row.isEnable?1:0
+                    "isEnable":row.isEnable?0:1
                 }
 
 
@@ -220,7 +226,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "@/element-ui/theme-variables.scss";
     .bottomFun {
         display: flex;
         justify-content: space-between;
@@ -231,5 +236,12 @@
             display: flex;
             align-items: center;
         }
+    }
+    .hiddenSwitch{
+        position: absolute;
+        width:100%;
+        height:100%;
+        top:0;
+        left:0;
     }
 </style>

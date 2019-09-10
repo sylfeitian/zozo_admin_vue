@@ -18,11 +18,11 @@
 
         <!-- 分页 -->
         <el-pagination
-                @size-change="pageSizeChangeHandle"
-                @current-change="pageCurrentChangeHandle"
-                :current-page="page"
+                @size-change="sizeChangeHandle"
+                @current-change="currentChangeHandle"
+                :current-page="formData.page"
                 :page-sizes="[10, 20, 50, 100]"
-                :page-size="limit"
+                :page-size="formData.limit"
                 :total="total"
                 layout="total, sizes, prev, pager, next, jumper">
         </el-pagination>
@@ -32,36 +32,42 @@
 </template>
 
 <script>
-    import mixinViewModule from '@/mixins/view-module'
+    // import mixinViewModule from '@/mixins/view-module'
     import TableTreeColumn from "@/components/table-tree-column";
     import MyTableTree from "./tree.vue";
     import Bread from "@/components/bread";
     import addEditData from './model-add-edit-data'
     import { categoryJpPageTier } from '@/api/api'
-    import { categoryJpUrl } from '@/api/url'
+    // import { categoryJpUrl } from '@/api/url'
     export default {
-        mixins: [mixinViewModule],
+        // mixins: [mixinViewModule],
         data () {
             return {
-                mixinViewModuleOptions: {
-                    getDataListURL: categoryJpUrl,
-                    getDataListIsPage: true,
-                    // exportURL: '/admin-api/log/login/export',
-                    // deleteURL: deleteShopStyle,
-                    deleteIsBatch: false,
-                    deleteIsBatch: true,
-                    deleteIsBatchKey: 'id'
-                },
+                dataListLoading:false,
+                // mixinViewModuleOptions: {
+                //     getDataListURL: categoryJpUrl,
+                //     getDataListIsPage: true,
+                //     // exportURL: '/admin-api/log/login/export',
+                //     // deleteURL: deleteShopStyle,
+                //     deleteIsBatch: false,
+                //     deleteIsBatch: true,
+                //     deleteIsBatchKey: 'id'
+                // },
                 breaddata: [ "商品管理", "日本分类"],
                 // dataForm: {
                 //     selectName: "",//分类名称
                 // },
+                formData:{  
+                    page:1,   
+                    limit: 10,
+                },
+                total: 0,
                 value: '',
                 addEditDataVisible:false,
                 treeConfig: {
                     //等于 el-tree 的选项配置
                     options: {
-                        'show-checkbox': true
+                        // 'show-checkbox': true
                     },
                     //自定义表格列 目前只支持文本渲染
                     columns: [
@@ -105,11 +111,24 @@
             this.getTree();
         },
         methods: {
+             // 每页数
+            sizeChangeHandle (val) {
+                this.formData.page= 1;
+                this.formData.limit = val;
+                this.getTree();
+            },
+            // 当前页
+            currentChangeHandle (val) {
+                this.formData.page = val;
+                this.getTree();
+		    },
             getTree() {
                 let obj = {
                     params:this.formData
                 }
+                this.dataListLoading = true;
                 categoryJpPageTier(obj).then(res => {
+                     this.dataListLoading = false;
                     //Promise后 对数据格式进行处理
                     if (res.code == 200) {
                         var data = res.data.list;

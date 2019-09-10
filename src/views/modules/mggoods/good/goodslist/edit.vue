@@ -185,7 +185,7 @@
     import Bread from "@/components/bread";
     import quillEditorImg from "@/components/quillEditor"
     import addEditData from './model-edit-data'
-    import mixinViewModule from '@/mixins/view-module'
+    // import mixinViewModule from '@/mixins/view-module'
     import { backScanZozogoods, saveZozogoods } from '@/api/api'
     import sizeData from './model-size'
 
@@ -194,7 +194,7 @@
     import 'quill/dist/quill.bubble.css';
     import Quill from 'quill'
     export default {
-        mixins: [mixinViewModule],
+        // mixins: [mixinViewModule],
         data () {
             return {
                 breaddata: [ "商品管理","商品列表", "编辑商品"],
@@ -203,8 +203,13 @@
                     goodsName:"",
                     madeIn:"",
                     material:"",
+                    firstCategory:'',//
+                    firstCategoryId:'',
+                    secondCategoryId:'',
+                    secondCategory:'',
                 },
                 sizeDataVisible: false,
+                row:'',
             }
         },
         components: {
@@ -219,6 +224,7 @@
         // ],
         methods: {
             init(row){
+                this.row = row;
                 this.$nextTick(()=>{
                     if(row){
                         var obj  = {
@@ -250,7 +256,7 @@
             logMore(){
                 this.setAddEditDataVisible(true);
                 this.$nextTick(() => {
-                    this.$refs.addEditData.init()
+                    this.$refs.addEditData.init(this.row)
                 })
             },
             setAddEditDataVisible(boolargu){
@@ -274,10 +280,10 @@
                     that.changePage();
                 }).catch();
             },
-            getData(saveFlag){
+            getData(saveType){
                 let that = this;
-                this.dataForm.saveFlag = saveFlag;
-                saveZozogoods({saveLookDTO:this.dataForm}).then((res)=>{
+                this.dataForm.saveFlag = saveType;
+                saveZozogoods(this.dataForm).then((res)=>{
                     if(res.code == 200){
                         this.$message({
                             message: res.msg,
@@ -299,7 +305,7 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     /*.inforTit {*/
     /*    width: 100px;*/
     /*    font-weight: 600;*/

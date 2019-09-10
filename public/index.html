@@ -44,23 +44,26 @@
 //      window.SITE_CONFIG['apiURL'] = 'http://192.168.1.5:9093';   //李涛
 //      window.SITE_CONFIG['imgURL'] = 'http://62.234.0.169:8888';
 //      window.SITE_CONFIG['imgURL'] = 'http://192.168.1.9:9093';  //孙
-     		window.SITE_CONFIG['imgURL'] = ' http://oss-cn-beijing.speedycloud.org';
+     		window.SITE_CONFIG['imgURL'] = 'http://oss-cn-beijing.speedycloud.org';
     </script>
   <% } %>
   <!-- 集成测试环境 -->
   <% if (process.env.VUE_APP_NODE_ENV === 'prod:sit') { %>
     <script>window.SITE_CONFIG['apiURL'] = 'http://106.2.12.221:9093';</script>
-    <script>window.SITE_CONFIG['imgURL'] = 'http://62.234.0.169:8888';</script>
+    <!-- <script>window.SITE_CONFIG['imgURL'] = 'http://62.234.0.169:8888';</script> -->
+    <script>window.SITE_CONFIG['imgURL'] = 'http://oss-cn-beijing.speedycloud.org';</script>
   <% } %>
   <!-- 验收测试环境 -->
   <% if (process.env.VUE_APP_NODE_ENV === 'prod:uat') { %>
     <script>window.SITE_CONFIG['apiURL'] = 'http://106.2.12.221:9093';</script>
+    <!-- <script>window.SITE_CONFIG['imgURL'] = 'http://62.234.0.169:8888';</script> -->
     <script>window.SITE_CONFIG['imgURL'] = 'http://62.234.0.169:8888';</script>
   <% } %>
   <!-- 生产环境 -->
   <% if (process.env.VUE_APP_NODE_ENV === 'prod') { %>
     <script>window.SITE_CONFIG['apiURL'] = 'http://106.2.12.221:9093';</script>
-    <script>window.SITE_CONFIG['imgURL'] = 'http://62.234.0.169:8888';</script>
+    <!-- <script>window.SITE_CONFIG['imgURL'] = 'http://62.234.0.169:8888';</script> -->
+    <script>window.SITE_CONFIG['imgURL'] = 'http://oss-cn-beijing.speedycloud.org';</script>
   <% } %>
 </head>
 <body>

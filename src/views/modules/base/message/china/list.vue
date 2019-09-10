@@ -28,7 +28,7 @@
 			  @size-change="sizeChangeHandle"
 			  @current-change="currentChangeHandle"
 			  :current-page="formData.page"
-			  :page-sizes="[20, 50, 100]"
+			  :page-sizes="[10,20, 50, 100]"
 			  :page-size="formData.limit"
 			  :total="total"
 			  layout="total, sizes, prev, pager, next, jumper">
@@ -44,7 +44,7 @@
 
 <script>
 import cloneDeep from 'lodash/cloneDeep'
-import mixinViewModule from "@/mixins/view-module";
+// import mixinViewModule from "@/mixins/view-module";
 // import TableTreeColumn from "@/components/table-tree-column";
 
 
@@ -65,7 +65,7 @@ import addData from "./add"
 import editData from "./edit"
 let id = 1000;
 export default {
-  mixins: [mixinViewModule],
+  // mixins: [mixinViewModule],
   data() {
     return {
       table: [],
@@ -221,6 +221,7 @@ export default {
     	  let obj = {
             params:this.formData
         }
+        // 获取表格数据
        getdatalist(obj).then(res => {
           //Promise后 对数据格式进行处理
           if (res.code == 200) {
@@ -253,7 +254,7 @@ export default {
     // 新增下级
    addRowFn(row){
    		this.reset();     //清空弹窗内容
-   		this.dialogTableVisible = true;
+   		this.dialogTableVisible = true;   //新增分类弹窗
    		if(row){ //添加下一级
       	if(row.grade == 2){
 	   			this.$message('二级分类不可以新增下一级');
@@ -295,11 +296,17 @@ export default {
        	deleteCategoryCn(row,false).then((res)=>{
           console.log(res);
           if(res.code == 200){
-          	this.$message.success("删除成功");
-          	this.getTree();
+            if(res.data){
+              this.$message.success("删除成功 ");
+              this.getTree();
+            }else{
+                this.$message.error("删除的分类存在关联的分类或商品");
+            }
+          	
           }else{
-          	this.$message(res.msg);
+            this.$message.error("删除失败");
           }
+        
         });
     },
     //设为推荐
@@ -397,7 +404,7 @@ export default {
     	showCategoryCn(data,false).then((res)=>{
           console.log(res);
           if(res.code == 200){
-          	this.$message.success("设为显示成功")
+          	this.$message.success("设为"+(data.showFlag==1?'显示':'不显示')+"成功")
           	this.getTree();
           }else{
           	this.$message(res.msg);
@@ -448,4 +455,9 @@ export default {
 .grey{
 		color: #999;
 	}
+  .el-tree img{
+    width:60px;
+    height: 60px;
+    padding:8px;
+  }
 </style>

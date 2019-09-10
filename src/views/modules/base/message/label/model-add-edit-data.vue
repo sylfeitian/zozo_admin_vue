@@ -180,7 +180,7 @@
                         that.uploading = false
                         if(res && res.code == "200"){
                             var url = res.data.url
-                            that.dataForm.gcPic = url;
+                            that.dataForm.imgUrl = url;
                             // that.currentIndex = -1;//不能这样写，防止网络延迟
                             resolve("true")
                         }else {
@@ -202,11 +202,12 @@
                     if (valid) {
                         this.loading = true;
                         var obj = {
-                            "styleName":  this.dataForm.styleName,
-                            "styleType":  this.dataForm.styleType,
-                            "sex":  this.dataForm.sex,
-                            "imgUrl":  this.dataForm.imgUrl,
-                            "sort":  this.dataForm.sort,
+                            styleName:  this.dataForm.styleName,
+                            styleType:  this.dataForm.styleType,
+                            gender:  this.dataForm.gender,
+                            imgUrl:  this.dataForm.imgUrl,
+                            sort:  this.dataForm.sort,
+                            description: this.dataForm.description,
                         }
                         if(this.row) obj.id = this.row.id
                         var fn = updateShopStyle;

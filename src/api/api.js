@@ -867,3 +867,7 @@ export const goodsListVisible = params => { return http.get(`${base}/cartrecom/g
 //异常日志-------------------------------------------------------------------------------------------------------------
 // 操作模块列表
 export const errorListModule = params => { return http.get(`${base}/log/error/listModule`, params).then(res => res.data); };
+
+//黑名单管理表-------------------------------------------------------------------------------------------------------------
+// 添加黑名单
+export const addBlcaklist = params => { return http.post(`${base}/blacklist/add`, params).then(res => res.data); };

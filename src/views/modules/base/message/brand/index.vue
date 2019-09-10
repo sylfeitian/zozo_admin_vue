@@ -102,6 +102,7 @@
         methods: {
             getData(){
                 this.dataForm = {};
+                this.page = 1;
                 for(let key in this.dataFormShow){
                     this.$set(this.dataForm,`${key}`,this.dataFormShow[key]);
                 }
@@ -136,6 +137,10 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+    /deep/ .cell{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>
