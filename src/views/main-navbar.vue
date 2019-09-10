@@ -126,7 +126,7 @@
         <el-menu-item index="4" class="aui-navbar__avatar">
           <el-dropdown placement="bottom" :show-timeout="0">
             <span class="el-dropdown-link">
-              <img style="width:40px;height:40px;" src="~@/assets/img/logo300.png">
+              <img style="width:40px;height:40px;" src="~@/assets/img/rightLogo.png">
               <span>{{ $store.state.user.realName }}</span>
               <i class="el-icon-arrow-down"></i>
             </span>

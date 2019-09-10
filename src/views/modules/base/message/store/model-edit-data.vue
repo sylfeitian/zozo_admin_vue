@@ -274,8 +274,8 @@
                             "storeName":  this.dataForm.storeName,
                             "descriptionJp":  this.dataForm.descriptionJp,
                             "description":  this.dataForm.description,
-                            "imageUrl":  this.dataForm.imageUrl,
-                            "storeLogo":  this.dataForm.storeLogo,
+                            "imageUrl":   this.dataForm.imageUrl, //"http://bug.leimingtech.com/zentao/file-read-25289.png",
+                            "storeLogo": this.dataForm.storeLogo,// "http://bug.leimingtech.com/zentao/file-read-25289.png",
                             "mainTag":  mainTag,
                         }
                         if(this.row) obj.id = this.row.id
