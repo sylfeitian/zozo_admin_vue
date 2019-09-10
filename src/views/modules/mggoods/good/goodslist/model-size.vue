@@ -49,7 +49,7 @@
             init (row,row2) {
                 this.visible = true;
                 this.row = row;
-                this.sizeId = this.dataList.sizeId;
+                this.sizeId = this.dataList.sizeIdJp;
                 this.spuid = this.dataList.idJp;
                 this.$nextTick(() => {
                     // this.$refs['addForm'].resetFields();

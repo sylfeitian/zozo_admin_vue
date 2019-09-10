@@ -14,7 +14,7 @@
             </el-form-item>
             <el-form-item label="店铺名称：">
                 <el-select
-                        v-model="dataFormShow.storeName"
+                        v-model="dataFormShow.storeId"
                         filterable
                         placeholder="请输入店铺名称"
                         :loading="loading"
@@ -29,7 +29,7 @@
             </el-form-item>
             <el-form-item label="品牌名称：">
                 <el-select
-                        v-model="dataFormShow.brandName"
+                        v-model="dataFormShow.brandId"
                         filterable
                         placeholder="请输入品牌名称"
                         :loading="loading"
@@ -73,8 +73,8 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="getData()">查询</el-button>
-                <el-button   class="btn"type="primary" plain @click="reset()" >重置</el-button>
+                <el-button class="btn" type="primary" @click="getData()">查询</el-button>
+                <el-button class="btn" type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
         <el-radio-group v-model="activeName" @change="handleClick">
@@ -106,7 +106,7 @@
                     <img
                             :src="scope.row.mainImageUrl | filterImgUrl"
                             alt=""
-                            style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
+                            style=" object-fit: contain;width: 70px;height:70px;"
                     >
                 </template>
             </el-table-column>
@@ -173,7 +173,7 @@
             <el-table-column label="更新时间" align="center">
                 <template slot-scope="scope">
                     <div>
-                        {{scope.row.updateDate}}
+                        {{scope.row.syncDate}}
                     </div>
                 </template>
             </el-table-column>
@@ -281,7 +281,7 @@
         },
         created () {
             // 第一次请求数据
-            this.handleClick();
+            // this.handleClick();
             this.activeName =  this.status == undefined ? "" : this.status;
             this.dataFormShow.showWeb = this.status == undefined ? "" : this.status;
             this.backScan();
@@ -459,8 +459,8 @@
             align-items: center;
         }
     }
-    img {
-        width: 100px;
-        height: 100px;
-    }
+    /*img {*/
+    /*    width: 100px;*/
+    /*    height: 100px;*/
+    /*}*/
 </style>
