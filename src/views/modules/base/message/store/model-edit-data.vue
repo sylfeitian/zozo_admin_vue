@@ -13,6 +13,7 @@
                 ref="addForm"
                 @keyup.enter.native="dataFormSubmit('addForm')"
                 label-width="120px"
+                v-loading="backScanLoading"
         >
             <el-form-item label="店铺ID：">
                 <span>{{dataForm.idJp}}</span>
@@ -38,7 +39,7 @@
                         <template slot-scope="scope">
                             <div class="pcCoverUrl imgUrl">
                                 <img-cropper
-                                        v-loading="uploading"
+                                        v-loading="uploading1"
                                         ref="cropperImg"
                                         :index="'1'"
                                         :cropImg="dataForm.imageUrl"
@@ -56,7 +57,7 @@
                         <template slot-scope="scope">
                             <div class="pcCoverUrl imgUrl">
                                 <img-cropper
-                                        v-loading="uploading"
+                                        v-loading="uploading2"
                                         ref="cropperImg"
                                         :index="'2'"
                                         :cropImg="dataForm.storeLogo"
@@ -111,8 +112,9 @@
                 title:'',
                 visible : false,
                 loading : false,
-                uploading:false,
-
+                backScanLoading:false,
+                uploading1:false,
+                uploading2:false,
                 dataForm: {
                     id:"",
                     idJp: "",//店铺ID
@@ -187,7 +189,9 @@
                     imageUrl:this.dataForm.imageUrl,
                     storeLogo:this.dataForm.storeLogo,
                 }
+                this.backScanLoading = true;
                 backScanShopStore(obj).then((res)=>{
+                    this.backScanLoading = false;
                     if(res.code == 200){
                         Object.assign(this.dataForm,res.data);
                         this.dataForm.mainTag = res.data.mainTag.split(",");
@@ -220,10 +224,18 @@
             uploadPic(base64,index){
                 const params = { "imgStr": base64 };
                 const that = this;
-                this.uploading = true;
+                if(index==1){
+                    this.uploading1 = true;
+                }else if(index==2){
+                    this.uploading2 = true;
+                }
                 return new Promise(function(resolve){
                     uploadPicBase64(params).then(res =>{
-                        that.uploading = false
+                        if(index==1){
+                            that.uploading1 = false;
+                        }else if(index==2){
+                            that.uploading2 = false;
+                        }
                         if(res && res.code == "200"){
                             var url = res.data.url
                             if(index == 1){
@@ -254,7 +266,7 @@
                     if (valid) {
                         this.loading = true;
                         var mainTag = this.dataForm.mainTag?this.dataForm.mainTag.join(","):'';
-                        console.log(this.dataForm.mainTag);
+                        console.log(this.dataForm);
                         var obj = {
                             "idJp":  this.dataForm.idJp,
                             "storeNameGlo":  this.dataForm.storeNameGlo,
