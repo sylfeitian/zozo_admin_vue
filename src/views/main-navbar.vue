@@ -7,7 +7,7 @@
       </h1>-->
       <img
         style="height:100%"
-        src="http://morefun.image.alimmdn.com/leiming/logo.png"
+        src="@/assets/img/logo.png"
         alt=""
       >
     </div>
@@ -346,6 +346,7 @@ export default {
 .aui-navbar__header {
   width: 220px;
   height: 100%;
+   text-align: center;
 }
 .aui-navbar__body {
   background: transparent !important;
