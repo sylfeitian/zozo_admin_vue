@@ -81,13 +81,13 @@
                     width="30%">
                 <el-form :model="numberDataForm" ref="numberDataForm" :rules="dataRule" @keyup.enter.native="numberSubmitHandle()" label-width="120px">
                     <el-form-item style="margin-left: -42px!important;">
-                        <span>账号：</span><span>{{numberDataForm.username}}</span>
+                        <span>账号：</span><span>{{numberDataForm.id}}</span>
                     </el-form-item>
-                    <el-form-item label="密码：" prop="newPassword">
-                        <el-input v-model="numberDataForm.newPassword" placeholder="请输入6-12位的密码" show-password minlength="6" maxlength="12"></el-input>
+                    <el-form-item label="密码：" prop="password">
+                        <el-input v-model="numberDataForm.password" placeholder="请输入6-12位的密码" show-password minlength="6" maxlength="12"></el-input>
                     </el-form-item>
-                    <el-form-item label="确认密码：" prop="confirmPassword">
-                        <el-input v-model="numberDataForm.confirmPassword" placeholder="请确认密码" show-password minlength="6" maxlength="12"></el-input>
+                    <el-form-item label="确认密码：" prop="newPassword">
+                        <el-input v-model="numberDataForm.newPassword" placeholder="请确认密码" show-password minlength="6" maxlength="12"></el-input>
                     </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
@@ -122,9 +122,9 @@
                 centerDialogVisible:false,
                 buttonStatus:false,
                 numberDataForm:{
+                    password: '',
                     newPassword: '',
-                    confirmPassword: '',
-                    username:''
+                    id:''
                 },
             }
         },
@@ -154,10 +154,10 @@
                     callback()
                 }
                 return {
-                    newPassword: [
+                    password: [
                         { required: false, validator: validatePassword, trigger: 'blur' }
                     ],
-                    confirmPassword: [
+                    newPassword: [
                         { required: false, validator: validateComfirmPassword, trigger: 'blur' }
                     ]
                 }
