@@ -34,6 +34,7 @@
 
 <script>
     import { editsizejptag } from '@/api/api'
+    import cloneDeep from 'lodash/cloneDeep'
     export default {
         name: "model-add-edit-data",
         data () {
@@ -64,7 +65,7 @@
         methods: {
             init (row) {
                 this.visible = true;
-                this.dataForm = row;
+                this.dataForm =cloneDeep(row);
                 this.title="编辑尺码";
                
                 this.$nextTick(() => {

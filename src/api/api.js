@@ -852,6 +852,10 @@ export const settingPage = params => { return http.post(`${base}/setting/order/c
 export const settingPopup = params => { return http.post(`${base}/setting/order/confirm/popup`,params).then(res => res.data); };
 //设置首页集合推荐
 export const sethomeIndexPage = params => { return http.post(`${base}/folderrecommend/setrecommend`, params).then(res => res.data); };
+//购物车添加商品
+export const addGoodscarList = params => { return http.post(`${base}/cartrecom/add`, params).then(res => res.data); };
+//添加商品未推荐列表
+export const goodsListVisible = params => { return http.get(`${base}/cartrecom/goodslist`, params).then(res => res.data); };
 
 
 

@@ -26,7 +26,7 @@
             </el-select>
         </el-form-item>
         <el-form-item>
-            <el-button  class="btn" type="primary" @click="getDataList()">查询</el-button>
+            <el-button  class="btn" type="primary" @click="getData()">查询</el-button>
             <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
         </el-form-item>
         <el-form-item style="float:right;">
@@ -202,7 +202,7 @@
             <el-form-item label="商品名称：">
                 <el-input v-model="goodsdataForm.goodsName" placeholder="请输入商品名称" clearable></el-input>
             </el-form-item>
-            <el-form-item label="商品名称：">
+            <el-form-item label="选择分类：">
                 <el-cascader
                     :options="classList"
                     change-on-select
@@ -405,6 +405,10 @@
                 };
                 this.getDataList();
             },
+            getData(){
+                this.page =1;
+                 this.getDataList();
+            },
             //打开新增编辑活动弹框
             addActivity(id){
                 this.activiVisible = true;
@@ -564,7 +568,6 @@
                                 this.classList[i].list = null
                             }
                             if(this.classList[i].list&&this.classList[i].list.length>0){
-                                console.log('222222',this.classList[i].list)
                                 let aa = this.classList[i].list;
                                 for(j=0;j<aa.length;j++){
                             　　　　 if(aa[j].list&&aa[j].list.length==0){
@@ -608,12 +611,13 @@
                     goodsName : '',
                     categoryId : ''
                 };
+                this.selectedOptions = [];
                 this.getGoodsDataList()
             },
             gettem(item){
                 console.log(item)
                 this.checkFunStatus = item.id;
-                this.checkItem = item.nameJp;
+                this.checkItem = item.nameJp;//数据正常后改为中国商品名称
                 this.activiDataForm.linkValue = item.id;
                 this.activiDataForm.linkValueName = this.checkItem;
             },

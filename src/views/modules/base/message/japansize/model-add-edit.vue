@@ -43,7 +43,8 @@
 </template>
 
 <script>
-	import {uploadsizejptag,getsizecn} from '@/api/api'
+    import {uploadsizejptag,getsizecn} from '@/api/api'
+    import cloneDeep from 'lodash/cloneDeep'
     export default {
         name: "model-add-edit-data",
         data () {
@@ -91,7 +92,7 @@
         	},
             init (row) {
                 this.visible = true;
-                this.dataForm = row;
+                this.dataForm = cloneDeep(row);
                 this.title="修改/关联尺码";
 //              this.$nextTick(() => {
 //                  this.$refs['addForm'].resetFields();

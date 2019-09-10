@@ -397,6 +397,15 @@ export const homeIndexPage = `${base}/folderrecommend/page`;
 //首页集合列表批量删除
 export const homeIndexDelete = `${base}/folderrecommend/delete`;
 
+//购物车推荐列表
+export const goodsCarlist = `${base}/cartrecom/page`;
+//购物车推荐列表批量删除
+export const goodsCarlistDelete = `${base}/cartrecom`;
+//Q&A主页面列表
+export const QamainList = `${base}/questionanswer/dataPage`;
+
+
+
 
 
 

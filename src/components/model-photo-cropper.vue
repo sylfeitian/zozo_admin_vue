@@ -26,7 +26,7 @@
 			<img class="pre-img crop-pre-img" :style="{width:imgWidth,height:imgHeight}" :src="cropper.cropImg">
 		</div>
 	    <span slot="footer" class="dialog-footer">
-	        <!-- <el-button type="primary" @click="cropper.dialogVisible = false">确 定</el-button> -->
+	        <el-button @click="cancleImg">取消</el-button>
 			 <el-button type="primary" @click="submitImg()">确 定</el-button>
 	    </span>
     </el-dialog>
@@ -76,6 +76,7 @@
 				//imgWidth:'337.7778px',
 				//imgHeight:'190px',
 				value:'',
+				oldimg:'',
 			}
 		},
 		// props:['index','imgWidth','imgHeight', 'aspectRatio','font-size'],
@@ -121,12 +122,16 @@
 			VueCropper
 		},
 		created(){
+		
 		},
 		mounted(){
+			console.log("mounted"+this.cropImg);
+			this.oldimg = this.cropImg
 			this.backScanImage(this.cropImg);	
 		},
 		methods:{
 			init(){
+				console.log("init");
 				this.cropper.imgShow = false;
 			},
 			// 初始回显图片
@@ -140,29 +145,52 @@
 					this.cropper.cropImg = "";
 				}
 			},
-      setImage(e){
-          const file = e.target.files[0];
-          if (!file.type.includes('image/')) {
-              return;
-          }
-          const reader = new FileReader();
-          reader.onload = (event) => {
-              this.cropper.dialogVisible = true;
-              this.cropper.imgShow = true;
-              this.cropper.imgSrc = event.target.result;
-              this.$refs.cropper && this.$refs.cropper.replace(event.target.result);
-							this.value = "";
-          };
-          reader.readAsDataURL(file);
-      },
-      cropImage () {
-        this.cropper.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL();
-        //this.$emit("GiftUrlHandle", this.cropper.cropImg,this.index);
-      },
-	  submitImg(){
-		  this.cropper.dialogVisible = false;
-		  this.$emit("GiftUrlHandle", this.cropper.cropImg,this.index);
-	  }
+			setImage(e){
+				console.log("setImage");
+				const file = e.target.files[0];
+				if (!file.type.includes('image/')) {
+					this.$message.error('仅支持（jpg,jpeg,png,bmp,PNG,JEPG,JPG）为后缀的文件!');
+					//   this.value = file
+					var cropImg = this.cropper.cropImg;
+					this.cropper.cropImg = ""
+					this.cropper.cropImg =cropImg;
+					this.value = "";
+					return;
+				}
+				if(file.size/(1024*1024) > 10){
+					this.$message.error('图片大小不能大于10M');
+					//    this.value = file
+					var cropImg = this.cropper.cropImg;
+					this.cropper.cropImg = ""
+					this.cropper.cropImg =cropImg;
+					this.value = "";
+					return
+				}
+				const reader = new FileReader();
+				reader.onload = (event) => {
+					this.cropper.dialogVisible = true;
+					this.cropper.imgShow = true;
+					this.cropper.imgSrc = event.target.result;
+					this.$refs.cropper && this.$refs.cropper.replace(event.target.result);
+					this.value = "";
+				};
+				reader.readAsDataURL(file);
+			},
+			cropImage () {
+				this.cropper.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL();
+				//this.$emit("GiftUrlHandle", this.cropper.cropImg,this.index);
+			},
+			// 取消上传图片，要回显一起拿的图片
+			cancleImg(){
+				this.cropper.dialogVisible = false;
+				this.cropper.cropImg =  this.oldimg;
+			},
+			submitImg(){
+				this.cropper.dialogVisible = false;
+				this.$emit("GiftUrlHandle", this.cropper.cropImg,this.index);
+				// 上传图片成功后，最有一次上传的图片要更新
+				this.oldimg = this.cropper.cropImg
+			}
 		}
 	}
 </script>

@@ -13,6 +13,7 @@
                 ref="addForm"
                 @keyup.enter.native="dataFormSubmit('addForm')"
                 label-width="120px"
+                v-loading="backScanLoading"
         >
             <el-form-item label="店铺ID：">
                 <span>{{dataForm.idJp}}</span>
@@ -32,38 +33,44 @@
             <el-form-item label="店铺中文描述：" prop="description">
                 <el-input type="textarea" v-model="dataForm.description" placeholder=""></el-input>
             </el-form-item>
-            <el-form-item label="店铺主图：" prop="imageUrl" style="float: left;width:50%;">
-                <template slot-scope="scope">
-                    <div class="pcCoverUrl imgUrl" style="float: left;width:50%;">
-                        <img-cropper
-                                v-loading="uploading"
-                                ref="cropperImg"
-                                :index="'1'"
-                                :cropImg="dataForm.imageUrl"
-                                :imgWidth='"100px"'
-                                :imgHeight='"100px"'
-                                @GiftUrlHandle="GiftUrlHandle"
-                                style="display: inline-block;"
-                        ></img-cropper>
-                    </div>
-                </template>
-            </el-form-item>
-            <el-form-item label="店铺logo：" prop="storeLogo" style="float: right;width:50%;">
-                <template slot-scope="scope">
-                    <div class="pcCoverUrl imgUrl" style="float: left;width:50%;">
-                        <img-cropper
-                                v-loading="uploading"
-                                ref="cropperImg"
-                                :index="'1'"
-                                :cropImg="dataForm.storeLogo"
-                                :imgWidth='"100px"'
-                                :imgHeight='"100px"'
-                                @GiftUrlHandle="GiftUrlHandle"
-                                style="display: inline-block;"
-                        ></img-cropper>
-                    </div>
-                </template>
-            </el-form-item>
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="店铺主图：" prop="imageUrl">
+                        <template slot-scope="scope">
+                            <div class="pcCoverUrl imgUrl">
+                                <img-cropper
+                                        v-loading="uploading1"
+                                        ref="cropperImg"
+                                        :index="'1'"
+                                        :cropImg="dataForm.imageUrl"
+                                        :imgWidth='"100px"'
+                                        :imgHeight='"100px"'
+                                        @GiftUrlHandle="GiftUrlHandle"
+                                        style="display: inline-block;"
+                                ></img-cropper>
+                            </div>
+                        </template>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="店铺logo：" prop="storeLogo">
+                        <template slot-scope="scope">
+                            <div class="pcCoverUrl imgUrl">
+                                <img-cropper
+                                        v-loading="uploading2"
+                                        ref="cropperImg"
+                                        :index="'2'"
+                                        :cropImg="dataForm.storeLogo"
+                                        :imgWidth='"100px"'
+                                        :imgHeight='"100px"'
+                                        @GiftUrlHandle="GiftUrlHandle"
+                                        style="display: inline-block;"
+                                ></img-cropper>
+                            </div>
+                        </template>
+                    </el-form-item>
+                </el-col>
+            </el-row>
             <el-form-item label="选择风格标签：" prop="mainTag">
                 <el-select
                         v-model="dataForm.mainTag"
@@ -105,8 +112,9 @@
                 title:'',
                 visible : false,
                 loading : false,
-                uploading:false,
-
+                backScanLoading:false,
+                uploading1:false,
+                uploading2:false,
                 dataForm: {
                     id:"",
                     idJp: "",//店铺ID
@@ -178,10 +186,12 @@
                     // storeName:this.row.storeName,
                     descriptionJp:this.row.descriptionJp,
                     // description:this.row.description,
-                    imageUrl:this.row.imageUrl,
-                    storeLogo:this.row.storeLogo,
+                    imageUrl:this.dataForm.imageUrl,
+                    storeLogo:this.dataForm.storeLogo,
                 }
+                this.backScanLoading = true;
                 backScanShopStore(obj).then((res)=>{
+                    this.backScanLoading = false;
                     if(res.code == 200){
                         Object.assign(this.dataForm,res.data);
                         this.dataForm.mainTag = res.data.mainTag.split(",");
@@ -211,16 +221,29 @@
                 })
             },
             //上传图片
-            uploadPic(base64){
+            uploadPic(base64,index){
                 const params = { "imgStr": base64 };
                 const that = this;
-                this.uploading = true;
+                if(index==1){
+                    this.uploading1 = true;
+                }else if(index==2){
+                    this.uploading2 = true;
+                }
                 return new Promise(function(resolve){
                     uploadPicBase64(params).then(res =>{
-                        that.uploading = false
+                        if(index==1){
+                            that.uploading1 = false;
+                        }else if(index==2){
+                            that.uploading2 = false;
+                        }
                         if(res && res.code == "200"){
                             var url = res.data.url
-                            that.dataForm.gcPic = url;
+                            if(index == 1){
+                                that.dataForm.imageUrl = url;
+                            }else if(index == 2){
+                                that.dataForm.storeLogo = url;
+                            }
+
                             // that.currentIndex = -1;//不能这样写，防止网络延迟
                             resolve("true")
                         }else {
@@ -230,10 +253,10 @@
                     })
                 });
             },
-            GiftUrlHandle(val){
+            GiftUrlHandle(val,index){
                 console.log("base64上传图片接口");
                 console.log(val);
-                this.uploadPic(val);
+                this.uploadPic(val,index);
             },
             // 提交
             dataFormSubmit(formName){
@@ -243,7 +266,7 @@
                     if (valid) {
                         this.loading = true;
                         var mainTag = this.dataForm.mainTag?this.dataForm.mainTag.join(","):'';
-                        console.log(this.dataForm.mainTag);
+                        console.log(this.dataForm);
                         var obj = {
                             "idJp":  this.dataForm.idJp,
                             "storeNameGlo":  this.dataForm.storeNameGlo,
@@ -251,8 +274,8 @@
                             "storeName":  this.dataForm.storeName,
                             "descriptionJp":  this.dataForm.descriptionJp,
                             "description":  this.dataForm.description,
-                            "imageUrl":  this.dataForm.imageUrl,
-                            "storeLogo":  this.dataForm.storeLogo,
+                            "imageUrl":   this.dataForm.imageUrl, //"http://bug.leimingtech.com/zentao/file-read-25289.png",
+                            "storeLogo": this.dataForm.storeLogo,// "http://bug.leimingtech.com/zentao/file-read-25289.png",
                             "mainTag":  mainTag,
                         }
                         if(this.row) obj.id = this.row.id

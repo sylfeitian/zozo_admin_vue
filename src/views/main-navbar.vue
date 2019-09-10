@@ -7,7 +7,7 @@
       </h1>-->
       <img
         style="height:100%"
-        src="http://morefun.image.alimmdn.com/leiming/logo.png"
+        src="@/assets/img/logo.png"
         alt=""
       >
     </div>
@@ -126,7 +126,7 @@
         <el-menu-item index="4" class="aui-navbar__avatar">
           <el-dropdown placement="bottom" :show-timeout="0">
             <span class="el-dropdown-link">
-              <img style="width:40px;height:40px;" src="~@/assets/img/logo300.png">
+              <img style="width:40px;height:40px;" src="~@/assets/img/rightLogo.png">
               <span>{{ $store.state.user.realName }}</span>
               <i class="el-icon-arrow-down"></i>
             </span>
@@ -346,6 +346,7 @@ export default {
 .aui-navbar__header {
   width: 220px;
   height: 100%;
+   text-align: center;
 }
 .aui-navbar__body {
   background: transparent !important;
