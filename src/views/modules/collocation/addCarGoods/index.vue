@@ -290,19 +290,25 @@
             },
             // 关闭弹框
             handleClose(done){
-                let arry1 = [];
-                this.trueList.map(item=>{
-                    arry1.push({goodsId:item.idJp,sortNum:255,goodsName:item.name,price:item.sellPrice,category:item.firstCategory+item.goodsTypeName})
-                })
-                addGoodscarList({list:arry1}).then((res)=>{
-                    console.log('添加结果',res)
-                    if(res.code == 200){
-                        this.$message.success('添加成功');
-                        done();
-                    }else{
-                        this.$message.error(res.msg)
-                    }
-                })
+                if(this.trueList.length!=0){
+                    let arry1 = [];
+                    this.trueList.map(item=>{
+                        arry1.push({goodsId:item.idJp,sortNum:255,goodsName:item.name,price:item.sellPrice,category:item.firstCategory+item.goodsTypeName})
+                    })
+                    addGoodscarList({list:JSON.stringify(arry1)}).then((res)=>{
+                        console.log('添加结果',res)
+                        if(res.code == 200){
+                            this.$message.success('添加成功');
+                            done();
+                        }else{
+                            this.$message.error(res.msg)
+                        }
+                    })
+                }else{
+                    done();
+                }
+                            done();
+
             },
             //单选商品项
             gettem($event,item,index){
