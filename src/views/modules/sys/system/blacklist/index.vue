@@ -65,7 +65,7 @@
                 		<el-tag v-else>账号</el-tag>
 	                </template>
                 </el-table-column>
-                <el-table-column prop="createDateStart" label="封禁时间" header-align="center" align="center">
+                <el-table-column prop="createDate" label="封禁时间" header-align="center" align="center">
                 </el-table-column>
                 <el-table-column prop="remark" label="封禁原因" header-align="center" align="center"></el-table-column>
                 <el-table-column label="操作" header-align="center" align="center">

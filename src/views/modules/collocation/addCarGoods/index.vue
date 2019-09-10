@@ -9,7 +9,7 @@
             <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" clearable></el-input>
         </el-form-item>
         <el-form-item>
-            <el-button  class="btn" type="primary" @click="getDataList()">查询</el-button>
+            <el-button  class="btn" type="primary" @click="getData()">查询</el-button>
             <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
         </el-form-item>
         <el-form-item style="float:right;">
@@ -214,6 +214,10 @@
             //重置
             reset() {
                 this.dataForm = {};
+                this.getDataList();
+            },
+            getData(){
+                this.page =1;
                 this.getDataList();
             },
             //打开新增编辑活动弹框

@@ -43,7 +43,7 @@
                 ></el-date-picker>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
+                <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>
                 <el-button  class="btn" type="primary" plain @click="reset()" >重置条件</el-button>
             </el-form-item>
         </el-form>
@@ -184,6 +184,8 @@
                 this.dataForm.publishJpEndTime = this.timeArr[1];
                 this.dataForm.publishStartTime = this.timeArr2[0];
                 this.dataForm.publishEndTime = this.timeArr2[1];
+                this.page = 1;
+                this.getDataList();
             },
             reset(formName) {
                 this.timeArr = [];
