@@ -29,15 +29,17 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="已关联副风格标签：" prop="styleName">
-                <el-tag closable
-                        v-for="(item,index) in dataArray"
-                        :key="item.index"
-                        :label="item.styleName"
-                        :value="item.id"
-                        @close="handleClose(item)"
-                        class="tag">
-                {{item.styleName}}
-                </el-tag>
+               <div class="elTagWarp">
+                    <el-tag closable
+                            v-for="(item,index) in dataArray"
+                            :key="item.index"
+                            :label="item.styleName"
+                            :value="item.id"
+                            @close="handleClose(item)"
+                            class="tag">
+                    {{item.styleName}}
+                    </el-tag>
+               </div>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
                 <el-button  @click="dataFormCancel()">取消</el-button>
@@ -76,34 +78,19 @@
             // this.dataForm.styleType = this.options[0].id;
         },
         methods: {
-            changeSelect (val) {
-                console.log(val);
-                console.log(this.value);
-                var obj = this.selectAllOption.find((item,index)=>{
-                    return item.id == val;
-                });
-                var selectAllOption= this.selectAllOption.filter((item,index)=>{
-                    return item.id != val;
-                });
-                this.selectAllOption = selectAllOption;
-                this.dataArray.unshift(obj)
-            },
-            handleClose(item) {
-                this.dataArray.splice(this.dataArray.indexOf(item), 1);
-            },
             init (row) {
                 this.visible = true;
                 this.row = row;
                 this.title="管理副风格标签";
+                this.getStyleSubList();
                 this.backScan();
-                this.backScan1();
                 this.$nextTick(() => {
                     this.$refs['addForm'].resetFields();
                     // this.getApplyPullList();
                 })
             },
-            //编辑回显
-            backScan(){
+            // 下拉列表
+            getStyleSubList(){
                 var obj  = {
                     id:this.row.id,
                     styleName:this.row.styleName,
@@ -116,7 +103,8 @@
                     }
                 })
             },
-            backScan1(){
+            // 已关联风格标签回显
+            backScan(){
                 var obj  = {
                     id:this.row.id,
                     styleName:this.row.styleName
@@ -124,26 +112,72 @@
                 backScanShopStyleUnion(obj).then((res)=>{
                     if(res.code == 200){
                         this.dataArray = res.data;
-                        // this.dataArray.forEach((item,index)=>{
-                        //     item.styleName = item.name;
-                        // })
+                        //  已选过得风格标签，要从下拉列表中去除
+                       var selectAllOption =  this.selectAllOption.filter((item,index)=>{
+                            var _index = this.dataArray.findIndex((item2,index2)=>{
+                                return item.id == item2.id
+                            })
+                            if(_index==-1){
+                                return true
+                            }else{
+                                return false
+                            }
+                        })
+                        this.selectAllOption = selectAllOption;
                     }else{
 
                     }
                 })
+            },
+            // 下拉切换风格标签
+            changeSelect (val) {
+                console.log(val);
+                console.log(this.value);
+                // 找到下拉选中的obj
+                var obj = this.selectAllOption.find((item,index)=>{
+                    return item.id == val;
+                });
+
+                  // 查看选中的obj，是否在已关联的已选过的
+                var index =  this.dataArray.findIndex((item,index)=>{
+                    return item.id == val;
+                });
+                // 如果以前没选过
+                if(index==-1){
+                    // 从下拉中去掉已选的
+                    var selectAllOption = this.selectAllOption.filter((item,index)=>{
+                        return item.id != val;
+                    });
+                    this.selectAllOption = selectAllOption;
+
+                     //  已关联的新增一条
+                    this.dataArray.unshift(obj)
+                    this.dataForm.styleName = "";
+                }
+            },
+            // 取消选择风格标签
+            handleClose(item) {
+                this.dataArray.splice(this.dataArray.indexOf(item), 1);
+                // 如果下拉中已有，不在追加
+                 var index = this.selectAllOption.findIndex((item2,index2)=>{
+                    return item2.id == item.id;
+                });
+                if(index==-1){
+                    this.selectAllOption.push(item);
+                }
             },
             // 提交
             dataFormSubmit(formName){
                 // alert([this.dataForm.name,this.dataForm.domainAddress]);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        let childrenIds = new Array();
+                        let ids = new Array();
                         this.dataArray.forEach((item, index)=>{
-                            childrenIds.push(item.id)
+                            ids.push(item.id)
                         });
                         this.loading = true;
                         var obj = {
-                            ids: childrenIds,
+                            ids: ids,
                         }
                         if(this.row) obj.id = this.row.id
                         var fn = shopStyleUnion;
@@ -217,4 +251,8 @@
     /*    margin-right: 0;*/
     /*    margin-left: 30px;*/
     /*}*/
+    .elTagWarp{
+        display: flex;
+        flex-wrap: wrap;
+    }
 </style>
