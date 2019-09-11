@@ -146,7 +146,6 @@
         },
         methods: {
             sortChange(val){
-                console.log(val)
                 if(val.order == "descending") this.dataForm.descOrAsc = 0;
                 else if(val.order == "ascending") this.dataForm.descOrAsc = 1;
                 this.getDataList();
@@ -163,7 +162,7 @@
                     }
                 })
             },
-            reset(formName) {
+            reset() {
                 this.dataForm.messageTitle = "";
                 this.dataForm.messageType = "";
                 this.dataForm.sendMode = "";
@@ -209,7 +208,6 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    console.log(obj)
                     deleteMessage(obj).then((res)=>{
                         if(res.code==200){
                             this.getDataList();

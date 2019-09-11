@@ -3,7 +3,6 @@
   	<Bread :breaddata="breaddata" ></Bread>
 	  <el-table
 		  	:data="dataForm"
-		  	ref='dataList'
 		  	border
 		  	style="width: 100%"
 		  	v-loading="dataListLoading">
@@ -23,7 +22,7 @@
 					  @change="putState(scope.row.id,scope.row.isSendInner,1)"
 					  >
 					</el-switch>
-					<span class="artblue" @click="show(0,scope.row.messageTypeId)">模板设置</span>
+					<span class="artblue" @click="show(0,scope.row.messageTypeId,scope.row.innerCanOpen)">模板设置</span>
 			    </template>
 			</el-table-column>
 			<el-table-column
@@ -36,7 +35,7 @@
 							@change="putState(scope.row.id,scope.row.isSendUmeng,2)"
 							>
 					</el-switch>
-					<span class="artblue" @click="show(1,scope.row.messageTypeId)">模板设置</span>
+					<span class="artblue" @click="show(1,scope.row.messageTypeId,scope.row.umengCanOpen)">模板设置</span>
 				</template>
 			</el-table-column>
 			<el-table-column
@@ -48,7 +47,7 @@
 							@change="putState(scope.row.id,scope.row.isSendSms,3)"
 							>
 					</el-switch>
-					<span class="artblue" @click="show(2,scope.row.messageTypeId)">模板设置</span>
+					<span class="artblue" @click="show(2,scope.row.messageTypeId,scope.row.smsCanOpen)">模板设置</span>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -111,7 +110,6 @@ export default {
 	data () {
 	    return {
 	      	breaddata: ["消息中心", "系统消息设置"],
-            dataList: [],
             dataListLoading: false,
             dialogTableVisible: false,
             dialogTableVisibleOne: false,
@@ -126,7 +124,7 @@ export default {
 			},
             dataForm: {},
             selectVal:""
-	    };
+	    }
 	},
 	created() {
         getmessagepage().then((res)=>{
@@ -221,29 +219,31 @@ export default {
         handleClose(val){
             this.ShopmessagetemplateList.messageContent = this.ShopmessagetemplateList.messageContent+val;
 		},
-  	    show(name,id){
-  	        if(name == 2) {
-                this.dialogTableVisibleOne = true;
-			} else{
-                this.dialogTableVisible = true;
-			}
-            getShopmessagetemplate({id:id}).then((res)=>{
-                if(res.code == 200){
-                    this.ShopmessagetemplateList.labelList = res.data.labelList;
-                    this.ShopmessagetemplateList.messageTypeName = res.data.messageTypeName;
-                    this.ShopmessagetemplateList.templateType = name;
-                    this.ShopmessagetemplateList.messageId = id;
-                    if(name == 0){
-                        this.ShopmessagetemplateList.messageTitle = res.data.messAgeTemplate.tempTitle;
-                        this.ShopmessagetemplateList.messageContent = res.data.messAgeTemplate.tempInnerContent;
-                    }else if(name == 1){
-                        this.ShopmessagetemplateList.messageTitle = res.data.messAgeTemplate.umengTitle;
-                        this.ShopmessagetemplateList.messageContent = res.data.messAgeTemplate.tempUmentContent;
-                    }else if(name == 2){
-                        this.ShopmessagetemplateList.messageCode = res.data.messAgeTemplate.tempSmsCode;
-					}
+  	    show(name,id,open){
+  	        if(open == 1){
+                if(name == 2) {
+                    this.dialogTableVisibleOne = true;
+                } else{
+                    this.dialogTableVisible = true;
                 }
-            })
+                getShopmessagetemplate({id:id}).then((res)=>{
+                    if(res.code == 200){
+                        this.ShopmessagetemplateList.labelList = res.data.labelList;
+                        this.ShopmessagetemplateList.messageTypeName = res.data.messageTypeName;
+                        this.ShopmessagetemplateList.templateType = name;
+                        this.ShopmessagetemplateList.messageId = id;
+                        if(name == 0){
+                            this.ShopmessagetemplateList.messageTitle = res.data.messAgeTemplate.tempTitle;
+                            this.ShopmessagetemplateList.messageContent = res.data.messAgeTemplate.tempInnerContent;
+                        }else if(name == 1){
+                            this.ShopmessagetemplateList.messageTitle = res.data.messAgeTemplate.umengTitle;
+                            this.ShopmessagetemplateList.messageContent = res.data.messAgeTemplate.tempUmentContent;
+                        }else if(name == 2){
+                            this.ShopmessagetemplateList.messageCode = res.data.messAgeTemplate.tempSmsCode;
+                        }
+                    }
+                })
+			}
 		},
   	    putState(id,isCheck,type){
             let that = this;

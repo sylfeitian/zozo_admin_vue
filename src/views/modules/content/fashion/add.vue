@@ -43,7 +43,7 @@
                         <span style="color:#f56c6c;margin-right: 4px;">*</span>内容：</div>
                         <div id="content" v-for="(v,i) in content" :key="i">
                         <div class="contentChild" v-if="content[i]&&v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
-                            <quill-editor-img class="inforRight" :value="v.text" :index="i" ref="quillEditorCompon" style="display: inline-block;"  @artmessageContent='artmessageContent' ></quill-editor-img>
+                            <quill-editor-img class="inforRight" :value="v.textCn" :index="i" ref="quillEditorCompon" style="display: inline-block;"  @artmessageContent='artmessageContent' ></quill-editor-img>
                             <span style="margin-left: 10px;color:#2260d2;" @click="delContent(i)">删除</span>
                         </div>
                         <div class="contentChild" v-if="content[i]&&v.typeId=='3'">
@@ -53,7 +53,7 @@
                         <div class="contentChild" v-if="content[i]&&v.typeId=='4'">
                             <div style="display: inline-block;">
                                 <img style="width:600px;margin-bottom: 10px;" :src="$imgDomain+v.imageUrl" alt="">
-                                <div>{{v.text}}</div>
+                                <div>{{v.textCn}}</div>
                             </div>
                             <span style="margin-left: 10px;color:#2260d2;" @click="delContent(i)">删除</span>
                         </div>
@@ -147,7 +147,6 @@
                 mixinViewModuleOptions: {
                     getDataListURL: getGoodscspage,
                     getDataListIsPage: true,
-                    // exportURL: '/admin-api/log/login/export',
                     deleteURL: '',
                     dataListLoading: false,
                     deleteIsBatch: true,
@@ -231,14 +230,14 @@
                         id :v.id ,// 主键id
                         imageUrl :v.imageUrl ,// 图片url
                         sortId :"" ,// 排序id
-                        text :v.goodsName ,// 内容
+                        textCn :v.goodsName ,// 内容
                         typeId :"4" ,// 内容类型id
                     };
                     this.content.push(obj);
                 })
             },
             artmessageContent(messageContent,i){
-                if(this.content[i]) this.content[i].text = messageContent;
+                if(this.content[i]) this.content[i].textCn = messageContent;
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
@@ -256,13 +255,12 @@
                 window.this = this;
                 this.$nextTick(()=>{
                     this.content.forEach((item,index)=>{
-                        this.$refs.quillEditorCompon[index].dataForm.messageContent = item.text;
+                        this.$refs.quillEditorCompon[index].dataForm.messageContent = item.textCn;
                     })
                     this.content = [].concat(this.content)
                 },0)
             },
             imgUpload(e){
-                console.log(e.target.files)
                 let that = this;
                 for (let i = 0; i < e.target.files.length; i++) {
                     var reader = new FileReader();
@@ -287,7 +285,7 @@
                                     id :"" ,// 主键id
                                     imageUrl :res.data.url ,// 图片url
                                     sortId :"" ,// 排序id
-                                    text :"" ,// 内容
+                                    textCn :"" ,// 内容
                                     typeId :"3" ,// 内容类型id
                                 };
                                 that.content.push(obj);
@@ -313,7 +311,7 @@
                         id :"" ,// 主键id
                         imageUrl :"" ,// 图片url
                         sortId :"" ,// 排序id
-                        text :"" ,// 内容
+                        textCn :"" ,// 内容
                         typeId :type ,// 内容类型id
                     };
                     this.content.push(obj);
@@ -343,7 +341,7 @@
                             .then(() => {
                                 that.addDataForm.fashionContents = that.content;
                                 that.addDataForm.saveType = type;
-                                savefashiondetail({saveFashionDTO:that.addDataForm}).then((res)=>{
+                                savefashiondetail(that.addDataForm).then((res)=>{
                                     if(res.code == 200){
                                         this.$message({
                                             message: res.msg,
@@ -366,8 +364,6 @@
 
             },
             GiftUrlHandle(val){
-                console.log("base64上传图片接口");
-                console.log(val);
                 this.uploadPic(val);
             },
             //上传图片
@@ -381,10 +377,8 @@
                         if(res && res.code == "200"){
                             var url = res.data.url
                             that.addDataForm.mainImageUrl = url;
-                            // that.currentIndex = -1;//不能这样写，防止网络延迟
                             resolve("true")
                         }else {
-                            // that.currentIndex = -1;//不能这样写，防止网络延迟
                             resolve("false")
                         }
                     })

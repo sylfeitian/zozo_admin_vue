@@ -11,35 +11,24 @@
             <el-form-item label="店铺：">
                 <el-input v-model="dataForm.storeName" ></el-input>
             </el-form-item>
-            <!--<el-form-item label="发布状态：" prop="paymentStatus">-->
-                <!--<el-select v-model="dataForm.paymentStatus" placeholder="请选择">-->
-                    <!--<el-option label="全部" value=""></el-option>-->
-                    <!--<el-option label="已取消发布" value="0"></el-option>-->
-                    <!--<el-option label="已发布" value="1"></el-option>-->
-                <!--</el-select>-->
-            <!--</el-form-item>-->
             <el-form-item label="日本发布时间：">
                 <el-date-picker
                         v-model="timeArr"
                         type="datetimerange"
-                        value-format="yyyy-MM-dd HH:mm:ss"
+                        value-format="yyyy-MM-dd"
                         align="left"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
-                        :default-time="['00:00:00', '23:59:59']"
-                        @blur='getData'
                 ></el-date-picker>
             </el-form-item>
             <el-form-item label="发布时间：">
                 <el-date-picker
                         v-model="timeArr2"
                         type="datetimerange"
-                        value-format="yyyy-MM-dd HH:mm:ss"
+                        value-format="yyyy-MM-dd"
                         align="left"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
-                        :default-time="['00:00:00', '23:59:59']"
-                        @blur='getData'
                 ></el-date-picker>
             </el-form-item>
             <el-form-item>
@@ -74,7 +63,7 @@
                 </template>
             </el-table-column>
             <el-table-column prop="title" label="标题" align="center"></el-table-column>
-            <el-table-column prop="shopNameCn" label="店铺" align="center"></el-table-column>
+            <el-table-column prop="shopName" label="店铺" align="center"></el-table-column>
             <el-table-column prop="goodsCount" label="相关商品" align="center"></el-table-column>
             <el-table-column prop="showWeb" label="发布状态" align="center">
                 <template slot-scope="scope">
@@ -136,7 +125,6 @@
                 mixinViewModuleOptions: {
                     getDataListURL: getStoreNewspage,
                     getDataListIsPage: true,
-                    // exportURL: '/admin-api/log/login/export',
                     deleteURL: '',
                     dataListLoading: false,
                     deleteIsBatch: true,
@@ -147,17 +135,11 @@
                 dataForm: {},
                 selectVal:"",
                 multipleSelection:[],
-                value: '',
                 dataList: [],
                 dataListLoading: false,
                 forbitLoading:false,
                 timeArr: "", //日本发布时间数据
                 timeArr2: "", //发布时间数据
-                startCreateDate: "",
-                endCreateDate: "",
-                endPaymentTime: "",
-                startPaymentTime: "",
-                isIndeterminate: false,
                 checkAll: false,
                 currentIndex:'',
             }
@@ -187,7 +169,7 @@
                 this.page = 1;
                 this.getDataList();
             },
-            reset(formName) {
+            reset() {
                 this.timeArr = [];
                 this.timeArr2 = [];
                 this.dataForm.id = "";
@@ -236,7 +218,6 @@
                     this.forbitLoading = true;
                     storeNewsPutoperating(obj).then((res)=>{
                         this.forbitLoading = false;
-                        // console.log(res);
                         if(res.code==200){
                             this.getDataList();
                             this.$message({
@@ -289,7 +270,6 @@
             },
             getIds(){
                 var ids= [];
-                console.log(this.multipleSelection);
                 this.multipleSelection.forEach((item,index)=>{
                     if("object" == typeof(item)){
                         ids.push(item.id);
