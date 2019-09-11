@@ -103,6 +103,7 @@
         },
         methods: {
             getData() {
+                this.page =1;
                 this.dataForm.startCreateDate = this.timeArr && this.timeArr[0];
                 this.dataForm.endCreateDate = this.timeArr && this.timeArr[1];
                 this.getDataList();

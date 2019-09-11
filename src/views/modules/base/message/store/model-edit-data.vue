@@ -269,14 +269,16 @@
                         console.log(this.dataForm);
                         var obj = {
                             "idJp":  this.dataForm.idJp,
-                            "storeNameGlo":  this.dataForm.storeNameGlo,
-                            "storeNameJp":  this.dataForm.storeNameJp,
+                            "id":  this.dataForm.id,
+                            // "storeNameGlo":  this.dataForm.storeNameGlo,
+                            // "storeNameJp":  this.dataForm.storeNameJp,
                             "storeName":  this.dataForm.storeName,
-                            "descriptionJp":  this.dataForm.descriptionJp,
+                            // "descriptionJp":  this.dataForm.descriptionJp,
                             "description":  this.dataForm.description,
-                            "imageUrl":   this.dataForm.imageUrl, //"http://bug.leimingtech.com/zentao/file-read-25289.png",
-                            "storeLogo": this.dataForm.storeLogo,// "http://bug.leimingtech.com/zentao/file-read-25289.png",
+                            // "imageUrl":   this.dataForm.imageUrl, //"http://bug.leimingtech.com/zentao/file-read-25289.png",
+                            // "storeLogo": this.dataForm.storeLogo,// "http://bug.leimingtech.com/zentao/file-read-25289.png",
                             "mainTag":  mainTag,
+                            "subTag":  subTag,
                         }
                         if(this.row) obj.id = this.row.id
                         var fn = updateShopStore;
