@@ -11,35 +11,24 @@
             <el-form-item label="发布人：">
                 <el-input v-model="dataForm.publisher" ></el-input>
             </el-form-item>
-            <!--<el-form-item label="状态：" prop="state">-->
-                <!--<el-select v-model="dataForm.paymentStatus" placeholder="请选择">-->
-                    <!--<el-option label="全部" value=""></el-option>-->
-                    <!--<el-option label="已取消发布" value="0"></el-option>-->
-                    <!--<el-option label="已发布" value="1"></el-option>-->
-                <!--</el-select>-->
-            <!--</el-form-item>-->
             <el-form-item label="日本发布时间：">
                 <el-date-picker
                         v-model="timeArr"
                         type="datetimerange"
-                        value-format="yyyy-MM-dd HH:mm:ss"
+                        value-format="yyyy-MM-dd"
                         align="left"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
-                        :default-time="['00:00:00', '23:59:59']"
-                        @blur='getData'
                 ></el-date-picker>
             </el-form-item>
             <el-form-item label="发布时间：">
                 <el-date-picker
                         v-model="timeArr2"
                         type="datetimerange"
-                        value-format="yyyy-MM-dd HH:mm:ss"
+                        value-format="yyyy-MM-dd"
                         align="left"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
-                        :default-time="['00:00:00', '23:59:59']"
-                        @blur='getData'
                 ></el-date-picker>
             </el-form-item>
             <el-form-item>
@@ -64,7 +53,7 @@
                 @selection-change="handleSelectionChange"
         >
             <el-table-column type="selection" width="70"></el-table-column>
-            <el-table-column prop="id" label="ID" align="center"></el-table-column>
+            <el-table-column prop="idJp" label="ID" align="center"></el-table-column>
             <el-table-column prop="mainImageUrl " label="封面图片" align="center">
                 <template slot-scope="scope">
                     <img
@@ -94,9 +83,9 @@
             <el-table-column prop="publishTime" label="发布时间" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button @click.native.prevent="showDetail(scope.row)"type="text"size="mini">查看</el-button>
-                    <el-button @click.native.prevent="addOrAdit(scope.row)"type="text"size="mini">编辑</el-button>
-                    <el-button @click.native.prevent="forbitHandle(scope.$index,scope.row)"type="text"size="mini">
+                    <el-button @click.native.prevent="showDetail(scope.row)" type="text" size="mini">查看</el-button>
+                    <el-button @click.native.prevent="addOrAdit(scope.row)" type="text" size="mini">编辑</el-button>
+                    <el-button @click.native.prevent="forbitHandle(scope.$index,scope.row)" type="text" size="mini">
                         <span v-if="scope.row.state==1" class="artdisable">{{scope.$index==currentIndex&&forbitLoading?"取消发布中..":"取消发布"}}</span>
                         <span v-else class="artstart">{{scope.$index==currentIndex && forbitLoading?"发布中..":"发布"}}</span>
                     </el-button>
@@ -137,7 +126,6 @@
                 mixinViewModuleOptions: {
                     getDataListURL: getlookfashionpage,
                     getDataListIsPage: true,
-                    // exportURL: '/admin-api/log/login/export',
                     deleteURL: '',
                     dataListLoading: false,
                     deleteIsBatch: true,
@@ -147,7 +135,6 @@
                 selectVal:"",
                 breaddata: [ "内容管理", "时尚记事"],
                 dataForm: {},
-                value: '',
                 multipleSelection:[],
                 dataList: [],
                 currentIndex:"",
@@ -155,11 +142,6 @@
                 forbitLoading:false,
                 timeArr: "", //日本发布时间数据
                 timeArr2: "", //发布时间数据
-                startCreateDate: "",
-                endCreateDate: "",
-                endPaymentTime: "",
-                startPaymentTime: "",
-                isIndeterminate: false,
                 checkAll: false,
             }
         },
@@ -192,7 +174,7 @@
                 this.page = 1;
                 this.getDataList();
             },
-            reset(formName) {
+            reset() {
                 this.timeArr = [];
                 this.timeArr2 = [];
                 this.dataForm.idJp = "";
@@ -240,7 +222,6 @@
                     this.forbitLoading = true;
                     fashionPutoperating(obj).then((res)=>{
                         this.forbitLoading = false;
-                        // console.log(res);
                         if(res.code==200){
                             this.getDataList();
                             this.$message({
@@ -293,7 +274,6 @@
             },
             getIds(){
                 var ids= [];
-                console.log(this.multipleSelection);
                 this.multipleSelection.forEach((item,index)=>{
                     if("object" == typeof(item)){
                         ids.push(item.id);

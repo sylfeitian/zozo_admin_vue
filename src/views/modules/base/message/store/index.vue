@@ -88,13 +88,13 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="110px">
         <template slot-scope="scope">
-          <el-button type="text" @click="editHandle(scope.$index, scope.row)" size="mini">编辑</el-button>
+          <el-button type="text" @click="editHandle(scope.$index, scope.row)" size="mini" :disabled="scope.row.operateFlagJp==1">编辑</el-button>
           <!--                    <el-button  @click="forbitHandle('singe',scope.row)" type="text" size="mini" >-->
           <!--                        <span  v-if="scope.row.operateFlag==0">营业</span>-->
           <!--                        <span  v-if="scope.row.operateFlag==1" class="artclose">停业</span>-->
           <!--                    </el-button>-->
           <el-button
-            v-if="scope.row.operateFlagJp == 0"
+           :disabled="scope.row.operateFlagJp==1"
             @click.native.prevent="forbitHandle(scope.$index,scope.row)"
             type="text"
             size="mini"
@@ -164,6 +164,7 @@ export default {
       multipleSelection: [],
       row: "",
       operateShopStore: [
+         { id: "", name: "全部" },
         { id: "1", name: "营业中" },
         { id: "2", name: "已停业" },
         { id: "0", name: "待营业" }
@@ -229,6 +230,8 @@ export default {
     },
     //编辑
     editHandle(index = -1, row = "") {
+      // 如果日本那边状态是已停业，这边不能操作
+      if(row.operateFlagJp==1) return;
       this.setEditDataVisible(true);
       this.$nextTick(() => {
         this.$refs.editData.init(row);
@@ -275,14 +278,16 @@ export default {
     //     }).catch(() => {});
     // },
     forbitHandle(index, row) {
+      // 如果日本那边状态是已停业，这边不能操作
+      if(row.operateFlagJp==1) return;
       console.log(row);
       this.currentIndex = index;
       var obj = {
         storeId: row.id,
-        operateFlag: row.operateFlag == 1 ? 0 : 1 //1发布   0取消发布
+        operateFlag: row.operateFlag == 1 ? 2 : 1 //0:待营业 1:营业中 2已停业 ,
       };
       var msg = "";
-      row.state == 1 ? (msg = "停业") : (msg = "营业");
+      obj.operateFlag == 1 ? (msg = "营业") : (msg = "停业");
       this.$confirm("是否" + msg + "该店铺?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",

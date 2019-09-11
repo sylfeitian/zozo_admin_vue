@@ -322,7 +322,10 @@ export const zozomemberDetail = params => { return http.get(`${base}/zozomember/
 export const zozomemberEditDetail= params => { return http.get(`${base}/zozomember/edit/${params.id}`, params).then(res => res.data); };
 // 修改会员信息
 export const updateZozomember= params => { return http.put(`${base}/zozomember`, params).then(res => res.data); };
-
+// 修改用户状态
+export const updateZozomemberState= params => { return http.put(`${base}/zozomember/state?memberStatus=${params.memberStatus}`, params.ids).then(res => res.data); };
+// 会员认证信息查询  身份证正反面，身份证号
+export const idCardInfo= params => { return http.get(`${base}/zozomember/auth/${params.id}`, params).then(res => res.data); };
 
 
 // 用户登录日志表--------------------------------------------------------------------------------------------------------------------

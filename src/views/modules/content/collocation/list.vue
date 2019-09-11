@@ -202,8 +202,10 @@
 		    	this.dataForm.publishStartTimeJp = this.valuetime1[0];
 		    	this.dataForm.publishEndTimeJp = this.valuetime1[1];
 		    },
-            reset(formName) {
-                this.dataForm.id = null;
+            reset() {
+                this.valuetime1 = [];
+                this.valuetime2 = [];
+                this.dataForm.idJp = null;
                 this.dataForm.state = null;
                 this.dataForm.nickname = null;
                 this.dataForm.publishStartTime = null;

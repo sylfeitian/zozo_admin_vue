@@ -50,7 +50,7 @@
         </el-form-item>
         <!-- </el-scrollbar> -->
         <el-form-item>
-            <el-button  class="btn" type="primary" @click="getDataList()">查询</el-button>
+            <el-button  class="btn" type="primary" @click="getData()">查询</el-button>
             <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
         </el-form-item>
         <br />
@@ -188,6 +188,10 @@ export default {
     this.demo();
   },
   methods: {
+	  getData () {
+		  this.page =1;
+		  this.getDataList();
+	  },
         showDetail(id){
 	    	this.$emit("showDetail",id);
         },

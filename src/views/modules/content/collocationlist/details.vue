@@ -16,7 +16,7 @@
                     <span>{{dataForm.userNickname}}</span>
                 </el-form-item>
                 <el-form-item label="用户身高：">
-                    <span>{{dataForm.userHeight}}</span>
+                    <span>{{dataForm.heightCm}}</span>
                 </el-form-item>
                 <el-form-item label="用户地区：">
                     <span>日本</span>
@@ -34,7 +34,6 @@
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg">
-                                <!--                                    <img :src="scope.row.pictureUrl | filterImgUrl" alt=""/>-->
                                 <img :src="dataForm.imageUrl" alt=""/>
                             </div>
                         </div>
@@ -89,7 +88,7 @@
                     <span>{{dataForm.userNickname}}</span>
                 </el-form-item>
                 <el-form-item label="用户身高：">
-                    <span>{{dataForm.userHeight}}</span>
+                    <span>{{dataForm.heightCm}}</span>
                 </el-form-item>
                 <el-form-item label="用户地区：">
                     <span>日本</span>
@@ -107,7 +106,6 @@
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg">
-                                <!--                                    <img :src="scope.row.pictureUrl | filterImgUrl" alt=""/>-->
                                 <img :src="dataForm.imageUrl" alt=""/>
                             </div>
                         </div>
@@ -129,7 +127,7 @@
                             class="inforRight"
                             style="display:inline-block;width: 80%;"
                     >
-                        <el-table-column prop="id" label="搭配ID" align="center"></el-table-column>
+                        <el-table-column prop="idJp" label="搭配ID" align="center"></el-table-column>
                         <el-table-column prop="imageUrl320" label="主图" align="center">
                             <template slot-scope="scope">
                                 <img
