@@ -73,6 +73,7 @@ export default {
       addForm: {},
       listOrAdd: true,
       breaddata: ["基础资料管理", "中国分类管理"],
+      dataListLoading: false,
       mixinViewModuleOptions: {
         // activatedIsNeed: false,
         getDataListURL: categoryUrl,
@@ -80,7 +81,6 @@ export default {
         // exportURL: '/admin-api/log/login/export',
         deleteURL: deleteGoodsclasscustomUrl,
         deleteIsBatch: true,
-        dataListLoading: false,
         deleteIsBatch: true,
         deleteIsBatchKey: "id"
       },
