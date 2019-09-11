@@ -202,6 +202,7 @@
                     if (valid) {
                         this.loading = true;
                         var obj = {
+                            id:  this.dataForm.id,
                             styleName:  this.dataForm.styleName,
                             styleType:  this.dataForm.styleType,
                             gender:  this.dataForm.gender,

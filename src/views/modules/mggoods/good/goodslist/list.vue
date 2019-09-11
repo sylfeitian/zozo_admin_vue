@@ -10,7 +10,20 @@
                 <el-input v-model="dataFormShow.idJp" placeholder="请输入spuID" ></el-input>
             </el-form-item>
             <el-form-item label="分类：">
-                <el-input v-model="dataFormShow.categoryId" placeholder="请输入" ></el-input>
+<!--                <el-input v-model="dataFormShow.categoryId" placeholder="请输入" ></el-input>-->
+                <el-select
+                        v-model="dataFormShow.categoryId"
+                        filterable
+                        placeholder="请输入分类名称"
+                        :loading="loading"
+                >
+                    <el-option
+                            v-for="(item,index) in selectCategoryOption"
+                            :key="item.index"
+                            :label="item.name"
+                            :value="item.id">
+                    </el-option>
+                </el-select>
             </el-form-item>
             <el-form-item label="店铺名称：">
                 <el-select
@@ -228,7 +241,7 @@
     import Bread from "@/components/bread";
     import detail from "./detail";
     import { goodsUrl } from '@/api/url'
-    import { showBatchGoods,showGoods, searchStoreName, searchBrandName } from '@/api/api'
+    import { showBatchGoods,showGoods, searchStoreName, searchBrandName, backScanCategorys } from '@/api/api'
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -244,7 +257,7 @@
                 breaddata: [ "商品管理", "商品列表"],
                 dataFormShow: {
                     goodsName: "",//商品名称/商品货号
-                    id: "",//品牌名称
+                    idJp: "",//品牌名称
                     categoryId: "",//分类
                     storeName: "",//店铺名称
                     brandName:"",//品牌名称
@@ -272,6 +285,7 @@
                 selectVal:"",
                 checked:false,
                 selectStoreOption:[],
+                selectCategoryOption:[],
                 selectBrandOption:[]
             }
         },
@@ -286,6 +300,7 @@
             this.dataFormShow.showWeb = this.status == undefined ? "" : this.status;
             this.backScan();
             this.backScan1();
+            this.backScan2();
         },
         methods: {
             handleClick(tab,val) {
@@ -353,6 +368,19 @@
                 searchBrandName(obj).then((res)=>{
                     if(res.code == 200){
                         this.selectBrandOption = res.data;
+                    }else{
+
+                    }
+                })
+            },
+            backScan2(){
+                var obj  = {
+                    id:this.dataForm.id,
+                    categoryName:this.dataForm.categoryName,
+                }
+                backScanCategorys(obj).then((res)=>{
+                    if(res.code == 200){
+                        this.selectCategoryOption = res.data;
                     }else{
 
                     }
