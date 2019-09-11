@@ -117,8 +117,8 @@
                             border
                             :data="dataForm.skuVOList"
                             class="inforRight"
-                            style="display:inline-block;width: 80%">
-                        <el-table-column prop="goodsCsIdjp" label="SKU编码" align="center"></el-table-column>
+                            style="display:inline-block;width: 90%">
+                        <el-table-column prop="goodsCsIdJp" label="SKU编码" align="center"></el-table-column>
                         <el-table-column prop="colorName" label="颜色" align="center"></el-table-column>
                         <el-table-column prop="sizeName" label="尺码" align="center"></el-table-column>
                         <el-table-column prop="specId" label="尺码信息" align="center">
@@ -129,9 +129,10 @@
                             </template>
                         </el-table-column>
                         <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
-                        <el-table-column prop="sellState" label="是否可售" align="center"></el-table-column>
                         <el-table-column prop="sellStartDate" label="售卖开始时间" align="center"></el-table-column>
                         <el-table-column prop="sellEndDate" label="售卖结束时间" align="center"></el-table-column>
+                        <el-table-column prop="" label="日本限购数量" align="center"></el-table-column>
+                        <el-table-column prop="" label="日本每人限购数量" align="center"></el-table-column>
                         <el-table-column prop="sellPrice" label="售价(RMB)" align="center">
                             <template
                                     slot-scope="scope"

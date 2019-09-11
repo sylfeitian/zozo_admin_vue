@@ -28,7 +28,6 @@
                 this.dtailVisible = true;
                 this.mainVisible = false;
                 this.addoraditVisible = false;
-                console.log(row);
                 this.$nextTick(()=>{
                     this.$refs.detailCompon.init(row);
                 })

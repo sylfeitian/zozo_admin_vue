@@ -19,19 +19,16 @@
                         align="left"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
-                        @blur='getData'
                 ></el-date-picker>
             </el-form-item>
             <el-form-item label="发布时间：">
                 <el-date-picker
                         v-model="timeArr2"
                         type="datetimerange"
-                        value-format="yyyy-MM-dd HH:mm:ss"
+                        value-format="yyyy-MM-dd"
                         align="left"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
-                        :default-time="['00:00:00', '23:59:59']"
-                        @blur='getData'
                 ></el-date-picker>
             </el-form-item>
             <el-form-item>
@@ -281,6 +278,7 @@
                 this.dataForm.publishEndTimeJp = "";
                 this.dataForm.startPaymentTime = "";
                 this.dataForm.publishEndTime = "";
+                this.dataForm.publishStartTime = "";
                 this.getDataList();
             },
             handleClick(tab,val) {
