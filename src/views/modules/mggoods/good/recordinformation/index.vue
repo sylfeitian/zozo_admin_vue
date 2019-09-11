@@ -82,7 +82,7 @@
                 <template slot-scope="scope">
                     <div class="goodsPropsWrap">
                         <div class="goodsImg">
-                            <img :src="scope.row.imageUrl | filterImgUrl" alt=""/>
+                            <img :src="scope.row.imageUrl | filterImgUrl" alt="" style=" object-fit: contain;width: 70px;height:70px;"/>
                         </div>
                     </div>
                 </template>
@@ -272,10 +272,5 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "@/element-ui/theme-variables.scss";
-
-    img {
-        width: 100px;
-        height: 100px;
-    }
+    
 </style>
