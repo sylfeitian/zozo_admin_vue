@@ -57,6 +57,12 @@
             <el-radio-button label="upper">待备案</el-radio-button>
 <!--            <el-button @click="exportHandle()"  class="btn" type="primary" style="margin-left: 1342px;">导入商品信息</el-button>-->
         </el-radio-group>
+        <el-form style="float: right;" v-if="dataFormShow.isTofile=='0'">
+            <el-form-item>
+                <el-button  class="btn" type="primary" @click="">导出数据</el-button>
+                <el-button   class="btn"type="primary" plain @click="" >导入备案信息</el-button>
+            </el-form-item>
+        </el-form>
         <el-table
                 width="100%"
                 :data="dataList"
@@ -135,14 +141,14 @@
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="jdThirdCategory" label="京东三级分类"  align="center" v-if="dataFormShow.goodsShow==''">
+            <el-table-column prop="jdThirdCategory" label="京东三级分类"  align="center" v-if="dataFormShow.isTofile=='1'">
                 <template slot-scope="scope">
                     <div>
                         {{scope.row.jdThirdCategory}}
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="hsCode" label="HSCODE"  align="center">
+            <el-table-column prop="hsCode" label="HSCODE"  align="center" v-if="dataFormShow.isTofile=='1'">
                 <template slot-scope="scope">
                     <div>
                         {{scope.row.hsCode}}
