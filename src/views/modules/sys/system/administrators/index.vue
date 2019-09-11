@@ -48,14 +48,18 @@
                 </el-table-column>
                 <el-table-column prop="username" label="账号" header-align="center" align="center" width="130px"></el-table-column>
                 <el-table-column prop="realName" label="姓名" header-align="center" align="center" width="130px"></el-table-column>
-                <el-table-column prop="roleName" label="角色" header-align="center" align="center"></el-table-column>
+                <el-table-column prop="roleName" label="角色" header-align="center" align="center">
+                    <template slot-scope="scope">
+                            <template v-for="item in scope.row.roleName">{{item+'  '}}</template>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="mobile" label="手机号" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="createDate" label="创建时间" header-align="center" align="center">
                 </el-table-column>
                 <el-table-column :label="$t('handle')" header-align="center" align="center">
                     <template slot-scope="scope" v-if="scope.row.superAdmin!==1">
                         <el-button v-if="$hasPermission('sys:user:update')" type="text" size="small" @click="changeNumber(scope.row)">重置密码</el-button>
-                        <el-button v-if="$hasPermission('sys:user:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">编辑</el-button>
+                        <el-button v-if="$hasPermission('sys:user:edit')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">编辑</el-button>
                         <el-button v-if="$hasPermission('sys:user:delete')" type="text" class="artdanger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
                     </template>
                 </el-table-column>
@@ -84,10 +88,10 @@
                         <span>账号：</span><span>{{numberDataForm.username}}</span>
                     </el-form-item>
                     <el-form-item label="密码：" prop="password">
-                        <el-input v-model="numberDataForm.password" placeholder="请输入6-12位的密码" show-password minlength="6" maxlength="12"></el-input>
+                        <el-input v-model="numberDataForm.password" type="password" placeholder="请输入6-12位的密码" minlength="6" maxlength="12"></el-input>
                     </el-form-item>
                     <el-form-item label="确认密码：" prop="newPassword">
-                        <el-input v-model="numberDataForm.newPassword" placeholder="请确认密码" show-password minlength="6" maxlength="12"></el-input>
+                        <el-input v-model="numberDataForm.newPassword" type="password" placeholder="请确认密码" minlength="6" maxlength="12"></el-input>
                     </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
@@ -208,7 +212,7 @@
             // 重置密码 取消
             noCheck(){
                 this.centerDialogVisible = false
-                this.$refs['numberDataForm'].resetFields();//校验隐藏
+                this.$refs['numberDataForm'].resetFields();
             },
             // 获取角色列表
             getRoleList () {

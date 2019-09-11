@@ -11,24 +11,24 @@
                 <el-input v-model="dataForm.mobile" placeholder="请输入手机号"></el-input>
             </el-form-item>
             <el-form-item prop="password" label="密码：" :class="{ 'is-required': !pageId }">
-                <el-input v-model="dataForm.password" show-password placeholder="请输入6-12位的密码" minlength="6" maxlength="12"></el-input>
+                <el-input v-model="dataForm.password" type="password" placeholder="请输入6-12位的密码" minlength="6" maxlength="12"></el-input>
             </el-form-item>
             <el-form-item prop="confirmPasswd" label="确认密码：" :class="{ 'is-required': !pageId }">
-                <el-input v-model="dataForm.confirmPasswd" show-password placeholder="请确认密码" minlength="6" maxlength="12"></el-input>
+                <el-input v-model="dataForm.confirmPasswd" type="password" placeholder="请确认密码" minlength="6" maxlength="12"></el-input>
             </el-form-item>
             <el-form-item
                     :label="'角色' + (index+1) + '：'"
                     v-for="(roleItem, index) in dataForm.roleIds"
                     :key="roleItem.key"
-                    :prop="'roleIds.' + index + '.value'"
+                    :prop="'roleIds.' + index + '.id'"
                     :rules="{
       required: true, message: '必填项不能为空', trigger: 'change'
     }"
             >
-                <el-select v-model="roleItem.value" :placeholder="$t('user.roleIdList')" class="distance-btn">
+                <el-select v-model="roleItem.id" :placeholder="$t('user.roleIdList')" class="distance-btn">
                     <el-option
                             v-for="item in roleList"
-                            :key="item.id"
+                            :key="item.key"
                             :label="item.name"
                             :value="item.id">
                     </el-option>
@@ -38,7 +38,7 @@
             </el-form-item>
         </el-form>
         <template slot="footer">
-            <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
+            <el-button @click="noCheck">{{ $t('cancel') }}</el-button>
             <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
         </template>
     </el-dialog>
@@ -51,14 +51,14 @@
         data () {
             return {
                 visible: false,
-                deptList: [],
-                deptListVisible: false,
+                // deptList: [],
+                // deptListVisible: false,
                 pageId:null,// 有值的话代表是编辑
                 roleList: [],
                 // roleIdListDefault: [],
                 dataForm: {
                     roleIds: [{
-                        value: '',
+                        id: '',
                         key: Date.now()
                     }],
                     id: '',
@@ -126,7 +126,7 @@
                     if (!/\S/.test(value)) {
                         return callback(new Error(this.$t('validate.required')))
                     }
-                    if (!this.pageId) {
+                    else{
                         value=value.replace(/\s*/g, '')
                         if(!/^1[3-9][0-9]{9}$/.test(value))
                         {
@@ -158,6 +158,15 @@
             }
         },
         methods: {
+            // 弹窗关闭
+            noCheck(){
+                this.visible = false
+                this.$refs['dataForm'].resetFields();
+                this.dataForm.roleIds=[{
+                    id: '',
+                    key: Date.now()
+                }]
+            },
             // 删除角色
             removeRoleItem(roleItem) {
                 var index = this.dataForm.roleIds.indexOf(roleItem)
@@ -167,21 +176,15 @@
             },
             // 新增角色
             addRoleItem() {
-                debugger
                 this.dataForm.roleIds.push({
-                    value: '',
+                    id: '',
                     key: Date.now()
                 });
             },
             init (id) {
-                console.log('有id代表编辑，无id代表新增',id)
                 this.visible = true;
                 this.$nextTick(() => {
                     this.$refs['dataForm'].resetFields()
-                    // this.dataForm.roleIds=[{
-                    //     value: '',
-                    //     key: Date.now()
-                    // }]
                     if(id){
                         this.pageId = id;
                         this.getInfo(id);
@@ -189,35 +192,34 @@
                         this.pageId = '';
                     }
                     this.getRoleList()
+                    this.dataForm.roleIds=[{
+                        id: '',
+                        key: Date.now()
+                    }]
                 })
             },
             // 获取部门列表
-            getDeptList () {
-                return this.$http.get('/admin-api/dept/list').then(({ data: res }) => {
-                    if (res.code !== 200) {
-                        return this.$message.error(res.msg)
-                    }
-                    this.deptList = res.data
-                }).catch(() => {})
-            },
+            // getDeptList () {
+            //     return this.$http.get('/admin-api/dept/list').then(({ data: res }) => {
+            //         if (res.code !== 200) {
+            //             return this.$message.error(res.msg)
+            //         }
+            //         this.deptList = res.data
+            //     }).catch(() => {})
+            // },
             // 获取角色列表
             getRoleList () {
                 return this.$http.get('/admin-api/role/list').then(({ data: res }) => {
-                    debugger
                     if (res.code !== 200) {
                         return this.$message.error(res.msg)
                     }
                     this.roleList = res.data
                 }).catch(() => {})
             },
-            // 获取信息 反填
+            // 回显
             getInfo (id) {
                 this.$http.get(`/admin-api/user/${id}`).then(({ data: res }) => {
-                    debugger
-                    for(var i=0;i<res.data.roleNames.length;i++){
-                        res.data.roleIds[i].push(res.data.roleNames[i])
-                    }
-                    console.log(res.data.roleIds)
+                    Object.assign(res.data.roleIds,res.data.roleNames)
                     if (res.code !== 200) {
                         return this.$message.error(res.msg)
                     }
@@ -237,11 +239,11 @@
                 }).catch(() => {})
             },
             // 所属部门树, 选中
-            deptListTreeCurrentChangeHandle (data, node) {
-                this.dataForm.deptId = data.id
-                this.dataForm.deptName = data.name
-                this.deptListVisible = false
-            },
+            // deptListTreeCurrentChangeHandle (data, node) {
+            //     this.dataForm.deptId = data.id
+            //     this.dataForm.deptName = data.name
+            //     this.deptListVisible = false
+            // },
             // 表单提交
             dataFormSubmitHandle: debounce(function () {
                 this.$refs['dataForm'].validate((valid) => {
@@ -250,8 +252,7 @@
                     }
                     var roleData=[]
                     for(var i=0;i<this.dataForm.roleIds.length;i++){
-                        debugger
-                        roleData.push(this.dataForm.roleIds[i].value)
+                        roleData.push(this.dataForm.roleIds[i].id)
                     }
                     this.dataForm.roleIds = roleData
                     this.$http[!this.pageId ? 'post' : 'put']('/admin-api/user', {
@@ -271,7 +272,7 @@
                         })
                     }).catch(() => {})
                     this.dataForm.roleIds=[{
-                        value: '',
+                        id: '',
                         key: Date.now()
                     }]
                 })
