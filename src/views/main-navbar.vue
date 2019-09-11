@@ -127,7 +127,8 @@
           <el-dropdown placement="bottom" :show-timeout="0">
             <span class="el-dropdown-link">
               <img style="width:40px;height:40px;" src="~@/assets/img/rightLogo.png">
-              <span>{{ $store.state.user.realName }}</span>
+              <!-- <span>{{ $store.state.user.realName }}</span> -->
+              <span>{{ $store.state.user.username }}</span>
               <i class="el-icon-arrow-down"></i>
             </span>
             <el-dropdown-menu slot="dropdown" class="textCenter">

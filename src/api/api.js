@@ -876,3 +876,10 @@ export const errorListModule = params => { return http.get(`${base}/log/error/li
 //黑名单管理表-------------------------------------------------------------------------------------------------------------
 // 添加黑名单
 export const addBlcaklist = params => { return http.post(`${base}/blacklist/add`, params).then(res => res.data); };
+
+
+// 积分设置-------------------------------------------------------------------------------------------------------------
+export const updatehoppointssettings = params => { return http.put(`${base}/shoppointssettings`, params).then(res => res.data); };
+
+export const getShoppointssettings = params => { return http.get(`${base}/shoppointssettings`, params).then(res => res.data); };
+

@@ -26,6 +26,13 @@
             <el-input v-model="dataForm.sort" type="text" placeholder="0-255" show-word-limit style="width:200px;"></el-input>
         		<div class="grey">(数字越小越靠前)</div>
         </el-form-item>
+
+		<el-form-item label="评价类型：" prop="appraisal" v-if="erjishow">
+			    <!-- <el-input v-model="dataForm.appraisal " type="text" placeholder="请输入4个汉字/8个字符以内的内容" show-word-limit style="width:400px;"></el-input> -->
+	        <el-input v-model="dataForm.appraisal" type="text" maxlength="6" placeholder="请输入6字以内的内容" show-word-limit style="width:400px;"></el-input>
+	    </el-form-item>
+    
+
         <el-form-item v-if="yijishow" v-for="(item, index) in dataForm.categoryJpId" :key="index" :label="index == 0 ? '关联日本分类：' : '' ">
 	        <el-select
 	          v-model="dataForm.categoryJpId[index]"
@@ -42,10 +49,7 @@
 	        <el-button v-if="index+1 == dataForm.categoryJpId.length" @click="actadd" type="primary" style="margin-left: 20px;">添加</el-button>
 		</el-form-item>
 		 
-	 	<el-form-item label="评价类型：" prop="appraisal" v-if="erjishow">
-	        <el-input v-model="dataForm.appraisal" type="text" maxlength="6" placeholder="请输入6字以内的内容" show-word-limit style="width:400px;"></el-input>
-	    </el-form-item>
-    
+	 	
     
     	<el-form-item label="测量方法：" prop="methodUrlshow" v-if="yijishow">
 			<div class="pcCoverUrl imgUrl" v-for="(item,index) in dataForm.methodUrlshow" @click="imgtype = 'rule'">
@@ -163,7 +167,8 @@
 	    	}else{
 	    		callback('排序值在0-255之间');
 	    	}
-	    };
+		};
+		
 	    return {
 	    	erjishow: true,  //二级没有评价类型
 	    	yijishow: true,  //一级不用上传图片
@@ -197,7 +202,7 @@
          			{ validator: sortminmax,trigger: 'blur'},
 	        	],
 	        	appraisal: [
-	       			{ required: true, message: '必填项不能为空', trigger: 'blur' },
+					{ required: true, message: '必填项不能为空', trigger: 'blur' },
 				],
 	     	},
 	    };
