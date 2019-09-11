@@ -114,9 +114,9 @@
                         this.loading = true;
                         var obj = {
                             "id":  this.dataForm.id,
-                            "idJp":  this.dataForm.idJp,
-                            "brandNameJp":  this.dataForm.brandNameJp,
-                            "descriptionJp":  this.dataForm.descriptionJp,
+                            // "idJp":  this.dataForm.idJp,
+                            // "brandNameJp":  this.dataForm.brandNameJp,
+                            // "descriptionJp":  this.dataForm.descriptionJp,
                             "brandName":  this.dataForm.brandName,
                             "description":  this.dataForm.description,
                         }

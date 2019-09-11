@@ -12,6 +12,7 @@
                 border=""
                 v-loading="dataListLoading"
                 style="width: 100%">
+            <el-table-column prop="goodsCsIdJp" label="ECLP编码"></el-table-column>
             <el-table-column prop="goodsCsIdJp" label="SKU编码"></el-table-column>
             <el-table-column prop="barcodes" label="商品条形码(UPC)"></el-table-column>
             <el-table-column prop="goodsName" label="商品名称(中文)"></el-table-column>
