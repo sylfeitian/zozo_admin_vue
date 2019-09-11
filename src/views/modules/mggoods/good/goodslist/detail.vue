@@ -25,18 +25,67 @@
                 <el-form-item label="商品名称：" class="item">
                     <span>{{dataForm.name}}</span>
                 </el-form-item>
-                <el-form-item label="品牌：" class="item">
-                    <span>{{dataForm.brandName}}</span>
+<!--                <el-form-item label="品牌：" class="item">-->
+<!--                    <span>{{dataForm.brandName}}</span>-->
+<!--                </el-form-item>-->
+                <el-form-item label="主品牌：" class="item">
+                    <!--                <span>{{}}</span>-->
+                    <template>
+                        <span v-if="dataForm.brands && dataForm.brands.length!=0 && dataForm.brands[0].isMainBrand==1">{{dataForm.brands[0].brandName}}</span>
+                    </template>
+                </el-form-item>
+                <el-form-item label="副品牌：" class="item">
+                    <template>
+                        <span v-if="dataForm.brands && dataForm.brands.length!=0 &&dataForm.brands[0].isMainBrand==0">{{dataForm.brands[0].brandName}}</span>
+                    </template>
                 </el-form-item>
                 <el-form-item label="所属店铺：" class="item">
                     <span>{{dataForm.storeName}}</span>
                 </el-form-item>
-                <el-form-item label="性别：" class="item">
+<!--                <el-form-item label="性别：" class="item">-->
+<!--                    <template>-->
+<!--                        <span v-if="dataForm.genders==0">男</span>-->
+<!--                        <span v-if="dataForm.genders==1">女</span>-->
+<!--                        <span v-if="dataForm.genders==2">儿童</span>-->
+<!--                    </template>-->
+<!--                </el-form-item>-->
+                <el-form-item label="主性别：" class="item">
                     <template>
                         <span v-if="dataForm.genders==0">男</span>
                         <span v-if="dataForm.genders==1">女</span>
                         <span v-if="dataForm.genders==2">儿童</span>
                     </template>
+                </el-form-item>
+                <el-form-item label="副性别：" class="item">
+                    <template>
+                        <span v-if="dataForm.viceGenders==0">男</span>
+                        <span v-if="dataForm.viceGenders==1">女</span>
+                        <span v-if="dataForm.viceGenders==2">儿童</span>
+                    </template>
+                </el-form-item>
+                <el-form-item label="日本销售价：" class="item">
+                    <span>{{dataForm.properPriceYen}}</span>
+                </el-form-item>
+                <el-form-item label="日本促销价：" class="item">
+                    <span>{{dataForm.salePriceYen}}</span>
+                </el-form-item>
+                <el-form-item label="品牌销售价：" class="item">
+                    <span>{{dataForm.properPrice}}</span>
+                </el-form-item>
+                <el-form-item label="品牌促销价：" class="item">
+                    <span>{{dataForm.salePrice}}</span>
+                </el-form-item>
+                <el-form-item label="价格标识：" class="item">
+                    <!--                <span>{{dataForm.salePlan}}</span>-->
+                    <template>
+                        <span v-if="dataForm.salePlan==0">关税计算</span>
+                        <span v-if="dataForm.salePlan==1">品牌方设定</span>
+                    </template>
+                    <template>
+                        <span v-if="dataForm.priceType=='sale'">促销价</span>
+                        <span v-if="dataForm.priceType=='proper'">标准价</span>
+                    </template>
+                    <!--                <span>{{dataForm.priceType}}</span>-->
                 </el-form-item>
                 <el-form-item label="原产地：" class="item">
                     <span>{{dataForm.madeIn}}</span>
@@ -55,6 +104,12 @@
                     <template>
                         <span v-if="dataForm.japanShowWeb==0">可售</span>
                         <span v-if="dataForm.japanShowWeb==1">不可售</span>
+                    </template>
+                </el-form-item>
+                <el-form-item label="可售状态：" class="item">
+                    <template>
+                        <span v-if="dataForm.sellState==0">不可售</span>
+                        <span v-if="dataForm.sellState==1">可售</span>
                     </template>
                 </el-form-item>
                 <el-form-item label="颜色尺码：">
