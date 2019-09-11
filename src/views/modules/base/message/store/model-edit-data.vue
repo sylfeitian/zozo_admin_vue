@@ -278,7 +278,6 @@
                             // "imageUrl":   this.dataForm.imageUrl, //"http://bug.leimingtech.com/zentao/file-read-25289.png",
                             // "storeLogo": this.dataForm.storeLogo,// "http://bug.leimingtech.com/zentao/file-read-25289.png",
                             "mainTag":  mainTag,
-                            "subTag":  subTag,
                         }
                         if(this.row) obj.id = this.row.id
                         var fn = updateShopStore;
