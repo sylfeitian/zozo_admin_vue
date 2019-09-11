@@ -315,17 +315,19 @@ export const areaList = params => { return http.get(`${base}/area/first/list`, p
 //二级、三级、四级
 export const proList = params => { return http.get(`${base}/area/parent/${params.id}`, params).then(res => res.data); };
 
+// zozo会员管理--------------------------------------------------------------------------------------------------------------------
+// 会员详情
+export const zozomemberDetail = params => { return http.get(`${base}/zozomember/${params.id}`, params).then(res => res.data); };
+// 会员编辑信息查询
+export const zozomemberEditDetail= params => { return http.get(`${base}/zozomember/edit/${params.id}`, params).then(res => res.data); };
+// 修改会员信息
+export const updateZozomember= params => { return http.put(`${base}/zozomember`, params).then(res => res.data); };
 
 
 
-
-
-
-
-
-
-
-
+// 用户登录日志表--------------------------------------------------------------------------------------------------------------------
+// 查询用户日志
+export const memberloginlogById= params => { return http.get(`${base}/memberloginlog/${params.id}`, params).then(res => res.data); };
 
 
 
@@ -852,6 +854,10 @@ export const settingPage = params => { return http.post(`${base}/setting/order/c
 export const settingPopup = params => { return http.post(`${base}/setting/order/confirm/popup`,params).then(res => res.data); };
 //设置首页集合推荐
 export const sethomeIndexPage = params => { return http.post(`${base}/folderrecommend/setrecommend`, params).then(res => res.data); };
+//购物车添加商品
+export const addGoodscarList = params => { return http.post(`${base}/cartrecom/add`, params).then(res => res.data); };
+//添加商品未推荐列表
+export const goodsListVisible = params => { return http.get(`${base}/cartrecom/goodslist`, params).then(res => res.data); };
 
 
 

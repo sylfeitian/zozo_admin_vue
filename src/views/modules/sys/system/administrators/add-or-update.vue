@@ -13,8 +13,8 @@
             <el-form-item prop="password" label="密码：" :class="{ 'is-required': !pageId }">
                 <el-input v-model="dataForm.password" show-password placeholder="请输入6-12位的密码" minlength="6" maxlength="12"></el-input>
             </el-form-item>
-            <el-form-item prop="comfirmPassword" label="确认密码：" :class="{ 'is-required': !pageId }">
-                <el-input v-model="dataForm.comfirmPassword" show-password placeholder="请确认密码" minlength="6" maxlength="12"></el-input>
+            <el-form-item prop="confirmPasswd" label="确认密码：" :class="{ 'is-required': !pageId }">
+                <el-input v-model="dataForm.confirmPasswd" show-password placeholder="请确认密码" minlength="6" maxlength="12"></el-input>
             </el-form-item>
             <el-form-item
                     :label="'角色' + (index+1) + '：'"
@@ -58,14 +58,15 @@
                 // roleIdListDefault: [],
                 dataForm: {
                     roleIds: [{
-                        value: ''
+                        value: '',
+                        key: Date.now()
                     }],
                     id: '',
                     username: '',
                     deptId: '0',
                     deptName: '',
                     password: '',
-                    comfirmPassword: '',
+                    confirmPasswd: '',
                     realName: '',
                     gender: 0,
                     email: '',
@@ -144,7 +145,7 @@
                     password: [
                         { required: true, validator: validatePassword, trigger: 'blur' }
                     ],
-                    comfirmPassword: [
+                    confirmPasswd: [
                         { required: true, validator: validateComfirmPassword, trigger: 'blur' }
                     ],
                     roleIds: [
@@ -178,7 +179,8 @@
                 this.$nextTick(() => {
                     this.$refs['dataForm'].resetFields()
                     this.dataForm.roleIds=[{
-                        value: ''
+                        value: '',
+                        key: Date.now()
                     }]
                     if(id){
                         this.pageId = id;
@@ -201,11 +203,12 @@
             },
             // 获取角色列表
             getRoleList () {
-                return this.$http.get('/admin-api/role/list').then(({ data: res }) => {
+                return this.$http.get('/admin-api/role/page').then(({ data: res }) => {
+                    debugger
                     if (res.code !== 200) {
                         return this.$message.error(res.msg)
                     }
-                    this.roleList = res.data
+                    this.roleList = res.data.list
                 }).catch(() => {})
             },
             // 获取信息 反填
@@ -241,6 +244,12 @@
                     if (!valid) {
                         return false
                     }
+                    var roleData=[]
+                    for(var i=0;i<this.dataForm.roleIds.length;i++){
+                        debugger
+                        roleData.push(this.dataForm.roleIds[i].key)
+                    }
+                    this.dataForm.roleIds = roleData
                     this.$http[!this.pageId ? 'post' : 'put']('/admin-api/user', {
                         ...this.dataForm
                     }).then(({ data: res }) => {

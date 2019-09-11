@@ -31,7 +31,7 @@
 		    	</el-date-picker>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
+                <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>
                 <el-button  class="btn" type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
@@ -61,11 +61,7 @@
                 </template>
             </el-table-column>
             <el-table-column prop="nickname" label="用户" align="center"></el-table-column>
-            <el-table-column prop="itemList" width="80" label="相关商品" align="center">
-            	<template slot-scope="scope">
-            		{{scope.row.itemList && scope.row.itemList.length || 0}}
-            	</template>
-            </el-table-column>
+            <el-table-column prop="goodsNums" width="80" label="相关商品" align="center"></el-table-column>
             <el-table-column prop="state" width="120" label="发布状态" align="center">
             	<template slot-scope="scope">
                     <el-tag v-if="scope.row.state == 1" type="success">已发布</el-tag>
@@ -80,11 +76,7 @@
             </el-table-column>
             <el-table-column prop="publishTimeJp" label="日本发布时间" width="120" align="center"></el-table-column>
             <el-table-column prop="publishTime" label="发布时间" width="95" align="center"></el-table-column>
-            <el-table-column prop="favNumJp" label="收藏量" width="80" align="center">
-            	<template slot-scope="scope">
-                    {{scope.row.favNumCn+scope.row.favNumJp}}
-                </template>
-            </el-table-column>
+            <el-table-column prop="totalFavNum" label="收藏量" width="80" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="showDetail(scope.row)"type="text"size="mini">查看</el-button>
@@ -190,6 +182,10 @@
             this.dataForm.goodsShow = this.status == undefined ? "" : this.status;
         },
         methods: {
+            getData(){
+                this.page =1;
+                this.getDataList();
+            },
             showDetail(row){     //查看
                 this.$emit("showDetail",row);
             },

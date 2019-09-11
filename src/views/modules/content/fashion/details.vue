@@ -22,7 +22,7 @@
                     <span>{{dataForm.totalViewsNums}}</span>
                 </el-form-item>
                 <el-form-item label="发布状态：">
-                    <span>{{dataForm.isOpen == 0?"发布":dataForm.isOpen == 1?"未发布":""}}</span>
+                    <span>{{dataForm.isOpen == 1?"发布":dataForm.isOpen == 0?"未发布":""}}</span>
                 </el-form-item>
                 <el-form-item label="背景图：" style="height: 100%!important;">
                     <template slot-scope="scope">
@@ -35,7 +35,7 @@
                     </template>
                 </el-form-item>
                 <el-form-item label="标题：" style="height: 100%!important;">
-                    <span>{{dataForm.title}}</span>
+                    <span>{{dataForm.titleJp}}</span>
                 </el-form-item>
                 <el-form-item label="详情：" style="height: 100%!important;">
                     <template slot-scope="scope">
@@ -98,14 +98,14 @@
                         <div v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
                             <div style="height: 20px;"></div>
                             <div class="contentChild" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
-                               {{v.text}}
+                               {{v.textCn}}
                             </div>
                             <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
                                 <div class="goodsPropsWrap">
                                     <div class="goodsImg">
                                         <img :src="v.imageUrl" alt=""/>
                                     </div>
-                                    <div v-if="v.typeId=='4'">{{v.text}}</div>
+                                    <div v-if="v.typeId=='4'">{{v.textCn}}</div>
                                 </div>
                             </div>
                         </div>
@@ -117,11 +117,9 @@
 </template>
 
 <script>
-    import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import { getfashiondetail } from '@/api/api'
     export default {
-        mixins: [mixinViewModule],
         data () {
             return {
                 breaddata: [ "内容管理", "时尚记事","时尚记事详情"],

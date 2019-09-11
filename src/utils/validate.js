@@ -28,3 +28,11 @@ export function isPhone (s) {
 export function isURL (s) {
   return /^http[s]?:\/\/.*/.test(s)
 }
+/**
+ * 身份证号
+ * 身份证号码为15位或者18位，15位时全为数字，18位前17位为数字，最后一位是校验位，可能为数字或字符X
+ * @param {*} s
+ */
+export function isIdCard (s) {
+  return /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(s)
+}

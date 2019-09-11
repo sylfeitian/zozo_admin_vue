@@ -19,7 +19,7 @@
                     <span>{{dataForm.userHeight}}</span>
                 </el-form-item>
                 <el-form-item label="用户地区：">
-                    <span>{{dataForm.contryNameJp}}</span>
+                    <span>日本</span>
                 </el-form-item>
                 <el-form-item label="性别：">
                     <span>{{dataForm.gender == 0?"男":dataForm.gender == 1?"女":dataForm.gender == 2?"儿童":dataForm.gender == 3?"world":""}}</span>
@@ -44,7 +44,7 @@
                     <span>{{dataForm.titleJp}}</span>
                 </el-form-item>
                 <el-form-item label="详情：" style="height: 100%!important;">
-                    <span>{{dataForm.contentJp}}</span>
+                    <span>{{dataForm.descriptionJp}}</span>
                 </el-form-item>
                 <div class="goods">
                     <span class="inforTit" style="vertical-align:top;">关联搭配：</span>
@@ -84,7 +84,7 @@
             >
                 <p class="title">中文</p>
                 <el-form-item label="搭配集合：">
-                    <span>{{dataForm.id}}</span>
+                    <span>{{dataForm.idJp}}</span>
                 </el-form-item>
                 <el-form-item label="用户昵称：">
                     <span>{{dataForm.userNickname}}</span>
@@ -93,7 +93,7 @@
                     <span>{{dataForm.userHeight}}</span>
                 </el-form-item>
                 <el-form-item label="用户地区：">
-                    <span>{{dataForm.contryName}}</span>
+                    <span>日本</span>
                 </el-form-item>
                 <el-form-item label="性别：">
                     <span>{{dataForm.gender == 0?"男":dataForm.gender == 1?"女":dataForm.gender == 2?"儿童":dataForm.gender == 3?"world":""}}</span>
@@ -118,7 +118,7 @@
                     <el-input v-model="dataForm.title" type="text" placeholder="请输入标题名称"></el-input>
                 </el-form-item>
                 <el-form-item label="详情：" style="height: 100%!important;">
-                    <el-input v-model="dataForm.content" type="textarea":rows="5" placeholder="请输入内容"></el-input>
+                    <el-input v-model="dataForm.description" type="textarea":rows="5" placeholder="请输入内容"></el-input>
                 </el-form-item>
                 <div class="goods">
                     <span class="inforTit" style="vertical-align:top;">关联搭配：</span>
@@ -130,7 +130,7 @@
                             class="inforRight"
                             style="display:inline-block;width: 80%;"
                     >
-                        <el-table-column prop="id" label="搭配ID" align="center"></el-table-column>
+                        <el-table-column prop="idJp" label="搭配ID" align="center"></el-table-column>
                         <el-table-column prop="imageUrl320" label="主图" align="center">
                             <template slot-scope="scope">
                                 <img
@@ -178,11 +178,9 @@
 </template>
 
 <script>
-    import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import {  getlookfolderdetail,saveFolderdetail } from '@/api/api'
     export default {
-        mixins: [mixinViewModule],
         data () {
             return {
                 breaddata: [ "内容管理",  "搭配集合管理","编辑搭配集合"],

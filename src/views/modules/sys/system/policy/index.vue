@@ -269,7 +269,8 @@
                     if(res.code==200){
                         // this.dataForm = res.data;
                         this.dataForm = JSON.parse(res.data.value);
-                        this.rate = JSON.parse(this.dataForm.addPriceRate);
+                        // this.rate = JSON.parse(this.dataForm.addPriceRate);
+                         this.rate =this.dataForm.addPriceRate;
                         console.log("回显数据");
                         console.log(this.dataForm);
                     }
@@ -363,7 +364,8 @@
             	}
             	this.$refs[formName].validate((valid) => {
 			        if (valid) {
-                        this.dataForm.addPriceRate = JSON.stringify(this.rate);
+                        // this.dataForm.addPriceRate = JSON.stringify(this.rate);
+                        this.dataForm.addPriceRate = this.rate;
                         this.saveLoading = true;
 			            addsetting(this.dataForm).then((res)=>{
                             this.saveLoading = false;
