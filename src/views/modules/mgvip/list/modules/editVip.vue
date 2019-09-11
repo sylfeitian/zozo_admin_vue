@@ -31,9 +31,9 @@
                 </div>
                   
             </el-form-item>
-            <el-form-item label="原密码：">
+            <!-- <el-form-item label="原密码：">
                    <span>{{dataForm.memberPasswd}}</span>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="新密码："  prop="newPasswd">
                    <el-input v-model="dataForm.newPasswd"></el-input>
             </el-form-item>
