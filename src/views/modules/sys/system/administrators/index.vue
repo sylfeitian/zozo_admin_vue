@@ -59,7 +59,7 @@
                 <el-table-column :label="$t('handle')" header-align="center" align="center">
                     <template slot-scope="scope" v-if="scope.row.superAdmin!==1">
                         <el-button v-if="$hasPermission('sys:user:update')" type="text" size="small" @click="changeNumber(scope.row)">重置密码</el-button>
-                        <el-button v-if="$hasPermission('sys:user:edit')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">编辑</el-button>
+                        <el-button v-if="$hasPermission('sys:user:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">编辑</el-button>
                         <el-button v-if="$hasPermission('sys:user:delete')" type="text" class="artdanger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
                     </template>
                 </el-table-column>
