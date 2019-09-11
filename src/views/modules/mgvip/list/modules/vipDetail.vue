@@ -30,7 +30,12 @@
                      <label for="">手机号</label><span>{{allData.memberMobile }}</span>
                 </div>
                 <div class="topItem">
-                     <label for="">实名认证</label><span>{{allData.certificationStatus==0?"未认证":"已认证"}}</span>
+                     <label for="">实名认证</label>
+                     <span>
+                        <span> {{allData.certificationStatus==0?"未认证":"已认证"}}  </span>
+                        <span v-if="allData.certificationStatus!=0 && allData.idCard"> ({{allData.idCard.slice(0,12)+"******"}}) </span>
+                        <span v-if="allData.certificationStatus!=0" @click="lookIncardInfo"  class="look">查看</span>
+                     </span>
                 </div>
                 <div class="topItem">
                      <label for="">注册时间</label><span>{{allData.createDate }}</span>
@@ -96,14 +101,38 @@
                  <span>{{allData.collectionStoreNum?allData.collectionStoreNum:0 }}</span>
             </div>
       </div>
+
+
+      <el-dialog
+        title="身份证信息"
+        :visible.sync="dialogVisible"
+        width="30%"
+        :before-close="handleClose">
+        
+         <el-form label-width="100px" :model="dataForm" :rules="dataRule"  class="elForm" ref="editForm">
+            <el-form-item label="身份证号码：">
+                 <span>{{myIdCardInfo.idCard}}</span>
+            </el-form-item>
+            <el-form-item label="身份证正反面：" >
+               <div class="idCardImgWarp">
+                    <img :src="myIdCardInfo.idcartPositiveUrl | filterImgUrl" alt="">
+                    <img :src="myIdCardInfo.idcartReverseUrl | filterImgUrl"  alt="">
+               </div>
+            </el-form-item>
+        </el-form>
+        </el-dialog>
+
     </div>
 </template>
 
 <script>
     import {zozomemberDetail} from "@/api/api.js"
+    import {idCardInfo} from "@/api/api.js"
     export default {
         data () {
             return {
+                myIdCardInfo:{},
+                dialogVisible:false,
                 row:'',
                 dataLoading:false,
                 allData:{},
@@ -130,6 +159,23 @@
                         this.allData.jifen = this.allData.availablePoint + this.allData.consumeAmount;
                     }
                 })
+            },
+            // 查看身份证正反面信息
+            lookIncardInfo(){
+                var obj = {
+                id:this.row.id
+                }
+                idCardInfo(obj).then((res)=>{
+                    if(res.code==200){
+                        this.dialogVisible = true;
+                        this.myIdCardInfo = res.data;
+                    }else{
+                        this.$message.error(res.msg);
+                    }
+                })
+            },
+            handleClose(){
+                this.dialogVisible = false;
             }
         }
     }
@@ -165,7 +211,7 @@
         width:430px;
          box-sizing:border-box;
           border: 1px solid #ebebeb;
-         label{
+         &>label{
             display: inline-block;
             width: 123px;
             height: 45px;
@@ -174,7 +220,7 @@
             background-color: rgba(240, 242, 245, 1);
             padding-right:10px;
         }
-        span{
+        &>span{
             display: inline-block;
             text-align: left;
             height: 45px;
@@ -201,20 +247,32 @@
         box-sizing: content-box;
         border-left: 1px solid #ebebeb;
         border-right: 1px solid #ebebeb;
-        label,span{
+        &>label,&>span{
             width: 130px;
             display: inline-block;
             height: 45px;
             line-height: 45px;
             text-align: center;
         }
-        label{
+        &>label{
             background-color: rgba(240, 242, 245, 1);
             border-top: 1px solid #ebebeb;
         }
-        span{
+        &>span{
              border-bottom: 1px solid #ebebeb;
         }
+    }
+}
+
+.look{
+    cursor: pointer;
+    color: #1890FF;
+}
+.idCardImgWarp{
+    img{
+        width: 158px;
+        height: 100px;
+        margin-right: 10px;
     }
 }
 </style>
