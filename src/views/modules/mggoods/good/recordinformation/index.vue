@@ -10,14 +10,14 @@
                 <el-input v-model="dataFormShow.goodsCsIdJp" placeholder="商品skuid" ></el-input>
             </el-form-item>
             <el-form-item label="分类：">
-                <el-select v-model="dataFormShow.firstCategory" placeholder="请选择">
-                    <el-option
-                            v-for="item in stateOptions"
-                            :key="item.id"
-                            :label="item.label"
-                            :value="item.id">
-                    </el-option>
-                </el-select>
+                <el-cascader
+                        :options="selectCategoryOption"
+                        v-model="classList"
+                        change-on-select
+                        :clearable="true"
+                        :props="props"
+                        @change="handleChange">
+                </el-cascader>
             </el-form-item>
             <el-form-item  label="所属店铺：">
                 <el-input v-model="dataFormShow.storeName" placeholder="请输入店铺名称" ></el-input>
@@ -179,6 +179,7 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import { registerUrl } from '@/api/url'
+    import { backScanCategorys } from '@/api/api'
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -220,6 +221,13 @@
                     id: '1',
                     label: '已下发'
                 }],
+                selectCategoryOption:[],
+                classList:[],
+                props: {
+                    label:'name',
+                    value: 'id',
+                    children:'list'
+                },
             }
         },
         components: {
@@ -230,9 +238,36 @@
             // 第一次请求数据
             this.activeName =  this.status == undefined ? "" : this.status;
             this.dataFormShow.isTofile = "1";
+            this.backScan();
             this.getData();
         },
         methods: {
+            handleChange(){
+                if(this.classList.length!=0){
+                    this.dataForm.categoryId = this.classList[this.classList.length-1]
+                }
+                console.log(this.dataForm.categoryId)
+            },
+            backScan(){
+                var obj  = {
+                    id:this.dataForm.id,
+                    categoryName:this.dataForm.categoryName,
+                }
+                backScanCategorys(obj).then((res)=>{
+                    if(res.code == 200){
+                        this.selectCategoryOption = res.data;
+                        // console.log( this.selectCategoryOption);
+                        this.selectCategoryOption.forEach((item,index)=>{
+                            item.list && item.list.forEach((item2,index2)=>{
+                                item2.list="";
+                            })
+                        })
+
+                    }else{
+
+                    }
+                })
+            },
             handleClick(tab) {
                 if(tab== ""){
                     this.dataFormShow.isTofile  = "1"
@@ -272,5 +307,5 @@
 </script>
 
 <style lang="scss" scoped>
-    
+
 </style>

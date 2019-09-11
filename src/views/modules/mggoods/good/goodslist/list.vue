@@ -10,20 +10,27 @@
                 <el-input v-model="dataFormShow.idJp" placeholder="请输入spuID" ></el-input>
             </el-form-item>
             <el-form-item label="分类：">
-<!--                <el-input v-model="dataFormShow.categoryId" placeholder="请输入" ></el-input>-->
-                <el-select
-                        v-model="dataFormShow.categoryId"
-                        filterable
-                        placeholder="请输入分类名称"
-                        :loading="loading"
-                >
-                    <el-option
-                            v-for="(item,index) in selectCategoryOption"
-                            :key="item.index"
-                            :label="item.name"
-                            :value="item.id">
-                    </el-option>
-                </el-select>
+<!--                <el-select-->
+<!--                        v-model="dataFormShow.categoryId"-->
+<!--                        filterable-->
+<!--                        placeholder="请输入分类名称"-->
+<!--                        :loading="loading"-->
+<!--                >-->
+<!--                    <el-option-->
+<!--                            v-for="(item,index) in selectCategoryOption"-->
+<!--                            :key="item.index"-->
+<!--                            :label="item.name"-->
+<!--                            :value="item.id">-->
+<!--                    </el-option>-->
+<!--                </el-select>-->
+                <el-cascader
+                        :options="selectCategoryOption"
+                        v-model="classList"
+                        change-on-select
+                        :clearable="true"
+                        :props="props"
+                        @change="handleChange">
+                </el-cascader>
             </el-form-item>
             <el-form-item label="店铺名称：">
                 <el-select
@@ -31,6 +38,7 @@
                         filterable
                         placeholder="请输入店铺名称"
                         :loading="loading"
+                        @change="changeStore"
                 >
                     <el-option
                             v-for="(item,index) in selectStoreOption"
@@ -46,10 +54,11 @@
                         filterable
                         placeholder="请输入品牌名称"
                         :loading="loading"
+                        @change="changeBrand"
                 >
                     <el-option
                             v-for="(item,index) in selectBrandOption"
-                            :key="item.index"
+                            :key="item.id"
                             :label="item.brandName"
                             :value="item.id">
                     </el-option>
@@ -242,6 +251,7 @@
     import detail from "./detail";
     import { goodsUrl } from '@/api/url'
     import { showBatchGoods,showGoods, searchStoreName, searchBrandName, backScanCategorys } from '@/api/api'
+    import cloneDeep from 'lodash/cloneDeep'
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -264,6 +274,12 @@
                     sellState: "",//是否可售
                     showWeb:"",//上下架状态:0：待上架，1：已上架，2：下架 ,
                     priceState: "",//价格变更
+                },
+                classList:[],
+                props: {
+                    label:'name',
+                    value: 'id',
+                    children:'list'
                 },
                 showOptions: [{id: '0', label: '待上架'}, {id: '1', label: '已上架'}, {id: '2', label: '已下架'}],
                 stateOptions: [{id: '0', label: '不可售'}, {id: '1', label: '可售'}],
@@ -303,6 +319,24 @@
             this.backScan2();
         },
         methods: {
+            // handleChangeOut(val){
+            //     console.log(val)
+            //     this.dataForm.categoryId = val[val.length-1];
+            // },
+            handleChange(){
+                if(this.classList.length!=0){
+                    this.dataForm.categoryId = this.classList[this.classList.length-1]
+                }
+                console.log(this.dataForm.categoryId)
+            },
+            changeStore(val){
+                this.$set(this.dataFormShow,"storeId",val);
+                this.selectStoreOption = [].concat(this.selectStoreOption)
+            },
+            changeBrand(val){
+                this.$set(this.dataFormShow,"brandId",val);
+                this.selectBrandOption = [].concat(this.selectBrandOption)
+            },
             handleClick(tab,val) {
                 if(tab== ""){
                     this.dataFormShow.showWeb = ""
@@ -320,10 +354,11 @@
             },
             getData(){
                 this.page =1;
-                this.dataForm = {};
-                for(let key in this.dataFormShow){
-                    this.$set(this.dataForm,`${key}`,this.dataFormShow[key]);
-                }
+                // this.dataForm = {};
+                // for(let key in this.dataFormShow){
+                //     this.$set(this.dataForm,`${key}`,this.dataFormShow[key]);
+                // }
+                this.dataForm = cloneDeep(this.dataFormShow);
                 console.log(this.dataForm);
                 this.getDataList()
             },
@@ -331,16 +366,16 @@
                 this.dataFormShow.goodsName = "";
                 this.dataFormShow.idJp = "";
                 this.dataFormShow.categoryId = "";
-                this.dataFormShow.storeName = "";
-                this.dataFormShow.brandName = "";
+                this.dataFormShow.storeId = "";
+                this.dataFormShow.brandId = "";
                 this.dataFormShow.goodsStatus = "";
                 this.dataFormShow.showWeb = "";
                 this.dataFormShow.priceState = "";
                 this.dataForm.goodsName = "";
                 this.dataForm.idJp = "";
                 this.dataForm.categoryId = "";
-                this.dataForm.storeName = "";
-                this.dataForm.brandName = "";
+                this.dataForm.storeId = "";
+                this.dataForm.brandId = "";
                 this.dataForm.goodsStatus = "";
                 this.dataForm.showWeb = "";
                 this.dataForm.priceState = "";
@@ -381,6 +416,13 @@
                 backScanCategorys(obj).then((res)=>{
                     if(res.code == 200){
                         this.selectCategoryOption = res.data;
+                        // console.log( this.selectCategoryOption);
+                        this.selectCategoryOption.forEach((item,index)=>{
+                            item.list && item.list.forEach((item2,index2)=>{
+                                item2.list="";
+                            })
+                        })
+
                     }else{
 
                     }
