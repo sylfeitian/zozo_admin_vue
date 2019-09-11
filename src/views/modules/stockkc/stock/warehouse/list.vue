@@ -191,11 +191,9 @@
                 console.log(row);
                 this.currentIndex = index;
                 var obj = {
-                    "storeId": row.id,
+                    "id": row.id,
                     "isEnable":row.isEnable?0:1
-                }
-
-
+                };
                 var msg = ""
                 row.isEnable==1?msg="不启用":msg="启用"
                 this.$confirm('是否进行'+msg+'操作?', '提示', {

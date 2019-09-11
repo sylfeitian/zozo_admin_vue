@@ -601,7 +601,7 @@ export const allWare = params => { return http.get(`${base}/ware/all`, params).t
 // 导出数据
 export const importWare = params => { return http.get(`${base}/ware/import`, params).then(res => res.data); };
 // 修改仓库启用状态
-export const editWare = params => { return http.delete(`${base}/ware/isenable`, params).then(res => res.data); };
+export const editWare = params => { return http.delete(`${base}/ware/isenable?id=${params.id}&isEnable=${params.isEnable}`, params).then(res => res.data); };
 // 仓库列表
 export const warePage = params => { return http.get(`${base}/ware/list`, params).then(res => res.data); };
 // 仓库sku商品
