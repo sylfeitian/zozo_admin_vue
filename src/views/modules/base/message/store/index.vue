@@ -164,6 +164,7 @@ export default {
       multipleSelection: [],
       row: "",
       operateShopStore: [
+         { id: "", name: "全部" },
         { id: "1", name: "营业中" },
         { id: "2", name: "已停业" },
         { id: "0", name: "待营业" }
