@@ -73,7 +73,7 @@
 <!--            <el-table-column type="selection" width="70"></el-table-column>-->
             <el-table-column label="商品SKU ID" align="center">
                 <template slot-scope="scope">
-                    <div>
+                    <div @click="detShowChange(scope.row)" style="cursor:pointer;color:#2260D2;">
                         {{scope.row.skuIdJp}}
                     </div>
                 </template>

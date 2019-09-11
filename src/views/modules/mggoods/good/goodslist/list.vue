@@ -108,8 +108,8 @@
         >
             <el-table-column type="selection" width="70"></el-table-column>
             <el-table-column label="商品ID" align="center" width="100">
-                <template slot-scope="scope" >
-                    <div @click="detShowChange(scope.row)" style="cursor:pointer;">
+                <template slot-scope="scope">
+                    <div @click="detShowChange(scope.row)" style="cursor:pointer;color:#2260D2;">
                         {{scope.row.idJp}}
                     </div>
                 </template>
