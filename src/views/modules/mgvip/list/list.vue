@@ -73,7 +73,7 @@
               width="80"
       >
         <template slot-scope="scope">
-          <span v-if="scope.row.groupStatus == 0">启用</span>
+          <span v-if="scope.row.memberState == 0">启用</span>
           <span v-else>禁止</span>
         </template>
       </el-table-column>
@@ -98,6 +98,18 @@
         </template>
       </el-table-column>
     </el-table>
+
+       <!-- 分页 -->
+        <el-pagination
+                @size-change="pageSizeChangeHandle"
+                @current-change="pageCurrentChangeHandle"
+                :current-page="page"
+                :page-sizes="[10, 20, 50, 100]"
+                :page-size="limit"
+                :total="total"
+                layout="total, sizes, prev, pager, next, jumper">
+        </el-pagination>
+
   </div>
 </template>
 
@@ -141,6 +153,7 @@
     },
     methods: {
       getData(){
+        this.page = 1
         this.getDataList()
       },
       reset(){
@@ -148,6 +161,7 @@
         this.dataForm.minConsumeAmount = "";
         this.dataForm.maxConsumeAmount = "";
         this.dataForm.memberState = "";
+        this.getData();
       },
       goDetail(row){
          row.activeName = "vipDetail";

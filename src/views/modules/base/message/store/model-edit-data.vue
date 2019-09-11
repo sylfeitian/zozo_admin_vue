@@ -5,7 +5,7 @@
             :close-on-click-modal="false"
             :visible.sync="visible"
             :before-close="closeDialog"
-            width="30%"
+            width="50%"
     >
         <el-form
                 :model="dataForm"
@@ -268,17 +268,12 @@
                         var mainTag = this.dataForm.mainTag?this.dataForm.mainTag.join(","):'';
                         console.log(this.dataForm);
                         var obj = {
-                            "idJp":  this.dataForm.idJp,
                             "id":  this.dataForm.id,
-                            // "storeNameGlo":  this.dataForm.storeNameGlo,
-                            // "storeNameJp":  this.dataForm.storeNameJp,
                             "storeName":  this.dataForm.storeName,
-                            // "descriptionJp":  this.dataForm.descriptionJp,
                             "description":  this.dataForm.description,
-                            // "imageUrl":   this.dataForm.imageUrl, //"http://bug.leimingtech.com/zentao/file-read-25289.png",
-                            // "storeLogo": this.dataForm.storeLogo,// "http://bug.leimingtech.com/zentao/file-read-25289.png",
+                            "imageUrl":   this.dataForm.imageUrl, //"http://bug.leimingtech.com/zentao/file-read-25289.png",
+                            "storeLogo": this.dataForm.storeLogo,// "http://bug.leimingtech.com/zentao/file-read-25289.png",
                             "mainTag":  mainTag,
-                            "subTag":  subTag,
                         }
                         if(this.row) obj.id = this.row.id
                         var fn = updateShopStore;

@@ -601,7 +601,7 @@ export const allWare = params => { return http.get(`${base}/ware/all`, params).t
 // 导出数据
 export const importWare = params => { return http.get(`${base}/ware/import`, params).then(res => res.data); };
 // 修改仓库启用状态
-export const editWare = params => { return http.delete(`${base}/ware/isenable`, params).then(res => res.data); };
+export const editWare = params => { return http.delete(`${base}/ware/isenable?id=${params.id}&isEnable=${params.isEnable}`, params).then(res => res.data); };
 // 仓库列表
 export const warePage = params => { return http.get(`${base}/ware/list`, params).then(res => res.data); };
 // 仓库sku商品
@@ -876,3 +876,10 @@ export const errorListModule = params => { return http.get(`${base}/log/error/li
 //黑名单管理表-------------------------------------------------------------------------------------------------------------
 // 添加黑名单
 export const addBlcaklist = params => { return http.post(`${base}/blacklist/add`, params).then(res => res.data); };
+
+
+// 积分设置-------------------------------------------------------------------------------------------------------------
+export const updatehoppointssettings = params => { return http.put(`${base}/shoppointssettings`, params).then(res => res.data); };
+
+export const getShoppointssettings = params => { return http.get(`${base}/shoppointssettings`, params).then(res => res.data); };
+

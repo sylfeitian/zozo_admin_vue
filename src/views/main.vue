@@ -104,6 +104,8 @@ export default {
         this.$store.state.user.name = res.data.username
         this.$store.state.user.realName = res.data.realName
         this.$store.state.user.superadmin= res.data.superadmin
+        this.$store.state.user.username= res.data.username
+        
       }).catch(() => {})
     },
     // 获取权限

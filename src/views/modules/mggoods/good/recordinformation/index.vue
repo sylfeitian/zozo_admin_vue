@@ -25,7 +25,7 @@
             <el-form-item  label="品牌：">
                 <el-input v-model="dataFormShow.brandName" placeholder="请输入品牌名称" ></el-input>
             </el-form-item>
-            <el-form-item  label="状态：" v-if="dataFormShow.goodsShow==''">
+            <el-form-item  label="状态：" v-if="dataFormShow.isTofile=='1'">
                 <el-select v-model="dataFormShow.transportFlag" placeholder="请选择">
                     <el-option
                             v-for="item in stateOptions"
@@ -35,7 +35,7 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item  label="备案状态：" v-if="dataFormShow.goodsShow=='1'">
+            <el-form-item  label="备案状态：" v-if="dataFormShow.isTofile=='0'">
                 <el-select v-model="dataFormShow.tofileFlag" placeholder="请选择">
                     <el-option
                             v-for="item in alreadyOptions"
@@ -82,7 +82,7 @@
                 <template slot-scope="scope">
                     <div class="goodsPropsWrap">
                         <div class="goodsImg">
-                            <img :src="scope.row.imageUrl | filterImgUrl" alt=""/>
+                            <img :src="scope.row.imageUrl | filterImgUrl" alt="" style=" object-fit: contain;width: 70px;height:70px;"/>
                         </div>
                     </div>
                 </template>
@@ -117,7 +117,7 @@
         </el-table-column>
             <el-table-column prop="price" label="售价" align="center">
                 <template slot-scope="scope">
-                    <div class="price1">￥{{scope.row.sellPrice }}</div>
+                    <div class="price1">￥{{scope.row.price}}</div>
                 </template>
             </el-table-column>
 <!--            <el-table-column label="售价类型" align="center" width="150">-->
@@ -135,10 +135,16 @@
                 </template>
             </el-table-column>
             <el-table-column prop="tofileFlag" label="状态"  align="center">
-                <template slot-scope="scope">
-                    <div>
-                        {{scope.row.tofileFlag}}
-                    </div>
+<!--                <template slot-scope="scope">-->
+<!--                    <div>-->
+<!--                        {{scope.row.isTofile}}-->
+<!--                    </div>-->
+<!--                </template>-->
+                <template>
+                    <span v-if="dataForm.isTofile==0">待备案</span>
+                    <span v-if="dataForm.isTofile==1">已备案</span>
+                    <span v-if="dataForm.isTofile==2">不可备案</span>
+                    <span v-if="dataForm.isTofile==3">待重新备案</span>
                 </template>
             </el-table-column>
             <el-table-column prop="jdThirdCategory" label="京东三级分类"  align="center" v-if="dataFormShow.isTofile=='1'">
@@ -201,8 +207,8 @@
                 },
                 changeVal: "",
                 alreadyOptions: [{
-                    id: '0',
-                    label: '待备案'
+                    id: '2',
+                    label: '不可备案'
                 },{
                     id: '3',
                     label: '待重新备案'
@@ -247,14 +253,18 @@
                 this.getDataList()
             },
             reset() {
+                this.dataFormShow.goodsCsIdJp = "";//商品sku ID
                 this.dataFormShow.goodsName = "";//商品名称/商品货号
                 this.dataFormShow.brandName = "";//品牌名称
-                this.dataFormShow.conditionName = "";//分类名称
+                this.dataFormShow.categoryId = "";//分类名称
                 this.dataFormShow.storeName = "";//店铺名称
+                this.dataFormShow.transportFlag = "";//下发状态
+                this.dataForm.goodsCsIdJp = "";//商品sku ID
                 this.dataForm.goodsName = "";//商品名称/商品货号
                 this.dataForm.brandName = "";//品牌名称
-                this.dataForm.conditionName = "";//分类名称
+                this.dataForm.categoryId = "";//分类名称
                 this.dataForm.storeName = "";//店铺名称
+                this.dataForm.transportFlag = "";//下发状态
                 this.handleClick();
             },
         }
@@ -262,10 +272,5 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "@/element-ui/theme-variables.scss";
-
-    img {
-        width: 100px;
-        height: 100px;
-    }
+    
 </style>
