@@ -265,7 +265,7 @@
                     showWeb:"",//上下架状态:0：待上架，1：已上架，2：下架 ,
                     priceState: "",//价格变更
                 },
-                showOptions: [{id: '0', label: '已下架'}, {id: '1', label: '已上架'}, {id: '2', label: '待上架'}],
+                showOptions: [{id: '0', label: '待上架'}, {id: '1', label: '已上架'}, {id: '2', label: '已下架'}],
                 stateOptions: [{id: '0', label: '不可售'}, {id: '1', label: '可售'}],
                 priceOptions: [{id: '0', label: '价格正常'}, {id: '1', label: '价格上涨'}, {id: '2', label: '价格下降'}, {id: '3', label: '倒挂'}],
                 activeName: "",

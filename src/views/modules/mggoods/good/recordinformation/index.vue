@@ -25,7 +25,7 @@
             <el-form-item  label="品牌：">
                 <el-input v-model="dataFormShow.brandName" placeholder="请输入品牌名称" ></el-input>
             </el-form-item>
-            <el-form-item  label="状态：" v-if="dataFormShow.goodsShow==''">
+            <el-form-item  label="状态：">
                 <el-select v-model="dataFormShow.transportFlag" placeholder="请选择">
                     <el-option
                             v-for="item in stateOptions"
@@ -35,16 +35,16 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item  label="备案状态：" v-if="dataFormShow.goodsShow=='1'">
-                <el-select v-model="dataFormShow.tofileFlag" placeholder="请选择">
-                    <el-option
-                            v-for="item in alreadyOptions"
-                            :key="item.id"
-                            :label="item.label"
-                            :value="item.id">
-                    </el-option>
-                </el-select>
-            </el-form-item>
+<!--            <el-form-item  label="备案状态：">-->
+<!--                <el-select v-model="dataFormShow.tofileFlag" placeholder="请选择">-->
+<!--                    <el-option-->
+<!--                            v-for="item in alreadyOptions"-->
+<!--                            :key="item.id"-->
+<!--                            :label="item.label"-->
+<!--                            :value="item.id">-->
+<!--                    </el-option>-->
+<!--                </el-select>-->
+<!--            </el-form-item>-->
             <br>
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="getData()">查询</el-button>

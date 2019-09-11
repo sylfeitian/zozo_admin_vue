@@ -282,7 +282,7 @@ export default {
         operateFlag: row.operateFlag == 1 ? 0 : 1 //1发布   0取消发布
       };
       var msg = "";
-      row.state == 1 ? (msg = "停业") : (msg = "营业");
+      row.operateFlag == 1 ? (msg = "停业") : (msg = "营业");
       this.$confirm("是否" + msg + "该店铺?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
