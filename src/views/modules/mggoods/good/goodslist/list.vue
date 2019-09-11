@@ -426,7 +426,7 @@
                     showWeb = rowOrstatus
                 }else{ //单个
                     ids = [rowOrstatus.id]
-                    showWeb = rowOrstatus.showWeb==1?0:1;
+                    showWeb = rowOrstatus.showWeb==1?2:1;
                 }
                 var obj = {
                     ids:ids,
