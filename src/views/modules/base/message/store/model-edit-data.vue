@@ -268,15 +268,11 @@
                         var mainTag = this.dataForm.mainTag?this.dataForm.mainTag.join(","):'';
                         console.log(this.dataForm);
                         var obj = {
-                            "idJp":  this.dataForm.idJp,
                             "id":  this.dataForm.id,
-                            // "storeNameGlo":  this.dataForm.storeNameGlo,
-                            // "storeNameJp":  this.dataForm.storeNameJp,
                             "storeName":  this.dataForm.storeName,
-                            // "descriptionJp":  this.dataForm.descriptionJp,
                             "description":  this.dataForm.description,
-                            // "imageUrl":   this.dataForm.imageUrl, //"http://bug.leimingtech.com/zentao/file-read-25289.png",
-                            // "storeLogo": this.dataForm.storeLogo,// "http://bug.leimingtech.com/zentao/file-read-25289.png",
+                            "imageUrl":   this.dataForm.imageUrl, //"http://bug.leimingtech.com/zentao/file-read-25289.png",
+                            "storeLogo": this.dataForm.storeLogo,// "http://bug.leimingtech.com/zentao/file-read-25289.png",
                             "mainTag":  mainTag,
                         }
                         if(this.row) obj.id = this.row.id
