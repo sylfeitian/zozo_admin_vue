@@ -178,17 +178,16 @@
                 this.visible = true;
                 this.$nextTick(() => {
                     this.$refs['dataForm'].resetFields()
-                    this.dataForm.roleIds=[{
-                        value: '',
-                        key: Date.now()
-                    }]
+                    // this.dataForm.roleIds=[{
+                    //     value: '',
+                    //     key: Date.now()
+                    // }]
                     if(id){
                         this.pageId = id;
                         this.getInfo(id);
                     }else{
                         this.pageId = '';
                     }
-                    // 有必要？
                     this.getRoleList()
                 })
             },
@@ -203,17 +202,22 @@
             },
             // 获取角色列表
             getRoleList () {
-                return this.$http.get('/admin-api/role/page').then(({ data: res }) => {
+                return this.$http.get('/admin-api/role/list').then(({ data: res }) => {
                     debugger
                     if (res.code !== 200) {
                         return this.$message.error(res.msg)
                     }
-                    this.roleList = res.data.list
+                    this.roleList = res.data
                 }).catch(() => {})
             },
             // 获取信息 反填
             getInfo (id) {
                 this.$http.get(`/admin-api/user/${id}`).then(({ data: res }) => {
+                    debugger
+                    for(var i=0;i<res.data.roleNames.length;i++){
+                        res.data.roleIds[i].push(res.data.roleNames[i])
+                    }
+                    console.log(res.data.roleIds)
                     if (res.code !== 200) {
                         return this.$message.error(res.msg)
                     }
@@ -247,7 +251,7 @@
                     var roleData=[]
                     for(var i=0;i<this.dataForm.roleIds.length;i++){
                         debugger
-                        roleData.push(this.dataForm.roleIds[i].key)
+                        roleData.push(this.dataForm.roleIds[i].value)
                     }
                     this.dataForm.roleIds = roleData
                     this.$http[!this.pageId ? 'post' : 'put']('/admin-api/user', {
@@ -266,6 +270,10 @@
                             }
                         })
                     }).catch(() => {})
+                    this.dataForm.roleIds=[{
+                        value: '',
+                        key: Date.now()
+                    }]
                 })
             }, 1000, { 'leading': true, 'trailing': false })
         }
