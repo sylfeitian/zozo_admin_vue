@@ -208,8 +208,8 @@
                 },
                 changeVal: "",
                 alreadyOptions: [{
-                    id: '2',
-                    label: '不可备案'
+                    id: '0',
+                    label: '待备案'
                 },{
                     id: '3',
                     label: '待重新备案'
@@ -244,9 +244,9 @@
         methods: {
             handleChange(){
                 if(this.classList.length!=0){
-                    this.dataForm.categoryId = this.classList[this.classList.length-1]
+                    this.dataFormShow.categoryId = this.classList[this.classList.length-1]
                 }
-                console.log(this.dataForm.categoryId)
+                console.log(this.dataFormShow.categoryId)
             },
             backScan(){
                 var obj  = {
@@ -291,15 +291,16 @@
                 this.dataFormShow.goodsCsIdJp = "";//商品sku ID
                 this.dataFormShow.goodsName = "";//商品名称/商品货号
                 this.dataFormShow.brandName = "";//品牌名称
-                this.dataFormShow.categoryId = "";//分类名称
                 this.dataFormShow.storeName = "";//店铺名称
                 this.dataFormShow.transportFlag = "";//下发状态
+                this.dataFormShow.categoryId = "";
+                this.dataForm.categoryId = "";
                 this.dataForm.goodsCsIdJp = "";//商品sku ID
                 this.dataForm.goodsName = "";//商品名称/商品货号
                 this.dataForm.brandName = "";//品牌名称
-                this.dataForm.categoryId = "";//分类名称
                 this.dataForm.storeName = "";//店铺名称
                 this.dataForm.transportFlag = "";//下发状态
+                this.classList = [];//分类名称
                 this.handleClick();
             },
         }

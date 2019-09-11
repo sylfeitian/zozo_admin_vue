@@ -325,9 +325,9 @@
             // },
             handleChange(){
                 if(this.classList.length!=0){
-                    this.dataForm.categoryId = this.classList[this.classList.length-1]
+                    this.dataFormShow.categoryId = this.classList[this.classList.length-1]
                 }
-                console.log(this.dataForm.categoryId)
+                console.log(this.dataFormShow.categoryId)
             },
             changeStore(val){
                 this.$set(this.dataFormShow,"storeId",val);
@@ -365,20 +365,21 @@
             reset() {
                 this.dataFormShow.goodsName = "";
                 this.dataFormShow.idJp = "";
-                this.dataFormShow.categoryId = "";
                 this.dataFormShow.storeId = "";
                 this.dataFormShow.brandId = "";
                 this.dataFormShow.goodsStatus = "";
                 this.dataFormShow.showWeb = "";
                 this.dataFormShow.priceState = "";
+                this.dataFormShow.categoryId = "";
+                this.dataForm.categoryId = "";
                 this.dataForm.goodsName = "";
                 this.dataForm.idJp = "";
-                this.dataForm.categoryId = "";
                 this.dataForm.storeId = "";
                 this.dataForm.brandId = "";
                 this.dataForm.goodsStatus = "";
                 this.dataForm.showWeb = "";
                 this.dataForm.priceState = "";
+                this.classList = [];//分类名称
                 this.handleClick();
             },
             //回显

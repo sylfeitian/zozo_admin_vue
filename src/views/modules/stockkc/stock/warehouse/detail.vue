@@ -127,7 +127,7 @@
                     goodsName: "",
                     storeName: "",
                     brandName: "",
-
+                    categoryId:""
                 },
                 dataForm:{},
                 dataList: [],
@@ -151,9 +151,9 @@
         methods: {
             handleChange(){
                 if(this.classList.length!=0){
-                    this.dataForm.categoryId = this.classList[this.classList.length-1]
+                    this.dataFormShow.categoryId = this.classList[this.classList.length-1]
                 }
-                console.log(this.dataForm.categoryId)
+                console.log(this.dataFormShow.categoryId)
             },
             backScan1(){
                 var obj  = {
@@ -211,6 +211,20 @@
             },
             goList(){
                 this.$emit("showList");
+            },
+            reset() {
+                this.dataFormShow.skuId = "";//商品sku ID
+                this.dataFormShow.goodsName = "";//商品名称/商品货号
+                this.dataFormShow.brandName = "";//品牌名称
+                this.dataFormShow.storeName = "";//店铺名称
+                this.dataFormShow.categoryId = "";
+                this.dataForm.categoryId = "";
+                this.dataForm.skuId = "";//商品sku ID
+                this.dataForm.goodsName = "";//商品名称/商品货号
+                this.dataForm.brandName = "";//品牌名称
+                this.dataForm.storeName = "";//店铺名称
+                this.classList = [];//分类名称
+                this.handleClick();
             },
         }
     }

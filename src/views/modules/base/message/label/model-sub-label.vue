@@ -81,11 +81,11 @@
                 console.log(this.value);
                 var obj = this.selectAllOption.find((item,index)=>{
                     return item.id == val;
-                })
-                // varthis.selectAllOption.findIndex((item,index)=>{
-                //     return item.id == val;
-                // })
-
+                });
+                var selectAllOption= this.selectAllOption.filter((item,index)=>{
+                    return item.id != val;
+                });
+                this.selectAllOption = selectAllOption;
                 this.dataArray.unshift(obj)
             },
             handleClose(item) {
