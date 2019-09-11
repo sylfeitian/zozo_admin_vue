@@ -47,13 +47,25 @@
         <template slot-scope="scope">{{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}</template>
       </el-table-column>
       <el-table-column prop="id" label="会员ID" align="center" width="170"></el-table-column>
-      <el-table-column prop="nickName" label="会员账号" align="center"></el-table-column>
-      <el-table-column prop="memberMobile" align="center" label="用户昵称" width="140"></el-table-column>
-      <el-table-column prop="gradeName" align="center" label="注册时间" width="140"></el-table-column>
-      <el-table-column prop="memberSource" align="center" label="会员成长值"></el-table-column>
-      <el-table-column prop="createDate" align="center" label="消费金额" width="170"></el-table-column>
-      <el-table-column prop="createDate" align="center" label="订单数量" width="170"></el-table-column>
-      <el-table-column prop="createDate" align="center" label="积分" width="170"></el-table-column>
+      <el-table-column prop="memberName" label="会员账号" align="center"></el-table-column>
+      <el-table-column prop="nickName" align="center" label="用户昵称" width="140"></el-table-column>
+      <el-table-column prop="createDate" align="center" label="注册时间" width="140"></el-table-column>
+      <el-table-column prop="point" align="center" label="会员成长值"></el-table-column>
+      <el-table-column prop="consumeAmount" align="center" label="消费金额" width="170">
+          <template slot-scope="scope">
+            <span>￥{{scope.row.consumeAmount}}</span>
+          </template>
+      </el-table-column>
+      <el-table-column prop="orderNums" align="center" label="订单数量" width="170">
+        <template slot-scope="scope">
+            <span>{{scope.row.orderNums?scope.row.orderNums:0}}</span>
+          </template>
+      </el-table-column>
+      <el-table-column prop="point" align="center" label="积分" width="170">
+         <template slot-scope="scope">
+            <span>{{scope.row.point?scope.row.point:0}}</span>
+          </template>
+      </el-table-column>
       <el-table-column
               prop="memberState"
               align="center"
@@ -92,7 +104,8 @@
 <script>
   import Bread from "@/components/bread";
   import mixinViewModule from "@/mixins/view-module";
-  import {zozomemberPageUrl} from "@/api/url.js"
+  import {zozomemberPageUrl,} from "@/api/url.js"
+
   export default {
     mixins: [mixinViewModule],
     data() {
@@ -143,9 +156,43 @@
       editHandle(row){
          row.activeName = "editVip"; 
          this.$emit("controlShowPage",2,row)
-      }
-    }
-  };
+      },
+      forbitHandle(row){
+        var obj = {
+           "ids": [row.id],
+           "memberStatus":row.memberState==1?0:1
+        }
+        var msg = ""
+        obj.memberStatus==0?msg="禁用":msg="启用"
+        this.$confirm('是否'+msg+'该用户?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+        }).then(() => {
+              updateZozomemberState(obj).then((res)=>{
+                  this.forbitLoading = false;
+                  // console.log(res);
+                  if(res.code==200){
+                      this.getDataList();
+                      this.$message({
+                        message:res.msg,
+                          type: 'success',
+                          duration: 1500,
+                      })
+                  }else{
+                    this.$message({
+                        message:res.msg,
+                        type: 'error',
+                        duration: 1500,
+                    })
+                  }
+              })
+          
+        }).catch(() => {});
+      },
+     
+  }
+};
 </script>
 <style>
   .el-dialog {

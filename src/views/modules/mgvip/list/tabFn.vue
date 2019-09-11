@@ -36,6 +36,7 @@ import Bread from "@/components/bread";
             init(row){
                 this.row = row;
                 this.activeName = row.activeName
+                this.handleClick(this.activeName);
             },
             handleClick(tab) {
                 // if(tab== "vipDetail"){
