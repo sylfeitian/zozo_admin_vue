@@ -34,7 +34,6 @@
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg">
-                                <!--                                    <img :src="scope.row.pictureUrl | filterImgUrl" alt=""/>-->
                                 <img :src="dataForm.imageUrl" alt=""/>
                             </div>
                         </div>
@@ -108,7 +107,6 @@
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg">
-                                <!--                                    <img :src="scope.row.pictureUrl | filterImgUrl" alt=""/>-->
                                 <img :src="dataForm.imageUrl" alt=""/>
                             </div>
                         </div>
@@ -186,6 +184,7 @@
                 breaddata: [ "内容管理",  "搭配集合管理","编辑搭配集合"],
                 dataForm: {},
                 stylesName:"",
+                dataListLoading: false,
                 ac:[]
             }
         },

@@ -34,7 +34,6 @@
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg">
-                                <!--                                    <img :src="scope.row.pictureUrl | filterImgUrl" alt=""/>-->
                                 <img :src="dataForm.imageUrl320" alt=""/>
                             </div>
                         </div>
@@ -115,7 +114,6 @@
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg">
-                                <!--                                    <img :src="scope.row.pictureUrl | filterImgUrl" alt=""/>-->
                                 <img :src="dataForm.imageUrl320" alt=""/>
                             </div>
                         </div>
@@ -188,10 +186,8 @@
                             id:row.id
                         }
                         getlookdetail(obj).then((res)=>{
-                            console.log('详情',res.data)
                             if(res.code == 200){
                             	this.dataForm = res.data;
-
                             }
                         })
                     }

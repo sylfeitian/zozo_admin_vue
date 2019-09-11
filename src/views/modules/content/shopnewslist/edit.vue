@@ -160,7 +160,8 @@
         data () {
             return {
                 breaddata: [ "内容管理","店铺新闻管理", "编辑店铺新闻"],
-                dataForm: {}
+                dataForm: {},
+                dataListLoading: false,
             }
         },
         components: {
