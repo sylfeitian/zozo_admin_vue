@@ -153,7 +153,7 @@
                 editDataVisible:false,
                 multipleSelection:[],
                 row:"",
-                operateShopStore:[{ id: '0', name: '营业中' },{ id: '1', name: '已停业' }],//营业状态
+                operateShopStore:[{ id: '0', name: '待營業' },{ id: '1', name: '营业中' },{ id: '2', name: '已停业' }],//营业状态
                 currentIndex:'',
                 forbitLoading:false,
                 recommendFlag:""
