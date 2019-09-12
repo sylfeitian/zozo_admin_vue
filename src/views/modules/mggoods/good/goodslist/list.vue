@@ -75,7 +75,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="可售状态：">
-                <el-select v-model="dataFormShow.sellState" placeholder="请选择">
+                <el-select v-model="dataFormShow.japanShowWeb" placeholder="请选择">
                     <el-option
                             v-for="item in stateOptions"
                             :key="item.id"
@@ -173,8 +173,8 @@
             </el-table-column>
             <el-table-column label="状态" align="center">
                 <template slot-scope="scope">
-                    <el-tag v-if="scope.row.sellState==0" type="info">不可售</el-tag>
-                    <el-tag v-if="scope.row.sellState==1" type="success">可售</el-tag>
+                    <el-tag v-if="scope.row.japanShowWeb==0" type="info">不可售</el-tag>
+                    <el-tag v-if="scope.row.japanShowWeb==1" type="success">可售</el-tag>
                 </template>
             </el-table-column>
 <!--            <el-table-column label="日本状态" align="center">-->
@@ -271,7 +271,7 @@
                     categoryId: "",//分类
                     storeName: "",//店铺名称
                     brandName:"",//品牌名称
-                    sellState: "",//是否可售
+                    japanShowWeb: "",//是否可售
                     showWeb:"",//上下架状态:0：待上架，1：已上架，2：下架 ,
                     priceState: "",//价格变更
                 },
@@ -371,7 +371,7 @@
                 this.dataFormShow.showWeb = "";
                 this.dataFormShow.priceState = "";
                 this.dataFormShow.categoryId = "";
-                this.dataFormShow.sellState = "";
+                this.dataFormShow.japanShowWeb = "";
                 this.dataForm.categoryId = "";
                 this.dataForm.goodsName = "";
                 this.dataForm.idJp = "";
@@ -380,7 +380,7 @@
                 this.dataForm.goodsStatus = "";
                 this.dataForm.showWeb = "";
                 this.dataForm.priceState = "";
-                this.dataForm.sellState = "";
+                this.dataForm.japanShowWeb = "";
                 this.classList = [];//分类名称
                 this.handleClick();
             },
