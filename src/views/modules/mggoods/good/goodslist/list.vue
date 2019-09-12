@@ -160,7 +160,9 @@
             <el-table-column prop="categoryId" label="分类"  align="center">
                 <template slot-scope="scope">
                     <div>
-                        {{scope.row.categoryId}}
+                        {{scope.row.firstCategory}}
+                        <span>--</span>
+                        {{scope.row.secondCategory}}
                     </div>
                 </template>
             </el-table-column>
@@ -173,8 +175,9 @@
             </el-table-column>
             <el-table-column label="状态" align="center">
                 <template slot-scope="scope">
-                    <el-tag v-if="scope.row.japanShowWeb==0" type="info">不可售</el-tag>
-                    <el-tag v-if="scope.row.japanShowWeb==1" type="success">可售</el-tag>
+                    <el-tag v-if="scope.row.showWeb==0" type="info">待上架</el-tag>
+                    <el-tag v-if="scope.row.showWeb==1" type="success">已上架</el-tag>
+                    <el-tag v-if="scope.row.showWeb==2" type="success">已下架</el-tag>
                 </template>
             </el-table-column>
 <!--            <el-table-column label="日本状态" align="center">-->
