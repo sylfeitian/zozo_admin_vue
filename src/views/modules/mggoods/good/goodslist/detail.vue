@@ -137,7 +137,7 @@
                             <template
                                     slot-scope="scope"
                                     v-if="scope.row.specSellPrice!==''&&scope.row.specSellPrice!==null"
-                            >￥{{scope.row.sellPrice}}</template>
+                            >￥{{scope.row.sellPrice?scope.row.sellPrice:'0.00'}}</template>
                         </el-table-column>
                         <el-table-column prop="goodsNum" label="图片" align="center">
                             <template slot-scope="scope">
