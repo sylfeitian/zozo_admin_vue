@@ -3,7 +3,7 @@
         <el-row>
             <el-col :span="24">
                 <div class="rltv">
-                    <div class="tree-title tree-head-first">分类名称</div>
+                    <div class="tree-title tree-head-first">{{firstColName}}</div>
                     <!-- <div class="tree-title tree-head-first">新增下级</div> -->
                     <el-row class="last">
                         <el-col v-for="col in mate.columns" :key="col.label" :span="col.span" class="tree-title" :class="{'text-center': col.center}">{{col.label}}</el-col>
@@ -33,6 +33,10 @@
         //     required: true
         // },
         props: {
+            firstColName:{
+                type: String,
+                default: '分类名称'
+            },
             mate: {
                 type: Object,
                 required: true

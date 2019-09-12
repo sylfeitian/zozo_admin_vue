@@ -74,16 +74,16 @@ export default {
       listOrAdd: true,
       breaddata: ["基础资料管理", "中国分类管理"],
       dataListLoading: false,
-      mixinViewModuleOptions: {
-        // activatedIsNeed: false,
-        getDataListURL: categoryUrl,
-        getDataListIsPage: true,
-        // exportURL: '/admin-api/log/login/export',
-        deleteURL: deleteGoodsclasscustomUrl,
-        deleteIsBatch: true,
-        deleteIsBatch: true,
-        deleteIsBatchKey: "id"
-      },
+      // mixinViewModuleOptions: {
+      //   // activatedIsNeed: false,
+      //   getDataListURL: categoryUrl,
+      //   getDataListIsPage: true,
+      //   // exportURL: '/admin-api/log/login/export',
+      //   deleteURL: deleteGoodsclasscustomUrl,
+      //   deleteIsBatch: true,
+      //   deleteIsBatch: true,
+      //   deleteIsBatchKey: "id"
+      // },
       formData:{  
       	page:1,   
       	limit: 10,
@@ -98,7 +98,7 @@ export default {
       treeConfig: {
           //等于 el-tree 的选项配置
           options: {
-              'show-checkbox': true
+              'show-checkbox': false
           },
           //自定义表格列 目前只支持文本渲染
           columns: [
@@ -414,7 +414,6 @@ export default {
     currentChange(list){
       console.log("current-change");
       console.log(list);
-      
     }
 
   }

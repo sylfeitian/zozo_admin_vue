@@ -7,7 +7,7 @@
       :model="dataForm"
     >
       <el-form-item label="会员账号：">
-          <el-input v-model="dataForm.memberName" placeholder="请输入售后单号" clearable></el-input>
+          <el-input v-model="dataForm.memberName" placeholder="请输入会员账号" clearable></el-input>
       </el-form-item>
 
       <!-- <el-form-item label="订单号：">
@@ -15,15 +15,24 @@
       </el-form-item> -->
 
       <el-form-item label="skuid：">
-          <el-input v-model="dataForm.goodsCsIdJp" placeholder="请输入售后单号" clearable></el-input>
+          <el-input v-model="dataForm.goodsCsIdJp" placeholder="请输入skuid" clearable></el-input>
       </el-form-item>
 
       <el-form-item label="商品名称：">
-          <el-input v-model="dataForm.goodsName" placeholder="请输入售后单号" clearable></el-input>
+          <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" clearable></el-input>
       </el-form-item>
 
       <el-form-item label="尺码感受：">
-          <el-input v-model="dataForm.sizeFeeling" placeholder="请输入售后单号" clearable></el-input>
+           <el-select
+		          v-model="dataForm.sizeFeeling"
+		          placeholder="请选择"
+		          loading-text="加载中···">
+                <el-option label="全部" value=""></el-option>
+                <el-option label="合适" value="0"></el-option>
+                <el-option label="偏小" value="1"></el-option>
+                <el-option label="偏大" value="2"></el-option>
+		            </el-option>
+          </el-select>
       </el-form-item>
 
       <el-form-item label="评价时间：">
@@ -44,11 +53,10 @@
 		          placeholder="请选择"
 		          loading-text="加载中···">
               <el-option label="全部" value=""></el-option>
-              <el-option label="1星" value="1"></el-option>
-              <el-option label="2星" value="2"></el-option>
-              <el-option label="3星" value="3"></el-option>
-              <el-option label="4星" value="4"></el-option>
-              <el-option label="5星" value="5"></el-option>
+              <el-option label="超赞" value="0"></el-option>
+              <el-option label="一般" value="1"></el-option>
+              <el-option label="满意" value="2"></el-option>
+          
 		          </el-option>
           </el-select>
       </el-form-item>
@@ -149,7 +157,7 @@
 
       <el-table-column prop="evaluateContent" label="评论内容" align="center"> </el-table-column>
 
-      <el-table-column prop="commentEndDate" label="评论时间" align="center"> </el-table-column>
+      <el-table-column prop="createDate" label="评论时间" align="center"> </el-table-column>
 
       <el-table-column label="操作" min-width="100" align="center">
         <template slot-scope="scope">

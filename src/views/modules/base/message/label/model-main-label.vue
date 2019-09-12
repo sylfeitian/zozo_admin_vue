@@ -51,7 +51,7 @@
 </template>
 
 <script>
-    import { backScanShopStyleUnion, shopStyleUnionSub ,searchShopStyle } from '@/api/api'
+    import { backScanShopStyleSubUnion, shopStyleUnionSub ,searchShopStyle } from '@/api/api'
     export default {
         name: "model-add-edit-data",
         data () {
@@ -110,7 +110,7 @@
                     id:this.row.id,
                     styleName:this.row.styleName
                 }
-                backScanShopStyleUnion(obj).then((res)=>{
+                backScanShopStyleSubUnion(obj).then((res)=>{
                     if(res.code == 200){
                         this.dataArray = res.data;
                        //  已选过得风格标签，要从下拉列表中去除
