@@ -132,7 +132,7 @@
                     >
                 </template>
             </el-table-column>
-            <el-table-column prop="goodsName" label="商品名称" align="center">
+            <el-table-column prop="name" label="商品名称" align="center">
                 <template slot-scope="scope">
                     <div>
                         {{scope.row.name}}
@@ -157,7 +157,7 @@
                     <span  v-if="scope.row.salePlan==1">品牌方设定</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="gcName" label="分类"  align="center">
+            <el-table-column prop="categoryId" label="分类"  align="center">
                 <template slot-scope="scope">
                     <div>
                         {{scope.row.categoryId}}
