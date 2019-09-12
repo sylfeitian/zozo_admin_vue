@@ -371,6 +371,7 @@
                 this.dataFormShow.showWeb = "";
                 this.dataFormShow.priceState = "";
                 this.dataFormShow.categoryId = "";
+                this.dataFormShow.sellState = "";
                 this.dataForm.categoryId = "";
                 this.dataForm.goodsName = "";
                 this.dataForm.idJp = "";
@@ -379,6 +380,7 @@
                 this.dataForm.goodsStatus = "";
                 this.dataForm.showWeb = "";
                 this.dataForm.priceState = "";
+                this.dataForm.sellState = "";
                 this.classList = [];//分类名称
                 this.handleClick();
             },
