@@ -220,8 +220,12 @@
 	  		}else{
 	  			this.dataForm.methodUrlshow.push('');
 	  			this.erjishow = false;
-	  			this.yijishow = true;
-	  		}
+				  this.yijishow = true;
+				  
+				if(this.dataForm.genderMr) this.checkList.push("男士");
+				if(this.dataForm.genderMrs) this.checkList.push("女士");
+				if(this.dataForm.genderKid) this.checkList.push("儿童");
+		  		}
 	  	},
 	  	init(row){
 			  this.row = row;
