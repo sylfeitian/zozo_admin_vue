@@ -148,7 +148,7 @@
             </el-table-column>
             <el-table-column prop="sellPrice" label="售价" width="100" align="center">
                 <template slot-scope="scope">
-                    <div class="price1">￥{{scope.row.sellPrice}}</div>
+                    <div class="price1">￥{{scope.row.sellPrice?scope.row.sellPrice:'0.00'}}</div>
                 </template>
             </el-table-column>
             <el-table-column prop="salePlan" label="售价类型" align="center" width="100">
