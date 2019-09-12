@@ -7,7 +7,7 @@
                 <el-input v-model="dataFormShow.goodsName" placeholder="商品名称/商品编号" ></el-input>
             </el-form-item>
             <el-form-item label="商品ID：">
-                <el-input v-model="dataFormShow.idJp" placeholder="商品名称/商品编号" ></el-input>
+                <el-input v-model="dataFormShow.idJp" placeholder="请输入商品skuID" ></el-input>
             </el-form-item>
             <el-form-item label="分类：">
                 <el-select v-model="dataFormShow.goodsTypeId" placeholder="请选择">
@@ -51,8 +51,8 @@
             </el-form-item>
             <!--//showDetail()-->
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="getData">搜索</el-button>
-                <el-button   class="btn"type="primary" plain @click="reset()" >重置</el-button>
+                <el-button class="btn" type="primary" @click="getData">搜索</el-button>
+                <el-button class="btn" type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
         <el-table
@@ -62,22 +62,28 @@
                 v-loading="dataListLoading"
                 style="width: 100%;margin-top:20px;"
         >
-            <el-table-column prop="" label="商品ID" align="center" width="100"></el-table-column>
-            <el-table-column label="主图" align="center" width="160">
+            <el-table-column label="商品ID" align="center" width="100">
                 <template slot-scope="scope">
-                    <div class="goodsPropsWrap">
-                        <div class="goodsImg">
-                            <img :src="scope.row.pictureUrl | filterImgUrl" alt=""/>
-                        </div>
+                    <div @click="detShowChange(scope.row)" style="cursor:pointer;color:#2260D2;">
+                        {{scope.row.idJp}}
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="" label="商品名称" align="center"></el-table-column>
-            <el-table-column prop="" label="品牌" align="center"></el-table-column>
-            <el-table-column prop="price" label="售价" width="100" align="center"></el-table-column>
-            <el-table-column prop="gcName" label="分类"  align="center"></el-table-column>
+            <el-table-column label="主图" prop="imageUrl" align="center" width="160">
+                <template slot-scope="scope">
+                    <img
+                            :src="scope.row.mainImageUrl | filterImgUrl"
+                            alt=""
+                            style=" object-fit: contain;width: 70px;height:70px;"
+                    >
+                </template>
+            </el-table-column>
+            <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
+            <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
+            <el-table-column prop="sellPrice" label="售价" width="100" align="center"></el-table-column>
+            <el-table-column prop="categoryId" label="分类"  align="center"></el-table-column>
             <el-table-column prop="storeName" label="所属店铺" align="center"></el-table-column>
-            <el-table-column prop="" label="上架状态" align="center"></el-table-column>
+            <el-table-column prop="showWeb" label="上架状态" align="center"></el-table-column>
             <el-table-column prop="" label="库存数" align="center"></el-table-column>
         </el-table>
         <!-- 分页 -->
@@ -103,7 +109,6 @@
         mixins: [mixinViewModule],
         data () {
             return {
-
             	mixinViewModuleOptions: {
 		          getDataListURL: getdatagoods,
 		          getDataListIsPage: true,
@@ -113,7 +118,7 @@
 		          deleteIsBatch: true,
 		          deleteIsBatchKey: 'id'
 			    },
-                breaddata: [ "商品管理", "商品列表"],
+                breaddata: [ "商品管理", "查看库存"],
                 dataFormShow: {  
                     goodsName: "",//商品名称/商品货号
                     idJp:"",  //商品id
