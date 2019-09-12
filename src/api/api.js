@@ -78,6 +78,8 @@ export const getStoreNewsdetail = params => { return http.get(`${base}/store/new
 export const savelookdetail = params => { return http.post(`${base}/look`, params).then(res => res.data); };
 //搭配集合保存|保存并发布操作
 export const saveFolderdetail = params => { return http.post(`${base}/look/folder`, params).then(res => res.data); };
+//保存风格标签
+export const saveFolderStyle = params => { return http.post(`${base}/look/folder/saveFolderStyles`, params).then(res => res.data); };
 //时尚记事保存|保存并发布操作
 export const savefashiondetail = params => { return http.post(`${base}/fashion`, params).then(res => res.data); };
 //店铺新闻保存并发布操作

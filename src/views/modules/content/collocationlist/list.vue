@@ -94,7 +94,7 @@
                         <span v-if="scope.row.sate==1" class="artdisable">{{scope.$index==currentIndex&&forbitLoading?"取消发布中..":"取消发布"}}</span>
                         <span v-else class="artstart">{{scope.$index==currentIndex && forbitLoading?"发布中..":"发布"}}</span>
                     </el-button>
-                    <el-button @click.native.prevent="dialogTableVisible = true" type="text" size="mini">管理风格标签</el-button>
+                    <el-button @click.native.prevent="openStyle(scope.row.id)" type="text" size="mini">管理风格标签</el-button>
                     <el-dialog title="管理风格标签" :visible.sync="dialogTableVisible">
                         <el-form :inline="true" style="text-align:left;" class="grayLine topGapPadding"  >
                             <el-form-item label="关联风格标签：">
@@ -123,7 +123,7 @@
                         </el-form>
                         <div slot="footer" class="dialog-footer">
                             <el-button @click="res">取 消</el-button>
-                            <el-button type="primary" @click="saveStyle(scope.row.id)">确 定</el-button>
+                            <el-button type="primary" @click="saveStyle(id)">确 定</el-button>
                         </div>
                     </el-dialog>
                 </template>
@@ -155,7 +155,7 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import { getlookfolderpage } from '@/api/url'
-    import { folderPutoperating,folderPutoperatingAll,getStyleName ,saveFolderdetail,getlookfolderdetail} from '@/api/api';   //发布/取消发布
+    import { folderPutoperating,folderPutoperatingAll,getStyleName ,saveFolderStyle,getlookfolderdetail} from '@/api/api';   //发布/取消发布
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -184,6 +184,7 @@
                 	publishStartTimeJp:null,
                 	publishEndTimeJp:null,
                 },
+                id:"",
                 value: '',
                 styleList:[],
                 dataList: [],
@@ -214,7 +215,21 @@
         },
         methods: {
             saveList(val){
-                this.styleList.push(this.options[val])
+                let is = true;
+                this.styleList.map((v)=>{
+                    if(v.id == this.options[val].id){
+                        this.$message({
+                            message: "风格标签不能重复选择",
+                            type: 'error',
+                        });
+                       is = false
+                    }
+                })
+                if(is) this.styleList.push(this.options[val])
+            },
+            openStyle(id){
+                this.dialogTableVisible = true;
+                this.id = id
             },
             getStyle(){
                 getStyleName({
@@ -226,36 +241,36 @@
             res(){
               this.dialogTableVisible = false;
               this.name = "";
+              this.id = "";
               this.styleList = [];
+              this.options = [];
             },
             saveStyle(id){
+                console.log(id)
                 let that = this;
-                getlookfolderdetail({
-                    id:id
-                }).then((res)=>{
-                   let data = res.data;
-                    let list = [];
-                    that.styleList.map((v,i)=>{
-                        list.push(parseInt(v.id))
-                    })
-                   data.styleIds = list;
-                    saveFolderdetail(data).then((res)=>{
-                        if(res.code == 200){
-                            this.$message({
-                                message: res.msg,
-                                type: 'success',
-                                onClose:function () {
-                                    that.res();
-                                    that.getDataList();
-                                }
-                            });
-                        }else{
-                            this.$message({
-                                message: res.msg,
-                                type: 'error',
-                            });
-                        }
-                    })
+                let data = {};
+                let list = [];
+                that.styleList.map((v,i)=>{
+                    list.push(v.id)
+                })
+                data.styleIds = list;
+                data.folderId = id;
+                saveFolderStyle(data).then((res)=>{
+                    if(res.code == 200){
+                        this.$message({
+                            message: res.msg,
+                            type: 'success',
+                            onClose:function () {
+                                that.res();
+                                that.getDataList();
+                            }
+                        });
+                    }else{
+                        this.$message({
+                            message: res.msg,
+                            type: 'error',
+                        });
+                    }
                 })
             },
             handleClose(index) {
@@ -302,18 +317,12 @@
                 this.changeVal = val;
                 this.getDataList();
             },
-            // 新建和编辑
-            // addOrEditHandle(index=-1,row=""){
-            //     this.setAddEditDataVisible(true);
-            //     this.$nextTick(() => {
-            //         this.$refs.addEditData.init(row)
-            //     })
-            // },
+
             forbitHandle(index,row){
                 this.currentIndex = index;
                 var obj = {
                     "id": row.id,
-                    "operating":row.sate==1?0:1  //
+                    "operating":row.sate==1?2:1  //
                 }
                 var msg = ""
                 row.sate==1?msg="禁用":msg="启用"
