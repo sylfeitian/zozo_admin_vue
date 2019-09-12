@@ -25,9 +25,7 @@
                 <el-button type="primary" plain @click="showDetail()" >添加商品</el-button>
             </el-form-item>
         </el-form>
-        <!-- 弹窗, 查看 -->
-        <showData  v-if="showDataVisible" :showdata="dataList || []"  :dataId="dataForm.wareHouseId" ref="showData" @searchDataList="searchDataList"></showData>
-    
+      
     
     	<el-table
                 width="100%"
@@ -59,27 +57,30 @@
             </el-table-column>
         </el-table>
 
+        <!-- 弹窗, 查看 -->
+        <showData  v-if="showDataVisible" :showdata="dataList || []"  :dataId="dataForm.wareHouseId" ref="showData" @searchDataList="searchDataList"></showData>
     </div>
 </template>
 
 <script>
-    import mixinViewModule from '@/mixins/view-module'
+    // import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import showData from './model-show-data'
     import { getallstock,addodoGoods} from "@/api/api"      //获取仓库，保存商品
     export default {
-        mixins: [mixinViewModule],
+        // mixins: [mixinViewModule],
         data () {
             return {
-            	mixinViewModuleOptions: {
-		          getDataListURL: '',
-		          getDataListIsPage: true,
-		          // exportURL: '/admin-api/log/login/export',
-		          deleteURL: '',
-		          dataListLoading: false, 
-		          deleteIsBatch: true,
-		          deleteIsBatchKey: 'id'
-			    },
+            	// mixinViewModuleOptions: {
+		        //   getDataListURL: '',
+		        //   getDataListIsPage: true,
+		        //   // exportURL: '/admin-api/log/login/export',
+		        //   deleteURL: '',
+		        //   dataListLoading: false, 
+		        //   deleteIsBatch: true,
+		        //   deleteIsBatchKey: 'id'
+                // },
+                dataListLoading: false, 
                 breaddata: [ "库存管理", "其他出库单", "添加出库单"],
                 showDataVisible:false,
                 goodKindList1:[],   //搜索仓库
@@ -88,6 +89,7 @@
                 	wareHouseId:'',   //仓库id  
                 	wareHouseName:'', //仓库name
                 },
+               dataList:[],
                restaurants:[],  //所有仓库
             }
         },
@@ -153,7 +155,6 @@
 		    		scope.row.changeQty = 0;
 		    	}
 		    },
-        	getGoodKind2() {},
         	artgetallstock(){
         		var obj = {
                 	params:this.dataForm
@@ -179,7 +180,7 @@
                 })
             },
             showDetail(index=-1,row=""){
-            	if(!this.dataForm.wareHouseName){
+            	if(!this.dataForm.wareHouseName || !this.dataForm.wareHouseId){
             		this.$message('请先选择所属仓库')
             		return;
             	}

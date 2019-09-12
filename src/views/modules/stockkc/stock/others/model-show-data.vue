@@ -76,11 +76,11 @@
         data () {
             return {
             	mixinViewModuleOptions: {
+				  activatedIsNeed: false,   
 		          getDataListURL: getallstock,
 		          getDataListIsPage: true,
 		          // exportURL: '/admin-api/log/login/export',
 		          deleteURL: '',
-		          dataListLoading: false, 
 		          deleteIsBatch: true,
 		          deleteIsBatchKey: 'id'
 			    },
@@ -103,59 +103,14 @@
         watch:{
 		},
         created(){
-        	this.dataForm.wareHouseId = this.dataId;
-        	this.showdatacurrent = this.showdata;
-        	this.getDataList();
         },
         methods: {
-        	//单个去选商品    //点击全选
-        	onTableSelect(rows, row) {
-        		let selected = rows.length && rows.indexOf(row) !== -1
-        		if(selected){   //true    添加
-        			this.showdatacurrent.push(row);
-        		}else{          //删除
-			        for (var i = 0; i < this.showdatacurrent.length; i++) {
-				        if (this.showdatacurrent[i].id == row.id){
-						    this.showdatacurrent.splice(i, 1);
-				        }
-				    }
-        		}
-        		console.log(this.showdatacurrent);
-			},
-			onTableSelectall(rows){
-				if(this.$refs.dataList.selection[0]){     //全选
-					var flag = true;    //添加进去
-					rows.forEach((item)=>{
-						flag = true; 
-						for (var i = 0; i < this.showdatacurrent.length; i++) {
-					        if (this.showdatacurrent[i].id == item.id){
-							    flag = false;   //已经存在不用添加
-					        }
-					   }
-						if (flag){
-							this.showdatacurrent.push(item);
-						}
-					})
-				}else{     //全不选
-					this.dataList.forEach((item)=>{
-						for (var i = 0; i < this.showdatacurrent.length; i++) {
-					        if (this.showdatacurrent[i].id == item.id){
-						    	this.showdatacurrent.splice(i, 1);
-					        }
-					   }
-					})
-				}
-				console.log(this.showdatacurrent);
-			},
-			handleClose(done) {    //带回到父级页面
-				console.log(this.showdatacurrent);
-			    this.$emit('searchDataList',this.showdatacurrent);
-		        done();
-		   },
 			init(row){
 		      	this.visible = true;
                 this.row = row;
-                this.title="查看详情";
+				this.title="查看详情";
+				this.dataForm.wareHouseId = this.dataId;
+        		this.showdatacurrent = this.showdata;
 				this.$nextTick(()=>{
 					this.search();
 				})
@@ -180,6 +135,56 @@
 	           	})
 	            this.toggleSelection(this.dataListSelections);
 	      	},
+        	//单个去选商品    //点击全选
+        	onTableSelect(rows, row) {
+        		let selected = rows.length && rows.indexOf(row) !== -1
+				if(selected){   //true    添加
+					row.wareHouseId = this.dataId;
+					row.skuId = row.id;
+					delete row.id;
+        			this.showdatacurrent.push(row);
+        		}else{          //删除
+			        for (var i = 0; i < this.showdatacurrent.length; i++) {
+				        if (this.showdatacurrent[i].id == row.id){
+						    this.showdatacurrent.splice(i, 1);
+				        }
+				    }
+        		}
+        		console.log(this.showdatacurrent);
+			},
+			onTableSelectall(rows){
+				if(this.$refs.dataList.selection[0]){     //全选
+					var flag = true;    //添加进去
+					rows.forEach((item)=>{
+						flag = true; 
+						for (var i = 0; i < this.showdatacurrent.length; i++) {
+					        if (this.showdatacurrent[i].id == item.id){
+							    flag = false;   //已经存在不用添加
+					        }
+					   }
+						if (flag){
+							item.wareHouseId = this.dataId;
+							item.skuId = item.id;
+							delete item.id;
+							this.showdatacurrent.push(item);
+						}
+					})
+				}else{     //全不选
+					this.dataList.forEach((item)=>{
+						for (var i = 0; i < this.showdatacurrent.length; i++) {
+					        if (this.showdatacurrent[i].id == item.id){
+						    	this.showdatacurrent.splice(i, 1);
+					        }
+					   }
+					})
+				}
+				console.log(this.showdatacurrent);
+			},
+			handleClose(done) {    //带回到父级页面
+				console.log(this.showdatacurrent);
+			    this.$emit('searchDataList',this.showdatacurrent);
+		        done();
+		   },
 	      	//  处理回显事件
 	      	toggleSelection(rows) {
 	        if (rows) {

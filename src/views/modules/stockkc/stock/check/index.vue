@@ -10,9 +10,9 @@
     import list from "./list"
     import detail from "./details"
     import operation from "./operation"
-    import mixinViewModule from '@/mixins/view-module'
+    // import mixinViewModule from '@/mixins/view-module'
     export default {
-        mixins: [mixinViewModule],
+        // mixins: [mixinViewModule],
         data () {
             return {
                 mainVisible:true,

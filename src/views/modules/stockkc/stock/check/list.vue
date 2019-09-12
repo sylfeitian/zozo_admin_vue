@@ -10,14 +10,22 @@
                 <el-input v-model="dataFormShow.idJp" placeholder="请输入商品skuID" ></el-input>
             </el-form-item>
             <el-form-item label="分类：">
-                <el-select v-model="dataFormShow.goodsTypeId" placeholder="请选择">
+                <!-- <el-select v-model="dataFormShow.goodsTypeId" placeholder="请选择">
                     <el-option
-                            v-for="item in goodsTypeId"
+                            v-for="item in selectCategoryOption"
                             :key="item.id"
                             :label="item.label"
                             :value="item.id">
                     </el-option>
-                </el-select>
+                </el-select> -->
+                <el-cascader
+                        :options="selectCategoryOption"
+                        v-model="classList"
+                        change-on-select
+                        :clearable="true"
+                        :props="props"
+                        @change="handleChange">
+                </el-cascader>
             </el-form-item>
             <el-form-item  label="品牌：">
                 <el-select v-model="dataFormShow.brandName" placeholder="请选择">
@@ -130,7 +138,7 @@
                  dataForm: {
 				},
                 storeName:[],  //店铺名称
-                goodsTypeId: [],//中国分类id
+                selectCategoryOption: [],//中国分类id
                 brandName: [],//品牌名称
                 options: [{  //是否可售
                     value: '',
@@ -156,7 +164,21 @@
                 isIndeterminate: false,
                 checkednodeslist: [],
                 checkAll: false,
-                checked:false
+                checked:false,
+                props: {
+                    label:'name',
+                    value: 'id',
+                    children:'list'
+                },
+                dataFormShow:{
+                    goodsName:'',//商品中文名称
+                    idJp:'',//商品spuid
+                    brandName:'',//品牌名称
+                    storeName:'',//	所属店铺名称
+                    goodsTypeId:'',//中国分类Id
+                    isSoldOut:'',//是否售完，已售完1，未售完0
+                },
+                classList:[],
             }
         },
         components: {
@@ -186,29 +208,45 @@
 		  			this.$message("服务器错误");
 		  		})
 	  		
-	  		//获取中国分类
-	  		getdatacategory().then((res)=>{
-	  			if(res.code == 200){
-	  				console.log(res);
-	  				this.goodsTypeId = res.data;
-	  			}else{
-	  				this.$message(res.msg);
-	  			}
-	  		}).catch(()=>{
-	  			this.$message("服务器错误");
-	  		})
-	  		
-	  		//获取点铺列表
-	  		getdatastores().then((res)=>{
-	  			if(res.code == 200){
-	  				this.storeName = res.data;
-	  			}else{
-	  				this.$message(res.msg);
-	  			}
-	  		}).catch(()=>{
-	  			this.$message("服务器错误");
-	  		})
-        	},
+                //获取中国分类
+                getdatacategory().then((res)=>{
+                    if(res.code == 200){
+                        console.log(res);
+                        this.selectCategoryOption = res.data;
+                        this.selectCategoryOption.forEach((item,index)=>{
+                            // item.label = item.name
+                            // item.value = item.id
+                            item.list && item.list.forEach((item2,index2)=>{
+                                // item2.label = item2.name
+                                // item2.value = item2.id
+                                item2.list="";
+                            })
+                        })
+                    }else{
+                        this.$message(res.msg);
+                    }
+                }).catch(()=>{
+                    this.$message("服务器错误");
+                })
+                
+                //获取点铺列表
+                getdatastores().then((res)=>{
+                    if(res.code == 200){
+                        this.storeName = res.data;
+                    }else{
+                        this.$message(res.msg);
+                    }
+                }).catch(()=>{
+                    this.$message("服务器错误");
+                })
+            },
+            // 切换中国分类
+            handleChange(){
+                if(this.classList.length!=0){
+                    this.dataFormShow.goodsTypeId = this.classList[this.classList.length-1]
+                }
+                console.log(this.dataFormShow.goodsTypeId)
+            },
             showDetail(id){
                 this.$emit("showDetail",id);
             },

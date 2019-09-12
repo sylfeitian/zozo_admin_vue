@@ -412,7 +412,7 @@
 }
 
 /deep/ .el-checkbox{
-	margin-left: 60px;
+	// margin-left: 60px;
 	display: block;
 }
 .artmwc{
@@ -430,7 +430,7 @@
 }
 
 .artall{
-	margin-left: 92px;
+	// margin-left: 92px;
 	margin-right: 23px;
 }
 .artuploadimg{
