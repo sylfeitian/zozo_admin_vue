@@ -134,6 +134,8 @@
                             if(node.level==2){
                                 item.level = 3;
                                 item.children = [];
+                                // 第三级没有下级，所以不需要下拉箭头
+                                item.leaf = true;
                             }
                             item.relateList && item.relateList.forEach((item2, index2) => {
                                 item.name += item2.name;

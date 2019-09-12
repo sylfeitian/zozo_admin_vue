@@ -75,7 +75,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="可售状态：">
-                <el-select v-model="dataFormShow.sellState" placeholder="请选择">
+                <el-select v-model="dataFormShow.japanShowWeb" placeholder="请选择">
                     <el-option
                             v-for="item in stateOptions"
                             :key="item.id"
@@ -132,7 +132,7 @@
                     >
                 </template>
             </el-table-column>
-            <el-table-column prop="goodsName" label="商品名称" align="center">
+            <el-table-column prop="name" label="商品名称" align="center">
                 <template slot-scope="scope">
                     <div>
                         {{scope.row.name}}
@@ -148,7 +148,7 @@
             </el-table-column>
             <el-table-column prop="sellPrice" label="售价" width="100" align="center">
                 <template slot-scope="scope">
-                    <div class="price1">￥{{scope.row.sellPrice}}</div>
+                    <div class="price1">￥{{scope.row.sellPrice?scope.row.sellPrice:'0.00'}}</div>
                 </template>
             </el-table-column>
             <el-table-column prop="salePlan" label="售价类型" align="center" width="100">
@@ -157,10 +157,12 @@
                     <span  v-if="scope.row.salePlan==1">品牌方设定</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="gcName" label="分类"  align="center">
+            <el-table-column prop="categoryId" label="分类"  align="center">
                 <template slot-scope="scope">
                     <div>
-                        {{scope.row.categoryId}}
+                        {{scope.row.firstCategory}}
+                        <span>--</span>
+                        {{scope.row.secondCategory}}
                     </div>
                 </template>
             </el-table-column>
@@ -173,8 +175,9 @@
             </el-table-column>
             <el-table-column label="状态" align="center">
                 <template slot-scope="scope">
-                    <el-tag v-if="scope.row.sellState==0" type="info">不可售</el-tag>
-                    <el-tag v-if="scope.row.sellState==1" type="success">可售</el-tag>
+                    <el-tag v-if="scope.row.showWeb==0" type="info">待上架</el-tag>
+                    <el-tag v-if="scope.row.showWeb==1" type="success">已上架</el-tag>
+                    <el-tag v-if="scope.row.showWeb==2" type="success">已下架</el-tag>
                 </template>
             </el-table-column>
 <!--            <el-table-column label="日本状态" align="center">-->
@@ -271,7 +274,7 @@
                     categoryId: "",//分类
                     storeName: "",//店铺名称
                     brandName:"",//品牌名称
-                    sellState: "",//是否可售
+                    japanShowWeb: "",//是否可售
                     showWeb:"",//上下架状态:0：待上架，1：已上架，2：下架 ,
                     priceState: "",//价格变更
                 },
@@ -371,7 +374,7 @@
                 this.dataFormShow.showWeb = "";
                 this.dataFormShow.priceState = "";
                 this.dataFormShow.categoryId = "";
-                this.dataFormShow.sellState = "";
+                this.dataFormShow.japanShowWeb = "";
                 this.dataForm.categoryId = "";
                 this.dataForm.goodsName = "";
                 this.dataForm.idJp = "";
@@ -380,7 +383,7 @@
                 this.dataForm.goodsStatus = "";
                 this.dataForm.showWeb = "";
                 this.dataForm.priceState = "";
-                this.dataForm.sellState = "";
+                this.dataForm.japanShowWeb = "";
                 this.classList = [];//分类名称
                 this.handleClick();
             },
