@@ -7,7 +7,7 @@
                     <el-input v-model="dataForm.username" placeholder="请输入账号" clearable></el-input>
                 </el-form-item>
                 <el-form-item label="角色：">
-                    <el-select v-model="dataForm.roleIds" placeholder="请选择">
+                    <el-select v-model="dataForm.roleId" placeholder="请选择">
                         <el-option
                                 v-for="item in options"
                                 :key="item.id"
@@ -48,13 +48,17 @@
                 </el-table-column>
                 <el-table-column prop="username" label="账号" header-align="center" align="center" width="130px"></el-table-column>
                 <el-table-column prop="realName" label="姓名" header-align="center" align="center" width="130px"></el-table-column>
-                <el-table-column prop="roleName" label="角色" header-align="center" align="center"></el-table-column>
+                <el-table-column prop="roleName" label="角色" header-align="center" align="center">
+                    <template slot-scope="scope">
+                            <template v-for="item in scope.row.roleName">{{item+'  '}}</template>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="mobile" label="手机号" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="createDate" label="创建时间" header-align="center" align="center">
                 </el-table-column>
                 <el-table-column :label="$t('handle')" header-align="center" align="center">
                     <template slot-scope="scope" v-if="scope.row.superAdmin!==1">
-                        <el-button v-if="$hasPermission('sys:user:update')" type="text" size="small" @click="changeNumber(scope.row.username)">重置密码</el-button>
+                        <el-button v-if="$hasPermission('sys:user:update')" type="text" size="small" @click="changeNumber(scope.row)">重置密码</el-button>
                         <el-button v-if="$hasPermission('sys:user:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">编辑</el-button>
                         <el-button v-if="$hasPermission('sys:user:delete')" type="text" class="artdanger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
                     </template>
@@ -81,13 +85,13 @@
                     width="30%">
                 <el-form :model="numberDataForm" ref="numberDataForm" :rules="dataRule" @keyup.enter.native="numberSubmitHandle()" label-width="120px">
                     <el-form-item style="margin-left: -42px!important;">
-                        <span>账号：</span><span>{{numberDataForm.id}}</span>
+                        <span>账号：</span><span>{{numberDataForm.username}}</span>
                     </el-form-item>
                     <el-form-item label="密码：" prop="password">
-                        <el-input v-model="numberDataForm.password" placeholder="请输入6-12位的密码" show-password minlength="6" maxlength="12"></el-input>
+                        <el-input v-model="numberDataForm.password" type="password" placeholder="请输入6-12位的密码" minlength="6" maxlength="12"></el-input>
                     </el-form-item>
                     <el-form-item label="确认密码：" prop="newPassword">
-                        <el-input v-model="numberDataForm.newPassword" placeholder="请确认密码" show-password minlength="6" maxlength="12"></el-input>
+                        <el-input v-model="numberDataForm.newPassword" type="password" placeholder="请确认密码" minlength="6" maxlength="12"></el-input>
                     </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
@@ -122,6 +126,7 @@
                 centerDialogVisible:false,
                 buttonStatus:false,
                 numberDataForm:{
+                    username:'',
                     password: '',
                     newPassword: '',
                     id:''
@@ -145,7 +150,7 @@
                     callback()
                 }
                 var validateComfirmPassword = (rule, value, callback) => {
-                    if (this.numberDataForm.newPassword !== value) {
+                    if (this.numberDataForm.password !== value) {
                         return callback(new Error(this.$t('user.validate.comfirmPassword')))
                     }
                     if (!/^[a-zA-Z0-9]{6,12}$/.test(value)) {
@@ -165,12 +170,13 @@
         },
         methods:{
             // 重置密码 获取账户名
-            changeNumber(username){
+            changeNumber(row){
                 this.centerDialogVisible = true;
                 this.$nextTick(()=> {
                     this.$refs['numberDataForm'].resetFields()
                 })
-                this.numberDataForm.username = username;
+                this.numberDataForm.id = row.id
+                this.numberDataForm.username = row.username
             },
             getData(){
                 this.page = 1;
@@ -188,7 +194,7 @@
                     if (!valid) {
                         return false
                     }
-                    this.$http.put('/admin-api/store/update/password', this.numberDataForm).then(({ data: res }) => {
+                    this.$http.put('/admin-api/user/reset/passwd', this.numberDataForm).then(({ data: res }) => {
                         if (res.code !== 200) {
                             return this.$message.error(res.msg)
                         }
@@ -206,15 +212,15 @@
             // 重置密码 取消
             noCheck(){
                 this.centerDialogVisible = false
-                this.$refs['numberDataForm'].resetFields();//校验隐藏
+                this.$refs['numberDataForm'].resetFields();
             },
             // 获取角色列表
             getRoleList () {
-                return this.$http.get('/admin-api/role/page').then(({ data: res }) => {
+                return this.$http.get('/admin-api/role/list').then(({ data: res }) => {
                     if (res.code !== 200) {
                         return this.$message.error(res.msg)
                     }
-                    this.options = res.data.list
+                    this.options = res.data
                 }).catch(() => {})
             },
         }
