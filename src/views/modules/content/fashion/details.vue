@@ -28,7 +28,7 @@
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg">
-                                <img :src="dataForm.mainImageUrl" alt=""/>
+                                <img :src="dataForm.mainImageUrl" style="width:200px;" alt=""/>
                             </div>
                         </div>
                     </template>
@@ -46,7 +46,7 @@
                             <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
                                 <div class="goodsPropsWrap">
                                     <div class="goodsImg">
-                                        <img :src="v.imageUrl" alt=""/>
+                                        <img :src="v.imageUrl" style="width:200px;" alt=""/>
                                     </div>
                                     <div v-if="v.typeId=='4'">{{v.text}}</div>
                                 </div>
@@ -83,7 +83,7 @@
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg">
-                                <img :src="dataForm.mainImageUrl" alt=""/>
+                                <img :src="dataForm.mainImageUrl" style="width:200px;" alt=""/>
                             </div>
                         </div>
                     </template>
@@ -101,7 +101,7 @@
                             <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
                                 <div class="goodsPropsWrap">
                                     <div class="goodsImg">
-                                        <img :src="v.imageUrl" alt=""/>
+                                        <img :src="v.imageUrl" style="width:200px;" alt=""/>
                                     </div>
                                     <div v-if="v.typeId=='4'">{{v.textCn}}</div>
                                 </div>
