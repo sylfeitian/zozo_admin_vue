@@ -73,6 +73,7 @@ export default {
       addForm: {},
       listOrAdd: true,
       breaddata: ["基础资料管理", "中国分类管理"],
+      dataListLoading: false,
       mixinViewModuleOptions: {
         // activatedIsNeed: false,
         getDataListURL: categoryUrl,
@@ -80,7 +81,6 @@ export default {
         // exportURL: '/admin-api/log/login/export',
         deleteURL: deleteGoodsclasscustomUrl,
         deleteIsBatch: true,
-        dataListLoading: false,
         deleteIsBatch: true,
         deleteIsBatchKey: "id"
       },
@@ -98,7 +98,7 @@ export default {
       treeConfig: {
           //等于 el-tree 的选项配置
           options: {
-              'show-checkbox': true
+              // 'show-checkbox': true
           },
           //自定义表格列 目前只支持文本渲染
           columns: [

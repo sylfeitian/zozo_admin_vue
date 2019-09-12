@@ -43,11 +43,15 @@
             <el-form-item prop="brandName" label="品牌：" placeholder="请输入">
                 <el-input v-model="dataForm.brandName" ></el-input>
             </el-form-item>
-            <el-form-item prop="categoryId" label="分类：">
-                <el-select v-model="dataForm.categoryId" placeholder="请选择">
-                    <el-option label="全部" value="">衣服</el-option>
-                    <el-option label="1星" value="0">裤子</el-option>
-                </el-select>
+            <el-form-item label="分类：">
+                <el-cascader
+                        :options="selectCategoryOption"
+                        v-model="classList"
+                        change-on-select
+                        :clearable="true"
+                        :props="props"
+                        @change="handleChange">
+                </el-cascader>
             </el-form-item>
             <el-form-item>
                 <el-button class="btn" type="primary" @click="getData()">搜索</el-button>
@@ -102,7 +106,7 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import { skuGoods } from '@/api/url'
-    import { warePage } from '@/api/api'
+    import { backScanCategorys } from '@/api/api'
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -123,20 +127,54 @@
                     goodsName: "",
                     storeName: "",
                     brandName: "",
-
+                    categoryId:""
                 },
                 dataForm:{},
                 dataList: [],
                 dataListLoading: false,
+                selectCategoryOption:[],
+                classList:[],
+                props: {
+                    label:'name',
+                    value: 'id',
+                    children:'list'
+                },
             }
         },
         components: {
             Bread
         },
         created () {
+            this.backScan1();
             this.getDataList();
         },
         methods: {
+            handleChange(){
+                if(this.classList.length!=0){
+                    this.dataFormShow.categoryId = this.classList[this.classList.length-1]
+                }
+                console.log(this.dataFormShow.categoryId)
+            },
+            backScan1(){
+                var obj  = {
+                    id:this.dataForm.id,
+                    categoryName:this.dataForm.categoryName,
+                }
+                backScanCategorys(obj).then((res)=>{
+                    if(res.code == 200){
+                        this.selectCategoryOption = res.data;
+                        // console.log( this.selectCategoryOption);
+                        this.selectCategoryOption.forEach((item,index)=>{
+                            item.list && item.list.forEach((item2,index2)=>{
+                                item2.list="";
+                            })
+                        })
+
+                    }else{
+
+                    }
+                })
+            },
             init (row) {
                 this.visible = true;
                 this.row = row;
@@ -173,6 +211,20 @@
             },
             goList(){
                 this.$emit("showList");
+            },
+            reset() {
+                this.dataFormShow.skuId = "";//商品sku ID
+                this.dataFormShow.goodsName = "";//商品名称/商品货号
+                this.dataFormShow.brandName = "";//品牌名称
+                this.dataFormShow.storeName = "";//店铺名称
+                this.dataFormShow.categoryId = "";
+                this.dataForm.categoryId = "";
+                this.dataForm.skuId = "";//商品sku ID
+                this.dataForm.goodsName = "";//商品名称/商品货号
+                this.dataForm.brandName = "";//品牌名称
+                this.dataForm.storeName = "";//店铺名称
+                this.classList = [];//分类名称
+                this.handleClick();
             },
         }
     }

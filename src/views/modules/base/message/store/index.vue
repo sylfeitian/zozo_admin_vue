@@ -164,7 +164,6 @@ export default {
       multipleSelection: [],
       row: "",
       operateShopStore: [
-         { id: "", name: "全部" },
         { id: "1", name: "营业中" },
         { id: "2", name: "已停业" },
         { id: "0", name: "待营业" }
@@ -230,8 +229,6 @@ export default {
     },
     //编辑
     editHandle(index = -1, row = "") {
-      // 如果日本那边状态是已停业，这边不能操作
-      if(row.operateFlagJp==1) return;
       this.setEditDataVisible(true);
       this.$nextTick(() => {
         this.$refs.editData.init(row);

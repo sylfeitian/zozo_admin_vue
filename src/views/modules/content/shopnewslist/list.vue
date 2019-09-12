@@ -3,7 +3,7 @@
         <Bread  :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
             <el-form-item label="ID：">
-                <el-input v-model="dataForm.id" ></el-input>
+                <el-input v-model="dataForm.idJp" ></el-input>
             </el-form-item>
             <el-form-item label="标题：">
                 <el-input v-model="dataForm.title" ></el-input>
@@ -82,9 +82,9 @@
             <el-table-column prop="publishTime" label="发布时间" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button @click.native.prevent="showDetail(scope.row)"type="text"size="mini">查看</el-button>
-                    <el-button @click.native.prevent="addOrAdit( scope.row)"type="text"size="mini">编辑</el-button>
-                    <el-button @click.native.prevent="forbitHandle(scope.$index,scope.row)"type="text"size="mini">
+                    <el-button @click.native.prevent="showDetail(scope.row)" type="text" size="mini">查看</el-button>
+                    <el-button @click.native.prevent="addOrAdit( scope.row)" type="text" size="mini">编辑</el-button>
+                    <el-button @click.native.prevent="forbitHandle(scope.$index,scope.row)" type="text" size="mini">
                         <span v-if="scope.row.showWeb==1" class="artdisable">{{scope.$index==currentIndex&&forbitLoading?"取消发布中..":"取消发布"}}</span>
                         <span v-else class="artstart">{{scope.$index==currentIndex && forbitLoading?"发布中..":"发布"}}</span>
                     </el-button>

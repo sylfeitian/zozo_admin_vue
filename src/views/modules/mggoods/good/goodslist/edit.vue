@@ -20,7 +20,7 @@
                 <span>{{dataForm.nameJp}}</span>
             </el-form-item>
             <el-form-item label="商品名称：" class="item">
-                <el-input v-model="dataForm.goodsName" placeholder="请输入" maxlength="60" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
+                <el-input v-model="dataForm.name" placeholder="请输入" maxlength="60" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
                 <span style="color: #bebebe;">最多可输入60个文字</span>
             </el-form-item>
             <el-form-item label="品牌：" class="item">
@@ -113,7 +113,7 @@
                         :data="dataForm.skuVOList"
                         class="inforRight"
                         style="display:inline-block;width: 80%">
-                    <el-table-column prop="goodsCsIdjp" label="SKU编码" align="center"></el-table-column>
+                    <el-table-column prop="goodsCsIdJp" label="SKU编码" align="center"></el-table-column>
                     <el-table-column prop="colorName" label="颜色" align="center"></el-table-column>
                     <el-table-column prop="sizeName" label="尺码" align="center"></el-table-column>
                     <el-table-column prop="specId" label="尺码信息" align="center">
@@ -124,10 +124,9 @@
                         </template>
                     </el-table-column>
                     <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
+                    <el-table-column prop="sellState" label="是否可售" align="center"></el-table-column>
                     <el-table-column prop="sellStartDate" label="售卖开始时间" align="center"></el-table-column>
                     <el-table-column prop="sellEndDate" label="售卖结束时间" align="center"></el-table-column>
-                    <el-table-column prop="" label="日本限购数量" align="center"></el-table-column>
-                    <el-table-column prop="" label="日本每人限购数量" align="center"></el-table-column>
                     <el-table-column prop="sellPrice" label="售价(RMB)" align="center">
                         <template
                                 slot-scope="scope"
@@ -201,7 +200,7 @@
                 breaddata: [ "商品管理","商品列表", "编辑商品"],
                 addEditDataVisible: false,
                 dataForm: {
-                    goodsName:"",
+                    name:"",
                     madeIn:"",
                     material:"",
                     firstCategory:'',//

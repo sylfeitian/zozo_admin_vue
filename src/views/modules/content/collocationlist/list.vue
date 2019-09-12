@@ -69,7 +69,7 @@
                 <template slot-scope="scope">
                     <el-tag v-if="scope.row.sate == 1" type="success">已发布</el-tag>
                     <el-tag v-if="scope.row.sate == 2" type="success">取消发布</el-tag>
-                    <el-tag v-else type="info">未发布</el-tag>
+                    <el-tag v-if="scope.row.sate == 0" type="info">未发布</el-tag>
                 </template>
             </el-table-column>
             <el-table-column width="120" prop="jpPublishState"  label="日本发布状态" align="center">
@@ -98,10 +98,14 @@
                     <el-dialog title="管理风格标签" :visible.sync="dialogTableVisible">
                         <el-form :inline="true" style="text-align:left;" class="grayLine topGapPadding"  >
                             <el-form-item label="关联风格标签：">
-                                <el-input v-model="name" ></el-input>
-                            </el-form-item>
-                            <el-form-item>
-                                <el-button  class="btn" type="primary" @click="getStyle">搜索</el-button>
+                                <el-select v-model="name" :filter-method="getStyle" @change="saveList" filterable placeholder="请选择">
+                                    <el-option
+                                            v-for="(item,index) in options"
+                                            :key="index"
+                                            :label="item.styleName"
+                                            :value="index">
+                                    </el-option>
+                                </el-select>
                             </el-form-item>
                             <el-form-item style="width:100%;" label="已关联风格标签：">
                                 <div style="margin-left: 20px;">
@@ -165,6 +169,7 @@
 			        deleteIsBatch: true,
 			        deleteIsBatchKey: 'id'
 			    },
+                options:"",
                 activeName: "",
                 dialogTableVisible:false,
                 breaddata: [ "内容管理","搭配集合管理"],
@@ -208,11 +213,14 @@
             this.getDataList();
         },
         methods: {
+            saveList(val){
+                this.styleList.push(this.options[val])
+            },
             getStyle(){
                 getStyleName({
                     params:{styleName:this.name}
                 }).then((res)=>{
-                    this.styleList = res;
+                    this.options = res;
                 })
             },
             res(){

@@ -10,14 +10,14 @@
                 <el-input v-model="dataFormShow.goodsCsIdJp" placeholder="商品skuid" ></el-input>
             </el-form-item>
             <el-form-item label="分类：">
-                <el-select v-model="dataFormShow.firstCategory" placeholder="请选择">
-                    <el-option
-                            v-for="item in stateOptions"
-                            :key="item.id"
-                            :label="item.label"
-                            :value="item.id">
-                    </el-option>
-                </el-select>
+                <el-cascader
+                        :options="selectCategoryOption"
+                        v-model="classList"
+                        change-on-select
+                        :clearable="true"
+                        :props="props"
+                        @change="handleChange">
+                </el-cascader>
             </el-form-item>
             <el-form-item  label="所属店铺：">
                 <el-input v-model="dataFormShow.storeName" placeholder="请输入店铺名称" ></el-input>
@@ -25,7 +25,7 @@
             <el-form-item  label="品牌：">
                 <el-input v-model="dataFormShow.brandName" placeholder="请输入品牌名称" ></el-input>
             </el-form-item>
-            <el-form-item  label="状态：" v-if="dataFormShow.goodsShow==''">
+            <el-form-item  label="状态：" v-if="dataFormShow.isTofile=='1'">
                 <el-select v-model="dataFormShow.transportFlag" placeholder="请选择">
                     <el-option
                             v-for="item in stateOptions"
@@ -35,7 +35,7 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item  label="备案状态：" v-if="dataFormShow.goodsShow=='1'">
+            <el-form-item  label="备案状态：" v-if="dataFormShow.isTofile=='0'">
                 <el-select v-model="dataFormShow.tofileFlag" placeholder="请选择">
                     <el-option
                             v-for="item in alreadyOptions"
@@ -82,7 +82,7 @@
                 <template slot-scope="scope">
                     <div class="goodsPropsWrap">
                         <div class="goodsImg">
-                            <img :src="scope.row.imageUrl | filterImgUrl" alt=""/>
+                            <img :src="scope.row.imageUrl | filterImgUrl" alt="" style=" object-fit: contain;width: 70px;height:70px;"/>
                         </div>
                     </div>
                 </template>
@@ -117,7 +117,7 @@
         </el-table-column>
             <el-table-column prop="price" label="售价" align="center">
                 <template slot-scope="scope">
-                    <div class="price1">￥{{scope.row.sellPrice }}</div>
+                    <div class="price1">￥{{scope.row.price}}</div>
                 </template>
             </el-table-column>
 <!--            <el-table-column label="售价类型" align="center" width="150">-->
@@ -135,10 +135,16 @@
                 </template>
             </el-table-column>
             <el-table-column prop="tofileFlag" label="状态"  align="center">
-                <template slot-scope="scope">
-                    <div>
-                        {{scope.row.tofileFlag}}
-                    </div>
+<!--                <template slot-scope="scope">-->
+<!--                    <div>-->
+<!--                        {{scope.row.isTofile}}-->
+<!--                    </div>-->
+<!--                </template>-->
+                <template>
+                    <span v-if="dataForm.isTofile==0">待备案</span>
+                    <span v-if="dataForm.isTofile==1">已备案</span>
+                    <span v-if="dataForm.isTofile==2">不可备案</span>
+                    <span v-if="dataForm.isTofile==3">待重新备案</span>
                 </template>
             </el-table-column>
             <el-table-column prop="jdThirdCategory" label="京东三级分类"  align="center" v-if="dataFormShow.isTofile=='1'">
@@ -173,6 +179,7 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import { registerUrl } from '@/api/url'
+    import { backScanCategorys } from '@/api/api'
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -214,6 +221,13 @@
                     id: '1',
                     label: '已下发'
                 }],
+                selectCategoryOption:[],
+                classList:[],
+                props: {
+                    label:'name',
+                    value: 'id',
+                    children:'list'
+                },
             }
         },
         components: {
@@ -224,9 +238,36 @@
             // 第一次请求数据
             this.activeName =  this.status == undefined ? "" : this.status;
             this.dataFormShow.isTofile = "1";
+            this.backScan();
             this.getData();
         },
         methods: {
+            handleChange(){
+                if(this.classList.length!=0){
+                    this.dataFormShow.categoryId = this.classList[this.classList.length-1]
+                }
+                console.log(this.dataFormShow.categoryId)
+            },
+            backScan(){
+                var obj  = {
+                    id:this.dataForm.id,
+                    categoryName:this.dataForm.categoryName,
+                }
+                backScanCategorys(obj).then((res)=>{
+                    if(res.code == 200){
+                        this.selectCategoryOption = res.data;
+                        // console.log( this.selectCategoryOption);
+                        this.selectCategoryOption.forEach((item,index)=>{
+                            item.list && item.list.forEach((item2,index2)=>{
+                                item2.list="";
+                            })
+                        })
+
+                    }else{
+
+                    }
+                })
+            },
             handleClick(tab) {
                 if(tab== ""){
                     this.dataFormShow.isTofile  = "1"
@@ -247,14 +288,19 @@
                 this.getDataList()
             },
             reset() {
+                this.dataFormShow.goodsCsIdJp = "";//商品sku ID
                 this.dataFormShow.goodsName = "";//商品名称/商品货号
                 this.dataFormShow.brandName = "";//品牌名称
-                this.dataFormShow.conditionName = "";//分类名称
                 this.dataFormShow.storeName = "";//店铺名称
+                this.dataFormShow.transportFlag = "";//下发状态
+                this.dataFormShow.categoryId = "";
+                this.dataForm.categoryId = "";
+                this.dataForm.goodsCsIdJp = "";//商品sku ID
                 this.dataForm.goodsName = "";//商品名称/商品货号
                 this.dataForm.brandName = "";//品牌名称
-                this.dataForm.conditionName = "";//分类名称
                 this.dataForm.storeName = "";//店铺名称
+                this.dataForm.transportFlag = "";//下发状态
+                this.classList = [];//分类名称
                 this.handleClick();
             },
         }
@@ -262,10 +308,5 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "@/element-ui/theme-variables.scss";
 
-    img {
-        width: 100px;
-        height: 100px;
-    }
 </style>
