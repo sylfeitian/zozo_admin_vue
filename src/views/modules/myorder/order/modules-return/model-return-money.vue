@@ -10,9 +10,9 @@
 				<h3 v-else>拒绝退款将取消该售后单，请确认已于用户达成一致?</h3>
                 <!-- <p style="color:red">请确认已与用户沟通达成一致</p> -->
 			    <span slot="footer" class="dialog-footer"  >
+		     		    <el-button @click="dataFormCancel()">取消</el-button>
 		     		    <el-button type="primary" @click="dataFormSubmit('addForm')"
-		     		    :loading="loading">{{loading ? "提交中···" : "提交"}}</el-button>
-		     		    <el-button @click="dataFormCancel()">返回</el-button>
+		     		    :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
 			    </span>
 	</el-dialog>
 </template>
