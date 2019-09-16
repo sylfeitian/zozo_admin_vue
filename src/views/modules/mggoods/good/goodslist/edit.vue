@@ -5,7 +5,6 @@
                 ref="dataForm"
                 class="grayLine topGapPadding"
                 :model="dataForm"
-                @keyup.enter.native="getDataList()"
                 style="margin-left: 20px;margin-bottom: 100px;"
         >
             <el-form-item label="商品分类：" class="item" style="margin-top: 20px;">
@@ -174,9 +173,9 @@
             </div>
         </el-col>
         <!-- 弹窗, 新建 -->
-        <addEditData :id="dataForm.id" v-if="addEditDataVisible" ref="addEditData" @searchDataList="getDataList"></addEditData>
+        <addEditData :id="dataForm.id" v-if="addEditDataVisible" ref="addEditData"></addEditData>
         <!-- 尺码信息 -->
-        <sizeData v-if="sizeDataVisible" ref="sizeDataCompon" @searchDataList="getDataList"></sizeData>
+        <sizeData v-if="sizeDataVisible" ref="sizeDataCompon"></sizeData>
     </div>
 </template>
 
@@ -205,7 +204,7 @@
                     material:"",
                     firstCategory:'',//
                     firstCategoryId:'',
-                    secondCategoryId:'',
+                    secondCategoryIsd:'',
                     secondCategory:'',
                 },
                 sizeDataVisible: false,
@@ -283,6 +282,7 @@
             getData(saveType){
                 let that = this;
                 this.dataForm.saveFlag = saveType;
+                this.dataForm.goodsTypeId  = this.dataForm.secondCategoryIsd 
                 saveZozogoods(this.dataForm).then((res)=>{
                     if(res.code == 200){
                         this.$message({

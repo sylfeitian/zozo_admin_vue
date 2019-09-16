@@ -190,7 +190,7 @@
     import Bread from "@/components/bread";
     import quillEditorImg from "@/components/quillEditor"
     //import addEditData from './model-show-data'
-    import mixinViewModule from '@/mixins/view-module'
+    // import mixinViewModule from '@/mixins/view-module'
     import { backScanZozogoods } from '@/api/api'
 
     import 'quill/dist/quill.core.css';
@@ -199,7 +199,7 @@
     import Quill from 'quill'
     import operationallog from "./operationalLog"
     export default {
-        mixins: [mixinViewModule],
+        // mixins: [mixinViewModule],
         data () {
             return {
                 breaddata: [ "商品管理","商品列表", "商品详情"],

@@ -86,8 +86,8 @@
                 this.title="选择分类";
                 //回显第一二级数据
                 this.dataForm.firstCategoryId =  this.$parent.dataForm.firstCategoryId
-                this.dataForm.secondCategoryId =  this.$parent.dataForm.secondCategoryId
-
+                this.dataForm.secondCategoryId =  this.$parent.dataForm.secondCategoryIsd
+                // this.changeFirstCategoryFn(this.dataForm.firstCategoryId);
                 this.backScan();
                 this.$nextTick(() => {
                     this.$refs['addForm'].resetFields();
@@ -103,6 +103,8 @@
                     var itemObj = this.selectFirstCategory.find((item,index)=>{
                         return item.id ==this.dataForm.firstCategoryId;
                     })
+                    console.log(itemObj);
+                    console.log(this.dataForm.secondCategoryId );
                     //找第二级下拉
                     this.selectSecondCategory = itemObj.list;
                 })
@@ -138,7 +140,7 @@
                     if (valid) {
                         this.$parent.dataForm.firstCategory = this.dataForm.firstCategory;
                         this.$parent.dataForm.firstCategoryId =this.dataForm.firstCategoryId;
-                        this.$parent.dataForm.secondCategoryId = this.dataForm.secondCategoryId;
+                        this.$parent.dataForm.secondCategoryIsd = this.dataForm.secondCategoryId;
                         this.$parent.dataForm.secondCategory = this.dataForm.secondCategory;
                         this.closeDialog();
                     }

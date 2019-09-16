@@ -7,7 +7,7 @@ let requestType = { headers: { 'content-type': 'application/x-www-form-urlencode
 export const getDataApi = params => { return http.post("https://api.sscoin.cc/cfd/v1/cfd/user/order/place", params).then(res => res.data); };
 
 //首页  
-export const gethomepage = params => { return http.get(`${base}/homepage`, params).then(res => res.data); };
+export const gethomepage = params => { return http.get(`${base}/homepage/page`, params).then(res => res.data); };
 export const gethomepageRate = params => { return http.get(`${base}/homepage/recentlyRate`, params).then(res => res.data); };
 
 //广告--------------------------------------------------------------------------------------------------------------

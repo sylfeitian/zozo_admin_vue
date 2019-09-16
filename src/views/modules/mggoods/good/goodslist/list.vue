@@ -161,8 +161,8 @@
                 <template slot-scope="scope">
                     <div>
                         {{scope.row.firstCategory}}
-                        <span>--</span>
-                        {{scope.row.secondCategory}}
+                        <span v-if="scope.row.goodsTypeName">--</span>
+                        {{scope.row.goodsTypeName}}
                     </div>
                 </template>
             </el-table-column>
@@ -421,7 +421,7 @@
                 }
                 backScanCategorys(obj).then((res)=>{
                     if(res.code == 200){
-                        this.selectCategoryOption = res.data;
+                        this.selectCategoryOption = res.data?res.data:[];
                         // console.log( this.selectCategoryOption);
                         this.selectCategoryOption.forEach((item,index)=>{
                             item.list && item.list.forEach((item2,index2)=>{
