@@ -184,7 +184,7 @@
     import Bread from "@/components/bread";
     import quillEditorImg from "@/components/quillEditor"
     import addEditData from './model-edit-data'
-    // import mixinViewModule from '@/mixins/view-module'
+    import mixinViewModule from '@/mixins/view-module'
     import { backScanZozogoods, saveZozogoods } from '@/api/api'
     import sizeData from './model-size'
 
@@ -193,7 +193,7 @@
     import 'quill/dist/quill.bubble.css';
     import Quill from 'quill'
     export default {
-        // mixins: [mixinViewModule],
+        mixins: [mixinViewModule],
         data () {
             return {
                 breaddata: [ "商品管理","商品列表", "编辑商品"],
