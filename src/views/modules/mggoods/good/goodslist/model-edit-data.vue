@@ -45,12 +45,17 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item style="text-align: center;margin-left: -120px!important;">
-                <el-button type="primary" @click="dataFormSubmit('addForm')"
-                           :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
-                <el-button  @click="dataFormCancel()">返回</el-button>
-            </el-form-item>
+<!--            <el-form-item style="text-align: center;margin-left: -120px!important;">-->
+<!--                <el-button type="primary" @click="dataFormSubmit('addForm')"-->
+<!--                           :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>-->
+<!--                <el-button  @click="dataFormCancel()">返回</el-button>-->
+<!--            </el-form-item>-->
         </el-form>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="dataFormCancel()">取消</el-button>
+            <el-button type="primary" @click="dataFormSubmit('addForm')"
+                       :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
+        </span>
     </el-dialog>
 </template>
 
@@ -86,8 +91,8 @@
                 this.title="选择分类";
                 //回显第一二级数据
                 this.dataForm.firstCategoryId =  this.$parent.dataForm.firstCategoryId
-                this.dataForm.secondCategoryId =  this.$parent.dataForm.secondCategoryId
-
+                this.dataForm.secondCategoryId =  this.$parent.dataForm.secondCategoryIsd
+                // this.changeFirstCategoryFn(this.dataForm.firstCategoryId);
                 this.backScan();
                 this.$nextTick(() => {
                     this.$refs['addForm'].resetFields();
@@ -103,6 +108,8 @@
                     var itemObj = this.selectFirstCategory.find((item,index)=>{
                         return item.id ==this.dataForm.firstCategoryId;
                     })
+                    console.log(itemObj);
+                    console.log(this.dataForm.secondCategoryId );
                     //找第二级下拉
                     this.selectSecondCategory = itemObj.list;
                 })
@@ -138,7 +145,7 @@
                     if (valid) {
                         this.$parent.dataForm.firstCategory = this.dataForm.firstCategory;
                         this.$parent.dataForm.firstCategoryId =this.dataForm.firstCategoryId;
-                        this.$parent.dataForm.secondCategoryId = this.dataForm.secondCategoryId;
+                        this.$parent.dataForm.secondCategoryIsd = this.dataForm.secondCategoryId;
                         this.$parent.dataForm.secondCategory = this.dataForm.secondCategory;
                         this.closeDialog();
                     }

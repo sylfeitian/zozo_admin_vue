@@ -70,9 +70,9 @@
                         </el-form-item> 
                 </el-form>
 			    <span slot="footer" class="dialog-footer">
-		     		    <el-button @click="closeDialog()">返回</el-button>
+		     		    <el-button @click="closeDialog()">取消</el-button>
 		     		    <el-button type="primary" @click="dataFormSubmit('addForm')"
-		     		    :loading="loading">{{loading ? "提交中···" : "提交"}}</el-button>
+		     		    :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
 			    </span>
     </el-dialog>
 </template>
