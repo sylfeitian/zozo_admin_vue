@@ -1,22 +1,22 @@
 <template>
   <div>
     	<el-form :model="dataForm" label-width="140px" 	:rules="dataRule" class="demo-ruleForm" ref="addForm">
-        <el-form-item label="优惠券名称：" prop="gcName">
-            <el-input v-model="dataForm.gcName" type="text" maxlength="50" placeholder="请输入50字以内的内容" show-word-limit style="width:400px;"></el-input>
+        <el-form-item label="优惠券名称：" prop="name">
+            <el-input v-model="dataForm.name" type="text" maxlength="50" placeholder="请输入50字以内的内容" show-word-limit style="width:400px;"></el-input>
         </el-form-item>
-        <el-form-item label="总发行量：" prop="totalnumber">
-            <el-input v-model="dataForm.totalnumber" type="number"  max="1000000" placeholder="1000"  style="width:400px;"></el-input>
+        <el-form-item label="总发行量：" prop="totalNums">
+            <el-input v-model="dataForm.totalNums" type="number"  max="1000000" placeholder="1000"  style="width:400px;"></el-input>
         </el-form-item>
-        <el-form-item label="面额：" prop="money">
-             <el-input placeholder="20" v-model="dataForm.money" show-word-limit style="width:220px;">
+        <el-form-item label="面额：" prop="faceValue">
+             <el-input placeholder="20" v-model="dataForm.faceValue" show-word-limit style="width:220px;">
 					    <template slot="append">元</template>
 					  </el-input>
 					  <div>面值只能是数值，0.01-1000000，限2位小数</div>
         </el-form-item>
-        <el-form-item label="领取开始时间："  prop="startTime">
+        <el-form-item label="领取开始时间："  prop="getStartTime">
         	<!--:default-time="startsecond"-->
             	<el-date-picker
-                v-model="dataForm.startTime"
+                v-model="dataForm.getStartTime"
                 type="date"
                 value-format="yyyy-MM-dd"
                 clearable
@@ -25,7 +25,7 @@
                 style="width:220px;">
             </el-date-picker>
       </el-form-item>
-      <el-form-item label=""  prop="value1" class="artvalue12time">  
+      <el-form-item label=""  prop="value1" class="artvalue12time">
 						<el-time-picker
 							v-if="value1isshow"
 						  v-model="dataForm.value1"
@@ -34,13 +34,9 @@
 					    placeholder="选择时间">
   					</el-time-picker>
      </el-form-item>
-       
-      
-      
-      
-      <el-form-item label="领取结束时间：" prop="endTime">
+      <el-form-item label="领取结束时间：" prop="getEndTime">
             <el-date-picker
-                v-model="dataForm.endTime"
+                v-model="dataForm.getEndTime"
                 type="date"
                 value-format="yyyy-MM-dd"
                 clearable
@@ -59,25 +55,24 @@
 						  placeholder="选择时间">
 						</el-time-picker>
     	</el-form-item>
-    	
-    
-        <el-form-item class="artfromitem" label="使用门槛：" prop="totalnumber">
+        <el-form-item class="artfromitem" label="每人限领：" prop="men">
+            <span>1张</span>
+        </el-form-item>
+        <el-form-item class="artfromitem" label="使用门槛：" prop="threshold">
         		<div>单笔订单满</div>
-            <el-input v-model="dataForm.totalnumber"  type="number"  max="1000000" placeholder="0"  style="width:400px;"></el-input>
+            <el-input v-model="dataForm.threshold"  type="number"  max="1000000" placeholder="0"  style="width:400px;"></el-input>
         		<div>元可用（输入“0”为无门槛优惠券）</div>
         </el-form-item>
-        <el-form-item class="artfromitem" label="每人限领：" prop="men">
-            <el-input v-model="dataForm.onlyNum" :disabled="true" type="number"  max="1000000" placeholder="1"  style="width:400px;"></el-input>
-            <div>张 &nbsp;&nbsp;&nbsp;&nbsp; 0代表不限制，每人最多限制5张</div>
+        <el-form-item label="有效期：" prop="validityDays">
+            <el-input v-model="dataForm.validityDays" placeholder="领取后到期天数" show-word-limit style="width:220px;">
+                <template slot="append">天</template>
+            </el-input>
         </el-form-item>
-        <el-form-item label="有效期：" prop="totalnumber">
-            <el-input v-model="dataForm.totalnumber" type="number"  max="1000000" placeholder="1000"  style="width:400px;"></el-input>
-        </el-form-item>
-        <el-form-item label="备注：" prop="datatextarea">
+        <el-form-item label="备注：" prop="bei">
            <el-input
 						  type="textarea"
 						  placeholder="请输入内容"
-						  v-model="dataForm.datatextarea"
+						  v-model="dataForm.bei"
 						  maxlength="300"
 						  style="width:400px;">
 						</el-input>
@@ -91,57 +86,59 @@
 </template>
 
 <script>
-import vueFilter from '@/utils/filter'
-var validnumber =(rule, value,callback)=>{
-    if (value/1 > 1000000){
-      callback(new Error('请输入1000000以内的数字'))
-    }else if(value.indexOf('.') != -1){
-    	callback(new Error('只能输入整数'))
-    }else if(value <= 0){
-    	callback(new Error('只能输入大于的数'))
-    }else {
-      callback()
-    }
-};
-var validmoney =(rule, value,callback)=>{
-    if (value/1 > 1000000){
-      callback(new Error('请输入1000000以内的数字'))
-    }else if(value <= 0){
-    	callback(new Error('只能输入大于的数'))
-    }else if(value.indexOf('.') != -1 && value.substr(value.indexOf('.') + 1).length > 2){
-    	callback(new Error('小数点后只能有两位'))
-    }else {
-      callback()
-    }
-};
+    import cloneDeep from 'lodash/cloneDeep'
+    import vueFilter from '@/utils/filter'
+    import { editActivityNewMember, updateActivityNewMember } from "@/api/api"
+    var validnumber =(rule, value,callback)=>{
+        if (value/1 > 1000000){
+          callback(new Error('请输入1000000以内的数字'))
+        }else if(value.indexOf('.') != -1){
+            callback(new Error('只能输入整数'))
+        }else if(value <= 0){
+            callback(new Error('只能输入大于的数'))
+        }else {
+          callback()
+        }
+    };
+    var validfaceValue =(rule, value,callback)=>{
+        if (value/1 > 1000000){
+          callback(new Error('请输入1000000以内的数字'))
+        }else if(value <= 0){
+            callback(new Error('只能输入大于的数'))
+        }else if(value.indexOf('.') != -1 && value.substr(value.indexOf('.') + 1).length > 2){
+            callback(new Error('小数点后只能有两位'))
+        }else {
+          callback()
+        }
+    };
 export default {
     props: ['type','editSatusId'],
   data () {
     return {
         saveLoading: false,
-        datatextarea:'',
+        bei:'',
         dataForm:{
-            "gcName": "",//分类名称 ,
-            "totalnumber": "", //总发行量
-            "gcParentId": 0,//父ID ,
-            "gcSort": 0,// 排序 ,
-            "attrIds":[],//属性关联数组 ,
-            "specIds":[],//规格关联数组 ,
-            "storeId": 0,//店铺ID
-            "money":0,
-            startTime:'',
-            endTime:'',    
+            name: "",//分类名称 ,
+            totalNums: "", //总发行量
+            gcParentId: 0,//父ID ,
+            gcSort: 0,// 排序 ,
+            attrIds:[],//属性关联数组 ,
+            specIds:[],//规格关联数组 ,
+            storeId: 0,//店铺ID
+            faceValue:0,
+            getStartTime:'',
+            getEndTime:'',
             value1:'',
             value2:'',
     	},
     	dataRule : {
-            gcName : [
+            name : [
                 { required: true, message: '必填项不能为空', trigger: 'blur' },
             ],
-            startTime : [
+            getStartTime : [
                     { required: true, message: '必填项不能为空', trigger: 'blur' },
             ],
-            endTime : [
+            getEndTime : [
                     { required: true, message: '必填项不能为空', trigger: 'blur' },
             ],
             value1 : [
@@ -150,16 +147,19 @@ export default {
             value2 : [
                     { required: true, message: '必填项不能为空', trigger: 'blur' },
             ],
-            men: [
+            threshold: [
                     { required: true, message: '必填项不能为空', trigger: 'blur' },
             ],
-            totalnumber :[
+            validityDays: [
+                { required: true, message: '必填项不能为空', trigger: 'blur' },
+            ],
+            totalNums :[
                     { required: true, message: '必填项不能为空', trigger: 'blur' },
                     { validator: validnumber, trigger: 'blur' },
             ],
-            money :[
+            faceValue :[
                     { required: true, message: '必填项不能为空', trigger: 'blur' },
-                    { validator: validmoney, trigger: 'blur' },
+                    { validator: validfaceValue, trigger: 'blur' },
             ],
             gcParentId : [
                 { required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -170,8 +170,8 @@ export default {
         },
         pickerOptions0: {
             disabledDate: (time) => {
-               if (this.dataForm.endTime) {   //先选的结束时间
-                  return time.getTime() > new Date(this.dataForm.endTime).getTime()  || time.getTime() < Date.now() - 8.64e7;
+               if (this.dataForm.getEndTime) {   //先选的结束时间
+                  return time.getTime() > new Date(this.dataForm.getEndTime).getTime()  || time.getTime() < Date.now() - 8.64e7;
                }else{//还没有选择结束时间的时候，让他只能选择今天之后的时间包括今天
                    return time.getTime() < Date.now() - 8.64e7
                } 
@@ -180,9 +180,9 @@ export default {
         },
          pickerOptions1: {
                 disabledDate: (time) => {
-                    if(this.dataForm.startTime){
-                      return time.getTime() < new Date(this.dataForm.startTime).getTime() - 8.64e7;//可以选择同一天
-                    }else if(!this.dataForm.startTime){
+                    if(this.dataForm.getStartTime){
+                      return time.getTime() < new Date(this.dataForm.getStartTime).getTime() - 8.64e7;//可以选择同一天
+                    }else if(!this.dataForm.getStartTime){
 											return time.getTime() < Date.now() - 8.64e7
 										}
                 }
@@ -204,16 +204,16 @@ export default {
         }else{
             this.dataForm = {
                 onlyNum:'1',//限领数
-                "gcName": "",//分类名称 ,
-                "totalnumber": "", //总发行量
-                "gcParentId": 0,//父ID ,
-                "gcSort": 0,// 排序 ,
-                "attrIds":[],//属性关联数组 ,
-                "specIds":[],//规格关联数组 ,
-                "storeId": 0,//店铺ID
-                "money":0,
-                startTime:'',
-                endTime:'',    
+                name: "",//分类名称 ,
+                totalNums: "", //总发行量
+                gcParentId: 0,//父ID ,
+                gcSort: 0,// 排序 ,
+                attrIds:[],//属性关联数组 ,
+                specIds:[],//规格关联数组 ,
+                storeId: 0,//店铺ID
+                faceValue:0,
+                getStartTime:'',
+                getEndTime:'',
                 value1:'',
                 value2:'',
             }
@@ -225,11 +225,11 @@ export default {
     	deep:true, //深度监听设置为 true
     	handler:function(newV,oldV){
     		//选择了开始时间
-				if(newV.startTime){   
+				if(newV.getStartTime){
 	      	this.value1isshow = true;
 	      	var currentTime = vueFilter.dateToStr();
 	      	//选择的是今天
-	      	if(this.dataForm.startTime.substr(0,10) == currentTime.substr(0,10)){
+	      	if(this.dataForm.getStartTime.substr(0,10) == currentTime.substr(0,10)){
 	      		this.value1Time = {
 					      selectableRange: `${currentTime.substr(11)} - 23:59:59`
 						};
@@ -245,7 +245,7 @@ export default {
 	   		
 	   		
 				//选择了结束时间
-				if(newV.endTime){    
+				if(newV.getEndTime){
 	      	this.value2isshow = true;
 	   		}else{    //清空了结束时间
 	     		this.value2isshow = false;
@@ -273,7 +273,7 @@ export default {
         },
         artvalue2time(){
             this.value2timedisabled = false;
-            if(this.dataForm.value1 && this.dataForm.startTime == this.dataForm.endTime){    //选择了开始时间      日期是同一天
+            if(this.dataForm.value1 && this.dataForm.getStartTime == this.dataForm.getEndTime){    //选择了开始时间      日期是同一天
                 this.value2Time = {
                     selectableRange: `${vueFilter.dateToStr(this.dataForm.value1).substr(10)} - 23:59:59`
                 };
@@ -301,9 +301,53 @@ export default {
         },
         //开始结束时间
         acttime(){
-            this.dataForm.strTime = this.valuetime[0];
-            this.dataForm.endTime = this.valuetime[1];
+            this.dataForm.getStartTime = this.valuetime[0];
+            this.dataForm.getEndTime = this.valuetime[1];
         },
+      // 提交
+      dataFormSubmit(formName){
+          // alert([this.dataForm.name,this.dataForm.domainAddress]);
+          this.$refs[formName].validate((valid) => {
+              if (valid) {
+                  this.loading = true;
+                  var obj = {
+                      bei:  this.dataForm.bei,
+                      faceValue:  this.dataForm.faceValue,
+                      getEndTime:  this.dataForm.getEndTime,
+                      getStartTime:  this.dataForm.getStartTime,
+                      name:  this.dataForm.name,
+                      threshold:  this.dataForm.threshold,
+                      totalNums:  this.dataForm.totalNums,
+                      validityDays:  this.dataForm.validityDays,
+                  }
+                  if(this.row) obj.id = this.row.id
+                  var fn = this.row?editActivityNewMember:updateActivityNewMember;
+                  fn(obj).then((res) => {
+                      this.loading = false;
+                      // alert(JSON.stringify(res));
+                      let status = null;
+                      if(res.code == "200"){
+                          status = "success";
+                          this.visible = false;
+                          this.$emit('searchDataList');
+                          this.closeDialog();
+
+                      }else{
+                          status = "error";
+                      }
+
+                      this.$message({
+                          message: res.msg,
+                          type: status,
+                          duration: 1500
+                      })
+                  })
+              } else {
+                  //console.log('error 添加失败!!');
+                  return false;
+              }
+          })
+      },
         
   }
 };
