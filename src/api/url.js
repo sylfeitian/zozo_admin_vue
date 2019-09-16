@@ -406,6 +406,12 @@ export const QamainList = `${base}/questionanswer/dataPage`;
 
 
 
+//优惠券管理-------------------------------------------------------------------------------------------------------------
+//优惠券活动分页查询
+export const activityPage = `${base}/activity/coupon/page`;
+//删除优惠券活动
+export const deleteActivity = `${base}/activity/coupon`;
+
 
 
 
