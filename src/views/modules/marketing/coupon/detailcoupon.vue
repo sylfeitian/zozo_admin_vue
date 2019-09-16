@@ -1,7 +1,13 @@
 <template>
     <div>
         <Bread :breaddata="breaddata" :index = "'1'" @changePage = "changePage"></Bread>
-        <table>
+        <el-form
+                :inline="true"
+                class="grayLine topGapPadding"
+                :model="dataForm"
+                @keyup.enter.native="getDataList()"
+        >
+            <table>
             <thead>
                 <tr>
                     <th colspan="5" style="font-weight:400;background: #f5f7fa;padding-left:20px;text-align: left;">优惠券明细</th>
@@ -16,11 +22,11 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>20元优惠券</td>
-                    <td>新人专享券</td>
-                    <td>满100元可用</td>
-                    <td>100元</td>
-                    <td>进行中</td>
+                    <td>{{dataForm.name}}</td>
+                    <td>{{dataForm.type}}</td>
+                    <td>{{dataForm.threshold}}</td>
+                    <td>{{dataForm.faceValue}}</td>
+                    <td>{{dataForm.state}}</td>
                 </tr>
             </tbody>
             <thead>
@@ -46,6 +52,7 @@
                 </tr>
             </tbody>
         </table>
+        </el-form>
 
 
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
@@ -150,7 +157,7 @@
             }
         },
         created(){
-            console.log('详情id=======',this.detailId) 
+            console.log('详情id=======',this.detailId)
         },
         methods: {
             //返回

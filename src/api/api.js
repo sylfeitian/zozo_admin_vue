@@ -895,3 +895,30 @@ export const updatehoppointssettings = params => { return http.put(`${base}/shop
 
 export const getShoppointssettings = params => { return http.get(`${base}/shoppointssettings`, params).then(res => res.data); };
 
+
+
+
+
+
+
+//优惠券管理-------------------------------------------------------------------------------------------------------------
+//优惠券活动审核
+export const activityAudit = params => { return http.put(`${base}/activity/coupon/audit`, params).then(res => res.data); };
+//新增新会员专享优惠券活动
+export const updateActivityNewMember = params => { return http.post(`${base}/activity/coupon/newmember`, params).then(res => res.data); };
+// 编辑新会员专享优惠券活动
+export const editActivityNewMember = params => { return http.put(`${base}/activity/coupon/newmember`, params).then(res => res.data); };
+//新增普通优惠券活动
+export const updateActivityNormal = params => { return http.post(`${base}/activity/coupon/normal`, params).then(res => res.data); };
+// 编辑普通优惠券活动
+export const editActivityNormal = params => { return http.put(`${base}/activity/coupon/normal`, params).then(res => res.data); };
+//新增积分专享优惠券活动
+export const updateActivityPoint = params => { return http.post(`${base}/activity/coupon/point`, params).then(res => res.data); };
+// 编辑积分专享优惠券活动
+export const editActivityPoint = params => { return http.put(`${base}/activity/coupon/point`, params).then(res => res.data); };
+// 优惠券活动停止
+export const stopActivity = params => { return http.put(`${base}/activity/coupon/stop`, params).then(res => res.data); };
+// 修改
+export const updateActivity = params => { return http.put(`${base}/activity/coupon/update`, params).then(res => res.data); };
+// 优惠券活动详情
+export const backScanActivity = params => { return http.get(`${base}/activity/coupon/${params.id}`, params).then(res => res.data); };

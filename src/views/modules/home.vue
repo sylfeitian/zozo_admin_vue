@@ -4,7 +4,7 @@
     	 <span class='arttitle'>今日汇率：</span>
     	 <span class="artnumber">{{rate}}</span>
     	 <span class="artmoney">1日元兑换{{rate}}人民币</span>
-    	 <span class="artgreen artpointer" @click="artgethistoryRate">查看历史汇率</span>
+    	 <span class="artgreen artpointer"  :class="{ artred : actrise }" @click="artgethistoryRate">查看历史汇率</span>
     	 <span class="artRefresh artpointer" @click="artrefresh"><i class="el-icon-refresh"></i> &nbsp;刷新</span>
     </div>
     <!-- secound -->
@@ -43,18 +43,18 @@
     	<div class="arttitle">待处理事务</div>
     	<div class="artcon">
 	    	<div class="artitem">
-	    		<div class="artitems">
+	    		<div class="artitems" @click="actorder">
 	    			待处理订单<span>（<em>{{ data && data.toProcessOrdersNum || 0  }}</em>）</span>
 	    		</div>
-	    		<div class="artitems">
+	    		<div class="artitems" @click="actrecordinformation">  
 	    			待备案商品<span>（<em>{{ data && data.toRecordGoodsNum || 0 }}</em>）</span>
 	    		</div>
 	    	</div>
-	    	<div class="artitem">
-	    		<div class="artitems">
+	    	<div class="artitem">  
+	    		<div class="artitems" @click="actordercheaplist">
 	    			待付款订单<span>（<em>{{ data && data.toPayOrdersNum || 0}}</em>）</span>
 	    		</div>
-	    		<div class="artitems">
+	    		<div class="artitems" @click="actordercheaplist">
 	    			待发货订单<span>（<em>{{ data && data.toSendOrdersNum || 0  }}</em>）</span>
 	    		</div>
 	    	</div>
@@ -123,6 +123,7 @@
             	timer:null,
             	dialogTableVisible: false,
             	rate:'',
+            	actrise: false,  //今日汇率是否上升   红    下降  绿
             }
         },
        	components: {
@@ -141,7 +142,6 @@
 				  },1000)
 				},
 				mounted(){
-					this.getdata();
 				},
 				beforeDestroy() {
 				    if(this.timer) {
@@ -149,6 +149,19 @@
 				    }
 				},
         methods: {
+        	//待处理事务跳转
+        	actorder(){
+        		 this.$router.push('myorder-order-wait');  
+        	}, 
+        	actordercheaplist(){
+        		 this.$router.push('myorder-order-cheaplist');  
+        	}, 
+        	actrecordinformation(){ 
+        		 this.$router.push('mggoods-good-recordinformation');  
+        	}, 
+//      	actordercheaplist(){
+//      		 this.$router.push('myorder-order-cheaplist');  
+//      	}, 
         	artgethistoryRate(){
         		this.dialogTableVisible = true;
         		this.$nextTick(()=>{
@@ -170,8 +183,8 @@
         		})
         		gethomepageRate().then((res)=>{
         			if(res && res.code == 200){
-        				console.log(res);
         				this.rate =res.data.rate;
+        				this.actrise = res.data.varyState == 1;
         			}else{
         				this.$message(res.msg)
         			}
@@ -215,6 +228,9 @@
 			text-decoration: underline;
 			font-size: 12px;
 		
+		}
+		.artred{
+			color: red;
 		}
 		.artRefresh{
 			float: right;
@@ -273,6 +289,7 @@
 			padding: 0 30px;
 			font-size: 14px;
 			.artitems{
+				cursor: pointer;
 				width: 300px;
 				display: flex;
 				padding: 20px 10px;
