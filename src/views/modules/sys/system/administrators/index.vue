@@ -50,7 +50,7 @@
                 <el-table-column prop="realName" label="姓名" header-align="center" align="center" width="130px"></el-table-column>
                 <el-table-column prop="roleName" label="角色" header-align="center" align="center">
                     <template slot-scope="scope">
-                            <template v-for="item in scope.row.roleName">{{item+'  '}}</template>
+                        <template>{{scope.row.roleName.join('、')}}</template>
                     </template>
                 </el-table-column>
                 <el-table-column prop="mobile" label="手机号" header-align="center" align="center"></el-table-column>

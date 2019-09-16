@@ -25,7 +25,7 @@
       required: true, message: '必填项不能为空', trigger: 'change'
     }"
             >
-                <el-select v-model="roleItem.id" :placeholder="$t('user.roleIdList')" class="distance-btn">
+                <el-select v-model="roleItem.id" :placeholder="$t('user.roleIdList')" class="distance-btn" @change="selected">
                     <el-option
                             v-for="item in roleList"
                             :key="item.key"
@@ -158,6 +158,19 @@
             }
         },
         methods: {
+            // 筛选重复的角色
+            selected(query) {
+                var selectItem = [];
+                for(let i=0;i<this.dataForm.roleIds.length;i++){
+                    selectItem.push(this.dataForm.roleIds[i].id)
+            }
+                if( selectItem.indexOf(query) !== selectItem.lastIndexOf(query) ){ // 所选角色重复
+                    this.dataForm.roleIds[selectItem.lastIndexOf(query)].name=''
+                    this.dataForm.roleIds[selectItem.lastIndexOf(query)].id=''
+                    this.dataForm.roleIds[selectItem.lastIndexOf(query)].key=Date.now()
+                    this.$message("该角色已经被选了,请选择其他角色")
+                }
+            },
             // 弹窗关闭
             noCheck(){
                 this.visible = false
