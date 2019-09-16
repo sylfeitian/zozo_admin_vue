@@ -199,6 +199,7 @@ export default {
       },
       dataForm: {},
       storeTypes:[
+		  {id: '',label: '全部'},
           {id: '0',label: '未审核'},
           {id: '1',label: '审核通过'},
           {id: '2',label: '审核未通过'}
@@ -215,7 +216,7 @@ export default {
   created(){
   	this.dataForm.type = this.couponKindList1 && this.couponKindList1[0].id;
   	this.dataForm.state = this.activitesstates && this.activitesstates[0].id;
-  	this.dataForm.auditState = this.auditState && this.auditState[0].id;
+  	this.dataForm.auditState = this.storeTypes && this.storeTypes[0].id;
     this.demo();
   },
   methods: {
