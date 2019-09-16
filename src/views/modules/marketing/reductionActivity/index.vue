@@ -3,7 +3,7 @@
       <!-- 列表 -->
       <list v-if='showStatus'  @showDetailFun='showDetailFun'></list>
       <!-- 查看 -->
-      <detail v-else @showListFun='showListFun' :activityId="activityId"></detail>
+      <detail ref="detailCompon" v-else @showListFun='showListFun' ></detail>
   </div>
 </template>
 
@@ -14,7 +14,7 @@ import detail from "./detail";
 export default {
   data () {
     return {
-        activityId:'',
+        // activityId:'',
         showStatus: true,
     }
   },
@@ -22,9 +22,12 @@ export default {
   	list,detail
   },
   methods: {
-      showDetailFun(id){
+      showDetailFun(row){
           this.showStatus = false;
-          this.activityId = id;
+          // this.activityId = id;
+          this.$nextTick(()=>{
+            this.$refs.detailCompon.init(row);
+          })
       },
       showListFun(){
           this.showStatus = true;

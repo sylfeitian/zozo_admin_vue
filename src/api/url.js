@@ -117,6 +117,14 @@ export const brandPageUrl = `${base}/brand/page`;
 // 编辑品牌
 export const deleteBrandUrl = `${base}/brand`;
 
+//  满减活动-------------------------------------------------------------------------------------------------------------
+// 满减活动分页查询
+export const activityReduceUrl =  `${base}/activity/reduce/page`; 
+
+export const deleteActivityReduceUrl =  `${base}/activity/reduce/`; 
+// 满减活动订单分页查询
+export const reduceOrderUrl =  `${base}/activity/reduce/order/page/`; // /activity/reduce/order/page/{reductionId}
+
 // 商户管理--------------------------------------------------------------------------------------------------------------------
 // 商家列表
 export const businessPageUrl = `${base}/store/page`;

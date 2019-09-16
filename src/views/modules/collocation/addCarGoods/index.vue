@@ -124,7 +124,7 @@
             border
             style="width: 100%">
             <el-table-column
-                prop="nameJp"
+                prop="name"
                 label="商品名称"
                 width="240">
             </el-table-column>
@@ -141,7 +141,7 @@
                 label="操作">
                 <template slot-scope="scope" v-if="goodsdataList.length!=0">
                     <span v-if="(scope.$index+1+(parseInt(pages)-1)* parseInt(limits)-1) < goodsdataList.length">
-                        {{goodsdataList[(scope.$index+1+(parseInt(pages)-1)* parseInt(limits)-1)].checked}}
+                        <!-- {{goodsdataList[(scope.$index+1+(parseInt(pages)-1)* parseInt(limits)-1)].checked}} -->
                         <el-checkbox v-model="goodsdataList[(scope.$index+1+(parseInt(pages)-1)* parseInt(limits)-1)].checked" @change="gettem($event,scope.row,(scope.$index+1+(parseInt(pages)-1)* parseInt(limits)-1))"></el-checkbox>
                     </span>
                 </template>

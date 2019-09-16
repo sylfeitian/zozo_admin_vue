@@ -865,10 +865,19 @@ export const addGoodscarList = params => { return http.post(`${base}/cartrecom/a
 //添加商品未推荐列表
 export const goodsListVisible = params => { return http.get(`${base}/cartrecom/goodslist`, params).then(res => res.data); };
 
-
-
-
-
+//  满减活动-------------------------------------------------------------------------------------------------------------
+// 新增满减活动
+ export const activityReduceAdd = params => { return http.post(`${base}/activity/reduce`, params).then(res => res.data); };
+//  满减活动编辑
+ export const activityReduceEdit = params => { return http.put(`${base}/activity/reduce/edit`, params).then(res => res.data); };
+//  满减活动详情
+export const activityReduceDetailById = params => { return http.get(`${base}/activity/reduce/${params.id}`, params).then(res => res.data); };
+// 满减活动审核
+export const activityReduceAudit= params => { return http.put(`${base}/activity/reduce/audit?id=${params.id}&auditState=${params.auditState}`, params).then(res => res.data); };
+// 满减活动停止
+export const activityReduceStop = params => { return http.put(`${base}/activity/reduce/stop?id=${params.id}`, params).then(res => res.data); };
+// DELETE /activity/reduce/{id}
+// 满减活动删除
 
 
 
