@@ -162,7 +162,7 @@
                     <div>
                         {{scope.row.firstCategory}}
                         <span>--</span>
-                        {{scope.row.secondCategory}}
+                        {{scope.row.goodsTypeName}}
                     </div>
                 </template>
             </el-table-column>
