@@ -121,12 +121,15 @@
     		
     		</el-form-item>
 		</el-form>
-		  	
-		  	
-	  <span slot="footer" class="dialog-footer artFooter">
-	    <el-button @click="closeadd" style="margin-right: 20px;">取 消</el-button>
-	    <el-button type="primary" @click="actuploaddata('addForm')">确 定</el-button>
-	  </span>
+
+		<span slot="footer" class="dialog-footer">
+            <el-button @click="closeadd">取消</el-button>
+            <el-button type="primary" @click="actuploaddata('addForm')">确 定</el-button>
+        </span>
+<!--	  <span slot="footer" class="dialog-footer artFooter">-->
+<!--	    <el-button @click="closeadd" style="margin-right: 20px;">取 消</el-button>-->
+<!--	    <el-button type="primary" @click="actuploaddata('addForm')">确 定</el-button>-->
+<!--	  </span>-->
 	</el-dialog>
 </template>
 

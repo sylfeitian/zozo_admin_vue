@@ -41,12 +41,17 @@
                     </el-tag>
                </div>
             </el-form-item>
-            <el-form-item style="text-align: center;margin-left: -120px!important;">
-                <el-button  @click="dataFormCancel()">取消</el-button>
-                <el-button type="primary" @click="dataFormSubmit('addForm')"
-                           :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
-            </el-form-item>
+<!--            <el-form-item style="text-align: center;margin-left: -120px!important;">-->
+<!--                <el-button  @click="dataFormCancel()">取消</el-button>-->
+<!--                <el-button type="primary" @click="dataFormSubmit('addForm')"-->
+<!--                           :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>-->
+<!--            </el-form-item>-->
         </el-form>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="dataFormCancel()">取消</el-button>
+            <el-button type="primary" @click="dataFormSubmit('addForm')"
+                       :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
+        </span>
     </el-dialog>
 </template>
 
