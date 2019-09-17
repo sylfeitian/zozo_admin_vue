@@ -419,6 +419,8 @@ export const QamainList = `${base}/questionanswer/dataPage`;
 export const activityPage = `${base}/activity/coupon/page`;
 //删除优惠券活动
 export const deleteActivity = `${base}/activity/coupon`;
+// 优惠券活动已领会员优惠券分页查询
+export const activityMemberCouponsPage = `${base}/activity/coupon/member/coupons/`;
 
 
 
