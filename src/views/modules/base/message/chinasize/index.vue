@@ -69,6 +69,7 @@
         <el-dialog
 		  title="查看关联尺码"
 		  :visible.sync="dialogVisible"
+          style="text-align: center;"
 		  width="30%">
 		  <span class="artitem" v-for='(item,index) in itemlist' :key='index'>{{item}}</span>
 		</el-dialog>
