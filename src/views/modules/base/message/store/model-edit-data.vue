@@ -81,7 +81,8 @@
                         placeholder="请输入关键词"
                         :remote-method="remoteMethod"
                         :loading="loading"
-                        style="width: 791px;"
+                        style="width: 100%;"
+                        :multiple-limit="2"
                 >
                     <el-option
                             v-for="item in dataArray"

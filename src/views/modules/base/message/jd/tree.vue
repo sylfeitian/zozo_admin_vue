@@ -291,7 +291,7 @@
             line-height: $lineH;
             height: $lineH;
             position: relative;
-            border: 1px solid $borderColor;
+            // border: 1px solid $borderColor;
             border-top: none;
             text-align: left;
             .line-row {
