@@ -10,7 +10,7 @@
 	    <el-tab-pane label="普通优惠券" name="first">
 	    	<add-coupon-pt :type="type" v-if="showLable == '普通优惠券'" @changePage = "changePage"></add-coupon-pt>
 	    </el-tab-pane>
-	    <el-tab-pane label="积分优惠券" name="second">
+	    <el-tab-pane label="积分兑换券" name="second">
 	    	<add-coupon-jf :type="type" v-if="showLable == '积分兑换券'" @changePage = "changePage"></add-coupon-jf>
 	    </el-tab-pane>
 	    <el-tab-pane label="新会员专享" name="third">

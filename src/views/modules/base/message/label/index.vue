@@ -26,7 +26,7 @@
                 <el-button class="btn"type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
-        <el-button @click="addOrEditHandle()" class="btn" type="primary">新增标签</el-button>
+        <el-button @click="addOrEditHandle()" class="btn" type="primary">新增风格标签</el-button>
         <el-table
             width="100%"
             :data="dataList"

@@ -122,7 +122,8 @@
             	data:null,
             	timer:null,
             	dialogTableVisible: false,
-            	rate:'',
+				rate:'',
+				rateJp:'',
             	actrise: false,  //今日汇率是否上升   红    下降  绿
             }
         },
@@ -183,7 +184,8 @@
         		})
         		gethomepageRate().then((res)=>{
         			if(res && res.code == 200){
-        				this.rate =res.data.rate;
+						this.rate =res.data.rate;
+						this.rateJp = res.data.rateJp;
         				this.actrise = res.data.varyState == 1;
         			}else{
         				this.$message(res.msg)

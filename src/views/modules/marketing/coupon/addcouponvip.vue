@@ -105,7 +105,7 @@
 <script>
     import cloneDeep from 'lodash/cloneDeep'
     import vueFilter from '@/utils/filter'
-    import { updateActivityNewMember, editActivityNewMember, backScanActivity } from '@/api/api'
+    import { addActivityNewMember, editActivityNewMember, backScanActivity } from '@/api/api'
     // var validnumber =(rule, value,callback)=>{
     //     if (value/1 > 1000000){
     //       callback(new Error('请输入1000000以内的数字'))
@@ -148,7 +148,15 @@ export default {
             getEndTime:'',
             value1:'',
             value2:'',
-    	},
+        },
+        //  bei:  this.dataForm.bei,//备注 ,
+        //               faceValue:  this.dataForm.faceValue,//面额 ,
+        //               getEndTime:  this.dataForm.getEndTime,//领取结束时间
+        //               getStartTime:  this.dataForm.getStartTime,//: 领取开始时间 ,
+        //               name:  this.dataForm.name,//优惠券名称 ,
+        //               threshold:  this.dataForm.threshold,//使用门槛 ,
+        //               totalNums:  this.dataForm.totalNums,//总发行量 ,
+        //               validityDays:  this.dataForm.validityDays,// 有效天数
     	dataRule : {
             name : [
                 { required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -236,43 +244,7 @@ export default {
                 value2:'',
             }
         }
-      this.demo();
   },
-  // watch:{
-  // 	dataForm:{ //监听的对象
-  //   	deep:true, //深度监听设置为 true
-  //   	handler:function(newV,oldV){
-  //   		//选择了开始时间
-	// 			if(newV.getStartTime){
-	//       	this.value1isshow = true;
-	//       	var currentTime = vueFilter.dateToStr();
-	//       	//选择的是今天
-	//       	if(this.dataForm.getStartTime.substr(0,10) == currentTime.substr(0,10)){
-	//       		this.value1Time = {
-	// 				      selectableRange: `${currentTime.substr(11)} - 23:59:59`
-	// 					};
-	//       	}else{
-	//       		this.value1Time = {
-	// 				      selectableRange: '00:00:00 - 23:59:59'
-	// 					};
-	//       	}
-	//    		}else{
-	//      		this.value1isshow = false;
-	// 	  		this.dataForm.value1 = '';
-	//      	}
-	//
-	//
-	// 			//选择了结束时间
-	// 			if(newV.getEndTime){
-	//       	this.value2isshow = true;
-	//    		}else{    //清空了结束时间
-	//      		this.value2isshow = false;
-	// 	  		this.dataForm.value2 = '';
-	//      	}
-  //    	}
-	// 	}
-	//
-  // },
   methods: {
       //编辑详情接口方法
       getInfo(){
@@ -315,16 +287,6 @@ export default {
                 this.$message('请先选择开始时间');
             }
         },
-        demo(){
-        	function placeholderPic(){
-                var w = document.documentElement.offsetWidth;
-                document.documentElement.style.fontSize=w/20+'px';
-            }
-                placeholderPic();
-            window.onresize=function(){
-                placeholderPic();
-            }
-        },
         //开始结束时间
         acttime(){
             this.dataForm.getStartTime = this.valuetime[0];
@@ -337,17 +299,17 @@ export default {
               if (valid) {
                   this.loading = true;
                   var obj = {
-                      bei:  this.dataForm.bei,
-                      faceValue:  this.dataForm.faceValue,
-                      getEndTime:  this.dataForm.getEndTime,
-                      getStartTime:  this.dataForm.getStartTime,
-                      name:  this.dataForm.name,
-                      threshold:  this.dataForm.threshold,
-                      totalNums:  this.dataForm.totalNums,
-                      validityDays:  this.dataForm.validityDays,
+                      bei:  this.dataForm.bei,//备注 ,
+                      faceValue:  this.dataForm.faceValue,//面额 ,
+                      getEndTime:  this.dataForm.getEndTime,//领取结束时间
+                      getStartTime:  this.dataForm.getStartTime,//: 领取开始时间 ,
+                      name:  this.dataForm.name,//优惠券名称 ,
+                      threshold:  this.dataForm.threshold,//使用门槛 ,
+                      totalNums:  this.dataForm.totalNums,//总发行量 ,
+                      validityDays:  this.dataForm.validityDays,// 有效天数
                   }
-                  if(this.row) obj.id = this.row.id
-                  var fn = this.row?editActivityNewMember:updateActivityNewMember;
+                  if(this.editSatusId) obj.id = this.editSatusId//优惠券活动id 
+                  var fn = this.type?addActivityNewMember:editActivityNewMember
                   fn(obj).then((res) => {
                       this.loading = false;
                       // alert(JSON.stringify(res));

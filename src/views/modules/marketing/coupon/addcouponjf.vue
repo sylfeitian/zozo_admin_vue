@@ -5,10 +5,10 @@
             <el-input v-model="dataForm.name" type="text" maxlength="50" placeholder="请输入50字以内的内容" show-word-limit style="width:400px;"></el-input>
         </el-form-item>
         <el-form-item label="所需积分：" prop="memberPoints">
-            <el-input v-model="dataForm.memberPoints" type="number"  max="1000000" placeholder="1000"  style="width:400px;"></el-input>
+            <el-input v-model="dataForm.memberPoints" type="number" min="0" max="1000000" placeholder="1000"  style="width:400px;"></el-input>
         </el-form-item>
         <el-form-item label="总发行量：" prop="totalNums">
-            <el-input v-model="dataForm.totalNums" type="number"  max="1000000" placeholder="1000"  style="width:400px;"></el-input>
+            <el-input v-model="dataForm.totalNums" type="number" min="0" max="1000000" placeholder="1000"  style="width:400px;"></el-input>
         </el-form-item>
         <el-form-item label="面额：" prop="faceValue">
              <el-input placeholder="20" v-model="dataForm.faceValue" show-word-limit style="width:220px;">
@@ -86,23 +86,27 @@
         </el-form-item>
             <el-form-item label="有效期：" prop="totalNums">
                 <!--            <el-input v-model="dataForm.totalNums" type="number"  max="1000000" placeholder="1000"  style="width:400px;"></el-input>-->
-                <span>日期范围</span>&nbsp;
-                <el-date-picker
-                        v-model="valuetime"
-                        type="datetimerange"
-                        value-format="yyyy-MM-dd HH:mm:ss"
-                        align="right"
-                        unlink-panels
-                        range-separator="-"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期"
-                        @blur='acttime'>
-                </el-date-picker>
+                <el-radio v-model="validityPeriodType" label="0">
+                    <span>日期范围</span>&nbsp;
+                    <el-date-picker
+                            v-model="valuetime"
+                            type="datetimerange"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            align="right"
+                            unlink-panels
+                            range-separator="-"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            @blur='acttime'>
+                    </el-date-picker>
+                </el-radio>
                 <br>
-                <span>固定天数</span>&nbsp;
-                <el-input placeholder="20" v-model="dataForm.validityDays" show-word-limit style="width:220px;">
-                    <template slot="append">天</template>
-                </el-input>
+                <el-radio v-model="validityPeriodType" label="1">
+                    <span>固定天数</span>&nbsp;
+                    <el-input placeholder="20" v-model="dataForm.validityDays" show-word-limit style="width:220px;">
+                        <template slot="append">天</template>
+                    </el-input>
+                </el-radio>
             </el-form-item>
         <el-form-item label="备注：" prop="bei">
             <el-input
@@ -122,7 +126,7 @@
 </template>
 
 <script>
-import { updateActivityPoint, editActivityPoint, backScanActivity } from '@/api/api'
+import { addActivityPoint, editActivityPoint, backScanActivity } from '@/api/api'
     import vueFilter from '@/utils/filter'
     // var validnumber =(rule, value,callback)=>{
     //     if (value/1 > 1000000){
@@ -154,19 +158,21 @@ export default {
       activeName2: 'first',
       datatextarea:'',
       dataForm:{
-        name: "",//分类名称 ,
-        memberPoints: "", //总发行量
-        gcParentId: 0,//父ID ,
-        gcSort: 0,// 排序 ,
-        attrIds:[],//属性关联数组 ,
-        specIds:[],//规格关联数组 ,
-        storeId: 0,//店铺ID
-        faceValue:0,
-        getStartTime:'',
-        getEndTime:'',
-        value1:'',
-        value2:'',
-    	},
+             bei:  "",//备注 ,
+            faceValue:  "",//面额 ,
+            getEndTime:  "",//领取结束时间
+            getStartTime:  "",//: 领取开始时间 ,
+            name:  "",//优惠券名称 ,
+            threshold:  "",//使用门槛 ,
+            totalNums:  "",//总发行量 , ,
+            validityDays:  "",// 有效天数 ,
+            limitNum:"",//每人限领数量 ,
+            memberPoints:'',//兑换优惠券用的积分数
+            validityPeriodType:"0",//有效期类型，0：日期范围，1：固定天数
+            startTime:'',//生效日期
+            endTime:'',// 截止日期 
+        },
+        validityPeriodType:"0",
         row:"",
         valuetime:"",
     	dataRule : {
@@ -177,12 +183,6 @@ export default {
         		{ required: true, message: '必填项不能为空', trigger: 'blur' },
         ],
         getEndTime : [
-        		{ required: true, message: '必填项不能为空', trigger: 'blur' },
-        ],
-        value1 : [
-        		{ required: true, message: '必填项不能为空', trigger: 'blur' },
-        ],
-        value2 : [
         		{ required: true, message: '必填项不能为空', trigger: 'blur' },
         ],
         limitNum: [
@@ -241,22 +241,21 @@ export default {
             this.getInfo();//判断为编辑时获取详情
         }else{
             this.dataForm = {
-                name: "",//分类名称 ,
-                totalNums: "", //总发行量
-                gcParentId: 0,//父ID ,
-                gcSort: 0,// 排序 ,
-                attrIds:[],//属性关联数组 ,
-                specIds:[],//规格关联数组 ,
-                storeId: 0,//店铺ID
-                faceValue:0,
-                memberPoints:"",
-                getStartTime:'',
-                getEndTime:'',
-                value1:'',
-                value2:''
+                 bei:  "",//备注 ,
+                faceValue:  "",//面额 ,
+                getEndTime:  "",//领取结束时间
+                getStartTime:  "",//: 领取开始时间 ,
+                name:  "",//优惠券名称 ,
+                threshold:  "",//使用门槛 ,
+                totalNums:  "",//总发行量 , ,
+                validityDays:  "",// 有效天数 ,
+                limitNum:"",//每人限领数量 ,
+                memberPoints:'',//兑换优惠券用的积分数
+                validityPeriodType:"0",//有效期类型，0：日期范围，1：固定天数
+                startTime:'',//生效日期
+                endTime:'',// 截止日期 
             }
         }
-      this.demo();
   },
   watch:{
   	dataForm:{ //监听的对象
@@ -335,16 +334,6 @@ export default {
 	      		this.$message('请先选择开始时间');
 	      	}
 		},
-        demo(){
-        	function placeholderPic(){
-						var w = document.documentElement.offsetWidth;
-						document.documentElement.style.fontSize=w/20+'px';
-					}
-						placeholderPic();
-					window.onresize=function(){
-						placeholderPic();
-					}
-        },
         //开始结束时间
         acttime(){
             this.dataForm.getStartTime = this.valuetime[0];
@@ -357,22 +346,22 @@ export default {
               if (valid) {
                   this.loading = true;
                   var obj = {
-                      bei:  this.dataForm.bei,
-                      endTime:  this.dataForm.endTime,
-                      faceValue:  this.dataForm.faceValue,
-                      getEndTime:  this.dataForm.getEndTime,
-                      getStartTime:  this.dataForm.getStartTime,
-                      limitNum:  this.dataForm.limitNum,
-                      memberPoints:  this.dataForm.memberPoints,
-                      name:  this.dataForm.name,
-                      startTime:  this.dataForm.startTime,
-                      threshold:  this.dataForm.threshold,
-                      totalNums:  this.dataForm.totalNums,
-                      validityDays:  this.dataForm.validityDays,
-                      validityPeriodType:  this.dataForm.validityPeriodType,
+                      bei:  this.dataForm.bei,// 备注 ,
+                      endTime:  this.dataForm.endTime,//截止日期 ,
+                      faceValue:  this.dataForm.faceValue,//面额 ,
+                      getEndTime:  this.dataForm.getEndTime,//领取结束时间 ,
+                      getStartTime:  this.dataForm.getStartTime,//领取开始时间 ,
+                      limitNum:  this.dataForm.limitNum,//每人限领数量 ,
+                      memberPoints:  this.dataForm.memberPoints,// 兑换优惠券用的积分数 ,
+                      name:  this.dataForm.name,//优惠券名称 ,
+                      startTime:  this.dataForm.startTime,//生效日期 ,
+                      threshold:  this.dataForm.threshold,//使用门槛 ,
+                      totalNums:  this.dataForm.totalNums,//总发行量 ,
+                      validityDays:  this.dataForm.validityDays,//有效天数 ,
+                      validityPeriodType:  this.validityPeriodType,//有效期类型，0：日期范围，1：固定天数
                   }
-                  if(this.row) obj.id = this.row.id
-                  var fn = this.row?editActivityPoint:updateActivityPoint;
+                    if(this.editSatusId) obj.id = this.editSatusId//优惠券活动id 
+                  var fn = this.type?editActivityPoint:addActivityPoint;
                   fn(obj).then((res) => {
                       this.loading = false;
                       // alert(JSON.stringify(res));

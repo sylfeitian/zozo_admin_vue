@@ -160,7 +160,7 @@
 			<template slot-scope="scope">
 				<el-button type="text" size="small" @click="showDetail(scope.row)">查看</el-button>
 				<el-button type="text" size="small" @click="addCoupon(scope.row)">编辑</el-button>
-				<el-button class="artdanger" type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+				<el-button class="artdanger" type="text" size="small" @click="deleteHandleLocal(scope.row)">删除</el-button>
 				<el-button type="text" size="small" @click="showStopModel(scope.row)">停止</el-button>
 				<el-button type="text" size="small" @click="showExammine(scope.row)">审核</el-button>
 			</template>
@@ -200,7 +200,7 @@ export default {
           getDataListIsPage: true,
           exportURL: '/admin-api/store/export',
           deleteURL: deleteActivity,
-          deleteIsBatch: true,
+          deleteIsBatch: false,
           deleteIsBatchKey: 'id'
       },
       dataForm: {},
@@ -227,7 +227,6 @@ export default {
   	this.dataForm.type = this.couponKindList1 && this.couponKindList1[0].id;
   	this.dataForm.state = this.activitesstates && this.activitesstates[0].id;
   	this.dataForm.auditState = this.storeTypes && this.storeTypes[0].id;
-    this.demo();
   },
   methods: {
 	  getData () {
@@ -259,20 +258,13 @@ export default {
         	    this.$emit('showAddOrEditCoupon')//新增优惠券
             }
         },
-        demo(){
-        	function placeholderPic(){
-						var w = document.documentElement.offsetWidth;
-						document.documentElement.style.fontSize=w/20+'px';
-					}
-						placeholderPic();
-					window.onresize=function(){
-						placeholderPic();
-					}
-        },
         //开始结束时间
 		acttime(){
 			this.dataForm.getStartTime = this.valuetime[0];
 			this.dataForm.getEndTime = this.valuetime[1];
+		},
+		deleteHandleLocal(row){
+			this.deleteHandle(row.id);
 		},
 	  // 审核弹框
 	  showExammine(row){
