@@ -410,7 +410,9 @@ export const goodsCarlist = `${base}/cartrecom/page`;
 //购物车推荐列表批量删除
 export const goodsCarlistDelete = `${base}/cartrecom`;
 //Q&A主页面列表
-export const QamainList = `${base}/questionanswer/dataPage`;
+export const QamainList = `${base}/questiontype/page`;
+//查看Q&A列表
+export const toQamainList = `${base}/questionanswer/lookQuestionAnswer`;
 
 
 
@@ -419,6 +421,8 @@ export const QamainList = `${base}/questionanswer/dataPage`;
 export const activityPage = `${base}/activity/coupon/page`;
 //删除优惠券活动
 export const deleteActivity = `${base}/activity/coupon`;
+// 优惠券活动已领会员优惠券分页查询
+export const activityMemberCouponsPage = `${base}/activity/coupon/member/coupons/`;
 
 
 

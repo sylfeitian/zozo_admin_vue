@@ -26,7 +26,7 @@
             </el-select>
         </el-form-item>
         <el-form-item>
-            <el-button  class="btn" type="primary" @click="getData()">查询</el-button>
+            <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>
             <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
         </el-form-item>
         <el-form-item style="float:right;">

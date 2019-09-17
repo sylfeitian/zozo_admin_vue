@@ -217,7 +217,7 @@
 	  },
 	  methods: {
 	  	actselectchange(){
-	  		if(this.dataForm.parentId == 0){   //添加一级	  			
+	  		if(this.dataForm.parentId == 0){   //添加一级
 	  			this.erjishow = true;
 	  			this.yijishow = false;
 	  		}else{

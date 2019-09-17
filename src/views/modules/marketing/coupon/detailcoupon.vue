@@ -58,7 +58,7 @@
 
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
             <el-form-item  label="活动状态：">
-                <el-select v-model="dataForm.state" clearable  placeholder="请选择">
+                <el-select v-model="dataForm.untitled" clearable  placeholder="请选择">
                     <el-option
                         v-for="item in activitesstates"
                         :key="item.id"
@@ -68,7 +68,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="订单编号：">
-                <el-input v-model="dataForm.storeId" placeholder="请输入订单编号" clearable></el-input>
+                <el-input v-model="dataForm.orderSn" placeholder="请输入订单编号" clearable></el-input>
             </el-form-item>
 
             <el-form-item>
@@ -92,25 +92,30 @@
                 </template>
             </el-table-column> -->
             <el-table-column
-                prop="id"
+                prop="memberId"
                 label="会员账号"
                 width="180">
             </el-table-column>
             <el-table-column
-                prop="account"
+                prop="createDate"
                 label="领取时间">
             </el-table-column>
             <el-table-column
-                prop="gradeName"
+                prop="untitled"
                 label="当前状态">
+                <template slot-scope="scope">
+                    <span  v-if="scope.row.untitled==0">未使用</span>
+                    <span  v-if="scope.row.untitled==3">已使用</span>
+                    <span  v-if="scope.row.untitled==4">已过期</span>
+                </template>
             </el-table-column>
             <el-table-column
-                prop="createDate"
+                prop="usedTime"
                 label="使用时间"
                 width="180">
             </el-table-column>
             <el-table-column
-                prop="creator"
+                prop="orderSn"
                 label="订单编号">
             </el-table-column>
         </el-table>
@@ -129,7 +134,7 @@
 
 <script>
     import mixinViewModule from '@/mixins/view-module'
-    import { businessPageUrl } from '@/api/url'
+    import { businessPageUrl, activityMemberCouponsPage } from '@/api/url'
     import { backScanActivity } from '@/api/api'
     import Bread from "@/components/bread";
     export default {
@@ -139,7 +144,8 @@
         data () {
             return {
                 mixinViewModuleOptions: {
-                    getDataListURL: businessPageUrl,
+                    getDataListURL: activityMemberCouponsPage,
+                    activatedIsNeed: false,
                     getDataListIsPage: true,
                     exportURL: '/admin-api/store/export',
                     deleteURL: '/admin-api/store',
@@ -150,10 +156,10 @@
                 dataList:[],
                 breaddata: ["营销管理", "优惠券","优惠券明细"],
                 dataForm: {
-                    status:'',
-                    storeId:'',
+                    untitled:'',
+                    orderSn:'',
                 },
-                activitesstates: [{ id: '', name: "全部" },{ id: 1, name: "未开始" },{ id: 2, name: "进行中" },{ id: 3, name: "已结束" },{ id: 4, name: "待审核" }],
+                activitesstates: [{ id: '', name: "全部" },{ id: 0, name: "未使用" },{ id: 3, name: "已使用" },{ id: 4, name: "已过期" }],
                 row:'',
                 dataInfo:{},
             }
@@ -167,8 +173,8 @@
             init(row){
                 this.row = row;
                 console.log(row);
-                // this.mixinViewModuleOptions.getDataListURL = reduceOrderUrl+ row.id;
-                this.dataForm.detailId = this.row.id;
+                this.mixinViewModuleOptions.getDataListURL = activityMemberCouponsPage+ row.id;
+                this.dataForm.id = this.row.id;
                 this.backScan();
                 this.getDataList()
             },
@@ -191,8 +197,8 @@
             },
             reset(){
                 this.dataForm = {
-                    status:'',
-                    storeId:'',
+                    untitled:'',
+                    orderSn:'',
                 }
                 this.getDataList();
             }

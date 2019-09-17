@@ -30,7 +30,7 @@
                     ></el-date-picker>
                 </el-form-item>
                 <el-form-item>
-                    <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
+                    <el-button  class="btn" type="primary" @click="getDataList()">查询</el-button>
                     <el-button  class="btn" type="primary" plain @click="reset()" >重置</el-button>
                 </el-form-item>
                 <br />

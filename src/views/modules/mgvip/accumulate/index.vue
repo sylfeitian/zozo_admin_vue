@@ -1,5 +1,6 @@
 <template>
   <div v-loading="dataLoding">
+      <Bread :breaddata="breaddata"></Bread>
      <div class="topMoudel">
         <h3>新手任务<span>&nbsp;&nbsp;新手任务每个用户只奖励一次，相关值必须为大于0的整数</span></h3>
         <div class="topItem">
@@ -105,11 +106,13 @@
 <script>
   import quillEditorImg from "@/components/quillEditor"
   import {updatehoppointssettings,getShoppointssettings} from "@/api/api.js"
+  import Bread from "@/components/bread";
   export default {
     data() {
       return {
         dataLoding:false,
         saveLoading:false,
+          breaddata: ["会员管理", "积分奖励设置"],
         dataForm:{
           "birthdaySettingPoints": 0,//生日设置奖励积分
           "consumptionSettingPoints": 0,
@@ -130,6 +133,7 @@
     },
     components: {
       quillEditorImg,
+        Bread
     },
     created() {
       this.backScan();

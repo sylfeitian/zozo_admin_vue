@@ -1,9 +1,9 @@
 <template>
   <div>
       <!-- Q&A配置主页面 -->
-      <list v-if='showStatus'  @mainListFun='mainListFun'></list>
+      <list v-if='showStatus'   @mainListFun='mainListFun'></list>
       <!-- 商品列表页面 -->
-      <detail v-else @showListFun='showListFun' :configId="configId"></detail>
+      <detail v-else @showListFun='showListFun' ref="toDetail" :configId="configId"></detail>
   </div>
 </template>
 
@@ -25,6 +25,10 @@ export default {
       mainListFun(id){
           this.showStatus = false;
           this.configId = id;
+          this.$nextTick(()=>{
+              this.$refs.toDetail.init(id);
+          })
+
       },
       showListFun(){
           this.showStatus = true;

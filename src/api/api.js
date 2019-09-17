@@ -922,3 +922,22 @@ export const stopActivity = params => { return http.put(`${base}/activity/coupon
 export const updateActivity = params => { return http.put(`${base}/activity/coupon/update`, params).then(res => res.data); };
 // 优惠券活动详情
 export const backScanActivity = params => { return http.get(`${base}/activity/coupon/${params.id}`, params).then(res => res.data); };
+
+
+//Q&A----------------------------------------------------------------------------------------------------------
+//问题类型删除
+export const delQuestiontype = params => { return http.delete(`${base}/questiontype`, params).then(res => res.data); };
+//问题类型保存
+export const saveQuestiontype = params => { return http.post(`${base}/questiontype/add`, params).then(res => res.data); };
+//问题类型修改
+export const putQuestiontype = params => { return http.put(`${base}/questiontype/update`, params).then(res => res.data); };
+//问题类型信息
+export const getQuestiontype = params => { return http.get(`${base}/questiontype/${params.id}`, params).then(res => res.data); };
+//Q&A删除
+export const delQuestionanswer = params => { return http.delete(`${base}/questionanswer`, params).then(res => res.data); };
+//Q&A保存
+export const saveQuestionanswer = params => { return http.post(`${base}/questionanswer/add`, params).then(res => res.data); };
+//Q&A修改
+export const putQuestionanswer = params => { return http.put(`${base}/questionanswer/update`, params).then(res => res.data); };
+//Q&A信息
+export const getQuestionanswer = params => { return http.get(`${base}/questionanswer/${params.id}`, params).then(res => res.data); };

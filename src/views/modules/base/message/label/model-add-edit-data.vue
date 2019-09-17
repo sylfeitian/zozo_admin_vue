@@ -15,7 +15,7 @@
             label-width="120px"
         >
             <el-form-item  label="风格标签分类：">
-                <el-select v-model="dataForm.styleType" placeholder="请选择">
+                <el-select v-model="dataForm.styleType" placeholder="请选择" disabled>
                     <el-option
                             v-for="item in options"
                             :key="item.id"
@@ -209,7 +209,7 @@
                         var obj = {
                             id:  this.dataForm.id,
                             styleName:  this.dataForm.styleName,
-                            styleType:  this.dataForm.styleType,
+                            // styleType:  this.dataForm.styleType,
                             gender:  this.dataForm.gender,
                             imgUrl:  this.dataForm.imgUrl,
                             sort:  this.dataForm.sort,

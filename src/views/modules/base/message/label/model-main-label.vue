@@ -240,6 +240,7 @@
     .tag {
         // width: 28%;
         margin-right: 8px;
+        margin-bottom: 8px;
     }
     // /deep/ .el-icon-close {
     //     margin-left: 20% !important;

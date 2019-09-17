@@ -314,7 +314,7 @@
                         textCn :"" ,// 内容
                         typeId :type ,// 内容类型id
                     };
-                    this.content.push(obj);
+                    this.content.push(obj)
             },
             dataFormSubmit(type){
                 let that = this;
@@ -339,6 +339,9 @@
                             type: "warning"
                         })
                             .then(() => {
+                                that.content.map((v,i)=>{
+                                    v.sortId = i+1;
+                                });
                                 that.addDataForm.fashionContents = that.content;
                                 that.addDataForm.saveType = type;
                                 savefashiondetail(that.addDataForm).then((res)=>{
