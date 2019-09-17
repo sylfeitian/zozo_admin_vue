@@ -2,7 +2,7 @@
   <div>
     <Bread :breaddata="breaddata"></Bread>
     <!-- <el-button style="float:right;margin-bottom:20px;" type="primary" @click="addHelp()">新增帮助类型</el-button> -->
-    <el-button style="float:right;margin-bottom:20px;" type="primary" @click="toDetail('1212211')">新增帮助类型</el-button>
+    <el-button style="float:right;margin-bottom:20px;" type="primary" @click=" addHelp()">新增帮助类型</el-button>
 
     <el-table
         :data="dataList"
@@ -20,26 +20,30 @@
             </template>
 		</el-table-column>
 		<el-table-column
-		    prop="id"
+		    prop="sort"
+			align="center"
 		    label="排序">
 		</el-table-column>
         <el-table-column
-		    prop="account"
+		    prop="type"
 		    label="帮助类型"
+			align="center"
 		    width="220">
 		</el-table-column>
 		<el-table-column
-		    prop="account"
+		    prop="num"
+			align="center"
 		    label="问题数量">
 		</el-table-column>		
 	    <el-table-column
 	   		prop="address"
 	    	label="操作"
+			align="center"
             width="220">
 		    <template slot-scope="scope">
-		    	<el-button type="text" size="small" @click="toDetail(scope.row.id)">查看</el-button>
+		    	<el-button type="text" size="small" @click="toDetail(scope.row)">查看</el-button>
 		    	<el-button type="text" size="small" @click="addHelp(scope.row.id)">编辑</el-button>
-		    	<el-button type="text" size="small">删除</el-button>
+		    	<el-button type="text" size="small" @click="delItem(scope.row.id)">删除</el-button>
 		    </template>
 	  	</el-table-column>
 	</el-table>
@@ -81,7 +85,7 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import { QamainList } from '@/api/url'
-    import { zozogoodsPage } from '@/api/api'
+    import { zozogoodsPage,delQuestiontype,saveQuestiontype,putQuestiontype,getQuestiontype } from '@/api/api'
     import Bread from "@/components/bread";
     
     export default {
@@ -100,6 +104,8 @@
                 helpTitle:'新增帮助类型',
                 dataListLoading:false,
                 dataList:[],
+				isSave:true,
+                dataContent:"",
                 buttonStatus:false,
                 editVisible:false,
                 editDataForm:{
@@ -125,28 +131,119 @@
             this.demo();
         },
         methods: {
+            delItem(id){
+                this.$confirm('是否删除该数据?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    let obj = [];
+                    obj.push(id)
+                    delQuestiontype({data:obj}).then((res)=>{
+                        if(res.code==200){
+                            this.getDataList();
+                            this.$message({
+                                message:res.msg,
+                                type: 'success',
+                                duration: 1500,
+                            })
+                        }else{
+                            this.$message({
+                                message:res.msg,
+                                type: 'error',
+                                duration: 1500,
+                            })
+                        }
+                    })
+
+                }).catch(() => {});
+			},
             toDetail(id){
                 this.$emit("mainListFun",id);
             },
             addHelp(id){
                 this.editVisible = true;
                 if(id){
-                    this.helpTitle = '编辑帮助类型'
+                    this.helpTitle = '编辑帮助类型';
+                    this.isSave = false;
+                    var obj  = {
+                        id:id
+                    }
+                    getQuestiontype(obj).then((res)=>{
+                        if(res.code == 200){
+                            this.dataContent = res.data;
+							this.editDataForm.sgName = this.dataContent.type;
+							this.editDataForm.sort = this.dataContent.sort;
+                        }
+                    })
                 }else{
-                    this.helpTitle = '新增帮助类型'
+                    this.helpTitle = '新增帮助类型';
+                    this.isSave = true;
                 }
             },
             
             noCheck(formName){
                 this.$refs[formName].resetFields();
                 this.editVisible = false;
-                this.editDataForm.imageUrl1='';
-                this.editDataForm.imageUrl2='';
+                this.editDataForm.sgName='';
+                this.editDataForm.sort='';
+                this.dataContent='';
             },
             subActivity(formName){
+                let that = this;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        
+                        this.$confirm(`确定提交表单信息?`, "提示", {
+                            confirmButtonText: "确定",
+                            cancelButtonText: "取消",
+                            type: "warning"
+                        })
+                            .then(() => {
+                                if(that.isSave){
+                                    let obj = {
+                                        type:that.editDataForm.sgName,
+										sort:that.editDataForm.sort
+									}
+                                    saveQuestiontype(obj).then((res)=>{
+                                        if(res.code == 200){
+                                            this.$message({
+                                                message: res.msg,
+                                                type: 'success',
+                                                onClose:function () {
+                                                    that.noCheck("editDataForm");
+                                                    that.getDataList();
+                                                }
+                                            });
+                                        }else{
+                                            this.$message({
+                                                message: res.msg,
+                                                type: 'error',
+                                            });
+                                        }
+                                    })
+								}else{
+                                    that.dataContent.type = that.editDataForm.sgName;
+                                    that.dataContent.sort = that.editDataForm.sort;
+                                    putQuestiontype(that.dataContent).then((res)=>{
+                                        if(res.code == 200){
+                                            this.$message({
+                                                message: res.msg,
+                                                type: 'success',
+                                                onClose:function () {
+                                                    that.noCheck("editDataForm")
+                                                    that.getDataList();
+                                                }
+                                            });
+                                        }else{
+                                            this.$message({
+                                                message: res.msg,
+                                                type: 'error',
+                                            });
+                                        }
+                                    })
+								}
+                            })
+                            .catch(() => {});
                     }
                 });
             },

@@ -410,7 +410,9 @@ export const goodsCarlist = `${base}/cartrecom/page`;
 //购物车推荐列表批量删除
 export const goodsCarlistDelete = `${base}/cartrecom`;
 //Q&A主页面列表
-export const QamainList = `${base}/questionanswer/dataPage`;
+export const QamainList = `${base}/questiontype/page`;
+//查看Q&A列表
+export const toQamainList = `${base}/questionanswer/lookQuestionAnswer`;
 
 
 
