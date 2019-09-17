@@ -205,7 +205,7 @@
     .flexedConfig{
         .modle{
             width: 100%;
-            /*display: flex;*/
+            display: flex;
             flex-direction: column;
             .el-input{
                 width: 360px;
