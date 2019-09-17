@@ -18,37 +18,53 @@
             </template>
 		</el-table-column>
 		<el-table-column
-		    prop="id"
+		    prop="sort"
+			align="center"
 		    label="排序">
 		</el-table-column>
         <el-table-column
-		    prop="account"
+		    prop="title"
+			align="center"
 		    label="标题"
 		    width="220">
 		</el-table-column>
 		<el-table-column
-		    prop="account"
-		    label="帮助类型">
-		</el-table-column>	
-        <el-table-column
-		    prop="account"
+		    prop="type"
+			align="center"
 		    label="帮助类型">
 		</el-table-column>
+		<el-table-column
+		    prop="booleanDisplay"
+			align="center"
+		    label="是否显示">
+			<template slot-scope="scope">
+				<el-switch
+						v-model="scope.row.booleanDisplay"
+						@change="putState(scope.row)"
+				>
+				</el-switch>
+			</template>
+		</el-table-column>
+
+
         <el-table-column
-		    prop="account"
+		    prop="createDate"
+			align="center"
 		    label="发布时间">
 		</el-table-column>
         <el-table-column
-		    prop="account"
+		    prop="views"
+			align="center"
 		    label="查看次数">
 		</el-table-column>	
 	    <el-table-column
 	   		prop="address"
+			align="center"
 	    	label="操作"
             width="220">
 		    <template slot-scope="scope">
 		    	<el-button type="text" size="small" @click="addHelp(scope.row.id)">编辑</el-button>
-		    	<el-button type="text" size="small">删除</el-button>
+		    	<el-button type="text" size="small" @click="delItem(scope.row.id)">删除</el-button>
 		    </template>
 	  	</el-table-column>
 	</el-table>
@@ -72,17 +88,17 @@
         class="activiDialog"
         width="40%">
         <el-form :model="editDataForm" :rules="dataRule" ref="editDataForm" @keyup.enter.native="subActivity()" label-width="120px">
-            <el-form-item label="帮助类型：" prop="sgName">
-                <el-input v-model="editDataForm.sgName" :disabled="true"></el-input>
+            <el-form-item label="帮助类型：" prop="type">
+                <el-input v-model="editDataForm.type" :disabled="true"></el-input>
             </el-form-item>
-            <el-form-item label="帮助标题：" prop="sgNameTitle">
-                <el-input v-model="editDataForm.sgNameTitle" :maxlength="200" placeholder="请输入200字以内的内容"></el-input>
+            <el-form-item label="帮助标题：" prop="title">
+                <el-input v-model="editDataForm.title" :maxlength="200" placeholder="请输入200字以内的内容"></el-input>
             </el-form-item>
             <el-form-item label="帮助内容：" prop="content">
                 <el-input v-model="editDataForm.content" type="textarea" :row="10"></el-input>
             </el-form-item>
             <el-form-item label="显示设置：">
-                <el-switch v-model="value" @change="changeSwitch"></el-switch>
+                <el-switch v-model="editDataForm.booleanDisplay" ></el-switch>
             </el-form-item>
                         
         </el-form>
@@ -96,8 +112,8 @@
 
 <script>
     import mixinViewModule from '@/mixins/view-module'
-    import { businessPageUrl } from '@/api/url'
-    import { zozogoodsPage } from '@/api/api'
+    import { toQamainList } from '@/api/url'
+    import { zozogoodsPage,delQuestionanswer,saveQuestionanswer,putQuestionanswer,getQuestionanswer  } from '@/api/api'
     import Bread from "@/components/bread";
     
     export default {
@@ -106,23 +122,26 @@
         data () {
             return {
                 mixinViewModuleOptions: {
-                    getDataListURL: businessPageUrl,
+                    getDataListURL: toQamainList,
                     getDataListIsPage: true,
-                    exportURL: '/admin-api/store/export',
-                    deleteURL: '/admin-api/store',
-                    deleteIsBatch: true,
+                    activatedIsNeed:false,
+                    // exportURL: '/admin-api/store/export',
+                    // deleteURL: '/admin-api/store',
+                    // deleteIsBatch: true,
                     // deleteIsBatchKey: 'id'
                 },
                 helpTitle:'新增帮助',
                 dataListLoading:false,
                 dataList:[],
+                dataForm:{},
+                isSave:true,
                 buttonStatus:false,
                 editVisible:false,
                 editDataForm:{
-                    sgName:'',
-                    sgNameTitle:'',
+                    type:'',
+                    title:'',
                     content:'',
-                    value:'1',
+                    booleanDisplay:true,
                 },
                 value:true,
                 breaddata: ["配置管理", "Q&A配置","查看Q&A"],
@@ -131,10 +150,10 @@
         computed:{
             dataRule(){
                 return{
-                    sgName : [
+                    type : [
                         { required: true, message: '名称不能为空', trigger: 'blur' },
                     ],
-                    sgNameTitle : [
+                    title : [
                             { required: true, message: '帮助标题为空', trigger: 'blur' },
                     ],
                     content : [
@@ -147,23 +166,87 @@
             this.demo();
         },
         methods: {
+            init(row){
+                this.$nextTick(()=>{
+                    if(row){
+                       this.dataForm.typeId = row.id;
+                       this.editDataForm.type = row.type;
+                       this.editDataForm.typeId = row.id;
+                       this.getDataList();
+                    }
+                })
+            },
+            putState(data){
+                let obj = {
+                    id:data.id,
+					booleanDisplay:data.booleanDisplay
+				}
+                putQuestionanswer(obj).then((res)=>{
+                    if(res.code==200){
+                        this.getDataList();
+                        this.$message({
+                            message:res.msg,
+                            type: 'success',
+                            duration: 1500,
+                        })
+                    }else{
+                        this.$message({
+                            message:res.msg,
+                            type: 'error',
+                            duration: 1500,
+                        })
+                    }
+                })
+			},
+            delItem(id){
+                this.$confirm('是否删除该数据?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    let obj = [];
+                    obj.push(id)
+                    delQuestionanswer({data:obj}).then((res)=>{
+                        if(res.code==200){
+                            this.getDataList();
+                            this.$message({
+                                message:res.msg,
+                                type: 'success',
+                                duration: 1500,
+                            })
+                        }else{
+                            this.$message({
+                                message:res.msg,
+                                type: 'error',
+                                duration: 1500,
+                            })
+                        }
+                    })
+                }).catch(() => {});
+            },
             changePage(){
                 this.$emit("showListFun");
-            },
-            //改变显示设置
-            changeSwitch(e){
-                console.log(e)
-                if(e){
-                    this.editDataForm.value = '1'
-                }else{
-                    this.editDataForm.value = '1'
-                }
             },
             addHelp(id){
                 this.editVisible = true;
                 if(id){
-                    this.helpTitle = '编辑帮助'
+                    this.helpTitle = '编辑帮助';
+                    this.isSave = false;
+                    var obj  = {
+                        id:id
+                    }
+                    getQuestionanswer(obj).then((res)=>{
+                        if(res.code == 200){
+                            this.editDataForm.sort = res.data.sort;
+                            this.editDataForm.id = res.data.id;
+                            this.editDataForm.views  = res.data.views ;
+                            this.editDataForm.title  = res.data.title ;
+                            this.editDataForm.content  = res.data.content ;
+                            this.editDataForm.booleanDisplay  = res.data.booleanDisplay ;
+                        }
+                    })
                 }else{
+                    this.isSave = true;
                     this.helpTitle = '新增帮助'
                 }
             },
@@ -171,13 +254,62 @@
             noCheck(formName){
                 this.$refs[formName].resetFields();
                 this.editVisible = false;
-                this.editDataForm.imageUrl1='';
-                this.editDataForm.imageUrl2='';
+                this.editDataForm.title = "";
+                this.editDataForm.content = "";
+                this.editDataForm.booleanDisplay = true;
+                this.editDataForm.sort = "";
+                this.editDataForm.id = "";
+                this.editDataForm.views  = "";
             },
             subActivity(formName){
+                let that = this;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        
+                        this.$confirm(`确定提交表单信息?`, "提示", {
+                            confirmButtonText: "确定",
+                            cancelButtonText: "取消",
+                            type: "warning"
+                        })
+                            .then(() => {
+                                if(that.isSave){
+                                    saveQuestionanswer(that.editDataForm).then((res)=>{
+                                        if(res.code == 200){
+                                            this.$message({
+                                                message: res.msg,
+                                                type: 'success',
+                                                onClose:function () {
+                                                    that.noCheck("editDataForm");
+                                                    that.getDataList();
+                                                }
+                                            });
+                                        }else{
+                                            this.$message({
+                                                message: res.msg,
+                                                type: 'error',
+                                            });
+                                        }
+                                    })
+                                }else{
+                                    putQuestionanswer(that.editDataForm).then((res)=>{
+                                        if(res.code == 200){
+                                            this.$message({
+                                                message: res.msg,
+                                                type: 'success',
+                                                onClose:function () {
+                                                    that.noCheck("editDataForm")
+                                                    that.getDataList();
+                                                }
+                                            });
+                                        }else{
+                                            this.$message({
+                                                message: res.msg,
+                                                type: 'error',
+                                            });
+                                        }
+                                    })
+                                }
+                            })
+                            .catch(() => {});
                     }
                 });
             },
