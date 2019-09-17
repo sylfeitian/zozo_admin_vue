@@ -44,9 +44,9 @@
             </el-form-item>
             <el-form-item label="满减规则：" :prop="ruleName">
                 单笔订单满
-                 <el-input-number style="width:120px" @blur="bluerule1" v-model="activiDataForm.limitPrice"  :precision="2" :step="1" :max="999999" controls-position="right"></el-input-number>
+                 <el-input-number style="width:120px" @blur="bluerule1" v-model="activiDataForm.rule1"  :precision="2" :step="1" :min="0" :max="999999" controls-position="right"></el-input-number>
                 元立减
-                <el-input-number style="width:120px" v-model="activiDataForm.reducePrice" @blur="bluerule2"  :step="1" :max="999999" controls-position="right"></el-input-number>
+                <el-input-number style="width:120px" v-model="activiDataForm.rule2" @blur="bluerule2"  :step="1" :max="999999" :min="0" controls-position="right"></el-input-number>
                 元
             </el-form-item>
             <el-form-item label="开始时间：" prop="startTime">
@@ -83,7 +83,7 @@
     export default {
         name: "model-add-edit-data",
         data () {
-              var  validatorTime = (rule, value, callback) => {
+            var  validatorTime = (rule, value, callback) => {
                 if (new Date(value).getTime() < new Date(this.activiDataForm.startTime).getTime()) {
                  return callback(new Error("结束时间不能小于开始时间"))
                 }
@@ -168,16 +168,30 @@
                     // this.getApplyPullList();
                 })
             },
+            backScan(){
+              this.activiDataForm = this.row;
+              if(this.row.shareFlag==1){
+                  this.activiDataForm.checkList = true;
+              }else{
+                    this.activiDataForm.checkList = false;
+              }
+               this.activiDataForm.rule1 =this.activiDataForm.limitPrice 
+                this.activiDataForm.rule2 =this.activiDataForm.reducePrice 
+              
+            },
              bluerule1(){
                 if(this.activiDataForm.rule1){
                     this.ruleName = 'rule2';
                 }
+
+                this.activiDataForm.limitPrice =this.activiDataForm.rule1 
                 console.log('====',this.ruleName)
             },
             bluerule2(){
                 if(this.activiDataForm.rule1){
                     this.ruleName = 'rule1';
                 }
+                this.activiDataForm.reducePrice =this.activiDataForm.rule1 
                 console.log('====',this.ruleName)
             },
             // 提交

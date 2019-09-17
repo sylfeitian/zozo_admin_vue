@@ -75,6 +75,9 @@
 		    prop=""
             align="center"
 		    label="满减规则">
+             <template slot-scope="scope">
+                    满{{scope.row.limitPrice}}元减{{scope.row.reducePrice}}元
+            </template>
 		</el-table-column>
 		<el-table-column
 		    prop="startTime"
