@@ -106,32 +106,33 @@
     import cloneDeep from 'lodash/cloneDeep'
     import vueFilter from '@/utils/filter'
     import { updateActivityNewMember, editActivityNewMember, backScanActivity } from '@/api/api'
-    var validnumber =(rule, value,callback)=>{
-        if (value/1 > 1000000){
-          callback(new Error('请输入1000000以内的数字'))
-        }else if(value.indexOf('.') != -1){
-            callback(new Error('只能输入整数'))
-        }else if(value <= 0){
-            callback(new Error('只能输入大于的数'))
-        }else {
-          callback()
-        }
-    };
-    var validfaceValue =(rule, value,callback)=>{
-        if (value/1 > 1000000){
-          callback(new Error('请输入1000000以内的数字'))
-        }else if(value <= 0){
-            callback(new Error('只能输入大于的数'))
-        }else if(value.indexOf('.') != -1 && value.substr(value.indexOf('.') + 1).length > 2){
-            callback(new Error('小数点后只能有两位'))
-        }else {
-          callback()
-        }
-    };
+    // var validnumber =(rule, value,callback)=>{
+    //     if (value/1 > 1000000){
+    //       callback(new Error('请输入1000000以内的数字'))
+    //     }else if(value.indexOf('.') != -1){
+    //         callback(new Error('只能输入整数'))
+    //     }else if(value <= 0){
+    //         callback(new Error('只能输入大于的数'))
+    //     }else {
+    //       callback()
+    //     }
+    // };
+    // var validfaceValue =(rule, value,callback)=>{
+    //     if (value/1 > 1000000){
+    //       callback(new Error('请输入1000000以内的数字'))
+    //     }else if(value <= 0){
+    //         callback(new Error('只能输入大于的数'))
+    //     }else if(value.indexOf('.') != -1 && value.substr(value.indexOf('.') + 1).length > 2){
+    //         callback(new Error('小数点后只能有两位'))
+    //     }else {
+    //       callback()
+    //     }
+    // };
 export default {
     props: ['type','editSatusId'],
   data () {
     return {
+        row:"",
         saveLoading: false,
         bei:'',
         dataForm:{
@@ -172,11 +173,11 @@ export default {
             ],
             totalNums :[
                     { required: true, message: '必填项不能为空', trigger: 'blur' },
-                    { validator: validnumber, trigger: 'blur' },
+                    // { validator: validnumber, trigger: 'blur' },
             ],
             faceValue :[
                     { required: true, message: '必填项不能为空', trigger: 'blur' },
-                    { validator: validfaceValue, trigger: 'blur' },
+                    // { validator: validfaceValue, trigger: 'blur' },
             ],
             gcParentId : [
                 { required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -237,41 +238,41 @@ export default {
         }
       this.demo();
   },
-  watch:{
-  	dataForm:{ //监听的对象
-    	deep:true, //深度监听设置为 true
-    	handler:function(newV,oldV){
-    		//选择了开始时间
-				if(newV.getStartTime){
-	      	this.value1isshow = true;
-	      	var currentTime = vueFilter.dateToStr();
-	      	//选择的是今天
-	      	if(this.dataForm.getStartTime.substr(0,10) == currentTime.substr(0,10)){
-	      		this.value1Time = {
-					      selectableRange: `${currentTime.substr(11)} - 23:59:59`
-						};
-	      	}else{
-	      		this.value1Time = {
-					      selectableRange: '00:00:00 - 23:59:59'
-						};
-	      	}
-	   		}else{
-	     		this.value1isshow = false;
-		  		this.dataForm.value1 = '';
-	     	}
-	   		
-	   		
-				//选择了结束时间
-				if(newV.getEndTime){
-	      	this.value2isshow = true;
-	   		}else{    //清空了结束时间
-	     		this.value2isshow = false;
-		  		this.dataForm.value2 = '';
-	     	}    		
-     	}
-		}
-	
-  },
+  // watch:{
+  // 	dataForm:{ //监听的对象
+  //   	deep:true, //深度监听设置为 true
+  //   	handler:function(newV,oldV){
+  //   		//选择了开始时间
+	// 			if(newV.getStartTime){
+	//       	this.value1isshow = true;
+	//       	var currentTime = vueFilter.dateToStr();
+	//       	//选择的是今天
+	//       	if(this.dataForm.getStartTime.substr(0,10) == currentTime.substr(0,10)){
+	//       		this.value1Time = {
+	// 				      selectableRange: `${currentTime.substr(11)} - 23:59:59`
+	// 					};
+	//       	}else{
+	//       		this.value1Time = {
+	// 				      selectableRange: '00:00:00 - 23:59:59'
+	// 					};
+	//       	}
+	//    		}else{
+	//      		this.value1isshow = false;
+	// 	  		this.dataForm.value1 = '';
+	//      	}
+	//
+	//
+	// 			//选择了结束时间
+	// 			if(newV.getEndTime){
+	//       	this.value2isshow = true;
+	//    		}else{    //清空了结束时间
+	//      		this.value2isshow = false;
+	// 	  		this.dataForm.value2 = '';
+	//      	}
+  //    	}
+	// 	}
+	//
+  // },
   methods: {
       //编辑详情接口方法
       getInfo(){
@@ -355,7 +356,7 @@ export default {
                           status = "success";
                           this.visible = false;
                           this.$emit('searchDataList');
-                          this.closeDialog();
+                          this.goList();
 
                       }else{
                           status = "error";

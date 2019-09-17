@@ -124,28 +124,28 @@
 <script>
 import { updateActivityPoint, editActivityPoint, backScanActivity } from '@/api/api'
     import vueFilter from '@/utils/filter'
-    var validnumber =(rule, value,callback)=>{
-        if (value/1 > 1000000){
-          callback(new Error('请输入1000000以内的数字'))
-        }else if(value.indexOf('.') != -1){
-            callback(new Error('只能输入整数'))
-        }else if(value <= 0){
-            callback(new Error('只能输入大于的数'))
-        }else {
-          callback()
-        }
-    };
-    var validfaceValue =(rule, value,callback)=>{
-        if (value/1 > 1000000){
-          callback(new Error('请输入1000000以内的数字'))
-        }else if(value <= 0){
-            callback(new Error('只能输入大于的数'))
-        }else if(value.indexOf('.') != -1 && value.substr(value.indexOf('.') + 1).length > 2){
-            callback(new Error('小数点后只能有两位'))
-        }else {
-          callback()
-        }
-    };
+    // var validnumber =(rule, value,callback)=>{
+    //     if (value/1 > 1000000){
+    //       callback(new Error('请输入1000000以内的数字'))
+    //     }else if(value.indexOf('.') != -1){
+    //         callback(new Error('只能输入整数'))
+    //     }else if(value <= 0){
+    //         callback(new Error('只能输入大于的数'))
+    //     }else {
+    //       callback()
+    //     }
+    // };
+    // var validfaceValue =(rule, value,callback)=>{
+    //     if (value/1 > 1000000){
+    //       callback(new Error('请输入1000000以内的数字'))
+    //     }else if(value <= 0){
+    //         callback(new Error('只能输入大于的数'))
+    //     }else if(value.indexOf('.') != -1 && value.substr(value.indexOf('.') + 1).length > 2){
+    //         callback(new Error('小数点后只能有两位'))
+    //     }else {
+    //       callback()
+    //     }
+    // };
 export default {
     props: ['type','editSatusId'],
   data () {
@@ -190,14 +190,14 @@ export default {
         ],
         memberPoints :[
         		{ required: true, message: '必填项不能为空', trigger: 'blur' },
-        		{ validator: validnumber, trigger: 'blur' },
+        		// { validator: validnumber, trigger: 'blur' },
         ],
         totalNums:[
             { required: true, message: '必填项不能为空', trigger: 'blur' },
         ],
         faceValue :[
         		{ required: true, message: '必填项不能为空', trigger: 'blur' },
-        		{ validator: validfaceValue, trigger: 'blur' },
+        		// { validator: validfaceValue, trigger: 'blur' },
         ],
         gcParentId : [
             { required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -350,6 +350,55 @@ export default {
             this.dataForm.getStartTime = this.valuetime[0];
             this.dataForm.getEndTime = this.valuetime[1];
         },
+      // 提交
+      dataFormSubmit(formName){
+          // alert([this.dataForm.name,this.dataForm.domainAddress]);
+          this.$refs[formName].validate((valid) => {
+              if (valid) {
+                  this.loading = true;
+                  var obj = {
+                      bei:  this.dataForm.bei,
+                      endTime:  this.dataForm.endTime,
+                      faceValue:  this.dataForm.faceValue,
+                      getEndTime:  this.dataForm.getEndTime,
+                      getStartTime:  this.dataForm.getStartTime,
+                      limitNum:  this.dataForm.limitNum,
+                      memberPoints:  this.dataForm.memberPoints,
+                      name:  this.dataForm.name,
+                      startTime:  this.dataForm.startTime,
+                      threshold:  this.dataForm.threshold,
+                      totalNums:  this.dataForm.totalNums,
+                      validityDays:  this.dataForm.validityDays,
+                      validityPeriodType:  this.dataForm.validityPeriodType,
+                  }
+                  if(this.row) obj.id = this.row.id
+                  var fn = this.row?editActivityPoint:updateActivityPoint;
+                  fn(obj).then((res) => {
+                      this.loading = false;
+                      // alert(JSON.stringify(res));
+                      let status = null;
+                      if(res.code == "200"){
+                          status = "success";
+                          this.visible = false;
+                          this.$emit('searchDataList');
+                          this.goList();
+
+                      }else{
+                          status = "error";
+                      }
+
+                      this.$message({
+                          message: res.msg,
+                          type: status,
+                          duration: 1500
+                      })
+                  })
+              } else {
+                  //console.log('error 添加失败!!');
+                  return false;
+              }
+          })
+      },
         
   }
 };
