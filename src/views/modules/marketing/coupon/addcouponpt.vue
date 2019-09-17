@@ -71,8 +71,7 @@
 
 <script>
 import mixinViewModule from '@/mixins/view-module'
-import { businessPageUrl } from '@/api/url'
-import { updateActivityNormal } from '@/api/api'
+import { updateActivityNormal, editActivityNormal, backScanActivity } from '@/api/api'
 import vueFilter from '@/utils/filter'
 var validnumber =(rule, value,callback)=>{
     if (value/1 > 1000000){
@@ -161,6 +160,7 @@ export default {
                   return time.getTime() < Date.now() - 8.64e7
                 }
             },
+            row:"",
         }
     },
     components:{
@@ -189,6 +189,23 @@ export default {
         this.demo();
     },
     methods: {
+        init(row){
+            this.row= row;
+            console.log(row)
+            this.getData();
+        },
+        // 回显数据
+        getData(){
+            var obj  = {
+                id: this.row.id,
+            }
+            backScanActivity(obj).then((res)=>{
+                console.log(res);
+                if(res.code==200){
+                    this.dataForm = res.data;
+                }
+            })
+        },
         //编辑详情接口方法
         getInfo(){
             var obj  = {

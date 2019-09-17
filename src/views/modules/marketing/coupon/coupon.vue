@@ -159,7 +159,7 @@
 <!--		    </template>-->
 			<template slot-scope="scope">
 				<el-button type="text" size="small" @click="showDetail(scope.row)">查看</el-button>
-				<el-button type="text" size="small" @click="addCoupon(scope.row.id,'普通优惠券')">编辑</el-button>
+				<el-button type="text" size="small" @click="addCoupon(scope.row,'普通优惠券')">编辑</el-button>
 				<el-button class="artdanger" type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
 				<el-button type="text" size="small" @click="showStopModel(scope.row)">停止</el-button>
 				<el-button type="text" size="small" @click="showExammine(scope.row)">审核</el-button>
@@ -241,9 +241,9 @@ export default {
             this.dataForm = {};
             this.getDataList();
         },
-        addCoupon(id){
-            if(id){
-        	    this.$emit('artcoupon',id,'普通优惠券')//编辑优惠券
+        addCoupon(row){
+            if(row){
+        	    this.$emit('artcoupon',row,'普通优惠券')//编辑优惠券
             }else{
         	    this.$emit('artcoupon')//新增优惠券
             }
