@@ -13,48 +13,65 @@
 					  </el-input>
 					  <div>面值只能是数值，0.01-1000000，限2位小数</div>
         </el-form-item>
-        <el-form-item label="领取开始时间："  prop="getStartTime">
-        	<!--:default-time="startsecond"-->
-            	<el-date-picker
-                v-model="dataForm.getStartTime"
-                type="date"
-                value-format="yyyy-MM-dd"
-                clearable
-                :picker-options="pickerOptions0"
-                placeholder="请选择时间："
-                style="width:220px;">
-            </el-date-picker>
-      </el-form-item>
-      <el-form-item label=""  prop="value1" class="artvalue12time">
-						<el-time-picker
-							v-if="value1isshow"
-						  v-model="dataForm.value1"
-					    :picker-options="value1Time"
-					    @blur ="artvalue1time"
-					    placeholder="选择时间">
-  					</el-time-picker>
-     </el-form-item>
-      <el-form-item label="领取结束时间：" prop="getEndTime">
-            <el-date-picker
-                v-model="dataForm.getEndTime"
-                type="date"
-                value-format="yyyy-MM-dd"
-                clearable
-                :picker-options="pickerOptions1"
-                placeholder="请选择时间："
-                style="width:220px;">
-            </el-date-picker>
-    	</el-form-item>
-    	<el-form-item label="" prop="value2" class="artvalue12time">
-            <el-time-picker
-            	v-if="value2isshow"
-						  v-model="dataForm.value2"
-						  :picker-options="value2Time"
-						  :disabled = "value2timedisabled"
-						  @focus ="artvalue2time"
-						  placeholder="选择时间">
-						</el-time-picker>
-    	</el-form-item>
+<!--        <el-form-item label="领取开始时间："  prop="getStartTime">-->
+<!--        	&lt;!&ndash;:default-time="startsecond"&ndash;&gt;-->
+<!--            	<el-date-picker-->
+<!--                v-model="dataForm.getStartTime"-->
+<!--                type="date"-->
+<!--                value-format="yyyy-MM-dd"-->
+<!--                clearable-->
+<!--                :picker-options="pickerOptions0"-->
+<!--                placeholder="请选择时间："-->
+<!--                style="width:220px;">-->
+<!--            </el-date-picker>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label=""  prop="value1" class="artvalue12time">-->
+<!--						<el-time-picker-->
+<!--							v-if="value1isshow"-->
+<!--						  v-model="dataForm.value1"-->
+<!--					    :picker-options="value1Time"-->
+<!--					    @blur ="artvalue1time"-->
+<!--					    placeholder="选择时间">-->
+<!--  					</el-time-picker>-->
+<!--     </el-form-item>-->
+<!--      <el-form-item label="领取结束时间：" prop="getEndTime">-->
+<!--            <el-date-picker-->
+<!--                v-model="dataForm.getEndTime"-->
+<!--                type="date"-->
+<!--                value-format="yyyy-MM-dd"-->
+<!--                clearable-->
+<!--                :picker-options="pickerOptions1"-->
+<!--                placeholder="请选择时间："-->
+<!--                style="width:220px;">-->
+<!--            </el-date-picker>-->
+<!--    	</el-form-item>-->
+<!--    	<el-form-item label="" prop="value2" class="artvalue12time">-->
+<!--            <el-time-picker-->
+<!--            	v-if="value2isshow"-->
+<!--						  v-model="dataForm.value2"-->
+<!--						  :picker-options="value2Time"-->
+<!--						  :disabled = "value2timedisabled"-->
+<!--						  @focus ="artvalue2time"-->
+<!--						  placeholder="选择时间">-->
+<!--						</el-time-picker>-->
+<!--    	</el-form-item>-->
+            <el-form-item label="领取开始时间："  prop="getStartTime">
+                <el-date-picker
+                        v-model="dataForm.getStartTime"
+                        type="datetime"
+                        placeholder="选择开始时间"
+                        style="width: 200px">
+                </el-date-picker>
+            </el-form-item>
+
+            <el-form-item label="领取结束时间："  prop="getEndTime">
+                <el-date-picker
+                        v-model="dataForm.getEndTime"
+                        type="datetime"
+                        placeholder="选择结束时间"
+                        style="width: 200px">
+                </el-date-picker>
+            </el-form-item>
         <el-form-item class="artfromitem" label="每人限领：" prop="men">
             <span>1张</span>
         </el-form-item>
@@ -88,33 +105,34 @@
 <script>
     import cloneDeep from 'lodash/cloneDeep'
     import vueFilter from '@/utils/filter'
-    import { editActivityNewMember, updateActivityNewMember } from "@/api/api"
-    var validnumber =(rule, value,callback)=>{
-        if (value/1 > 1000000){
-          callback(new Error('请输入1000000以内的数字'))
-        }else if(value.indexOf('.') != -1){
-            callback(new Error('只能输入整数'))
-        }else if(value <= 0){
-            callback(new Error('只能输入大于的数'))
-        }else {
-          callback()
-        }
-    };
-    var validfaceValue =(rule, value,callback)=>{
-        if (value/1 > 1000000){
-          callback(new Error('请输入1000000以内的数字'))
-        }else if(value <= 0){
-            callback(new Error('只能输入大于的数'))
-        }else if(value.indexOf('.') != -1 && value.substr(value.indexOf('.') + 1).length > 2){
-            callback(new Error('小数点后只能有两位'))
-        }else {
-          callback()
-        }
-    };
+    import { updateActivityNewMember, editActivityNewMember, backScanActivity } from '@/api/api'
+    // var validnumber =(rule, value,callback)=>{
+    //     if (value/1 > 1000000){
+    //       callback(new Error('请输入1000000以内的数字'))
+    //     }else if(value.indexOf('.') != -1){
+    //         callback(new Error('只能输入整数'))
+    //     }else if(value <= 0){
+    //         callback(new Error('只能输入大于的数'))
+    //     }else {
+    //       callback()
+    //     }
+    // };
+    // var validfaceValue =(rule, value,callback)=>{
+    //     if (value/1 > 1000000){
+    //       callback(new Error('请输入1000000以内的数字'))
+    //     }else if(value <= 0){
+    //         callback(new Error('只能输入大于的数'))
+    //     }else if(value.indexOf('.') != -1 && value.substr(value.indexOf('.') + 1).length > 2){
+    //         callback(new Error('小数点后只能有两位'))
+    //     }else {
+    //       callback()
+    //     }
+    // };
 export default {
     props: ['type','editSatusId'],
   data () {
     return {
+        row:"",
         saveLoading: false,
         bei:'',
         dataForm:{
@@ -155,11 +173,11 @@ export default {
             ],
             totalNums :[
                     { required: true, message: '必填项不能为空', trigger: 'blur' },
-                    { validator: validnumber, trigger: 'blur' },
+                    // { validator: validnumber, trigger: 'blur' },
             ],
             faceValue :[
                     { required: true, message: '必填项不能为空', trigger: 'blur' },
-                    { validator: validfaceValue, trigger: 'blur' },
+                    // { validator: validfaceValue, trigger: 'blur' },
             ],
             gcParentId : [
                 { required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -220,46 +238,54 @@ export default {
         }
       this.demo();
   },
-  watch:{
-  	dataForm:{ //监听的对象
-    	deep:true, //深度监听设置为 true
-    	handler:function(newV,oldV){
-    		//选择了开始时间
-				if(newV.getStartTime){
-	      	this.value1isshow = true;
-	      	var currentTime = vueFilter.dateToStr();
-	      	//选择的是今天
-	      	if(this.dataForm.getStartTime.substr(0,10) == currentTime.substr(0,10)){
-	      		this.value1Time = {
-					      selectableRange: `${currentTime.substr(11)} - 23:59:59`
-						};
-	      	}else{
-	      		this.value1Time = {
-					      selectableRange: '00:00:00 - 23:59:59'
-						};
-	      	}
-	   		}else{
-	     		this.value1isshow = false;
-		  		this.dataForm.value1 = '';
-	     	}
-	   		
-	   		
-				//选择了结束时间
-				if(newV.getEndTime){
-	      	this.value2isshow = true;
-	   		}else{    //清空了结束时间
-	     		this.value2isshow = false;
-		  		this.dataForm.value2 = '';
-	     	}    		
-     	}
-		}
-	
-  },
+  // watch:{
+  // 	dataForm:{ //监听的对象
+  //   	deep:true, //深度监听设置为 true
+  //   	handler:function(newV,oldV){
+  //   		//选择了开始时间
+	// 			if(newV.getStartTime){
+	//       	this.value1isshow = true;
+	//       	var currentTime = vueFilter.dateToStr();
+	//       	//选择的是今天
+	//       	if(this.dataForm.getStartTime.substr(0,10) == currentTime.substr(0,10)){
+	//       		this.value1Time = {
+	// 				      selectableRange: `${currentTime.substr(11)} - 23:59:59`
+	// 					};
+	//       	}else{
+	//       		this.value1Time = {
+	// 				      selectableRange: '00:00:00 - 23:59:59'
+	// 					};
+	//       	}
+	//    		}else{
+	//      		this.value1isshow = false;
+	// 	  		this.dataForm.value1 = '';
+	//      	}
+	//
+	//
+	// 			//选择了结束时间
+	// 			if(newV.getEndTime){
+	//       	this.value2isshow = true;
+	//    		}else{    //清空了结束时间
+	//      		this.value2isshow = false;
+	// 	  		this.dataForm.value2 = '';
+	//      	}
+  //    	}
+	// 	}
+	//
+  // },
   methods: {
-        //编辑详情接口方法
-        getInfo(){
-
-        },
+      //编辑详情接口方法
+      getInfo(){
+          var obj  = {
+              id: this.editSatusId,
+          };
+          backScanActivity(obj).then((res)=>{
+              console.log(res);
+              if(res.code==200){
+                  this.dataForm = res.data;
+              }
+          })
+      },
         //返回
         goList(){
             this.$emit('changePage')
@@ -330,7 +356,7 @@ export default {
                           status = "success";
                           this.visible = false;
                           this.$emit('searchDataList');
-                          this.closeDialog();
+                          this.goList();
 
                       }else{
                           status = "error";

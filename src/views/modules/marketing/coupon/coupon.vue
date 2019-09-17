@@ -86,7 +86,7 @@
 			align="center">
 			<template slot-scope="scope">
 				<el-tag v-if="scope.row.type==0" type="info">普通优惠券</el-tag>
-				<el-tag v-if="scope.row.type==1" type="success">新人专享券</el-tag>
+				<el-tag v-if="scope.row.type==1" type="success">新会员专享</el-tag>
 				<el-tag v-if="scope.row.type==2" type="warning">积分兑换券</el-tag>
 			</template>
 		</el-table-column>
@@ -158,11 +158,11 @@
 <!--				<el-button type="text" size="small" @click="" v-if="scope.row.auditState==0">审核</el-button>-->
 <!--		    </template>-->
 			<template slot-scope="scope">
-				<el-button type="text" size="small" @click="showDetail(scope.row.id)">查看</el-button>
-				<el-button type="text" size="small" @click="addCoupon(scope.row.id,'普通优惠券')">编辑</el-button>
+				<el-button type="text" size="small" @click="showDetail(scope.row)">查看</el-button>
+				<el-button type="text" size="small" @click="addCoupon(scope.row)">编辑</el-button>
 				<el-button class="artdanger" type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
-				<el-button type="text" size="small" @click="">停止</el-button>
-				<el-button type="text" size="small" @click="">审核</el-button>
+				<el-button type="text" size="small" @click="showStopModel(scope.row)">停止</el-button>
+				<el-button type="text" size="small" @click="showExammine(scope.row)">审核</el-button>
 			</template>
 	  	</el-table-column>
 	</el-table>
@@ -176,6 +176,10 @@
 	    :total="total"
 	    layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
+	  <!-- 审核 -->
+	  <exammine v-if="exammineVisible" ref="exammineCompon" @searchDataList="getDataList()"></exammine>
+	  <!-- 停止 -->
+	  <stopModel v-if="stopModelVisible" ref="stopModelCompon" @searchDataList="getDataList()"></stopModel>
   </div>
 </template>
 
@@ -184,6 +188,8 @@ import mixinViewModule from '@/mixins/view-module'
 import { activityPage, deleteActivity } from '@/api/url'
 import { storeGrade } from '@/api/api'
 import Bread from "@/components/bread";
+import exammine from './model-exammine.vue'
+import stopModel from './model-stop.vue'
   
 export default {
   mixins: [mixinViewModule],
@@ -204,6 +210,8 @@ export default {
           {id: '1',label: '审核通过'},
           {id: '2',label: '审核未通过'}
       ],
+	  stopModelVisible:false,
+	  exammineVisible:false,
       couponKindList1: [{ id: '', name: "全部" },{ id: 0, name: "普通优惠券" },{ id: 1, name: "新人专享券" },{ id: 3, name: "积分兑换券" }],
       activitesstates: [{ id: '', name: "全部" },{ id: 0, name: "未开始" },{ id: 1, name: "进行中" },{ id: 2, name: "已结束" }],
       breaddata: ["营销管理", "优惠券"],
@@ -211,7 +219,9 @@ export default {
     }
   },
   components:{
-  	Bread
+	  Bread,
+	  exammine,
+	  stopModel
   },
   created(){
   	this.dataForm.type = this.couponKindList1 && this.couponKindList1[0].id;
@@ -231,11 +241,22 @@ export default {
             this.dataForm = {};
             this.getDataList();
         },
-        addCoupon(id){
-            if(id){
-        	    this.$emit('artcoupon',id,'普通优惠券')//编辑优惠券
+        addCoupon(row){
+            console.log(row);
+            if(row){
+
+                if(row.type==0){
+                    row.editType = "普通优惠券";
+                }else if(row.type==1){
+                    row.editType =  "新会员专享";
+                }else if(row.type==2){
+                    row.editType =  "积分兑换券";
+                }
+
+
+        	    this.$emit('showAddOrEditCoupon',row)//编辑优惠券
             }else{
-        	    this.$emit('artcoupon')//新增优惠券
+        	    this.$emit('showAddOrEditCoupon')//新增优惠券
             }
         },
         demo(){
@@ -249,10 +270,23 @@ export default {
 					}
         },
         //开始结束时间
-		    acttime(){
-		    	this.dataForm.getStartTime = this.valuetime[0];
-		    	this.dataForm.getEndTime = this.valuetime[1];
-		    },
+		acttime(){
+			this.dataForm.getStartTime = this.valuetime[0];
+			this.dataForm.getEndTime = this.valuetime[1];
+		},
+	  // 审核弹框
+	  showExammine(row){
+		  this.exammineVisible = true;
+		  this.$nextTick(()=>{
+			  this.$refs.exammineCompon.init(row);
+		  })
+	  },
+	  showStopModel(row){
+		  this.stopModelVisible = true;
+		  this.$nextTick(()=>{
+			  this.$refs.stopModelCompon.init(row);
+		  })
+	  },
         
   }
 };

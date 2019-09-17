@@ -1,13 +1,7 @@
 <template>
     <div>
         <Bread :breaddata="breaddata" :index = "'1'" @changePage = "changePage"></Bread>
-        <el-form
-                :inline="true"
-                class="grayLine topGapPadding"
-                :model="dataForm"
-                @keyup.enter.native="getDataList()"
-        >
-            <table>
+        <table>
             <thead>
                 <tr>
                     <th colspan="5" style="font-weight:400;background: #f5f7fa;padding-left:20px;text-align: left;">优惠券明细</th>
@@ -22,11 +16,19 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>{{dataForm.name}}</td>
-                    <td>{{dataForm.type}}</td>
-                    <td>{{dataForm.threshold}}</td>
-                    <td>{{dataForm.faceValue}}</td>
-                    <td>{{dataForm.state}}</td>
+                    <td>{{dataInfo.name}}</td>
+                    <td>
+                        <span v-if="dataInfo.type ==0">普通优惠券</span>
+                        <span v-if="dataInfo.type ==1">新人专享券</span>
+                        <span v-if="dataInfo.type ==2">积分兑换券</span>
+                    </td>
+                    <td>{{dataInfo.threshold}}</td>
+                    <td>{{dataInfo.faceValue}}</td>
+                    <td>
+                        <span v-if="dataInfo.state ==0">未开始</span>
+                        <span v-if="dataInfo.state ==1">进行中</span>
+                        <span v-if="dataInfo.state ==2">已结束</span>
+                    </td>
                 </tr>
             </tbody>
             <thead>
@@ -40,24 +42,23 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>2019-06-06 18:23:01 ~ 2019-06-28 12:21:21</td>
-                    <td>10000</td>
-                    <td>1821</td>
-                    <td>1221</td>
-                    <td>777</td>
+                    <td>{{dataInfo.getStartTime}} ~ {{dataInfo.getEndTime}}</td>
+                    <td>{{dataInfo.totalNums}}</td>
+                    <td>{{dataInfo.receivedNum}}</td>
+                    <td>{{dataInfo.usedNum}}</td>
+                    <td>{{dataInfo.unUsedNum}}</td>
                 </tr>
                 <tr>
                     <td style="font-weight: bold;padding: 24px 0;">备注</td>
-                    <td colspan="4" style="text-align: left;padding: 24px 0;">该优惠券属于叠加优惠券，和满减某某活动可同时使用，请注意</td>
+                    <td colspan="4" style="text-align: left;padding: 24px 0;">{{dataInfo.bei}}</td>
                 </tr>
             </tbody>
         </table>
-        </el-form>
 
 
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
             <el-form-item  label="活动状态：">
-                <el-select v-model="dataForm.status" clearable  placeholder="请选择">
+                <el-select v-model="dataForm.state" clearable  placeholder="请选择">
                     <el-option
                         v-for="item in activitesstates"
                         :key="item.id"
@@ -129,7 +130,7 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import { businessPageUrl } from '@/api/url'
-    import { storeGrade } from '@/api/api'
+    import { backScanActivity } from '@/api/api'
     import Bread from "@/components/bread";
     export default {
         mixins: [mixinViewModule],
@@ -153,13 +154,37 @@
                     storeId:'',
                 },
                 activitesstates: [{ id: '', name: "全部" },{ id: 1, name: "未开始" },{ id: 2, name: "进行中" },{ id: 3, name: "已结束" },{ id: 4, name: "待审核" }],
-
+                row:'',
+                dataInfo:{},
             }
         },
         created(){
-            console.log('详情id=======',this.detailId)
+            console.log('详情id=======',this.detailId);
+            this.getDataListURL
         },
         methods: {
+            //返回
+            init(row){
+                this.row = row;
+                console.log(row);
+                // this.mixinViewModuleOptions.getDataListURL = reduceOrderUrl+ row.id;
+                this.dataForm.detailId = this.row.id;
+                this.backScan();
+                this.getDataList()
+            },
+            backScan(){
+                var obj  = {
+                    id:this.row.id,
+                }
+                backScanActivity(obj).then((res)=>{
+                    if(res.code == 200){
+                        this.dataInfo= res.data;
+                    }else{
+                        this.dataInfo = {};
+                    }
+                })
+
+            },
             //返回
             changePage(){
                 this.$emit('detailno')
