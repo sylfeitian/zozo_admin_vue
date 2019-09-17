@@ -16,48 +16,65 @@
 					  </el-input>
 					  <div>面值只能是数值，0.01-1000000，限2位小数</div>
         </el-form-item>
-        <el-form-item label="领取开始时间："  prop="getStartTime">
-        	<!--:default-time="startsecond"-->
-            	<el-date-picker
-                v-model="dataForm.getStartTime"
-                type="date"
-                value-format="yyyy-MM-dd"
-                clearable
-                :picker-options="pickerOptions0"
-                placeholder="请选择时间："
-                style="width:220px;">
-            </el-date-picker>
-      </el-form-item>
-      <el-form-item label=""  prop="value1" class="artvalue12time">  
-						<el-time-picker
-							v-if="value1isshow"
-						  v-model="dataForm.value1"
-					    :picker-options="value1Time"
-					    @blur ="artvalue1time"
-					    placeholder="选择时间">
-  					</el-time-picker>
-     </el-form-item>
-      <el-form-item label="领取结束时间：" prop="getEndTime">
-            <el-date-picker
-                v-model="dataForm.getEndTime"
-                type="date"
-                value-format="yyyy-MM-dd"
-                clearable
-                :picker-options="pickerOptions1"
-                placeholder="请选择时间："
-                style="width:220px;">
-            </el-date-picker>
-    	</el-form-item>
-    	<el-form-item label="" prop="value2" class="artvalue12time">
-            <el-time-picker
-            	v-if="value2isshow"
-						  v-model="dataForm.value2"
-						  :picker-options="value2Time"
-						  :disabled = "value2timedisabled"
-						  @focus ="artvalue2time"
-						  placeholder="选择时间">
-						</el-time-picker>
-    	</el-form-item>
+<!--        <el-form-item label="领取开始时间："  prop="getStartTime">-->
+<!--        	&lt;!&ndash;:default-time="startsecond"&ndash;&gt;-->
+<!--            	<el-date-picker-->
+<!--                v-model="dataForm.getStartTime"-->
+<!--                type="date"-->
+<!--                value-format="yyyy-MM-dd"-->
+<!--                clearable-->
+<!--                :picker-options="pickerOptions0"-->
+<!--                placeholder="请选择时间："-->
+<!--                style="width:220px;">-->
+<!--            </el-date-picker>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label=""  prop="value1" class="artvalue12time">  -->
+<!--						<el-time-picker-->
+<!--							v-if="value1isshow"-->
+<!--						  v-model="dataForm.value1"-->
+<!--					    :picker-options="value1Time"-->
+<!--					    @blur ="artvalue1time"-->
+<!--					    placeholder="选择时间">-->
+<!--  					</el-time-picker>-->
+<!--     </el-form-item>-->
+<!--      <el-form-item label="领取结束时间：" prop="getEndTime">-->
+<!--            <el-date-picker-->
+<!--                v-model="dataForm.getEndTime"-->
+<!--                type="date"-->
+<!--                value-format="yyyy-MM-dd"-->
+<!--                clearable-->
+<!--                :picker-options="pickerOptions1"-->
+<!--                placeholder="请选择时间："-->
+<!--                style="width:220px;">-->
+<!--            </el-date-picker>-->
+<!--    	</el-form-item>-->
+<!--    	<el-form-item label="" prop="value2" class="artvalue12time">-->
+<!--            <el-time-picker-->
+<!--            	v-if="value2isshow"-->
+<!--						  v-model="dataForm.value2"-->
+<!--						  :picker-options="value2Time"-->
+<!--						  :disabled = "value2timedisabled"-->
+<!--						  @focus ="artvalue2time"-->
+<!--						  placeholder="选择时间">-->
+<!--						</el-time-picker>-->
+<!--    	</el-form-item>-->
+            <el-form-item label="领取开始时间："  prop="getStartTime">
+                <el-date-picker
+                        v-model="dataForm.getStartTime"
+                        type="datetime"
+                        placeholder="选择开始时间"
+                        style="width: 200px">
+                </el-date-picker>
+            </el-form-item>
+
+            <el-form-item label="领取结束时间："  prop="getEndTime">
+                <el-date-picker
+                        v-model="dataForm.getEndTime"
+                        type="datetime"
+                        placeholder="选择结束时间"
+                        style="width: 200px">
+                </el-date-picker>
+            </el-form-item>
         <el-form-item class="artfromitem" label="使用门槛：" prop="threshold">
         		<div>单笔订单满</div>
             <el-input v-model="dataForm.threshold"  type="number"  max="1000000" placeholder="0"  style="width:400px;"></el-input>
@@ -71,9 +88,15 @@
                 <!--            <el-input v-model="dataForm.totalNums" type="number"  max="1000000" placeholder="1000"  style="width:400px;"></el-input>-->
                 <span>日期范围</span>&nbsp;
                 <el-date-picker
-                        v-model="dataForm.getEndTime"
-                        type="datetime"
-                        placeholder="选择日期时间">
+                        v-model="valuetime"
+                        type="datetimerange"
+                        value-format="yyyy-MM-dd HH:mm:ss"
+                        align="right"
+                        unlink-panels
+                        range-separator="-"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"
+                        @blur='acttime'>
                 </el-date-picker>
                 <br>
                 <span>固定天数</span>&nbsp;
@@ -99,6 +122,7 @@
 </template>
 
 <script>
+import { updateActivityPoint, editActivityPoint, backScanActivity } from '@/api/api'
     import vueFilter from '@/utils/filter'
     var validnumber =(rule, value,callback)=>{
         if (value/1 > 1000000){
@@ -143,6 +167,8 @@ export default {
         value1:'',
         value2:'',
     	},
+        row:"",
+        valuetime:"",
     	dataRule : {
         name : [
             { required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -269,9 +295,17 @@ export default {
   },
   methods: {
       //编辑详情接口方法
-        getInfo(){
-
-        },
+      getInfo(){
+          var obj  = {
+              id: this.editSatusId,
+          };
+          backScanActivity(obj).then((res)=>{
+              console.log(res);
+              if(res.code==200){
+                  this.dataForm = res.data;
+              }
+          })
+      },
         //返回
         goList(){
             this.$emit('changePage')

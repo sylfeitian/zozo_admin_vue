@@ -86,7 +86,7 @@
 			align="center">
 			<template slot-scope="scope">
 				<el-tag v-if="scope.row.type==0" type="info">普通优惠券</el-tag>
-				<el-tag v-if="scope.row.type==1" type="success">新人专享券</el-tag>
+				<el-tag v-if="scope.row.type==1" type="success">新会员专享</el-tag>
 				<el-tag v-if="scope.row.type==2" type="warning">积分兑换券</el-tag>
 			</template>
 		</el-table-column>
@@ -159,7 +159,7 @@
 <!--		    </template>-->
 			<template slot-scope="scope">
 				<el-button type="text" size="small" @click="showDetail(scope.row)">查看</el-button>
-				<el-button type="text" size="small" @click="addCoupon(scope.row,'普通优惠券')">编辑</el-button>
+				<el-button type="text" size="small" @click="addCoupon(scope.row)">编辑</el-button>
 				<el-button class="artdanger" type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
 				<el-button type="text" size="small" @click="showStopModel(scope.row)">停止</el-button>
 				<el-button type="text" size="small" @click="showExammine(scope.row)">审核</el-button>
@@ -242,10 +242,21 @@ export default {
             this.getDataList();
         },
         addCoupon(row){
+            console.log(row);
             if(row){
-        	    this.$emit('artcoupon',row,'普通优惠券')//编辑优惠券
+
+                if(row.type==0){
+                    row.editType = "普通优惠券";
+                }else if(row.type==1){
+                    row.editType =  "新会员专享";
+                }else if(row.type==2){
+                    row.editType =  "积分兑换券";
+                }
+
+
+        	    this.$emit('showAddOrEditCoupon',row)//编辑优惠券
             }else{
-        	    this.$emit('artcoupon')//新增优惠券
+        	    this.$emit('showAddOrEditCoupon')//新增优惠券
             }
         },
         demo(){

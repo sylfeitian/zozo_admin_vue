@@ -17,7 +17,8 @@
         	<el-date-picker
                 v-model="dataForm.getStartTime"
                 type="datetime"
-                placeholder="选择开始时间">
+                placeholder="选择开始时间"
+                style="width: 200px">
             </el-date-picker>
     	</el-form-item>
 
@@ -25,7 +26,8 @@
         	<el-date-picker
                 v-model="dataForm.getEndTime"
                 type="datetime"
-                placeholder="选择日期时间">
+                placeholder="选择结束时间"
+                style="width: 200px">
             </el-date-picker>
     	</el-form-item>
       
@@ -41,10 +43,21 @@
         <el-form-item label="有效期：" prop="totalNums">
 <!--            <el-input v-model="dataForm.totalNums" type="number"  max="1000000" placeholder="1000"  style="width:400px;"></el-input>-->
             <span>日期范围</span>&nbsp;
+<!--            <el-date-picker-->
+<!--                    v-model="dataForm.startTime"-->
+<!--                    type="datetime"-->
+<!--                    placeholder="选择日期时间">-->
+<!--            </el-date-picker>-->
             <el-date-picker
-                    v-model="dataForm.getEndTime"
-                    type="datetime"
-                    placeholder="选择日期时间">
+                    v-model="valuetime"
+                    type="datetimerange"
+                    value-format="yyyy-MM-dd HH:mm:ss"
+                    align="right"
+                    unlink-panels
+                    range-separator="-"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    @blur='acttime'>
             </el-date-picker>
             <br>
             <span>固定天数</span>&nbsp;
@@ -70,7 +83,6 @@
 </template>
 
 <script>
-import mixinViewModule from '@/mixins/view-module'
 import { updateActivityNormal, editActivityNormal, backScanActivity } from '@/api/api'
 import vueFilter from '@/utils/filter'
 var validnumber =(rule, value,callback)=>{
@@ -161,6 +173,7 @@ export default {
                 }
             },
             row:"",
+            valuetime:"",
         }
     },
     components:{
@@ -189,33 +202,15 @@ export default {
         this.demo();
     },
     methods: {
-        init(row){
-            this.row= row;
-            console.log(row)
-            this.getData();
-        },
-        // 回显数据
-        getData(){
+        //编辑详情接口方法
+        getInfo(){
             var obj  = {
-                id: this.row.id,
-            }
+                id: this.editSatusId,
+            };
             backScanActivity(obj).then((res)=>{
                 console.log(res);
                 if(res.code==200){
                     this.dataForm = res.data;
-                }
-            })
-        },
-        //编辑详情接口方法
-        getInfo(){
-            var obj  = {
-                id: this.row.id,
-            }
-            updateActivityNormal(obj).then((res)=>{
-                console.log(res);
-                if(res.code==200){
-                    this.dataForm = res.data;
-
                 }
             })
         },
@@ -233,6 +228,11 @@ export default {
             window.onresize=function(){
                 placeholderPic();
             }
+        },
+        //开始结束时间
+        acttime(){
+            this.dataForm.getStartTime = this.valuetime[0];
+            this.dataForm.getEndTime = this.valuetime[1];
         },
             
     }
