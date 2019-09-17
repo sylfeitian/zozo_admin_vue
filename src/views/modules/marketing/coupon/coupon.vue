@@ -158,7 +158,7 @@
 <!--				<el-button type="text" size="small" @click="" v-if="scope.row.auditState==0">审核</el-button>-->
 <!--		    </template>-->
 			<template slot-scope="scope">
-				<el-button type="text" size="small" @click="showDetail(scope.row.id)">查看</el-button>
+				<el-button type="text" size="small" @click="showDetail(scope.row)">查看</el-button>
 				<el-button type="text" size="small" @click="addCoupon(scope.row.id,'普通优惠券')">编辑</el-button>
 				<el-button class="artdanger" type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
 				<el-button type="text" size="small" @click="showStopModel(scope.row)">停止</el-button>

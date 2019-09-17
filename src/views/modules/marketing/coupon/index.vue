@@ -5,7 +5,7 @@
       <!-- 新增编辑 -->
       <addcoupon v-if='!couponIsshow&&!detailStatus' @artcouponno='artcouponno' :editSatusId="editSatusId" :editType="editType"></addcoupon>
       <!-- 查看 -->
-      <detailcoupon v-if="detailStatus" @detailno="detailno" :detailId="detailId"></detailcoupon>
+      <detailcoupon v-if="detailStatus" ref="detailCompon" @detailno="detailno"></detailcoupon>
 
   </div>
 </template>
@@ -46,10 +46,11 @@ export default {
       artcouponno(){
       	this.couponIsshow = true;
       },
-      showDetail(id){
-        console.log('??????',id)
+      showDetail(row){
         this.detailStatus = true;
-        this.detailId = id
+          this.$nextTick(()=>{
+              this.$refs.detailCompon.init(row);
+          })
       }
   }
 };
