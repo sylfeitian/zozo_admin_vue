@@ -3,7 +3,7 @@
         <Bread :breaddata="breaddata"></Bread>
         <div>
             <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getData()">
-                <el-form-item label="关键词搜索：">
+                <el-form-item label="关键字搜索：">
                     <el-input v-model="dataForm.name" placeholder="请输入关键字搜索" clearable style="width: 220px!important;"></el-input>
                 </el-form-item>
                 <el-form-item>

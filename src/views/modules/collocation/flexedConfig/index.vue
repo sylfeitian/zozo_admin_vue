@@ -1,5 +1,6 @@
 <template>
     <div class="flexedConfig">
+        <Bread :breaddata="breaddata"></Bread>
         <div class="modle">
             <div class="titleTops">库存显示配置</div>
             <div class="modleItem">
@@ -75,14 +76,15 @@
             </div>
         </div>
         </div>
-    </div>
 </template>
 
 <script>
     import { settingAll,settingSearch,settingStock,settingPage,settingPopup} from '@/api/api'
+    import Bread from "@/components/bread";
     export default {
         data () {
             return {
+                breaddata: ["配置管理", "固定显示配置"],
                 dataForm1:{
                     inventory:'',//库存数
                 },
@@ -105,6 +107,9 @@
                     child:''
                 }
             }
+        },
+        components: {
+            Bread
         },
         created(){
             this.getSettingAll();

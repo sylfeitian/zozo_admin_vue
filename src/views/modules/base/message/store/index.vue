@@ -8,7 +8,7 @@
       @keyup.enter.native="getDataList()"
     >
       <el-form-item label="店铺ID：">
-        <el-input v-model="dataFormShow.idJp" placeholder="请输入"></el-input>
+        <el-input v-model="dataFormShow.idJp" placeholder="请输入" maxlength="30"></el-input>
       </el-form-item>
       <el-form-item label="店铺名称：">
         <el-input v-model="dataFormShow.storeName" placeholder="请输入"></el-input>
@@ -24,7 +24,7 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button class="btn" type="primary" @click="getData()">查询</el-button>
+        <el-button class="btn" type="primary" @click="getData()">搜索</el-button>
         <el-button class="btn" type="primary" plain @click="reset()">重置</el-button>
       </el-form-item>
     </el-form>
@@ -193,6 +193,15 @@ export default {
     Bread,
     addEditData,
     editData
+  },
+  watch:{
+    'dataFormShow.idJp':function(newV,oldV) {
+      for(let i=0;i<newV.length;i++){
+        if(!/[a-zA-Z0-9]/.test(newV[i])){
+          this.dataFormShow.idJp = newV.replace(newV[i],"")
+        }
+      }
+}
   },
   methods: {
     getData() {

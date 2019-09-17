@@ -33,7 +33,7 @@
             </el-form-item>
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>
-                <el-button  class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
+                <el-button  class="btn"type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
         <el-radio-group v-model="activeName" @change="handleClick">
@@ -133,7 +133,7 @@
                 },
                 activeName: "",
                 selectVal:"",
-                breaddata: [ "内容管理", "时尚记事"],
+                breaddata: [ "内容管理", "时尚纪实"],
                 dataForm: {},
                 multipleSelection:[],
                 dataList: [],
