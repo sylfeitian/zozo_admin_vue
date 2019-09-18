@@ -6,14 +6,14 @@ let requestType = { headers: { 'content-type': 'application/x-www-form-urlencode
 
 export const getDataApi = params => { return http.post("https://api.sscoin.cc/cfd/v1/cfd/user/order/place", params).then(res => res.data); };
 
-//首页  
+//首页
 export const gethomepage = params => { return http.get(`${base}/homepage/page`, params).then(res => res.data); };
 export const gethomepageRate = params => { return http.get(`${base}/homepage/recentlyRate`, params).then(res => res.data); };
 
 //广告--------------------------------------------------------------------------------------------------------------
-//添加禁用词   
+//添加禁用词
 export const addadvertisingban = params => { return http.post(`${base}/advertisingban/add`, params).then(res => res.data); };
-//编辑禁用词   
+//编辑禁用词
 export const updateadvertisingban = params => { return http.put(`${base}/advertisingban/update`, params).then(res => res.data); };
 //策略
 export const getStrategySetting = params => { return http.get(`${base}/strategy/setting`, params).then(res => res.data); };
@@ -29,11 +29,11 @@ export const uploadPicBase64 = params => { return http.post(`${base}/picture/bas
 // 新增/修改分类
 export const updatasizeCn = params => { return http.put(`${base}/sizeCn`, params).then(res => res.data); };
 
-//日本尺码管理关联  
+//日本尺码管理关联
 export const uploadsizejptag = params => { return http.put(`${base}/sizejp/correlation?cnSizeId=${params.cnSizeId}&id=${params.id}`, params).then(res => res.data); };
-//获取中国尺码  
+//获取中国尺码
 export const getsizecn = params => { return http.get(`${base}/sizejp/getsizecn`, params).then(res => res.data); };
-//修改日本尺码  
+//修改日本尺码
 export const editsizejptag = params => { return http.put(`${base}/sizejp/edit?name=${params.name}&id=${params.id}`, params).then(res => res.data); };
 
 // 中国尺码-ZOZO
@@ -96,7 +96,7 @@ export const getStyleName = params => { return http.get(`${base}/look/folder/sty
 export const getallstockname = params => { return http.get(`${base}/wareHouse/odoGoods/houseName`, params).then(res => res.data); };
 // 获取弹框仓库商品
 export const getallstock = params => { return http.get(`${base}/wareHouse/odoGoods/stock/page`, params).then(res => res.data); };
-// 保存商品  
+// 保存商品
 export const addodoGoods = params => { return http.post(`${base}/wareHouse/odoGoods/add`, params).then(res => res.data); };
 
 //中国分类管理--------------------------------------------------------------------------------------------------------------------
@@ -526,7 +526,7 @@ export const recommendShopStore = params => { return http.put(`${base}/shopStore
 export const verifyShopStore = params => { return http.get(`${base}/shopStore/verify/name`, params).then(res => res.data); };
 // 根据中国ID获取信息
 export const backScanShopStore = params => { return http.get(`${base}/shopStore/${params.id}`, params).then(res => res.data); };
-// 
+//
 //地区管理--------------------------------------------------------------------------------------------------------------------
 // 查询全部一级地区
 export const areaFirst = params => { return http.get(`${base}/area/first/list`, params).then(res => res.data); };
@@ -613,7 +613,7 @@ export const skuGoods = params => { return http.get(`${base}/ware/skugoods`, par
 export const verifyWare = params => { return http.get(`${base}/ware/verify/name`, params).then(res => res.data); };
 // 根据ID获取仓库信息
 export const backScanWare = params => { return http.get(`${base}/ware/${params.id}`, params).then(res => res.data); };
-// 根据类型查询仓库列表  
+// 根据类型查询仓库列表
 export const wareListByType = params => { return http.get(`${base}/ware/${params.type}/list`, params).then(res => res.data); };
 // 删除
 export const deleteWare = params => { return http.delete(`${base}/ware`, params).then(res => res.data); };
@@ -801,13 +801,13 @@ export const operationPage = params => { return http.get(`${base}/log/operation/
 
 
 //查看库存----------------------------------------------------------------------------------------------------
-//查看库存分类  
+//查看库存分类
 export const getdatagoods = params => { return http.get(`${base}/stock/goods`, params).then(res => res.data); };
-//获取品牌列表   
+//获取品牌列表
 export const getdatabrands = params => { return http.get(`${base}/stock/brands`, params).then(res => res.data); };
-//获取中国分类  
+//获取中国分类
 export const getdatacategory = params => { return http.get(`${base}/stock/category`, params).then(res => res.data); };
-//获取店铺列表  
+//获取店铺列表
 export const getdatastores = params => { return http.get(`${base}/stock/stores`, params).then(res => res.data); };
 
 
@@ -903,7 +903,7 @@ export const getShoppointssettings = params => { return http.get(`${base}/shoppo
 
 //优惠券管理-------------------------------------------------------------------------------------------------------------
 //优惠券活动审核
-export const activityAudit = params => { return http.put(`${base}/activity/coupon/audit`, params).then(res => res.data); };
+export const activityAudit = params => { return http.put(`${base}/activity/coupon/audit?id=${params.id}&auditState=${params.auditState}`, params).then(res => res.data); };
 //新增新会员专享优惠券活动
 export const addActivityNewMember = params => { return http.post(`${base}/activity/coupon/newmember`, params).then(res => res.data); };
 // 编辑新会员专享优惠券活动
@@ -917,7 +917,7 @@ export const addActivityPoint = params => { return http.post(`${base}/activity/c
 // 编辑积分专享优惠券活动
 export const editActivityPoint = params => { return http.put(`${base}/activity/coupon/point`, params).then(res => res.data); };
 // 优惠券活动停止
-export const stopActivity = params => { return http.put(`${base}/activity/coupon/stop`, params).then(res => res.data); };
+export const stopActivity = params => { return http.put(`${base}/activity/coupon/stop?id=${params.id}`, params).then(res => res.data); };
 // 修改
 export const updateActivity = params => { return http.put(`${base}/activity/coupon/update`, params).then(res => res.data); };
 // 优惠券活动详情
