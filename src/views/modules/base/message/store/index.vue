@@ -86,7 +86,7 @@
           <el-button type="text" @click.native.prevent="addHandle" size="mini">查看</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="110px">
+      <el-table-column label="操作" align="center" width="120px">
         <template slot-scope="scope">
           <el-button type="text" @click="editHandle(scope.$index, scope.row)" size="mini" :disabled="scope.row.operateFlagJp==1">编辑</el-button>
           <!--                    <el-button  @click="forbitHandle('singe',scope.row)" type="text" size="mini" >-->

@@ -29,15 +29,15 @@
             <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>
             <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
         </el-form-item>
-        <el-form-item style="float:right;">
-            <el-button type="primary" @click="addActivity()">添加轮播图</el-button>
-        </el-form-item>
+    </el-form>
+    <el-form>
+        <el-button type="primary" @click="addActivity()">添加轮播图</el-button>
     </el-form>
     <el-table
 	  :data="dataList"
       v-loading="dataListLoading"
       border
-	  style="width: 100%">
+	  style="width: 100%;margin-top: 10px;">
 	    <el-table-column
 	    	type="index"
 		    prop="$index"
