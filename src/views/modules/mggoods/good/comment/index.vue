@@ -12,7 +12,7 @@
                 <el-input v-model="dataForm.skuId" ></el-input>
             </el-form-item>
             <el-form-item prop="goodsName" label="商品名称：">
-                <el-input v-model="dataForm.goodsName" ></el-input>
+                <el-input v-model="dataForm.goodsName" maxlength="300"></el-input>
             </el-form-item>
             <el-form-item prop="sizeFeeling" label="尺码感受：">
                 <el-select v-model="dataForm.sizeFeeling" placeholder="尺码感受">

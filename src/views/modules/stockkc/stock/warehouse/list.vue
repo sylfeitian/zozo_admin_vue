@@ -3,7 +3,7 @@
         <Bread :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
             <el-form-item label="仓库名称/ID：">
-                <el-input v-model="dataForm.warehousename" maxlength="30"></el-input>
+                <el-input v-model="dataForm.warehousename" maxlength="30" ></el-input>
             </el-form-item>
             <el-form-item label="仓库种类：">
                 <el-select v-model="dataForm.type" placeholder="请选择">
@@ -255,5 +255,10 @@
         height:100%;
         top:0;
         left:0;
+    }
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>

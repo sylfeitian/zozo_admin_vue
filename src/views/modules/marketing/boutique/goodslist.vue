@@ -6,7 +6,7 @@
                 <el-input v-model="dataForm.storeId"  placeholder="请输入商品货号" clearable></el-input>
             </el-form-item>
             <el-form-item label="商品名称：">
-                <el-input v-model="dataForm.storeId" placeholder="请输入商品名称" clearable></el-input>
+                <el-input v-model="dataForm.storeId" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
             </el-form-item>
             <el-form-item >
                 <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>

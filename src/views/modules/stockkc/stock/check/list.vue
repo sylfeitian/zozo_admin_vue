@@ -4,10 +4,10 @@
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" @keyup.enter.native="getDataList()" >
             <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
             <el-form-item label="商品名称：">
-                <el-input v-model="dataFormShow.goodsName" placeholder="商品名称/商品编号" ></el-input>
+                <el-input v-model="dataFormShow.goodsName" placeholder="商品名称/商品编号" maxlength="300"></el-input>
             </el-form-item>
             <el-form-item label="商品ID：">
-                <el-input v-model="dataFormShow.idJp" placeholder="请输入商品skuID" maxlength="30"></el-input>
+                <el-input v-model="dataFormShow.idJp" placeholder="请输入商品skuID" maxlength="30" ></el-input>
             </el-form-item>
             <el-form-item label="分类：">
                 <!-- <el-select v-model="dataFormShow.goodsTypeId" placeholder="请选择">
@@ -70,7 +70,7 @@
                 v-loading="dataListLoading"
                 style="width: 100%;margin-top:20px;"
         >
-            <el-table-column label="商品ID" align="center" width="100">
+            <el-table-column label="商品ID" align="center" width="180">
                 <template slot-scope="scope">
                     <div @click="detShowChange(scope.row)" style="cursor:pointer;color:#2260D2;">
                         {{scope.row.idJp}}
@@ -319,7 +319,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "@/element-ui/theme-variables.scss";
     .grayLine{
         border-bottom: 0!important;
     }
@@ -333,5 +332,10 @@
             display: flex;
             align-items: center;
         }
+    }
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>

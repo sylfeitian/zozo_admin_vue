@@ -3,7 +3,7 @@
 		<el-dialog title="新增分类" :visible.sync="showListVisible" width="50%" :before-close="handleClose">
 			<el-form :model="dataForm" label-width="140px" 	:rules="dataRule" class="demo-ruleForm" ref="addForm">
 		    <el-form-item v-if='dataForm.parentname' label="上级分类：" prop="gcName">
-            <el-input v-model="dataForm.parentname" type="text" :disabled="true" placeholder="dataForm.parentname" show-word-limit style="width:400px;"></el-input>
+            <el-input v-model="dataForm.parentname" type="text" :disabled="true" placeholder="dataForm.parentname"  style="width:400px;"></el-input>
         </el-form-item>
         <el-form-item v-else label="上级分类：">  
 	        <el-select

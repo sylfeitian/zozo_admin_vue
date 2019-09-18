@@ -56,7 +56,7 @@
                 <el-table-column prop="mobile" label="手机号" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="createDate" label="创建时间" header-align="center" align="center">
                 </el-table-column>
-                <el-table-column :label="$t('handle')" header-align="center" align="center">
+                <el-table-column :label="$t('handle')" header-align="center" align="center" width="200">
                     <template slot-scope="scope">
                         <el-button v-if="$hasPermission('sys:user:update')" type="text" size="small" @click="changeNumber(scope.row)">重置密码</el-button>
                         <el-button v-if="$hasPermission('sys:user:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">编辑</el-button>
@@ -227,7 +227,5 @@
     }
 </script>
 <style lang="scss" scoped>
-    .grayLine{
-        border-bottom: 0!important;
-    }
+
 </style>

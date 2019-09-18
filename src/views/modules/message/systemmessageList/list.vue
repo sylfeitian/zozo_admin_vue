@@ -68,7 +68,7 @@
                     <div v-else-if="scope.row.messageType == 12" > 售后审核通过</div>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center">
+            <el-table-column label="操作" align="center" width="200">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="showDetail(scope.row.id)" type="text"size="mini">查看</el-button>
                     <el-button @click.native.prevent="deleteList(scope.row.id)" type="text"size="mini">删除</el-button>

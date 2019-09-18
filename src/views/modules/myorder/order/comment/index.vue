@@ -15,11 +15,11 @@
       </el-form-item> -->
 
       <el-form-item label="skuid：">
-          <el-input v-model="dataForm.goodsCsIdJp" placeholder="请输入skuid" clearable maxlength="30"></el-input>
+          <el-input v-model="dataForm.goodsCsIdJp" placeholder="请输入skuid" clearable maxlength="30" ></el-input>
       </el-form-item>
 
       <el-form-item label="商品名称：">
-          <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" clearable></el-input>
+          <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
       </el-form-item>
 
       <el-form-item label="尺码感受：">

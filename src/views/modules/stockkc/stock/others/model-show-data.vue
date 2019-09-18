@@ -14,7 +14,7 @@
             :inline="true"
         >
             <el-form-item label="商品名称：" prop="goodsName">
-                <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称"></el-input>
+                <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" maxlength="300"></el-input>
             </el-form-item>
             <el-form-item label="商品ID：" prop="skuIdJp">
                 <el-input v-model="dataForm.skuIdJp" placeholder="请输入skuID"></el-input>
@@ -218,6 +218,10 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>

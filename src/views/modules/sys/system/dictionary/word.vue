@@ -29,7 +29,7 @@
                 </el-table-column>
                 <el-table-column prop="dictName" label="词典名称" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="dictValue" label="词典编号" header-align="center" align="center"></el-table-column>
-                <el-table-column  label="操作" header-align="center" align="center">
+                <el-table-column  label="操作" header-align="center" align="center" width="220">
                     <template slot-scope="scope">
                         <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row)">编辑</el-button>
                         <el-button class="artdanger" type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>

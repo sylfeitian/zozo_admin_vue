@@ -4,7 +4,7 @@
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" @keyup.enter.native="getDataList()" style="margin-top: 20px;">
             <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
             <el-form-item label="商品名称：">
-                <el-input v-model="dataFormShow.goodsName" placeholder="商品名称" ></el-input>
+                <el-input v-model="dataFormShow.goodsName" placeholder="商品名称"  maxlength="300"></el-input>
             </el-form-item>
             <el-form-item label="商品sku ID：">
                 <el-input v-model="dataFormShow.goodsCsIdJp" placeholder="商品skuid" maxlength="30"></el-input>

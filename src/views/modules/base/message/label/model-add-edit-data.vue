@@ -25,7 +25,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="风格标签名称：" prop="styleName">
-                <el-input v-model="dataForm.styleName" placeholder="0"></el-input>
+                <el-input v-model="dataForm.styleName" placeholder="请输入标签名称" minlength="2" maxlength="6" show-word-limit></el-input>
             </el-form-item>
             <el-form-item label="性别：">
                 <el-select v-model="dataForm.gender" placeholder="请选择">

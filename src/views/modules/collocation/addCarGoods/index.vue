@@ -3,10 +3,10 @@
     <Bread :breaddata="breaddata"></Bread>
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="商品ID：">
-            <el-input v-model="dataForm.goodsId" placeholder="请输入商品ID" clearable maxlength="30"></el-input>
+            <el-input v-model="dataForm.goodsId" placeholder="请输入商品ID" clearable maxlength="30" ></el-input>
         </el-form-item>
         <el-form-item label="商品名称：">
-            <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" clearable></el-input>
+            <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
         </el-form-item>
         <el-form-item>
             <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>
@@ -74,7 +74,8 @@
 	    <el-table-column
 	   		prop="address"
             align="center"
-	    	label="操作">
+	    	label="操作"
+            width="180">
 		    <template slot-scope="scope">
 		    	<el-button class="artdanger" type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
 		    </template>
@@ -100,7 +101,7 @@
         width="60%">
         <el-form :inline="true" :model="goodsdataForm">
             <el-form-item label="商品名称：">
-                <el-input v-model="goodsdataForm.storeId" placeholder="请输入商品名称" clearable></el-input>
+                <el-input v-model="goodsdataForm.storeId" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
             </el-form-item>
             <el-form-item label="选择分类：">
                 <el-cascader
@@ -387,5 +388,9 @@
         width: 300px;
     }
 }
-
+/deep/ .cell {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 </style>

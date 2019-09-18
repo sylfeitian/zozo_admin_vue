@@ -8,7 +8,7 @@
             ref="dataForm"
     >
       <el-form-item label="会员账号/ID：">
-        <el-input v-model="dataForm.memeberNameOrId" placeholder="请输入会员账号/ID" clearable maxlength="30"></el-input>
+        <el-input v-model="dataForm.memeberNameOrId" placeholder="请输入会员账号/ID" clearable maxlength="30" ></el-input>
       </el-form-item>
       <el-form-item label="消费金额：">
         <div style="display:flex">

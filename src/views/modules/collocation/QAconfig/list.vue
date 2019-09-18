@@ -27,8 +27,7 @@
         <el-table-column
 		    prop="type"
 		    label="帮助类型"
-			align="center"
-		    width="220">
+			align="center">
 		</el-table-column>
 		<el-table-column
 		    prop="num"
@@ -71,7 +70,7 @@
                 <el-input v-model="editDataForm.sgName" placeholder="请输入10字以内的名称" :maxlength="10"></el-input>
             </el-form-item>
             <el-form-item label="排序：" prop="sort">
-                <el-input v-model="editDataForm.sort" type="number" :maxlength="30"></el-input>
+                <el-input v-model="editDataForm.sort" type="number" :maxlength="30" show-word-limit></el-input>
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -268,5 +267,9 @@
         width: 240px;
         height: 40px;
     }
-
+	/deep/ .cell {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
 </style>

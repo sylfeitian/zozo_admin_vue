@@ -101,7 +101,8 @@
 	    <el-table-column
 	   		prop="address"
             align="center"
-	    	label="操作">
+	    	label="操作"
+            width="200">
 		    <template slot-scope="scope">
 		    	<el-button type="text" size="small" @click="addActivity(scope.row.id)">编辑</el-button>
 		    	<el-button class="artdanger" type="text" size="small"@click="deleteHandle(scope.row.id)">删除</el-button>
@@ -139,7 +140,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="轮播图名称：" prop="name">
-                <el-input v-model="activiDataForm.name" placeholder="请输入30字以内的名称" :maxlength="30"></el-input>
+                <el-input v-model="activiDataForm.name" placeholder="请输入30字以内的名称" :maxlength="30" show-word-limit></el-input>
             </el-form-item>
             <el-form-item label="排序：">
                 <el-input v-model="activiDataForm.sort" placeholder="数字越大排序越靠前" type="number" :maxlength="3"></el-input>
@@ -200,7 +201,7 @@
         width="44%">
         <el-form :inline="true" :model="goodsdataForm">
             <el-form-item label="商品名称：">
-                <el-input v-model="goodsdataForm.goodsName" placeholder="请输入商品名称" clearable></el-input>
+                <el-input v-model="goodsdataForm.goodsName" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
             </el-form-item>
             <el-form-item label="选择分类：">
                 <el-cascader
@@ -703,5 +704,9 @@
         border-radius: 50%;
         background: #2260D2;
     }
-
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>

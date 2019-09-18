@@ -11,17 +11,15 @@
                     <el-button class="btn" type="primary" plain @click="reset()" >重置</el-button>
                 </el-form-item>
             </el-form>
-            <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getDataList()">
-                <el-form-item>
-                    <el-button @click="addOrEditHandle()" type="primary">添加对照词</el-button>
-                    <el-button @click="" type="primary">导入</el-button>
-                    <el-button @click="">下载模板</el-button>
-                </el-form-item>
-            </el-form>
             <el-radio-group v-model="activeName" @change="handleClick">
                 <el-radio-button label="">商品详情</el-radio-button>
                 <el-radio-button label="two">材质</el-radio-button>
             </el-radio-group>
+            <el-form style="float: right;">
+                <el-button @click="addOrEditHandle()" type="primary">添加对照词</el-button>
+                <el-button @click="" type="primary">导入</el-button>
+                <el-button @click="">下载模板</el-button>
+            </el-form>
             <el-table
                     v-loading="dataListLoading"
                     :data="dataList"
@@ -42,7 +40,7 @@
                 <el-table-column prop="japaneseWord" label="对照日文词汇" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="createDate" label="添加时间" header-align="center" align="center">
                 </el-table-column>
-                <el-table-column label="操作" header-align="center" align="center">
+                <el-table-column label="操作" header-align="center" align="center" width="200">
                     <template slot-scope="scope" v-if="scope.row.superAdmin!==1">
                         <el-button type="text" size="small" @click.native.prevent="addOrEditHandle(scope.$index, scope.row)">编辑</el-button>
                         <el-button class="artdanger" @click.native.prevent="deleteHandle(scope.row.id)" type="text" size="mini">删除</el-button>
@@ -132,7 +130,5 @@
     }
 </script>
 <style lang="scss" scoped>
-    .grayLine{
-        border-bottom: 0!important;
-    }
+
 </style>

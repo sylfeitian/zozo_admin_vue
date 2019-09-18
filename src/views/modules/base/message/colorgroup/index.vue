@@ -3,7 +3,7 @@
         <Bread  :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" @keyup.enter.native="getDataList()" >
             <el-form-item label="颜色组ID：">
-                <el-input v-model="dataFormShow.idJp" maxlength="30"></el-input>
+                <el-input v-model="dataFormShow.idJp" maxlength="30" ></el-input>
             </el-form-item>
             <el-form-item label="颜色组名称：">
                 <el-input v-model="dataFormShow.name" ></el-input>
