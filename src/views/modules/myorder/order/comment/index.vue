@@ -123,7 +123,7 @@
             <img :src="scope.row.imgUrl | filterImgUrl"  style="width:60px;height:60px" alt="">
           </template>
       </el-table-column>
-      <el-table-column prop="goodsCsId" label="skuid" align="center"></el-table-column>
+      <el-table-column prop="goodsCsId" label="skuid" align="center" width="200"></el-table-column>
       <el-table-column prop="goodsName" label="商品名称" align="center" ></el-table-column>
       <el-table-column prop="" label="规格" align="center" ></el-table-column>
       <el-table-column prop="access " label="订单评价" align="center" >
@@ -154,7 +154,7 @@
 
       <el-table-column prop="createDate" label="评论时间" align="center"> </el-table-column>
 
-      <el-table-column label="操作" min-width="100" align="center">
+      <el-table-column label="操作" min-width="100" align="center" width="120">
         <template slot-scope="scope">
           <el-button class="artdanger" size="mini" type="text" @click="deleteHandle( scope.row.id)">删除</el-button>
         </template>
@@ -394,6 +394,10 @@ export default {
   }
 };
 </script>
-<style>
-/* .el-form-item{width:auto;} */
+<style lang="scss" scoped>
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>

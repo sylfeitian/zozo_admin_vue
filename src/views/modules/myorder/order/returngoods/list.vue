@@ -76,7 +76,7 @@
             <el-table-column prop="memberName" label="会员账号" align="center"></el-table-column>
             <el-table-column prop="createDate" label="申请时间" align="center"></el-table-column>
             <el-table-column prop="goodsNum" label="售后数量" align="center" width="100"></el-table-column>
-            <el-table-column prop="refundAmount" label="退款金额" align="right">
+            <el-table-column prop="refundAmount" label="退款金额" align="center">
                 <template slot-scope="scope">￥{{scope.row.refundAmount}}</template>
             </el-table-column>
             <el-table-column
@@ -87,7 +87,7 @@
             >
             <!-- （退货退款 10待审核、20待退货、30待入库、40待退款、50退款中、60退款完成、70退款失败、80售后取消） 仅退款（10退款中、20退款完成、30退款失败） -->
             </el-table-column>
-            <el-table-column label="操作" min-width="100" align="center">
+            <el-table-column label="操作" min-width="100" align="center" width="200">
                 <template slot-scope="scope">
                     <el-button size="mini" type="text" @click="afterSaleDetailFn(scope.row)">查看</el-button>
                     <!-- <el-button size="mini" type="text" @click="exammineFn(scope.row)" >审核</el-button> -->
@@ -280,7 +280,7 @@
         }
     };
 </script>
-<style scoped>
+<style lang="scss" scoped>
     .creater {
         display: inline-block;
         width: 80px;
@@ -341,5 +341,10 @@
     }
     /deep/ .el-form-item {
         margin-top: 0px !important;
+    }
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>
