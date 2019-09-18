@@ -27,8 +27,7 @@
         <el-table-column
 		    prop="type"
 		    label="帮助类型"
-			align="center"
-		    width="220">
+			align="center">
 		</el-table-column>
 		<el-table-column
 		    prop="num"
@@ -268,5 +267,9 @@
         width: 240px;
         height: 40px;
     }
-
+	/deep/ .cell {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
 </style>

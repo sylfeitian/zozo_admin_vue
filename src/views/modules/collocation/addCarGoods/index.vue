@@ -74,7 +74,8 @@
 	    <el-table-column
 	   		prop="address"
             align="center"
-	    	label="操作">
+	    	label="操作"
+            width="180">
 		    <template slot-scope="scope">
 		    	<el-button class="artdanger" type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
 		    </template>
@@ -387,5 +388,9 @@
         width: 300px;
     }
 }
-
+/deep/ .cell {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 </style>
