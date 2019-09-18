@@ -20,7 +20,7 @@
                 <el-input v-model="dataForm.skuIdJp" placeholder="请输入skuID"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="search()">搜索</el-button>
+                <el-button  class="btn" type="primary" @click="search()">查询</el-button>
             </el-form-item>
         </el-form>
         <el-table

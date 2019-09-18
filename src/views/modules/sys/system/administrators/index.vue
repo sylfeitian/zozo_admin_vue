@@ -18,7 +18,7 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button @click="getData()" type="primary">搜索</el-button>
-                    <el-button  @click="reset()">重置</el-button>
+                    <el-button  @click="reset()" type="primary" plain>重置</el-button>
                     <el-button v-if="$hasPermission('sys:user:save')" type="primary" @click="addOrUpdateHandle()">添加管理员</el-button>
                 </el-form-item>
             </el-form>

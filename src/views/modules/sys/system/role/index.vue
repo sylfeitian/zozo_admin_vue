@@ -8,7 +8,7 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button @click="getData()" type="primary">搜索</el-button>
-                    <el-button  @click="reset()">重置</el-button>
+                    <el-button  @click="reset()" plain type="primary">重置</el-button>
                     <!--<el-button v-if="$hasPermission('sys:role:save')" type="primary" @click="addOrUpdateHandle()">添加角色</el-button>-->
                     <el-button type="primary" @click="addOrUpdateHandle()">添加角色</el-button>
                 </el-form-item>

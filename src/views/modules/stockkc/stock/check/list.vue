@@ -250,7 +250,7 @@
             showDetail(id){
                 this.$emit("showDetail",id);
             },
-            getData(){  //查询
+            getData(){  //搜索
                 this.page = 1;
             	this.dataForm = {};
                 for(let key in this.dataFormShow){

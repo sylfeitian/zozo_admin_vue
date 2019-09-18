@@ -9,7 +9,7 @@
                 <el-input v-model="dataFormShow.conditionName" ></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="getData()">查询</el-button>
+                <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>
                 <el-button   class="btn"type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form> -->
