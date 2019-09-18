@@ -268,10 +268,8 @@ export default {
                             message: res.msg,
                             type: 'success',
                             onClose:function () {
-                            	alert(1)
 								this.changeSwitchVisible = true;
                                 getmessagepage().then((res)=>{
-                                	alert(2)
 									this.changeSwitchVisible = false;
                                     if(res.code == 200){
                                         that.dataForm = res.data;
