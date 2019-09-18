@@ -99,7 +99,7 @@
 				  <span>{{ShopmessagetemplateList.messageTypeName}}</span>
 			  </el-form-item>
 			  <el-form-item label="模板编码：" style="height: 100%!important;">
-				  <el-input type="text" maxlength="30" v-model="ShopmessagetemplateList.messageCode" placeholder="请输入短信模板编码"></el-input>
+				  <el-input type="text" maxlength="30" v-model="ShopmessagetemplateList.messageCode" placeholder="请输入短信模板编码" show-word-limit></el-input>
 				  <p style="color: #bebebe;line-height: 14px;">请填写在阿里短信后台配置的短信模板编码</p>
 			  </el-form-item>
 		  </el-form>
