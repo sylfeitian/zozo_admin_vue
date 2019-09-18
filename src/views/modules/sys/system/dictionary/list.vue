@@ -31,7 +31,7 @@
                 </el-table-column>
                 <el-table-column prop="dictName" label="字典名称" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="dictValue" label="字典编号" header-align="center" align="center"></el-table-column>
-                <el-table-column  label="操作" header-align="center" align="center">
+                <el-table-column  label="操作" header-align="center" align="center" width="220">
                     <template slot-scope="scope">
                         <el-button type="text" size="small" @click="addOrUpdateHandle(scope.$index, scope.row)">编辑</el-button>
                         <el-button type="text" size="small" @click="addWord(scope.row)">词典列表</el-button>

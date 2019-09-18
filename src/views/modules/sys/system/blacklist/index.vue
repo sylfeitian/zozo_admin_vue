@@ -33,9 +33,7 @@
                 </el-form-item>
             </el-form>
             <el-form>
-            	<el-form-item>
-                    <el-button type="primary" @click="addOrUpdateHandle()">添加黑名单</el-button>
-                </el-form-item>
+                <el-button type="primary" @click="addOrUpdateHandle()">添加黑名单</el-button>
             </el-form>
             <el-table
                     v-loading="dataListLoading"
@@ -43,7 +41,7 @@
                     border
                     @selection-change="dataListSelectionChangeHandle"
                     @sort-change="dataListSortChangeHandle"
-                    style="width: 100%;">
+                    style="width: 100%;margin-top: 10px;">
                 <el-table-column
                         type="index"
                         prop="$index"
@@ -68,7 +66,7 @@
                 <el-table-column prop="createDate" label="封禁时间" header-align="center" align="center">
                 </el-table-column>
                 <el-table-column prop="remark" label="封禁原因" header-align="center" align="center"></el-table-column>
-                <el-table-column label="操作" header-align="center" align="center">
+                <el-table-column label="操作" header-align="center" align="center" width="180">
                     <template slot-scope="scope">
                         <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">移除黑名单</el-button>
                     </template>

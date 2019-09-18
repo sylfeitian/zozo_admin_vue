@@ -104,7 +104,9 @@
 </script>
 
 <style lang="scss" scoped>
-    .grayLine{
-        border-bottom: 0!important;
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>
