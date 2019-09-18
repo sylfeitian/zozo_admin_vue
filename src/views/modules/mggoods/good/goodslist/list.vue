@@ -216,7 +216,7 @@
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center">
+            <el-table-column label="操作" align="center" width="120">
                 <template slot-scope="scope">
 <!--                    <el-button size="mini" type="text" @click="detShowChange(scope.row)">查看详情</el-button>-->
                     <el-button @click="editList(scope.row)" type="text" size="mini">编辑</el-button>
