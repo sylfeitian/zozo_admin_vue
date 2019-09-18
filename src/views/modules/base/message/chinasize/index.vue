@@ -6,8 +6,8 @@
                 <el-input v-model="dataFormShow.name" ></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>
-                <el-button   class="btn"type="primary" plain @click="reset()" >重置</el-button>
+                <el-button class="btn" type="primary" @click="getData()">搜索</el-button>
+                <el-button class="btn" type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
         <el-form>
@@ -44,7 +44,8 @@
 
             <el-table-column
                     label="操作"
-                    align="center">
+                    align="center"
+                    width="240">
                 <template slot-scope="scope">
                 	<el-button @click.native.prevent="lookHandle(scope.$index, scope.row)"type="text"size="mini">查看关联尺码</el-button>
                     <el-button @click.native.prevent="addOrEditHandle(scope.$index, scope.row)"type="text"size="mini">编辑</el-button>
@@ -151,12 +152,17 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 	.artitem{
 		padding:0 10px;
 		margin-right: 10px;
 		margin-bottom: 10px;
 		background: #EEE;
 	}
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
 </style>

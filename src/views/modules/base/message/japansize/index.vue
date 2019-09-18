@@ -23,7 +23,7 @@
             <el-table-column prop="sizeUpdateTime" label="更新时间" align="center"></el-table-column>
             <el-table-column prop="name" label="尺码名称" align="center"></el-table-column>
             <el-table-column prop="cnSizeName" label="关联中国尺码" align="center"></el-table-column>
-            <el-table-column label="操作" align="center">
+            <el-table-column label="操作" align="center" width="200">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="relationHandle(scope.$index, scope.row)"type="text"size="mini">{{scope.row.cnSizeName?'修改关联尺码':'关联尺码'}}</el-button>
                     <el-button @click.native.prevent="addOrEditHandle(scope.$index, scope.row)"type="text"size="mini">编辑</el-button>
@@ -134,9 +134,14 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
    .el-button + .el-button {
 	    margin-right: 0px;
 	    margin-left: 20px;
 	}
+   /deep/ .cell {
+       white-space: nowrap;
+       overflow: hidden;
+       text-overflow: ellipsis;
+   }
 </style>

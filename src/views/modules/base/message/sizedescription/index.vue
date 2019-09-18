@@ -23,7 +23,7 @@
             <el-table-column prop="idJp" label="尺码项目ID" align="center"></el-table-column>
             <el-table-column prop="nameJp" label="日本尺码项目名称" align="center"></el-table-column>
             <el-table-column prop="name" label="尺码项目名称" align="center"></el-table-column>
-            <el-table-column label="操作" align="center">
+            <el-table-column label="操作" align="center" width="180">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="addOrEditHandle(scope.$index, scope.row)"type="text"size="mini">编辑</el-button>
                 </template>
@@ -119,5 +119,10 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>

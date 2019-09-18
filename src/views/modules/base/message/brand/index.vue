@@ -30,7 +30,7 @@
             <el-table-column prop="descriptionJp" label="日本品牌描述" align="center"></el-table-column>
             <el-table-column prop="description" label="品牌描述" align="center"></el-table-column>
 <!--            <el-table-column prop="state" label="是否可售" align="center"></el-table-column>-->
-            <el-table-column label="操作" align="center">
+            <el-table-column label="操作" align="center" width="180">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="addOrEditHandle(scope.$index, scope.row)" type="text" size="mini">编辑</el-button>
                 </template>
