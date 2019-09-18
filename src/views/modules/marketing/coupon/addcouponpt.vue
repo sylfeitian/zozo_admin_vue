@@ -30,7 +30,7 @@
                 style="width: 200px">
             </el-date-picker>
     	</el-form-item>
-      
+
         <el-form-item class="artfromitem" label="使用门槛：" prop="threshold">
         		<div>单笔订单满</div>
             <el-input v-model="dataForm.threshold"  type="number"  max="1000000" placeholder="0"  style="width:400px;"></el-input>
@@ -45,7 +45,7 @@
                 <span>日期范围</span>&nbsp;
                 <el-date-picker
                         v-model="valuetime"
-                        type="datetimerange"
+                        type="daterange"
                         value-format="yyyy-MM-dd HH:mm:ss"
                         align="right"
                         unlink-panels
@@ -124,7 +124,7 @@ export default {
                 memberPoints:'',//兑换优惠券用的积分数
                 validityPeriodType:"0",//有效期类型，0：日期范围，1：固定天数
                 startTime:'',//生效日期
-                endTime:'',// 截止日期 
+                endTime:'',// 截止日期
             },
             validityPeriodType:"0",
             dataRule : {
@@ -137,7 +137,7 @@ export default {
                 getEndTime : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                 ],
-               
+
                 threshold: [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                 ],
@@ -165,7 +165,7 @@ export default {
         }
     },
     components:{
-        
+
     },
     created(){
         console.log('999999',this.type,this.editSatusId)
@@ -185,7 +185,7 @@ export default {
                 memberPoints:'',//兑换优惠券用的积分数
                 // validityPeriodType:0,//有效期类型，0：日期范围，1：固定天数
                 startTime:'',//生效日期
-                endTime:'',// 截止日期 
+                endTime:'',// 截止日期
             }
         }
     },
@@ -199,12 +199,12 @@ export default {
                 console.log(res);
                 if(res.code==200){
                     this.dataForm = res.data;
-                  
+
                     // this.dataForm.validityDays = res.data.validityDays// 有效天数 ,
                     // this.dataForm.memberPoints =  res.data.memberPoints//兑换优惠券用的积分数
                     // this.validityPeriodType =  res.data.validityPeriodType//有效期类型，0：日期范围，1：固定天数
                     // this.dataForm.startTime =  res.data.startTime//生效日期
-                    // this.dataForm.endTime =  res.data.endTime// 截止日期 
+                    // this.dataForm.endTime =  res.data.endTime// 截止日期
 //                       if(res.data.startTime && res.data.endTime){
 //                         this.valuetime = [res.data.getStartTime,res.data.getEndTime]
 //                     }
@@ -229,7 +229,7 @@ export default {
                 // memberPoints:'',//兑换优惠券用的积分数
                 // validityPeriodType:0,//有效期类型，0：日期范围，1：固定天数
                 // startTime:'',//生效日期
-                // endTime:'',// 截止日期 
+                // endTime:'',// 截止日期
                 }
             })
         },
@@ -272,9 +272,9 @@ export default {
                         memberPoints:this.dataForm.memberPoints?parseInt(this.dataForm.memberPoints):0,//兑换优惠券用的积分数
                         validityPeriodType:parseInt(this.validityPeriodType),//有效期类型，0：日期范围，1：固定天数
                         startTime:this.dataForm.startTime,//生效日期
-                        endTime:this.dataForm.endTime,// 截止日期 
+                        endTime:this.dataForm.endTime,// 截止日期
                     }
-                    if(this.editSatusId) obj.id = this.editSatusId//优惠券活动id 
+                    if(this.editSatusId) obj.id = this.editSatusId//优惠券活动id
                     var fn = this.type?addActivityNormal:editActivityNormal
                     fn(obj).then((res) => {
                         this.loading = false;
@@ -302,7 +302,7 @@ export default {
                 }
             })
         },
-            
+
     }
 };
 </script>
@@ -334,5 +334,5 @@ input[type="number"]{
 }
 .artvalue12time{
 	 margin: -55px 0 0 231px;
-}   
+}
 </style>
