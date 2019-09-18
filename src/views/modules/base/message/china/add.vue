@@ -212,7 +212,25 @@
 	  components: {
 	  	imgCropper,
 	  },
-	  created () {
+		watch:{
+			'dataForm.name':function(newV,oldV) {
+				debugger
+				var chinese = 0;
+				var character = 0;
+				for (let i = 0; i < newV.length; i++) {
+					if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+						chinese = chinese + 2;
+					} else { //字符
+						character = character + 1;
+					}
+					var count = chinese + character;
+					if (count > 8) { //输入字符大于8的时候过滤
+						this.dataForm.name = newV.replace(newV[i], "")
+					}
+				}
+			}
+			},
+			created () {
 	  },
 	  methods: {
 	  	actselectchange(){
