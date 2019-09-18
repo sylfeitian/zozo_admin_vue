@@ -40,7 +40,7 @@
       <el-table-column prop="storeLogo" label="店铺logo" align="center">
         <template slot-scope="scope">
           <img
-            :src="scope.row.imageUrl | filterImgUrl"
+            :src="scope.row.storeLogo | filterImgUrl"
             alt
             style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
           />
