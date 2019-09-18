@@ -70,7 +70,7 @@
                 v-loading="dataListLoading"
                 style="width: 100%;margin-top:20px;"
         >
-            <el-table-column label="商品ID" align="center" width="100">
+            <el-table-column label="商品ID" align="center" width="180">
                 <template slot-scope="scope">
                     <div @click="detShowChange(scope.row)" style="cursor:pointer;color:#2260D2;">
                         {{scope.row.idJp}}
@@ -319,7 +319,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "@/element-ui/theme-variables.scss";
     .grayLine{
         border-bottom: 0!important;
     }
@@ -333,5 +332,10 @@
             display: flex;
             align-items: center;
         }
+    }
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>

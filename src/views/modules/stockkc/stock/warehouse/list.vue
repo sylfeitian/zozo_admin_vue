@@ -256,4 +256,9 @@
         top:0;
         left:0;
     }
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>
