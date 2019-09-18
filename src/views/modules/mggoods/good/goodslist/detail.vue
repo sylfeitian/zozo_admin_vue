@@ -295,7 +295,7 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     /*.inforTit {*/
     /*    width: 100px;*/
     /*    font-weight: 600;*/
@@ -329,5 +329,10 @@
     }
     .info {
         margin-left: 100px;
+    }
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>

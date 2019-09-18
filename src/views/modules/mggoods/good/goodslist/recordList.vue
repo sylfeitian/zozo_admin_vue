@@ -95,6 +95,10 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>

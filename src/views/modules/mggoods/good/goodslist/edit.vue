@@ -343,4 +343,9 @@
     /deep/ .el-input {
         width: 200px!important;
     }
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>

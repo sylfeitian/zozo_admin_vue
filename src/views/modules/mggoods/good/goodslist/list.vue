@@ -534,7 +534,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "@/element-ui/theme-variables.scss";
     .bottomFun {
         display: flex;
         justify-content: space-between;
@@ -546,8 +545,9 @@
             align-items: center;
         }
     }
-    /*img {*/
-    /*    width: 100px;*/
-    /*    height: 100px;*/
-    /*}*/
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>
