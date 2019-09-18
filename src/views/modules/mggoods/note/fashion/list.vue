@@ -42,7 +42,7 @@
             </el-form-item>
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="add()">搜索</el-button>
-                <el-button  class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
+                <el-button  class="btn"type="primary" plain @click="reset()" >搜索</el-button>
             </el-form-item>
         </el-form>
         <!--        <el-radio-group v-model="activeName" @change="handleClick">-->

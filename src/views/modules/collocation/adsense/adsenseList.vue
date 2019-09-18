@@ -214,7 +214,7 @@
             </el-form-item>
             
             <el-form-item>
-                <el-button class="btn" type="primary" @click="getGoodsDataList()">查询</el-button>
+                <el-button class="btn" type="primary" @click="getGoodsDataList()">搜索</el-button>
                 <el-button class="btn"  type="primary" plain @click="goodsreset()" plain>重置</el-button>
             </el-form-item>
         </el-form>

@@ -28,7 +28,7 @@
         <el-form-item>
             <el-button @click="goList()">返回</el-button>
             <el-button type="primary" @click="dataFormSubmit('addForm')" :loading="saveLoading">{{saveLoading?"提交中...":"确认"}}</el-button>
-            <!-- <el-button @click="resetForm('addForm')">重置</el-button> -->
+            <!-- <el-button @click="resetForm('addForm')" type="primary">重置</el-button> -->
         </el-form-item>
         </el-form>
         
