@@ -3,7 +3,7 @@
         <Bread :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
             <el-form-item label="仓库名称/ID：">
-                <el-input v-model="dataForm.warehousename" ></el-input>
+                <el-input v-model="dataForm.warehousename" maxlength="30"></el-input>
             </el-form-item>
             <el-form-item label="仓库种类：">
                 <el-select v-model="dataForm.type" placeholder="请选择">
@@ -144,6 +144,16 @@
             Bread,
             addEditData,
             // showData
+        },
+        // ID类搜索框仅可输入数字、英文，最多可输入30个字符
+        watch:{
+            'dataForm.warehousename':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    if(!/[a-zA-Z0-9]/.test(newV[i])){
+                        this.dataForm.warehousename = newV.replace(newV[i],"")
+                    }
+                }
+            }
         },
         created () {
             // 第一次请求数据

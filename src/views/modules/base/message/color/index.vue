@@ -4,7 +4,7 @@
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" @keyup.enter.native="getDataList()" >
             <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
             <el-form-item label="颜色ID：">
-                <el-input v-model="dataFormShow.idJp" ></el-input>
+                <el-input v-model="dataFormShow.idJp" maxlength="30"></el-input>
             </el-form-item>
             <el-form-item label="颜色名称：">
                 <el-input v-model="dataFormShow.name" ></el-input>
@@ -81,6 +81,16 @@
         components: {
             Bread,
             addEditData
+        },
+        // ID类搜索框仅可输入数字、英文，最多可输入30个字符
+        watch:{
+            'dataFormShow.idJp':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    if(!/[a-zA-Z0-9]/.test(newV[i])){
+                        this.dataFormShow.idJp = newV.replace(newV[i],"")
+                    }
+                }
+            }
         },
         created () {
             this.getDataList();

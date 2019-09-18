@@ -3,7 +3,7 @@
         <Bread :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
             <el-form-item label="ID：">
-                <el-input v-model="dataForm.idJp" ></el-input>
+                <el-input v-model="dataForm.idJp" maxlength="30"></el-input>
             </el-form-item>
             <el-form-item label="用户：">
                 <el-input v-model="dataForm.nickName" ></el-input>
@@ -174,6 +174,14 @@
 		    	this.dataForm.publishEndTimeJp = '';
 		      }
 		    },
+            // ID类搜索框仅可输入数字、英文，最多可输入30个字符
+            'dataForm.idJp':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    if(!/[a-zA-Z0-9]/.test(newV[i])){
+                        this.dataForm.idJp = newV.replace(newV[i],"")
+                    }
+                }
+            }
 		},
         created () {
             // 第一次请求数据

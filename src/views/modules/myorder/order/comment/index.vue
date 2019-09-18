@@ -15,7 +15,7 @@
       </el-form-item> -->
 
       <el-form-item label="skuid：">
-          <el-input v-model="dataForm.goodsCsIdJp" placeholder="请输入skuid" clearable></el-input>
+          <el-input v-model="dataForm.goodsCsIdJp" placeholder="请输入skuid" clearable maxlength="30"></el-input>
       </el-form-item>
 
       <el-form-item label="商品名称：">
@@ -220,6 +220,16 @@ export default {
     Bread, 
     // evaDet 
   },
+    // ID类搜索框仅可输入数字、英文，最多可输入30个字符
+    watch:{
+        'dataForm.goodsCsIdJp':function(newV,oldV) {
+            for(let i=0;i<newV.length;i++){
+                if(!/[a-zA-Z0-9]/.test(newV[i])){
+                    this.dataForm.goodsCsIdJp = newV.replace(newV[i],"")
+                }
+            }
+        }
+    },
   methods: {
     //详情
     handleEdit(index) {

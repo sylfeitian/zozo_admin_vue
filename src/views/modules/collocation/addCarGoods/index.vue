@@ -3,7 +3,7 @@
     <Bread :breaddata="breaddata"></Bread>
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="商品ID：">
-            <el-input v-model="dataForm.goodsId" placeholder="请输入商品ID" clearable></el-input>
+            <el-input v-model="dataForm.goodsId" placeholder="请输入商品ID" clearable maxlength="30"></el-input>
         </el-form-item>
         <el-form-item label="商品名称：">
             <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" clearable></el-input>
@@ -204,6 +204,16 @@
                 limits:10,
                 totals:0,
                 breaddata: ["配置管理", "购物车推荐商品配置"],
+            }
+        },
+        // ID类搜索框仅可输入数字、英文，最多可输入30个字符
+        watch:{
+            'dataForm.goodsId':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    if(!/[a-zA-Z0-9]/.test(newV[i])){
+                        this.dataForm.goodsId = newV.replace(newV[i],"")
+                    }
+                }
             }
         },
         created(){

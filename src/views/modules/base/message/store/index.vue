@@ -194,6 +194,7 @@ export default {
     addEditData,
     editData
   },
+  // ID类搜索框仅可输入数字、英文，最多可输入30个字符
   watch:{
     'dataFormShow.idJp':function(newV,oldV) {
       for(let i=0;i<newV.length;i++){
