@@ -15,7 +15,7 @@
             label-width="120px"
         >
             <el-form-item  label="风格标签分类：" prop="styleType">
-                <el-select v-model="dataForm.styleType" placeholder="请选择" disabled>
+                <el-select v-model="dataForm.styleType" placeholder="请选择" :disabled="row?true:false">
                     <el-option
                             v-for="item in options"
                             :key="item.id"
