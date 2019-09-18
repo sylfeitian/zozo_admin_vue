@@ -81,7 +81,7 @@
             </el-table-column>
             <el-table-column prop="publishTimeJp" label="日本发布时间" align="center"></el-table-column>
             <el-table-column prop="publishTime" label="发布时间" align="center"></el-table-column>
-            <el-table-column label="操作" align="center">
+            <el-table-column label="操作" align="center" width="180">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="showDetail(scope.row)" type="text" size="mini">查看</el-button>
                     <el-button @click.native.prevent="addOrAdit(scope.row)" type="text" size="mini">编辑</el-button>
@@ -307,10 +307,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "@/element-ui/theme-variables.scss";
-    .grayLine{
-        border-bottom: 0!important;
-    }
     .bottomFun {
         display: flex;
         justify-content: space-between;
@@ -321,5 +317,10 @@
             display: flex;
             align-items: center;
         }
+    }
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>

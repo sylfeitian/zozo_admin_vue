@@ -47,7 +47,7 @@
                 :data="dataList"
                 border=""
                 v-loading="dataListLoading"
-                style="width: 100%;margin-top:20px;"
+                style="width: 100%;margin-top:10px;"
                 @selection-change="handleSelectionChange"
                 ref="multipleTable"
         >
@@ -421,10 +421,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "@/element-ui/theme-variables.scss";
-    .grayLine{
-        border-bottom: 0!important;
-    }
     .bottomFun {
         display: flex;
         justify-content: space-between;
