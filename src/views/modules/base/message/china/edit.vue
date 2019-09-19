@@ -20,11 +20,11 @@
 	        </el-select>
 		    </el-form-item>
         <el-form-item label="分类名称：" prop="name">
-            <el-input v-model="dataForm.name " type="text" placeholder="请输入4个汉字/8个字符以内的内容" show-word-limit style="width:400px;"></el-input>
+            <el-input v-model="dataForm.name " type="text" placeholder="请输入4个汉字/8个字符以内的内容" style="width:400px;"></el-input>
         </el-form-item>
         <el-form-item label="排序：" prop="sort">
             <el-input v-model="dataForm.sort" type="text" placeholder="0-255" show-word-limit style="width:200px;"></el-input>
-        		<div class="grey">(数字越小越靠前)</div>
+        		<div class="grey">(数字越大越靠前)</div>
         </el-form-item>
 
 		<el-form-item label="评价类型：" prop="appraisal" v-if="erjishow">
@@ -142,27 +142,29 @@
 <script>
 	import imgCropper from "@/components/model-photo-cropper";
 	//查询一级分类   查询日本分类  图片   提交   编辑查询回显
-	import { categoryCn,searchCategoryJp,uploadPicBase64 ,updataCategoryCn ,backScanCategoryCn} from '@/api/api'  
+	import { categoryCn,searchCategoryJp,uploadPicBase64 ,updataCategoryCn ,backScanCategoryCn,categoryCnVerifyName} from '@/api/api'
 	export default {
 	  data() {
-	  	//这里就是整个checkName啦，就是方法一的使用
 	    var checkName = (rule, value, callback) => {
-	            var len = 0;  
-	            for (var i=0; i<value.length; i++) {   
-	                var c = value.charCodeAt(i);   
-	                //单字节加1   
-	                if ((c >= 0x0001 && c <= 0x007e) || (0xff60<=c && c<=0xff9f)) {   
-	                    len++;   
-	                } else {   
-	                    len+=2;   
-	                }   
-	            };   
-	            if (len = 0 || len > 8) {
-	                //重点重点，下面就是填写提示的文字
-	                callback(new Error('名称长度不超过8个字符，一个中文字等于2个字符。'));
-	            } else {
-	                callback();
-	            }
+					// 校验中国分类名称是否重复
+					if(value){
+						debugger
+						if(value===this.tempName){
+							callback();
+						}else{
+							var obj={name:value, parentId:0}
+							if(this.dataForm.parentId !==0){ //不是一级分类时
+								obj.parentId=this.dataForm.parentId
+							}
+							categoryCnVerifyName(obj).then((res)=>{
+								if(res.code == 200){
+									callback();
+								}else{
+									callback(new Error(res.msg));
+								}
+							})
+						}
+					}
 	    };
 	    var sortminmax = (rule, value, callback) => {
 	    	if(value >= 0 && value < 255){
@@ -182,6 +184,7 @@
 	        goodKindList1: [{ id: '0', name: "无" }],
 	        goodKindList2: [],
 	        dataArray:[],
+			tempName:'',
 	        dataForm:{     
 	        	parentId:'', //父级分类id
 	        	name:'', //分类名称
@@ -213,6 +216,23 @@
 	  components: {
 	  	imgCropper,
 	  },
+		watch:{
+			'dataForm.name':function(newV,oldV) {
+				var chinese = 0;
+				var character = 0;
+				for (let i = 0; i < newV.length; i++) {
+					if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+						chinese = chinese + 2;
+					} else { //字符
+						character = character + 1;
+					}
+					var count = chinese + character;
+					if (count > 8) { //输入字符大于8的时候过滤
+						this.dataForm.name = newV.replace(newV[i], "")
+					}
+				}
+			}
+		},
 	  created () {
 	  },
 	  methods: {
@@ -231,7 +251,9 @@
 		  		}
 	  	},
 	  	init(row){
+	  		debugger
 			  this.row = row;
+			  this.tempName = this.row.label; // 暂存当前名字，校验用
 	  		this.showListVisible = true;
 	  		backScanCategoryCn(row).then((res)=>{
 	  			if(res.code == 200){

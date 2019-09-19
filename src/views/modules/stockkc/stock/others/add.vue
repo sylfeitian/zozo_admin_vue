@@ -12,7 +12,7 @@
 			      @select="handleSelect"
 			    ></el-autocomplete>
             </el-form-item>
-            <el-form-item prop="orderId" label="备注：" style="width:400px;">
+            <el-form-item prop="orderId" label="备注：">
                 <el-input v-model="dataForm.orderId" type="text" maxlength="500" placeholder="请输入备注内容" style="width:400px;"></el-input>
             </el-form-item>
             <el-form-item>
@@ -50,7 +50,7 @@
                 </template>
             </el-table-column>
             <el-table-column prop="afterQty" label="变更后库存" align="center"></el-table-column>
-            <el-table-column label="操作" align="center">
+            <el-table-column label="操作" align="center" width="180">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="deletelocaldata(scope.$index, scope.row)"type="text"size="mini">删除</el-button>
                 </template>
@@ -215,6 +215,10 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>

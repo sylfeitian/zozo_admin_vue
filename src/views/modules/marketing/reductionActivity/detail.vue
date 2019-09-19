@@ -33,7 +33,7 @@
                     <el-input v-model="dataForm.orderSn" placeholder="请输入订单编号" clearable></el-input>
                 </el-form-item>
                 <el-form-item style="margin-bottom:0 !important;float:right;">
-                    <el-button  class="btn" type="primary" @click="getDataList()">查询</el-button>
+                    <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
                     <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
                 </el-form-item>
             </el-form>

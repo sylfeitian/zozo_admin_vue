@@ -9,7 +9,7 @@
           <el-input v-model="dataForm.groupName" placeholder="品牌分组"></el-input>
         </el-form-item> -->
         <el-form-item>
-          <el-button type="primary" @click="search()">查询</el-button>
+          <el-button type="primary" @click="search()">搜索</el-button>
         </el-form-item>
       </el-form>
       <el-table :data="dataList" border style=" width:9%6;margin:auto"   ref="multipleTable" @selection-change="dataListSelectionChangeHandle">

@@ -79,7 +79,7 @@
             <el-table-column prop="orderState" label="订单状态" align="center"></el-table-column>
             <!-- :formatter="orderState" -->
             <el-table-column prop="orderType" label="订单类型" align="center" ></el-table-column>
-            <el-table-column label="操作" align="center">
+            <el-table-column label="操作" align="center" width="200">
                 <template slot-scope="scope">
                     <!-- <el-button type="primary" @click="submitStore()">{{ $t('confirm') }}</el-button> -->
                     <el-button size="mini" type="text" @click="orderDetFn(scope.row)">查看</el-button>
@@ -326,7 +326,7 @@
         
     };
 </script>
-<style scoped>
+<style lang="scss" scoped>
     .el-popper {
         left: 292px !important;
     }
@@ -456,5 +456,10 @@
     }
     /deep/ .el-form-item {
         margin-top: 0px !important;
+    }
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>

@@ -8,7 +8,7 @@
       @keyup.enter.native="getDataList()"
     >
       <el-form-item label="店铺ID：">
-        <el-input v-model="dataFormShow.idJp" placeholder="请输入" maxlength="30"></el-input>
+        <el-input v-model="dataFormShow.idJp" placeholder="请输入" maxlength="30" ></el-input>
       </el-form-item>
       <el-form-item label="店铺名称：">
         <el-input v-model="dataFormShow.storeName" placeholder="请输入"></el-input>
@@ -40,7 +40,7 @@
       <el-table-column prop="storeLogo" label="店铺logo" align="center">
         <template slot-scope="scope">
           <img
-            :src="scope.row.imageUrl | filterImgUrl"
+            :src="scope.row.storeLogo | filterImgUrl"
             alt
             style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
           />
@@ -86,7 +86,7 @@
           <el-button type="text" @click.native.prevent="addHandle" size="mini">查看</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="110px">
+      <el-table-column label="操作" align="center" width="120px">
         <template slot-scope="scope">
           <el-button type="text" @click="editHandle(scope.$index, scope.row)" size="mini" :disabled="scope.row.operateFlagJp==1">编辑</el-button>
           <!--                    <el-button  @click="forbitHandle('singe',scope.row)" type="text" size="mini" >-->
@@ -194,6 +194,7 @@ export default {
     addEditData,
     editData
   },
+  // ID类搜索框仅可输入数字、英文，最多可输入30个字符
   watch:{
     'dataFormShow.idJp':function(newV,oldV) {
       for(let i=0;i<newV.length;i++){

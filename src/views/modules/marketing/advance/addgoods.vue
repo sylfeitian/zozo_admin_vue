@@ -3,7 +3,7 @@
     <Bread :breaddata="breaddata" :index = "'1'" @changePage = "changePage"></Bread>
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="商品名称：">
-            <el-input v-model="dataForm.storeId" placeholder="请输入商品名称" clearable></el-input>
+            <el-input v-model="dataForm.storeId" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
         </el-form-item>
         <el-form-item label="商品货号：">
             <el-input v-model="dataForm.storeId" placeholder="请输入spu编号" clearable></el-input>
@@ -15,7 +15,7 @@
             <el-input v-model="dataForm.storeId" placeholder="请输入品牌名称" clearable></el-input>
         </el-form-item>
         <el-form-item>
-            <el-button  class="btn" type="primary" @click="getDataList()">查询</el-button>
+            <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
             <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
         </el-form-item>
         <br />

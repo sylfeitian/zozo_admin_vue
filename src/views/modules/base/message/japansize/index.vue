@@ -4,13 +4,13 @@
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" @keyup.enter.native="getDataList()" >
             <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
             <el-form-item label="尺码ID：">
-                <el-input v-model="dataFormShow.idJp" ></el-input>
+                <el-input v-model="dataFormShow.idJp" maxlength="30" ></el-input>
             </el-form-item>
             <el-form-item label="尺码名称：">
                 <el-input v-model="dataFormShow.name" ></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="getData()">查询</el-button>
+                <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>
                 <el-button   class="btn"type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
@@ -23,7 +23,7 @@
             <el-table-column prop="sizeUpdateTime" label="更新时间" align="center"></el-table-column>
             <el-table-column prop="name" label="尺码名称" align="center"></el-table-column>
             <el-table-column prop="cnSizeName" label="关联中国尺码" align="center"></el-table-column>
-            <el-table-column label="操作" align="center">
+            <el-table-column label="操作" align="center" width="200">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="relationHandle(scope.$index, scope.row)"type="text"size="mini">{{scope.row.cnSizeName?'修改关联尺码':'关联尺码'}}</el-button>
                     <el-button @click.native.prevent="addOrEditHandle(scope.$index, scope.row)"type="text"size="mini">编辑</el-button>
@@ -86,6 +86,16 @@
             addEditData,
             addEdit
         },
+        // ID类搜索框仅可输入数字、英文，最多可输入30个字符
+        watch:{
+            'dataFormShow.idJp':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    if(!/[a-zA-Z0-9]/.test(newV[i])){
+                        this.dataFormShow.idJp = newV.replace(newV[i],"")
+                    }
+                }
+            }
+        },
         methods: {
             getData(){
                 this.page = 1;
@@ -124,9 +134,14 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
    .el-button + .el-button {
 	    margin-right: 0px;
 	    margin-left: 20px;
 	}
+   /deep/ .cell {
+       white-space: nowrap;
+       overflow: hidden;
+       text-overflow: ellipsis;
+   }
 </style>

@@ -17,12 +17,17 @@
             <el-form-item label="禁用词名称：" prop="name" :label-width="formLabelWidth">
                 <el-input v-model="dataForm && dataForm.name" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item style="text-align: center;margin-left: -120px!important;">
-                <el-button  @click="dataFormCancel()">取消</el-button>
-                <el-button type="primary" @click="dataFormSubmit('dataForm')"
-                           :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
-            </el-form-item>
+<!--            <el-form-item style="text-align: center;margin-left: -120px!important;">-->
+<!--                <el-button  @click="dataFormCancel()">取消</el-button>-->
+<!--                <el-button type="primary" @click="dataFormSubmit('dataForm')"-->
+<!--                           :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>-->
+<!--            </el-form-item>-->
         </el-form>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="dataFormCancel()">取消</el-button>
+            <el-button type="primary" @click="dataFormSubmit('addForm')"
+                       :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
+        </span>
     </el-dialog>
 </template>
 

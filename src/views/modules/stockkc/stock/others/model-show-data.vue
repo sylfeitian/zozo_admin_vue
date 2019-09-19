@@ -13,14 +13,14 @@
             label-width="100px"
             :inline="true"
         >
-            <el-form-item label="商品名称：" >
-                <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称"></el-input>
+            <el-form-item label="商品名称：">
+                <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" maxlength="300"></el-input>
             </el-form-item>
             <el-form-item label="商品货号：">
                 <el-input v-model="dataForm.goodCsId" placeholder="请输入spu编号"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="search()">搜索</el-button>
+                <el-button  class="btn" type="primary" @click="search()">查询</el-button>
             </el-form-item>
         </el-form>
         <el-table
@@ -222,6 +222,10 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>

@@ -17,12 +17,15 @@
 			    label="站内信"
 			    align="center">
 			    <template slot-scope="scope">
-			        <el-switch
-					  v-model="scope.row.isSendInner"
-					  @change="putState(scope.row.id,scope.row.isSendInner,1)"
-					  >
-					</el-switch>
-					<span class="artblue" @click="show(0,scope.row.messageTypeId,scope.row.innerCanOpen)">模板设置</span>
+					<div style="position: relative;">
+						<el-switch
+						  v-model="scope.row.isSendInner"
+						  @change="putState(scope.row.id,scope.row.isSendInner,1)"
+						  >
+						</el-switch>
+						<span class="artblue" @click="show(0,scope.row.messageTypeId,scope.row.innerCanOpen)">模板设置</span>
+						<div v-if="changeSwitchVisible"  class="hiddenSwitch"></div>
+					</div>
 			    </template>
 			</el-table-column>
 			<el-table-column
@@ -30,12 +33,15 @@
 			    label="APP推送"
 			    align="center">
 				<template slot-scope="scope">
-					<el-switch
-							v-model="scope.row.isSendUmeng"
-							@change="putState(scope.row.id,scope.row.isSendUmeng,2)"
-							>
-					</el-switch>
-					<span class="artblue" @click="show(1,scope.row.messageTypeId,scope.row.umengCanOpen)">模板设置</span>
+					<div style="position: relative;">
+						<el-switch
+								v-model="scope.row.isSendUmeng"
+								@change="putState(scope.row.id,scope.row.isSendUmeng,2)"
+								>
+						</el-switch>
+						<span class="artblue" @click="show(1,scope.row.messageTypeId,scope.row.umengCanOpen)">模板设置</span>
+						<div v-if="changeSwitchVisible"  class="hiddenSwitch"></div>
+					</div>
 				</template>
 			</el-table-column>
 			<el-table-column
@@ -43,11 +49,14 @@
 			    label="短信 "
 			    align="center">
 				<template slot-scope="scope">
-					<el-switch v-model="scope.row.isSendSms"
-							@change="putState(scope.row.id,scope.row.isSendSms,3)"
-							>
-					</el-switch>
-					<span class="artblue" @click="show(2,scope.row.messageTypeId,scope.row.smsCanOpen)">模板设置</span>
+					<div style="position: relative;">
+						<el-switch v-model="scope.row.isSendSms"
+								@change="putState(scope.row.id,scope.row.isSendSms,3)"
+								>
+						</el-switch>
+						<span class="artblue" @click="show(2,scope.row.messageTypeId,scope.row.smsCanOpen)">模板设置</span>
+						<div v-if="changeSwitchVisible"  class="hiddenSwitch"></div>
+					</div>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -90,7 +99,7 @@
 				  <span>{{ShopmessagetemplateList.messageTypeName}}</span>
 			  </el-form-item>
 			  <el-form-item label="模板编码：" style="height: 100%!important;">
-				  <el-input type="text" maxlength="30" v-model="ShopmessagetemplateList.messageCode" placeholder="请输入短信模板编码"></el-input>
+				  <el-input type="text" maxlength="30" v-model="ShopmessagetemplateList.messageCode" placeholder="请输入短信模板编码" show-word-limit></el-input>
 				  <p style="color: #bebebe;line-height: 14px;">请填写在阿里短信后台配置的短信模板编码</p>
 			  </el-form-item>
 		  </el-form>
@@ -123,6 +132,7 @@ export default {
                 messageCode:""
 			},
             dataForm: {},
+			changeSwitchVisible: false,
             selectVal:""
 	    }
 	},
@@ -258,7 +268,9 @@ export default {
                             message: res.msg,
                             type: 'success',
                             onClose:function () {
+								this.changeSwitchVisible = true;
                                 getmessagepage().then((res)=>{
+									this.changeSwitchVisible = false;
                                     if(res.code == 200){
                                         that.dataForm = res.data;
                                         that.dataForm.map((v,i)=>{
@@ -310,5 +322,12 @@ export default {
 	color: blue;
 	margin-left: 10px;
 }
+ .hiddenSwitch {
+	 position: absolute;
+	 width: 100%;
+	 height: 100%;
+	 top: 0;
+	 left: 0;
+ }
 </style>
 
