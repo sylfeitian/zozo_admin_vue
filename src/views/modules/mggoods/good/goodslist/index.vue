@@ -60,10 +60,10 @@
             //     })
             //
             // },
-            more () {
-                this.detailVisible = true;
-                this.operationallogVisible = false;
-            },
+            // more () {
+            //     this.detailVisible = true;
+            //     this.operationallogVisible = false;
+            // },
             editList (row) {
                 this.mainVisible = false;
                 this.editVisible = true;

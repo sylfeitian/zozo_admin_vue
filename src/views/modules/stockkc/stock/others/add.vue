@@ -8,7 +8,7 @@
 			      v-model="dataForm.wareHouseName"
 			      :fetch-suggestions="querySearch"
 			      placeholder="请输入内容"
-			      value-key="wareHouseName"
+			      value-key="name"
 			      @select="handleSelect"
 			    ></el-autocomplete>
             </el-form-item>
@@ -16,13 +16,13 @@
                 <el-input v-model="dataForm.orderId" type="text" maxlength="500" placeholder="请输入备注内容" style="width:400px;"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="artaddodoGoods">保存</el-button>
+                <el-button  class="btn" type="primary" @click="saveGoods">保存</el-button>
             </el-form-item>
         </el-form>
         <el-form>
             <el-form-item>
                 <!--<el-button type="primary"  @click="addOrEditHandle()" >导入商品</el-button>-->
-                <el-button type="primary" plain @click="showDetail()" >添加商品</el-button>
+                <el-button type="primary" plain @click="addGoods()" >添加商品</el-button>
             </el-form-item>
         </el-form>
       
@@ -58,15 +58,15 @@
         </el-table>
 
         <!-- 弹窗, 查看 -->
-        <showData  v-if="showDataVisible" :showdata="dataList || []"  :dataId="dataForm.wareHouseId" ref="showData" @searchDataList="searchDataList"></showData>
+        <showData  v-if="showDataVisible" :showdata="dataList || []"  ref="showData" @searchDataList="searchDataList"></showData>
     </div>
 </template>
 
 <script>
-    // import mixinViewModule from '@/mixins/view-module'
+    import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import showData from './model-show-data'
-    import { getallstock,addodoGoods,warelistByType} from "@/api/api"      //获取仓库，保存商品
+    import { warehouserecordsodoAdd,warelistByType} from "@/api/api"      //获取仓库，保存商品
     export default {
         // mixins: [mixinViewModule],
         data () {
@@ -89,6 +89,7 @@
                 	wareHouseId:'',   //仓库id  
                 	wareHouseName:'', //仓库name
                 },
+                wareItem:"",
                dataList:[],
                restaurants:[],  //所有仓库
             }
@@ -109,12 +110,12 @@
         	searchDataList(rows){
         		this.dataList = rows;
         	},
-        	artaddodoGoods(){
+        	saveGoods(){
         		if(this.dataList.length < 1){
         			this.$message('请添加商品')
         			return;
         		}
-        		addodoGoods(this.dataList).then((data)=>{
+        		warehouserecordsodoAdd(this.dataList).then((data)=>{
         			if(data.code == 200){
         				this.$message({
         					message:'保存成功',
@@ -138,8 +139,8 @@
                 console.log(this.restaurants);
 		        var restaurants = this.restaurants;
 		        var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
-		        // 调用 callback 返回建议列表的数据
-		        cb(results);
+                // 调用 callback 返回建议列表的数据
+                 cb(results);
 		    },
 		    createFilter(queryString) {
 		        return (restaurant) => {
@@ -148,7 +149,9 @@
 		    },
 			//当前选择的仓库
 		    handleSelect(item) {
-		      	this.dataForm.wareHouseId = item.id;
+                console.log(item);
+                this.wareItem = item;
+                //   this.dataForm.wareHouseId = item.id;
 		    },
 		    //变更数量
 		    artnumberinput(scope){
@@ -158,29 +161,22 @@
 		    		scope.row.changeQty = 0;
 		    	}
             },
-            // 查询所有仓库数据
-        	artgetallstock(){
-        		var obj = {
-                	params:this.dataForm
-               }
-                getallstock(obj).then(({data})=>{
-                	if(data){
-                		this.restaurants = data.list;
-                		console.log(this.restaurants)
-		          	}else {
-			          	this.$message.error("服务器错误");
-		          	}
-	                })
-            },
+            // // 查询所有仓库数据
+        	// artgetallstock(){
+        	// 	var obj = {
+            //     	params:this.dataForm
+            //    }
+            //     getallstock(obj).then(({data})=>{
+            //     	if(data){
+            //     		this.restaurants = data.list;
+            //     		console.log(this.restaurants)
+		    //       	}else {
+			//           	this.$message.error("服务器错误");
+		    //       	}
+	        //         })
+            // },
             // 根据类型查询仓库列表
             getWarelistByType(){
-                this.restaurants = [
-          { "id": "1", "name": "长宁区新渔路144号" },
-           { "id": "2", "name": "22222" },
-        ]
-        console.log("第一次获取数据");
-        console.log(this.restaurants);
-        return;
                 var obj  = {
                     type:1
                 }
@@ -201,16 +197,15 @@
                     // this.getApplyPullList();
                 })
             },
-            showDetail(index=-1,row=""){
-            	if(!this.dataForm.wareHouseName || !this.dataForm.wareHouseId){
+            addGoods(){
+            	if(!this.wareItem){
             		this.$message('请先选择所属仓库')
             		return;
-            	}
-            	
-                this.setShowDataVisible(true);
+                }
                 
+                this.setShowDataVisible(true);
                 this.$nextTick(() => {
-                    this.$refs.showData.init(row)
+                    this.$refs.showData.init(this.wareItem)
                 })
             },
             setShowDataVisible(boolargu){

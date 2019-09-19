@@ -59,8 +59,25 @@
         </el-radio-group>
         <el-form style="float: right;" v-if="dataFormShow.isTofile=='0'">
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="">导出数据</el-button>
-                <el-button   class="btn"type="primary" plain @click="" >导入备案信息</el-button>
+                <el-button  class="btn" type="primary" @click="exportExcel">导出数据</el-button>
+                <!-- <el-button   class="btn"type="primary" plain @click="importExcel" >导入备案信息</el-button> -->
+                <el-upload
+                style="display:inline-block;margin-left:20px;"
+                    class="upload-demo"
+                    ref="upload"
+                    :action='url'
+                    :on-success="uploadSuccess"
+                    :on-error="uploadError"
+                    :show-file-list="false"
+                    :headers="myHeaders"
+                    :before-upload="beforeAvatarUpload"
+                    name="file"
+                    :on-progress="handleProgress"
+                    @on-change="handleChange"
+                    >
+                    <el-button slot="trigger"  class="btn"  type="primary">{{uploadLoading?"导入中...":"导入备案信息"}}</el-button>
+                    <!-- <div slot="tip" class="el-upload__tip">只能上传excel格式视频，且不超过10M</div> -->
+                </el-upload>
             </el-form-item>
         </el-form>
         <el-table
@@ -94,10 +111,10 @@
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="storeName" label="规格" align="center" width="150">
+            <el-table-column prop="spe" label="规格" align="center" width="150">
                 <template slot-scope="scope">
                     <div>
-                        {{scope.row.csName}}
+                        {{scope.row.spe}}
                     </div>
                 </template>
             </el-table-column>
@@ -127,10 +144,10 @@
 <!--                    </div>-->
 <!--                </template>-->
 <!--            </el-table-column>-->
-            <el-table-column prop="firstCategory " label="分类"  align="center">
+            <el-table-column prop="category " label="分类"  align="center">
                 <template slot-scope="scope">
                     <div>
-                        {{scope.row.firstCategory }}
+                        {{scope.row.category }}
                     </div>
                 </template>
             </el-table-column>
@@ -178,12 +195,17 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
+    import Cookies from 'js-cookie'
     import { registerUrl } from '@/api/url'
-    import { backScanCategorys } from '@/api/api'
+    import { backScanCategorys} from '@/api/api'
+    import {importRegisterUrl,exportRegisterUrl} from "@/api/io.js"
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
+                myHeaders: {},//Cookies.get(teacher_token)
+                url:`${importRegisterUrl}`,
+                uploadLoading:false,
                 mixinViewModuleOptions: {
                     activatedIsNeed: false,
                     getDataListURL: registerUrl,
@@ -240,6 +262,7 @@
             this.dataFormShow.isTofile = "1";
             this.backScan();
             this.getData();
+            this.myHeaders ={token:Cookies.get('token')} ;
         },
         methods: {
             handleChange(){
@@ -305,6 +328,85 @@
                 this.dataForm.transportFlag = "";//下发状态
                 this.classList = [];//分类名称
                 this.handleClick();
+            },
+            // 导入
+            importExcel(){
+                // importRegister
+            },
+            // 导出
+            exportExcel(){
+                let url = ""
+                let kvArr = Object.entries(this.dataFormShow);
+                kvArr.forEach(v=>{
+                    if(Object.prototype.toString.call(v[1]) =='[object Object]'){
+                        arguments.callee(v[1]);
+                    }else{
+                        url += v.join('=')+'&'
+                    }
+                })
+
+                url  = url.substring(0,url.length-1);
+                url = exportRegisterUrl + "?"+url
+                window.open(url);
+            },
+            beforeAvatarUpload(file) {
+                this.$refs.upload.abort();
+                this.progress = 0;
+                console.log(file);
+                // const isMP4 = file.type === 'video/mp4';
+                const isLt2M = file.size / 1024 / 1024 < 500;
+
+                // if (!isMP4) {
+                //     this.$message.error('只能上传mp4格式视频!');
+                // }
+                if (!isLt2M) {
+                    this.$message.error('视频大小不能超过 500MB!');
+                }
+                // return isMP4 && isLt2M;
+                return isLt2M;
+            },
+            handleProgress(event, file, fileList){
+                this.uploadLoading = true;
+                console.log([event, file, fileList]);
+
+                if(file.percentage>=90){
+                    this.progress = 90;
+                }else{
+                    this.progress =parseInt(file.percentage);
+                }
+
+            },
+            uploadSuccess(response, file, fileList){
+                // console.log(file.per);
+                let that = this;
+                 that.uploadLoading = false;
+                if(response.code=='200'){
+                    that.$message({
+                        message: response.msg,
+                        type: "success",
+                        duration: 1500
+                    })
+                    // that.dataFormSubmit();
+                }else{
+                    // that.progress = 0;
+                    that.$message({
+                        message: response.msg,
+                        type: "error",
+                        duration: 1500
+                    })
+                }
+            },
+            uploadError(response, file, fileList) {
+                let that = this;
+                that.uploadLoading = false;
+                console.log("上传文件失败response" +response);
+                console.log("上传文件失败file" +file);
+                console.log("上传文件失败fileList" +fileList);
+                that.$message({
+                message: "导入失败，请重新导入",
+                type: "error",
+                duration: 1500
+                })
             },
         }
     }

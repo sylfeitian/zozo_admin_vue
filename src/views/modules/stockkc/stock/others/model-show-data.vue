@@ -13,11 +13,11 @@
             label-width="100px"
             :inline="true"
         >
-            <el-form-item label="商品名称：" prop="goodsName">
+            <el-form-item label="商品名称：" >
                 <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称"></el-input>
             </el-form-item>
-            <el-form-item label="商品ID：" prop="skuIdJp">
-                <el-input v-model="dataForm.skuIdJp" placeholder="请输入skuID"></el-input>
+            <el-form-item label="商品货号：">
+                <el-input v-model="dataForm.goodCsId" placeholder="请输入spu编号"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="search()">搜索</el-button>
@@ -70,14 +70,16 @@
 
 <script>
     import mixinViewModule from '@/mixins/view-module'
-    import {getallstock,delstock} from '@/api/url'
+	import {warehouserecordsodoPageUrl,tock,delstock} from '@/api/url'
+	// import {wareInfoById} from  "@/api/api.js"
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
+				
             	mixinViewModuleOptions: {
 				  activatedIsNeed: false,   
-		          getDataListURL: getallstock,
+				  getDataListURL: warehouserecordsodoPageUrl,
 		          getDataListIsPage: true,
 		          // exportURL: '/admin-api/log/login/export',
 		          deleteURL: '',
@@ -85,11 +87,10 @@
 		          deleteIsBatchKey: 'id'
 			    },
                 dataForm:{
-                	houseName: '', //所属仓库名  
+                	// houseName: '', //所属仓库名  
                 	wareHouseId: '',   //仓库id  
                 	goodsName:'',  //商品名
-                	skuIdJp:'',  //商品的日本skuid
-                	wareHouseId:'', //wareHouseIds
+                	goodCsId:'',  //商品的日本skuid
                 },
                 title:'',
                 visible : false,
@@ -105,36 +106,39 @@
         created(){
         },
         methods: {
-			init(row){
+			init(wareItem){
+				console.log(wareItem);
 		      	this.visible = true;
-                this.row = row;
 				this.title="查看详情";
-				this.dataForm.wareHouseId = this.dataId;
+				// this.dataForm.wareHouseId = this.dataId;
+				this.dataForm.wareHouseId = wareItem.id;
         		this.showdatacurrent = this.showdata;
 				this.$nextTick(()=>{
 					this.search();
 				})
 			},
 	      	search(){
-	          	this.getDataList().then((res)=>{
-	              	this.backScanHook();
-	          	});
+	          	// this.getDataList().then((res)=>{
+				// 	this.backScanHook();
+				// });
+				// this.dataForm.wareHouseId =  this.dataForm.wareHouseId
+				this.getDataList();
 	      	},
 			//   处理回显数据
-	       	backScanHook(){
-	          	this.dataListSelections = [];
-	          	var specIds = [];
-	          	this.showdatacurrent = this.showdata;
-	         	this.showdatacurrent.forEach((item,index)=>{
-	          		specIds[index] = item.id;
-	          	})
-	          	this.dataList.forEach((item,index)=>{
-	               	if(specIds.indexOf(item.id)!=-1){
-	                   this.dataListSelections.push(item);
-	               	}
-	           	})
-	            this.toggleSelection(this.dataListSelections);
-	      	},
+	       	// backScanHook(){
+	        //   	this.dataListSelections = [];
+	        //   	var specIds = [];
+	        //   	this.showdatacurrent = this.showdata;
+	        //  	this.showdatacurrent.forEach((item,index)=>{
+	        //   		specIds[index] = item.id;
+	        //   	})
+	        //   	this.dataList.forEach((item,index)=>{
+	        //        	if(specIds.indexOf(item.id)!=-1){
+	        //            this.dataListSelections.push(item);
+	        //        	}
+	        //    	})
+	        //     this.toggleSelection(this.dataListSelections);
+	      	// },
         	//单个去选商品    //点击全选
         	onTableSelect(rows, row) {
         		let selected = rows.length && rows.indexOf(row) !== -1

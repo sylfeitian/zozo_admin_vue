@@ -127,11 +127,10 @@ export default {
                 validityDays:  "",// 有效天数 ,
                 limitNum:"",//每人限领数量 ,
                 memberPoints:'',//兑换优惠券用的积分数
-                validityPeriodType:0,//有效期类型，0：日期范围，1：固定天数
                 startTime:'',//生效日期
                 endTime:'',// 截止日期 
             },
-            validityPeriodType:"0",
+            validityPeriodType:0,//有效期类型，0：日期范围，1：固定天数
             dataRule : {
                 name : [
                     { required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -188,7 +187,6 @@ export default {
                 validityDays:  "",// 有效天数 ,
                 limitNum:"",//每人限领数量 ,
                 memberPoints:'',//兑换优惠券用的积分数
-                // validityPeriodType:0,//有效期类型，0：日期范围，1：固定天数
                 startTime:'',//生效日期
                 endTime:'',// 截止日期 
             }
