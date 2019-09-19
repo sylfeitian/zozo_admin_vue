@@ -98,7 +98,6 @@
                 }
             },
             'dataForm.mobile': function (newV, oldV) {
-                debugger
                 var chinese = 0,character = 0;
                 for (let i = 0; i < newV.length; i++) {
                     if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字

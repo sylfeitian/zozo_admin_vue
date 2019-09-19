@@ -123,7 +123,8 @@ export const showCategoryCn = params => { return http.put(`${base}/categoryCn/sh
 export const categoryCnSort = params => { return http.put(`${base}/categoryCn/sort`, params).then(res => res.data); };
 // 根据分类id查询中方分类
 export const backScanCategoryCn = params => { return http.get(`${base}/categoryCn/${params.id}`, params).then(res => res.data); };
-
+// 校验中国分类名称是否重复
+export const categoryCnVerifyName = params => { return http.put(`${base}/categoryCn/verifyName?name=${params.name}&parentId=${params.parentId}`, params).then(res => res.data); };
 
 
 
