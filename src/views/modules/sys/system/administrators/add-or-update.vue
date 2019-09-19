@@ -1,20 +1,25 @@
 <template>
-    <el-dialog :visible.sync="visible" :title="!pageId ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
-        <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmitHandle()" label-width="120px">
+    <el-dialog :visible.sync="visible" :title="!pageId ? $t('add') : $t('update')" :close-on-click-modal="false"
+               :close-on-press-escape="false">
+        <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmitHandle()"
+                 label-width="120px">
             <el-form-item prop="username" label="账号：">
-                <el-input v-model="dataForm.username" placeholder="请输入账号" :disabled="!pageId ? false : true" maxlength="20"></el-input>
+                <el-input v-model="dataForm.username" placeholder="请输入账号" :disabled="!pageId ? false : true"
+                          maxlength="20"></el-input>
             </el-form-item>
             <el-form-item prop="realName" label="姓名：">
-                <el-input v-model="dataForm.realName" placeholder="请输入姓名" maxlength="10"></el-input>
+                <el-input v-model="dataForm.realName" placeholder="请输入姓名"></el-input>
             </el-form-item>
             <el-form-item prop="mobile" label="手机号：">
                 <el-input v-model="dataForm.mobile" placeholder="请输入手机号"></el-input>
             </el-form-item>
             <el-form-item prop="password" label="密码：" :class="{ 'is-required': !pageId }">
-                <el-input v-model="dataForm.password" type="password" placeholder="请输入6-12位的密码" minlength="6" maxlength="12"></el-input>
+                <el-input v-model="dataForm.password" type="password" placeholder="请输入6-12位的密码" minlength="6"
+                          maxlength="12"></el-input>
             </el-form-item>
             <el-form-item prop="confirmPasswd" label="确认密码：" :class="{ 'is-required': !pageId }">
-                <el-input v-model="dataForm.confirmPasswd" type="password" placeholder="请确认密码" minlength="6" maxlength="12"></el-input>
+                <el-input v-model="dataForm.confirmPasswd" type="password" placeholder="请确认密码" minlength="6"
+                          maxlength="12"></el-input>
             </el-form-item>
             <el-form-item
                     :label="'角色' + (index+1) + '：'"
@@ -25,7 +30,8 @@
       required: true, message: '必填项不能为空', trigger: 'change'
     }"
             >
-                <el-select v-model="roleItem.id" :placeholder="$t('user.roleIdList')" class="distance-btn" @change="selected">
+                <el-select v-model="roleItem.id" :placeholder="$t('user.roleIdList')" class="distance-btn"
+                           @change="selected">
                     <el-option
                             v-for="item in roleList"
                             :key="item.key"
@@ -46,14 +52,15 @@
 
 <script>
     import debounce from 'lodash/debounce'
-    import { isEmail, isMobile } from '@/utils/validate'
+    import {isEmail, isMobile} from '@/utils/validate'
+
     export default {
-        data () {
+        data() {
             return {
                 visible: false,
                 // deptList: [],
                 // deptListVisible: false,
-                pageId:null,// 有值的话代表是编辑
+                pageId: null,// 有值的话代表是编辑
                 roleList: [],
                 // roleIdListDefault: [],
                 dataForm: {
@@ -75,8 +82,41 @@
                 }
             }
         },
+        watch: {
+            'dataForm.realName': function (newV, oldV) {
+                var chinese = 0,character = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chinese = chinese + 2;
+                    } else { //字符
+                        character = character + 1;
+                    }
+                    var count = chinese + character;
+                    if (count > 20) { //输入字符大于20的时候过滤
+                        this.dataForm.realName = newV.replace(newV[i], "")
+                    }
+                }
+            },
+            'dataForm.mobile': function (newV, oldV) {
+                debugger
+                var chinese = 0,character = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chinese = chinese + 2;
+                    } else if(/ /.test(newV[i])){ //空格
+                        this.dataForm.mobile = newV.replace(newV[i], "") //删除空格
+                    }else{
+                        character = character + 1;
+                    }
+                    var count = chinese + character;
+                    if (count > 11) { //输入字符大于11的时候过滤
+                        this.dataForm.mobile = newV.replace(newV[i], "")
+                    }
+                }
+            }
+        },
         computed: {
-            dataRule () {
+            dataRule() {
                 var validateUsername = (rule, value, callback) => {
                     if (!/\S/.test(value)) {
                         return callback(new Error(this.$t('validate.required')))
@@ -90,7 +130,6 @@
                     if (!/\S/.test(value)) {
                         return callback(new Error(this.$t('validate.required')))
                     }
-                    callback()
                 }
                 // 密码校验
                 var validatePassword = (rule, value, callback) => {
@@ -125,34 +164,32 @@
                 var validateMobile = (rule, value, callback) => {
                     if (!/\S/.test(value)) {
                         return callback(new Error(this.$t('validate.required')))
-                    }
-                    else{
-                        value=value.replace(/\s*/g, '')
-                        if(!/^1[3-9][0-9]{9}$/.test(value))
-                        {
-                            return callback(new Error(this.$t('validate.format', { 'attr': this.$t('user.mobile') })))
+                    } else {
+                        value = value.replace(/\s*/g, '')
+                        if (!/^1[3-9][0-9]{9}$/.test(value)) {
+                            return callback(new Error(this.$t('validate.format', {'attr': this.$t('user.mobile')})))
                         }
                     }
                     callback()
                 }
                 return {
                     username: [
-                        { required: true, validator: validateUsername, trigger: 'blur' }
+                        {required: true, validator: validateUsername, trigger: 'blur'}
                     ],
                     realName: [
-                        { required: true, validator: validateRealName, trigger: 'blur' }
+                        {required: true, validator: validateRealName, trigger: 'blur'}
                     ],
                     password: [
-                        { required: true, validator: validatePassword, trigger: 'blur' }
+                        {required: true, validator: validatePassword, trigger: 'blur'}
                     ],
                     confirmPasswd: [
-                        { required: true, validator: validateComfirmPassword, trigger: 'blur' }
+                        {required: true, validator: validateComfirmPassword, trigger: 'blur'}
                     ],
                     roleIds: [
-                        { required: true, validator: validateRoleId, trigger: 'change' }
+                        {required: true, validator: validateRoleId, trigger: 'change'}
                     ],
                     mobile: [
-                        { required: true, validator: validateMobile, trigger: 'blur' }
+                        {required: true, validator: validateMobile, trigger: 'blur'}
                     ]
                 }
             }
@@ -161,21 +198,21 @@
             // 筛选重复的角色
             selected(query) {
                 var selectItem = [];
-                for(let i=0;i<this.dataForm.roleIds.length;i++){
+                for (let i = 0; i < this.dataForm.roleIds.length; i++) {
                     selectItem.push(this.dataForm.roleIds[i].id)
-            }
-                if( selectItem.indexOf(query) !== selectItem.lastIndexOf(query) ){ // 所选角色重复
-                    this.dataForm.roleIds[selectItem.lastIndexOf(query)].name=''
-                    this.dataForm.roleIds[selectItem.lastIndexOf(query)].id=''
-                    this.dataForm.roleIds[selectItem.lastIndexOf(query)].key=Date.now()
+                }
+                if (selectItem.indexOf(query) !== selectItem.lastIndexOf(query)) { // 所选角色重复
+                    this.dataForm.roleIds[selectItem.lastIndexOf(query)].name = ''
+                    this.dataForm.roleIds[selectItem.lastIndexOf(query)].id = ''
+                    this.dataForm.roleIds[selectItem.lastIndexOf(query)].key = Date.now()
                     this.$message("该角色已经被选了,请选择其他角色")
                 }
             },
             // 弹窗关闭
-            noCheck(){
+            noCheck() {
                 this.visible = false
                 this.$refs['dataForm'].resetFields();
-                this.dataForm.roleIds=[{
+                this.dataForm.roleIds = [{
                     id: '',
                     key: Date.now()
                 }]
@@ -194,18 +231,18 @@
                     key: Date.now()
                 });
             },
-            init (id) {
+            init(id) {
                 this.visible = true;
                 this.$nextTick(() => {
                     this.$refs['dataForm'].resetFields()
-                    if(id){
+                    if (id) {
                         this.pageId = id;
                         this.getInfo(id);
-                    }else{
+                    } else {
                         this.pageId = '';
                     }
                     this.getRoleList()
-                    this.dataForm.roleIds=[{
+                    this.dataForm.roleIds = [{
                         id: '',
                         key: Date.now()
                     }]
@@ -221,18 +258,19 @@
             //     }).catch(() => {})
             // },
             // 获取角色列表
-            getRoleList () {
-                return this.$http.get('/admin-api/role/list').then(({ data: res }) => {
+            getRoleList() {
+                return this.$http.get('/admin-api/role/list').then(({data: res}) => {
                     if (res.code !== 200) {
                         return this.$message.error(res.msg)
                     }
                     this.roleList = res.data
-                }).catch(() => {})
+                }).catch(() => {
+                })
             },
             // 回显
-            getInfo (id) {
-                this.$http.get(`/admin-api/user/${id}`).then(({ data: res }) => {
-                    Object.assign(res.data.roleIds,res.data.roleNames)
+            getInfo(id) {
+                this.$http.get(`/admin-api/user/${id}`).then(({data: res}) => {
+                    Object.assign(res.data.roleIds, res.data.roleNames)
                     if (res.code !== 200) {
                         return this.$message.error(res.msg)
                     }
@@ -249,7 +287,8 @@
                     //   }
                     //   this.roleIdListDefault.push(res.data.roleIdList[i])
                     // }
-                }).catch(() => {})
+                }).catch(() => {
+                })
             },
             // 所属部门树, 选中
             // deptListTreeCurrentChangeHandle (data, node) {
@@ -263,14 +302,14 @@
                     if (!valid) {
                         return false
                     }
-                    var roleData=[]
-                    for(var i=0;i<this.dataForm.roleIds.length;i++){
+                    var roleData = []
+                    for (var i = 0; i < this.dataForm.roleIds.length; i++) {
                         roleData.push(this.dataForm.roleIds[i].id)
                     }
                     this.dataForm.roleIds = roleData
                     this.$http[!this.pageId ? 'post' : 'put']('/admin-api/user', {
                         ...this.dataForm
-                    }).then(({ data: res }) => {
+                    }).then(({data: res}) => {
                         if (res.code !== 200) {
                             return this.$message.error(res.msg)
                         }
@@ -283,21 +322,23 @@
                                 this.$emit('refreshDataList')
                             }
                         })
-                    }).catch(() => {})
-                    this.dataForm.roleIds=[{
+                    }).catch(() => {
+                    })
+                    this.dataForm.roleIds = [{
                         id: '',
                         key: Date.now()
                     }]
                 })
-            }, 1000, { 'leading': true, 'trailing': false })
+            }, 1000, {'leading': true, 'trailing': false})
         }
     }
 </script>
 
 <style lang="scss">
-    .distance-btn{
+    .distance-btn {
         margin-right: 15px;
     }
+
     .mod-sys__user {
         .dept-list {
             .el-input__inner,
@@ -305,6 +346,7 @@
                 cursor: pointer;
             }
         }
+
         .role-list {
             .el-select {
                 width: 100%;
