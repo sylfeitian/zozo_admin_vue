@@ -66,7 +66,7 @@
     // import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import showData from './model-show-data'
-    import { getallstock,addodoGoods} from "@/api/api"      //获取仓库，保存商品
+    import { getallstock,addodoGoods,warelistByType} from "@/api/api"      //获取仓库，保存商品
     export default {
         // mixins: [mixinViewModule],
         data () {
@@ -98,7 +98,8 @@
             showData
         },
         created(){
-        	this.artgetallstock();
+            // this.artgetallstock();
+            this.getWarelistByType();
         },
         watch:{
         	
@@ -133,6 +134,8 @@
         	},
         	//所有仓库
         	querySearch(queryString, cb) {
+                console.log("查询");
+                console.log(this.restaurants);
 		        var restaurants = this.restaurants;
 		        var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
 		        // 调用 callback 返回建议列表的数据
@@ -140,7 +143,7 @@
 		    },
 		    createFilter(queryString) {
 		        return (restaurant) => {
-		          return (restaurant.wareHouseName.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+		          return (restaurant.name.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
 		        };
 		    },
 			//当前选择的仓库
@@ -154,7 +157,8 @@
 		    	}else if(scope.row.changeQty <= 0){
 		    		scope.row.changeQty = 0;
 		    	}
-		    },
+            },
+            // 查询所有仓库数据
         	artgetallstock(){
         		var obj = {
                 	params:this.dataForm
@@ -167,7 +171,25 @@
 			          	this.$message.error("服务器错误");
 		          	}
 	                })
-        	},
+            },
+            // 根据类型查询仓库列表
+            getWarelistByType(){
+                this.restaurants = [
+          { "id": "1", "name": "长宁区新渔路144号" },
+           { "id": "2", "name": "22222" },
+        ]
+        console.log("第一次获取数据");
+        console.log(this.restaurants);
+        return;
+                var obj  = {
+                    type:1
+                }
+                 warelistByType(obj).then((res)=>{
+                     if(res.code==200){
+                         this.restaurants = res.data;
+                     }
+                })
+            },
         	changePage(){
 		    	this.$emit("addoraditList");
 		    },

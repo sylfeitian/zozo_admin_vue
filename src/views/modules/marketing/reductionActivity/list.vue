@@ -34,7 +34,7 @@
                 range-separator="-"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
-                value-format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd HH:mm:ss"
                 @blur='acttime'>
 			</el-date-picker>
 		    </el-form-item>

@@ -282,4 +282,9 @@
 	    margin-right: 0px;
 	    margin-left: 20px;
 	}
+    .myGridTree .el-tree img{
+    width:60px;
+    height: 60px;
+    padding:8px;
+    }
 </style>

@@ -93,7 +93,11 @@ export const getStyleName = params => { return http.get(`${base}/look/folder/sty
 
 //仓库管理--------------------------------------------------------------------------------------------------------
 // 获取所有仓库
-export const getallstockname = params => { return http.get(`${base}/wareHouse/odoGoods/houseName`, params).then(res => res.data); };
+// export const getallstockname = params => { return http.get(`${base}/wareHouse/odoGoods/houseName`, params).then(res => res.data); };
+
+// 根据类型查询仓库列表
+export const warelistByType = params => { return http.get(`${base}/ware/${params.type}/list`, params).then(res => res.data); };
+
 // 获取弹框仓库商品
 export const getallstock = params => { return http.get(`${base}/wareHouse/odoGoods/stock/page`, params).then(res => res.data); };
 // 保存商品  

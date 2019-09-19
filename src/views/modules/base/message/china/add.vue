@@ -1,7 +1,7 @@
 <template>
 	<!--新增的弹窗-->
-	<el-dialog title="新增分类" :visible.sync="showListVisible" width="50%" :before-close="handleClose">
-		<el-form :model="dataForm" label-width="140px" 	:rules="dataRule" class="demo-ruleForm" ref="addForm">
+	<el-dialog title="新增分类" :visible.sync="showListVisible" width="50%" :before-close="handleClose" >
+			<el-form :model="dataForm" label-width="140px" 	:rules="dataRule" class="demo-ruleForm" ref="addForm"  v-loading="loading">
 			<el-form-item v-if='dataForm.parentname' label="上级分类：" prop="gcName">
 				<el-input v-model="dataForm.parentname" type="text" :disabled="true" placeholder="dataForm.parentname" show-word-limit style="width:400px;"></el-input>
 			</el-form-item>
@@ -46,9 +46,6 @@
 				</el-select>
 				<el-button v-if="index+1 == dataForm.categoryJpId.length" @click="actadd" type="primary" style="margin-left: 20px;">添加</el-button>
 			</el-form-item>
-			
-		
-		
 		
 			<el-form-item label="测量方法：" prop="methodUrl" v-if="yijishow">
 				<div class="pcCoverUrl imgUrl" v-for="(item,index) in dataForm.methodUrlshow" @click="imgtype = 'rule'">
@@ -122,7 +119,7 @@
     		</el-form-item>
 		</el-form>
 
-		<span slot="footer" class="dialog-footer">
+		<span slot="footer" class="dialog-footer" v-if="!loading">
             <el-button @click="closeadd">取消</el-button>
             <el-button type="primary" @click="actuploaddata('addForm')">确 定</el-button>
         </span>
@@ -165,6 +162,7 @@
 	    	}
 	    };
 	    return {
+			loading:false,
 	    	erjishow: true,  //二级没有评价类型
 	    	yijishow: true,  //一级不用上传图片
 //	    	selectdisabled: false, //是否可以选择一级分类
@@ -215,19 +213,25 @@
 	  created () {
 	  },
 	  methods: {
-	  	actselectchange(){
-	  		if(this.dataForm.parentId == 0){   //添加一级
-	  			this.erjishow = true;
-	  			this.yijishow = false;
-	  			this.dataForm.appraisal = null;  //一级没有评价类型
-	  		}else{
-	  			this.erjishow = false;
-	  			this.yijishow = true;
-	  		}
-	  	},
 	  	init(row){
 	  		this.showListVisible = true;
-	  		categoryCn().then((res)=>{
+	  		this.$nextTick(()=>{
+				if(row){
+					this.dataForm.parentId = row.id;
+				}
+				this.loading =  true;
+				Promise.all([
+					this.getGoodKindList1(),
+					this.getCategoryJp()
+				]).then(() => {
+					this.loading = false
+				})
+			   this.actselectchange();
+			})
+		},
+	 	 // 获取一级分类列表
+		getGoodKindList1(){
+			return categoryCn().then((res)=>{
 	  			if(res.code == 200){
 	  				console.log(res.data);
 	  				res.data.forEach((item)=>{
@@ -241,8 +245,10 @@
 	  		}).catch(()=>{
 	  			this.$message("服务器错误");
 	  		})
-	  		
-	  		searchCategoryJp().then((res)=>{
+		},
+		// 获取日本分类列表
+		getCategoryJp(){
+			return searchCategoryJp().then((res)=>{
 	  			if(res.code == 200){
 	  				console.log(res.data);
 	  				res.data.forEach((item)=>{
@@ -254,14 +260,20 @@
 	  		}).catch(()=>{
 	  			this.$message("服务器错误");
 	  		})
-	  		this.$nextTick(()=>{
-				if(row){
-					this.dataForm.parentId = row.id;
-				}
-			   this.actselectchange();
-			})
-	  	},
-		  actuploaddata(formName){  //确定提交  
+		},
+		//  判断是否是一级，啦显示不同的选项
+		actselectchange(){
+	  		if(this.dataForm.parentId == 0){   //添加一级
+	  			this.erjishow = true;
+	  			this.yijishow = false;
+	  			this.dataForm.appraisal = null;  //一级没有评价类型
+	  		}else{
+	  			this.erjishow = false;
+	  			this.yijishow = true;
+	  		}
+		  },
+		//   提交
+		actuploaddata(formName){  //确定提交  
 		  	if(this.yijishow && this.dataForm.methodUrlshow.length==0){
 				this.$message("测量方法至少上传一张图片");
 				return
