@@ -135,6 +135,23 @@
         components:{
             imgCropper
         },
+        watch:{
+            'dataForm.styleName':function(newV,oldV) {
+                var chinese = 0;
+                var character = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chinese = chinese + 2;
+                    } else { //字符
+                        character = character + 1;
+                    }
+                    var count = chinese + character;
+                    if (count > 12) { //输入字符大于12的时候过滤
+                        this.dataForm.styleName = newV.replace(newV[i], "")
+                    }
+                }
+            }
+            },
         created () {
             // this.dataForm.styleType = this.options[0].id;
         },
