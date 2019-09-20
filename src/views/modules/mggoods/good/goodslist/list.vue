@@ -80,7 +80,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="可售状态：">
-        <el-select v-model="dataFormShow.japanShowWeb" placeholder="请选择">
+        <el-select v-model="dataFormShow.sellState" placeholder="请选择">
           <el-option
             v-for="item in stateOptions"
             :key="item.id"
@@ -203,8 +203,8 @@
       <el-table-column label="可售状态" align="center">
         <template slot-scope="scope">
           <div>
-            <span v-if="scope.row.japanShowWeb == 'true' ">可售</span>
-            <span v-if="scope.row.japanShowWeb== 'false' ">不可售</span>
+            <span v-if="scope.row.sellState == 1 ">可售</span>
+            <span v-if="scope.row.sellState== 0 ">不可售</span>
           </div>
         </template>
       </el-table-column>
