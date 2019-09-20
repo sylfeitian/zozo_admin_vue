@@ -217,10 +217,18 @@
         <template slot-scope="scope">
           <!--                    <el-button size="mini" type="text" @click="detShowChange(scope.row)">查看详情</el-button>-->
           <el-button @click="editList(scope.row)" type="text" size="mini">编辑</el-button>
-          <el-button @click="cotrolGoodsShow('singe',scope.row)" type="text" size="mini">
-            <span v-if="scope.row.showWeb==0 || scope.row.showWeb==2">上架</span>
-            <span v-if="scope.row.showWeb==1" class="artclose">下架</span>
-            <!-- <span  v-if="scope.row.goodsShow==2"   style="color:#FF0000">未上架</span> -->
+          <el-button 
+            @click="cotrolGoodsShow('singe',scope.row)"  
+            :disabled="scope.row.japanShowWeb== 'false'"
+            v-if="scope.row.showWeb==0 || scope.row.showWeb==2" 
+            type="text" size="mini">
+            <span>上架</span>
+          </el-button>
+          <el-button  
+            @click="cotrolGoodsShow('singe',scope.row)" 
+            v-if="scope.row.showWeb==1" class="artclose" 
+            type="text" size="mini">
+            <span >下架</span>
           </el-button>
         </template>
       </el-table-column>
@@ -505,6 +513,14 @@ export default {
         showWeb = rowOrstatus;
       } else {
         //单个
+        if(rowOrstatus.japanShowWeb=="false"){
+            this.$message({
+              message: "不可售商品不能上下架",
+              type: "warning",
+              duration: 1500
+            });
+            return;
+        }
         ids = [rowOrstatus.id];
         showWeb = rowOrstatus.showWeb == 1 ? 2 : 1;
       }

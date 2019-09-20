@@ -24,6 +24,7 @@
             detShowChange (row) {
                 this.detailVisible = true;
                 this.mainVisible = false;
+                row.origin = "recordinformation"
                 this.$nextTick(()=>{
                     this.$refs.detailCompon.init(row);
                 })
