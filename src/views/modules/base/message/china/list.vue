@@ -421,9 +421,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.el-table__empty-block {
-  display: none;
-}
 .el-tree-node__content {
   border: 1px solid #d1d1d1;
 }
