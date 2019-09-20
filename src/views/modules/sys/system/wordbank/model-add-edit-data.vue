@@ -9,7 +9,6 @@
     >
         <el-form
                 :model="dataForm"
-                :rules="dataRule"
                 ref="addForm"
                 @keyup.enter.native="dataFormSubmit('addForm')"
                 label-width="120px"
@@ -45,14 +44,6 @@
                 dataForm: {
                     chineseVocabulary :"",
                     japaneseWord: "",
-                },
-                dataRule : {
-                    chineseVocabulary : [
-                        { required: true, message: '必填项不能为空', trigger: 'blur' },
-                    ],
-                    japaneseWord : [
-                        { required: true, message: '必填项不能为空', trigger: 'blur' },
-                    ]
                 },
                 optionsApplication: [],
                 optionsRight: [],

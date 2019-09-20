@@ -10,7 +10,6 @@
         <el-form
                 :model="dataForm"
                 ref="addForm"
-                :rules="dataRule"
                 @keyup.enter.native="dataFormSubmit('addForm')"
                 label-width="120px"
         >
@@ -44,14 +43,6 @@
                 dataForm: {
                     dictName: "",
                     dictValue: ""
-                },
-                dataRule : {
-                    dictName : [
-                        { required: true, message: '必填项不能为空', trigger: 'blur' },
-                    ],
-                    dictValue : [
-                        { required: true, message: '必填项不能为空', trigger: 'blur' },
-                    ]
                 },
                 title:'',
                 row:"",
