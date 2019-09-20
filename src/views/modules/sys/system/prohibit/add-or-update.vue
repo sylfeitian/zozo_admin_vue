@@ -10,7 +10,7 @@
         <el-form
                 :model="dataForm"
                 :rules="dataRule"
-                ref="dataForm"
+                ref="addForm"
                 @keyup.enter.native="dataFormSubmit('dataForm')"
                 label-width="120px"
         >
