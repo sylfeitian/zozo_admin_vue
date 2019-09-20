@@ -50,9 +50,16 @@ export const getsizeJPdata = `${base}/sizejp/page`;
 //出库单管理
 export const getstockdata = `${base}/wareHouse/odo/list/page`;
 //当前仓库的商品
-export const getallstock  = `${base}/wareHouse/odoGoods/stock/page`;
+// export const getallstock  = `${base}/wareHouse/odoGoods/stock/page`;
 //保存添加的商品
 export const addstock  = `${base}/wareHouse/odoGoods/add`;
+
+// 出库单分页
+export const warehouserecordsodoListPage  = `${base}/warehouserecordsodo/list/page`;
+// 添加出库单商品列表查询
+export const warehouserecordsodoPageUrl  = `${base}/warehouserecordsodo/page`;
+
+
 
 // 商品管理--------------------------------------------------------------------------------------------------------------------
 // 商品列表

@@ -90,7 +90,7 @@
                     <span>日期范围</span>&nbsp;
                     <el-date-picker
                             v-model="valuetime"
-                            type="datetimerange"
+                            type="daterange"
                             value-format="yyyy-MM-dd HH:mm:ss"
                             align="right"
                             unlink-panels
@@ -170,7 +170,7 @@ export default {
             memberPoints:'',//兑换优惠券用的积分数
             validityPeriodType:"0",//有效期类型，0：日期范围，1：固定天数
             startTime:'',//生效日期
-            endTime:'',// 截止日期 
+            endTime:'',// 截止日期
         },
         validityPeriodType:"0",
         row:"",
@@ -234,7 +234,7 @@ export default {
     }
   },
   components:{
-  	
+
   },
   created(){
       if(!this.type){
@@ -253,7 +253,7 @@ export default {
                 memberPoints:'',//兑换优惠券用的积分数
                 validityPeriodType:"0",//有效期类型，0：日期范围，1：固定天数
                 startTime:'',//生效日期
-                endTime:'',// 截止日期 
+                endTime:'',// 截止日期
             }
         }
   },
@@ -279,18 +279,18 @@ export default {
 	     		this.value1isshow = false;
 		  		this.dataForm.value1 = '';
 	     	}
-	   		
-	   		
+
+
 				//选择了结束时间
 				if(newV.getEndTime){
 	      	this.value2isshow = true;
 	   		}else{    //清空了结束时间
 	     		this.value2isshow = false;
 		  		this.dataForm.value2 = '';
-	     	}    		
+	     	}
      	}
 		}
-	
+
   },
   methods: {
       //编辑详情接口方法
@@ -310,7 +310,7 @@ export default {
             this.$emit('changePage')
         },
   		artvalue1time(){
-		  	if(this.dataForm.value1){  
+		  	if(this.dataForm.value1){
 						this.value2timedisabled = false;
 	      	}else{
 	      		this.value2timedisabled = true;
@@ -360,7 +360,7 @@ export default {
                       validityDays:  this.dataForm.validityDays,//有效天数 ,
                       validityPeriodType:  this.validityPeriodType,//有效期类型，0：日期范围，1：固定天数
                   }
-                    if(this.editSatusId) obj.id = this.editSatusId//优惠券活动id 
+                    if(this.editSatusId) obj.id = this.editSatusId//优惠券活动id
                   var fn = this.type?editActivityPoint:addActivityPoint;
                   fn(obj).then((res) => {
                       this.loading = false;
@@ -388,7 +388,7 @@ export default {
               }
           })
       },
-        
+
   }
 };
 </script>
@@ -420,5 +420,5 @@ input[type="number"]{
 }
 .artvalue12time{
 	 margin: -55px 0 0 231px;
-}   
+}
 </style>

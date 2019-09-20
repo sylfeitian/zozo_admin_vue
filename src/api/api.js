@@ -91,11 +91,22 @@ export const getStyleName = params => { return http.get(`${base}/look/folder/sty
 
 
 
+
 //仓库管理--------------------------------------------------------------------------------------------------------
 // 获取所有仓库
-export const getallstockname = params => { return http.get(`${base}/wareHouse/odoGoods/houseName`, params).then(res => res.data); };
+// export const getallstockname = params => { return http.get(`${base}/wareHouse/odoGoods/houseName`, params).then(res => res.data); };
+
+
 // 获取弹框仓库商品
 export const getallstock = params => { return http.get(`${base}/wareHouse/odoGoods/stock/page`, params).then(res => res.data); };
+// 保存商品  
+// export const addodoGoods = params => { return http.post(`${base}/wareHouse/odoGoods/add`, params).then(res => res.data); };
+export const warehouserecordsodoAdd = params => { return http.post(`${base}/warehouserecordsodo/add`, params).then(res => res.data); };
+
+// 根据类型查询仓库列表
+export const warelistByType = params => { return http.get(`${base}/ware/${params.type}/list`, params).then(res => res.data); };
+// 根据ID获取仓库信息
+// export const wareInfoById = params => { return http.get(`${base}/ware/${params.id}`, params).then(res => res.data); };
 // 保存商品
 export const addodoGoods = params => { return http.post(`${base}/wareHouse/odoGoods/add`, params).then(res => res.data); };
 
@@ -123,7 +134,8 @@ export const showCategoryCn = params => { return http.put(`${base}/categoryCn/sh
 export const categoryCnSort = params => { return http.put(`${base}/categoryCn/sort`, params).then(res => res.data); };
 // 根据分类id查询中方分类
 export const backScanCategoryCn = params => { return http.get(`${base}/categoryCn/${params.id}`, params).then(res => res.data); };
-
+// 校验中国分类名称是否重复
+export const categoryCnVerifyName = params => { return http.put(`${base}/categoryCn/verifyName?name=${params.name}&parentId=${params.parentId}`, params).then(res => res.data); };
 
 
 
@@ -542,9 +554,9 @@ export const areaByParentId = params => { return http.get(`${base}/area/parent/$
 
 //备案商品管理接口--------------------------------------------------------------------------------------------------------------------
 // 导出备案商品信息
-export const exportRegister = params => { return http.get(`${base}/goods/register/export`, params).then(res => res.data); };
+// export const exportRegister = params => { return http.get(`${base}/goods/register/export`, params).then(res => res.data); };
 // 导入商品备案信息
-export const importRegister = params => { return http.post(`${base}/goods/register/import`, params).then(res => res.data); };
+// export const importRegister = params => { return http.post(`${base}/goods/register/import`, params).then(res => res.data); };
 // 备案商品分页查询接口
 export const registerPage = params => { return http.get(`${base}/goods/register/page`, params).then(res => res.data); };
 // 根据商品的spuid查询商品的备案信息
@@ -671,7 +683,7 @@ export const backScanShoplabel = params => { return http.get(`${base}/shoplabel/
 
 //商品管理接口--------------------------------------------------------------------------------------------------------------------
 // 商品详细信息
-export const backScanZozogoods = params => { return http.get(`${base}/zozogoods/?id=${params.id}`, params).then(res => res.data); };
+export const backScanZozogoods = params => { return http.get(`${base}/zozogoods/goodsCsJpInfo?id=${params.id}`, params).then(res => res.data); };
 // 商品保存
 export const saveZozogoods = params => { return http.post(`${base}/zozogoods`, params).then(res => res.data); };
 // 商品分页

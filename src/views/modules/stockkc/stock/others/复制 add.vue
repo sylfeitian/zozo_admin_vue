@@ -66,7 +66,7 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import showData from './model-show-data'
-    import { getallstock,addodoGoods} from "@/api/api"      //获取仓库，保存商品
+    // import { getallstock,addodoGoods} from "@/api/api"      //获取仓库，保存商品
     export default {
         mixins: [mixinViewModule],
         data () {

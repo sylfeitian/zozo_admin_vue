@@ -1,7 +1,7 @@
 <template>
 	<!--新增的弹窗-->
-	<el-dialog title="新增分类" :visible.sync="showListVisible" width="50%" :before-close="handleClose">
-		<el-form :model="dataForm" label-width="140px" 	:rules="dataRule" class="demo-ruleForm" ref="addForm">
+	<el-dialog title="新增分类" :visible.sync="showListVisible" width="50%" :before-close="handleClose" >
+			<el-form :model="dataForm" label-width="140px" 	:rules="dataRule" class="demo-ruleForm" ref="addForm"  v-loading="loading">
 			<el-form-item v-if='dataForm.parentname' label="上级分类：" prop="gcName">
 				<el-input v-model="dataForm.parentname" type="text" :disabled="true" placeholder="dataForm.parentname" show-word-limit style="width:400px;"></el-input>
 			</el-form-item>
@@ -20,7 +20,7 @@
 				</el-select>
 				</el-form-item>
 			<el-form-item label="分类名称：" prop="name">
-				<el-input v-model="dataForm.name " type="text" placeholder="请输入4个汉字/8个字符以内的内容" show-word-limit style="width:400px;"></el-input>
+				<el-input v-model="dataForm.name " type="text" placeholder="请输入4个汉字/8个字符以内的内容" style="width:400px;"></el-input>
 			</el-form-item>
 			<el-form-item label="排序：" prop="sort">
 				<el-input v-model="dataForm.sort" type="text" placeholder="0-255" show-word-limit style="width:200px;"></el-input>
@@ -46,9 +46,6 @@
 				</el-select>
 				<el-button v-if="index+1 == dataForm.categoryJpId.length" @click="actadd" type="primary" style="margin-left: 20px;">添加</el-button>
 			</el-form-item>
-			
-		
-		
 		
 			<el-form-item label="测量方法：" prop="methodUrl" v-if="yijishow">
 				<div class="pcCoverUrl imgUrl" v-for="(item,index) in dataForm.methodUrlshow" @click="imgtype = 'rule'">
@@ -122,7 +119,7 @@
     		</el-form-item>
 		</el-form>
 
-		<span slot="footer" class="dialog-footer">
+		<span slot="footer" class="dialog-footer" v-if="!loading">
             <el-button @click="closeadd">取消</el-button>
             <el-button type="primary" @click="actuploaddata('addForm')">确 定</el-button>
         </span>
@@ -135,27 +132,24 @@
 
 <script>
 	import imgCropper from "@/components/model-photo-cropper";
-	import { categoryCn,searchCategoryJp,uploadPicBase64 ,updataCategoryCn} from '@/api/api'   //查询一级分类   查询日本分类  图片   提交
+	import { categoryCn,searchCategoryJp,uploadPicBase64 ,updataCategoryCn,categoryCnVerifyName} from '@/api/api'   //查询一级分类   查询日本分类  图片   提交
 	export default {
 	  data() {
-	  	//这里就是整个checkName啦，就是方法一的使用
 	    var checkName = (rule, value, callback) => {
-	            var len = 0;  
-	            for (var i=0; i<value.length; i++) {   
-	                var c = value.charCodeAt(i);   
-	                //单字节加1   
-	                if ((c >= 0x0001 && c <= 0x007e) || (0xff60<=c && c<=0xff9f)) {   
-	                    len++;   
-	                } else {   
-	                    len+=2;   
-	                }   
-	            };   
-	            if (len = 0 || len > 8) {
-	                //重点重点，下面就是填写提示的文字
-	                callback(new Error('名称长度不超过8个字符，一个中文字等于2个字符。'));
-	            } else {
-	                callback();
-	            }
+					// 校验中国分类名称是否重复
+					if(value){
+						var obj={name:value, parentId:0}
+						if(this.dataForm.parentId !==0){ //不是一级分类时
+							obj.parentId=this.dataForm.parentId
+						}
+						categoryCnVerifyName(obj).then((res)=>{
+							if(res.code == 200){
+								callback();
+							}else{
+								callback(new Error(res.msg));
+							}
+						})
+					}
 	    };
 	    var sortminmax = (rule, value, callback) => {
 	    	if(value >= 0 && value < 255){
@@ -165,6 +159,7 @@
 	    	}
 	    };
 	    return {
+			loading:false,
 	    	erjishow: true,  //二级没有评价类型
 	    	yijishow: true,  //一级不用上传图片
 //	    	selectdisabled: false, //是否可以选择一级分类
@@ -212,22 +207,44 @@
 	  components: {
 	  	imgCropper,
 	  },
-	  created () {
+		watch:{
+			'dataForm.name':function(newV,oldV) {
+				var chinese = 0,character = 0;
+				for (let i = 0; i < newV.length; i++) {
+					if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+						chinese = chinese + 2;
+					} else { //字符
+						character = character + 1;
+					}
+					var count = chinese + character;
+					if (count > 8) { //输入字符大于8的时候过滤
+						this.dataForm.name = newV.replace(newV[i], "")
+					}
+				}
+			}
+			},
+			created () {
 	  },
 	  methods: {
-	  	actselectchange(){
-	  		if(this.dataForm.parentId == 0){   //添加一级
-	  			this.erjishow = true;
-	  			this.yijishow = false;
-	  			this.dataForm.appraisal = null;  //一级没有评价类型
-	  		}else{
-	  			this.erjishow = false;
-	  			this.yijishow = true;
-	  		}
-	  	},
 	  	init(row){
 	  		this.showListVisible = true;
-	  		categoryCn().then((res)=>{
+	  		this.$nextTick(()=>{
+				if(row){
+					this.dataForm.parentId = row.id;
+				}
+				this.loading =  true;
+				Promise.all([
+					this.getGoodKindList1(),
+					this.getCategoryJp()
+				]).then(() => {
+					this.loading = false
+				})
+			   this.actselectchange();
+			})
+		},
+	 	 // 获取一级分类列表
+		getGoodKindList1(){
+			return categoryCn().then((res)=>{
 	  			if(res.code == 200){
 	  				console.log(res.data);
 	  				res.data.forEach((item)=>{
@@ -241,8 +258,10 @@
 	  		}).catch(()=>{
 	  			this.$message("服务器错误");
 	  		})
-	  		
-	  		searchCategoryJp().then((res)=>{
+		},
+		// 获取日本分类列表
+		getCategoryJp(){
+			return searchCategoryJp().then((res)=>{
 	  			if(res.code == 200){
 	  				console.log(res.data);
 	  				res.data.forEach((item)=>{
@@ -254,14 +273,20 @@
 	  		}).catch(()=>{
 	  			this.$message("服务器错误");
 	  		})
-	  		this.$nextTick(()=>{
-				if(row){
-					this.dataForm.parentId = row.id;
-				}
-			   this.actselectchange();
-			})
-	  	},
-		  actuploaddata(formName){  //确定提交  
+		},
+		//  判断是否是一级，啦显示不同的选项
+		actselectchange(){
+	  		if(this.dataForm.parentId == 0){   //添加一级
+	  			this.erjishow = true;
+	  			this.yijishow = false;
+	  			this.dataForm.appraisal = null;  //一级没有评价类型
+	  		}else{
+	  			this.erjishow = false;
+	  			this.yijishow = true;
+	  		}
+		  },
+		//   提交
+		actuploaddata(formName){  //确定提交  
 		  	if(this.yijishow && this.dataForm.methodUrlshow.length==0){
 				this.$message("测量方法至少上传一张图片");
 				return

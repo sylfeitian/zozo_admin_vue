@@ -114,7 +114,7 @@
                 subDataVisible:false,
                 mainDataVisible:false,
                 isIndeterminate: false,
-                checkAll: false,
+                checkAll: false
             }
         },
         components: {
@@ -122,6 +122,22 @@
             subData,
             addEditData,
             mainData
+        },
+        watch:{
+            'dataFormShow.styleName':function(newV,oldV) {
+                var chinese=0;var character=0;
+                for(let i=0;i<newV.length;i++){
+                    if(/^[\u4e00-\u9fa5]*$/.test(newV[i])){ //汉字
+                        chinese=chinese+2;
+                    }else{ //字符
+                        character=character+1;
+                    }
+                    var count=chinese+character;
+                    if(count>300){ //输入字符大于300的时候过滤
+                        this.dataFormShow.styleName = newV.replace(newV[i],"")
+                    }
+                }
+            }
         },
         created () {
             this.dataFormShow.styleType = this.options && this.options[0].id;

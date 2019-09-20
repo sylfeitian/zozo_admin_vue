@@ -1,11 +1,15 @@
 <template>
     <div>
         <Bread :breaddata="breaddata" @changePage="changePage" :index="'1'"></Bread>
+
+        <div  v-loading="backScanLoading"  v-if="backScanLoading" style="min-height:400px">
+        </div>
         <el-form
                 ref="dataForm"
                 class="grayLine topGapPadding"
                 :model="dataForm"
                 style="margin-left: 20px;margin-bottom: 100px;"
+                v-if="!backScanLoading"
         >
             <el-form-item label="商品分类：" class="item" style="margin-top: 20px;">
                 <span>{{dataForm.firstCategory}}</span>-->
@@ -29,7 +33,6 @@
                 <span>{{dataForm.storeName}}</span>
             </el-form-item>
             <el-form-item label="主品牌：" class="item">
-<!--                <span>{{}}</span>-->
                 <template>
                     <span v-if="dataForm.brands && dataForm.brands.length!=0 && dataForm.brands[0].isMainBrand==1">{{dataForm.brands[0].brandName}}</span>
                 </template>
@@ -66,7 +69,6 @@
                 <span>{{dataForm.salePrice}}</span>
             </el-form-item>
             <el-form-item label="价格标识：" class="item">
-<!--                <span>{{dataForm.salePlan}}</span>-->
                 <template>
                     <span v-if="dataForm.salePlan==0">关税计算</span>
                     <span v-if="dataForm.salePlan==1">品牌方设定</span>
@@ -75,7 +77,6 @@
                     <span v-if="dataForm.priceType=='sale'">促销价</span>
                     <span v-if="dataForm.priceType=='proper'">标准价</span>
                 </template>
-<!--                <span>{{dataForm.priceType}}</span>-->
             </el-form-item>
             <el-form-item label="原产地：" class="item">
                 <span>{{dataForm.madeInJp}}</span>
@@ -123,9 +124,11 @@
                         </template>
                     </el-table-column>
                     <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
-                    <el-table-column prop="sellState" label="是否可售" align="center"></el-table-column>
+                    <!-- <el-table-column prop="sellState" label="是否可售" align="center"></el-table-column> -->
                     <el-table-column prop="sellStartDate" label="售卖开始时间" align="center"></el-table-column>
                     <el-table-column prop="sellEndDate" label="售卖结束时间" align="center"></el-table-column>
+                    <el-table-column prop="cartLimit" label="日本限购数量" align="center"></el-table-column>
+                    <el-table-column prop="limitPerCustomer" label="日本每人限购数量" align="center"></el-table-column>
                     <el-table-column prop="sellPrice" label="售价(RMB)" align="center">
                         <template
                                 slot-scope="scope"
@@ -184,7 +187,6 @@
     import Bread from "@/components/bread";
     import quillEditorImg from "@/components/quillEditor"
     import addEditData from './model-edit-data'
-    import mixinViewModule from '@/mixins/view-module'
     import { backScanZozogoods, saveZozogoods } from '@/api/api'
     import sizeData from './model-size'
 
@@ -193,11 +195,11 @@
     import 'quill/dist/quill.bubble.css';
     import Quill from 'quill'
     export default {
-        mixins: [mixinViewModule],
         data () {
             return {
                 breaddata: [ "商品管理","商品列表", "编辑商品"],
                 addEditDataVisible: false,
+                backScanLoading:false,
                 dataForm: {
                     name:"",
                     madeIn:"",
@@ -226,18 +228,25 @@
                 this.row = row;
                 this.$nextTick(()=>{
                     if(row){
-                        var obj  = {
-                            id:row.id
-                        }
-                        backScanZozogoods(obj).then((res)=>{
-                            console.log('详情',res.data)
-                            if(res.code == 200){
-                                this.dataForm = res.data;
-                            }
-                        })
+                        this.backScan(row);
                     }
                 })
             },
+            // 回显数据
+            backScan(row){
+                var obj  = {
+                    id:row.id
+                }
+                this.backScanLoading = true;
+                backScanZozogoods(obj).then((res)=>{
+                    this.backScanLoading = false;
+                    console.log('详情',res.data)
+                    if(res.code == 200){
+                        this.dataForm = res.data;
+                    }
+                })
+            },
+            // 富文本编辑器修改值
             artmessageContent(messageContent){
                 this.dataForm.messageContent = messageContent;
             },

@@ -57,24 +57,35 @@
             <el-table-column
                 prop="memberName"
                 label="会员账号"
+                 align="center"
                 width="180">
             </el-table-column>
              <el-table-column
                 prop="createDate"
                 label="使用时间"
+                 align="center"
                 width="180">
             </el-table-column>
             <el-table-column
                 prop="orderSn"
+                 align="center"
                 label="订单编号">
             </el-table-column>
             <el-table-column
                 prop="goodsAmount"
+                 align="center"
                 label="订单总金额">
+                 <template slot-scope="scope">
+                   ￥{{scope.row.goodsAmount}}
+                </template>
             </el-table-column>
             <el-table-column
+             align="center"
                 prop="orderAmount"
                 label="订单满减后价格">
+                 <template slot-scope="scope">
+                    ￥{{scope.row.goodsAmount}}
+                </template>
             </el-table-column>
         </el-table>
         <!-- 分页 -->

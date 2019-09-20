@@ -66,7 +66,7 @@
                 </el-date-picker>
             </el-form-item>
             <el-form-item label="活动限制：">
-                <el-checkbox-group v-model="activiDataForm.checkList">
+                <el-checkbox-group v-model="checkList">
                     <el-checkbox :label="true">不可使用优惠券</el-checkbox>
                 </el-checkbox-group>
             </el-form-item>
@@ -143,8 +143,8 @@
                     reducePrice:'',
                     rule1:'',
                     rule2: '',
-                    checkList:false
                 },
+                checkList:false,
                 ruleName:'rule1'
             }
         },
@@ -171,9 +171,9 @@
             backScan(){
               this.activiDataForm = this.row;
               if(this.row.shareFlag==1){
-                  this.activiDataForm.checkList = true;
+                  this.checkList = true;
               }else{
-                    this.activiDataForm.checkList = false;
+                 this.checkList = false;
               }
                this.activiDataForm.rule1 =this.activiDataForm.limitPrice 
                 this.activiDataForm.rule2 =this.activiDataForm.reducePrice 
@@ -204,7 +204,7 @@
                             "endTime": this.activiDataForm.endTime,//活动结束时间 ,
                             "limitPrice": this.activiDataForm.limitPrice,// 满减限制金额 ,
                             "reducePrice": this.activiDataForm.reducePrice,//满减金额 ,
-                            "shareFlag": this.activiDataForm.checkList?1:0,//能否共享优惠券活动标识,0:不共享，1:共享 ,
+                            "shareFlag": this.checkList?1:0,//能否共享优惠券活动标识,0:不共享，1:共享 ,
                             "startTime": this.activiDataForm.startTime,//活动开始时间 ,
                             "title": this.activiDataForm.title//活动标题
                         }
