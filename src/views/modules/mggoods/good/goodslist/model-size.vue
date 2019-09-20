@@ -49,7 +49,8 @@
             init (row,row2) {
                 this.visible = true;
                 this.row = row;
-                this.sizeId = this.dataList.sizeIdJp;
+                this.row2 = row2;
+                // this.sizeId = this.dataList.sizeIdJp;
                 this.spuid = this.dataList.idJp;
                 this.$nextTick(() => {
                     // this.$refs['addForm'].resetFields();
@@ -59,18 +60,20 @@
             },
             // 编辑回显
             backScan(){
+                console.log(this.row);
+                  console.log(this.row2);
                 if(!this.row.idJp){
                     this.$message.error("后端返回的idJp为空")
                     this.closeDialog();
                     return;
-                }else if(!this.row2.sizeId){
-                    this.$message.error("后端返回的sizeId为空")
+                }else if(!this.row2.sizeIdJp){
+                    this.$message.error("后端返回的sizeIdJp为空")
                     this.closeDialog();
                     return;;
                 }
                 var obj  = {
                     spuId:this.row.idJp,
-                    sizeId: this.row2.sizeId
+                    sizeIdJp: this.row2.sizeIdJp
                 }
                 this.dataListLoading = true;
                 getZozogoodsSize(obj).then((res)=>{

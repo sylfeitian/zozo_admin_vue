@@ -698,7 +698,7 @@ export const showBatchGoods = params => { return http.put(`${base}/zozogoods/sho
 // 单个商品上下架状态修改
 export const showGoods = params => { return http.put(`${base}/zozogoods/show/${params.id}?showWeb=${params.showWeb}&showType=${params.showType}`, params).then(res => res.data); };
 // 获取商品尺码信息
-export const getZozogoodsSize = params => { return http.get(`${base}/zozogoods/size/item?spuId=${params.spuId}&sizeId=${params.sizeId}`, params).then(res => res.data); };
+export const getZozogoodsSize = params => { return http.get(`${base}/zozogoods/size/item?spuId=${params.spuId}&sizeIdJp=${params.sizeIdJp}`, params).then(res => res.data); };
 // 查询中国分类列表
 export const backScanCategorys = params => { return http.get(`${base}/zozogoods/categorys`, params).then(res => res.data); };
 // 查询品牌列表

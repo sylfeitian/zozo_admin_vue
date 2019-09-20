@@ -8,7 +8,7 @@
                     ref="dataForm"
                     class="grayLine topGapPadding"
                     :model="dataForm"
-                    @keyup.enter.native="getDataList()"
+                    @keyup.enter.native="getData()"
                     style="margin-left: 20px;"
             >
                 <el-form-item label="商品分类：" class="item" style="margin-top: 20px;">
@@ -176,11 +176,11 @@
         </div>
 
         <!-- 备案 -->
-        <addEditData :idJp="dataForm.idJp" v-if="addEditDataVisible" ref="addEditData" @searchDataList="getDataList"></addEditData>
+        <addEditData :idJp="dataForm.idJp" v-if="addEditDataVisible" ref="addEditData" @searchDataList="getData"></addEditData>
         <!-- 操作日志 -->
-        <operationallog :idJp="dataForm.idJp" v-if="operationallogVisible" ref="operationallogCompon" @searchDataList="getDataList" ></operationallog>
+        <operationallog :idJp="dataForm.idJp" v-if="operationallogVisible" ref="operationallogCompon" @searchDataList="getData" ></operationallog>
         <!-- 尺码信息 -->
-        <sizeData v-if="sizeDataVisible" ref="sizeDataCompon" @searchDataList="getDataList"></sizeData>
+        <sizeData v-if="sizeDataVisible" ref="sizeDataCompon" @searchDataList="getData"></sizeData>
     </div>
 </template>
 
@@ -225,6 +225,9 @@
 
         },
         methods: {
+            getData(){
+
+            },
             operational (index=-1,row="") {
                 this.setOperationalVisible(true);
                 this.$nextTick(() => {
