@@ -240,13 +240,12 @@
                     if (valid) {
                         this.loading = true;
                         var obj = {
-                            id:  this.dataForm.id,
-                            styleName:  this.dataForm.styleName,
-                            // styleType:  this.dataForm.styleType,
-                            gender:  this.dataForm.gender,
-                            imgUrl:  this.dataForm.imgUrl,
-                            sort:  this.dataForm.sort,
-                            description: this.dataForm.description,
+                            styleName:  this.dataForm.styleName,//标签名 ,
+                            styleType:  this.dataForm.styleType,// 0 主 1 副
+                            gender:  this.dataForm.gender,//性别(0:男 1:女 2:儿童) ,
+                            imgUrl:  this.dataForm.imgUrl,//主图 ,
+                            sort:  this.dataForm.sort,//排序 ,
+                            description: this.dataForm.description,//描述 
                         }
                         if(this.row) obj.id = this.row.id
                         var fn = updateShopStyle;

@@ -58,7 +58,8 @@ export const addstock  = `${base}/wareHouse/odoGoods/add`;
 export const warehouserecordsodoListPage  = `${base}/warehouserecordsodo/list/page`;
 // 添加出库单商品列表查询
 export const warehouserecordsodoPageUrl  = `${base}/warehouserecordsodo/page`;
-
+// 查看出库单弹框详情
+export const warehouserecordsodoStockPageUrl  = `${base}/warehouserecordsodo/stock/page`;
 
 
 // 商品管理--------------------------------------------------------------------------------------------------------------------

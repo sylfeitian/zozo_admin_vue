@@ -63,14 +63,14 @@
                 layout="total, sizes, prev, pager, next, jumper">
         </el-pagination>
         <!-- 弹窗, 查看 -->
-        <showData  v-if="showDataVisible" ref="showData" @searchDataList="getDataList"></showData>
+        <showDetail  v-if="showDetailVisible" ref="showDetail" @searchDataList="getDataList"></showDetail>
     </div>
 </template>
 
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
-    import showData from './model-show-data'
+    import showDetail from './model-show-detail'
     import {warehouserecordsodoListPage} from '@/api/url'
     export default {
         mixins: [mixinViewModule],
@@ -96,12 +96,12 @@
                 timeArr: "", //出库时间
                 dataList: [],
                 dataListLoading: false,
-                showDataVisible:false,
+                showDetailVisible:false,
             }
         },
         components: {
             Bread,
-            showData
+            showDetail
         },
         watch:{
 			valuetime(val){
@@ -138,13 +138,13 @@
                 this.$emit("addOrAdit",id);
             },
             showDetail(index=-1,row=""){
-                this.setShowDataVisible(true);
+                this.setShowDetailVisible(true);
                 this.$nextTick(() => {
-                    this.$refs.showData.init(row)
+                    this.$refs.showDetail.init(row)
                 })
             },
-            setShowDataVisible(boolargu){
-                this.showDataVisible =  boolargu;
+            setShowDetailVisible(boolargu){
+                this.showDetailVisible =  boolargu;
             },
             reset(formName) {
                 this.dataForm.documentNo = null;

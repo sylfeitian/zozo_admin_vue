@@ -12,8 +12,8 @@
 			      @select="handleSelect"
 			    ></el-autocomplete>
             </el-form-item>
-            <el-form-item prop="orderId" label="备注：">
-                <el-input v-model="dataForm.orderId" type="text" maxlength="500" placeholder="请输入备注内容" style="width:400px;"></el-input>
+            <el-form-item prop="remarks" label="备注：">
+                <el-input v-model="dataForm.remarks" type="text" maxlength="500" placeholder="请输入备注内容" style="width:400px;"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="saveGoods">保存</el-button>
@@ -39,17 +39,22 @@
                     <span>{{scope.$index+1}}</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="skuIdJp" label="skuID" align="center"></el-table-column>
+            <el-table-column prop="goodsCsId" label="skuID" align="center"></el-table-column>
             <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
             <el-table-column prop="spe" label="规格" align="center"></el-table-column>
-            <el-table-column prop="wareHouseName" label="所属仓库" align="center"></el-table-column>
-            <el-table-column prop="beforeQty" label="库存" align="center"></el-table-column>
+            <el-table-column prop="warehouseName" label="所属仓库" align="center"></el-table-column>
+            <el-table-column prop="quantity" label="库存" align="center"></el-table-column>
             <el-table-column prop="changeQty" label="变更数量" align="center">
             	<template slot-scope="scope">
                     <el-input v-model="scope.row.changeQty" type="number" @blur='artnumberinput(scope)' :max='Number(scope.row.beforeQty)' min='0'  placeholder="0" style="width:90px; text-align: center;"></el-input>
                 </template>
             </el-table-column>
-            <el-table-column prop="afterQty" label="变更后库存" align="center"></el-table-column>
+            <el-table-column prop="afterQty" label="变更后库存" align="center">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.changeQty">{{parseInt(scope.row.quantity) - parseInt(scope.row.changeQty)}}</span>
+                    <span v-else>{{scope.row.quantity}}</span>
+                </template>
+            </el-table-column>
             <el-table-column label="操作" align="center" width="180">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="deletelocaldata(scope.$index, scope.row)"type="text"size="mini">删除</el-button>
@@ -87,7 +92,8 @@
                 dataForm:{
                 	houseName: '', //所属仓库名  
                 	wareHouseId:'',   //仓库id  
-                	wareHouseName:'', //仓库name
+                    wareHouseName:'', //仓库name
+                    remarks:'',
                 },
                 wareItem:"",
                dataList:[],
@@ -114,8 +120,12 @@
         		if(this.dataList.length < 1){
         			this.$message('请添加商品')
         			return;
-        		}
-        		warehouserecordsodoAdd(this.dataList).then((data)=>{
+                }
+                var obj = {
+                    dtos:this.dataList,
+                    remarks:this.dataForm.remarks
+                }
+        		warehouserecordsodoAdd(obj).then((data)=>{
         			if(data.code == 200){
         				this.$message({
         					message:'保存成功',
@@ -159,7 +169,14 @@
 		    		scope.row.changeQty = scope.row.beforeQty;
 		    	}else if(scope.row.changeQty <= 0){
 		    		scope.row.changeQty = 0;
-		    	}
+                }
+                
+                if(scope.row.changeQty> scope.row.quantity){
+                    scope.row.changeQty = scope.row.quantity
+                    scope.row.afterQty = 0;
+                }else{
+                     scope.row.afterQty = parseInt(scope.row.quantity) - parseInt(scope.row.changeQty)
+                }
             },
             // // 查询所有仓库数据
         	// artgetallstock(){
