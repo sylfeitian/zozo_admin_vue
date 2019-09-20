@@ -3,7 +3,7 @@
 		<el-dialog title="新增分类" :visible.sync="showListVisible" width="50%" :before-close="handleClose">
 			<el-form :model="dataForm" label-width="140px" 	:rules="dataRule" class="demo-ruleForm" ref="addForm">
 		    <el-form-item v-if='dataForm.parentname' label="上级分类：" prop="gcName">
-            <el-input v-model="dataForm.parentname" type="text" :disabled="true" placeholder="dataForm.parentname" show-word-limit style="width:400px;"></el-input>
+            <el-input v-model="dataForm.parentname" type="text" :disabled="true" placeholder="dataForm.parentname"  style="width:400px;"></el-input>
         </el-form-item>
         <el-form-item v-else label="上级分类：">  
 	        <el-select
@@ -24,8 +24,7 @@
             <el-input v-model="dataForm.name " type="text" placeholder="请输入4个汉字/8个字符以内的内容" show-word-limit style="width:400px;"></el-input>
         </el-form-item>
         <el-form-item label="排序：" prop="sort">
-            <el-input v-model="dataForm.sort" type="text" placeholder="0-255" show-word-limit style="width:200px;"></el-input>
-        		<div class="grey">(数字越小越靠前)</div>
+            <el-input v-model="dataForm.sort" type="text" placeholder="0-255(数字越大越靠前)" show-word-limit style="width:200px;"></el-input>
         </el-form-item>
         <el-form-item v-if="yijishow" v-for="(item, index) in dataForm.categoryJpId" :key="index" :label="index == 0 ? '关联日本分类：' : '' ">
 	        <el-select

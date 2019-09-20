@@ -195,5 +195,9 @@
         -webkit-line-clamp:2;
         -webkit-box-orient: vertical;
     }
-
+	/deep/ .cell {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
 </style>

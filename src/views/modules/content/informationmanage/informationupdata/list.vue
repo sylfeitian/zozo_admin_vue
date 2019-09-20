@@ -23,7 +23,7 @@
 			      <el-input v-model="dataForm.storeName" placeholder="请输入" clearable></el-input>
 			    </el-form-item>
 					<el-form-item>
-					  <el-button  class="btn" type="primary" @click="getDataList()">查询</el-button>
+					  <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
 					</el-form-item>
 			</el-form>
 		  <el-table

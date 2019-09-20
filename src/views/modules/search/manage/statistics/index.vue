@@ -11,7 +11,7 @@
                 <el-input v-model="dataFormShow.keyword" placeholder="请输入关键词搜索" ></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button class="btn" type="primary" @click="getData()">查询</el-button>
+                <el-button class="btn" type="primary" @click="getData()">搜索</el-button>
                 <el-button class="btn"type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
@@ -32,7 +32,7 @@
             <el-table-column prop="totalSearchNum" label="总搜索次数" sortable="custom" align="center"></el-table-column>
             <el-table-column prop="monthSearchNum" label="本月搜索次数" sortable="custom" align="center"></el-table-column>
             <el-table-column prop="daySearchNum" label="今日搜索次数" sortable="custom" align="center"></el-table-column>
-            <el-table-column label="操作" align="center" width="250">
+            <el-table-column label="操作" align="center" width="240">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="deleteHandle(scope.row.id)" type="text" size="mini">删除</el-button>
                 </template>

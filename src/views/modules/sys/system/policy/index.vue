@@ -36,6 +36,7 @@
             <!-- @keydown.native="artonkeydown('maxAmount')"  @keyup.native="artonkeyup"-->
             <el-form-item  class="artAmount artmaxAmount" prop="maxAmount" :label-width="formLabelWidth">
                 <el-input  @keydown.native="artonkeydown('maxAmount')"  @keyup.native="artonkeyup"  v-model="dataForm.maxAmount"  placeholder="请输入" style="width: 160px;"></el-input>
+
             </el-form-item>
             
             
@@ -271,6 +272,29 @@
             imgCropper,
             Bread
         },
+        watch:{
+            'dataForm.minAmount':function(newV,oldV) {
+                if(newV){
+                    // 删除非数字和小数点之外的输入
+                    this.dataForm.minAmount=newV.replace(/[^\d|\.]/g,'')
+                }
+                debugger
+                // 有小数点 截取0到小数点后2位间的数据
+               if(newV.toString().indexOf('.') !== -1 && newV.toString().substr(newV.indexOf('.') + 1).length > 2){
+                    this.dataForm.minAmount=newV.substr(0,newV.indexOf('.')+3)
+               }
+            },
+            'dataForm.maxAmount':function(newV,oldV) {
+                if(newV){
+                    this.dataForm.maxAmount=newV.replace(/[^\d|\.]/g,'')
+                }
+                debugger
+                // 有小数点 截取0到小数点后2位间的数据
+                if(newV.toString().indexOf('.') !== -1 && newV.toString().substr(newV.indexOf('.') + 1).length > 2){
+                    this.dataForm.maxAmount=newV.substr(0,newV.indexOf('.')+3)
+                }
+            }
+        },
         created(){
             // 获取汇率
             this.getrate();
@@ -475,7 +499,7 @@
     }
     
     .artinfo{
-    	margin-top: 30px;
+    	/*margin-top: 30px;*/
     	color: #ccc;
     }
 </style>

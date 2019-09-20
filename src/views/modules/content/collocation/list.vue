@@ -3,7 +3,7 @@
         <Bread :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
             <el-form-item label="ID：">
-                <el-input v-model="dataForm.idJp" ></el-input>
+                <el-input v-model="dataForm.idJp" maxlength="30" ></el-input>
             </el-form-item>
             <el-form-item label="用户：">
                 <el-input v-model="dataForm.nickName" ></el-input>
@@ -45,7 +45,7 @@
                 :data="dataList"
                 border=""
                 v-loading="dataListLoading"
-                style="width: 100%;margin-top:20px;"
+                style="width: 100%;margin-top:10px;"
                 @selection-change="handleSelectionChange"
                 ref="multipleTable"
         >
@@ -74,10 +74,10 @@
 					<el-tag v-else type="info">取消发布</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column prop="publishTimeJp" label="日本发布时间" width="120" align="center"></el-table-column>
-            <el-table-column prop="publishTime" label="发布时间" width="95" align="center"></el-table-column>
+            <el-table-column prop="publishTimeJp" label="日本发布时间" align="center"></el-table-column>
+            <el-table-column prop="publishTime" label="发布时间" align="center"></el-table-column>
             <el-table-column prop="totalFavNum" label="收藏量" width="80" align="center"></el-table-column>
-            <el-table-column label="操作" align="center">
+            <el-table-column label="操作" align="center" width="240">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="showDetail(scope.row)"type="text"size="mini">查看</el-button>
                     <el-button @click.native.prevent="addOrAdit(scope.row)"type="text"size="mini">编辑</el-button>
@@ -174,6 +174,14 @@
 		    	this.dataForm.publishEndTimeJp = '';
 		      }
 		    },
+            // ID类搜索框仅可输入数字、英文，最多可输入30个字符
+            'dataForm.idJp':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    if(!/[a-zA-Z0-9]/.test(newV[i])){
+                        this.dataForm.idJp = newV.replace(newV[i],"")
+                    }
+                }
+            }
 		},
         created () {
             // 第一次请求数据
@@ -317,10 +325,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "@/element-ui/theme-variables.scss";
-    .grayLine{
-        border-bottom: 0!important;
-    }
     .bottomFun {
         display: flex;
         justify-content: space-between;
@@ -331,5 +335,10 @@
             display: flex;
             align-items: center;
         }
+    }
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>

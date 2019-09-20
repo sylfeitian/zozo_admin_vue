@@ -3,17 +3,17 @@
     <Bread :breaddata="breaddata"></Bread>
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="商品ID：">
-            <el-input v-model="dataForm.goodsId" placeholder="请输入商品ID" clearable></el-input>
+            <el-input v-model="dataForm.goodsId" placeholder="请输入商品ID" clearable maxlength="30" ></el-input>
         </el-form-item>
         <el-form-item label="商品名称：">
-            <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" clearable></el-input>
+            <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
         </el-form-item>
         <el-form-item>
-            <el-button  class="btn" type="primary" @click="getData()">查询</el-button>
+            <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>
             <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
         </el-form-item>
         <el-form-item style="float:right;">
-            <el-button type="primary" @click="addActivity()">添加商品</el-button>
+            <el-button type="primary" @click="addActivity()" plain>添加商品</el-button>
         </el-form-item>
     </el-form>
     <el-table
@@ -74,7 +74,8 @@
 	    <el-table-column
 	   		prop="address"
             align="center"
-	    	label="操作">
+	    	label="操作"
+            width="180">
 		    <template slot-scope="scope">
 		    	<el-button class="artdanger" type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
 		    </template>
@@ -100,7 +101,7 @@
         width="60%">
         <el-form :inline="true" :model="goodsdataForm">
             <el-form-item label="商品名称：">
-                <el-input v-model="goodsdataForm.storeId" placeholder="请输入商品名称" clearable></el-input>
+                <el-input v-model="goodsdataForm.storeId" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
             </el-form-item>
             <el-form-item label="选择分类：">
                 <el-cascader
@@ -113,7 +114,7 @@
                 </el-cascader>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="getgoodsList()">查询</el-button>
+                <el-button  class="btn" type="primary" @click="getgoodsList()">搜索</el-button>
                 <el-button class="btn"  type="primary" plain @click="goodsreset()" plain>重置</el-button>
             </el-form-item>
         </el-form>
@@ -124,7 +125,7 @@
             border
             style="width: 100%">
             <el-table-column
-                prop="nameJp"
+                prop="name"
                 label="商品名称"
                 width="240">
             </el-table-column>
@@ -141,7 +142,7 @@
                 label="操作">
                 <template slot-scope="scope" v-if="goodsdataList.length!=0">
                     <span v-if="(scope.$index+1+(parseInt(pages)-1)* parseInt(limits)-1) < goodsdataList.length">
-                        {{goodsdataList[(scope.$index+1+(parseInt(pages)-1)* parseInt(limits)-1)].checked}}
+                        <!-- {{goodsdataList[(scope.$index+1+(parseInt(pages)-1)* parseInt(limits)-1)].checked}} -->
                         <el-checkbox v-model="goodsdataList[(scope.$index+1+(parseInt(pages)-1)* parseInt(limits)-1)].checked" @change="gettem($event,scope.row,(scope.$index+1+(parseInt(pages)-1)* parseInt(limits)-1))"></el-checkbox>
                     </span>
                 </template>
@@ -204,6 +205,16 @@
                 limits:10,
                 totals:0,
                 breaddata: ["配置管理", "购物车推荐商品配置"],
+            }
+        },
+        // ID类搜索框仅可输入数字、英文，最多可输入30个字符
+        watch:{
+            'dataForm.goodsId':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    if(!/[a-zA-Z0-9]/.test(newV[i])){
+                        this.dataForm.goodsId = newV.replace(newV[i],"")
+                    }
+                }
             }
         },
         created(){
@@ -377,5 +388,9 @@
         width: 300px;
     }
 }
-
+/deep/ .cell {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 </style>

@@ -8,7 +8,7 @@
                     ref="dataForm"
                     class="grayLine topGapPadding"
                     :model="dataForm"
-                    @keyup.enter.native="getDataList()"
+                    @keyup.enter.native="getData()"
                     style="margin-left: 20px;"
             >
                 <el-form-item label="商品分类：" class="item" style="margin-top: 20px;">
@@ -131,8 +131,8 @@
                         <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
                         <el-table-column prop="sellStartDate" label="售卖开始时间" align="center"></el-table-column>
                         <el-table-column prop="sellEndDate" label="售卖结束时间" align="center"></el-table-column>
-                        <el-table-column prop="" label="日本限购数量" align="center"></el-table-column>
-                        <el-table-column prop="" label="日本每人限购数量" align="center"></el-table-column>
+                        <el-table-column prop="cartLimit" label="日本限购数量" align="center"></el-table-column>
+                        <el-table-column prop="limitPerCustomer" label="日本每人限购数量" align="center"></el-table-column>
                         <el-table-column prop="sellPrice" label="售价(RMB)" align="center">
                             <template
                                     slot-scope="scope"
@@ -176,11 +176,11 @@
         </div>
 
         <!-- 备案 -->
-        <addEditData :idJp="dataForm.idJp" v-if="addEditDataVisible" ref="addEditData" @searchDataList="getDataList"></addEditData>
+        <addEditData :idJp="dataForm.idJp" v-if="addEditDataVisible" ref="addEditData" @searchDataList="getData"></addEditData>
         <!-- 操作日志 -->
-        <operationallog :idJp="dataForm.idJp" v-if="operationallogVisible" ref="operationallogCompon" @searchDataList="getDataList" ></operationallog>
+        <operationallog :idJp="dataForm.idJp" v-if="operationallogVisible" ref="operationallogCompon" @searchDataList="getData" ></operationallog>
         <!-- 尺码信息 -->
-        <sizeData v-if="sizeDataVisible" ref="sizeDataCompon" @searchDataList="getDataList"></sizeData>
+        <sizeData v-if="sizeDataVisible" ref="sizeDataCompon" @searchDataList="getData"></sizeData>
     </div>
 </template>
 
@@ -191,7 +191,7 @@
     import quillEditorImg from "@/components/quillEditor"
     //import addEditData from './model-show-data'
     // import mixinViewModule from '@/mixins/view-module'
-    import { backScanZozogoods } from '@/api/api'
+    import { backScanZozogoods,backScanZozogoods2 } from '@/api/api'
 
     import 'quill/dist/quill.core.css';
     import 'quill/dist/quill.snow.css';
@@ -225,6 +225,9 @@
 
         },
         methods: {
+            getData(){
+
+            },
             operational (index=-1,row="") {
                 this.setOperationalVisible(true);
                 this.$nextTick(() => {
@@ -252,7 +255,11 @@
                         var obj  = {
                             id:row.id
                         }
-                        backScanZozogoods(obj).then((res)=>{
+                        var fn = backScanZozogoods
+                        if(row.origin && row.origin=="recordinformation"){
+                            fn = backScanZozogoods2;
+                        }
+                        fn(obj).then((res)=>{
                             console.log('详情',res.data)
                             if(res.code == 200){
                                 this.dataForm = res.data;
@@ -295,7 +302,7 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     /*.inforTit {*/
     /*    width: 100px;*/
     /*    font-weight: 600;*/
@@ -329,5 +336,10 @@
     }
     .info {
         margin-left: 100px;
+    }
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>

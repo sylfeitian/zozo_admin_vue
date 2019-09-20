@@ -137,7 +137,5 @@
 </script>
 
 <style scoped>
-    .grayLine{
-        border-bottom: 0!important;
-    }
+
 </style>

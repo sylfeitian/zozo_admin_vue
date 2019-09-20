@@ -14,8 +14,8 @@
             @keyup.enter.native="dataFormSubmit('addForm')"
             label-width="120px"
         >
-            <el-form-item  label="风格标签分类：">
-                <el-select v-model="dataForm.styleType" placeholder="请选择">
+            <el-form-item  label="风格标签分类：" prop="styleType">
+                <el-select v-model="dataForm.styleType" placeholder="请选择" :disabled="row?true:false">
                     <el-option
                             v-for="item in options"
                             :key="item.id"
@@ -25,7 +25,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="风格标签名称：" prop="styleName">
-                <el-input v-model="dataForm.styleName" placeholder="0"></el-input>
+                <el-input v-model="dataForm.styleName" placeholder="请输入标签名称"></el-input>
             </el-form-item>
             <el-form-item label="性别：">
                 <el-select v-model="dataForm.gender" placeholder="请选择">
@@ -81,6 +81,21 @@
     export default {
         name: "model-add-edit-data",
         data () {
+            var validateStyleName = (rule, value, callback) => {
+                var chinese=0;var character=0;
+                for(let i=0;i<value.length;i++){
+                    if (/^[\u4e00-\u9fa5]*$/.test(value[i])) { //汉字
+                        chinese=chinese+2;
+                    }else{ //字符
+                        character=character+1;
+                    }
+                }
+                var count=chinese+character;
+                if(count<4||count>12){
+                    return callback(new Error('至少2个字，最多6个字！'))
+                }
+                callback()
+            }
             return {
                 visible : false,
                 loading : false,
@@ -96,6 +111,7 @@
                 dataRule : {
                     styleName : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
+                        { validator: validateStyleName, trigger: 'blur'},
                     ],
                     styleType: [
                         {required: true, message: "请选择标签分类", trigger: "change"}
@@ -119,6 +135,23 @@
         components:{
             imgCropper
         },
+        watch:{
+            'dataForm.styleName':function(newV,oldV) {
+                var chinese = 0;
+                var character = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chinese = chinese + 2;
+                    } else { //字符
+                        character = character + 1;
+                    }
+                    var count = chinese + character;
+                    if (count > 12) { //输入字符大于12的时候过滤
+                        this.dataForm.styleName = newV.replace(newV[i], "")
+                    }
+                }
+            }
+            },
         created () {
             // this.dataForm.styleType = this.options[0].id;
         },
@@ -209,7 +242,7 @@
                         var obj = {
                             id:  this.dataForm.id,
                             styleName:  this.dataForm.styleName,
-                            styleType:  this.dataForm.styleType,
+                            // styleType:  this.dataForm.styleType,
                             gender:  this.dataForm.gender,
                             imgUrl:  this.dataForm.imgUrl,
                             sort:  this.dataForm.sort,

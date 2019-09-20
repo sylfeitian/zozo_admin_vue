@@ -15,11 +15,11 @@
       </el-form-item> -->
 
       <el-form-item label="skuid：">
-          <el-input v-model="dataForm.goodsCsIdJp" placeholder="请输入skuid" clearable></el-input>
+          <el-input v-model="dataForm.goodsCsIdJp" placeholder="请输入skuid" clearable maxlength="30" ></el-input>
       </el-form-item>
 
       <el-form-item label="商品名称：">
-          <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" clearable></el-input>
+          <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
       </el-form-item>
 
       <el-form-item label="尺码感受：">
@@ -31,7 +31,6 @@
                 <el-option label="合适" value="0"></el-option>
                 <el-option label="偏小" value="1"></el-option>
                 <el-option label="偏大" value="2"></el-option>
-		            </el-option>
           </el-select>
       </el-form-item>
 
@@ -56,8 +55,6 @@
               <el-option label="超赞" value="0"></el-option>
               <el-option label="一般" value="1"></el-option>
               <el-option label="满意" value="2"></el-option>
-          
-		          </el-option>
           </el-select>
       </el-form-item>
 
@@ -72,7 +69,6 @@
               <el-option label="3星" value="3"></el-option>
               <el-option label="4星" value="4"></el-option>
               <el-option label="5星" value="5"></el-option>
-		          </el-option>
           </el-select>
       </el-form-item>
 
@@ -87,12 +83,11 @@
               <el-option label="3星" value="3"></el-option>
               <el-option label="4星" value="4"></el-option>
               <el-option label="5星" value="5"></el-option>
-		          </el-option>
           </el-select>
       </el-form-item>
 
       <el-form-item>
-        <el-button class="btn" type="primary" @click="getData()">查询</el-button>
+        <el-button class="btn" type="primary" @click="getData()">搜索</el-button>
         <el-button class="btn" type="primary" plain @click="reset()" >重置</el-button>
       </el-form-item>
     </el-form>
@@ -108,7 +103,7 @@
       :data="dataList"
       @selection-change="dataListSelectionChangeHandle"
       v-loading="dataListLoading"
-      style="width: 100%,maigin-top:20px;"
+      style="width: 100%;maigin-top:20px;"
     > 
      <el-table-column type="selection" width="70" align="center"></el-table-column>
       <el-table-column
@@ -128,7 +123,7 @@
             <img :src="scope.row.imgUrl | filterImgUrl"  style="width:60px;height:60px" alt="">
           </template>
       </el-table-column>
-      <el-table-column prop="goodsCsId" label="skuid" align="center"></el-table-column>
+      <el-table-column prop="goodsCsId" label="skuid" align="center" width="200"></el-table-column>
       <el-table-column prop="goodsName" label="商品名称" align="center" ></el-table-column>
       <el-table-column prop="" label="规格" align="center" ></el-table-column>
       <el-table-column prop="access " label="订单评价" align="center" >
@@ -159,7 +154,7 @@
 
       <el-table-column prop="createDate" label="评论时间" align="center"> </el-table-column>
 
-      <el-table-column label="操作" min-width="100" align="center">
+      <el-table-column label="操作" min-width="100" align="center" width="120">
         <template slot-scope="scope">
           <el-button class="artdanger" size="mini" type="text" @click="deleteHandle( scope.row.id)">删除</el-button>
         </template>
@@ -225,6 +220,16 @@ export default {
     Bread, 
     // evaDet 
   },
+    // ID类搜索框仅可输入数字、英文，最多可输入30个字符
+    watch:{
+        'dataForm.goodsCsIdJp':function(newV,oldV) {
+            for(let i=0;i<newV.length;i++){
+                if(!/[a-zA-Z0-9]/.test(newV[i])){
+                    this.dataForm.goodsCsIdJp = newV.replace(newV[i],"")
+                }
+            }
+        }
+    },
   methods: {
     //详情
     handleEdit(index) {
@@ -389,6 +394,10 @@ export default {
   }
 };
 </script>
-<style>
-/* .el-form-item{width:auto;} */
+<style lang="scss" scoped>
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>

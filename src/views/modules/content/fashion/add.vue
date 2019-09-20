@@ -93,7 +93,7 @@
                     </el-form-item>
                     <el-form-item>
                         <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
-                        <el-button  class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
+                        <el-button  class="btn"type="primary" plain @click="reset()" >搜索</el-button>
                     </el-form-item>
                 </el-form>
                 <el-table
@@ -314,7 +314,7 @@
                         textCn :"" ,// 内容
                         typeId :type ,// 内容类型id
                     };
-                    this.content.push(obj);
+                    this.content.push(obj)
             },
             dataFormSubmit(type){
                 let that = this;
@@ -339,6 +339,9 @@
                             type: "warning"
                         })
                             .then(() => {
+                                that.content.map((v,i)=>{
+                                    v.sortId = i+1;
+                                });
                                 that.addDataForm.fashionContents = that.content;
                                 that.addDataForm.saveType = type;
                                 savefashiondetail(that.addDataForm).then((res)=>{

@@ -3,19 +3,18 @@
         <Bread :breaddata="breaddata"></Bread>
         <div>
             <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getData()">
-                <el-form-item label="关键词搜索：">
+                <el-form-item label="关键字搜索：">
                     <el-input v-model="dataForm.name" placeholder="请输入关键字搜索" clearable style="width: 220px!important;"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button @click="getData()" type="primary">搜索</el-button>
-                    <el-button  @click="reset()">重置</el-button>
+                    <el-button  @click="reset()" plain type="primary">重置</el-button>
                 </el-form-item>
             </el-form>
             <el-form>
-            	<el-form-item>
-                    <el-button type="primary" @click="addOrUpdateHandle()" >添加禁用词</el-button>
-                    <el-button type="primary" @click="">导入</el-button>
-                </el-form-item>
+                <el-button type="primary" @click="addOrUpdateHandle()" >添加禁用词</el-button>
+                <!-- <el-button type="primary" @click="">导入</el-button> -->
+                 <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"></importAndExport>
             </el-form>
 
             <!--            <el-form>-->
@@ -30,7 +29,7 @@
                     border
                     @selection-change="dataListSelectionChangeHandle"
                     @sort-change="dataListSortChangeHandle"
-                    style="width: 100%;">
+                    style="width: 100%;margin-top: 10px;">
                 <el-table-column
                         type="index"
                         prop="$index"
@@ -43,7 +42,7 @@
                 </el-table-column>
                 <el-table-column prop="name" label="禁用词名称" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="createDate" label="添加时间" header-align="center" align="center"></el-table-column>
-                <el-table-column label="操作" fixed="right" header-align="center" align="center">
+                <el-table-column label="操作" fixed="right" header-align="center" align="center" width="200">
                     <template slot-scope="scope" >
                         <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row)">编辑</el-button>
                         <el-button  type="text" class="artdanger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
@@ -69,12 +68,19 @@
     import mixinViewModule from '@/mixins/view-module'
     import AddOrUpdate from './add-or-update'
     import Bread from "@/components/bread";
+     import importAndExport from "@/components/import-and-export"
     import { getadvertisingban, advertisingban} from '@/api/url'
-
+    import { importAdvertisingbanUrl} from '@/api/io'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
+                importAndExportOptions:{
+                    importUrl:importAdvertisingbanUrl,//导入接口
+                    importWord:"导入",
+                    // exportUrl:exportRegisterUrl,//导出接口
+                    // exportWord:"导出数据",
+                },
                 mixinViewModuleOptions: {
                     getDataListURL: getadvertisingban,
                     getDataListIsPage: true,
@@ -90,7 +96,8 @@
         },
         components: {
             AddOrUpdate,
-            Bread
+            Bread,
+            importAndExport
         },
         methods:{
             getData(){

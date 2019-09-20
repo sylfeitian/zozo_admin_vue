@@ -6,7 +6,7 @@
           <el-input v-model="dataForm.specName" placeholder="请输入规格名称" clearable></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button  calss="btn" type="primary" @click="getDataList()">查询</el-button>
+          <el-button  calss="btn" type="primary" @click="getDataList()">搜索</el-button>
           <el-button   calss="btn"  @click="reset()" type="primary" plain>重置</el-button>
         </el-form-item>
         <br />

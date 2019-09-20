@@ -137,6 +137,11 @@
             },
              // 下拉切换风格标签
             changeSelect (val) {
+                if(this.dataArray.length>9){
+                    this.$message.warning("最多添加十个");
+                     this.dataForm.styleName = "";
+                    return
+                }
                console.log(val);
                 console.log(this.value);
                 // 找到下拉选中的obj
@@ -233,12 +238,13 @@
         margin-left: 130px!important;
     }
     .tag {
-        width: 28%;
-
+        // width: 28%;
+        margin-right: 8px;
+        margin-bottom: 8px;
     }
-    /deep/ .el-icon-close {
-        margin-left: 20% !important;
-    }
+    // /deep/ .el-icon-close {
+    //     margin-left: 20% !important;
+    // }
     .elTagWarp{
         display: flex;
         flex-wrap: wrap;

@@ -25,7 +25,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="getDataList">查询</el-button>
+              <el-button type="primary" @click="getDataList">搜索</el-button>
               <el-button type="primary" plain @click="rest">重置</el-button>
             </el-form-item>
         </el-form>

@@ -50,9 +50,16 @@ export const getsizeJPdata = `${base}/sizejp/page`;
 //出库单管理
 export const getstockdata = `${base}/wareHouse/odo/list/page`;
 //当前仓库的商品
-export const getallstock  = `${base}/wareHouse/odoGoods/stock/page`;
+// export const getallstock  = `${base}/wareHouse/odoGoods/stock/page`;
 //保存添加的商品
 export const addstock  = `${base}/wareHouse/odoGoods/add`;
+
+// 出库单分页
+export const warehouserecordsodoListPage  = `${base}/warehouserecordsodo/list/page`;
+// 添加出库单商品列表查询
+export const warehouserecordsodoPageUrl  = `${base}/warehouserecordsodo/page`;
+
+
 
 // 商品管理--------------------------------------------------------------------------------------------------------------------
 // 商品列表
@@ -116,6 +123,14 @@ export const deleteSpecGroupUrl = `${base}/specgroup/batch`;
 export const brandPageUrl = `${base}/brand/page`;
 // 编辑品牌
 export const deleteBrandUrl = `${base}/brand`;
+
+//  满减活动-------------------------------------------------------------------------------------------------------------
+// 满减活动分页查询
+export const activityReduceUrl =  `${base}/activity/reduce/page`; 
+
+export const deleteActivityReduceUrl =  `${base}/activity/reduce/`; 
+// 满减活动订单分页查询
+export const reduceOrderUrl =  `${base}/activity/reduce/order/page/`; // /activity/reduce/order/page/{reductionId}
 
 // 商户管理--------------------------------------------------------------------------------------------------------------------
 // 商家列表
@@ -402,7 +417,9 @@ export const goodsCarlist = `${base}/cartrecom/page`;
 //购物车推荐列表批量删除
 export const goodsCarlistDelete = `${base}/cartrecom`;
 //Q&A主页面列表
-export const QamainList = `${base}/questionanswer/dataPage`;
+export const QamainList = `${base}/questiontype/page`;
+//查看Q&A列表
+export const toQamainList = `${base}/questionanswer/lookQuestionAnswer`;
 
 
 
@@ -411,6 +428,8 @@ export const QamainList = `${base}/questionanswer/dataPage`;
 export const activityPage = `${base}/activity/coupon/page`;
 //删除优惠券活动
 export const deleteActivity = `${base}/activity/coupon`;
+// 优惠券活动已领会员优惠券分页查询
+export const activityMemberCouponsPage = `${base}/activity/coupon/member/coupons/`;
 
 
 

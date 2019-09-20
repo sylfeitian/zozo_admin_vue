@@ -79,8 +79,10 @@
     }
 </script>
 
-<style scoped>
-    /*/deep/.el-table--border th:first-child td:first-child .cell {*/
-    /*    text-align: left!important;*/
-    /*}*/
+<style lang="scss" scoped>
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>

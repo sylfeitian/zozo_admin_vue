@@ -25,16 +25,16 @@
                 <el-button  class="btn" type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
             <!--@click="showDetail()"-->
-            <el-form-item>
-                <el-button  class="btn" type="primary" plain @click="addOrAdit()" >添加出库单</el-button>
-            </el-form-item>
+        </el-form>
+        <el-form>
+            <el-button  class="btn" type="primary" plain @click="addOrAdit()" >添加出库单</el-button>
         </el-form>
         <el-table
                 width="100%"
                 :data="dataList"
                 border=""
                 v-loading="dataListLoading"
-                style="width: 100%;margin-top:20px;"
+                style="width: 100%;margin-top:10px;"
         >
             <el-table-column label="序号" width="140" align="center">
                 <template slot-scope="scope">
@@ -46,7 +46,7 @@
             <el-table-column prop="createDate" label="出库时间" align="center"></el-table-column>
             <el-table-column prop="outputQuantity" label="出库总数量" align="center"></el-table-column>
             <el-table-column prop="creator" label="操作人" align="center"></el-table-column>
-            <el-table-column label="操作" align="center">
+            <el-table-column label="操作" align="center" width="180">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="showDetail(scope.$index, scope.row)"type="text"size="mini">查看</el-button>
                 </template>
@@ -71,13 +71,13 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import showData from './model-show-data'
-    import {getstockdata} from '@/api/url'
+    import {warehouserecordsodoListPage} from '@/api/url'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
             	mixinViewModuleOptions: {
-		          getDataListURL: getstockdata,
+		          getDataListURL: warehouserecordsodoListPage,
 		          getDataListIsPage: true,
 		          // exportURL: '/admin-api/log/login/export',
 		          deleteURL: '',

@@ -71,21 +71,43 @@
                 </el-select>
                 <el-input type="textarea" v-model="dataForm.addressInfo" placeholder="请输入详细地址" :rows="4" style="margin-top: 20px;"></el-input>
             </el-form-item>
-            <el-form-item style="text-align: center;margin-left: -120px!important;">
-                <el-button  @click="dataFormCancel()">取消</el-button>
-                <el-button type="primary" @click="dataFormSubmit('addForm')"
-                           :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
-            </el-form-item>
+<!--            <el-form-item style="text-align: center;margin-left: -120px!important;">-->
+<!--                <el-button  @click="dataFormCancel()">取消</el-button>-->
+<!--                <el-button type="primary" @click="dataFormSubmit('addForm')"-->
+<!--                           :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>-->
+<!--            </el-form-item>-->
         </el-form>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="dataFormCancel()">取消</el-button>
+            <el-button type="primary" @click="dataFormSubmit('addForm')"
+                       :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
+        </span>
     </el-dialog>
 </template>
 
 <script>
     import { backScanWare,addWare, updataWare} from '@/api/api'
-    import {areaFirst,areaByParentId} from "@/api/api.js"
+    import { areaFirst, areaByParentId, verifyWare } from "@/api/api"
     export default {
         name: "model-add-edit-data",
         data () {
+            var validatorWarehouseName = (rule, value, callback) => {
+                if (value != '') {
+                     var obj  ={
+                         id:this.row?this.row.id:"",
+                         name:value
+                     }
+                    verifyWare(obj).then((res)=>{
+                        if(res.code=="200"){
+                            callback()
+                        }else{}
+                            callback(new Error('仓库名称已经存在'))
+                    })
+
+                } else {
+                    callback()
+                }
+            }
             return {
                 visible : false,
                 loading : false,
@@ -112,6 +134,7 @@
                 dataRule : {
                     warehouseName : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
+                        { validator: validatorWarehouseName, trigger: 'blur'}
                     ],
                     type : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },

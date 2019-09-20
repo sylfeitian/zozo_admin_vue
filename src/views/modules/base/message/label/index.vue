@@ -9,7 +9,7 @@
         >
             <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
             <el-form-item label="风格标签名称：">
-                <el-input v-model="dataFormShow.styleName" placeholder="标签名称" ></el-input>
+                <el-input v-model="dataFormShow.styleName" placeholder="标签名称" maxlength="300" ></el-input>
             </el-form-item>
             <el-form-item  label="风格标签分类：">
                 <el-select v-model="dataFormShow.styleType" placeholder="请选择">
@@ -22,11 +22,11 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button class="btn" type="primary" @click="getData()">查询</el-button>
+                <el-button class="btn" type="primary" @click="getData()">搜索</el-button>
                 <el-button class="btn"type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
-        <el-button @click="addOrEditHandle()" class="btn" type="primary">新增标签</el-button>
+        <el-button @click="addOrEditHandle()" class="btn" type="primary">新增风格标签</el-button>
         <el-table
             width="100%"
             :data="dataList"
@@ -47,7 +47,7 @@
                     <span  v-else-if="scope.row.styleType==1">副标签</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center">
+            <el-table-column label="操作" align="center" width="300">
                 <template slot-scope="scope">
                     <el-button type="text" @click="addOrEditHandle(scope.$index, scope.row)" size="mini">编辑</el-button>
                     <el-button v-if="scope.row.styleType==0" type="text" @click="showHandle(scope.$index, scope.row)" size="mini">管理副风格标签</el-button>
@@ -114,7 +114,7 @@
                 subDataVisible:false,
                 mainDataVisible:false,
                 isIndeterminate: false,
-                checkAll: false,
+                checkAll: false
             }
         },
         components: {
@@ -122,6 +122,22 @@
             subData,
             addEditData,
             mainData
+        },
+        watch:{
+            'dataFormShow.styleName':function(newV,oldV) {
+                var chinese=0;var character=0;
+                for(let i=0;i<newV.length;i++){
+                    if(/^[\u4e00-\u9fa5]*$/.test(newV[i])){ //汉字
+                        chinese=chinese+2;
+                    }else{ //字符
+                        character=character+1;
+                    }
+                    var count=chinese+character;
+                    if(count>300){ //输入字符大于300的时候过滤
+                        this.dataFormShow.styleName = newV.replace(newV[i],"")
+                    }
+                }
+            }
         },
         created () {
             this.dataFormShow.styleType = this.options && this.options[0].id;
@@ -179,7 +195,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "@/element-ui/theme-variables.scss";
     .bottomFun {
         display: flex;
         justify-content: space-between;
@@ -190,5 +205,10 @@
             display: flex;
             align-items: center;
         }
+    }
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>

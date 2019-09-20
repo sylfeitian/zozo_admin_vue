@@ -12,10 +12,14 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>满100减10</td>
-                    <td>满100减10</td>
-                    <td>进行中</td>
-                    <td>2017-07-31 13:00:00 至2017-08-19 13:00:00</td>
+                    <td>{{dataInfo.title}}</td>
+                    <td>满{{dataInfo.limitPrice}}减{{dataInfo.reducePrice}}</td>
+                    <td>
+                        <span v-if="dataInfo.state ==0">未开始</span>
+                        <span v-else-if="dataInfo.state ==1">进行中</span>
+                        <span v-else="dataInfo.state ==2">已结束</span>
+                    </td>
+                    <td>{{dataInfo.startTime}} 至 {{dataInfo.endTime}}</td>
                 </tr>
             </tbody>
         </table>
@@ -23,13 +27,13 @@
         <el-card shadow="never" style="margin-bottom:20px;">
             <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()" >
                 <el-form-item label="会员账号：" style="margin-bottom:0 !important;">
-                    <el-input v-model="dataForm.storeId"  placeholder="请输入会员账号" clearable></el-input>
+                    <el-input v-model="dataForm.memberName"  placeholder="请输入会员账号" clearable></el-input>
                 </el-form-item>
                 <el-form-item label="订单编号：" style="margin-bottom:0 !important;">
-                    <el-input v-model="dataForm.storeId" placeholder="请输入订单编号" clearable></el-input>
+                    <el-input v-model="dataForm.orderSn" placeholder="请输入订单编号" clearable></el-input>
                 </el-form-item>
                 <el-form-item style="margin-bottom:0 !important;float:right;">
-                    <el-button  class="btn" type="primary" @click="getDataList()">查询</el-button>
+                    <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
                     <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
                 </el-form-item>
             </el-form>
@@ -51,26 +55,37 @@
                 </template>
             </el-table-column> -->
             <el-table-column
-                prop="id"
+                prop="memberName"
                 label="会员账号"
+                 align="center"
                 width="180">
             </el-table-column>
              <el-table-column
                 prop="createDate"
                 label="使用时间"
+                 align="center"
                 width="180">
             </el-table-column>
             <el-table-column
-                prop="creator"
+                prop="orderSn"
+                 align="center"
                 label="订单编号">
             </el-table-column>
             <el-table-column
-                prop="account"
+                prop="goodsAmount"
+                 align="center"
                 label="订单总金额">
+                 <template slot-scope="scope">
+                   ￥{{scope.row.goodsAmount}}
+                </template>
             </el-table-column>
             <el-table-column
-                prop="gradeName"
+             align="center"
+                prop="orderAmount"
                 label="订单满减后价格">
+                 <template slot-scope="scope">
+                    ￥{{scope.row.goodsAmount}}
+                </template>
             </el-table-column>
         </el-table>
         <!-- 分页 -->
@@ -87,18 +102,19 @@
 </template>
 
 <script>
+    import { activityReduceDetailById}  from '@/api/api.js'
     import mixinViewModule from '@/mixins/view-module'
-    import { businessPageUrl } from '@/api/url'
+    import { reduceOrderUrl } from '@/api/url'
     import { storeGrade } from '@/api/api'
     import Bread from "@/components/bread";
     export default {
         mixins: [mixinViewModule],
-        props: ['activityId'],
         components:{Bread},
         data () {
             return {
                 mixinViewModuleOptions: {
-                    getDataListURL: businessPageUrl,
+                    getDataListURL: reduceOrderUrl,
+                    activatedIsNeed:false,
                     getDataListIsPage: true,
                     exportURL: '/admin-api/store/export',
                     deleteURL: '/admin-api/store',
@@ -109,26 +125,47 @@
                 dataList:[],
                 breaddata: ["营销管理", "满减活动","满减活动详情"],
                 dataForm: {
-                    status:'',
-                    storeId:'',
+                    reductionId:'',
+                    memberName:'',
+                    orderSn:'',
                 },
                 activitesstates: [{ id: '', name: "全部" },{ id: 1, name: "未开始" },{ id: 2, name: "进行中" },{ id: 3, name: "已结束" },{ id: 4, name: "待审核" }],
-
+                row:'',
+                dataInfo:{},
             }
         },
         created(){
-            console.log('详情id=======',this.activityId) 
+            this.getDataListURL
         },
         methods: {
             //返回
+            init(row){
+                this.row = row;
+                console.log(row); 
+                this.mixinViewModuleOptions.getDataListURL = reduceOrderUrl+ row.id;
+                this.dataForm.reductionId = this.row.id;
+                this.backScan();
+                this.getDataList()
+            },
+             backScan(){
+                var obj  = {
+                    id:this.row.id,
+                }
+                activityReduceDetailById(obj).then((res)=>{
+                    if(res.code == 200){
+                        this.dataInfo= res.data;
+                    }else{
+                        this.dataInfo = {};
+                    }
+                })
+              
+            },
             changePage(){
                 this.$emit('showListFun')
             },
             reset(){
-                this.dataForm = {
-                    status:'',
-                    storeId:'',
-                }
+                this.dataForm.memberName = ""
+                this.dataForm.memberName =""
                 this.getDataList();
             }
         }

@@ -29,10 +29,10 @@
                 ></el-date-picker>
             </el-form-item>
             <el-form-item label="商品名称：">
-                <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" clearable></el-input>
+                <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
             </el-form-item>
             <el-form-item label="商品ID：">
-                <el-input v-model="dataForm.id" placeholder="请输入spuID" clearable></el-input>
+                <el-input v-model="dataForm.id" placeholder="请输入spuID" clearable maxlength="30" ></el-input>
             </el-form-item>
             <el-form-item label="店铺名称：">
                 <el-input v-model="dataForm.storeName" placeholder="请输入店铺名称" clearable></el-input>
@@ -44,7 +44,7 @@
                 <el-input v-model="dataForm.type" placeholder="请选择" clearable></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button class="btn" type="primary" @click="getData()">查询</el-button>
+                <el-button class="btn" type="primary" @click="getData()">搜索</el-button>
                 <el-button class="btn"type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
@@ -118,6 +118,14 @@
                 if(!val){
                     this.dataForm.startCreateDate = '';
                     this.dataForm.endCreateDate = '';
+                }
+            },
+            // ID类搜索框仅可输入数字、英文，最多可输入30个字符
+            'dataForm.id':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    if(!/[a-zA-Z0-9]/.test(newV[i])){
+                        this.dataForm.id = newV.replace(newV[i],"")
+                    }
                 }
             }
         },

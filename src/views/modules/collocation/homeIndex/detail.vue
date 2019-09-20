@@ -22,7 +22,7 @@
             </el-select>
         </el-form-item>
         <el-form-item style="float:right;">
-            <el-button  class="btn" type="primary" @click="getDataList()">查询</el-button>
+            <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
             <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
             <el-button  class="btn" type="primary" @click="toSet()">设为推荐</el-button>
         </el-form-item>

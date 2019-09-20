@@ -1,6 +1,6 @@
 <template>
     <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false" class="rolePage">
-        <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmitHandle()" label-width="120px">
+        <el-form :model="dataForm" ref="dataForm" @keyup.enter.native="dataFormSubmitHandle()" label-width="120px">
             <el-form-item prop="name" label="角色名称：">
                 <el-input v-model="dataForm.name" placeholder="请输入"></el-input>
             </el-form-item>
@@ -46,16 +46,37 @@
                 }
             }
         },
-        computed: {
-            dataRule () {
-                return {
-                    name: [
-                        { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-                    ]
+        watch: {
+            'dataForm.name': function (newV, oldV) {
+                var chinese = 0,character = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chinese = chinese + 2;
+                    } else { //字符
+                        character = character + 1;
+                    }
+                    var count = chinese + character;
+                    if (count > 20) { //输入字符大于20的时候过滤
+                        this.dataForm.name = newV.replace(newV[i], "")
+                    }
+                }
+            },
+            'dataForm.remark':function(newV,oldV) {
+                var chinese=0,character=0;
+                for(let i=0;i<newV.length;i++){
+                    if(/^[\u4e00-\u9fa5]*$/.test(newV[i])){ //汉字
+                        chinese=chinese+2;
+                    }else{ //字符
+                        character=character+1;
+                    }
+                    var count=chinese+character;
+                    if(count>40){ //输入字符大于40的时候过滤
+                        this.dataForm.remark = newV.replace(newV[i],"")
+                    }
                 }
             }
         },
-        methods: {
+            methods: {
             init (id) {
                 this.visible = true
                 this.$nextTick(() => {

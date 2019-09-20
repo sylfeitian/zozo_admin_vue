@@ -452,9 +452,5 @@ export default {
 .grey{
 		color: #999;
 	}
-  .el-tree img{
-    width:60px;
-    height: 60px;
-    padding:8px;
-  }
+
 </style>

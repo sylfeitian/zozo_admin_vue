@@ -40,7 +40,7 @@
                 ></el-date-picker>
             </el-form-item>
             <el-form-item>
-                <el-button class="btn" type="primary" @click="getData()">查询</el-button>
+                <el-button class="btn" type="primary" @click="getData()">搜索</el-button>
                 <el-button
                         class="btn"
                         type="primary"
@@ -71,7 +71,7 @@
             <el-table-column prop="memberName" label="会员账号" align="center"></el-table-column>
             <el-table-column prop="createDate" label="申请时间" align="center"></el-table-column>
             <el-table-column prop="goodsNum" label="售后数量" align="center" width="100"></el-table-column>
-            <el-table-column prop="refundAmount" label="退款金额" align="right">
+            <el-table-column prop="refundAmount" label="退款金额" align="center">
                 <template slot-scope="scope">￥{{scope.row.refundAmount}}</template>
             </el-table-column>
             <el-table-column
@@ -80,7 +80,7 @@
                     align="center"
                     :formatter="statusRules"
             ></el-table-column>
-            <el-table-column label="操作" min-width="100" align="center">
+            <el-table-column label="操作" min-width="100" align="center" width="200">
                 <template slot-scope="scope">
                     <el-button size="mini" type="text" @click="afterSaleDetailFn(scope.row)">查看</el-button>
                     <el-button size="mini" type="text" @click="returnMoneyFn(scope.row)"   v-if="scope.row.status==40">同意退款</el-button>
@@ -231,7 +231,7 @@
         }
     };
 </script>
-<style scoped>
+<style lang="scss" scoped>
     .creater {
         display: inline-block;
         width: 80px;
@@ -292,5 +292,10 @@
     }
     /deep/ .el-form-item {
         margin-top: 0px !important;
+    }
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>

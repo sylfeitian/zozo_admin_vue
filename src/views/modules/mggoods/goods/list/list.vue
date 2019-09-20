@@ -83,7 +83,7 @@
             </el-form-item>
             <!-- </el-scrollbar> -->
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="handleClick()">查询</el-button>
+                <el-button  class="btn" type="primary" @click="handleClick()">搜索</el-button>
                 <!-- </el-form-item>
                 <el-form-item> -->
                 <el-button   class="btn"  @click="reset()" type="primary" plain>重置</el-button>

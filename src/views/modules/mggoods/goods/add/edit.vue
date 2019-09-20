@@ -13,7 +13,7 @@
                 <el-button v-if="!$route.query.gcId" @click="preStep()"  style="margin-left:20px;">编辑</el-button>
             </el-form-item>
             <el-form-item label="商品名称：" prop="goodsName" style="width:45%">
-                <el-input v-model="dataForm.goodsName" maxlength="64"  show-word-limit placeholder="请输入商品名称"></el-input>
+                <el-input v-model="dataForm.goodsName" maxlength="64" placeholder="请输入商品名称"></el-input>
             </el-form-item>
 
             <el-form-item label="副标题：" prop="goodsSubTitle" style="width:45%;">

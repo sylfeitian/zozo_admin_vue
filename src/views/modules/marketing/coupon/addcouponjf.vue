@@ -1,89 +1,121 @@
 <template>
   <div>
     	<el-form :model="dataForm" label-width="140px" 	:rules="dataRule" class="demo-ruleForm" ref="addForm">
-        <el-form-item label="优惠券名称：" prop="gcName">
-            <el-input v-model="dataForm.gcName" type="text" maxlength="50" placeholder="请输入50字以内的内容" show-word-limit style="width:400px;"></el-input>
+        <el-form-item label="优惠券名称：" prop="name">
+            <el-input v-model="dataForm.name" type="text" maxlength="50" placeholder="请输入50字以内的内容" show-word-limit style="width:400px;"></el-input>
         </el-form-item>
-        <el-form-item label="所需积分：" prop="totalnumber">
-            <el-input v-model="dataForm.totalnumber" type="number"  max="1000000" placeholder="1000"  style="width:400px;"></el-input>
+        <el-form-item label="所需积分：" prop="memberPoints">
+            <el-input v-model="dataForm.memberPoints" type="number" min="0" max="1000000" placeholder="1000"  style="width:400px;"></el-input>
         </el-form-item>
-        <el-form-item label="总发行量：" prop="totalnumber">
-            <el-input v-model="dataForm.totalnumber" type="number"  max="1000000" placeholder="1000"  style="width:400px;"></el-input>
+        <el-form-item label="总发行量：" prop="totalNums">
+            <el-input v-model="dataForm.totalNums" type="number" min="0" max="1000000" placeholder="1000"  style="width:400px;"></el-input>
         </el-form-item>
-        <el-form-item label="面额：" prop="money">
-             <el-input placeholder="20" v-model="dataForm.money" show-word-limit style="width:220px;">
+        <el-form-item label="面额：" prop="faceValue">
+             <el-input placeholder="20" v-model="dataForm.faceValue" show-word-limit style="width:220px;">
 					    <template slot="append">元</template>
 					  </el-input>
 					  <div>面值只能是数值，0.01-1000000，限2位小数</div>
         </el-form-item>
-        <el-form-item label="领取开始时间："  prop="startTime">
-        	<!--:default-time="startsecond"-->
-            	<el-date-picker
-                v-model="dataForm.startTime"
-                type="date"
-                value-format="yyyy-MM-dd"
-                clearable
-                :picker-options="pickerOptions0"
-                placeholder="请选择时间："
-                style="width:220px;">
-            </el-date-picker>
-      </el-form-item>
-      <el-form-item label=""  prop="value1" class="artvalue12time">  
-						<el-time-picker
-							v-if="value1isshow"
-						  v-model="dataForm.value1"
-					    :picker-options="value1Time"
-					    @blur ="artvalue1time"
-					    placeholder="选择时间">
-  					</el-time-picker>
-     </el-form-item>
-       
-      
-      
-      
-      <el-form-item label="领取结束时间：" prop="endTime">
-            <el-date-picker
-                v-model="dataForm.endTime"
-                type="date"
-                value-format="yyyy-MM-dd"
-                clearable
-                :picker-options="pickerOptions1"
-                placeholder="请选择时间："
-                style="width:220px;">
-            </el-date-picker>
-    	</el-form-item>
-    	<el-form-item label="" prop="value2" class="artvalue12time">
-            <el-time-picker
-            	v-if="value2isshow"
-						  v-model="dataForm.value2"
-						  :picker-options="value2Time"
-						  :disabled = "value2timedisabled"
-						  @focus ="artvalue2time"
-						  placeholder="选择时间">
-						</el-time-picker>
-    	</el-form-item>
-    	
-    
-        <el-form-item class="artfromitem" label="使用门槛：" prop="totalnumber">
+<!--        <el-form-item label="领取开始时间："  prop="getStartTime">-->
+<!--        	&lt;!&ndash;:default-time="startsecond"&ndash;&gt;-->
+<!--            	<el-date-picker-->
+<!--                v-model="dataForm.getStartTime"-->
+<!--                type="date"-->
+<!--                value-format="yyyy-MM-dd"-->
+<!--                clearable-->
+<!--                :picker-options="pickerOptions0"-->
+<!--                placeholder="请选择时间："-->
+<!--                style="width:220px;">-->
+<!--            </el-date-picker>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label=""  prop="value1" class="artvalue12time">  -->
+<!--						<el-time-picker-->
+<!--							v-if="value1isshow"-->
+<!--						  v-model="dataForm.value1"-->
+<!--					    :picker-options="value1Time"-->
+<!--					    @blur ="artvalue1time"-->
+<!--					    placeholder="选择时间">-->
+<!--  					</el-time-picker>-->
+<!--     </el-form-item>-->
+<!--      <el-form-item label="领取结束时间：" prop="getEndTime">-->
+<!--            <el-date-picker-->
+<!--                v-model="dataForm.getEndTime"-->
+<!--                type="date"-->
+<!--                value-format="yyyy-MM-dd"-->
+<!--                clearable-->
+<!--                :picker-options="pickerOptions1"-->
+<!--                placeholder="请选择时间："-->
+<!--                style="width:220px;">-->
+<!--            </el-date-picker>-->
+<!--    	</el-form-item>-->
+<!--    	<el-form-item label="" prop="value2" class="artvalue12time">-->
+<!--            <el-time-picker-->
+<!--            	v-if="value2isshow"-->
+<!--						  v-model="dataForm.value2"-->
+<!--						  :picker-options="value2Time"-->
+<!--						  :disabled = "value2timedisabled"-->
+<!--						  @focus ="artvalue2time"-->
+<!--						  placeholder="选择时间">-->
+<!--						</el-time-picker>-->
+<!--    	</el-form-item>-->
+            <el-form-item label="领取开始时间："  prop="getStartTime">
+                <el-date-picker
+                        v-model="dataForm.getStartTime"
+                        type="datetime"
+                        placeholder="选择开始时间"
+                        style="width: 200px">
+                </el-date-picker>
+            </el-form-item>
+
+            <el-form-item label="领取结束时间："  prop="getEndTime">
+                <el-date-picker
+                        v-model="dataForm.getEndTime"
+                        type="datetime"
+                        placeholder="选择结束时间"
+                        style="width: 200px">
+                </el-date-picker>
+            </el-form-item>
+        <el-form-item class="artfromitem" label="使用门槛：" prop="threshold">
         		<div>单笔订单满</div>
-            <el-input v-model="dataForm.totalnumber"  type="number"  max="1000000" placeholder="0"  style="width:400px;"></el-input>
+            <el-input v-model="dataForm.threshold"  type="number"  max="1000000" placeholder="0"  style="width:400px;"></el-input>
         		<div>元可用（输入“0”为无门槛优惠券）</div>
         </el-form-item>
-        <el-form-item class="artfromitem" label="每人限领：" prop="men">
-            <el-input v-model="dataForm.totalnumber" type="number"  max="1000000" placeholder="1"  style="width:400px;"></el-input>
+        <el-form-item class="artfromitem" label="每人限领：" prop="limitNum">
+            <el-input v-model="dataForm.limitNum" type="number"  max="1000000" placeholder="1"  style="width:400px;"></el-input>
             <div>张 &nbsp;&nbsp;&nbsp;&nbsp; 0代表不限制，每人最多限制5张</div>
         </el-form-item>
-        <el-form-item label="有效期：" prop="totalnumber">
-            <el-input v-model="dataForm.totalnumber" type="number"  max="1000000" placeholder="1000"  style="width:400px;"></el-input>
-        </el-form-item>
-        <el-form-item label="备注：" prop="datatextarea">
-           <el-input
-						  type="textarea"
-						  placeholder="请输入内容"
-						  v-model="dataForm.datatextarea"
-						  maxlength="300"
-						  style="width:400px;">
-						</el-input>
+            <el-form-item label="有效期：" prop="totalNums">
+                <!--            <el-input v-model="dataForm.totalNums" type="number"  max="1000000" placeholder="1000"  style="width:400px;"></el-input>-->
+                <el-radio v-model="validityPeriodType" label="0">
+                    <span>日期范围</span>&nbsp;
+                    <el-date-picker
+                            v-model="valuetime"
+                            type="daterange"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            align="right"
+                            unlink-panels
+                            range-separator="-"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            @blur='acttime'>
+                    </el-date-picker>
+                </el-radio>
+                <br>
+                <el-radio v-model="validityPeriodType" label="1">
+                    <span>固定天数</span>&nbsp;
+                    <el-input placeholder="20" v-model="dataForm.validityDays" show-word-limit style="width:220px;">
+                        <template slot="append">天</template>
+                    </el-input>
+                </el-radio>
+            </el-form-item>
+        <el-form-item label="备注：" prop="bei">
+            <el-input
+                    type="textarea"
+                    placeholder="请输入内容"
+                    v-model="dataForm.bei"
+                    maxlength="300"
+                    style="width:400px;">
+            </el-input>
         </el-form-item>
         <el-form-item>
             <el-button @click="goList()">返回</el-button>
@@ -94,29 +126,30 @@
 </template>
 
 <script>
-import vueFilter from '@/utils/filter'
-var validnumber =(rule, value,callback)=>{
-    if (value/1 > 1000000){
-      callback(new Error('请输入1000000以内的数字'))
-    }else if(value.indexOf('.') != -1){
-    	callback(new Error('只能输入整数'))
-    }else if(value <= 0){
-    	callback(new Error('只能输入大于的数'))
-    }else {
-      callback()
-    }
-};
-var validmoney =(rule, value,callback)=>{
-    if (value/1 > 1000000){
-      callback(new Error('请输入1000000以内的数字'))
-    }else if(value <= 0){
-    	callback(new Error('只能输入大于的数'))
-    }else if(value.indexOf('.') != -1 && value.substr(value.indexOf('.') + 1).length > 2){
-    	callback(new Error('小数点后只能有两位'))
-    }else {
-      callback()
-    }
-};
+import { addActivityPoint, editActivityPoint, backScanActivity } from '@/api/api'
+    import vueFilter from '@/utils/filter'
+    // var validnumber =(rule, value,callback)=>{
+    //     if (value/1 > 1000000){
+    //       callback(new Error('请输入1000000以内的数字'))
+    //     }else if(value.indexOf('.') != -1){
+    //         callback(new Error('只能输入整数'))
+    //     }else if(value <= 0){
+    //         callback(new Error('只能输入大于的数'))
+    //     }else {
+    //       callback()
+    //     }
+    // };
+    // var validfaceValue =(rule, value,callback)=>{
+    //     if (value/1 > 1000000){
+    //       callback(new Error('请输入1000000以内的数字'))
+    //     }else if(value <= 0){
+    //         callback(new Error('只能输入大于的数'))
+    //     }else if(value.indexOf('.') != -1 && value.substr(value.indexOf('.') + 1).length > 2){
+    //         callback(new Error('小数点后只能有两位'))
+    //     }else {
+    //       callback()
+    //     }
+    // };
 export default {
     props: ['type','editSatusId'],
   data () {
@@ -125,45 +158,46 @@ export default {
       activeName2: 'first',
       datatextarea:'',
       dataForm:{
-        "gcName": "",//分类名称 ,
-        "totalnumber": "", //总发行量
-        "gcParentId": 0,//父ID ,
-        "gcSort": 0,// 排序 ,
-        "attrIds":[],//属性关联数组 ,
-        "specIds":[],//规格关联数组 ,
-        "storeId": 0,//店铺ID
-        "money":0,
-        startTime:'',
-        endTime:'',    
-        value1:'',
-        value2:'',
-    	},
+             bei:  "",//备注 ,
+            faceValue:  "",//面额 ,
+            getEndTime:  "",//领取结束时间
+            getStartTime:  "",//: 领取开始时间 ,
+            name:  "",//优惠券名称 ,
+            threshold:  "",//使用门槛 ,
+            totalNums:  "",//总发行量 , ,
+            validityDays:  "",// 有效天数 ,
+            limitNum:"",//每人限领数量 ,
+            memberPoints:'',//兑换优惠券用的积分数
+            validityPeriodType:"0",//有效期类型，0：日期范围，1：固定天数
+            startTime:'',//生效日期
+            endTime:'',// 截止日期
+        },
+        validityPeriodType:"0",
+        row:"",
+        valuetime:"",
     	dataRule : {
-        gcName : [
+        name : [
             { required: true, message: '必填项不能为空', trigger: 'blur' },
         ],
-        startTime : [
+        getStartTime : [
         		{ required: true, message: '必填项不能为空', trigger: 'blur' },
         ],
-        endTime : [
+        getEndTime : [
         		{ required: true, message: '必填项不能为空', trigger: 'blur' },
         ],
-        value1 : [
+        limitNum: [
         		{ required: true, message: '必填项不能为空', trigger: 'blur' },
         ],
-        value2 : [
+        memberPoints :[
         		{ required: true, message: '必填项不能为空', trigger: 'blur' },
+        		// { validator: validnumber, trigger: 'blur' },
         ],
-        men: [
-        		{ required: true, message: '必填项不能为空', trigger: 'blur' },
+        totalNums:[
+            { required: true, message: '必填项不能为空', trigger: 'blur' },
         ],
-        totalnumber :[
+        faceValue :[
         		{ required: true, message: '必填项不能为空', trigger: 'blur' },
-        		{ validator: validnumber, trigger: 'blur' },
-        ],
-        money :[
-        		{ required: true, message: '必填项不能为空', trigger: 'blur' },
-        		{ validator: validmoney, trigger: 'blur' },
+        		// { validator: validfaceValue, trigger: 'blur' },
         ],
         gcParentId : [
             { required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -174,8 +208,8 @@ export default {
       },
       pickerOptions0: {
         disabledDate: (time) => {
-           if (this.dataForm.endTime) {   //先选的结束时间
-              return time.getTime() > new Date(this.dataForm.endTime).getTime()  || time.getTime() < Date.now() - 8.64e7;
+           if (this.dataForm.getEndTime) {   //先选的结束时间
+              return time.getTime() > new Date(this.dataForm.getEndTime).getTime()  || time.getTime() < Date.now() - 8.64e7;
            }else{//还没有选择结束时间的时候，让他只能选择今天之后的时间包括今天
                return time.getTime() < Date.now() - 8.64e7
            } 
@@ -184,9 +218,9 @@ export default {
       },
          pickerOptions1: {
                 disabledDate: (time) => {
-                    if(this.dataForm.startTime){
-                      return time.getTime() < new Date(this.dataForm.startTime).getTime() - 8.64e7;//可以选择同一天
-                    }else if(!this.dataForm.startTime){
+                    if(this.dataForm.getStartTime){
+                      return time.getTime() < new Date(this.dataForm.getStartTime).getTime() - 8.64e7;//可以选择同一天
+                    }else if(!this.dataForm.getStartTime){
 											return time.getTime() < Date.now() - 8.64e7
 										}
                 }
@@ -200,39 +234,39 @@ export default {
     }
   },
   components:{
-  	
+
   },
   created(){
       if(!this.type){
             this.getInfo();//判断为编辑时获取详情
         }else{
             this.dataForm = {
-                "gcName": "",//分类名称 ,
-                "totalnumber": "", //总发行量
-                "gcParentId": 0,//父ID ,
-                "gcSort": 0,// 排序 ,
-                "attrIds":[],//属性关联数组 ,
-                "specIds":[],//规格关联数组 ,
-                "storeId": 0,//店铺ID
-                "money":0,
-                startTime:'',
-                endTime:'',    
-                value1:'',
-                value2:''
+                 bei:  "",//备注 ,
+                faceValue:  "",//面额 ,
+                getEndTime:  "",//领取结束时间
+                getStartTime:  "",//: 领取开始时间 ,
+                name:  "",//优惠券名称 ,
+                threshold:  "",//使用门槛 ,
+                totalNums:  "",//总发行量 , ,
+                validityDays:  "",// 有效天数 ,
+                limitNum:"",//每人限领数量 ,
+                memberPoints:'',//兑换优惠券用的积分数
+                validityPeriodType:"0",//有效期类型，0：日期范围，1：固定天数
+                startTime:'',//生效日期
+                endTime:'',// 截止日期
             }
         }
-      this.demo();
   },
   watch:{
   	dataForm:{ //监听的对象
     	deep:true, //深度监听设置为 true
     	handler:function(newV,oldV){
     		//选择了开始时间
-				if(newV.startTime){   
+				if(newV.getStartTime){
 	      	this.value1isshow = true;
 	      	var currentTime = vueFilter.dateToStr();
 	      	//选择的是今天
-	      	if(this.dataForm.startTime.substr(0,10) == currentTime.substr(0,10)){
+	      	if(this.dataForm.getStartTime.substr(0,10) == currentTime.substr(0,10)){
 	      		this.value1Time = {
 					      selectableRange: `${currentTime.substr(11)} - 23:59:59`
 						};
@@ -245,30 +279,38 @@ export default {
 	     		this.value1isshow = false;
 		  		this.dataForm.value1 = '';
 	     	}
-	   		
-	   		
+
+
 				//选择了结束时间
-				if(newV.endTime){    
+				if(newV.getEndTime){
 	      	this.value2isshow = true;
 	   		}else{    //清空了结束时间
 	     		this.value2isshow = false;
 		  		this.dataForm.value2 = '';
-	     	}    		
+	     	}
      	}
 		}
-	
+
   },
   methods: {
       //编辑详情接口方法
-        getInfo(){
-
-        },
+      getInfo(){
+          var obj  = {
+              id: this.editSatusId,
+          };
+          backScanActivity(obj).then((res)=>{
+              console.log(res);
+              if(res.code==200){
+                  this.dataForm = res.data;
+              }
+          })
+      },
         //返回
         goList(){
             this.$emit('changePage')
         },
   		artvalue1time(){
-		  	if(this.dataForm.value1){  
+		  	if(this.dataForm.value1){
 						this.value2timedisabled = false;
 	      	}else{
 	      		this.value2timedisabled = true;
@@ -276,7 +318,7 @@ export default {
 		},
 		artvalue2time(){
 		  		this.value2timedisabled = false;
-		  		if(this.dataForm.value1 && this.dataForm.startTime == this.dataForm.endTime){    //选择了开始时间      日期是同一天
+		  		if(this.dataForm.value1 && this.dataForm.getStartTime == this.dataForm.getEndTime){    //选择了开始时间      日期是同一天
 	      		this.value2Time = {
 					      selectableRange: `${vueFilter.dateToStr(this.dataForm.value1).substr(10)} - 23:59:59`
 						};
@@ -292,22 +334,61 @@ export default {
 	      		this.$message('请先选择开始时间');
 	      	}
 		},
-        demo(){
-        	function placeholderPic(){
-						var w = document.documentElement.offsetWidth;
-						document.documentElement.style.fontSize=w/20+'px';
-					}
-						placeholderPic();
-					window.onresize=function(){
-						placeholderPic();
-					}
-        },
         //开始结束时间
         acttime(){
-            this.dataForm.strTime = this.valuetime[0];
-            this.dataForm.endTime = this.valuetime[1];
+            this.dataForm.getStartTime = this.valuetime[0];
+            this.dataForm.getEndTime = this.valuetime[1];
         },
-        
+      // 提交
+      dataFormSubmit(formName){
+          // alert([this.dataForm.name,this.dataForm.domainAddress]);
+          this.$refs[formName].validate((valid) => {
+              if (valid) {
+                  this.loading = true;
+                  var obj = {
+                      bei:  this.dataForm.bei,// 备注 ,
+                      endTime:  this.dataForm.endTime,//截止日期 ,
+                      faceValue:  this.dataForm.faceValue,//面额 ,
+                      getEndTime:  this.dataForm.getEndTime,//领取结束时间 ,
+                      getStartTime:  this.dataForm.getStartTime,//领取开始时间 ,
+                      limitNum:  this.dataForm.limitNum,//每人限领数量 ,
+                      memberPoints:  this.dataForm.memberPoints,// 兑换优惠券用的积分数 ,
+                      name:  this.dataForm.name,//优惠券名称 ,
+                      startTime:  this.dataForm.startTime,//生效日期 ,
+                      threshold:  this.dataForm.threshold,//使用门槛 ,
+                      totalNums:  this.dataForm.totalNums,//总发行量 ,
+                      validityDays:  this.dataForm.validityDays,//有效天数 ,
+                      validityPeriodType:  this.validityPeriodType,//有效期类型，0：日期范围，1：固定天数
+                  }
+                    if(this.editSatusId) obj.id = this.editSatusId//优惠券活动id
+                  var fn = this.type?editActivityPoint:addActivityPoint;
+                  fn(obj).then((res) => {
+                      this.loading = false;
+                      // alert(JSON.stringify(res));
+                      let status = null;
+                      if(res.code == "200"){
+                          status = "success";
+                          this.visible = false;
+                          this.$emit('searchDataList');
+                          this.goList();
+
+                      }else{
+                          status = "error";
+                      }
+
+                      this.$message({
+                          message: res.msg,
+                          type: status,
+                          duration: 1500
+                      })
+                  })
+              } else {
+                  //console.log('error 添加失败!!');
+                  return false;
+              }
+          })
+      },
+
   }
 };
 </script>
@@ -339,5 +420,5 @@ input[type="number"]{
 }
 .artvalue12time{
 	 margin: -55px 0 0 231px;
-}   
+}
 </style>

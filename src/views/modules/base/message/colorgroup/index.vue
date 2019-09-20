@@ -3,13 +3,13 @@
         <Bread  :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" @keyup.enter.native="getDataList()" >
             <el-form-item label="颜色组ID：">
-                <el-input v-model="dataFormShow.idJp" ></el-input>
+                <el-input v-model="dataFormShow.idJp" maxlength="30" ></el-input>
             </el-form-item>
             <el-form-item label="颜色组名称：">
                 <el-input v-model="dataFormShow.name" ></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="getData()">查询</el-button>
+                <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>
                 <el-button   class="btn" type="primary" plain @click="reset()">重置</el-button>
             </el-form-item>
         </el-form>
@@ -18,7 +18,7 @@
             <el-table-column prop="idJp" label="颜色组ID" align="center"></el-table-column>
             <el-table-column prop="nameJp" label="日本颜色组名称" align="center"></el-table-column>
             <el-table-column prop="name" label="颜色组名称" align="center"></el-table-column>
-            <el-table-column label="操作" align="center">
+            <el-table-column label="操作" align="center" width="180">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="addOrEditHandle(scope.$index, scope.row)"type="text"size="mini">编辑</el-button>
                 </template>
@@ -73,6 +73,16 @@
             Bread,
             addEditData
         },
+        // ID类搜索框仅可输入数字、英文，最多可输入30个字符
+        watch:{
+            'dataFormShow.idJp':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    if(!/[a-zA-Z0-9]/.test(newV[i])){
+                        this.dataFormShow.idJp = newV.replace(newV[i],"")
+                    }
+                }
+            }
+        },
         methods: {
             getData(){
                 this.page =1;
@@ -104,6 +114,10 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>

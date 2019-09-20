@@ -20,7 +20,7 @@
             </el-form-item>
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
-                <el-button  class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
+                <el-button  class="btn"type="primary" plain @click="reset()" >搜索</el-button>
             </el-form-item>
         </el-form>
         <el-button @click="add()" type="primary" style="float: left;margin-bottom: 10px;">推送消息</el-button>
@@ -68,7 +68,7 @@
                     <div v-else-if="scope.row.messageType == 12" > 售后审核通过</div>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center">
+            <el-table-column label="操作" align="center" width="200">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="showDetail(scope.row.id)" type="text"size="mini">查看</el-button>
                     <el-button @click.native.prevent="deleteList(scope.row.id)" type="text"size="mini">删除</el-button>
