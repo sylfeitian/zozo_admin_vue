@@ -13,7 +13,8 @@
             </el-form>
             <el-form>
                 <el-button type="primary" @click="addOrUpdateHandle()" >添加禁用词</el-button>
-                <el-button type="primary" @click="">导入</el-button>
+                <!-- <el-button type="primary" @click="">导入</el-button> -->
+                 <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"></importAndExport>
             </el-form>
 
             <!--            <el-form>-->
@@ -67,12 +68,19 @@
     import mixinViewModule from '@/mixins/view-module'
     import AddOrUpdate from './add-or-update'
     import Bread from "@/components/bread";
+     import importAndExport from "@/components/import-and-export"
     import { getadvertisingban, advertisingban} from '@/api/url'
-
+    import { importAdvertisingbanUrl} from '@/api/io'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
+                importAndExportOptions:{
+                    importUrl:importAdvertisingbanUrl,//导入接口
+                    importWord:"导入",
+                    // exportUrl:exportRegisterUrl,//导出接口
+                    // exportWord:"导出数据",
+                },
                 mixinViewModuleOptions: {
                     getDataListURL: getadvertisingban,
                     getDataListIsPage: true,
@@ -88,7 +96,8 @@
         },
         components: {
             AddOrUpdate,
-            Bread
+            Bread,
+            importAndExport
         },
         methods:{
             getData(){

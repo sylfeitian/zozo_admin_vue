@@ -512,10 +512,11 @@ export default {
         ids = this.getIds();
         showWeb = rowOrstatus;
       } else {
-        //单个
-        if(rowOrstatus.japanShowWeb=="false"){
+        //单个  
+        // (不可售商品不能上架)
+        if( (rowOrstatus.showWeb==0 || rowOrstatus.showWeb==2 ) && rowOrstatus.japanShowWeb=="false"){
             this.$message({
-              message: "不可售商品不能上下架",
+              message: "不可售商品不能上架",
               type: "warning",
               duration: 1500
             });

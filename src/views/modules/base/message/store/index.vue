@@ -28,7 +28,8 @@
         <el-button class="btn" type="primary" plain @click="reset()">重置</el-button>
       </el-form-item>
     </el-form>
-    <el-button @click class="btn" type="primary">导入店铺信息</el-button>
+    <!-- <el-button @click class="btn" type="primary">导入店铺信息</el-button> -->
+     <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"></importAndExport>
     <el-table
       width="100%"
       :data="dataList"
@@ -131,14 +132,22 @@
 <script>
 import mixinViewModule from "@/mixins/view-module";
 import Bread from "@/components/bread";
+ import importAndExport from "@/components/import-and-export"
 import addEditData from "./model-add-edit-data";
 import editData from "./model-edit-data";
 import { shopPageUrl } from "@/api/url";
 import { operateShopStore, recommendShopStore } from "@/api/api";
+  import { importShopStore} from '@/api/io'
 export default {
   mixins: [mixinViewModule],
   data() {
     return {
+      importAndExportOptions:{
+            importUrl:importShopStore,//导入接口
+            importWord:"导入",
+            // exportUrl:exportRegisterUrl,//导出接口
+            // exportWord:"导出数据",
+        },
       mixinViewModuleOptions: {
         getDataListURL: shopPageUrl,
         getDataListIsPage: true,
@@ -192,7 +201,8 @@ export default {
   components: {
     Bread,
     addEditData,
-    editData
+    editData,
+    importAndExport
   },
   // ID类搜索框仅可输入数字、英文，最多可输入30个字符
   watch:{
