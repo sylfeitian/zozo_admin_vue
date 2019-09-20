@@ -61,7 +61,8 @@ export default {
                 // this.progress = 0;
                 console.log(file);
                  var reg = /^.*\.(?:xls|xlsx)$/i;//文件名可以带空格
-                const isExcel =  file.type=== "application/vnd.ms-excel";
+                // const isExcel =  file.type=== "application/vnd.ms-excel";
+                 const isExcel =  reg.test(file.name);
                 const isLt2M = file.size / 1024 / 1024 < 500;
 
                 if (!isExcel) {

@@ -7,10 +7,10 @@
                 <el-input v-model="dataFormShow.goodsName" placeholder="商品名称/商品编号" maxlength="300"></el-input>
             </el-form-item>
             <el-form-item label="商品ID：">
-                <el-input v-model="dataFormShow.idJp" placeholder="请输入商品skuID" maxlength="30" ></el-input>
+                <el-input v-model="dataFormShow.goodsCsIdJp" placeholder="请输入商品skuID" maxlength="30" ></el-input>
             </el-form-item>
             <el-form-item label="分类：">
-                <!-- <el-select v-model="dataFormShow.goodsTypeId" placeholder="请选择">
+                <!-- <el-select v-model="dataFormShow.thirdCategoryNo" placeholder="请选择">
                     <el-option
                             v-for="item in selectCategoryOption"
                             :key="item.id"
@@ -80,19 +80,29 @@
             <el-table-column label="主图" prop="imageUrl" align="center" width="160">
                 <template slot-scope="scope">
                     <img
-                            :src="scope.row.mainImageUrl | filterImgUrl"
-                            alt=""
-                            style=" object-fit: contain;width: 70px;height:70px;"
+                        :src="scope.row.mainImageUrl | filterImgUrl"
+                        alt=""
+                        style=" object-fit: contain;width: 70px;height:70px;"
                     >
                 </template>
             </el-table-column>
-            <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
+            <el-table-column prop="name" label="商品名称" align="center"></el-table-column>
             <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
-            <el-table-column prop="sellPrice" label="售价" width="100" align="center"></el-table-column>
-            <el-table-column prop="categoryId" label="分类"  align="center"></el-table-column>
+            <el-table-column prop="price" label="售价" width="100" align="center">
+                <template slot-scope="scope">
+                   <span>￥{{scope.row.price?scope.row.price:"0.00"}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="category" label="分类"  align="center"></el-table-column>
             <el-table-column prop="storeName" label="所属店铺" align="center"></el-table-column>
-            <el-table-column prop="showWeb" label="上架状态" align="center"></el-table-column>
-            <el-table-column prop="" label="库存数" align="center"></el-table-column>
+            <el-table-column prop="showWeb" label="上架状态" align="center">
+                 <template slot-scope="scope">
+                    <span v-if="scope.row.showWeb==0">待上架</span>
+                    <span v-else-if="scope.row.showWeb==1">已上架</span>
+                    <span v-else-if="scope.row.showWeb==2">已下架</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="goodsQuantity" label="库存数" align="center"></el-table-column>
         </el-table>
         <!-- 分页 -->
         <el-pagination
@@ -129,10 +139,10 @@
                 breaddata: [ "商品管理", "查看库存"],
                 dataFormShow: {  
                     goodsName: "",//商品名称/商品货号
-                    idJp:"",  //商品id
+                    goodsCsIdJp:"",  //商品id
                     brandName: "",//品牌名称
                     storeName: "",//店铺名称
-                    goodsTypeId: "",//中国分类id
+                    thirdCategoryNo: "",//中国分类id
                     isSoldOut: "",//是否可售
                 },
                  dataForm: {
@@ -172,10 +182,10 @@
                 },
                 dataFormShow:{
                     goodsName:'',//商品中文名称
-                    idJp:'',//商品spuid
+                    goodsCsIdJp:'',//商品spuid
                     brandName:'',//品牌名称
                     storeName:'',//	所属店铺名称
-                    goodsTypeId:'',//中国分类Id
+                    thirdCategoryNo:'',//中国分类Id
                     isSoldOut:'',//是否售完，已售完1，未售完0
                 },
                 classList:[],
@@ -187,10 +197,10 @@
         },
         // ID类搜索框仅可输入数字、英文，最多可输入30个字符
         watch:{
-            'dataFormShow.idJp':function(newV,oldV) {
+            'dataFormShow.goodsCsIdJp':function(newV,oldV) {
                 for(let i=0;i<newV.length;i++){
                     if(!/[a-zA-Z0-9]/.test(newV[i])){
-                        this.dataFormShow.idJp = newV.replace(newV[i],"")
+                        this.dataFormShow.goodsCsIdJp = newV.replace(newV[i],"")
                     }
                 }
             }
@@ -253,9 +263,12 @@
             // 切换中国分类
             handleChange(){
                 if(this.classList.length!=0){
-                    this.dataFormShow.goodsTypeId = this.classList[this.classList.length-1]
+                    this.dataFormShow.thirdCategoryNo = this.classList[this.classList.length-1]
+                }else{
+                this.dataFormShow.thirdCategoryNo = "";//分类id
+
                 }
-                console.log(this.dataFormShow.goodsTypeId)
+                console.log(this.dataFormShow.thirdCategoryNo)
             },
             showDetail(id){
                 this.$emit("showDetail",id);
@@ -270,18 +283,19 @@
             },
             reset() {
                 this.dataFormShow.goodsName = "";//商品名称/商品货号
-                this.dataFormShow.idJp = "";//商品id
+                this.dataFormShow.goodsCsIdJp = "";//商品id
                 this.dataFormShow.brandName = "";//品牌名称
-                this.dataFormShow.goodsTypeId = "";//分类id
+                this.dataFormShow.thirdCategoryNo = "";//分类id
                 this.dataFormShow.storeName = "";//店铺名称
                 this.dataFormShow.isSoldOut = "";//是否可售
                 
                 this.dataForm.goodsName = "";//商品名称/商品货号
-                this.dataForm.idJp = "";//商品id
+                this.dataForm.goodsCsIdJp = "";//商品id
                 this.dataForm.brandName = "";//品牌名称
-                this.dataForm.goodsTypeId = "";//分类id
+                this.dataForm.thirdCategoryNo = "";//分类id
                 this.dataForm.storeName = "";//店铺名称
                 this.dataForm.isSoldOut = "";//是否可售
+                this.classList = [];
                 this.getDataList();
             },
             // 编辑

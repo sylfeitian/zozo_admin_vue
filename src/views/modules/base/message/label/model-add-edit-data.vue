@@ -158,8 +158,8 @@
         methods: {
             init (row) {
                 this.visible = true;
-                this.row = row;
                 if(row){
+                    this.row = row;
                     this.title="编辑标签";
                     this.backScan();
                 }else{
