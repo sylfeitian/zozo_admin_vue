@@ -17,6 +17,8 @@
         	<el-date-picker
                 v-model="dataForm.getStartTime"
                 type="datetime"
+                format="yyyy-MM-dd HH:mm:ss"
+                value-format="yyyy-MM-dd HH:mm:ss"
                 placeholder="选择开始时间"
                 style="width: 200px">
             </el-date-picker>
@@ -26,6 +28,8 @@
         	<el-date-picker
                 v-model="dataForm.getEndTime"
                 type="datetime"
+                format="yyyy-MM-dd HH:mm:ss"
+                value-format="yyyy-MM-dd HH:mm:ss"
                 placeholder="选择结束时间"
                 style="width: 200px">
             </el-date-picker>
@@ -41,10 +45,11 @@
             <div>张 &nbsp;&nbsp;&nbsp;&nbsp; 0代表不限制，每人最多限制5张</div>
         </el-form-item>
         <el-form-item label="有效期：" prop="totalNums">
-            <el-radio v-model="validityPeriodType" label="0">
+            <el-radio v-model="validityPeriodType" :label="0">
                 <span>日期范围</span>&nbsp;
                 <el-date-picker
                         v-model="valuetime"
+                        format="yyyy-MM-dd HH:mm:ss"
                         type="daterange"
                         value-format="yyyy-MM-dd HH:mm:ss"
                         align="right"
@@ -56,7 +61,7 @@
                 </el-date-picker>
             </el-radio>
             <br>
-            <el-radio v-model="validityPeriodType" label="1">
+            <el-radio v-model="validityPeriodType" :label="1">
                 <span>固定天数</span>&nbsp;
                 <el-input placeholder="20" v-model="dataForm.validityDays" show-word-limit style="width:220px;">
                     <template slot="append">天</template>
@@ -122,11 +127,10 @@ export default {
                 validityDays:  "",// 有效天数 ,
                 limitNum:"",//每人限领数量 ,
                 memberPoints:'',//兑换优惠券用的积分数
-                validityPeriodType:"0",//有效期类型，0：日期范围，1：固定天数
                 startTime:'',//生效日期
                 endTime:'',// 截止日期
             },
-            validityPeriodType:"0",
+            validityPeriodType:0,//有效期类型，0：日期范围，1：固定天数
             dataRule : {
                 name : [
                     { required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -183,7 +187,6 @@ export default {
                 validityDays:  "",// 有效天数 ,
                 limitNum:"",//每人限领数量 ,
                 memberPoints:'',//兑换优惠券用的积分数
-                // validityPeriodType:0,//有效期类型，0：日期范围，1：固定天数
                 startTime:'',//生效日期
                 endTime:'',// 截止日期
             }
@@ -199,37 +202,16 @@ export default {
                 console.log(res);
                 if(res.code==200){
                     this.dataForm = res.data;
+                  
+                    this.dataForm.validityDays = res.data.validityDays// 有效天数 ,
+                    this.dataForm.memberPoints =  res.data.memberPoints//兑换优惠券用的积分数
+                    this.validityPeriodType =  res.data.validityPeriodType//有效期类型，0：日期范围，1：固定天数
+                    this.dataForm.startTime =  res.data.startTime//生效日期
+                    this.dataForm.endTime =  res.data.endTime// 截止日期 
+                    if(res.data.startTime && res.data.endTime){
+                        this.valuetime = [res.data.startTime,res.data.endTime]
+                    }
 
-                    // this.dataForm.validityDays = res.data.validityDays// 有效天数 ,
-                    // this.dataForm.memberPoints =  res.data.memberPoints//兑换优惠券用的积分数
-                    // this.validityPeriodType =  res.data.validityPeriodType//有效期类型，0：日期范围，1：固定天数
-                    // this.dataForm.startTime =  res.data.startTime//生效日期
-                    // this.dataForm.endTime =  res.data.endTime// 截止日期
-//                       if(res.data.startTime && res.data.endTime){
-//                         this.valuetime = [res.data.getStartTime,res.data.getEndTime]
-//                     }
-// //                     auditState: 1
-                    // bei: "普通优惠券"
-                    // faceValue: "40.00"
-                    // getEndTime: "2019-12-01 00:00:00"
-                    // getStartTime: "2019-10-01 00:00:00"
-                    // id: "1171237712020197377"
-                    // limitNum: 3
-                    // name: "普通优惠券4"
-                    // receivedNum: 0
-                    // state: "1"
-                    // stopFlag: 1
-                    // threshold: "400"
-                    // totalNums: 9999
-                    // type: 0
-                    // unUsedNum: 0
-                    // usedNum: 0
-
-                // validityDays:  "",// 有效天数 ,
-                // memberPoints:'',//兑换优惠券用的积分数
-                // validityPeriodType:0,//有效期类型，0：日期范围，1：固定天数
-                // startTime:'',//生效日期
-                // endTime:'',// 截止日期
                 }
             })
         },
@@ -240,6 +222,7 @@ export default {
         },
         //开始结束时间
         acttime(){
+            console.log(this.valuetime)
             this.dataForm.startTime = this.valuetime[0];
             this.dataForm.endTime = this.valuetime[1];
         },

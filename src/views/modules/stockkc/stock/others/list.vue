@@ -71,13 +71,13 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import showData from './model-show-data'
-    import {getstockdata} from '@/api/url'
+    import {warehouserecordsodoListPage} from '@/api/url'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
             	mixinViewModuleOptions: {
-		          getDataListURL: getstockdata,
+		          getDataListURL: warehouserecordsodoListPage,
 		          getDataListIsPage: true,
 		          // exportURL: '/admin-api/log/login/export',
 		          deleteURL: '',

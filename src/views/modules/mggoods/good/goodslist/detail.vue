@@ -131,8 +131,8 @@
                         <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
                         <el-table-column prop="sellStartDate" label="售卖开始时间" align="center"></el-table-column>
                         <el-table-column prop="sellEndDate" label="售卖结束时间" align="center"></el-table-column>
-                        <el-table-column prop="" label="日本限购数量" align="center"></el-table-column>
-                        <el-table-column prop="" label="日本每人限购数量" align="center"></el-table-column>
+                        <el-table-column prop="cartLimit" label="日本限购数量" align="center"></el-table-column>
+                        <el-table-column prop="limitPerCustomer" label="日本每人限购数量" align="center"></el-table-column>
                         <el-table-column prop="sellPrice" label="售价(RMB)" align="center">
                             <template
                                     slot-scope="scope"
