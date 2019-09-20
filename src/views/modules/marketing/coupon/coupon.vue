@@ -149,11 +149,11 @@
 			align="center"
 			width="250">
 <!--		    <template slot-scope="scope">-->
-<!--		    	<el-button type="text" size="small" @click="showDetail(scope.row.id)">查看</el-button>-->
-<!--		    	<el-button type="text" size="small" @click="addCoupon(scope.row.id,'普通优惠券')" v-if="scope.row.auditState==0 || scope.row.auditState==1 && scope.row.state==0 || scope.row.auditState==2 && scope.row.state==0">编辑</el-button>-->
-<!--		    	<el-button class="artdanger" type="text" size="small" @click="deleteHandle(scope.row.id)" v-if="scope.row.auditState==2">删除</el-button>-->
-<!--				<el-button type="text" size="small" @click="" v-if="scope.row.state==1">停止</el-button>-->
-<!--				<el-button type="text" size="small" @click="" v-if="scope.row.auditState==0">审核</el-button>-->
+<!--		    	<el-button type="text" size="small" @click="showDetail(scope.row)">查看</el-button>-->
+<!--		    	<el-button type="text" size="small" @click="addCoupon(scope.row)" v-if="scope.row.auditState==0 || scope.row.auditState==1 && scope.row.state==0 || scope.row.auditState==2 && scope.row.state==0">编辑</el-button>-->
+<!--		    	<el-button class="artdanger" type="text" size="small" @click="deleteHandleLocal(scope.row)" v-if="scope.row.auditState==2">删除</el-button>-->
+<!--				<el-button type="text" size="small" @click="showStopModel(scope.row)" v-if="scope.row.state==1">停止</el-button>-->
+<!--				<el-button type="text" size="small" @click="showExammine(scope.row)" v-if="scope.row.auditState==0">审核</el-button>-->
 <!--		    </template>-->
 			<template slot-scope="scope">
 				<el-button type="text" size="small" @click="showDetail(scope.row)">查看</el-button>
