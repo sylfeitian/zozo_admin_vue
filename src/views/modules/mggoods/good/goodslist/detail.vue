@@ -191,7 +191,7 @@
     import quillEditorImg from "@/components/quillEditor"
     //import addEditData from './model-show-data'
     // import mixinViewModule from '@/mixins/view-module'
-    import { backScanZozogoods } from '@/api/api'
+    import { backScanZozogoods,backScanZozogoods2 } from '@/api/api'
 
     import 'quill/dist/quill.core.css';
     import 'quill/dist/quill.snow.css';
@@ -252,7 +252,11 @@
                         var obj  = {
                             id:row.id
                         }
-                        backScanZozogoods(obj).then((res)=>{
+                        var fn = backScanZozogoods
+                        if(row.origin && row.origin=="recordinformation"){
+                            fn = backScanZozogoods2;
+                        }
+                        fn(obj).then((res)=>{
                             console.log('详情',res.data)
                             if(res.code == 200){
                                 this.dataForm = res.data;

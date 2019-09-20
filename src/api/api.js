@@ -683,7 +683,10 @@ export const backScanShoplabel = params => { return http.get(`${base}/shoplabel/
 
 //商品管理接口--------------------------------------------------------------------------------------------------------------------
 // 商品详细信息
-export const backScanZozogoods = params => { return http.get(`${base}/zozogoods/goodsCsJpInfo?id=${params.id}`, params).then(res => res.data); };
+export const backScanZozogoods = params => { return http.get(`${base}/zozogoods?id=${params.id}`, params).then(res => res.data); };
+// 商品详细信息
+export const backScanZozogoods2 = params => { return http.get(`${base}/zozogoods/goodsCsJpInfo?id=${params.id}`, params).then(res => res.data); };
+
 // 商品保存
 export const saveZozogoods = params => { return http.post(`${base}/zozogoods`, params).then(res => res.data); };
 // 商品分页
