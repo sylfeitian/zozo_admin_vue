@@ -27,13 +27,15 @@
                         active-color="#1890ff"
                         inactive-color="#ff4949"
                 ></el-switch>
-            </el-form-item>
+            </el-form-item> 
+            <!--@keydown.native="artonkeydown('minAmount')"  @keyup.native="artonkeyup" -->
             <el-form-item class="artAmount" label="订单有效金额范围：" prop="minAmount" :label-width="formLabelWidth">
-                <el-input type="number" v-model="dataForm.minAmount"  placeholder="请输入" style="width: 160px;"></el-input>
+                <el-input  @keydown.native="artonkeydown('minAmount')"  @keyup.native="artonkeyup"   v-model="dataForm.minAmount"  placeholder="请输入" style="width: 160px;"></el-input>
                 <span> ~ </span>
             </el-form-item>
+            <!-- @keydown.native="artonkeydown('maxAmount')"  @keyup.native="artonkeyup"-->
             <el-form-item  class="artAmount artmaxAmount" prop="maxAmount" :label-width="formLabelWidth">
-                <el-input type="number" v-model="dataForm.maxAmount"  placeholder="请输入" style="width: 160px;"></el-input>
+                <el-input  @keydown.native="artonkeydown('maxAmount')"  @keyup.native="artonkeyup"  v-model="dataForm.maxAmount"  placeholder="请输入" style="width: 160px;"></el-input>
             </el-form-item>
             
             
@@ -157,6 +159,29 @@
 			    }else {
 			      callback()
 			    }
+			};  
+			var validnumdian =(rule, value,callback)=>{
+//				console.log(rule,value)
+				var valuestr = value +'';
+				if(valuestr && valuestr.indexOf('.') != -1 && valuestr.length > valuestr.indexOf('.') + 3){ //小数点只能输入两位
+					this.dataForm[rule.field] =  valuestr.substring(0,valuestr.indexOf('.') + 3);
+        		}
+			    
+			};  
+			var validnumreg =(rule, value,callback)=>{ //输入小数点后    前移一位再输入小鼠酒店  没用
+				var reg = /(^[\-0-9][0-9]*(.[0-9]+)?)$/;
+        		var pattern = new RegExp(reg);
+        		var valuestr = value +'';
+        		var lastchar = valuestr.substr(valuestr.length-1,1)
+				this.dataForm[rule.field] =  parseFloat(valuestr) || '';
+        		if(!(valuestr.indexOf('.') == -1) && e.key == '.'){    //存在小数点了
+        			this.dataForm[this.lastname] = this.lastval;
+        		}
+        		
+        		if(pattern.test(e.key) || e.key == '.' ){
+        		}else{  //非数字
+        			this.dataForm[this.lastname] =  parseFloat(this.lastval) || '';
+        		}
 			};
             return {
                 datadisabled: true,
@@ -188,12 +213,15 @@
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                         // { min:0, max:1000000, message: '最大可输入1000000', trigger: 'blur' },
                         { validator: validmoney, trigger: 'blur' },
+                        { validator: validnumdian, trigger: 'change' },
+//                      { validator: validnumreg, trigger: 'change' },
                     ],
                     maxAmount : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                         // { min:0, max:1000000, message: '最大可输入1000000', trigger: 'blur' },
                         { validator: validmoney, trigger: 'blur' },
                         { validator: maxvalidmoney, trigger: 'blur' },
+                        { validator: validnumdian, trigger: 'change' },
                     ],
                     expirationTimeMinute : [   
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -220,6 +248,7 @@
                        	// { min: 2, max: 6, message: '最大长度是6位', trigger: 'blur' },
                        	{ validator: valid, trigger: 'blur' },
                        	{ validator: validnum0, trigger: 'blur' },
+                       	
                     ],
                     riseIn: [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -233,6 +262,8 @@
                 uploading:false,
                 actendnumflag:false,
                 actratenumflag:false,
+                lastval:'',
+                lastname:'',
             }
         },
         components: {
@@ -246,7 +277,31 @@
             // 回显数据
             this.backScandata();
         },
-        methods: {
+        methods: {   
+        	artonkeyup(e){
+	            if(e.key == 'Backspace' || e.key == "Delete"){
+	              	return;
+	            }
+	            var reg = /(^[\-0-9][0-9]*(.[0-9]+)?)$/;
+	            var pattern = new RegExp(reg);
+	            if(!(this.lastval.indexOf('.') == -1) && e.key == '.'){    //存在小数点了
+	              this.dataForm[this.lastname] = this.lastval;
+	            }
+	            
+	            if(pattern.test(e.key) || e.key == '.' ){
+	            }else{  //非数字
+	              this.dataForm[this.lastname] =  parseFloat(this.lastval) || '';
+	            }
+//	            if(e.key == 'Shift'){
+//	            	console.log(this.lastval);
+//	            	console.log(parseFloat(this.lastval));
+//	              	this.dataForm[this.lastname] =  parseFloat(this.lastval) || '';
+//	            }
+          	},
+	        artonkeydown(str){   //输入前的值
+	            this.lastval = this.dataForm[str]+'';
+	            this.lastname = str;
+	        },
             // 获取汇率
         	getrate(){
         		gethomepageRate().then((res)=>{

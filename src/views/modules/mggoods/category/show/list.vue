@@ -270,10 +270,7 @@ export default {
   }
 };
 </script>
-<style >
-.el-table__empty-block {
-  display: none;
-}
+<style lang="scss" scoped>
 .el-tree-node__content {
   border: 1px solid #d1d1d1;
 }
