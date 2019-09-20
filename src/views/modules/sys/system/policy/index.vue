@@ -29,11 +29,11 @@
                 ></el-switch>
             </el-form-item>
             <el-form-item class="artAmount" label="订单有效金额范围：" prop="minAmount" :label-width="formLabelWidth">
-                <el-input type="number" v-model="dataForm.minAmount"  placeholder="请输入" style="width: 160px;"></el-input>
+                <el-input type="text" v-model="dataForm.minAmount"  placeholder="请输入" style="width: 160px;"></el-input>
                 <span> ~ </span>
             </el-form-item>
             <el-form-item  class="artAmount artmaxAmount" prop="maxAmount" :label-width="formLabelWidth">
-                <el-input type="number" v-model="dataForm.maxAmount"  placeholder="请输入" style="width: 160px;"></el-input>
+                <el-input type="text" v-model="dataForm.maxAmount"  placeholder="请输入" style="width: 160px;"></el-input>
             </el-form-item>
             
             
@@ -239,6 +239,29 @@
             quillEditorImg,
             imgCropper,
             Bread
+        },
+        watch:{
+            'dataForm.minAmount':function(newV,oldV) {
+                if(newV){
+                    // 删除非数字和小数点之外的输入
+                    this.dataForm.minAmount=newV.replace(/[^\d|\.]/g,'')
+                }
+                debugger
+                // 有小数点 截取0到小数点后2位间的数据
+               if(newV.toString().indexOf('.') !== -1 && newV.toString().substr(newV.indexOf('.') + 1).length > 2){
+                    this.dataForm.minAmount=newV.substr(0,newV.indexOf('.')+3)
+               }
+            },
+            'dataForm.maxAmount':function(newV,oldV) {
+                if(newV){
+                    this.dataForm.maxAmount=newV.replace(/[^\d|\.]/g,'')
+                }
+                debugger
+                // 有小数点 截取0到小数点后2位间的数据
+                if(newV.toString().indexOf('.') !== -1 && newV.toString().substr(newV.indexOf('.') + 1).length > 2){
+                    this.dataForm.maxAmount=newV.substr(0,newV.indexOf('.')+3)
+                }
+            }
         },
         created(){
             // 获取汇率

@@ -14,7 +14,7 @@
                     <span  style="color:transparent">0</span>
                 </el-radio>
                 <el-form-item label="账号：" style="width: 100%;" prop="memberName">
-                        <el-input v-model="dataForm.memberName" maxlength="11" show-word-limit></el-input>
+                        <el-input v-model="dataForm.memberName" placeholder="请输入"></el-input>
                 </el-form-item>
             </div>
 
@@ -144,7 +144,21 @@
             };
         },
         props: [],
-        created(){
+		watch:{
+			'dataForm.memberName':function(newV,oldV) {
+				debugger
+				var character=0;
+				for(let i=0;i<newV.length;i++){
+					if(/^[0-9]$/.test(newV[i])){
+						character=character+1;
+					}
+					if(character>11){
+						this.dataForm.memberName = newV.replace(newV[i],"")
+					}
+				}
+			}
+		},
+		created(){
         },
         methods: {
         	artfocus(){
