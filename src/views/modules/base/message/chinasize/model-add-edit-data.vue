@@ -13,7 +13,7 @@
                 ref="addForm"
                 label-width="100px">
             <el-form-item label="尺码名称：" prop="name">
-                  <el-input v-model="dataForm.name " maxlength="20"  show-word-limit  placeholder="请输入尺码性名称"></el-input>
+                  <el-input v-model="dataForm.name" placeholder="请输入10个字以内的内容"></el-input>
             </el-form-item>
             <el-form-item label="排序：" prop="sort">
                  <el-input-number v-model="dataForm.sort" :step="1" :min="0"></el-input-number><br>
@@ -48,9 +48,6 @@
                 dataRule : {
                     name : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
-                    ],
-                    sort : [
-                        { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ]
                 },
                 optionsApplication: [],
@@ -60,7 +57,24 @@
                 formLabelWidth: '120px'
             }
         },
-        methods: {
+        watch: {
+            'dataForm.name': function (newV, oldV) {
+                var chinese = 0;
+                var character = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chinese = chinese + 2;
+                    } else { //字符
+                        character = character + 1;
+                    }
+                    var count = chinese + character;
+                    if (count > 20) { //输入字符大于20的时候过滤
+                        this.dataForm.name = newV.replace(newV[i], "")
+                    }
+                }
+            }
+        },
+            methods: {
             init (row) {
                 this.visible = true;
                 this.$nextTick(() => {

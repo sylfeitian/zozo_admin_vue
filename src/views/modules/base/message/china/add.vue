@@ -23,8 +23,7 @@
 				<el-input v-model="dataForm.name " type="text" placeholder="请输入4个汉字/8个字符以内的内容" style="width:400px;"></el-input>
 			</el-form-item>
 			<el-form-item label="排序：" prop="sort">
-				<el-input v-model="dataForm.sort" type="text" placeholder="0-255" show-word-limit style="width:200px;"></el-input>
-					<div class="grey">(数字越大越靠前)</div>
+				<el-input v-model="dataForm.sort" type="text" placeholder="0-255(数字越大越靠前)" show-word-limit style="width:200px;"></el-input>
 			</el-form-item>
 			
 			<el-form-item label="评价类型：" prop="appraisal" v-if="erjishow">
