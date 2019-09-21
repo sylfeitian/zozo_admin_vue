@@ -28,7 +28,7 @@
                 <el-input v-model="dataForm.styleName" placeholder="请输入标签名称"></el-input>
             </el-form-item>
             <el-form-item label="性别：">
-                <el-select v-model="dataForm.gender" placeholder="请选择">
+                <el-select v-model="dataForm.gender" multiple  placeholder="请选择">
                     <el-option
                             v-for="item in genderOptions"
                             :key="item.id"
@@ -104,7 +104,7 @@
                 dataForm: {
                     styleName: "",//标签名称
                     styleType: "",//标签分类
-                    gender: "",//性别
+                    gender: [],//性别
                     imgUrl: "",//主图
                     sort: "",//排序
                 },
@@ -129,7 +129,8 @@
                 value2:[],
                 dataArray:[],
                 dataArray2:[],
-                formLabelWidth: '120px'
+                formLabelWidth: '120px',
+                row:'',
             }
         },
         components:{
@@ -182,7 +183,11 @@
                     if(res.code == 200){
                         Object.assign(this.dataForm,res.data);
                         this.dataForm.styleType =this.dataForm.styleType+"";
-                        this.dataForm.gender =this.dataForm.gender+"";
+                        if(this.dataForm.gender){
+                            this.dataForm.gender = this.dataForm.gender.split(",");
+                        }else{
+                            this.dataForm.gender = [];
+                        }
                     }else{
 
                     }
@@ -239,10 +244,14 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.loading = true;
+                        var gender =""
+                        if(this.dataForm.gender.length!=0){
+                            gender = this.dataForm.gender.join(",");
+                        }
                         var obj = {
                             styleName:  this.dataForm.styleName,//标签名 ,
                             styleType:  this.dataForm.styleType,// 0 主 1 副
-                            gender:  this.dataForm.gender,//性别(0:男 1:女 2:儿童) ,
+                            gender:  gender,//性别(0:男 1:女 2:儿童) ,
                             imgUrl:  this.dataForm.imgUrl,//主图 ,
                             sort:  this.dataForm.sort,//排序 ,
                             description: this.dataForm.description,//描述 
