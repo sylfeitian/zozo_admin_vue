@@ -94,14 +94,17 @@
             var validatorWarehouseName = (rule, value, callback) => {
                 if (value != '') {
                      var obj  ={
-                         id:this.row?this.row.id:"",
-                         name:value
+                        params:{
+                            id:this.row?this.row.id:"",
+                            name:value
+                        }
                      }
                     verifyWare(obj).then((res)=>{
-                        if(res.code=="200"){
+                        if(res){
                             callback()
-                        }else{}
+                        }else{
                             callback(new Error('仓库名称已经存在'))
+                        }
                     })
 
                 } else {
