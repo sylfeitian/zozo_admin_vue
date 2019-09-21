@@ -145,7 +145,9 @@
 				if(selected){   //true    添加
 					row.wareHouseId = this.dataId;
 					row.skuId = row.id;
-					delete row.id;
+					row.changeQty = 0;
+					row.afterQty =  row.quantity;
+					// delete row.id;
         			this.showdatacurrent.push(row);
         		}else{          //删除
 			        for (var i = 0; i < this.showdatacurrent.length; i++) {
@@ -169,7 +171,9 @@
 						if (flag){
 							item.wareHouseId = this.dataId;
 							item.skuId = item.id;
-							delete item.id;
+							item.changeQty = 0;
+							item.afterQty =  item.quantity;
+							// delete item.id;
 							this.showdatacurrent.push(item);
 						}
 					})
