@@ -43,7 +43,7 @@
               </el-row>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="dataFormSubmitHandle()" class="w-percent-100">{{ $t('login.title') }}</el-button>
+              <el-button :loading="loading" type="primary" @click="dataFormSubmitHandle()" class="w-percent-100">{{ $t('login.title') }}</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -63,9 +63,11 @@ import debounce from 'lodash/debounce'
 import { messages } from '@/i18n'
 import { getUUID } from '@/utils'
 import canvasbg from '@/components/canvasbg'
+import { isUserName,wordNumCharacter  } from '@/utils/validate'
 export default {
   data () {
     return {
+      loading:false,
       i18nMessages: messages,
       captchaPath: '',
       captchaStatus:true,
@@ -82,6 +84,20 @@ export default {
   },
   computed: {
     dataRule () {
+      var validateUsername = (rule, value, callback) => {
+        if (!isUserName(value)) {
+          return callback(new Error('仅可输入英文、数字'))
+        }else{
+          callback()
+        }
+      }
+      var validatePwd = (rule, value, callback) => {
+        if(!wordNumCharacter(value)){
+          return callback(new Error('可输入英文、数字、常用符号（不包含空格）'))
+        }else{
+          callback()
+        }
+      }
       var validateComfirmPassword = (rule, value, callback) => {
         // console.log(this.captchaStatus)
         if (this.captchaStatus) {
@@ -89,14 +105,15 @@ export default {
         }else{
           return callback(new Error('验证码不正确'))
         }
-        
       }
       return {
         username: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' },
+          { validator: validateUsername, trigger: 'blur' },
         ],
         password: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' },
+           { validator: validatePwd, trigger: 'blur' },
         ],
         captcha: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' },
@@ -118,12 +135,17 @@ export default {
     },
     // 表单提交
     dataFormSubmitHandle: debounce(function () {
+      if(this.loading){
+        return;
+      }
       this.$refs['dataForm'].validate((valid) => {
         if (!valid) {
           return false
         }
+        this.loading = true;
         this.$http.post('/auth/login', this.dataForm).then(({ data: res }) => {
-          if (res.code != 200) {
+           this.loading = false;
+          if(res.code != 200) {
             this.getCaptcha();
             if(res.code == 10007){
               this.captchaStatus = false;
