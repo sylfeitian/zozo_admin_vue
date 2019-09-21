@@ -84,7 +84,7 @@
       </el-table-column>
       <el-table-column label="售卖品牌" align="center">
         <template slot-scope="scope">
-          <el-button type="text" @click.native.prevent="addHandle" size="mini">查看</el-button>
+          <el-button type="text" @click.native.prevent="addHandle(scope.row)" size="mini">查看</el-button>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="120px">
@@ -238,7 +238,7 @@ export default {
       this.getAndHandleDataList();
     },
     // 查看
-    addHandle(index = -1, row = "") {
+    addHandle( row ) {
       this.setAddDataVisible(true);
       this.$nextTick(() => {
         this.$refs.addEditData.init(row);

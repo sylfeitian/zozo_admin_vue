@@ -246,8 +246,9 @@ export const deleteCategoryCnUrl = `${base}/categoryCn/delete`;
 export const shopBrandUrl = `${base}/shopBrand/page`;
 // 编辑品牌
 export const deleteShopBrandUrl = `${base}/shopBrand`;
+// // 根据店铺id分页查询信息
 
-
+export const pageByStoreUrl = `${base}/shopBrand/pageByStore`;
 
 
 // 风格标签管理--------------------------------------------------------------------------------------------------------------------

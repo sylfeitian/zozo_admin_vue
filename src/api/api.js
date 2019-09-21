@@ -575,7 +575,7 @@ export const importShopBrand = params => { return http.post(`${base}/shopBrand/i
 // 分页查询信息
 export const shopBrandPage = params => { return http.get(`${base}/shopBrand/page`, params).then(res => res.data); };
 // 根据店铺id分页查询信息
-export const pageByStore = params => { return http.get(`${base}/shopBrand/pageByStore`, params).then(res => res.data); };
+// export const pageByStore = params => { return http.get(`${base}/shopBrand/pageByStore`, params).then(res => res.data); };
 // 根据中国ID获取品牌信息
 export const backScanShopBrand = params => { return http.get(`${base}/shopBrand/${params.id}`, params).then(res => res.data); };
 

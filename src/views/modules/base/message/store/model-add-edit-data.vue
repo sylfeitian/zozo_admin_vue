@@ -24,7 +24,12 @@
                     style="width: 100%"
             >
                 <el-table-column prop="brandName" label="品牌名称" align="center"></el-table-column>
-                <el-table-column prop="enableCnFlag" label="可售状态" width="200" align="center"></el-table-column>
+                <el-table-column prop="enableCnFlag" label="可售状态" width="200" align="center">
+                     <template slot-scope="scope">
+                         <span v-if="scope.row.enableCnFlag==0">不可售</span>
+                         <span v-else-if="scope.row.enableCnFlag==1">可售</span>
+                    </template>
+                </el-table-column>
             </el-table>
         </el-form>
         <!-- 分页 -->
@@ -41,19 +46,30 @@
 </template>
 
 <script>
-    import { pageByStore } from '@/api/api'
     import mixinViewModule from '@/mixins/view-module'
+    import { pageByStoreUrl } from "@/api/url";
+
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
+                 mixinViewModuleOptions: {
+                    getDataListURL: pageByStoreUrl,
+                    activatedIsNeed: false,    // 此页面是否在激活（进入）时，调用查询数据列表接口？
+                    getDataListIsPage: true,
+                    // exportURL: "/admin-api/shopStore",
+                    // deleteURL: "/admin-api/shopStore",
+                    // deleteIsBatch: true
+                    // // deleteIsBatchKey: 'id'
+                },
                 visible : false,
                 loading : false,
                 uploading:false,
                 dataList: [],
                 dataListLoading: false,
                 dataForm: {
-                    labelName: "",//品牌名称
+                    brandName: "",//品牌名称
+                     storeId:"",
                 },
                 formLabelWidth: '120px'
             }
@@ -62,31 +78,22 @@
             init (row) {
                 this.visible = true;
                 this.row = row;
-                this.backScan();
+                this.dataList = [];
+                this.limit = 1;
+                this.page =10;
+                this.total =0;
                 this.$nextTick(() => {
                     this.$refs['addForm'].resetFields();
+                     this.backScan();
                     // this.getApplyPullList();
                 })
             },
             // 编辑回显
             backScan(){
-                var obj  = {
-                    storeId:this.row.id,
-                    brandName:this.row.brandName,
-                    enableCnFlag:this.row.enableCnFlag,
-                }
-                pageByStore(obj).then((res)=>{
-                    if(res.code == 200){
-                        Object.assign(this.dataForm,res.data);
-
-                    }else{
-
-                    }
-                })
+                this.dataForm.storeId = this.row.id,
+                this.getDataList();
+                console.log(this.row);
             },
-            // closeDialog() {
-            //     this.$parent.addEditDataVisible = false;
-            // },
         }
     }
 </script>
