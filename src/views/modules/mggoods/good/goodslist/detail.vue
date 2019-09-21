@@ -255,7 +255,9 @@
                         var obj  = {
                             id:row.id
                         }
+
                         var fn = backScanZozogoods
+                         //  如果是备案商品
                         if(row.origin && row.origin=="recordinformation"){
                             fn = backScanZozogoods2;
                         }

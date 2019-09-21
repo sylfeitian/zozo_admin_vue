@@ -62,17 +62,30 @@
             backScan(){
                 console.log(this.row);
                   console.log(this.row2);
-                if(!this.row.idJp){
-                    this.$message.error("后端返回的idJp为空")
-                    this.closeDialog();
-                    return;
-                }else if(!this.row2.sizeIdJp){
+                  var idJp = ""
+                //   如果是备案商品
+                if(this.row.origin && this.row.origin=="recordinformation"){
+                     if(!this.row.skuIdJp){
+                        this.$message.error("后端返回的skuIdJp为空")
+                        this.closeDialog();
+                        return;
+                     }
+                     idJp = this.row.skuIdJp
+                }else{ //  否则是商品管理
+                    if(!this.row.idJp){
+                        this.$message.error("后端返回的idJp为空")
+                        this.closeDialog();
+                        return;
+                     }
+                     idJp = this.row.idJp
+                }
+                if(!this.row2.sizeIdJp){
                     this.$message.error("后端返回的sizeIdJp为空")
                     this.closeDialog();
                     return;;
                 }
                 var obj  = {
-                    spuId:this.row.idJp,
+                    spuId:idJp,
                     sizeIdJp: this.row2.sizeIdJp
                 }
                 this.dataListLoading = true;
