@@ -145,8 +145,6 @@
 				if(selected){   //true    添加
 					row.wareHouseId = this.dataId;
 					row.skuId = row.id;
-					row.changeQty = 0;
-					row.afterQty =  row.quantity;
 					// delete row.id;
         			this.showdatacurrent.push(row);
         		}else{          //删除
@@ -171,8 +169,6 @@
 						if (flag){
 							item.wareHouseId = this.dataId;
 							item.skuId = item.id;
-							item.changeQty = 0;
-							item.afterQty =  item.quantity;
 							// delete item.id;
 							this.showdatacurrent.push(item);
 						}
@@ -190,6 +186,7 @@
 			},
 			handleClose(done) {    //带回到父级页面
 				console.log(this.showdatacurrent);
+				this.showdatacurrent = [].concat(this.showdatacurrent);
 			    this.$emit('searchDataList',this.showdatacurrent);
 		        done();
 		   },

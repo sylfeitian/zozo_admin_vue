@@ -50,7 +50,7 @@
             <el-table-column prop="skuIdJp" label="skuID" align="center"></el-table-column>
             <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
             <el-table-column prop="spe" label="规格" align="center"></el-table-column>
-            <el-table-column prop="warehousName" label="所属仓库" align="center"></el-table-column>
+            <el-table-column prop="warehouseName" label="所属仓库" align="center"></el-table-column>
             <el-table-column prop="beforeQty" label="修改前仓库数" align="center"></el-table-column>
             <el-table-column prop="changeQty" label="扣减库存数" align="center"></el-table-column>
             <el-table-column prop="afterQty" label="修改后库存数" align="center"></el-table-column>

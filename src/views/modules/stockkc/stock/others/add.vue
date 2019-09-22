@@ -121,6 +121,14 @@
         			this.$message('请添加商品')
         			return;
                 }
+                this.dataList.forEach((item,index)=>{
+                    if(!item.changeQty){
+                        item.changeQty = 0;
+                    }
+                    if(!item.afterQty){
+                        item.afterQty = item.quantity;
+                    }
+                })
                 var obj = {
                     dtos:this.dataList,
                     remarks:this.dataForm.remarks
