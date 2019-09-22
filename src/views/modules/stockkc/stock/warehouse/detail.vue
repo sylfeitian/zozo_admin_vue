@@ -1,7 +1,7 @@
 <template>
     <div>
         <Bread :breaddata="breaddata" @changePage="changePage" :index="'0'"></Bread>
-        <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
+        <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm"  >
             <el-form-item prop="id" label="仓库ID：">
                 <span>{{dataForm.id}}</span>
             </el-form-item>
@@ -30,18 +30,18 @@
                 </template>
             </el-form-item>
         </el-form>
-        <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
+        <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" >
             <el-form-item prop="skuId" label="skuID：">
-                <el-input v-model="dataForm.skuId" placeholder="请输入"></el-input>
+                <el-input v-model="dataFormShow.skuId" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item prop="goodsName" label="商品名称：">
-                <el-input v-model="dataForm.goodsName" placeholder="请输入" maxlength="300"></el-input>
+                <el-input v-model="dataFormShow.goodsName" placeholder="请输入" maxlength="300"></el-input>
             </el-form-item>
             <el-form-item prop="storeName" label="所属店铺：" placeholder="请输入">
-                <el-input v-model="dataForm.storeName" ></el-input>
+                <el-input v-model="dataFormShow.storeName" ></el-input>
             </el-form-item>
             <el-form-item prop="brandName" label="品牌：" placeholder="请输入">
-                <el-input v-model="dataForm.brandName" ></el-input>
+                <el-input v-model="dataFormShow.brandName" ></el-input>
             </el-form-item>
             <el-form-item label="分类：">
                 <el-cascader
@@ -104,6 +104,7 @@
 
 <script>
     import mixinViewModule from '@/mixins/view-module'
+    import cloneDeep from 'lodash/cloneDeep'
     import Bread from "@/components/bread";
     import { skuGoods } from '@/api/url'
     import { backScanCategorys } from '@/api/api'
@@ -122,6 +123,13 @@
                 },
                 breaddata: [ "仓库管理", "仓库详情"],
                 row:"",
+                dataFormShow:{
+                    skuId: "",
+                    goodsName: "",
+                    storeName: "",
+                    brandName: "",
+                    categoryId:""
+                },
                 dataForm: {
                     skuId: "",
                     goodsName: "",
@@ -146,7 +154,6 @@
         },
         created () {
             this.backScan1();
-            this.getDataList();
         },
         methods: {
             handleChange(){
@@ -185,6 +192,11 @@
                 //     // this.getApplyPullList();
                 // })
             },
+            getData(){
+                this.page = 1;
+                this.dataForm = cloneDeep(this.dataFormShow);
+                this.getDataList();
+            },
             // 编辑回显
             backScan(row){
                 console.log(row);
@@ -218,13 +230,13 @@
                 this.dataFormShow.brandName = "";//品牌名称
                 this.dataFormShow.storeName = "";//店铺名称
                 this.dataFormShow.categoryId = "";
-                this.dataForm.categoryId = "";
-                this.dataForm.skuId = "";//商品sku ID
-                this.dataForm.goodsName = "";//商品名称/商品货号
-                this.dataForm.brandName = "";//品牌名称
-                this.dataForm.storeName = "";//店铺名称
+                // this.dataForm.categoryId = "";
+                // this.dataForm.skuId = "";//商品sku ID
+                // this.dataForm.goodsName = "";//商品名称/商品货号
+                // this.dataForm.brandName = "";//品牌名称
+                // this.dataForm.storeName = "";//店铺名称
                 this.classList = [];//分类名称
-                this.handleClick();
+                this.getData();
             },
         }
     }

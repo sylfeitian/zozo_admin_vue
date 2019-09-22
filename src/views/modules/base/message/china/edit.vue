@@ -7,6 +7,7 @@
         </el-form-item>
         <el-form-item v-else label="上级分类：">  
 	        <el-select
+				:disabled="row.grade=='1'"
 	          	v-model="dataForm.parentId"
 	         	placeholder="请选择"
 	          	loading-text="加载中···"
@@ -147,7 +148,6 @@
 	    var checkName = (rule, value, callback) => {
 					// 校验中国分类名称是否重复
 					if(value){
-						debugger
 						if(value===this.tempName){
 							callback();
 						}else{
@@ -209,7 +209,8 @@
 	        	appraisal: [
 					{ required: true, message: '必填项不能为空', trigger: 'blur' },
 				],
-	     	},
+			 },
+			 row:"",
 	    };
 	  },
 	  components: {
@@ -250,9 +251,9 @@
 		  		}
 	  	},
 	  	init(row){
-	  		debugger
-			  this.row = row;
-			  this.tempName = this.row.label; // 暂存当前名字，校验用
+			  console.log(row);
+			this.row = row;
+			this.tempName = this.row.label; // 暂存当前名字，校验用
 	  		this.showListVisible = true;
 	  		backScanCategoryCn(row).then((res)=>{
 	  			if(res.code == 200){

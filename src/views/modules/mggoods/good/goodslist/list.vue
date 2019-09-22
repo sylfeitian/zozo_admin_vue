@@ -219,11 +219,12 @@
           <el-button @click="editList(scope.row)" type="text" size="mini">编辑</el-button>
           <el-button 
             @click="cotrolGoodsShow('singe',scope.row)"  
-            :disabled="scope.row.japanShowWeb== 'false'"
+            :disabled="scope.row.sellState== 0"
             v-if="scope.row.showWeb==0 || scope.row.showWeb==2" 
             type="text" size="mini">
             <span>上架</span>
           </el-button>
+
           <el-button  
             @click="cotrolGoodsShow('singe',scope.row)" 
             v-if="scope.row.showWeb==1" class="artclose" 
@@ -294,7 +295,7 @@ export default {
         categoryId: "", //分类
         storeName: "", //店铺名称
         brandName: "", //品牌名称
-        japanShowWeb: "", //是否可售
+        sellState: "", //是否可售
         showWeb: "", //上下架状态:0：待上架，1：已上架，2：下架 ,
         priceState: "" //价格变更
       },
@@ -415,7 +416,7 @@ export default {
       this.dataFormShow.showWeb = "";
       this.dataFormShow.priceState = "";
       this.dataFormShow.categoryId = "";
-      this.dataFormShow.japanShowWeb = "";
+      this.dataFormShow.sellState = "";
       this.dataForm.categoryId = "";
       this.dataForm.goodsName = "";
       this.dataForm.idJp = "";
@@ -424,7 +425,7 @@ export default {
       this.dataForm.goodsStatus = "";
       this.dataForm.showWeb = "";
       this.dataForm.priceState = "";
-      this.dataForm.japanShowWeb = "";
+      this.dataForm.sellState = "";
       this.classList = []; //分类名称
       this.handleClick();
     },
@@ -514,7 +515,7 @@ export default {
       } else {
         //单个  
         // (不可售商品不能上架)
-        if( (rowOrstatus.showWeb==0 || rowOrstatus.showWeb==2 ) && rowOrstatus.japanShowWeb=="false"){
+        if( (rowOrstatus.showWeb==0 || rowOrstatus.showWeb==2 ) && rowOrstatus.sellState==0){
             this.$message({
               message: "不可售商品不能上架",
               type: "warning",
