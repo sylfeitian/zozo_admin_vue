@@ -85,8 +85,8 @@
             </el-form-item>
             <el-form-item label="材质：" class="item">
                 <span>{{dataForm.materialJp}}</span>
-                <el-input v-model="dataForm.material" placeholder="请输入" maxlength="10" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
-                <span style="color: #bebebe;">最多可输入10个文字</span>
+                <el-input v-model="dataForm.material" placeholder="请输入" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
+                <!-- <span style="color: #bebebe;">最多可输入10个文字</span> -->
             </el-form-item>
             <el-form-item label="上架状态：" class="item">
                 <template>
