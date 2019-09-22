@@ -33,7 +33,7 @@
 	    </el-form-item>
     
 
-        <el-form-item v-if="yijishow" v-for="(item, index) in dataForm.categoryJpId" :key="index" :label="index == 0 ? '关联日本分类：' : '' ">
+        <el-form-item v-show="yijishow"  prop="categoryJpId" v-for="(item, index) in dataForm.categoryJpId" :key="index" :label="index == 0 ? '关联日本分类：' : '' ">
 	        <el-select
 	          v-model="dataForm.categoryJpId[index]"
 	          placeholder="请选择"
@@ -49,20 +49,18 @@
 	        <el-button v-if="index+1 == dataForm.categoryJpId.length" @click="actadd" type="primary" style="margin-left: 20px;">添加</el-button>
 		</el-form-item>
 		 
-	 	
-    
-    	<el-form-item label="测量方法：" prop="methodUrlshow" v-if="yijishow">
-			<div class="pcCoverUrl imgUrl" v-for="(item,index) in dataForm.methodUrlshow" @click="imgtype = 'rule'">
-				<img-cropper
-					ref="cropperImg1"
-					:cropImg = "item"
-					:index="'1'"
-					:imgWidth='"100px"'
-					:imgHeight='"100px"'
-					@GiftUrlHandle="GiftUrlHandle"
-				></img-cropper>
-			</div>
-		</el-form-item>
+       <el-form-item label="测量方法：" prop="methodUrl" v-if="yijishow">
+				<div class="pcCoverUrl imgUrl" v-for="(item,index) in dataForm.methodUrlshow" @click="imgtype = 'rule'">
+					<img-cropper
+						ref="cropperImg1"
+						:index="'1'"
+						:imgWidth='"100px"'
+						:imgHeight='"100px"'
+						:cropImg = "item"
+						@GiftUrlHandle="GiftUrlHandle"
+					></img-cropper>
+				</div>
+			</el-form-item>
 		
     	<el-form-item label="分类性别：" prop=""  v-if="yijishow">
     		<div class="pcCoverUrl imgUrl"  @click="imgtype = 'all'" style="display: flex;">
@@ -140,6 +138,7 @@
 </template>
 
 <script>
+	import cloneDeep from 'lodash/cloneDeep'
 	import imgCropper from "@/components/model-photo-cropper";
 	//查询一级分类   查询日本分类  图片   提交   编辑查询回显
 	import { categoryCn,searchCategoryJp,uploadPicBase64 ,updataCategoryCn ,backScanCategoryCn,categoryCnVerifyName} from '@/api/api'
@@ -190,7 +189,7 @@
 	        	sort:'', //排序
 		      	categoryJpId:[''],  //关联的日方分类id  
 		      	appraisal:'', //评价类型   
-		      	methodUrlshow:[''], //测试方法  不传
+				methodUrlshow:[''], //测试方法  不传
 		      	methodUrl:['',], //测试方法  传
 		      	genderMain:'' , //分类主图
 		      	genderMr:'', //分类男士图片 
@@ -205,7 +204,13 @@
 	        	sort: [
          			{ required: true, message: '必填项不能为空', trigger: 'blur' },
          			{ validator: sortminmax,trigger: 'blur'},
-	        	],
+				],
+				methodUrl:[
+					{ required: true, message: '必填项不能为空', trigger: 'blur' }
+				],
+				categoryJpId:[
+					{ required: true, message: '必填项不能为空', trigger: 'blur' },
+				],
 	        	appraisal: [
 					{ required: true, message: '必填项不能为空', trigger: 'blur' },
 				],
@@ -243,7 +248,7 @@
 	  		}else{
 	  			this.dataForm.methodUrlshow.push('');
 	  			this.erjishow = false;
-				  this.yijishow = true;
+				this.yijishow = true;
 				  
 				if(this.dataForm.genderMr) this.checkList.push("男士");
 				if(this.dataForm.genderMrs) this.checkList.push("女士");
@@ -257,7 +262,7 @@
 	  		this.showListVisible = true;
 	  		backScanCategoryCn(row).then((res)=>{
 	  			if(res.code == 200){
-					this.dataForm = res.data;
+					 Object.assign(this.dataForm ,res.data) ;
 					if(res.data.methodUrl) this.dataForm.methodUrlshow =JSON.parse(res.data.methodUrl);
 	  				this.actselectchange();
 	  			}else{
@@ -300,23 +305,24 @@
 	  		
 	  	},
 		actuploaddata(formName){  //确定提交 
-		  if(typeof this.dataForm.methodUrlshow =="string"){
-			  	this.dataForm.methodUrlshow = JSON.parse(this.dataForm.methodUrlshow);
-		  } 
-	  		if(!this.dataForm.methodUrlshow[this.dataForm.methodUrlshow.length-1]){
-	  			this.dataForm.methodUrlshow.pop()
-	  		}
-	  		if(this.dataForm.methodUrlshow.length){
-	  			this.dataForm.methodUrlshow.forEach((item)=>{
-		  			if(item.indexOf(this.$imgDomain) != -1){
-			  			item.substr(this.$imgDomain.length)
-			  		}
-		  		})
-	  		}
+		 var methodUrlshow = cloneDeep(this.dataForm.methodUrlshow);
+	 		if(typeof methodUrlshow =="string"){
+				methodUrlshow = JSON.parse(methodUrlshow);
+			} 
+			if(!methodUrlshow[methodUrlshow.length-1]){
+				methodUrlshow.pop()
+			}
+			if(methodUrlshow.length){
+				methodUrlshow.forEach((item)=>{
+					if(item.indexOf(this.$imgDomain) != -1){
+						item.substr(this.$imgDomain.length)
+					}
+				})
+			}  
 	  	
 	  		// 测量尺寸是一个json
-	  		this.dataForm.methodUrl = JSON.stringify(this.dataForm.methodUrlshow);
-	  		
+	  		this.dataForm.methodUrl = JSON.stringify(methodUrlshow);
+			if(this.dataForm.methodUrl=="[]"){this.dataForm.methodUrl= ""}
 	  		//处理男士/女士/儿童     是否传数据
 	  		if(this.checkList.indexOf('男士') == -1){
 	  			this.dataForm.genderMr = '';
@@ -359,9 +365,9 @@
 			console.log("base64上传图片接口");
 			console.log(val);
 			this.uploadPic(val);
-			if(this.imgtype == 'rule'){
-				this.dataForm.methodUrlshow.push('');
-			}
+			// if(this.imgtype == 'rule'){
+			// 	this.dataForm.methodUrlshow.push('');
+			// }
 		},
 		//上传图片
 		uploadPic(base64){
@@ -374,11 +380,21 @@
 					if(res && res.code == "200"){
 						var url = res.data.url
 						if(that.imgtype == 'rule'){
-							if(that.dataForm.methodUrlshow.lenght >= 10){
+							if(that.dataForm.methodUrlshow.length >= 10){
 								this.$message("最多可上传10张图片");
 								return;
 							}
-							that.dataForm.methodUrlshow[that.dataForm.methodUrlshow.length-1] = url;
+							//过滤空的
+							that.dataForm.methodUrlshow = that.dataForm.methodUrlshow.filter((item,index)=>{
+								if(item){
+									return item;
+								}
+							})
+							// 追加新的
+							console.log("新的");
+							that.dataForm.methodUrlshow.push(url);
+							// 追加最后一个展位
+							that.dataForm.methodUrlshow.push('');
 						}else if(that.imgtype == 'all'){
 							that.dataForm.genderMain = url;
 						}else if(that.imgtype == 'm'){

@@ -227,7 +227,7 @@
 
           <el-button  
             @click="cotrolGoodsShow('singe',scope.row)" 
-            v-if="scope.row.showWeb==1" class="artclose" 
+            v-else-if="scope.row.showWeb==1" class="artclose" 
             type="text" size="mini">
             <span >下架</span>
           </el-button>

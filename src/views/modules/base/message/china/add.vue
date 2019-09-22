@@ -29,8 +29,7 @@
 			<el-form-item label="评价类型：" prop="appraisal" v-if="erjishow">
 				<el-input v-model="dataForm.appraisal" type="text" maxlength="6" placeholder="请输入6字以内的内容" show-word-limit style="width:400px;"></el-input>
 			</el-form-item>
-
-			<el-form-item v-if="yijishow" v-for="(item, index) in dataForm.categoryJpId" :key="index" :label="index == 0 ? '关联日本分类：' : '' ">
+			<el-form-item v-show="yijishow" prop="categoryJpId" v-for="(item, index) in dataForm.categoryJpId" :key="index" :label="index == 0 ? '关联日本分类：' : '' ">
 				<el-select
 				v-model="dataForm.categoryJpId[index]"
 				placeholder="请选择"
@@ -45,7 +44,7 @@
 				</el-select>
 				<el-button v-if="index+1 == dataForm.categoryJpId.length" @click="actadd" type="primary" style="margin-left: 20px;">添加</el-button>
 			</el-form-item>
-		
+			
 			<el-form-item label="测量方法：" prop="methodUrl" v-if="yijishow">
 				<div class="pcCoverUrl imgUrl" v-for="(item,index) in dataForm.methodUrlshow" @click="imgtype = 'rule'">
 					<img-cropper
@@ -53,6 +52,7 @@
 						:index="'1'"
 						:imgWidth='"100px"'
 						:imgHeight='"100px"'
+						:cropImg = "item"
 						@GiftUrlHandle="GiftUrlHandle"
 					></img-cropper>
 				</div>
@@ -130,6 +130,7 @@
 </template>
 
 <script>
+	import cloneDeep from 'lodash/cloneDeep'
 	import imgCropper from "@/components/model-photo-cropper";
 	import { categoryCn,searchCategoryJp,uploadPicBase64 ,updataCategoryCn,categoryCnVerifyName} from '@/api/api'   //查询一级分类   查询日本分类  图片   提交
 	export default {
@@ -156,7 +157,14 @@
 	    	}else{
 	    		callback('排序值在0-255之间');
 	    	}
-	    };
+		};
+		var validateCategoryJpId = (rule, value, callback) => {
+	    	if(value.length==1 && value[0]==""){
+	    		callback('至少关联一个日本分类');
+	    	}else{
+	    		callback();
+	    	}
+		};
 	    return {
 			loading:false,
 	    	erjishow: true,  //二级没有评价类型
@@ -190,6 +198,10 @@
 	        	sort: [
          			{ required: true, message: '必填项不能为空', trigger: 'blur' },
          			{ validator: sortminmax,trigger: 'blur'},
+				],
+				categoryJpId:[
+					{ required: true, message: '必填项不能为空', trigger: 'blur' },
+					{ validator: validateCategoryJpId,trigger: 'blur'},
 				],
 				methodUrl:[
 					{ required: true, message: '必填项不能为空', trigger: 'blur' }
@@ -281,27 +293,49 @@
 	  			this.dataForm.appraisal = null;  //一级没有评价类型
 	  		}else{
 	  			this.erjishow = false;
-	  			this.yijishow = true;
-	  		}
+				this.yijishow = true;
+			} 
+
+			// 防止切换分类时候，导致空白图片变多
+			// this.dataForm.methodUrlshow= [""];
 		  },
 		//   提交
 		actuploaddata(formName){  //确定提交  
-		  	if(this.yijishow && this.dataForm.methodUrlshow.length==0){
-				this.$message("测量方法至少上传一张图片");
-				return
-			}
+		  	// if(this.yijishow && this.dataForm.methodUrlshow.length==0){
+			// 	this.$message("测量方法至少上传一张图片");
+			// 	return
+			// }
 			// 处理"测试方法"数据
-			var methodUrlshow = this.dataForm.methodUrlshow.filter((item,index)=>{
-				return  item;
-			})
-				this.dataForm.methodUrl = JSON.stringify(methodUrlshow);
+			// var methodUrlshow = this.dataForm.methodUrlshow.filter((item,index)=>{
+			// 	return  item;
+			// })
+			// 	this.dataForm.methodUrl = JSON.stringify(methodUrlshow);
 		
-			var categoryJpId = this.dataForm.categoryJpId.filter((item,index)=>{
-				return  item;
-			})
+			// var categoryJpId = this.dataForm.categoryJpId.filter((item,index)=>{
+			// 	return  item;
+			// })
 		
-			 this.dataForm.categoryJpId = categoryJpId;
-	
+			//  this.dataForm.categoryJpId = categoryJpId;
+			var methodUrlshow = cloneDeep(this.dataForm.methodUrlshow);
+	 		if(typeof methodUrlshow =="string"){
+				methodUrlshow = JSON.parse(methodUrlshow);
+			} 
+			if(!methodUrlshow[methodUrlshow.length-1]){
+				methodUrlshow.pop()
+			}
+			if(methodUrlshow.length){
+				methodUrlshow.forEach((item)=>{
+					if(item.indexOf(this.$imgDomain) != -1){
+						item.substr(this.$imgDomain.length)
+					}
+				})
+			}  
+			// 测量尺寸是一个json
+			this.dataForm.methodUrl = JSON.stringify(methodUrlshow);
+
+			if(this.dataForm.methodUrl=="[]"){this.dataForm.methodUrl= ""}
+			// if(this.dataForm.methodUrl=="[]"){this.dataForm.methodUrl= ""}
+			  
 	  		//处理男士/女士/儿童     是否传数据
 	  		if(this.checkList.indexOf('男士') == -1){
 	  			this.dataForm.genderMr = '';
@@ -310,8 +344,10 @@
 	  		}else if(this.checkList.indexOf('儿童') == -1){
 	  			this.dataForm.genderKid = '';
 			  }	
+			console.log(this.dataForm);
 			this.$refs[formName].validate((valid) => {
 				if (valid) {
+
 					updataCategoryCn(this.dataForm).then((res)=>{
 						if(res.code == 200){
 							console.log(res.data);
@@ -332,9 +368,9 @@
 			console.log("base64上传图片接口");
 			console.log(val);
 			this.uploadPic(val);
-			if(this.imgtype == 'rule'){
-				this.dataForm.methodUrlshow.push('');
-			}
+			// if(this.imgtype == 'rule'){
+			// 	this.dataForm.methodUrlshow.push('');
+			// }
 		},
 		//上传图片
 		uploadPic(base64){
@@ -347,11 +383,21 @@
 					if(res && res.code == "200"){
 						var url = res.data.url
 						if(that.imgtype == 'rule'){
-							if(that.dataForm.methodUrlshow.lenght >= 10){
+							if(that.dataForm.methodUrlshow.length >= 10){
 								this.$message("最多可上传10张图片");
 								return;
 							}
-							that.dataForm.methodUrlshow[that.dataForm.methodUrlshow.length-1] = url;
+							//过滤空的
+							that.dataForm.methodUrlshow = that.dataForm.methodUrlshow.filter((item,index)=>{
+								if(item){
+									return item;
+								}
+							})
+							// 追加新的
+							console.log("新的");
+							that.dataForm.methodUrlshow.push(url);
+							// 追加最后一个展位
+							that.dataForm.methodUrlshow.push('');
 						}else if(that.imgtype == 'all'){
 							that.dataForm.genderMain = url;
 						}else if(that.imgtype == 'm'){
