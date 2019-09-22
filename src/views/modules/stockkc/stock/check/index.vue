@@ -1,14 +1,14 @@
 <template>
     <div>
         <list v-if="mainVisible" ref="listCompon" @showDetail="showDetail" @addOrAdit="addOrAdit"></list>
-        <detail v-if="detailVisible" ref="detailCompon" @showList="showList" @operational="operational"></detail>
+        <detail v-if="detailVisible" ref="detailCompon" @logMore="showList" @operational="operational"></detail>
         <operation v-if="operationVisible" ref="operationCompon" @operationList="operationList" @operationalList="operationalList"></operation>
     </div>
 </template>
 
 <script>
     import list from "./list"
-    import detail from "./details"
+    import detail from "../../../mggoods/good/goodslist/detail"
     import operation from "./operation"
     // import mixinViewModule from '@/mixins/view-module'
     export default {
@@ -30,7 +30,7 @@
                 this.detailVisible = true;
                 this.mainVisible = false;
                 this.$nextTick(()=>{
-                    this.$refs.detailCompon.getDataList();
+                    this.$refs.detailCompon.init(row);
                 })
             },
             addOrAdit(id){
@@ -43,9 +43,6 @@
             showList(){
                 this.detailVisible = false;
                 this.mainVisible = true;
-                this.$nextTick(()=>{
-                    this.$refs.listCompon.getDataList();
-                })
             },
             operationList(){
                 this.operationVisible = false;

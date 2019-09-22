@@ -314,8 +314,8 @@
                 this.getDataList(); //刷新页面数据
             },
             //详情页展示判断
-            detShowChange() {
-                this.$emit("detShowChange");
+            detShowChange(row) {
+                this.$emit("showDetail",row);
             },
             //查看详情
             getSalesDet(index, statue) {
