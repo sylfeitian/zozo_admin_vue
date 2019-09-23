@@ -18,3 +18,4 @@ export const importAdvertisingbanUrl = `${allBase}/advertisingban/import`;
 
 // 店铺管理导入
 export const importShopStore = `${allBase}/shopStore/import`;
+export const tudo = `${allBase}/xxx/import`;

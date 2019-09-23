@@ -56,6 +56,40 @@
         components:{
         },
         computed:{},
+        watch:{
+            'dataForm.chineseVocabulary':function(newV,oldV) {
+                var chineseCount=0;
+                for(let i=0;i<newV.length;i++){
+                    if(/^[\u4e00-\u9fa5]*$/.test(newV[i])){ //只能输入汉字
+                        chineseCount=chineseCount+1;
+                    }else {
+                        this.dataForm.chineseVocabulary=newV.replace(newV[i],'')
+                    }
+                    if(chinese>100){ //最大输入100字
+                        this.dataForm.chineseVocabulary = newV.substr(0,100)
+                    }
+                }
+            },
+            // 可输入日文，中文，英文逗号，最大输入100字
+            'dataForm.japaneseWord':function(newV,oldV) {
+                var chineseCount=0,characterCount=0;
+                for(let i=0;i<newV.length;i++){
+                    if(/^[\u4e00-\u9fa5]*$/.test(newV[i])){ //汉字
+                        chineseCount=chineseCount+2;
+                    }else if(/^[\u0800-\u4e00]*$/.test(newV[i])) { //日文
+                        chineseCount=chineseCount+2;
+                    }else if(/^[\,]*$/.test(newV[i])){ //英文逗号
+                        characterCount=characterCount+1;
+                        }else{
+                        this.dataForm.japaneseWord=newV.replace(newV[i],'')
+                    }
+                var count=chineseCount+characterCount;
+                    if(count>200){ //最大输入200字符
+                        this.dataForm.japaneseWord = newV.substr(0,200)
+                    }
+                }
+            }
+        },
         mounted(){},
         methods: {
             init (row,lexiconType) {

@@ -59,17 +59,16 @@
         },
         watch: {
             'dataForm.name': function (newV, oldV) {
-                var chinese = 0;
-                var character = 0;
+                var chineseCount = 0,characterCount = 0;
                 for (let i = 0; i < newV.length; i++) {
                     if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
-                        chinese = chinese + 2;
+                        chineseCount = chineseCount + 2;
                     } else { //字符
-                        character = character + 1;
+                        characterCount = characterCount + 1;
                     }
-                    var count = chinese + character;
+                    var count = chineseCount + characterCount;
                     if (count > 20) { //输入字符大于20的时候过滤
-                        this.dataForm.name = newV.replace(newV[i], "")
+                        this.dataForm.name = newV.substr(0,20)
                     }
                 }
             }

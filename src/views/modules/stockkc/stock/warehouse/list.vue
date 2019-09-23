@@ -153,6 +153,9 @@
                         this.dataForm.warehousename = newV.replace(newV[i],"")
                     }
                 }
+                if(newV.length>30){
+                    this.dataForm.warehousename = newV.substr(0,30)
+                }
             }
         },
         created () {

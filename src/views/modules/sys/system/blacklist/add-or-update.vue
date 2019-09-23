@@ -146,15 +146,12 @@
         props: [],
 		watch:{
 			'dataForm.memberName':function(newV,oldV) {
-				debugger
-				var character=0;
-				for(let i=0;i<newV.length;i++){
-					if(/^[0-9]$/.test(newV[i])){
-						character=character+1;
-					}
-					if(character>11){
-						this.dataForm.memberName = newV.replace(newV[i],"")
-					}
+				if(newV){
+					// 删除非数字的输入
+					this.dataForm.memberName=newV.replace(/[^\d]/g,'')
+				}
+				if(newV.length>11){
+					this.dataForm.memberName = newV.substr(0,11)
 				}
 			}
 		},

@@ -215,6 +215,9 @@
                         this.dataForm.goodsId = newV.replace(newV[i],"")
                     }
                 }
+                if(newV.length>30){
+                    this.dataForm.goodsId = newV.substr(0,30)
+                }
             }
         },
         created(){
