@@ -1,7 +1,7 @@
 <template>
     <el-dialog
             class="model-add-edit-data"
-            title="订单跟踪"
+            title="修改收货人信息"
             :close-on-click-modal="false"
             :visible.sync="visible"
             :before-close="closeDialog"
@@ -19,7 +19,7 @@
                         <el-form-item label="手机号码：" prop="mobPhone">
                                 <el-input v-model="dataForm.mobPhone" maxlength="60" placeholder="请输入手机号码"></el-input>
                         </el-form-item>  
-                        <el-form-item label="所在区域：" prop="province">
+                        <el-form-item label="所在区域：" prop="areaId">
                              <el-select v-model="dataForm.provinceId" placeholder="省"
                                   style="margin-right:10px;"
                                  @visible-change="changeArea(dataForm.provinceId, 1)">
@@ -118,7 +118,7 @@ import { isMobile,isPhone } from '@/utils/validate'
 			        mobPhone: [
 			          { required: true, message: '必填项不能为空', trigger: 'blur' },
 					],
-					province: [
+					areaId: [
 			          { required: true, message: '必填项不能为空', trigger: 'blur' },
 					],
 					address: [
@@ -202,8 +202,8 @@ import { isMobile,isPhone } from '@/utils/validate'
 								var obj={
                                     "address": this.dataForm.address,
                                     "areaId": this.dataForm.areaId,
-                                    "area": this.dataForm.area,
-                                    "areaInfo": this.dataForm.province+""+ this.dataForm.city+""+this.dataForm.area+""+this.dataForm.townArea,
+                                    // "area": this.dataForm.area,
+                                    // "areaInfo": this.dataForm.province+""+ this.dataForm.city+""+this.dataForm.area+""+this.dataForm.townArea,
                                     "cityId": this.dataForm.cityId,
                                     "memberRealName": this.dataForm.memberRealName,
                                     "mobPhone": this.dataForm.mobPhone,

@@ -69,9 +69,13 @@
 			dataFormSubmit(formName){
 				this.$refs[formName].validate((valid) => {
 						if (valid) {
+								if(!this.orderBase.orderId){
+									this.$message.error("商品详情接口的orderBase对象的订单号不存在(orderId),无法提交")
+									return
+								}
 								this.loading = true;
 								var obj=  {
-									id:this.orderBase.logisticsSn,//物流单号
+									id:this.orderBase.orderId,//物流单号
 									remarks:this.dataForm.remarks,//备注
 								}
 								managerRemark(obj).then((res) => {
