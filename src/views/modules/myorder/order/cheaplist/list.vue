@@ -31,7 +31,7 @@
                     <el-option label="JD申报失败" value="90" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
                    
                     <el-option label="清关中" value="100" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
-                    <el-option label="清关失败" value="120" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
+                    <!-- <el-option label="清关失败" value="120" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option> -->
                      <el-option label="待收货" value="130" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
                     <!-- 已完成 -->
                     <el-option label="交易完成" value="140" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='complete'" ></el-option>
@@ -105,7 +105,7 @@
                         <span v-else-if="scope.row.orderStatus==80">JD申报中</span>
                         <span v-else-if="scope.row.orderStatus==90 || scope.row.orderStatus==100">JD申报失败</span>
                         <span v-else-if="scope.row.orderStatus==110">清关中</span>
-                        <span v-else-if="scope.row.orderStatus==120">清关失败</span>
+                        <!-- <span v-else-if="scope.row.orderStatus==120">清关失败</span> -->
                         <span v-else-if="scope.row.orderStatus==120">待收货</span>
                         <!-- 已完成 -->
                         <span v-else-if="scope.row.orderStatus==140">交易完成</span>
