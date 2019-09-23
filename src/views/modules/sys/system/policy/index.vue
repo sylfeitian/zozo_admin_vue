@@ -7,7 +7,6 @@
             :model="dataForm"
             :rules="dataRule"
             ref="addForm"
-            @keyup.enter.native="dataFormSubmit('addForm')"
             label-width="120px"
              class="demo-form-inline"
         >
@@ -82,7 +81,7 @@
             	<div class="artaddrate" v-for="(item,index) in rate" :key="index">
             		<el-input type="number"  v-model="rate[index-1] && rate[index-1].end || item.start"  :disabled="datadisabled" auto-complete="off" placeholder="0" style="width: 150px;"></el-input>
 	                <span> —— </span>
-	                <el-input type="number"  @blur="actendnum(item.end,item.start)" v-model="item.end"  placeholder="请输入" style="width: 150px;"></el-input>
+	                <el-input type="number"  @blur="actendnum(item.end,item.start)" v-model="item.end"  :placeholder="index==rate.length-1?'...':'请输入'" style="width: 150px;"></el-input>
 	                <span> 元（日元） </span>
 	                <el-input type="number"  @blur="actratenum(item.rate)" v-model="item.rate" placeholder="请输入加价率" style="width: 100px;"></el-input>
 	                <span> % </span>  
@@ -101,7 +100,17 @@
             		第一区间最小值默认为0且不可修改
             	</div>
             </el-form-item>
-            <el-form-item  v-if="!loading" style="text-align: center;margin-left: -120px!important; margin-top: 50px; margin-bottom: 50px;">
+          
+
+             <el-form-item style="background-color: #f3f3f3;">
+                <p style="margin-left: -100px;">倒挂阈值</p>
+            </el-form-item>
+             <el-form-item label="阈值：" prop="vpt" :label-width="formLabelWidth">
+                <el-input type="number" v-model="dataForm.vpt " auto-complete="off" placeholder="请输入" style="width: 250px;"></el-input>
+                <span> % </span>
+            </el-form-item>
+
+              <el-form-item  v-if="!loading" style="text-align: center;margin-left: -120px!important; margin-top: 50px; margin-bottom: 50px;">
                 <el-button type="primary" @click="dataFormSubmit('addForm')">{{saveLoading?"保存中...":"保存"}}</el-button>
             </el-form-item>
         </el-form>
@@ -153,7 +162,16 @@
 			    }else {
 			      callback()
 			    }
-			};
+            };
+            var validVpt =(rule, value,callback)=>{
+			    if(value.toString().indexOf('.') != -1 && value.toString().substr(value.indexOf('.') + 1).length > 4){
+			    	callback(new Error('小数点后只能有四位'))
+			    }else if(value/1 > 100){
+			      callback('最大值100')
+			    }else {
+			      callback()
+			    }
+            };
 			var validnum0 =(rule, value,callback)=>{
 			    if(value/1 < 0){
 			      callback('该值应该大于0')
@@ -167,7 +185,7 @@
 				if(valuestr && valuestr.indexOf('.') != -1 && valuestr.length > valuestr.indexOf('.') + 3){ //小数点只能输入两位
 					this.dataForm[rule.field] =  valuestr.substring(0,valuestr.indexOf('.') + 3);
         		}
-			    
+			     callback()
 			};  
 			var validnumreg =(rule, value,callback)=>{ //输入小数点后    前移一位再输入小鼠酒店  没用
 				var reg = /(^[\-0-9][0-9]*(.[0-9]+)?)$/;
@@ -182,7 +200,8 @@
         		if(pattern.test(e.key) || e.key == '.' ){
         		}else{  //非数字
         			this.dataForm[this.lastname] =  parseFloat(this.lastval) || '';
-        		}
+                }
+                 callback()
 			};
             return {
                 datadisabled: true,
@@ -200,7 +219,8 @@
                 	saleafterStopTime:'',  //售后截至时间
                 	auditOrderMinAmount:'', //单笔订单最小金额
                 	riseIn:'', //上调幅度
-                	addPriceRate:'', //加价符
+                    addPriceRate:'', //加价符
+                    vpt:'',//阈值
                 },
                 ratenum:'',
                 rate:[{
@@ -256,6 +276,11 @@
                        	{ validator: validriseIn, trigger: 'blur' },
                        	{ validator: validnum0, trigger: 'blur' },
                     ],
+                    vpt:[
+                        { required: true, message: '必填项不能为空', trigger: 'blur' },
+                        { validator: validVpt, trigger: 'blur' },
+                       	{ validator: validnum0, trigger: 'blur' },
+                    ]
                 },
                 formLabelWidth: '120px',
                 dialogImageUrl: "",
@@ -276,9 +301,8 @@
             'dataForm.minAmount':function(newV,oldV) {
                 if(newV){
                     // 删除非数字和小数点之外的输入
-                    this.dataForm.minAmount=newV.replace(/[^\d|\.]/g,'')
+                    this.dataForm.minAmount=newV.toString().replace(/[^\d|\.]/g,'')
                 }
-                debugger
                 // 有小数点 截取0到小数点后2位间的数据
                if(newV.toString().indexOf('.') !== -1 && newV.toString().substr(newV.indexOf('.') + 1).length > 2){
                     this.dataForm.minAmount=newV.substr(0,newV.indexOf('.')+3)
@@ -286,9 +310,8 @@
             },
             'dataForm.maxAmount':function(newV,oldV) {
                 if(newV){
-                    this.dataForm.maxAmount=newV.replace(/[^\d|\.]/g,'')
+                    this.dataForm.maxAmount=newV.toString().replace(/[^\d|\.]/g,'')
                 }
-                debugger
                 // 有小数点 截取0到小数点后2位间的数据
                 if(newV.toString().indexOf('.') !== -1 && newV.toString().substr(newV.indexOf('.') + 1).length > 2){
                     this.dataForm.maxAmount=newV.substr(0,newV.indexOf('.')+3)
@@ -296,12 +319,15 @@
             }
         },
         created(){
-            // 获取汇率
-            this.getrate();
-            // 回显数据
-            this.backScandata();
+            this.getData();
         },
         methods: {   
+            getData(){
+               // 获取汇率
+                this.getrate();
+                // 回显数据
+                this.backScandata();
+            },
         	artonkeyup(e){
 	            if(e.key == 'Backspace' || e.key == "Delete"){
 	              	return;
@@ -347,7 +373,8 @@
                     // console.log(res);
                     if(res.code==200){
                         // this.dataForm = res.data;
-                        this.dataForm = JSON.parse(res.data.value);
+                        var dataForm = JSON.parse(res.data.value);
+                        Object.assign(this.dataForm,dataForm);
                         // this.rate = JSON.parse(this.dataForm.addPriceRate);
                          this.rate =this.dataForm.addPriceRate;
                         console.log("回显数据");
@@ -440,7 +467,8 @@
             	if( !(this.rate[this.rate.length-1].end * this.rate[this.rate.length-1].rate) ){
                     this.$message("加价率是必填项");
                     return;
-            	}
+                }
+                console.log(this.$refs[formName]);
             	this.$refs[formName].validate((valid) => {
 			        if (valid) {
                         // this.dataForm.addPriceRate = JSON.stringify(this.rate);
@@ -449,6 +477,7 @@
 			            addsetting(this.dataForm).then((res)=>{
                             this.saveLoading = false;
                             console.log(res);
+                            this.getData();
                             this.$message(res.msg);
 			            }).catch(()=>{
                             this.saveLoading = false;
