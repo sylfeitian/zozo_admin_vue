@@ -81,7 +81,8 @@
             	<div class="artaddrate" v-for="(item,index) in rate" :key="index">
             		<el-input type="number"  v-model="rate[index-1] && rate[index-1].end || item.start"  :disabled="datadisabled" auto-complete="off" placeholder="0" style="width: 150px;"></el-input>
 	                <span> —— </span>
-	                <el-input type="number"  @blur="actendnum(item.end,item.start)" v-model="item.end"  :placeholder="index==rate.length-1?'...':'请输入'" style="width: 150px;"></el-input>
+	                <el-input v-if="index!=rate.length-1" type="number"  @blur="actendnum(item.end,item.start)" v-model="item.end"  placeholder="请输入" style="width: 150px;"></el-input>
+                    <el-input v-else :disabled="true"   placeholder="..." style="width: 150px;"></el-input>
 	                <span> 元（日元） </span>
 	                <el-input type="number"  @blur="actratenum(item.rate)" v-model="item.rate" placeholder="请输入加价率" style="width: 100px;"></el-input>
 	                <span> % </span>  
@@ -398,18 +399,20 @@
         		this.actratenumflag = true;
         		if(val > 100 || val < 0){
         			this.$message("加价率应为0-100之间");
-        		}else if(val.indexOf('.') != -1 && val.substr(val.indexOf('.') + 1).length > 4){
+        		}else if(val.toString().indexOf('.') != -1 && val.substr(val.toString().indexOf('.') + 1).length > 4){
 			    	this.$message('小数点后只能有四位');
 			    }else{
 			    	this.actratenumflag = false;
 			    }
         	},
-        	artaddclick(){   //添加一个加价率
+            artaddclick(){   //添加一个加价率
+                    // alert([this.actendnumflag,this.actratenumflag]);
         		if( this.actendnumflag || this.actratenumflag){
-	        		this.$message("本行加价率填写有误,请先修改再添加");
+	        		this.$message("加价率填写有误,请先修改再添加");
 	        		return;
-	        	}
-        		var num = this.rate.length-1;        		
+                }
+                this.rate[this.rate.length-1].end = ""
+        		var num = this.rate.length-2;        		
         		if(this.rate[num] && this.rate[num].end && this.rate[num].rate){
         			let obj = {
         				start : this.rate[num].end,

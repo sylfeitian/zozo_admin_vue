@@ -151,7 +151,7 @@
       <el-table-column prop="sellPrice" label="售价" width="100" align="center">
         <template slot-scope="scope">
           <div class="price1" v-if="scope.row.priceType=='sale'">￥{{scope.row.discountPrice?scope.row.discountPrice:'0.00'}}</div>
-          <div class="price1" v-else-if="dataForm.priceType=='proper'">￥{{scope.row.sellPrice?scope.row.sellPrice:'0.00'}}</div>
+          <div class="price1" v-else-if="scope.row.priceType=='proper'">￥{{scope.row.sellPrice?scope.row.sellPrice:'0.00'}}</div>
         </template>
       </el-table-column>
       <el-table-column prop="salePlan" label="售价类型" align="center" width="100">

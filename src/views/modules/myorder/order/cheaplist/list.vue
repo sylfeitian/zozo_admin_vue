@@ -244,7 +244,7 @@
             //处理不同状态
             // this.radio1 = this.status == undefined ? "" : this.status;
             this.dataForm.orderStatus = this.status == undefined ? "" : this.status;
-            this.getPaymentList();
+            // this.getPaymentList();
         },
         components: {
             Bread,
@@ -272,18 +272,18 @@
             },
              
             //订单支付方式
-            getPaymentList() {
-                paymentList().then(res => {
-                    if (res.code == 200) {
-                        this.paymentList = res.data;
-                    } else {
-                        this.$message({
-                            type: "warning",
-                            message: res.msg
-                        });
-                    }
-                });
-            },
+            // getPaymentList() {
+            //     paymentList().then(res => {
+            //         if (res.code == 200) {
+            //             this.paymentList = res.data;
+            //         } else {
+            //             this.$message({
+            //                 type: "warning",
+            //                 message: res.msg
+            //             });
+            //         }
+            //     });
+            // },
             //订单状态筛选
             agreeChange(val) {
                 // this.dataForm.paymentStatus = ""

@@ -97,8 +97,8 @@
             </el-form-item>
             <el-form-item label="日本上架状态：" class="item">
                 <template>
-                    <span v-if="dataForm.japanShowWeb==0">可售</span>
-                    <span v-if="dataForm.japanShowWeb==1">不可售</span>
+                    <span v-if="dataForm.japanShowWeb=='true' || dataForm.japanShowWeb==1|| dataForm.japanShowWeb==true">可售</span>
+                    <span v-else-if="dataForm.japanShowWeb=='false' || dataForm.japanShowWeb==0 || dataForm.japanShowWeb==false">不可售</span>
                 </template>
             </el-form-item>
             <el-form-item label="可售状态：" class="item">

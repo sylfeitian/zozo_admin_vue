@@ -47,15 +47,18 @@
                          <!-- 待发货 -->
                         <span v-else-if="orderBase.orderStatus==20">付款中</span>
                         <span v-else-if="orderBase.orderStatus==30">待审核</span>
-                        <!-- <span v-else-if="orderBase.orderStatus==40">申报中</span>
-                        <span v-else-if="orderBase.orderStatus==50">申报失败</span>
-                        <span v-else-if="orderBase.orderStatus==60">待发货</span>
-                        <span v-else-if="orderBase.orderStatus==70">日本取消订单</span> -->
+                        <span v-else-if="orderBase.orderStatus==40">lakala申报中</span>
+                        <span v-else-if="orderBase.orderStatus==50">lakala申报失败</span>
+                        <span v-else-if="orderBase.orderStatus==60">待日方发货</span>
                         <!-- 待收货 -->
-                        <span v-else-if="orderBase.orderStatus==80">清关中</span>
-                        <span v-else-if="orderBase.orderStatus==90">待收货</span>
+                         <span v-else-if="orderBase.orderStatus==70">日方取消订单</span> 
+                        <span v-else-if="orderBase.orderStatus==80">JD申报中</span>
+                        <span v-else-if="orderBase.orderStatus==90 || orderBase.orderStatus==100">JD申报失败</span>
+                        <span v-else-if="orderBase.orderStatus==110">清关中</span>
+                        <span v-else-if="orderBase.orderStatus==120">清关失败 </span>
+                        <span v-else-if="orderBase.orderStatus==130">待收货 </span>
                         <!-- 已完成 -->
-                        <span v-else-if="orderBase.orderStatus==100">交易完成</span>
+                        <span v-else-if="orderBase.orderStatus==140">交易完成</span>
                         <span v-else-if="orderBase.orderStatus==0">已取消</span>
                     </div>
                 </el-col>
@@ -134,7 +137,7 @@
 
                 <el-table-column prop="" label="商品图片" align="center">
                     <template slot-scope="scope">
-                        {{scope.row.goodsImage}}
+                        <img :src="scope.row.goodsImage | filterImgUrl" style="width:80px;height:80px;" />
                     </template>
                 </el-table-column>
                 <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
@@ -253,15 +256,18 @@
                          <!-- 待发货 -->
                         <span v-else-if="scope.row.orderStatus==20">付款中</span>
                         <span v-else-if="scope.row.orderStatus==30">待审核</span>
-                        <!-- <span v-else-if="scope.row.orderStatus==40">申报中</span>
-                        <span v-else-if="scope.row.orderStatus==50">申报失败</span>
-                        <span v-else-if="scope.row.orderStatus==60">待发货</span>
-                        <span v-else-if="scope.row.orderStatus==70">日本取消订单</span> -->
+                        <span v-else-if="scope.row.orderStatus==40">lakala申报中</span>
+                        <span v-else-if="scope.row.orderStatus==50">lakala申报失败</span>
+                        <span v-else-if="scope.row.orderStatus==60">待日方发货</span>
                         <!-- 待收货 -->
-                        <span v-else-if="scope.row.orderStatus==80">清关中</span>
-                        <span v-else-if="scope.row.orderStatus==90">待收货</span>
+                         <span v-else-if="scope.row.orderStatus==70">日方取消订单</span> 
+                        <span v-else-if="scope.row.orderStatus==80">JD申报中</span>
+                        <span v-else-if="scope.row.orderStatus==90 || scope.row.orderStatus==100">JD申报失败</span>
+                        <span v-else-if="scope.row.orderStatus==110">清关中</span>
+                        <span v-else-if="scope.row.orderStatus==120">清关失败 </span>
+                        <span v-else-if="scope.row.orderStatus==130">待收货 </span>
                         <!-- 已完成 -->
-                        <span v-else-if="scope.row.orderStatus==100">交易完成</span>
+                        <span v-else-if="scope.row.orderStatus==140">交易完成</span>
                         <span v-else-if="scope.row.orderStatus==0">已取消</span>
                     </template>
                 </el-table-column>
