@@ -140,7 +140,7 @@
       </el-table-column>
       <el-table-column prop="name" label="商品名称" align="center">
         <template slot-scope="scope">
-          <div>{{scope.row.name}}</div>
+          <div :title="scope.row.name">{{scope.row.name}}</div>
         </template>
       </el-table-column>
       <el-table-column prop="brandName" label="品牌" align="center">
@@ -590,9 +590,15 @@ export default {
     align-items: center;
   }
 }
-/deep/ .cell {
-  white-space: nowrap;
+.cell div{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
+/*/deep/ .cell {*/
+/*  white-space: nowrap;*/
+/*  overflow: hidden;*/
+/*  text-overflow: ellipsis;*/
+/*}*/
 </style>

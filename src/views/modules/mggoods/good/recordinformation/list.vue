@@ -86,9 +86,9 @@
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column label="商品名称" align="center" :show-overflow-tooltip="true">
+            <el-table-column label="商品名称" align="center">
                 <template slot-scope="scope">
-                    <div>
+                    <div :title="scope.row.goodsName">
                         {{scope.row.goodsName}}
                     </div>
                 </template>

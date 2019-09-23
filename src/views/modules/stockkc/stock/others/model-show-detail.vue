@@ -16,12 +16,17 @@
             <el-form-item label="商品名称：">
                 <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" maxlength="300"></el-input>
             </el-form-item>
-            <el-form-item label="商品货号：">
-                <el-input v-model="dataForm.goodCsId" placeholder="请输入spu编号"></el-input>
+            <el-form-item label="商品ID：">
+                <el-input v-model="dataForm.goodCsId" placeholder="请输入skuID"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="getData()">查询</el-button>
             </el-form-item>
+            <p>
+            <el-form-item label="备注：">
+                <span></span>
+            </el-form-item>
+            </p>
         </el-form>
         <el-table
             width="100%"
@@ -37,16 +42,6 @@
 		     	label="操作"
 		      	align="center">
 		  	</el-table-column> -->
-		  	<el-table-column
-		    	type="index"
-			    prop="$index"
-			    label="序号"
-			    align="center"
-			    width="70">
-			    <template slot-scope="scope">
-	          		{{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}
-	        	</template>
-			</el-table-column>
             <el-table-column prop="skuIdJp" label="skuID" align="center"></el-table-column>
             <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
             <el-table-column prop="spe" label="规格" align="center"></el-table-column>

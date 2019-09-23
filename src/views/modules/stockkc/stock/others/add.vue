@@ -7,7 +7,7 @@
 			      class="inline-input"
 			      v-model="dataForm.wareHouseName"
 			      :fetch-suggestions="querySearch"
-			      placeholder="请输入内容"
+			      placeholder="请输入仓库名称"
 			      value-key="name"
 			      @select="handleSelect"
 			    ></el-autocomplete>
@@ -23,6 +23,7 @@
             <el-form-item>
                 <!--<el-button type="primary"  @click="addOrEditHandle()" >导入商品</el-button>-->
                 <el-button type="primary" plain @click="addGoods()" >添加商品</el-button>
+                <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"></importAndExport>
             </el-form-item>
         </el-form>
       
@@ -72,10 +73,18 @@
     import Bread from "@/components/bread";
     import showData from './model-show-data'
     import { warehouserecordsodoAdd,warelistByType} from "@/api/api"      //获取仓库，保存商品
+    import importAndExport from "@/components/import-and-export"
+    import { tudo} from '@/api/io'
     export default {
         // mixins: [mixinViewModule],
         data () {
             return {
+                importAndExportOptions:{
+                    importUrl:tudo,//导入接口
+                    importWord:"导入商品",
+                    // exportUrl:exportRegisterUrl,//导出接口
+                    // exportWord:"导出数据",
+                },
             	// mixinViewModuleOptions: {
 		        //   getDataListURL: '',
 		        //   getDataListIsPage: true,
@@ -102,7 +111,8 @@
         },
         components: {
             Bread,
-            showData
+            showData,
+            importAndExport
         },
         created(){
             // this.artgetallstock();
