@@ -23,11 +23,12 @@
                     <!-- <el-option label="付款中" value="20"  v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option> -->
                     <el-option label="待审核" value="30" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option>
                     <!-- <el-option label="申报中" value="40" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option> -->
-                    <el-option label="申报失败" value="50" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option>
+                    <el-option label="lakala申报失败" value="50" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option>
                     <!-- <el-option label="待发货" value="60" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option> -->
-                    <el-option label="日本取消订单" value="70" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option>
                     <!-- 待收货 -->
-                    <el-option label="清关中" value="80" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
+                     <el-option label="日本取消订单" value="70" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option>
+                    <el-option label="JD申报失败" value="90" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
+                    <!-- <el-option label="清关中" value="80" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option> -->
                     <!-- <el-option label="待收货" value="90" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option> -->
                     <!-- 已完成 -->
                     <!-- <el-option label="交易完成" value="100" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='complete'" ></el-option> -->
@@ -76,7 +77,29 @@
                 <template slot-scope="scope">￥{{scope.row.orderAmount}}</template>
             </el-table-column>
             <el-table-column prop="paymentName" label="支付方式" align="center"></el-table-column>
-            <el-table-column prop="orderState" label="订单状态" align="center"></el-table-column>
+            <el-table-column prop="orderStatus" label="订单状态" align="center">
+                    <template slot-scope="scope">
+                        <!-- 待付款 -->
+                        <span v-if="scope.row.orderStatus==10">待付款</span>
+                         <!-- 待发货 -->
+                        <span v-else-if="scope.row.orderStatus==20">付款中</span>
+                        <span v-else-if="scope.row.orderStatus==30">待审核</span>
+                        <span v-else-if="scope.row.orderStatus==35">审核未通过</span>
+                        <span v-else-if="scope.row.orderStatus==40">lakala申报中</span>
+                        <span v-else-if="scope.row.orderStatus==50">lakala申报失败</span>
+                        <span v-else-if="scope.row.orderStatus==60">待日方发货</span>
+                        <!-- 待收货 -->
+                        <span v-else-if="scope.row.orderStatus==70">日方取消订单</span>
+                        <span v-else-if="scope.row.orderStatus==80">JD申报中</span>
+                        <span v-else-if="scope.row.orderStatus==90 || scope.row.orderStatus==100">JD申报失败</span>
+                        <span v-else-if="scope.row.orderStatus==110">清关中</span>
+                        <!-- <span v-else-if="scope.row.orderStatus==120">清关失败</span> -->
+                        <span v-else-if="scope.row.orderStatus==120">待收货</span>
+                        <!-- 已完成 -->
+                        <span v-else-if="scope.row.orderStatus==140">交易完成</span>
+                        <span v-else-if="scope.row.orderStatus==0">已取消</span>
+                    </template>
+            </el-table-column>
             <!-- :formatter="orderState" -->
             <el-table-column prop="orderType" label="订单类型" align="center" ></el-table-column>
             <el-table-column label="操作" align="center" width="200">
@@ -215,7 +238,7 @@
         created() {
             //处理不同状态
             // this.dataForm.orderStatus = this.status == undefined ? "" : this.status;
-            this.getPaymentList();
+            // this.getPaymentList();
         },
         methods: {
             orderDetFn(row){
@@ -232,18 +255,18 @@
                 this.getDataList();
             },
             //订单支付方式
-            getPaymentList() {
-                paymentList().then(res => {
-                    if (res.code == 200) {
-                        this.paymentList = res.data;
-                    } else {
-                        this.$message({
-                            type: "warning",
-                            message: res.msg
-                        });
-                    }
-                });
-            },
+            // getPaymentList() {
+            //     paymentList().then(res => {
+            //         if (res.code == 200) {
+            //             this.paymentList = res.data;
+            //         } else {
+            //             this.$message({
+            //                 type: "warning",
+            //                 message: res.msg
+            //             });
+            //         }
+            //     });
+            // },
             //重置
             reset(formName) {
                 this.timeArr = [];
