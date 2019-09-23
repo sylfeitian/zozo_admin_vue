@@ -84,32 +84,32 @@
         },
         watch: {
             'dataForm.realName': function (newV, oldV) {
-                var chinese = 0,character = 0;
+                var chineseCount = 0,characterCount = 0;
                 for (let i = 0; i < newV.length; i++) {
                     if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
-                        chinese = chinese + 2;
+                        chineseCount = chineseCount + 2;
                     } else { //字符
-                        character = character + 1;
+                        characterCount = characterCount + 1;
                     }
-                    var count = chinese + character;
+                    var count = chineseCount + characterCount;
                     if (count > 20) { //输入字符大于20的时候过滤
-                        this.dataForm.realName = newV.replace(newV[i], "")
+                        this.dataForm.realName = newV.substr(0,20)
                     }
                 }
             },
             'dataForm.mobile': function (newV, oldV) {
-                var chinese = 0,character = 0;
+                var chineseCount = 0,characterCount = 0;
                 for (let i = 0; i < newV.length; i++) {
                     if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
-                        chinese = chinese + 2;
+                        chineseCount = chineseCount + 2;
                     } else if(/ /.test(newV[i])){ //空格
                         this.dataForm.mobile = newV.replace(newV[i], "") //删除空格
                     }else{
-                        character = character + 1;
+                        characterCount = characterCount + 1;
                     }
-                    var count = chinese + character;
+                    var count = chineseCount + characterCount;
                     if (count > 11) { //输入字符大于11的时候过滤
-                        this.dataForm.mobile = newV.replace(newV[i], "")
+                        this.dataForm.mobile = newV.substr(0,11)
                     }
                 }
             }

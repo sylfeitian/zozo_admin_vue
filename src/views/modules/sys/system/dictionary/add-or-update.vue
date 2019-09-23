@@ -14,10 +14,10 @@
                 label-width="120px"
         >
             <el-form-item label="字典名称：" prop="dictName" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.dictName" auto-complete="off"></el-input>
+                <el-input v-model="dataForm.dictName" auto-complete="off" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="字典编码：" prop="dictValue" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.dictValue" auto-complete="off"></el-input>
+                <el-input v-model="dataForm.dictValue" auto-complete="off" show-word-limit placeholder="请输入"></el-input>
             </el-form-item>
 <!--            <el-form-item style="text-align: center;margin-left: -120px!important;">-->
 <!--                <el-button  @click="dataFormCancel()">取消</el-button>-->
@@ -52,6 +52,32 @@
         components:{
         },
         computed:{},
+        watch:{
+            'dataForm.dictName':function(newV,oldV) {
+                var chineseCount=0,characterCount=0;
+                for(let i=0;i<newV.length;i++){
+                    if(/^[\u4e00-\u9fa5]*$/.test(newV[i])){ //汉字
+                        chineseCount=chineseCount+2;
+                    }else if(/[0-9a-zA-Z]/g.test(newV[i])){ //数字、字母
+                        characterCount=characterCount+1;
+                    }else{ // 只能输入文字、字母、数字
+                        this.dataForm.dictName = newV.replace(newV[i],"")
+                    }
+                    var count=chineseCount+characterCount;
+                    if(count>40){ //输入字符大于40的时候过滤
+                        this.dataForm.dictName = newV.substr(0,40)
+                    }
+                }
+            },
+            'dataForm.dictValue':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    // 只能输入英文和数字
+                    if(/[^0-9a-zA-Z]/g.test(newV[i])){
+                        this.dataForm.dictValue = newV.replace(newV[i],"")
+                    }
+                }
+            }
+        },
         mounted(){},
         methods: {
             init (row) {

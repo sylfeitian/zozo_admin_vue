@@ -214,6 +214,9 @@
                         this.dataForm.idJp = newV.replace(newV[i],"")
                     }
                 }
+                if(newV.length>30){
+                    this.dataFormShow.idJp = newV.substr(0,30)
+                }
             }
         },
         created () {

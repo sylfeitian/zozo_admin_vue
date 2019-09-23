@@ -156,6 +156,9 @@
             this.dataForm.memeberNameOrId = newV.replace(newV[i],"")
           }
         }
+        if(newV.length>30){
+          this.dataForm.memeberNameOrId = newV.substr(0,30)
+        }
       }
     },
     created() {

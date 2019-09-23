@@ -228,6 +228,9 @@ export default {
                     this.dataForm.goodsCsIdJp = newV.replace(newV[i],"")
                 }
             }
+            if(newV.length>30){
+                this.dataForm.goodsCsIdJp = newV.substr(0,30)
+            }
         }
     },
   methods: {

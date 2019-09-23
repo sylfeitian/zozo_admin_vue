@@ -82,15 +82,15 @@
         name: "model-add-edit-data",
         data () {
             var validateStyleName = (rule, value, callback) => {
-                var chinese=0;var character=0;
+                var chineseCount=0,characterCount=0;
                 for(let i=0;i<value.length;i++){
                     if (/^[\u4e00-\u9fa5]*$/.test(value[i])) { //汉字
-                        chinese=chinese+2;
+                        chineseCount=chineseCount+2;
                     }else{ //字符
-                        character=character+1;
+                        characterCount=characterCount+1;
                     }
                 }
-                var count=chinese+character;
+                var count=chineseCount+characterCount;
                 if(count<4||count>12){
                     return callback(new Error('至少2个字，最多6个字！'))
                 }
@@ -138,17 +138,16 @@
         },
         watch:{
             'dataForm.styleName':function(newV,oldV) {
-                var chinese = 0;
-                var character = 0;
+                var chineseCount = 0,characterCount = 0;
                 for (let i = 0; i < newV.length; i++) {
                     if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
-                        chinese = chinese + 2;
+                        chineseCount = chineseCount + 2;
                     } else { //字符
-                        character = character + 1;
+                        characterCount = characterCount + 1;
                     }
-                    var count = chinese + character;
+                    var count = chineseCount + characterCount;
                     if (count > 12) { //输入字符大于12的时候过滤
-                        this.dataForm.styleName = newV.replace(newV[i], "")
+                        this.dataForm.styleName = newV.substr(0,12)
                     }
                 }
             }

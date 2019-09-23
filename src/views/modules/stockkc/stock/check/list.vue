@@ -203,6 +203,9 @@
                         this.dataFormShow.goodsCsIdJp = newV.replace(newV[i],"")
                     }
                 }
+                if(newV.length>30){
+                    this.dataFormShow.goodsCsIdJp = newV.substr(0,30)
+                }
             }
         },
         created () {

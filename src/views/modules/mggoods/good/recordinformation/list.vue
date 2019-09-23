@@ -86,7 +86,7 @@
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column label="商品名称" align="center">
+            <el-table-column label="商品名称" align="center" :show-overflow-tooltip="true">
                 <template slot-scope="scope">
                     <div>
                         {{scope.row.goodsName}}
@@ -250,6 +250,9 @@
                     if(!/[a-zA-Z0-9]/.test(newV[i])){
                         this.dataFormShow.goodsCsIdJp = newV.replace(newV[i],"")
                     }
+                }
+                if(newV.length>30){
+                    this.dataFormShow.goodsCsIdJp = newV.substr(0,30)
                 }
             }
         },

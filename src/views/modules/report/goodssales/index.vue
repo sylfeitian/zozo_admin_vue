@@ -127,6 +127,9 @@
                         this.dataForm.id = newV.replace(newV[i],"")
                     }
                 }
+                if(newV.length>30){
+                    this.dataForm.id = newV.substr(0,30)
+                }
             }
         },
         methods: {
