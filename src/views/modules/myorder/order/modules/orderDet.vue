@@ -346,7 +346,7 @@
         methods: {
             init(row){
                 console.log(row);
-                row.id = 123666;
+                // row.id = 123666;
                 this.row = row;
                 this.getOrderDetail();    
             },

@@ -22,17 +22,22 @@
                     <!-- 待发货 -->
                     <el-option label="付款中" value="20"  v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option>
                     <el-option label="待审核" value="30" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option>
-                    <el-option label="申报中" value="40" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option>
-                    <el-option label="申报失败" value="50" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option>
-                    <el-option label="待发货" value="60" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option>
-                    <el-option label="日本取消订单" value="70" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option>
+                    <el-option label="lakala申报中" value="40" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option>
+                    <el-option label="lakala申报失败" value="50" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option>
+                    <el-option label="待日方发货" value="60" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option>
                     <!-- 待收货 -->
-                    <el-option label="清关中" value="80" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
-                    <el-option label="待收货" value="90" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
+                     <el-option label="日本取消订单" value="70" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
+                    <el-option label="JD申报中" value="80" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
+                    <el-option label="JD申报失败" value="90" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
+                   
+                    <el-option label="清关中" value="100" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
+                    <el-option label="清关失败" value="120" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
+                     <el-option label="待收货" value="130" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
                     <!-- 已完成 -->
-                    <el-option label="交易完成" value="100" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='complete'" ></el-option>
+                    <el-option label="交易完成" value="140" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='complete'" ></el-option>
                     <!-- 已取消 -->
                     <el-option label="已取消" value="0" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='cancel'" ></el-option>
+
                 </el-select>
             </el-form-item>
             <el-form-item label="下单时间：">
@@ -91,15 +96,19 @@
                          <!-- 待发货 -->
                         <span v-else-if="scope.row.orderStatus==20">付款中</span>
                         <span v-else-if="scope.row.orderStatus==30">待审核</span>
-                        <span v-else-if="scope.row.orderStatus==40">申报中</span>
-                        <span v-else-if="scope.row.orderStatus==50">申报失败</span>
-                        <span v-else-if="scope.row.orderStatus==60">待发货</span>
-                        <span v-else-if="scope.row.orderStatus==70">日本取消订单</span>
+                        <span v-else-if="scope.row.orderStatus==35">审核未通过</span>
+                        <span v-else-if="scope.row.orderStatus==40">lakala申报中</span>
+                        <span v-else-if="scope.row.orderStatus==50">lakala申报失败</span>
+                        <span v-else-if="scope.row.orderStatus==60">待日方发货</span>
                         <!-- 待收货 -->
-                        <span v-else-if="scope.row.orderStatus==80">清关中</span>
-                        <span v-else-if="scope.row.orderStatus==90">待收货</span>
+                        <span v-else-if="scope.row.orderStatus==70">日方取消订单</span>
+                        <span v-else-if="scope.row.orderStatus==80">JD申报中</span>
+                        <span v-else-if="scope.row.orderStatus==90 || scope.row.orderStatus==100">JD申报失败</span>
+                        <span v-else-if="scope.row.orderStatus==110">清关中</span>
+                        <span v-else-if="scope.row.orderStatus==120">清关失败</span>
+                        <span v-else-if="scope.row.orderStatus==120">待收货</span>
                         <!-- 已完成 -->
-                        <span v-else-if="scope.row.orderStatus==100">交易完成</span>
+                        <span v-else-if="scope.row.orderStatus==140">交易完成</span>
                         <span v-else-if="scope.row.orderStatus==0">已取消</span>
                  </template>
             </el-table-column>
@@ -192,7 +201,7 @@
                 orderData: [],
                 dataForm: {
                     topStatus:"all",// 顶部状态 all全部 waitpay待付款 waitshipped待发货 waitreceived待收货 complete交易成功 cancel订单取消
-                    orderStatus:"",//10待付款、20付款中、30待审核、40申报中、50申报失败、60待发货、70日方取消订单、80清关中、90待收货、100交易完成、110拒收、0已取消
+                    orderStatus:"",//0待付款、20付款中、30待审核 、35审核未通过、40lakala申报中、50lakala申报失败、 60待日方发货、70日方取消订单、80JD申报中、90JD申报失败（无法重试）、100JD申报失败（可以重试）、110清关中、120清关失败 130待收货、140交易完成、0已取消
                     orderSn: "",
                     storeIdAndName: "",
                     memberName: "",
