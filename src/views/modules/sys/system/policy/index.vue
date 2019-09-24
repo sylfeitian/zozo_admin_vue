@@ -57,11 +57,11 @@
                 <span> 天（day）</span>
                 <span style="color: #999999;">发货后自动确认收货时间</span>
             </el-form-item>
-            <el-form-item label="售后时间：" prop="saleafterStopTime" :label-width="formLabelWidth">
+            <!-- <el-form-item label="售后时间：" prop="saleafterStopTime" :label-width="formLabelWidth">
                 <el-input type="number" maxlength='3' v-model="dataForm.saleafterStopTime"  placeholder="请输入" style="width: 250px;"></el-input>
                 <span> 天（day）</span>
                 <span style="color: #999999;">确认收货后可申请售后的时间</span>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="单笔订单最小金额：" prop="auditOrderMinAmount" :label-width="formLabelWidth">
                 <el-input type="number" maxlength='6' v-model="dataForm.auditOrderMinAmount"  placeholder="请输入" style="width: 250px;"></el-input>
                 <span> 元（RMB）</span>
