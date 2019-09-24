@@ -339,8 +339,14 @@ export const deleteShophotkeywordrecordUrl = `${base}/shophotkeywordrecord`;
 // 列表
 export const shophotkeywordUrl = `${base}/shophotkeyword/page`;
 // 删除
-export const deleteShophotkeywordUrl = `${base}/shophotkeyword`;
+export const deleteShopkeywordUrl = `${base}/shophotkeyword`;
+// 删除
+export const deleteShophotkeywordUrl = `${base}/shophotkeyword/keyword`;
 
+// GET 
+// GET 
+export const keywordcountpageUrl = `${base}/shophotkeyword/keywordcountpage`;
+export const keywordpageUrl = `${base}/shophotkeyword/keywordpage`;
 
 //消息-------------------------------------------------------------------------------------------------------------
 //消息列表分页  

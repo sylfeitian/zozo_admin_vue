@@ -14,7 +14,7 @@
                 label-width="120px"
         >
             <el-form-item label="搜索词：">
-                <el-input v-model="dataForm.keyword" placeholder="" maxlength="30" show-word-limit></el-input>
+                <el-input v-model="dataForm.hotKeyword" placeholder="" maxlength="30" show-word-limit></el-input>
 <!--                <span style="color: #999999;">0/30</span>-->
             </el-form-item>
             <el-form-item label="排序：">
@@ -44,7 +44,7 @@
                 visible : false,
                 loading : false,
                 dataForm: {
-                    keyword: "",
+                    hotKeyword: "",
                     sort: "",
                 },
                 title:'',
@@ -91,7 +91,7 @@
                     if (valid) {
                         this.loading = true;
                         var obj = {
-                            "keyword":  this.dataForm.keyword,
+                            "hotKeyword":  this.dataForm.hotKeyword,
                             "sort":  this.dataForm.sort,
                         }
                         if(this.row) obj.id = this.row.id

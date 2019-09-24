@@ -79,8 +79,8 @@
                 this.visible = true;
                 this.row = row;
                 this.dataList = [];
-                this.limit = 1;
-                this.page =10;
+                this.page =1;
+                 this.limit = 10;
                 this.total =0;
                 this.$nextTick(() => {
                     this.$refs['addForm'].resetFields();

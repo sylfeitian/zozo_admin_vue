@@ -8,7 +8,7 @@
                 @keyup.enter.native="getDataList()"
         >
             <el-form-item label="关键字搜索：">
-                <el-input v-model="dataFormShow.keyword" placeholder="请输入关键词搜索" ></el-input>
+                <el-input v-model="dataFormShow.hotKeyword" placeholder="请输入关键词搜索" ></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button class="btn" type="primary" @click="getData()">搜索</el-button>
@@ -29,7 +29,7 @@
                     <!-- {{scope.$index+1+(parseInt(params.currentPage)-1)* parseInt(params.currentPageSize) }} -->
                 </template>
             </el-table-column>
-            <el-table-column prop="keyword" label="搜索词" align="center"></el-table-column>
+            <el-table-column prop="hotKeyword" label="搜索词" align="center"></el-table-column>
             <el-table-column prop="sort" label="排序" align="center" width="250"></el-table-column>
             <el-table-column label="操作" align="center" width="250">
                 <template slot-scope="scope">
@@ -57,13 +57,13 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import addEditData from './model-add-edit-data'
-    import { shophotkeywordUrl,deleteShophotkeywordUrl } from '@/api/url'
+    import { keywordpageUrl,deleteShophotkeywordUrl } from '@/api/url'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
                 mixinViewModuleOptions: {
-                    getDataListURL: shophotkeywordUrl,
+                    getDataListURL: keywordpageUrl,
                     getDataListIsPage: true,
                     exportURL: '/admin-api/shopStore',
                     deleteURL: deleteShophotkeywordUrl,
@@ -72,7 +72,7 @@
                 },
                 breaddata: [ "搜索管理", "同义词管理"],
                 dataFormShow: {
-                    keyword: "",//关键字搜索
+                    hotKeyword: "",//关键字搜索
                 },
                 dataList: [],
                 dataListLoading: false,
@@ -94,8 +94,8 @@
             },
             // 重置
             reset() {
-                this.dataFormShow.keyword = "";//关键字搜索
-                this.dataForm.keyword = "";//关键字搜索
+                this.dataFormShow.hotKeyword = "";//关键字搜索
+                this.dataForm.hotKeyword = "";//关键字搜索
                 this.getDataList();
             },
             // 新建

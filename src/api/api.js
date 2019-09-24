@@ -749,7 +749,7 @@ export const deleteShophotkeyword = params => { return http.delete(`${base}/shop
 // 保存
 export const shophotkeywordSave = params => { return http.post(`${base}/shophotkeyword`, params).then(res => res.data); };
 // 修改
-export const editShophotkeyword = params => { return http.put(`${base}/shophotkeyword`, params).then(res => res.data); };
+export const editShophotkeyword = params => { return http.put(`${base}/shophotkeyword/updateHotKeyword`, params).then(res => res.data); };
 // 分页
 export const shophotkeywordPage = params => { return http.get(`${base}/shophotkeyword/page`, params).then(res => res.data); };
 // 信息

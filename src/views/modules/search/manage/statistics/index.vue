@@ -56,16 +56,16 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
-    import { shophotkeywordUrl,deleteShophotkeywordUrl } from '@/api/url'
+    import { keywordcountpageUrl,deleteShopkeywordUrl } from '@/api/url'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
                 mixinViewModuleOptions: {
-                    getDataListURL: shophotkeywordUrl,
+                    getDataListURL: keywordcountpageUrl,
                     getDataListIsPage: true,
                     exportURL: '/admin-api/shopStore',
-                    deleteURL: deleteShophotkeywordUrl,
+                    deleteURL: deleteShopkeywordUrl,
                     deleteIsBatch: true,
                     // deleteIsBatchKey: 'id'
                 },
