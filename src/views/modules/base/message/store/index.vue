@@ -65,7 +65,13 @@
       </el-table-column>
       <el-table-column prop="updateDate" label="更新时间" align="center"></el-table-column>
       <el-table-column prop="mainTag" label="店铺主风格标签" align="center"></el-table-column>
-      <el-table-column prop="subTag" label="店铺副风格标签" align="center"></el-table-column>
+      <el-table-column prop="subTag" label="店铺副风格标签" align="center">
+        <template slot-scope="scope">
+          <div :title="scope.row.subTag">
+            {{scope.row.subTag}}
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column prop label="设为推荐" align="center">
         <template slot-scope="scope">
           <div style="position: relative;">
@@ -378,11 +384,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/deep/ .cell {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+  /deep/ .cell{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+  /*/deep/ .cell {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+  }*/
+
 .hiddenSwitch {
   position: absolute;
   width: 100%;
