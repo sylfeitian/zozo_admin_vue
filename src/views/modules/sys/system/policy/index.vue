@@ -81,7 +81,7 @@
             	<div class="artaddrate" v-for="(item,index) in rate" :key="index">
             		<el-input type="number"  v-model="rate[index-1] && rate[index-1].end || item.start"  :disabled="datadisabled" auto-complete="off" placeholder="0" style="width: 150px;"></el-input>
 	                <span> —— </span>
-	                <el-input v-if="index!=rate.length-1" type="number"  @blur="actendnum(item.end,item.start)" v-model="item.end"  placeholder="请输入" style="width: 150px;"></el-input>
+	                <el-input v-if="rate.length==1 || index!=rate.length-1" type="number"  @blur="actendnum(item.end,item.start)" v-model="item.end"  placeholder="请输入" style="width: 150px;"></el-input>
                     <el-input v-else :disabled="true"   placeholder="..." style="width: 150px;"></el-input>
 	                <span> 元（日元） </span>
 	                <el-input type="number"  @blur="actratenum(item.rate)" v-model="item.rate" placeholder="请输入加价率" style="width: 100px;"></el-input>
@@ -90,7 +90,7 @@
 	                	&nbsp; &nbsp;
 	                	<i @click="artaddclick" class="el-icon-circle-plus"></i>
 	                	&nbsp; &nbsp;
-	                	<i v-if="rate.length-1 == index && rate.length>1" @click="deladdclick" class="el-icon-remove-outline"></i>
+	                	<i v-if="rate.length-1 == index && rate.length>2" @click="deladdclick" class="el-icon-remove-outline"></i>
 	                </span>
             	</div>
             </el-form-item>
@@ -406,13 +406,12 @@
 			    }
         	},
             artaddclick(){   //添加一个加价率
-                    // alert([this.actendnumflag,this.actratenumflag]);
         		if( this.actendnumflag || this.actratenumflag){
 	        		this.$message("加价率填写有误,请先修改再添加");
 	        		return;
                 }
-                this.rate[this.rate.length-1].end = ""
-        		var num = this.rate.length-2;        		
+                if(this.rate.length!=1) this.rate[this.rate.length-1].end = ""
+        		var num = this.rate.length!=1 ?this.rate.length-2:0;        		
         		if(this.rate[num] && this.rate[num].end && this.rate[num].rate){
         			let obj = {
         				start : this.rate[num].end,
@@ -467,7 +466,7 @@
 	        		this.$message("加价率填写有误");
 	        		return;
 	        	}
-            	if( !(this.rate[this.rate.length-1].end * this.rate[this.rate.length-1].rate) ){
+            	if( !(this.rate[this.rate.length-1].rate) ){
                     this.$message("加价率是必填项");
                     return;
                 }
