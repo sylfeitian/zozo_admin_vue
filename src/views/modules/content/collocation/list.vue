@@ -339,9 +339,16 @@
             align-items: center;
         }
     }
-    /deep/ .cell {
+    .cell div{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+    }
+    /*/deep/ .cell {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-    }
+    }*/
+
 </style>

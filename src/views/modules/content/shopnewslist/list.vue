@@ -62,8 +62,20 @@
                     >
                 </template>
             </el-table-column>
-            <el-table-column prop="title" label="标题" align="center"></el-table-column>
-            <el-table-column prop="shopName" label="店铺" align="center"></el-table-column>
+            <el-table-column prop="title" label="标题" align="center">
+                <template slot-scope="scope">
+                    <div :title="scope.row.title">
+                        {{scope.row.title}}
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column prop="shopName" label="店铺" align="center">
+                <template slot-scope="scope">
+                    <div :title="scope.row.shopName">
+                        {{scope.row.shopName}}
+                    </div>
+                </template>
+            </el-table-column>
             <el-table-column prop="goodsCount" label="相关商品" align="center"></el-table-column>
             <el-table-column prop="showWeb" label="发布状态" align="center">
                 <template slot-scope="scope">
@@ -78,8 +90,20 @@
                     <el-tag v-else type="info">取消发布</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column prop="publishTimeJp" label="日本发布时间" align="center"></el-table-column>
-            <el-table-column prop="publishTime" label="发布时间" align="center"></el-table-column>
+            <el-table-column prop="publishTimeJp" label="日本发布时间" align="center">
+                <template slot-scope="scope">
+                    <div :title="scope.row.publishTimeJp">
+                        {{scope.row.publishTimeJp}}
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column prop="publishTime" label="发布时间" align="center">
+                <template slot-scope="scope">
+                    <div :title="scope.row.publishTime">
+                        {{scope.row.publishTime}}
+                    </div>
+                </template>
+            </el-table-column>
             <el-table-column label="操作" align="center" width="180">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="showDetail(scope.row)" type="text" size="mini">查看</el-button>
@@ -317,9 +341,16 @@
             align-items: center;
         }
     }
-    /deep/ .cell {
+    /deep/ .cell{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+    }
+    /*/deep/ .cell {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-    }
+    }*/
+
 </style>
