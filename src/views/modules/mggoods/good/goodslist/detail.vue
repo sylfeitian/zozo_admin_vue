@@ -339,9 +339,15 @@
     .info {
         margin-left: 100px;
     }
-    /deep/ .cell {
-        white-space: nowrap;
+    .cell div{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
         overflow: hidden;
-        text-overflow: ellipsis;
     }
+    /*/deep/ .cell {*/
+    /*  white-space: nowrap;*/
+    /*  overflow: hidden;*/
+    /*  text-overflow: ellipsis;*/
+    /*}*/
 </style>

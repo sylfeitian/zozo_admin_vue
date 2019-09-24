@@ -23,7 +23,7 @@
                 <span>{{dataForm.nameJp}}</span>
             </el-form-item>
             <el-form-item label="商品名称：" class="item">
-                <el-input v-model="dataForm.name" placeholder="请输入" maxlength="60" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
+                <el-input v-model="dataForm.name" placeholder="请输入" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
                 <span style="color: #bebebe;">最多可输入60个文字</span>
             </el-form-item>
             <el-form-item label="品牌：" class="item">
@@ -80,13 +80,13 @@
             </el-form-item>
             <el-form-item label="原产地：" class="item">
                 <span>{{dataForm.madeInJp}}</span>
-                <el-input v-model="dataForm.madeIn" placeholder="请输入" maxlength="10" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
+                <el-input v-model="dataForm.madeIn" placeholder="请输入" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
                 <span style="color: #bebebe;">最多可输入10个文字</span>
             </el-form-item>
             <el-form-item label="材质：" class="item">
                 <span>{{dataForm.materialJp}}</span>
                 <el-input v-model="dataForm.material" placeholder="请输入" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
-                <!-- <span style="color: #bebebe;">最多可输入10个文字</span> -->
+                 <span style="color: #bebebe;">最多可输入10个文字</span>
             </el-form-item>
             <el-form-item label="上架状态：" class="item">
                 <template>
@@ -223,6 +223,50 @@
         //     "detdata",
         //     "data"
         // ],
+        watch:{
+            'dataForm.name':function(newV,oldV) {
+                var chineseCount = 0,characterCount = 0;
+                for(let i=0;i<newV.length;i++){
+                    if(/^[\u4e00-\u9fa5]*$/.test(newV[i])){ //汉字
+                        chineseCount=chineseCount+2;
+                    }else{ //字符
+                        characterCount=characterCount+1;
+                    }
+                    var count=chineseCount+characterCount;
+                    if(count>120){ //最多输入120个字符
+                        this.dataForm.name = newV.substr(0,(chineseCount/2+characterCount)-1)
+                    }
+                }
+            },
+            'dataForm.madeIn': function (newV, oldV) {
+                var chineseCount = 0,characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 20) { //最大输入20个字符
+                        this.dataForm.madeIn = newV.substr(0,(chineseCount/2+characterCount)-1)
+                    }
+                }
+            },
+            'dataForm.material': function (newV, oldV) {
+                var chineseCount = 0,characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 20) { //最大输入20个字符
+                        this.dataForm.material = newV.substr(0,(chineseCount/2+characterCount)-1)
+                    }
+                }
+            },
+        },
         methods: {
             init(row){
                 this.row = row;

@@ -232,7 +232,7 @@
 					}
 					var count = chineseCount + characterCount;
 					if (count > 8) { //输入字符大于8的时候过滤
-						this.dataForm.name = newV.substr(0,8)
+						this.dataForm.name = newV.substr(0,(chineseCount/2+characterCount)-1)
 					}
 				}
 			}

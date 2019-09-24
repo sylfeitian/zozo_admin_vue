@@ -147,7 +147,7 @@
                     }
                     var count = chineseCount + characterCount;
                     if (count > 12) { //输入字符大于12的时候过滤
-                        this.dataForm.styleName = newV.substr(0,12)
+                        this.dataForm.styleName = newV.substr(0,(chineseCount/2+characterCount)-1)
                     }
                 }
             }

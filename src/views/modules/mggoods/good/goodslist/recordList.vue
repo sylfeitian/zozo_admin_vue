@@ -15,7 +15,13 @@
             <el-table-column prop="eclpCode" label="ECLP编码"></el-table-column>
             <el-table-column prop="goodsCsIdJp" label="SKU编码"></el-table-column>
             <el-table-column prop="barcodes" label="商品条形码(UPC)"></el-table-column>
-            <el-table-column prop="goodsName" label="商品名称(中文)"></el-table-column>
+            <el-table-column prop="goodsName" label="商品名称(中文)">
+                <template slot-scope="scope">
+                    <div :title="scope.row.goodsName">
+                        {{scope.row.goodsName}}
+                    </div>
+                </template>
+            </el-table-column>
             <el-table-column prop="goodsNameGlo" label="商品英文名称"></el-table-column>
             <el-table-column prop="brandName" label="品牌"></el-table-column>
             <el-table-column prop="spe" label="规格型号"></el-table-column>
@@ -28,7 +34,13 @@
             <el-table-column prop="grossWeight" label="毛重(kg)"></el-table-column>
             <el-table-column prop="netWeight" label="净重(kg)"></el-table-column>
             <el-table-column prop="safeDays" label="保质期"></el-table-column>
-            <el-table-column prop="imageUrl" label="货物图片"></el-table-column>
+            <el-table-column prop="imageUrl" label="货物图片">
+                <template slot-scope="scope">
+                    <div :title="scope.row.imageUrl">
+                        {{scope.row.imageUrl}}
+                    </div>
+                </template>
+            </el-table-column>
             <el-table-column prop="shopStoreName" label="店铺名称"></el-table-column>
             <el-table-column prop="storeName" label="商家ID"></el-table-column>
             <el-table-column prop="storeContactInformation" label="商家联系方式"></el-table-column>
@@ -96,9 +108,16 @@
 </script>
 
 <style lang="scss" scoped>
-    /deep/ .cell {
+   /deep/ .cell{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+    }
+    /*/deep/ .cell {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-    }
+    }*/
+
 </style>

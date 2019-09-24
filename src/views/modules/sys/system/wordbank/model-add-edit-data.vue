@@ -85,7 +85,7 @@
                     }
                 var count=chineseCount+characterCount;
                     if(count>200){ //最大输入200字符
-                        this.dataForm.japaneseWord = newV.substr(0,200)
+                        this.dataForm.japaneseWord = newV.substr(0,(chineseCount/2+characterCount)-1)
                     }
                 }
             }

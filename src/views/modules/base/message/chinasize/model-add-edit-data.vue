@@ -68,7 +68,7 @@
                     }
                     var count = chineseCount + characterCount;
                     if (count > 20) { //输入字符大于20的时候过滤
-                        this.dataForm.name = newV.substr(0,20)
+                        this.dataForm.name = newV.substr(0,(chineseCount/2+characterCount)-1)
                     }
                 }
             }

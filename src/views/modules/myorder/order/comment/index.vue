@@ -116,7 +116,13 @@
           {{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}
         </template>
 	  	</el-table-column>      
-      <el-table-column prop="memberId" label="会员账号" align="center"></el-table-column>
+      <el-table-column prop="memberId" label="会员账号" align="center">
+          <template slot-scope="scope">
+              <div :title="scope.row.memberId">
+                  {{scope.row.memberId}}
+              </div>
+          </template>
+      </el-table-column>
       <el-table-column prop="orderSn" label="订单号" align="center" min-width="150"></el-table-column>
       <el-table-column prop="memberName" label="商品主图" align="center">
           <template slot-scope="scope">
@@ -124,7 +130,13 @@
           </template>
       </el-table-column>
       <el-table-column prop="goodsCsId" label="skuid" align="center" width="200"></el-table-column>
-      <el-table-column prop="goodsName" label="商品名称" align="center" ></el-table-column>
+      <el-table-column prop="goodsName" label="商品名称" align="center">
+          <template slot-scope="scope">
+              <div :title="scope.row.goodsName">
+                  {{scope.row.goodsName}}
+              </div>
+          </template>
+      </el-table-column>
       <el-table-column prop="" label="规格" align="center" ></el-table-column>
       <el-table-column prop="access " label="订单评价" align="center" >
           <template slot-scope="scope">
@@ -152,7 +164,13 @@
 
       <el-table-column prop="evaluateContent" label="评论内容" align="center"> </el-table-column>
 
-      <el-table-column prop="createDate" label="评论时间" align="center"> </el-table-column>
+      <el-table-column prop="createDate" label="评论时间" align="center">
+          <template slot-scope="scope">
+              <div :title="scope.row.createDate">
+                  {{scope.row.createDate}}
+              </div>
+          </template>
+      </el-table-column>
 
       <el-table-column label="操作" min-width="100" align="center" width="120">
         <template slot-scope="scope">
@@ -398,9 +416,16 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-    /deep/ .cell {
+    /deep/ .cell{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+    }
+    /*/deep/ .cell {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-    }
+    }*/
+
 </style>

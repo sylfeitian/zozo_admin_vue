@@ -49,7 +49,14 @@
       <el-table-column prop="memberCode" label="会员ID" align="center" width="170"></el-table-column>
       <el-table-column prop="memberName" label="会员账号" align="center"></el-table-column>
       <el-table-column prop="nickName" align="center" label="用户昵称" width="140"></el-table-column>
-      <el-table-column prop="createDate" align="center" label="注册时间" width="140"></el-table-column>
+      <el-table-column prop="createDate" align="center" label="注册时间" width="140">
+        <template slot-scope="scope">
+          <div :title="scope.row.createDate">
+            {{scope.row.createDate}}
+          </div>
+        </template>
+
+      </el-table-column>
       <el-table-column prop="point" align="center" label="会员成长值"></el-table-column>
       <el-table-column prop="consumeAmount" align="center" label="消费金额" width="170">
           <template slot-scope="scope">

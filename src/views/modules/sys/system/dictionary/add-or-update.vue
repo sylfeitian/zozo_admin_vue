@@ -65,7 +65,7 @@
                     }
                     var count=chineseCount+characterCount;
                     if(count>40){ //输入字符大于40的时候过滤
-                        this.dataForm.dictName = newV.substr(0,40)
+                        this.dataForm.dictName = newV.substr(0,(chineseCount/2+characterCount)-1)
                     }
                 }
             },
