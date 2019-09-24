@@ -67,10 +67,10 @@
         width="40%">
         <el-form :model="editDataForm" :rules="dataRule" ref="editDataForm" @keyup.enter.native="subActivity()" label-width="120px">
             <el-form-item label="帮助类型：" prop="sgName">
-                <el-input v-model="editDataForm.sgName" placeholder="请输入10字以内的名称" :maxlength="10"></el-input>
+                <el-input v-model="editDataForm.sgName" placeholder="请输入10字以内的名称"></el-input>
             </el-form-item>
             <el-form-item label="排序：" prop="sort">
-                <el-input v-model="editDataForm.sort" type="number" :maxlength="30" show-word-limit></el-input>
+                <el-input v-model="editDataForm.sort" type="number"></el-input>
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -126,7 +126,23 @@
                 }
             }
         },
-        created(){
+		watch: {
+			'editDataForm.sgName': function (newV, oldV) {
+				var chineseCount = 0, characterCount = 0;
+				for (let i = 0; i < newV.length; i++) {
+					if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+						chineseCount = chineseCount + 2;
+					} else { //字符
+						characterCount = characterCount + 1;
+					}
+					var count = chineseCount + characterCount;
+					if (count > 20) { //输入字符大于20的时候过滤
+						this.editDataForm.sgName = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
+					}
+				}
+			}
+			},
+			created(){
             this.demo();
         },
         methods: {

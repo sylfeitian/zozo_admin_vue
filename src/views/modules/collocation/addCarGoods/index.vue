@@ -3,10 +3,10 @@
     <Bread :breaddata="breaddata"></Bread>
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="商品ID：">
-            <el-input v-model="dataForm.goodsId" placeholder="请输入商品ID" clearable maxlength="30" ></el-input>
+            <el-input v-model="dataForm.goodsId" placeholder="请输入" clearable maxlength="30" ></el-input>
         </el-form-item>
         <el-form-item label="商品名称：">
-            <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
+            <el-input v-model="dataForm.goodsName" placeholder="请输入" clearable maxlength="300"></el-input>
         </el-form-item>
         <el-form-item>
             <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>
@@ -101,7 +101,7 @@
         width="60%">
         <el-form :inline="true" :model="goodsdataForm">
             <el-form-item label="商品名称：">
-                <el-input v-model="goodsdataForm.storeId" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
+                <el-input v-model="goodsdataForm.storeId" placeholder="商品名称/商品货号" clearable maxlength="300"></el-input>
             </el-form-item>
             <el-form-item label="选择分类：">
                 <el-cascader
@@ -128,6 +128,12 @@
                 prop="name"
                 label="商品名称"
                 width="240">
+                <template slot-scope="scope">
+                    <div :title="scope.row.name">
+                        {{scope.row.name}}
+                    </div>
+                </template>
+
             </el-table-column>
             <el-table-column
                 prop="idJp"
@@ -391,9 +397,16 @@
         width: 300px;
     }
 }
-/deep/ .cell {
+.cell div{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+/*/deep/ .cell {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
+}*/
+
 </style>
