@@ -105,7 +105,7 @@
             width="200">
 		    <template slot-scope="scope">
 		    	<el-button type="text" size="small" @click="addActivity(scope.row.id)">编辑</el-button>
-		    	<el-button class="artdanger" type="text" size="small"@click="deleteHandle(scope.row.id)">删除</el-button>
+		    	<el-button class="artdanger" type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
 		    </template>
 	  	</el-table-column>
 	</el-table>

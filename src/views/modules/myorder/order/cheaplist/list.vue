@@ -68,12 +68,12 @@
             </el-form-item>-->
         </el-form>
         <el-radio-group v-model="radio1" @change="agreeChange">
-            <el-radio-button label="all">全部订单</el-radio-button>
-            <el-radio-button label="waitpay">待支付</el-radio-button>
-            <el-radio-button label="waitshipped">待发货</el-radio-button>
-            <el-radio-button label="waitreceived">待收货</el-radio-button>
-            <el-radio-button label="complete">交易成功</el-radio-button>
-            <el-radio-button label="cancel">订单取消</el-radio-button>
+            <el-radio-button label="all">全部订单<span v-if="topNum.all && topNum.all!=0"> ({{topNum.all}}) </span></el-radio-button>
+            <el-radio-button label="waitpay">待支付<span v-if="topNum.waitpay && topNum.waitpay !=0">({{topNum.waitpay}})</span></el-radio-button> 
+            <el-radio-button label="waitshipped">待发货<span v-if="topNum.waitshipped && topNum.waitshipped !=0">({{topNum.waitshipped}})</span></el-radio-button>
+            <el-radio-button label="waitreceived">待收货<span v-if="topNum.waitreceived && topNum.waitreceived !=0">({{topNum.waitreceived}})</span></el-radio-button>
+            <el-radio-button label="complete">交易成功<span v-if="topNum.complete && topNum.complete !=0">({{topNum.complete}})</span></el-radio-button>
+            <el-radio-button label="cancel">订单取消<span v-if="topNum.cancel && topNum.cancel !=0">({{topNum.cancel}})</span></el-radio-button> 
         </el-radio-group>
         <el-table
                 width="100%"
@@ -164,7 +164,7 @@
 <script>
     import Bread from "@/components/bread";
     import { orderlists } from "@/api/url";
-    import { orderDetail, paymentList } from "@/api/api";
+    import { orderDetail, paymentList,orderListTop } from "@/api/api";
     import declareSth from '../modules/model-declare-sth.vue'
      import clearancFailure from '../modules/model-clearanc-failure.vue'
     import writeLogisticsInfo from '../modules/model-write-logistics-info.vue'
@@ -236,7 +236,15 @@
                 // ) : (
                 //     <el-tag type="success">交易完成</el-tag>
                 // );
-                // }
+                // },
+                topNum:{
+                    all:0,//全部订单数量 ,
+                    cancel: 0,//订单取消数量 ,
+                    complete:0, //交易成功完成 ,
+                    waitpay:0, //待付款数量 ,
+                    waitreceived:0, //待收货数量 ,
+                    waitshipped:0, ///待发货数量
+                }
             };
         },
         props: ["status"],
@@ -245,6 +253,7 @@
             // this.radio1 = this.status == undefined ? "" : this.status;
             this.dataForm.orderStatus = this.status == undefined ? "" : this.status;
             // this.getPaymentList();
+            this.getOrderListTop();
         },
         components: {
             Bread,
@@ -284,6 +293,22 @@
             //         }
             //     });
             // },
+            // 订单上部的数量
+            getOrderListTop(){
+                orderListTop().then((res)=>{
+                    console.log(res);
+                    if(res.code==200){
+                        Object.assign(this.topNum,res.data)
+                    }else{
+                        this.topNum.all = 0;   all:0,//全部订单数量 ,
+                        this.topNum.cancel = 0;//订单取消数量 ,
+                        this.topNum.complete = 0; //交易成功完成 ,
+                        this.topNum.waitpay = 0;//待付款数量 ,
+                        this.topNum.waitreceived = 0;//待收货数量 
+                        this.topNum.waitshipped = 0; ///待发货数量
+                    }
+                })
+            },
             //订单状态筛选
             agreeChange(val) {
                 // this.dataForm.paymentStatus = ""

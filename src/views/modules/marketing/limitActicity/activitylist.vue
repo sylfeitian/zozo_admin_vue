@@ -3,12 +3,12 @@
     <Bread :breaddata="breaddata"></Bread>
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="活动名称：">
-            <el-input v-model="dataForm.storeId" placeholder="请输入优惠券名称" clearable  maxlength="300" ></el-input>
+            <el-input v-model="dataForm.title" placeholder="请输入优惠券名称" clearable  maxlength="300" ></el-input>
         </el-form-item>
         <el-form-item  label="活动状态：">
-            <el-select v-model="dataForm.gradeId" clearable  placeholder="请选择">
+            <el-select v-model="dataForm.state" clearable  placeholder="请选择">
                 <el-option
-                    v-for="item in activitesstates"
+                    v-for="item in activitesstatesOption"
                     :key="item.id"
                     :label="item.name"
                     :value="item.id">
@@ -16,9 +16,9 @@
             </el-select>
         </el-form-item>
         <el-form-item  label="审核状态：">
-            <el-select v-model="dataForm.storeType" clearable  placeholder="请选择">
+            <el-select v-model="dataForm.auditState" clearable  placeholder="请选择">
                 <el-option
-                    v-for="item in storeTypes"
+                    v-for="item in auditStateOption"
                     :key="item.id"
                     :label="item.label"
                     :value="item.id">
@@ -65,32 +65,45 @@
             </template>
 		</el-table-column>
 		<el-table-column
-		    prop="id"
+		    prop="title"
 		    label="活动标题"
+            align="center"
 		    width="180">
 		</el-table-column>
 		<el-table-column
-		    prop="account"
+		    prop="startTime"
+            align="center"
 		    label="活动时间">
 		</el-table-column>
 		<el-table-column
-		    prop="gradeName"
+            align="center"
 		    label="审核状态">
+             <template slot-scope="scope">
+                <span v-if="scope.row.auditState==0">待审核</span>
+                <span v-else-if="scope.row.auditState==1">审核通过</span>
+                <span v-else-if="scope.row.auditState==2">审核未通过</span>
+            </template> 
 		</el-table-column>
 		<el-table-column
 		    prop="createDate"
+            align="center"
 		    label="活动状态"
-             width="180">
+            width="180">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.state ==0">未开始</span>
+                    <span v-else-if="scope.row.state ==1">进行中</span>
+                    <span v-else-if="scope.row.state ==2">已结束</span>
+                </template>   
 		</el-table-column>
 	    <el-table-column
-	   		prop="address"
+            align="center"
 	    	label="操作">
 		    <template slot-scope="scope">
 		    	<el-button type="text" size="small">审核</el-button>
 		    	<el-button type="text" size="small" @click="showDetail(scope.row.id)">查看商品</el-button>
-		    	<el-button type="text" size="small" @click="addAdit(scope.row.id)">添加商品</el-button>
-		    	<el-button type="text" size="small" @click="addActivity(scope.row.id)">编辑</el-button>
-		    	<el-button class="artdanger" type="text" size="small">删除</el-button>
+		    	<el-button type="text" size="small" @click="addAdit(scope.row)">添加商品</el-button>
+		    	<el-button type="text" size="small" @click="addActivity(scope.row)">编辑</el-button>
+		    	<el-button class="artdanger" type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
 		    </template>
 	  	</el-table-column>
 	</el-table>
@@ -105,86 +118,53 @@
 	    layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
 
-    <!-- 新增编辑活动弹框 -->
-    <el-dialog
-        :title="activiTitle"
-        :visible.sync="activiVisible"
-        :close-on-click-modal = "false"
-        :show-close = "false"
-        class="activiDialog"
-        width="40%">
-        <el-form :model="activiDataForm" :rules="dataRule" ref="activiDataForm" @keyup.enter.native="subActivity()" label-width="120px">
-            <el-form-item label="活动标题：" prop="sgName">
-                <el-input v-model="activiDataForm.sgName" placeholder="请输入50字以内的标题" :maxlength="50"></el-input>
-            </el-form-item>
-            <el-form-item label="开始时间：" prop="startTime">
-                <el-date-picker
-                    v-model="activiDataForm.startTime"
-                    type="datetime"
-                    value-format="yyyy-MM-dd"
-                    placeholder="选择开始时间">
-                </el-date-picker>
-            </el-form-item>
-            <el-form-item label="结束时间：" prop="endTime">
-                <el-date-picker
-                    v-model="activiDataForm.endTime"
-                    type="datetime"
-                    value-format="yyyy-MM-dd"
-                    placeholder="选择结束时间">
-                </el-date-picker>
-            </el-form-item>
-            <el-form-item label="活动限制：">
-                <el-checkbox-group v-model="activiDataForm.checkList">
-                    <el-checkbox :label="1">不可同时使用优惠券</el-checkbox>
-                    <el-checkbox :label="2">不可同时参加满减活动</el-checkbox>
-                </el-checkbox-group>
-            </el-form-item>
-        </el-form>
-        <span slot="footer" class="dialog-footer">
-            <el-button @click="noCheck('activiDataForm')">取 消</el-button>
-            <el-button type="primary" @click="subActivity('activiDataForm')" :loading="buttonStatus">确 定</el-button>
-        </span>
-    </el-dialog>
+    <modelAddOrEdit v-if="modelAddOrEditVisible" ref="modelAddOrEditCompon" @searchDataList="getDataList" ></modelAddOrEdit>
+    
   </div>
 </template>
 
 <script>
 import mixinViewModule from '@/mixins/view-module'
-import { businessPageUrl } from '@/api/url'
+import { limitActivityPage,deleteLimitActivity } from '@/api/url'
 import { storeGrade } from '@/api/api'
 import Bread from "@/components/bread";
+import modelAddOrEdit from "./modules/model-add-or-edit"
   
 export default {
   mixins: [mixinViewModule],
   data () {
     return {
       mixinViewModuleOptions: {
-          getDataListURL: businessPageUrl,
+          getDataListURL: limitActivityPage,
           getDataListIsPage: true,
           exportURL: '/admin-api/store/export',
-          deleteURL: '/admin-api/store',
+          deleteURL:deleteLimitActivity,
           deleteIsBatch: true,
-          // deleteIsBatchKey: 'id'
+          deleteIsBatchKey: 'id'
       },
+      modelAddOrEditVisible:false,
       buttonStatus:false,
-      activiVisible:false,
       activiTitle:'添加活动',
-      activiDataForm:{
-          sgName:'',
-          startTime:'',
-          endTime:'',
-          checkList:'0'
-      },
+      
       dataForm: {
-          gradeId:'',
-          storeType:'',
+        //   title:'',// 活动标题 ,
+        //   state:'',//0:未开始，1：进行中，2：已结束 ,
+        //   auditState :'',//审核状态：0未审核，1：审核通过，2审核未通过 ,
+        //   startTime:'',//活动开始时间   
+        //   endTime:'', // 活动结束时间
       },
-      storeTypes:[
-          {id: '',label: '待审核'},
+      auditStateOption:[
+          {id: '',label: '全部'},
+          {id: '0',label: '待审核'},
           {id: '1',label: '审核通过'},
           {id: '2',label: '审核不通过'}
       ],
-      activitesstates: [{ id: '', name: "全部" },{ id: 1, name: "未开始" },{ id: 2, name: "进行中" },{ id: 3, name: "已结束" },{ id: 4, name: "待审核" }],
+      activitesstatesOption: [
+          { id: '', name: "全部" },
+          { id: 1, name: "未开始" },
+          { id: 2, name: "进行中" },
+          { id: 3, name: "已结束" },
+        ],
       breaddata: ["营销管理", "限量活动"],
       valuetime:"",
       dataRule : {
@@ -201,7 +181,8 @@ export default {
     }
   },
   components:{
-  	Bread
+      Bread,
+      modelAddOrEdit
   },
   created(){
     this.demo();
@@ -217,27 +198,25 @@ export default {
         },
         //重置
         reset() {
-            this.dataForm = {};
+            this.dataForm.title = '';
+            this.dataForm.state = '';
+            this.dataForm.auditState = '';
+            this.dataForm.startTime = '';
+            this.dataForm.endTime = '';
+            this.valuetime = [];
+            this.page = 1;
             this.getDataList();
         },
         //回调跳到添加商品页面
-        addAdit(id){                    //id:为活动id
-        	this.$emit('addAditFun',id)//添加商品
+        addAdit(row){                    //id:为活动id
+        	this.$emit('addAditFun',row)//添加商品
         },
         //打开新增编辑活动弹框
-        addActivity(id){
-            this.activiVisible = true;
-            if(id){
-                this.activiTitle = '编辑活动';
-                this.getInfo(id);//判断是编辑情况下调详情方法
-            }else{
-                this.activiTitle = '添加活动';
-            }
-        },
-        //取消弹框
-        noCheck(formName){
-            this.$refs[formName].resetFields();
-            this.activiVisible = false;
+        addActivity(row){
+            this.modelAddOrEditVisible = true;
+            this.$nextTick(()=>{
+                this.$refs.modelAddOrEditCompon.init(row);
+            })
         },
         //提交新增编辑活动
         subActivity(formName){
@@ -247,11 +226,6 @@ export default {
                 }
             });
         },
-
-
-
-
-
 
         demo(){
         	function placeholderPic(){
@@ -265,7 +239,7 @@ export default {
         },
         //开始结束时间
         acttime(){
-            this.dataForm.strTime = this.valuetime[0];
+            this.dataForm.startTime = this.valuetime[0];
             this.dataForm.endTime = this.valuetime[1];
         },
         

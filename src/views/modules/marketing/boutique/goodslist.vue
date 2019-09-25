@@ -95,7 +95,7 @@
                     <el-input v-model="listdataForm.storeId"  placeholder="请输入商品货号" clearable></el-input>
                 </el-form-item>
                 <el-form-item label="选择分类：">
-                    <el-input v-model="listdataForm.storeId" placeholder="请输入商品名称" clearable></el-input>
+                    <el-input v-model="listdataForm.storeId" placeholder="请输入" clearable></el-input>
                 </el-form-item>
                 <el-form-item >
                     <el-button  class="btn" type="primary">搜索</el-button>

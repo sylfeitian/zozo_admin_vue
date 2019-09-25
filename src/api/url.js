@@ -395,11 +395,13 @@ export const deleteDict = `${base}/dict/delete`;
 // 词典列表
 export const dictList = `${base}/dict/list`;
 
-
-
-
-
-
+//限量活动管理-------------------------------------------------------------------------------------------------------------
+// 限量活动列表
+export const limitActivityPage = `${base}/limit/activity/page`;
+// 限量活动删除
+export const deleteLimitActivity = `${base}/limit/activity`;
+// 查询活动添加商品分页列表
+export const limitActivityGoodsList = `${base}/limit/activity/goods/list`;
 
 //异常日志-------------------------------------------------------------------------------------------------------------
 // 列表

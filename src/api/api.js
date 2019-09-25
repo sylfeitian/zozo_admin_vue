@@ -396,6 +396,9 @@ export const orderRedeclare = params => { return http.post(`${base}/order/redecl
 export const clearCustomFail = params => { return http.post(`${base}/order/${params.id}/clear/custom/fail`, params).then(res => res.data); }
 // 填写物流信息
 export const orderLogistics = params => { return http.post(`${base}/order/logistics?orderId=${params.orderId}&companyId=${params.companyId}&logisticsSn=${params.logisticsSn}`, params).then(res => res.data); }
+// 订单列表顶部头信息
+export const orderListTop = params => { return http.get(`${base}/order/list/top`).then(res => res.data); }
+
 
 // 物流公司--------------------------------------------------------------------------------------------------------------------
 export const logisticsCompany = params => { return http.get(`${base}/logistics/company/all`).then(res => res.data); }
@@ -937,6 +940,19 @@ export const stopActivity = params => { return http.put(`${base}/activity/coupon
 export const updateActivity = params => { return http.put(`${base}/activity/coupon/update`, params).then(res => res.data); };
 // 优惠券活动详情
 export const backScanActivity = params => { return http.get(`${base}/activity/coupon/${params.id}`, params).then(res => res.data); };
+
+
+// 限量活动管理 ----------------------------------------------------------------------------------------------------------
+// 新增
+export const addLimitActivity = params => { return http.post(`${base}/limit/activity`, params).then(res => res.data); };
+// 编辑
+export const editLimitActivity = params => { return http.put(`${base}/limit/activity`, params).then(res => res.data); };
+// 编辑回显限量活动
+export const backScanActivityDetail = params => { return http.get(`${base}/limit/activity/detail/${params.id}`, params).then(res => res.data); };
+
+// 活动选择添加商品sku列表查询
+export const limitActivitySkuChoice = params => { return http.get(`${base}/limit/activity/sku/choice`, params).then(res => res.data); };
+
 
 
 //Q&A----------------------------------------------------------------------------------------------------------
