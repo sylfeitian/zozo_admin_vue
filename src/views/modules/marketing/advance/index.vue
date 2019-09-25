@@ -3,9 +3,9 @@
       <!-- 列表 -->
       <activitylist v-if='showStatus&&!detailStatus'  @addAditFun='addAditFun' @showDetail='showDetail'></activitylist>
       <!-- 添加商品 -->
-      <addgoods v-if='!showStatus&&!detailStatus' @addGoodsActivity="addGoodsActivity" @showDetail='showDetail' :activityId="activityId"></addgoods>
+      <addgoods v-if='!showStatus&&!detailStatus' ref="addGoodsCompon" @addGoodsActivity="addGoodsActivity" @showDetail='showDetail' :activityId="activityId"></addgoods>
       <!-- 查看 -->
-      <detailgoods v-if="detailStatus&&!showStatus" @addAditFun='addAditFun' @detailno="detailno" :activityId="activityId"></detailgoods>
+      <detailgoods v-if="detailStatus&&!showStatus" ref="detailGoodsCompon" @addAditFun='addAditFun' @detailno="detailno" :activityId="activityId"></detailgoods>
 
   </div>
 </template>
@@ -27,20 +27,26 @@ export default {
   	activitylist,addgoods,detailgoods
   },
   methods: {
-      addAditFun(id){
-        console.log('??????',id)
+      addAditFun(row){
+       console.log('??????',row)
         this.showStatus = false;
         this.detailStatus = false;
-        this.activityId = id;
+        // this.activityId = row.id;
+        this.$nextTick(()=>{
+          this.$refs.addGoodsCompon.init(row);
+        })
       },
       detailno(){
         this.detailStatus = false;
         this.showStatus = true;
       },
-      showDetail(id){
+      showDetail(row){
         this.detailStatus = true;
         this.showStatus = false;
-        this.activityId = id
+        // this.activityId = id
+        this.$nextTick(()=>{
+          this.$refs.detailGoodsCompon.init(row);
+        })
       },
       addGoodsActivity(){
           this.showStatus = true;

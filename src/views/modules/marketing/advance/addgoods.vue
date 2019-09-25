@@ -3,16 +3,27 @@
     <Bread :breaddata="breaddata" :index = "'1'" @changePage = "changePage"></Bread>
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="商品名称：">
-            <el-input v-model="dataForm.storeId" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
+            <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
+        </el-form-item>
+        <el-form-item label="选择分类：">
+            <!-- <el-input v-model="dataForm.categoryId" placeholder="请输入spu编号" clearable></el-input> -->
+            <el-cascader
+                        :options="selectCategoryOption"
+                        v-model="classList"
+                        change-on-select
+                        :clearable="true"
+                        :props="props"
+                        @change="handleChange">
+            </el-cascader>
         </el-form-item>
         <el-form-item label="商品货号：">
-            <el-input v-model="dataForm.storeId" placeholder="请输入spu编号" clearable></el-input>
+            <el-input v-model="dataForm.goodsId" placeholder="请输入spu编号" clearable></el-input>
         </el-form-item>
          <el-form-item label="店铺名称：">
-            <el-input v-model="dataForm.storeId" placeholder="请输入店铺名称" clearable></el-input>
+            <el-input v-model="dataForm.storeName" placeholder="请输入店铺名称" clearable></el-input>
         </el-form-item>
          <el-form-item label="品牌名称：">
-            <el-input v-model="dataForm.storeId" placeholder="请输入品牌名称" clearable></el-input>
+            <el-input v-model="dataForm.brandName" placeholder="请输入品牌名称" clearable></el-input>
         </el-form-item>
         <el-form-item>
             <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
@@ -20,7 +31,7 @@
         </el-form-item>
         <br />
         <el-form-item>
-            <el-button type="primary" @click="showDetail(activityId)">查看商品</el-button>
+            <el-button type="primary" @click="showDetail()">查看商品</el-button>
             <!-- <el-button type="primary"   @click="editGoods('asassasasasasa')">修改</el-button> -->
         </el-form-item>
     </el-form>
@@ -42,35 +53,48 @@
 		<el-table-column
 		    prop="id"
 		    label="商品id"
+            align="center"
 		    width="180">
 		</el-table-column>
 		<el-table-column
-		    prop="storeName"
+		    prop="name"
 		    label="商品名称">
 		</el-table-column>
 		<el-table-column
-		    prop="account"
+		    prop="sellPrice"
+            align="center"
 		    label="销售价格">
+            <template slot-scope="scope">
+		    	<span>￥{{scope.row.sellPrice?scope.row.sellPrice:'0.00'}}</span>
+		    </template>
 		</el-table-column>
 		<el-table-column
-		    prop="gradeName"
+		    prop="goodsTypeName"
+            align="center"
 		    label="所属分类">
 		</el-table-column>
 		<el-table-column
-		    prop="createDate"
+		    prop="storeName"
+            align="center"
 		    label="所属店铺"
              width="180">
 		</el-table-column>
         <el-table-column
-		    prop="creator"
+		    prop="brandName"
+            align="center"
 		    label="品牌">
 		</el-table-column>
 	    <el-table-column
-	   		prop="address"
+            align="center"
 	    	label="操作">
 		    <template slot-scope="scope">
-		    	<el-button type="text" size="small">取消选择</el-button>
-		    	<el-button type="text" size="small" @click="editGoods(scope.row.id)">修改</el-button>
+                <div v-if="scope.row.activityState ==0">
+                    <el-button  v-if="scope.row.selfActivityState==1" type="text" size="small" @click="chooseFn(scope.row)" >取消选择</el-button>
+                    <el-button v-else type="text" size="small" @click="chooseFn(scope.row)">选择</el-button>
+		        	<el-button type="text" size="small" @click="editGoodsSku(scope.row)">修改</el-button>
+                </div>
+                <span v-else>与其他活动冲突</span>
+		    	
 		    </template>
 	  	</el-table-column>
 	</el-table>
@@ -85,142 +109,160 @@
 	    layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
 
-
-
-    <!-- 修改弹框 -->
-    <el-dialog
-        :visible.sync="editVisible"
-        :close-on-click-modal = "false"
-        :show-close = "false"
-        class="editDialog"
-        width="70%">
-        <div class="goodsPresent">
-            <img src="@/assets/img/avatar.png" alt="" />
-            <div class="goodsPresentModle">
-                <div class="goodsTitle">施华洛初恋珍珠耳环</div>
-                <div class="goodsmoney">￥ {{moneyNum}}</div>
-            </div>
-        </div>
-        <!-- scope.$index+1+(parseInt(page)-1)* parseInt(limit) -->
-        <el-table
-            :data="dataList"
-            v-loading="dataListLoading"
-            border
-            style="width: 100%">
-            <el-table-column
-                prop="id"
-                label="skuID"
-                width="180">
-            </el-table-column>
-            <el-table-column
-                prop="storeName"
-                label="规格">
-            </el-table-column>
-            <el-table-column
-                label="活动库存">
-                <template slot-scope="scope">
-                        <el-input v-model="kucun" :maxlength="6" type="number"></el-input>
-                </template>
-            </el-table-column>
-            <el-table-column
-                prop="gradeName"
-                label="日本限购数量">
-            </el-table-column>
-            <el-table-column
-                prop="createDate"
-                label="每人限购"
-                width="180">
-                <template slot-scope="scope">
-                        <el-input v-model="kucun" :maxlength="6" type="number"></el-input>
-                </template>
-            </el-table-column>
-            <el-table-column
-                prop="address"
-                label="操作">
-                <template slot-scope="scope">
-                    <el-button type="text" size="small">适用于全部规格</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
-        <span slot="footer" class="dialog-footer">
-            <el-button @click="noCheck('editDataForm')">取 消</el-button>
-            <el-button type="primary" @click="subEdit('editDataForm')" :loading="buttonStatus">确 定</el-button>
-        </span>
-    </el-dialog>
+    <editGoodsSku v-if="modelEditSkuVisible" ref="editGoodsSkuCompon"></editGoodsSku>
   </div>
 </template>
 
 <script>
     import mixinViewModule from '@/mixins/view-module'
-    import { businessPageUrl } from '@/api/url'
-    import { storeGrade } from '@/api/api'
+    import { limitActivityGoodsList } from '@/api/url'
+    import { storeGrade,getdatacategory,limitActivitySkuChoice} from '@/api/api'
     import Bread from "@/components/bread";
+    import editGoodsSku from "./modules/model-eidt-sku.vue"
 
     export default {
         mixins: [mixinViewModule],
         props:['activityId'],
-        components:{ Bread},
+        components:{ 
+            Bread,
+            editGoodsSku
+        },
         data () {
             return {
                 mixinViewModuleOptions: {
-                    getDataListURL: businessPageUrl,
+                    getDataListURL: limitActivityGoodsList,
+                    activatedIsNeed:false,
                     getDataListIsPage: true,
                     exportURL: '/admin-api/store/export',
                     deleteURL: '/admin-api/store',
                     deleteIsBatch: true,
                 },
-                dataForm: {},
+                dataForm: {
+                    goodsName:'',
+                    goodsId:'',
+                    activityId:'',//活动ID
+                    categoryId:'',//分类ID
+                    storeName:'',
+                    brandName:'',
+                },
                 breaddata: ["营销管理", "预售活动","添加商品"],
-                editVisible:false,//弹框状态
-                buttonStatus:false,
-                moneyNum:99.9,
-                kucun:'',
+                selectCategoryOption: [],//中国分类id
+                classList:[],
+                props: {
+                    label:'name',
+                    value: 'id',
+                    children:'list'
+                },
+                modelEditSkuVisible:false,
+                row:'',
             }
         },
         created(){
-            console.log('活动id',this.activityId)
-            this.demo();
         },
         methods: {
+                init(row){
+                    this.row = row;
+                    console.log(row);
+                    this.dataForm.activityId = this.row.id;
+                    this.getData();
+                    this.getDatacategoryFn();
+                },
+                getData(){
+                    this.page =1;
+                    this.getDataList();
+                },
+                getDatacategoryFn(){
+                    //获取中国分类
+                    getdatacategory().then((res)=>{
+                        if(res.code == 200){
+                            console.log(res);
+                            this.selectCategoryOption = res.data;
+                            this.selectCategoryOption.forEach((item,index)=>{
+                                // item.label = item.name
+                                // item.value = item.id
+                                item.list && item.list.forEach((item2,index2)=>{
+                                    // item2.label = item2.name
+                                    // item2.value = item2.id
+                                    item2.list="";
+                                })
+                            })
+                        }else{
+                            this.$message(res.msg);
+                        }
+                    }).catch(()=>{
+                        this.$message("服务器错误");
+                    })
+                },
+                 // 切换中国分类
+                handleChange(){
+                    if(this.classList.length!=0){
+                        this.dataForm.categoryId = this.classList[this.classList.length-1]
+                    }else{
+                    this.dataForm.categoryId = "";//分类id
+
+                    }
+                    console.log(this.dataFormShow.categoryId)
+                },
                 //回调跳转查看商品页面
-                showDetail(id){
-                    this.$emit("showDetail",id);
+                showDetail(){
+                    this.$emit("showDetail",this.row);
                     // this.$router.push({'name': 'marketing-coupon',})
                 },
                 //重置
                 reset() {
-                    this.dataForm = {};
-                    this.getDataList();
+                    this.dataForm.goodsName = ""
+                    this.dataForm.goodsId = ""
+                    this.dataForm.activityId = ""
+                    this.dataForm.categoryId = ""
+                    this.dataForm.storeName = ""
+                    this.dataForm.brandName = ""
+                    this.classList = ""
+                    this.getData();
                 },
                 //回调返回列表
                 changePage(){
                     this.$emit('addGoodsActivity')
                 },
+                // 选择或取消选择
+                chooseFn(row){
+                    alert("没找到接口");
+                    // let that = this;
+                    // if(row.selfActivityState==0){
+                    //     msgContent="是否确认选择"
+                    // }else{
+                    //        msgContent="是否确定取消选择"
+                    // }
+                    // this.$confirm(msgContent, "提示", {
+                    //     confirmButtonText: "确定",
+                    //     cancelButtonText:"取消",
+                    //     type: 'warning'
+                    // }).then(() => {
+                    //     var obj = {
+                    //         params:{
+                    //             goodsId:123,//商品spuid
+                    //             activityId:that.row.id,//活动id
+                    //             activityType:12,//活动类型 0秒杀 1限量 2预售
+                    //         }
+                    //     }
+                    //     limitActivitySkuChoice(obj).then((res)=>{
+
+                    //     })
+
+                    // }).catch(() => { 
+                    //  })
+                },
                 //弹出修改弹框
-                editGoods(id){
-                    this.editVisible = true;
+                editGoodsSku(row){
+                    this.modelEditSkuVisible = true;
+                    this.$nextTick(()=>{
+                        this.$refs.editGoodsSkuCompon.init(this.row,row);
+                    })
                 },
                 noCheck(){
                     this.editVisible = false;
                 },
                 subEdit(){
                     this.editVisible = false;
-                },
-
-
-
-
-
-
-                demo(){
-                    function placeholderPic(){
-                                var w = document.documentElement.offsetWidth;
-                                document.documentElement.style.fontSize=w/20+'px';
-                            }
-                                placeholderPic();
-                            window.onresize=function(){
-                                placeholderPic();
-                            }
                 },
         }
     };

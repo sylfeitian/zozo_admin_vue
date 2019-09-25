@@ -99,11 +99,12 @@
             align="center"
 	    	label="操作">
 		    <template slot-scope="scope">
-		    	<el-button type="text" size="small">审核</el-button>
+		    	<el-button type="text" size="small" @click="exammineActivity(scope.row)" v-if="scope.row.auditState==0">审核</el-button>
+                <el-button type="text" size="small" @click="stopActivity(scope.row)" v-if="scope.row.state ==1">停止</el-button>
 		    	<el-button type="text" size="small" @click="showDetail(scope.row)">查看商品</el-button>
-		    	<el-button type="text" size="small" @click="addAdit(scope.row)">添加商品</el-button>
-		    	<el-button type="text" size="small" @click="addActivity(scope.row)">编辑</el-button>
-		    	<el-button class="artdanger" type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+		    	<el-button type="text" size="small" @click="addAdit(scope.row)" v-if="scope.row.state ==0">添加商品</el-button>
+		    	<el-button type="text" size="small" @click="addActivity(scope.row)" v-if="scope.row.state ==0">编辑</el-button>
+		    	<el-button class="artdanger" type="text" size="small" @click="deleteHandle(scope.row.id)" v-if="scope.row.auditState==2 && scope.row.state ==0">删除</el-button>
 		    </template>
 	  	</el-table-column>
 	</el-table>
@@ -118,7 +119,12 @@
 	    layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
 
+    <!-- 添加或者编辑 -->
     <modelAddOrEdit v-if="modelAddOrEditVisible" ref="modelAddOrEditCompon" @searchDataList="getDataList" ></modelAddOrEdit>
+    <!-- 审核 -->
+    <modelExammine v-if="modelExammineVisible" ref="modelExammineCompon" @searchDataList="getDataList" ></modelExammine>
+    <!-- 停止 -->
+    <modelStop v-if="modelStopVisible" ref="modelStopCompon" @searchDataList="getDataList" ></modelStop>
     
   </div>
 </template>
@@ -129,6 +135,8 @@ import { limitActivityPage,deleteLimitActivity } from '@/api/url'
 import { storeGrade } from '@/api/api'
 import Bread from "@/components/bread";
 import modelAddOrEdit from "./modules/model-add-or-edit"
+import modelExammine from "./modules/model-exammine"
+import modelStop from "./modules/model-stop"
   
 export default {
   mixins: [mixinViewModule],
@@ -143,6 +151,8 @@ export default {
           deleteIsBatchKey: 'id'
       },
       modelAddOrEditVisible:false,
+      modelExammineVisible:false,
+      modelStopVisible:false,
       buttonStatus:false,
       activiTitle:'添加活动',
       
@@ -182,7 +192,9 @@ export default {
   },
   components:{
       Bread,
-      modelAddOrEdit
+      modelAddOrEdit,
+      modelExammine,
+      modelStop
   },
   created(){
     this.demo();
@@ -216,6 +228,20 @@ export default {
             this.modelAddOrEditVisible = true;
             this.$nextTick(()=>{
                 this.$refs.modelAddOrEditCompon.init(row);
+            })
+        },
+        // 审核活动
+        exammineActivity(row){
+            this.modelExammineVisible = true;  
+            this.$nextTick(()=>{
+                this.$refs.modelExammineCompon.init(row);
+            })
+        },
+        // 停止活动
+        stopActivity(row){
+            this.modelStopVisible = true;
+             this.$nextTick(()=>{
+                this.$refs.modelStopCompon.init(row);
             })
         },
         //提交新增编辑活动

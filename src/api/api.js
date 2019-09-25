@@ -948,12 +948,40 @@ export const addLimitActivity = params => { return http.post(`${base}/limit/acti
 // 编辑
 export const editLimitActivity = params => { return http.put(`${base}/limit/activity`, params).then(res => res.data); };
 // 编辑回显限量活动
-export const backScanActivityDetail = params => { return http.get(`${base}/limit/activity/detail/${params.id}`, params).then(res => res.data); };
+export const backScanLimitActivityDetail = params => { return http.get(`${base}/limit/activity/detail/${params.id}`, params).then(res => res.data); };
+// 增加(编辑)限量活动商品
+export const editLimitActivityGoods = params => { return http.post(`${base}/limit/activity/goods`, params).then(res => res.data); };
+// 删除限量活动商品
+export const deleteLimitActivityGoods = params => { return http.delete(`${base}/limit/activity/goods`, params).then(res => res.data); };
+
 // 活动选择添加商品sku列表查询
 export const limitActivitySkuChoice = params => { return http.get(`${base}/limit/activity/sku/choice`, params).then(res => res.data); };
-// 增加限量活动商品
-export const editLimitActivityGoods = params => { return http.post(`${base}/limit/activity/goods`, params).then(res => res.data); };
+// 删除限量活动商品规格
+export const deleteLimitActivityGoodscs = params => { return http.delete(`${base}/limit/activity/goodscs`, params).then(res => res.data); };
+// 修改限量活动商品排序
+export const limitActivityGoodsSorts = params => { return http.put(`${base}/limit/activity/goods/sort`, params).then(res => res.data); };
+// 审核限量活动
+export const limitActivityAudit = params => { return http.put(`${base}/limit/activity/audit`, params).then(res => res.data); };
+// 停止限量活动
+export const limitActivityStop = params => { return http.put(`${base}/limit/activity/stop?id=${params.id}`, params).then(res => res.data); };
 
+// 预售活动接口 ----------------------------------------------------------------------------------------------------------
+// 保存预售活动
+export const addPresellActivity = params => { return http.post(`${base}/presell/activity`, params).then(res => res.data); };
+// 修改预售活动
+export const editPresellActivity = params => { return http.put(`${base}/presell/activity`, params).then(res => res.data); };
+// 编辑回显预售活动
+export const backScanPresellActivityDetail = params => { return http.get(`${base}/presell/activity/detail/${params.id}`, params).then(res => res.data); };
+// 增加(编辑)限量活动商品
+export const editPresellActivityGoods = params => { return http.post(`${base}/presell/activity/goods`, params).then(res => res.data); };
+// 删除限量活动商品
+export const deletePresellActivityGoods = params => { return http.delete(`${base}/presell/activity/goods`, params).then(res => res.data); };
+
+
+// 审核限量活动
+export const presellActivityAudit = params => { return http.put(`${base}/presell/activity/audit`, params).then(res => res.data); };
+// 停止限量活动
+export const presellActivityStop = params => { return http.put(`${base}/presell/activity/stop?id=${params.id}`, params).then(res => res.data); };
 
 
 //Q&A----------------------------------------------------------------------------------------------------------

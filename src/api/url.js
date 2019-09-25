@@ -402,10 +402,19 @@ export const limitActivityPage = `${base}/limit/activity/page`;
 export const deleteLimitActivity = `${base}/limit/activity`;
 // 查询活动添加商品分页列表
 export const limitActivityGoodsList = `${base}/limit/activity/goods/list`;
+
 // 查询限量/预售活动关联的商品列表
 export const limitActivityReleGoodsList = `${base}/limit/activity/rele/goods/list`;
+// // 删除限量活动商品
+// export const deleteLimitActivityGoods = `${base}/limit/activity/goods`;
+// 删除限量活动商品规格
+// export const deleteLimitActivityGoodscs = `${base}/limit/activity/goodscs`;
 
-
+//预售活动接口 -------------------------------------------------------------------------------------------------------------
+// 分页
+export const presellActivityPage = `${base}/presell/activity/page`;
+// 删除预售活动
+export const deletePresellActivity = `${base}/presell/activity`;
 
 
 //异常日志-------------------------------------------------------------------------------------------------------------

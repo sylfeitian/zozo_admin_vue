@@ -3,16 +3,16 @@
     <Bread :breaddata="breaddata" :index = "'1'" @changePage = "changePage"></Bread>
     <el-form :inline="true" :model="dataForm">
         <el-form-item style="float: right;">
-            <el-button>批量删除</el-button>
-            <el-button type="primary">保存排序</el-button>
-            <el-button type="primary" @click="addGoods(activityId)">添加商品</el-button>
+            <el-button @click="deleteRow()">批量删除</el-button>
+            <el-button type="primary" @click="saveSort">保存排序</el-button>
+            <el-button type="primary" @click="addGoods()">添加商品</el-button>
             <!-- <el-button type="primary"   @click="lookShow('asassasasasasa')">修改</el-button> -->
         </el-form-item>
     </el-form>
     <el-table
 	  :data="dataList"
       v-loading="dataListLoading"
-      @selection-change="dataListSelectionChangeHandle"
+       @selection-change="handleSelectionChange"
       border
 	  style="width: 100%">
         <el-table-column 
@@ -23,44 +23,61 @@
         </el-table-column>
 		
         <el-table-column
-		    prop="storeName"
+		    prop="sort"
+            align="center"
+            min-width="180">
 		    label="排序">
+             <template slot-scope="scope">
+                <el-input-number v-model="scope.row.sort" :step="1" :min="0" :max="255" ></el-input-number>
+            </template>
 		</el-table-column>
         <el-table-column
-		    prop="id"
+		    prop="goodsId"
+            align="center"
 		    label="商品id"
 		    width="180">
 		</el-table-column>
 		<el-table-column
-		    prop="storeName"
+		    prop="name"
 		    label="商品名称">
 		</el-table-column>
         <el-table-column
-		    prop="createDate"
+		    prop="isAllCheck"
+            align="center"
 		    label="规格">
+            <template slot-scope="scope">
+                <el-button  v-if="scope.row.isAllCheck==0" type="text" size="small" @click="lookShow(scope.row)">部分规格</el-button>
+                <el-button v-else-if="scope.row.isAllCheck==1" type="text" size="small" @click="lookShow(scope.row)">部分规格</el-button>
+		    </template>
 		</el-table-column>
 		<el-table-column
-		    prop="gradeName"
+		    prop="sellPrice"
+            align="center"
 		    label="销售价格">
+            <template slot-scope="scope">
+		    	<span>￥{{scope.row.sellPrice?scope.row.sellPrice:'0.00'}}</span>
+		    </template>
 		</el-table-column>
         <el-table-column
-            prop="asassa"
+            prop="activityQuantity"
+            align="center"
             label="活动库存">
         </el-table-column>
         <el-table-column
-		    prop="creator"
+		    prop="cartLimit"
+             align="center"
 		    label="日本限购数量">
 		</el-table-column>
         <el-table-column
-            prop="createDate"
+            prop="personLimit"
+             align="center"
             label="每人限购">
         </el-table-column>
 	    <el-table-column
-	   		prop="address"
+            align="center"
 	    	label="操作">
 		    <template slot-scope="scope">
-		    	<el-button type="text" size="small" @click="lookShow(scope.row.id)">查看</el-button>
-		    	<el-button type="text" size="small">删除</el-button>
+		    	<el-button type="text" size="small" @click="deleteRow(scope.row)">删除</el-button>
 		    </template>
 	  	</el-table-column>
 	</el-table>
@@ -76,89 +93,130 @@
     </el-pagination>
 
 
-
     <!-- 查看弹框 -->
-    <el-dialog
-        :visible.sync="lookVisible"
-        class="editDialog"
-        width="50%">
-            <div class="goodsPresent">
-                <img src="@/assets/img/avatar.png" alt="" />
-                <div class="goodsPresentModle">
-                    <div class="goodsTitle">施华洛初恋珍珠耳环</div>
-                    <div class="goodsmoney">￥ {{moneyNum}}</div>
-                </div>
-            </div>
-           <!-- scope.$index+1+(parseInt(page)-1)* parseInt(limit) -->
-            <el-table
-                :data="dataList"
-                v-loading="dataListLoading"
-                border
-                style="width: 100%">
-                <el-table-column
-                    prop="id"
-                    label="skuID"
-                    width="180">
-                </el-table-column>
-                <el-table-column
-                    prop="storeName"
-                    label="规格">
-                </el-table-column>
-                <el-table-column
-                    prop="gradeName"
-                    label="销售价格">
-                </el-table-column>
-                <el-table-column
-                    prop="storeName"
-                    label="活动库存">
-                </el-table-column>
-                <el-table-column
-                    prop="gradeName"
-                    label="日本限购数量">
-                </el-table-column>
-                <el-table-column
-                    prop="createDate"
-                    label="每人限购">
-                </el-table-column>
-            </el-table>
-    </el-dialog>
+    <showGoodsSku v-if="modelShowSkuVisible" ref="showGoodsSkuCompon"></showGoodsSku>
   </div>
 </template>
 
 <script>
     import mixinViewModule from '@/mixins/view-module'
-    import { businessPageUrl } from '@/api/url'
-    import { storeGrade } from '@/api/api'
+    import { limitActivityReleGoodsList} from '@/api/url'
+    import { deletePresellActivityGoods,limitActivityGoodsSorts } from '@/api/api'
     import Bread from "@/components/bread";
+    import showGoodsSku from "./modules/model-show-sku.vue"
+    
 
     export default {
         mixins: [mixinViewModule],
-        props:['activityId'],
-        components:{ Bread},
+        components:{ 
+            Bread,
+            showGoodsSku
+        },
         data () {
             return {
+                modelShowSkuVisible:false,
                 mixinViewModuleOptions: {
-                    getDataListURL: businessPageUrl,
+                    getDataListURL: limitActivityReleGoodsList,
+                    activatedIsNeed:false,
                     getDataListIsPage: true,
                     exportURL: '/admin-api/store/export',
-                    deleteURL: '/admin-api/store',
+                    deleteURL: "?????",
+                    deleteIsBatchKey: 'id', //goodsId
                     deleteIsBatch: true,
                 },
-                dataForm: {},
+                dataForm: {
+                    activityId:"",
+                },
+                multipleSelection:[],
                 breaddata: ["营销管理", "预售活动","查看商品"],
-                lookVisible:false,//弹框状态
                 buttonStatus:false,
                 moneyNum:99.9,
             }
         },
         created(){
-            console.log('活动id',this.activityId)
-            this.demo();
         },
         methods: {
+                init(row){
+                    this.row = row;
+                    console.log(row);
+                    this.dataForm.activityId = this.row.id;
+                    this.getData();
+                    // this.getDatacategoryFn();
+                },
+                getData(){
+                    this.page =1;
+                    this.getDataList();
+                },
                 //回调跳转添加商品页面
-                addGoods(id){
-                    this.$emit("addAditFun",id);
+                addGoods(){
+                    this.$emit("addAditFun",this.row);
+                },
+                lookShow(row){
+                    this.modelShowSkuVisible = true;
+                    this.$nextTick(()=>{
+                        this.$refs.showGoodsSkuCompon.init(this.row,row);
+                    })
+                },
+                // 表格前端的checkbox
+                handleSelectionChange(val) {
+                    this.multipleSelection = val;
+                    console.log(this.multipleSelection);
+                },
+                // 保存排序
+                saveSort(){
+                    let dataArr = [];
+                    this.dataList.forEach((item,index)=>{
+                        dataArr.push({
+                            id:item.goodsId,//活动商品id ,
+                            sort:item.sort,// 排序
+                        })
+                    })
+                    var obj = dataArr
+                    limitActivityGoodsSorts(obj).then((res)=>{
+                             if(res.code==200){
+                                this.$message.success(res.msg);
+                                // that.getDataList();
+                            }else{
+                                this.$message.error(res.msg);
+                            }
+                    })
+                },
+                // 单个删除和批量删除
+                deleteRow(row){
+                    if(!row && this.multipleSelection.length==0){
+                        this.$message.warning("至少选择一个商品")
+                        return;
+                    }
+                    let that = this;
+                    this.$confirm("是否确认删除?", "提示", {
+                        confirmButtonText: "确定",
+                        cancelButtonText:"取消",
+                        type: 'warning'
+                    }).then(() => {
+                        let goodsIdList = [];
+                        if(row){//单个删除
+                            goodsIdList = [row.goodsId]
+                        }else{//批量删除
+                            that.multipleSelection.forEach((item,index)=>{
+                                goodsIdList.push(item.goodsId);
+                            })
+                        }
+                        var obj = {
+                            data:{
+                                "activityId": that.row.id,//  活动id ,
+                                "goodsIdList": goodsIdList,//商品spuid
+                            }
+                        }
+                        deletePresellActivityGoods(obj).then((res)=>{
+                            if(res.code==200){
+                                that.$message.success(res.msg);
+                                that.getDataList();
+                            }else{
+                                that.$message.error(res.msg);
+                            }
+                        })
+                    }).catch(() => { 
+                    })
                 },
                 //重置
                 reset() {
@@ -168,19 +226,6 @@
                 //回调返回列表
                 changePage(){
                     this.$emit('detailno')
-                },
-                lookShow(id){
-                    this.lookVisible = true;
-                },
-                demo(){
-                    function placeholderPic(){
-                                var w = document.documentElement.offsetWidth;
-                                document.documentElement.style.fontSize=w/20+'px';
-                            }
-                                placeholderPic();
-                            window.onresize=function(){
-                                placeholderPic();
-                            }
                 },
         }
     };
