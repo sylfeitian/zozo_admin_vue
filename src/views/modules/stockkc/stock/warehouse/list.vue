@@ -7,12 +7,14 @@
             </el-form-item>
             <el-form-item label="仓库种类：">
                 <el-select v-model="dataForm.type" placeholder="请选择">
+                    <el-option label="全部" value=""></el-option>
                     <el-option label="发货仓" value="0"></el-option>
                     <el-option label="退货仓" value="1"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="启用状态：">
                 <el-select v-model="dataForm.isEnable" placeholder="请选择">
+                    <el-option label="全部" value=""></el-option>
                     <el-option label="不启用" value="0"></el-option>
                     <el-option label="启用" value="1"></el-option>
                 </el-select>
