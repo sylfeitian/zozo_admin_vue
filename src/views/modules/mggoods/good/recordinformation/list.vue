@@ -25,7 +25,7 @@
             <el-form-item  label="品牌：">
                 <el-input v-model="dataFormShow.brandName" placeholder="请输入品牌名称" ></el-input>
             </el-form-item>
-            <el-form-item  label="状态：" v-if="dataFormShow.isTofile=='1'">
+            <el-form-item  label="状态：" v-if="dataFormShow.isTofileFlag=='1'">
                 <el-select v-model="dataFormShow.transportFlag" placeholder="请选择">
                     <el-option
                             v-for="item in stateOptions"
@@ -35,8 +35,8 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item  label="备案状态：" v-if="dataFormShow.isTofile=='0'">
-                <el-select v-model="dataFormShow.tofileFlag" placeholder="请选择">
+            <el-form-item  label="备案状态：" v-if="dataFormShow.isTofileFlag=='0'">
+                <el-select v-model="dataFormShow.isTofile" placeholder="请选择">
                     <el-option
                             v-for="item in alreadyOptions"
                             :key="item.id"
@@ -57,7 +57,7 @@
             <el-radio-button label="upper">待备案</el-radio-button>
 <!--            <el-button @click="exportHandle()"  class="btn" type="primary" style="margin-left: 1342px;">导入商品信息</el-button>-->
         </el-radio-group>
-        <el-form style="float: right;" v-if="dataFormShow.isTofile=='0'">
+        <el-form style="float: right;" v-if="dataFormShow.isTofileFlag=='0'">
             <el-form-item>
                 <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataFormShow"></importAndExport>
             </el-form-item>
@@ -133,27 +133,31 @@
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="tofileFlag" label="状态"  align="center">
+            <el-table-column prop="transportFlag" label="状态"  align="center" v-if="dataFormShow.isTofileFlag=='1'">
 <!--                <template slot-scope="scope">-->
 <!--                    <div>-->
-<!--                        {{scope.row.isTofile}}-->
+<!--                        {{scope.row.isTofileFlag}}-->
 <!--                    </div>-->
 <!--                </template>-->
                 <template>
-                    <span v-if="dataForm.isTofile==0">待备案</span>
-                    <span v-if="dataForm.isTofile==1">已备案</span>
-                    <span v-if="dataForm.isTofile==2">不可备案</span>
-                    <span v-if="dataForm.isTofile==3">待重新备案</span>
+                    <span v-if="dataForm.transportFlag==0">未下发</span>
+                    <span v-if="dataForm.transportFlag==1">已下发</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="jdThirdCategory" label="京东三级分类"  align="center" v-if="dataFormShow.isTofile=='1'">
+            <el-table-column prop="isTofile" label="状态"  align="center" v-if="dataFormShow.isTofileFlag=='0'">
+                <template>
+                    <span v-if="dataForm.isTofile==0">待备案</span>
+                    <span v-if="dataForm.isTofile==1">待重新备案</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="jdThirdCategory" label="京东三级分类"  align="center" v-if="dataFormShow.isTofileFlag=='1'">
                 <template slot-scope="scope">
                     <div>
                         {{scope.row.jdThirdCategory}}
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="hsCode" label="HSCODE"  align="center" v-if="dataFormShow.isTofile=='1'">
+            <el-table-column prop="hsCode" label="HSCODE"  align="center" v-if="dataFormShow.isTofileFlag=='1'">
                 <template slot-scope="scope">
                     <div>
                         {{scope.row.hsCode}}
@@ -210,8 +214,8 @@
                     firstCategory: "",// 分类
                     storeName: "",// 店铺名称
                     brandName:"",// 品牌
-                    tofileFlag:"",// 状态
-                    isTofile:"",
+                    isTofile:"",// 状态
+                    isTofileFlag:"",
                     transportFlag: ""
                 },
                 changeVal: "",
@@ -222,7 +226,11 @@
                     id: '3',
                     label: '待重新备案'
                 }],
-                stateOptions: [{
+                stateOptions: [
+                    {
+                        id: '',
+                        label: '全部'
+                    },{
                     id: '0',
                     label: '未下发'
                 }, {
@@ -259,7 +267,7 @@
         created() {
             // 第一次请求数据
             this.activeName =  this.status == undefined ? "" : this.status;
-            this.dataFormShow.isTofile = "1";
+            this.dataFormShow.isTofileFlag = "1";
             this.backScan();
             this.getData();
         },
@@ -277,7 +285,7 @@
                 }
                 backScanCategorys(obj).then((res)=>{
                     if(res.code == 200){
-                        this.selectCategoryOption = res.data;
+                        this.selectCategoryOption = [{id:"",name:"全部"}].concat(res.data)
                         // console.log( this.selectCategoryOption);
                         this.selectCategoryOption.forEach((item,index)=>{
                             item.list && item.list.forEach((item2,index2)=>{
@@ -292,12 +300,12 @@
             },
             handleClick(tab) {
                 if(tab== ""){
-                    this.dataFormShow.isTofile  = "1"
+                    this.dataFormShow.isTofileFlag  = "1"
                 }else if(tab== "upper"){
-                    this.dataFormShow.isTofile  = "0"
+                    this.dataFormShow.isTofileFlag  = "0"
                 }
                 // this.changeVal = val;
-                this.dataForm.isTofile =  this.dataFormShow.isTofile;
+                this.dataForm.isTofileFlag =  this.dataFormShow.isTofileFlag;
                 this.getDataList();
             },
             getData(){
@@ -307,6 +315,13 @@
                     this.$set(this.dataForm,`${key}`,this.dataFormShow[key]);
                 }
                 console.log(this.dataForm);
+                if(this.dataForm.isTofileFlag==1){
+                    this.dataForm.isTofile=""
+                    // delete this.dataForm.isTofile
+                }else if(this.dataForm.isTofileFlag==0){
+                    this.dataForm.transportFlag  =""
+                    // delete this.dataForm.transportFlag
+                }
                 this.getDataList()
             },
             detShowChange(row){
@@ -319,12 +334,14 @@
                 this.dataFormShow.storeName = "";//店铺名称
                 this.dataFormShow.transportFlag = "";//下发状态
                 this.dataFormShow.categoryId = "";
+                this.dataFormShow.isTofile = "";
                 this.dataForm.categoryId = "";
                 this.dataForm.goodsCsIdJp = "";//商品sku ID
                 this.dataForm.goodsName = "";//商品名称/商品货号
                 this.dataForm.brandName = "";//品牌名称
                 this.dataForm.storeName = "";//店铺名称
                 this.dataForm.transportFlag = "";//下发状态
+                this.dataForm.isTofile = "";
                 this.classList = [];//分类名称
                 this.handleClick();
             },

@@ -112,7 +112,7 @@
                 listModule(obj).then((res)=>{
                     if(res.code == 200 && res.data){
                         // Object.assign(this.dataForm,res.data);
-                        this.moduleOption = res.data
+                        this.moduleOption = [{id:"",name:"全部"}].concat(res.data)
 
                     }else{
                         // this.$message.error(res.msg)
