@@ -402,6 +402,11 @@ export const limitActivityPage = `${base}/limit/activity/page`;
 export const deleteLimitActivity = `${base}/limit/activity`;
 // 查询活动添加商品分页列表
 export const limitActivityGoodsList = `${base}/limit/activity/goods/list`;
+// 查询限量/预售活动关联的商品列表
+export const limitActivityReleGoodsList = `${base}/limit/activity/rele/goods/list`;
+
+
+
 
 //异常日志-------------------------------------------------------------------------------------------------------------
 // 列表

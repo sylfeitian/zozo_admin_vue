@@ -5,7 +5,7 @@
         <el-form-item style="float: right;">
             <el-button>批量删除</el-button>
             <el-button type="primary">保存排序</el-button>
-            <el-button type="primary" @click="addGoods(activityId)">添加商品</el-button>
+            <el-button type="primary" @click="addGoods()">添加商品</el-button>
             <!-- <el-button type="primary"   @click="lookShow('asassasasasasa')">修改</el-button> -->
         </el-form-item>
     </el-form>
@@ -23,43 +23,56 @@
         </el-table-column>
 		
         <el-table-column
-		    prop="storeName"
+		    prop="sort"
+            align="center"
 		    label="排序">
 		</el-table-column>
         <el-table-column
-		    prop="id"
+		    prop="goodsId"
+            align="center"
 		    label="商品id"
 		    width="180">
 		</el-table-column>
 		<el-table-column
-		    prop="storeName"
+		    prop="name"
 		    label="商品名称">
 		</el-table-column>
         <el-table-column
-		    prop="createDate"
+		    prop="isAllCheck"
+            align="center"
 		    label="规格">
+            <template slot-scope="scope">
+                <el-button  v-if="scope.row.isAllCheck==0" type="text" size="small" @click="lookShow(scope.row)">部分规格</el-button>
+                <el-button v-else-if="scope.row.isAllCheck==1" type="text" size="small" @click="lookShow(scope.row)">部分规格</el-button>
+		    </template>
 		</el-table-column>
 		<el-table-column
-		    prop="gradeName"
+		    prop="sellPrice"
+            align="center"
 		    label="销售价格">
+            <template slot-scope="scope">
+		    	<span>￥{{scope.row.sellPrice?scope.row.sellPrice:'0.00'}}</span>
+		    </template>
 		</el-table-column>
         <el-table-column
-            prop="asassa"
+            prop="activityQuantity"
+            align="center"
             label="活动库存">
         </el-table-column>
         <el-table-column
-		    prop="creator"
+		    prop="cartLimit"
+             align="center"
 		    label="日本限购数量">
 		</el-table-column>
         <el-table-column
-            prop="createDate"
+            prop="personLimit"
+             align="center"
             label="每人限购">
         </el-table-column>
 	    <el-table-column
-	   		prop="address"
+            align="center"
 	    	label="操作">
 		    <template slot-scope="scope">
-		    	<el-button type="text" size="small" @click="lookShow(scope.row.id)">查看</el-button>
 		    	<el-button type="text" size="small">删除</el-button>
 		    </template>
 	  	</el-table-column>
@@ -76,89 +89,66 @@
     </el-pagination>
 
 
-
     <!-- 查看弹框 -->
-    <el-dialog
-        :visible.sync="lookVisible"
-        class="editDialog"
-        width="50%">
-            <div class="goodsPresent">
-                <img src="@/assets/img/avatar.png" alt="" />
-                <div class="goodsPresentModle">
-                    <div class="goodsTitle">施华洛初恋珍珠耳环</div>
-                    <div class="goodsmoney">￥ {{moneyNum}}</div>
-                </div>
-            </div>
-           <!-- scope.$index+1+(parseInt(page)-1)* parseInt(limit) -->
-            <el-table
-                :data="dataList"
-                v-loading="dataListLoading"
-                border
-                style="width: 100%">
-                <el-table-column
-                    prop="id"
-                    label="skuID"
-                    width="180">
-                </el-table-column>
-                <el-table-column
-                    prop="storeName"
-                    label="规格">
-                </el-table-column>
-                <el-table-column
-                    prop="gradeName"
-                    label="销售价格">
-                </el-table-column>
-                <el-table-column
-                    prop="storeName"
-                    label="活动库存">
-                </el-table-column>
-                <el-table-column
-                    prop="gradeName"
-                    label="日本限购数量">
-                </el-table-column>
-                <el-table-column
-                    prop="createDate"
-                    label="每人限购">
-                </el-table-column>
-            </el-table>
-    </el-dialog>
+    <showGoodsSku v-if="modelShowSkuVisible" ref="showGoodsSkuCompon"></showGoodsSku>
   </div>
 </template>
 
 <script>
     import mixinViewModule from '@/mixins/view-module'
-    import { businessPageUrl } from '@/api/url'
+    import { limitActivityReleGoodsList } from '@/api/url'
     import { storeGrade } from '@/api/api'
     import Bread from "@/components/bread";
+    import showGoodsSku from "./modules/model-show-sku.vue"
 
     export default {
         mixins: [mixinViewModule],
-        props:['activityId'],
-        components:{ Bread},
+        components:{ 
+            Bread,
+            showGoodsSku
+        },
         data () {
             return {
+                modelShowSkuVisible:false,
                 mixinViewModuleOptions: {
-                    getDataListURL: businessPageUrl,
+                    getDataListURL: limitActivityReleGoodsList,
+                    activatedIsNeed:false,
                     getDataListIsPage: true,
                     exportURL: '/admin-api/store/export',
                     deleteURL: '/admin-api/store',
                     deleteIsBatch: true,
                 },
-                dataForm: {},
+                dataForm: {
+                    activityId:"",
+                },
                 breaddata: ["营销管理", "限量活动","查看商品"],
-                lookVisible:false,//弹框状态
                 buttonStatus:false,
                 moneyNum:99.9,
             }
         },
         created(){
-            console.log('活动id',this.activityId)
-            this.demo();
         },
         methods: {
+                init(row){
+                    this.row = row;
+                    console.log(row);
+                    this.dataForm.activityId = this.row.id;
+                    this.getData();
+                    // this.getDatacategoryFn();
+                },
+                getData(){
+                    this.page =1;
+                    this.getDataList();
+                },
                 //回调跳转添加商品页面
-                addGoods(id){
-                    this.$emit("addAditFun",id);
+                addGoods(){
+                    this.$emit("addAditFun",this.row);
+                },
+                lookShow(row){
+                    this.modelShowSkuVisible = true;
+                    this.$nextTick(()=>{
+                        this.$refs.showGoodsSkuCompon.init(this.row,row);
+                    })
                 },
                 //重置
                 reset() {
@@ -168,19 +158,6 @@
                 //回调返回列表
                 changePage(){
                     this.$emit('detailno')
-                },
-                lookShow(id){
-                    this.lookVisible = true;
-                },
-                demo(){
-                    function placeholderPic(){
-                                var w = document.documentElement.offsetWidth;
-                                document.documentElement.style.fontSize=w/20+'px';
-                            }
-                                placeholderPic();
-                            window.onresize=function(){
-                                placeholderPic();
-                            }
                 },
         }
     };

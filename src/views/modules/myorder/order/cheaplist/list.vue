@@ -119,11 +119,14 @@
                 <template slot-scope="scope">
                     <!-- <el-button type="primary" @click="submitStore()">{{ $t('confirm') }}</el-button> -->
                     <el-button size="mini" type="text" @click="orderDetFn(scope.row)">查看</el-button>
-                    <el-button size="mini" type="text" @click="cancleOrderFn(scope.row)"  v-if="scope.row.orderStatus==10 || scope.row.orderStatus==50 || scope.row.orderStatus==70">取消订单</el-button>
+                    <el-button size="mini" type="text" @click="cancleOrderFn(scope.row)"  v-if="scope.row.orderStatus==10  ||  scope.row.orderStatus==70 || scope.row.orderStatus==90 || scope.row.orderStatus==100">取消订单</el-button>
                     <el-button size="mini" type="text" @click="exammineFn(scope.row)" v-if="scope.row.orderStatus==30">审核</el-button>
-                    <el-button size="mini" type="text" @click="declareSthFn(scope.row)" v-if="scope.row.orderStatus==50">重新申报</el-button>
-                    <el-button size="mini" type="text"  @click="clearancFailureFn(scope.row)"  v-if="scope.row.orderStatus==80">清关失败</el-button>
-                    <el-button size="mini" type="text"  @click="writeLogisticsInfo(scope.row)"  v-if="scope.row.orderStatus==80">填写物流</el-button>
+                    <el-button size="mini" type="text" @click="declareSthFn(scope.row)" v-if="scope.row.orderStatus==70 || scope.row.orderStatus==100">重新申报</el-button>
+                    <!-- <el-button size="mini" type="text"  @click="clearancFailureFn(scope.row)"  v-if="scope.row.orderStatus==80">清关失败</el-button> -->
+                    <!-- <el-button size="mini" type="text"  @click="writeLogisticsInfo(scope.row)"  v-if="scope.row.orderStatus==80">填写物流</el-button> -->
+                    
+                    <!-- tudo lakala申报失败,申报失败需要重新申报，和JD申报失败重新申报调不一样的接口  -->
+                    <!-- <el-button size="mini" type="text" @click="declareSthFn(scope.row)" v-if="scope.row.orderStatus==50">重新申报</el-button> -->
                 </template>
             </el-table-column>
         </el-table>

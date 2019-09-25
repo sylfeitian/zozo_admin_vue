@@ -115,9 +115,9 @@
                 <el-col :span="8"><div class="grid-content bg-purple-light">收货地址</div></el-col>
             </el-row>
             <el-row>
-                <el-col :span="8"><div class="grid-content">{{receiverInfo.memberRealName}}</div></el-col>
-                <el-col :span="8"><div class="grid-content">{{receiverInfo.mobPhone}}</div></el-col>
-                <el-col :span="8"><div class="grid-content">{{receiverInfo.province}}{{receiverInfo.city}}{{receiverInfo.area}}{{receiverInfo.townArea}}{{receiverInfo.address}}</div></el-col>
+                <el-col :span="8"><div class="grid-content" v-if="receiverInfo">{{receiverInfo.memberRealName}}</div></el-col>
+                <el-col :span="8"><div class="grid-content" v-if="receiverInfo">{{receiverInfo.mobPhone}}</div></el-col>
+                <el-col :span="8"><div class="grid-content" v-if="receiverInfo">{{receiverInfo.province}}{{receiverInfo.city}}{{receiverInfo.area}}{{receiverInfo.townArea}}{{receiverInfo.address}}</div></el-col>
             </el-row>
 
               <!-- 订单信息 -->

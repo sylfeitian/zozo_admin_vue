@@ -949,9 +949,10 @@ export const addLimitActivity = params => { return http.post(`${base}/limit/acti
 export const editLimitActivity = params => { return http.put(`${base}/limit/activity`, params).then(res => res.data); };
 // 编辑回显限量活动
 export const backScanActivityDetail = params => { return http.get(`${base}/limit/activity/detail/${params.id}`, params).then(res => res.data); };
-
 // 活动选择添加商品sku列表查询
 export const limitActivitySkuChoice = params => { return http.get(`${base}/limit/activity/sku/choice`, params).then(res => res.data); };
+// 增加限量活动商品
+export const editLimitActivityGoods = params => { return http.post(`${base}/limit/activity/goods`, params).then(res => res.data); };
 
 
 

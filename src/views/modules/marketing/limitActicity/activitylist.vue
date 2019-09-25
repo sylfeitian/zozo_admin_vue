@@ -100,7 +100,7 @@
 	    	label="操作">
 		    <template slot-scope="scope">
 		    	<el-button type="text" size="small">审核</el-button>
-		    	<el-button type="text" size="small" @click="showDetail(scope.row.id)">查看商品</el-button>
+		    	<el-button type="text" size="small" @click="showDetail(scope.row)">查看商品</el-button>
 		    	<el-button type="text" size="small" @click="addAdit(scope.row)">添加商品</el-button>
 		    	<el-button type="text" size="small" @click="addActivity(scope.row)">编辑</el-button>
 		    	<el-button class="artdanger" type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
@@ -193,8 +193,8 @@ export default {
           this.getDataList();
       },
         //回调跳到查看页面
-        showDetail(id){
-	    	this.$emit("showDetail",id);
+        showDetail(row){
+	    	this.$emit("showDetail",row);
         },
         //重置
         reset() {

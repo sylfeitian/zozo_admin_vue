@@ -31,7 +31,7 @@
         </el-form-item>
         <br />
         <el-form-item>
-            <el-button type="primary" @click="showDetail(activityId)">查看商品</el-button>
+            <el-button type="primary" @click="showDetail()">查看商品</el-button>
             <!-- <el-button type="primary"   @click="editGoods('asassasasasasa')">修改</el-button> -->
         </el-form-item>
     </el-form>
@@ -91,7 +91,7 @@
                 <div v-if="scope.row.activityState ==0">
                     <el-button  v-if="scope.row.selfActivityState==1" type="text" size="small" @click="chooseFn(scope.row)" >取消选择</el-button>
                     <el-button v-else type="text" size="small" @click="chooseFn(scope.row)">选择</el-button>
-		        	<el-button type="text" size="small" @click="editGoods(scope.row)">修改</el-button>
+		        	<el-button type="text" size="small" @click="editGoodsSku(scope.row)">修改</el-button>
                 </div>
                 <span v-else>与其他活动冲突</span>
 		    	
@@ -109,72 +109,7 @@
 	    layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
 
-    <!-- 修改弹框 -->
-    <el-dialog
-        :visible.sync="editVisible"
-        :close-on-click-modal = "false"
-        :show-close = "false"
-        class="editDialog"
-        width="70%">
-        <div class="goodsPresent">
-            <img src="@/assets/img/avatar.png" alt="" />
-            <div class="goodsPresentModle">
-                <div class="goodsTitle">施华洛初恋珍珠耳环</div>
-                <div class="goodsmoney">￥ {{moneyNum}}</div>
-            </div>
-        </div>
-        <!-- scope.$index+1+(parseInt(page)-1)* parseInt(limit) -->
-        <el-table
-            :data="dataList"
-            v-loading="dataListLoading"
-            border
-            style="width: 100%">
-            <el-table-column
-                prop="id"
-                label="skuID"
-                align="center"
-                width="180">
-            </el-table-column>
-            <el-table-column
-                prop="storeName"
-                align="center"
-                label="规格">
-            </el-table-column>
-            <el-table-column
-                align="center"
-                label="活动库存">
-                <template slot-scope="scope">
-                        <el-input v-model="kucun" :maxlength="6" type="number"></el-input>
-                </template>
-            </el-table-column>
-            <el-table-column
-                align="center"
-                prop="gradeName"
-                label="日本限购数量">
-            </el-table-column>
-            <el-table-column
-                align="center"
-                prop="createDate"
-                label="每人限购"
-                width="180">
-                <template slot-scope="scope">
-                        <el-input v-model="kucun" :maxlength="6" type="number"></el-input>
-                </template>
-            </el-table-column>
-            <el-table-column
-                align="center"
-                prop="address"
-                label="操作">
-                <template slot-scope="scope">
-                    <el-button type="text" size="small">适用于全部规格</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
-        <span slot="footer" class="dialog-footer">
-            <el-button @click="noCheck('editDataForm')">取 消</el-button>
-            <el-button type="primary" @click="subEdit('editDataForm')" :loading="buttonStatus">确 定</el-button>
-        </span>
-    </el-dialog>
+    <editGoodsSku v-if="modelEditSkuVisible" ref="editGoodsSkuCompon"></editGoodsSku>
   </div>
 </template>
 
@@ -183,11 +118,15 @@
     import { limitActivityGoodsList } from '@/api/url'
     import { storeGrade,getdatacategory,limitActivitySkuChoice} from '@/api/api'
     import Bread from "@/components/bread";
+    import editGoodsSku from "./modules/model-eidt-sku.vue"
 
     export default {
         mixins: [mixinViewModule],
         props:['activityId'],
-        components:{ Bread},
+        components:{ 
+            Bread,
+            editGoodsSku
+        },
         data () {
             return {
                 mixinViewModuleOptions: {
@@ -214,10 +153,7 @@
                     value: 'id',
                     children:'list'
                 },
-                editVisible:false,//弹框状态
-                buttonStatus:false,
-                moneyNum:99.9,
-                kucun:'',
+                modelEditSkuVisible:false,
                 row:'',
             }
         },
@@ -230,6 +166,10 @@
                     this.dataForm.activityId = this.row.id;
                     this.getData();
                     this.getDatacategoryFn();
+                },
+                getData(){
+                    this.page =1;
+                    this.getDataList();
                 },
                 getDatacategoryFn(){
                     //获取中国分类
@@ -264,13 +204,9 @@
                     console.log(this.dataFormShow.categoryId)
                 },
                 //回调跳转查看商品页面
-                showDetail(id){
-                    this.$emit("showDetail",id);
+                showDetail(){
+                    this.$emit("showDetail",this.row);
                     // this.$router.push({'name': 'marketing-coupon',})
-                },
-                getData(){
-                    this.page =1;
-                    this.getDataList();
                 },
                 //重置
                 reset() {
@@ -316,8 +252,11 @@
                     //  })
                 },
                 //弹出修改弹框
-                editGoods(row){
-                    this.editVisible = true;
+                editGoodsSku(row){
+                    this.modelEditSkuVisible = true;
+                    this.$nextTick(()=>{
+                        this.$refs.editGoodsSkuCompon.init(this.row,row);
+                    })
                 },
                 noCheck(){
                     this.editVisible = false;
