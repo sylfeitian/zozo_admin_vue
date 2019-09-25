@@ -13,7 +13,7 @@
                 <p style="margin-left: -100px;">基础信息</p>
             </el-form-item>
             <el-form-item label="标题：" prop="title" :label-width="formLabelWidth">
-                <el-input v-model="addDataForm.title" maxlength="120" auto-complete="off" placeholder="请填写时尚记事标题" style="width: 1200px;"></el-input>
+                <el-input v-model="addDataForm.title" auto-complete="off" placeholder="请填写时尚记事标题" style="width: 1200px;"></el-input>
                 <p style="color: #bebebe;line-height: 14px;">请输入120个汉字，包含汉字、数字、英文、常用字符</p>
             </el-form-item>
             <el-form-item label="编号：" prop="" :label-width="formLabelWidth" style="display: inline-block;vertical-align:top;">
@@ -24,10 +24,10 @@
                 <el-input v-model="addDataForm.publisher" auto-complete="off" placeholder="" style="width: 540px;"></el-input>
             </el-form-item>
             <el-form-item label="关注量：" prop="" :label-width="formLabelWidth" style="display: inline-block;">
-                <el-input v-model="addDataForm.favNumCn" type="number" auto-complete="off" placeholder="（仅可填写数字，可选）" style="width: 540px;"></el-input>
+                <el-input v-model="addDataForm.favNumCn" type="text" auto-complete="off" placeholder="（仅可填写数字，可选）" style="width: 540px;"></el-input>
             </el-form-item>
             <el-form-item label="浏览量：" prop="" :label-width="formLabelWidth" style="display: inline-block;">
-                <el-input v-model="addDataForm.viewsNumCn" type="number" auto-complete="off" placeholder="（仅可填写数字，可选）" style="width: 540px;"></el-input>
+                <el-input v-model="addDataForm.viewsNumCn" type="text" auto-complete="off" placeholder="（仅可填写数字，可选）" style="width: 540px;"></el-input>
             </el-form-item>
             <el-form-item style="background-color: #f3f3f3;">
                 <div style="background-color: #f3f3f3;display: flex;align-items: center;">
@@ -195,6 +195,53 @@
             imgCropper,
             Bread
         },
+        watch: {
+            'addDataForm.title': function (newV, oldV) {
+                var chineseCount = 0, characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 240) { //输入字符大于240的时候过滤
+                        this.addDataForm.title = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
+                    }
+                }
+            },
+            'addDataForm.idJp':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    // 只能输入英文和数字
+                    if(/[^0-9a-zA-Z]/g.test(newV[i])){
+                        this.addDataForm.idJp = newV.replace(newV[i],"")
+                    }
+                }
+            },
+            'addDataForm.favNumCn':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    // 只能输入数字,最大999个整数
+                    if(!/[0-9]/g.test(newV[i])){
+                        this.addDataForm.favNumCn = newV.replace(newV[i],"")
+                    }
+                }
+                if(newV.length>999){
+                    this.addDataForm.favNumCn = newV.substr(0,999)
+                }
+            },
+            'addDataForm.viewsNumCn':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    // 只能输入数字,最大999个整数
+                    if(!/[0-9]/g.test(newV[i])){
+                        this.addDataForm.viewsNumCn = newV.replace(newV[i],"")
+                    }
+                }
+                if(newV.length>999){
+                    this.addDataForm.viewsNumCn = newV.substr(0,2)
+                }
+            }
+    },
+
         methods: {
             init(row){
                 this.$nextTick(()=>{

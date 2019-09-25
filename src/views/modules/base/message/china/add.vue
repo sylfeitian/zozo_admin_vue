@@ -27,7 +27,7 @@
 			</el-form-item>
 			
 			<el-form-item label="评价类型：" prop="appraisal" v-if="erjishow">
-				<el-input v-model="dataForm.appraisal" type="text" maxlength="6" placeholder="请输入6字以内的内容" show-word-limit style="width:400px;"></el-input>
+				<el-input v-model="dataForm.appraisal" type="text" placeholder="请输入6字以内的内容" style="width:400px;"></el-input>
 			</el-form-item>
 			<el-form-item v-show="yijishow" prop="categoryJpId" v-for="(item, index) in dataForm.categoryJpId" :key="index" :label="index == 0 ? '关联日本分类：' : '' ">
 				<el-select
@@ -165,6 +165,22 @@
 	    		callback();
 	    	}
 		};
+		var validateAppraisal = (rule, value, callback) => {
+                var chineseCount = 0,characterCount = 0;
+                for (let i = 0; i < value.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(value[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count < 4 ) {
+                        callback('至少输入2个字，对应4个字符的内容');
+                    }else{
+                        callback();
+                    }
+                }
+		};
 	    return {
 			loading:false,
 	    	erjishow: true,  //二级没有评价类型
@@ -208,6 +224,7 @@
 				],
 	        	appraisal: [
 	       			{ required: true, message: '必填项不能为空', trigger: 'blur' },
+                    { validator: validateAppraisal,trigger: 'blur'},
 				],
 				genderMain: [
 	       			{ required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -229,7 +246,21 @@
 					}
 					var count = chineseCount + characterCount;
 					if (count > 8) { //输入字符大于8的时候过滤
-						this.dataForm.name = newV.substr(0,8)
+						this.dataForm.name = newV.substr(0,(chineseCount/2+characterCount)-1)
+					}
+				}
+			},
+            'dataForm.appraisal':function(newV,oldV) {
+				var chineseCount = 0,characterCount = 0;
+				for (let i = 0; i < newV.length; i++) {
+					if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+						chineseCount = chineseCount + 2;
+					} else { //字符
+						characterCount = characterCount + 1;
+					}
+					var count = chineseCount + characterCount;
+					if (count > 12) { //输入字符大于12的时候过滤
+						this.dataForm.appraisal = newV.substr(0,(chineseCount/2+characterCount)-1)
 					}
 				}
 			}

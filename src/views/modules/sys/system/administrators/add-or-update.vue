@@ -93,7 +93,7 @@
                     }
                     var count = chineseCount + characterCount;
                     if (count > 20) { //输入字符大于20的时候过滤
-                        this.dataForm.realName = newV.substr(0,20)
+                        this.dataForm.realName = newV.substr(0,(chineseCount/2+characterCount)-1)
                     }
                 }
             },
@@ -109,7 +109,7 @@
                     }
                     var count = chineseCount + characterCount;
                     if (count > 11) { //输入字符大于11的时候过滤
-                        this.dataForm.mobile = newV.substr(0,11)
+                        this.dataForm.mobile = newV.substr(0,(chineseCount/2+characterCount)-1)
                     }
                 }
             }
@@ -129,6 +129,7 @@
                     if (!/\S/.test(value)) {
                         return callback(new Error(this.$t('validate.required')))
                     }
+                    callback()
                 }
                 // 密码校验
                 var validatePassword = (rule, value, callback) => {
@@ -153,6 +154,7 @@
                     callback()
 
                 }
+                // 角色
                 var validateRoleId = (rule, value, callback) => {
                     if (!/\S/.test(value)) {
                         return callback(new Error(this.$t('validate.required')))

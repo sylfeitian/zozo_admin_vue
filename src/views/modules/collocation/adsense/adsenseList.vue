@@ -125,7 +125,6 @@
         :title="activiTitle"
         :visible.sync="activiVisible"
         :close-on-click-modal = "false"
-        :show-close = "false"
         class="activiDialog"
         width="40%">
         <el-form :model="activiDataForm" :rules="dataRule" ref="activiDataForm" @keyup.enter.native="subActivity()" label-width="120px">
@@ -140,7 +139,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="轮播图名称：" prop="name">
-                <el-input v-model="activiDataForm.name" placeholder="请输入30字以内的名称" :maxlength="30" show-word-limit></el-input>
+                <el-input v-model="activiDataForm.name" placeholder="请输入30字以内的名称"></el-input>
             </el-form-item>
             <el-form-item label="排序：">
                 <el-input v-model="activiDataForm.sort" placeholder="数字越大排序越靠前" type="number" :maxlength="3"></el-input>
@@ -390,7 +389,37 @@
                 }
             }
         },
-        created(){
+        watch: {
+            'activiDataForm.name': function (newV, oldV) {
+                var chineseCount = 0, characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 60) { //输入字符大于60的时候过滤
+                        this.activiDataForm.name = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
+                    }
+                }
+            },
+            'activiDataForm.linkUrl': function (newV, oldV) {
+                var chineseCount = 0, characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 500) { //输入字符大于500的时候过滤
+                        this.activiDataForm.linkUrl = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
+                    }
+                }
+            }
+            },
+            created(){
             this.getClassList();
             this.demo();
         },

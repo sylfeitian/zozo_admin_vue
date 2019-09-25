@@ -13,7 +13,7 @@
 			    ></el-autocomplete>
             </el-form-item>
             <el-form-item prop="remarks" label="备注：">
-                <el-input v-model="dataForm.remarks" type="text" maxlength="500" placeholder="请输入备注内容" style="width:400px;"></el-input>
+                <el-input v-model="dataForm.remarks" type="text" placeholder="请输入备注内容" style="width:400px;"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="saveGoods">保存</el-button>
@@ -118,9 +118,22 @@
             // this.artgetallstock();
             this.getWarelistByType();
         },
-        watch:{
-        	
-        },
+            watch: {
+                'dataForm.remarks': function (newV, oldV) {
+                    var chineseCount = 0, characterCount = 0;
+                    for (let i = 0; i < newV.length; i++) {
+                        if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                            chineseCount = chineseCount + 2;
+                        } else { //字符
+                            characterCount = characterCount + 1;
+                        }
+                        var count = chineseCount + characterCount;
+                        if (count > 1000) { //输入字符大于1000的时候过滤
+                            this.dataForm.remarks = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
+                        }
+                    }
+                }
+            },
         methods: {
         	//显示所选的商品
         	searchDataList(rows){

@@ -162,7 +162,7 @@
       </el-table-column>
       <el-table-column prop="categoryId" label="分类" align="center">
         <template slot-scope="scope">
-          <div>
+          <div :title="scope.row.goodsTypeName ?scope.row.firstCategory+'--'+scope.row.goodsTypeName:scope.row.firstCategory">
             {{scope.row.firstCategory}}
             <span v-if="scope.row.goodsTypeName">--</span>
             {{scope.row.goodsTypeName}}
@@ -198,7 +198,7 @@
       </el-table-column>
       <el-table-column label="更新时间" align="center">
         <template slot-scope="scope">
-          <div>{{scope.row.syncDate}}</div>
+          <div :title="scope.row.syncDate">{{scope.row.syncDate}}</div>
         </template>
       </el-table-column>
       <el-table-column label="可售状态" align="center">
@@ -211,7 +211,7 @@
       </el-table-column>
       <el-table-column label="上下架时间" align="center">
         <template slot-scope="scope">
-          <div>{{scope.row.showWebDate}}</div>
+          <div :title="scope.row.showWebDate">{{scope.row.showWebDate}}</div>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="120">

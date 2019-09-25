@@ -4,7 +4,7 @@
             title="售卖品牌"
             :close-on-click-modal="false"
             :visible.sync="visible"
-            width="40%"
+            width="50%"
     >
         <el-form
                 :model="dataForm"

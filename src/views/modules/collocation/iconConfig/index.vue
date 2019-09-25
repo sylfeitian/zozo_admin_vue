@@ -66,12 +66,11 @@
         title="编辑图标"
         :visible.sync="editVisible"
         :close-on-click-modal = "false"
-        :show-close = "false"
         class="activiDialog"
         width="40%">
         <el-form :model="editDataForm" :rules="dataRule" ref="editDataForm" @keyup.enter.native="subActivity()" label-width="120px">
             <el-form-item label="名称：" prop="menuName">
-                <el-input v-model="editDataForm.menuName" placeholder="请输入5字以内的名称" :maxlength="5"></el-input>
+                <el-input v-model="editDataForm.menuName" placeholder="请输入5字以内的名称"></el-input>
             </el-form-item>
             <div class="imgConfig">
                 <el-form-item label="上传图片：" :prop="editDataForm.selectedIcon?'unselectedIcon':'selectedIcon'">
@@ -160,7 +159,24 @@
                 }
             }
         },
-        created(){
+        watch: {
+            'editDataForm.menuName': function (newV, oldV) {
+                var chineseCount = 0, characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 10) { //输入字符大于10的时候过滤
+                        this.editDataForm.menuName = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
+                    }
+                }
+            }
+            },
+
+            created(){
             this.demo();
         },
         methods: {

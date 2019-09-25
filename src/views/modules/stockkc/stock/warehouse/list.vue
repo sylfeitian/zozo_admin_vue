@@ -40,7 +40,14 @@
                     <!-- {{scope.$index+1+(parseInt(params.currentPage)-1)* parseInt(params.currentPageSize) }} -->
                 </template>
             </el-table-column>
-            <el-table-column prop="warehouseName" label="仓库名称" align="center"></el-table-column>
+            <el-table-column prop="warehouseName" label="仓库名称" align="center">
+                <template slot-scope="scope">
+                    <div :title="scope.row.warehouseName">
+                        {{scope.row.warehouseName}}
+                    </div>
+                </template>
+
+            </el-table-column>
             <el-table-column prop="addressInfo" label="仓库所在地" align="center"></el-table-column>
             <el-table-column label="仓库种类" align="center">
                 <template slot-scope="scope">
@@ -259,9 +266,15 @@
         top:0;
         left:0;
     }
-    /deep/ .cell {
-        white-space: nowrap;
+    /deep/ .cell{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
         overflow: hidden;
-        text-overflow: ellipsis;
     }
+    /*/deep/ .cell {*/
+    /*    white-space: nowrap;*/
+    /*    overflow: hidden;*/
+    /*    text-overflow: ellipsis;*/
+    /*}*/
 </style>

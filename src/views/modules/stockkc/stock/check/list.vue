@@ -86,7 +86,14 @@
                     >
                 </template>
             </el-table-column>
-            <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
+            <el-table-column prop="goodsName" label="商品名称" align="center">
+                <template slot-scope="scope">
+                    <div :title="scope.row.goodsName">
+                        {{scope.row.goodsName}}
+                    </div>
+                </template>
+
+            </el-table-column>
             <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
             <el-table-column prop="price" label="售价" width="100" align="center">
                 <template slot-scope="scope">
@@ -359,9 +366,16 @@
             align-items: center;
         }
     }
-    /deep/ .cell {
+    .cell div{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+    }
+    /*/deep/ .cell {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-    }
+    }*/
+
 </style>
