@@ -307,12 +307,14 @@ export default {
         children: "list"
       },
       showOptions: [
+        {id:"",label:"全部"},
         { id: "0", label: "待上架" },
         { id: "1", label: "已上架" },
         { id: "2", label: "已下架" }
       ],
-      stateOptions: [{ id: "0", label: "不可售" }, { id: "1", label: "可售" }],
+      stateOptions: [{id:"",label:"全部"},{ id: "0", label: "不可售" }, { id: "1", label: "可售" }],
       priceOptions: [
+        {id:"",label:"全部"},
         { id: "0", label: "价格正常" },
         { id: "1", label: "价格上涨" },
         { id: "2", label: "价格下降" },

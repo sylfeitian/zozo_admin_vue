@@ -222,7 +222,11 @@
                     id: '3',
                     label: '待重新备案'
                 }],
-                stateOptions: [{
+                stateOptions: [
+                    {
+                        id: '',
+                        label: '全部'
+                    },{
                     id: '0',
                     label: '未下发'
                 }, {
@@ -277,7 +281,7 @@
                 }
                 backScanCategorys(obj).then((res)=>{
                     if(res.code == 200){
-                        this.selectCategoryOption = res.data;
+                        this.selectCategoryOption = [{id:"",name:"全部"}].concat(res.data)
                         // console.log( this.selectCategoryOption);
                         this.selectCategoryOption.forEach((item,index)=>{
                             item.list && item.list.forEach((item2,index2)=>{

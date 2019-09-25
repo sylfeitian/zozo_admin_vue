@@ -7,7 +7,8 @@
             </el-form-item>
             <el-form-item label="推送方式：">
                 <el-select v-model="dataForm.sendMode" placeholder="请选择"  style="margin-left: 10px;width: 140px;">
-                    <el-option label="站内信"  value="0"></el-option>
+                    <el-option label="全部" value=""></el-option>
+                    <el-option label="站内信" value="0"></el-option>
                     <el-option label="友盟" value="1"></el-option>
                     <el-option label="短信" value="2"></el-option>
                 </el-select>
