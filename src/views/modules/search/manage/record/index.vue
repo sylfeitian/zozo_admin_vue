@@ -80,7 +80,7 @@ export default {
         deleteIsBatch: true
         // deleteIsBatchKey: 'id'
       },
-      breaddata: ["搜索管理", "同义词管理"],
+      breaddata: ["热门搜索", "搜索详情"],
       dataForm: {
         hotKeyword: "", //关键字搜索
         memberId: "",

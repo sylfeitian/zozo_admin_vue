@@ -65,7 +65,7 @@
                     }else {
                         this.dataForm.chineseVocabulary=newV.replace(newV[i],'')
                     }
-                    if(chinese>100){ //最大输入100字
+                    if(chineseCount>100){ //最大输入100字
                         this.dataForm.chineseVocabulary = newV.substr(0,100)
                     }
                 }
