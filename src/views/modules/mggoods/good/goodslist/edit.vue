@@ -171,8 +171,8 @@
         <el-col :span="24">
             <div style="position: fixed;bottom: 0;margin: 0 auto;width: 86%;text-align: center;z-index: 999;background-color: #e6e6e6;padding: 10px 0;">
                 <el-button class="btn" @click="reset()">取消</el-button>
-                <el-button class="btn" @click="getData(0)">仅保存</el-button>
-                <el-button class="btn" type="primary" @click="getData(1)">保存并上架</el-button>
+                <el-button class="btn" @click="saveData(0)">仅保存</el-button>
+                <el-button class="btn" type="primary" @click="saveData(1)">保存并上架</el-button>
             </div>
         </el-col>
         <!-- 弹窗, 新建 -->
@@ -225,6 +225,7 @@
         // ],
         watch:{
             'dataForm.name':function(newV,oldV) {
+                if(!newV) return
                 var chineseCount = 0,characterCount = 0;
                 for(let i=0;i<newV.length;i++){
                     if(/^[\u4e00-\u9fa5]*$/.test(newV[i])){ //汉字
@@ -239,6 +240,7 @@
                 }
             },
             'dataForm.madeIn': function (newV, oldV) {
+                if(!newV) return
                 var chineseCount = 0,characterCount = 0;
                 for (let i = 0; i < newV.length; i++) {
                     if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
@@ -253,6 +255,7 @@
                 }
             },
             'dataForm.material': function (newV, oldV) {
+                if(!newV) return
                 var chineseCount = 0,characterCount = 0;
                 for (let i = 0; i < newV.length; i++) {
                     if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
@@ -332,11 +335,26 @@
                     that.changePage();
                 }).catch();
             },
-            getData(saveType){
+            saveData(saveType){
                 let that = this;
-                this.dataForm.saveFlag = saveType;
-                this.dataForm.goodsTypeId  = this.dataForm.secondCategoryIsd 
-                saveZozogoods(this.dataForm).then((res)=>{
+                // this.dataForm.saveFlag = saveType;
+                // this.dataForm.goodsTypeId  = this.dataForm.secondCategoryIsd 
+                // console.log(this.dataForm);
+                var imgs =[]
+                 this.dataForm.imgs.forEach((item,index)=>{
+                        imgs.push(item.sizeOriginal); 
+                })
+                var obj = {
+                    "description": this.dataForm.description,//中方商品描述 ,
+                    "goodsTypeId": this.dataForm.secondCategoryIsd ,//商品的二级分类id ,
+                    "id": this.dataForm.id,//商品spu的id ,
+                    "imgs": imgs,//商品的图片列表 ,
+                    "madeIn": this.dataForm.madeIn,//生产地中文 ,
+                    "material": this.dataForm.material,//材质中文 ,
+                    "name":  this.dataForm.name,//商品中文名 ,
+                    "saveFlag": saveType // 0：仅保存，1：保存并上架
+                }
+                saveZozogoods(obj).then((res)=>{
                     if(res.code == 200){
                         this.$message({
                             message: res.msg,

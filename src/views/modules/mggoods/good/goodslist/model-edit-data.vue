@@ -60,7 +60,7 @@
 </template>
 
 <script>
-    import { backScanCategorys, saveZozogoods } from '@/api/api'
+    import { backScanCategorys } from '@/api/api'
     export default {
         name: "model-edit-data",
         data () {
