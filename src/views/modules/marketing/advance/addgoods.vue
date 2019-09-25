@@ -241,7 +241,6 @@
                     //         params:{
                     //             goodsId:123,//商品spuid
                     //             activityId:that.row.id,//活动id
-                    //             activityType:12,//活动类型 0秒杀 1限量 2预售
                     //         }
                     //     }
                     //     limitActivitySkuChoice(obj).then((res)=>{

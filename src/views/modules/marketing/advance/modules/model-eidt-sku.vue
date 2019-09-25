@@ -115,7 +115,7 @@
                    params:{
                     activityId:this.row.id,//活动ID
                     goodsId:this.row2.id,//商品ID
-                    activityType:1,//活动类型 0秒杀 1限量 2预售
+                    activityType:2,//活动类型 0秒杀 1限量 2预售
                    }
 
                 }
