@@ -43,17 +43,17 @@
                 <p style="margin-left: -100px;">订单设置</p>
             </el-form-item>
             <el-form-item class="artAmount" label="未支付订单失效时间：" prop="expirationTimeMinute" :label-width="formLabelWidth">
-                <el-input type="number" maxlength='2' v-model="dataForm.expirationTimeMinute"  placeholder="请输入" style="width: 111px;"></el-input>
+                <el-input type="text" v-model="dataForm.expirationTimeMinute"  placeholder="请输入" style="width: 111px;"></el-input>
                 <span> 分（min）</span>
             </el-form-item>  
             <el-form-item  class="artAmount artmaxAmount" prop="expirationTimeSecond" :label-width="formLabelWidth">
-				<el-input type="number" maxlength='2'  v-model="dataForm.expirationTimeSecond"  placeholder="请输入" style="width: 111px;"></el-input>
+				<el-input type="text" v-model="dataForm.expirationTimeSecond"  placeholder="请输入" style="width: 111px;"></el-input>
                 <span> 秒（s）</span>
             </el-form-item>
             
             
             <el-form-item label="自动确认收货时间：" prop="autoConfirmReceiptTime" :label-width="formLabelWidth">
-                <el-input type="number" maxlength='3' v-model="dataForm.autoConfirmReceiptTime"  placeholder="请输入" style="width: 250px;"></el-input>
+                <el-input type="text" v-model="dataForm.autoConfirmReceiptTime"  placeholder="请输入" style="width: 250px;"></el-input>
                 <span> 天（day）</span>
                 <span style="color: #999999;">发货后自动确认收货时间</span>
             </el-form-item>
@@ -63,7 +63,7 @@
                 <span style="color: #999999;">确认收货后可申请售后的时间</span>
             </el-form-item> -->
             <el-form-item label="单笔订单最小金额：" prop="auditOrderMinAmount" :label-width="formLabelWidth">
-                <el-input type="number" maxlength='6' v-model="dataForm.auditOrderMinAmount"  placeholder="请输入" style="width: 250px;"></el-input>
+                <el-input type="text" v-model="dataForm.auditOrderMinAmount"  placeholder="请输入" style="width: 250px;"></el-input>
                 <span> 元（RMB）</span>
                 <span style="color: #999999;">低于该金额时将无法提交订单</span>
             </el-form-item>
@@ -74,7 +74,7 @@
                 <p style="margin-top: 10px;padding: 2px 15px;background: #f1deab;display: inline-block;">{{ratenum}}</p>
             </el-form-item>
             <el-form-item label="上调幅度：" prop="riseIn" :label-width="formLabelWidth">
-                <el-input type="number" v-model="dataForm.riseIn" auto-complete="off" placeholder="请输入" style="width: 250px;"></el-input>
+                <el-input type="text" v-model="dataForm.riseIn" auto-complete="off" placeholder="请输入" style="width: 250px;"></el-input>
                 <span> % </span>
             </el-form-item>
             <el-form-item label="加价率：" prop="" :label-width="formLabelWidth">
@@ -179,7 +179,22 @@
 			    }else {
 			      callback()
 			    }
-			};  
+			};
+			var validnummax =(rule, value,callback)=>{
+			    if(value.indexOf('.') !==-1){// 存在小数点
+			        if(value.length>9){
+                        callback('最高可输入6位数,可输入2位小数')
+                    }else{
+                        callback()
+                    }
+			    }else {// 不存在小数点
+                    if(value.length>6){
+                        callback('最高可输入6位数')
+                    }else{
+                        callback()
+                    }
+			    }
+			};
 			var validnumdian =(rule, value,callback)=>{
 //				console.log(rule,value)
 				var valuestr = value +'';
@@ -247,30 +262,26 @@
                     ],
                     expirationTimeMinute : [   
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
-                        // { min: 1, max: 2, message: '最大长度是2位', trigger: 'blur' },
                         { validator: validnum0, trigger: 'blur' },
                     ],
                     expirationTimeSecond : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
-                        // { min: 1, max: 2, message: '最大长度是2位', trigger: 'blur' },
                         { validator: validnum0, trigger: 'blur' },
                     ],
                     autoConfirmReceiptTime : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
-                        // { min: 1, max: 3, message: '最大长度是3位', trigger: 'blur' },
                         { validator: validnum0, trigger: 'blur' },
                     ],
                     saleafterStopTime : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
-                        // { min: 1, max: 3, message: '最大长度是3位', trigger: 'blur' },
                         { validator: validnum0, trigger: 'blur' },
                     ],
                     auditOrderMinAmount: [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
-                       	// { min: 2, max: 6, message: '最大长度是6位', trigger: 'blur' },
                        	{ validator: valid, trigger: 'blur' },
                        	{ validator: validnum0, trigger: 'blur' },
-                       	
+                       	{ validator: validnummax, trigger: 'blur' },
+
                     ],
                     riseIn: [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -299,25 +310,92 @@
             Bread
         },
         watch:{
+            // 订单有效金额范围
             'dataForm.minAmount':function(newV,oldV) {
-                if(newV){
+                for(let i=0;i<newV.length;i++){
                     // 删除非数字和小数点之外的输入
-                    this.dataForm.minAmount=newV.toString().replace(/[^\d|\.]/g,'')
+                    if(/[^\d|\.]/g.test(newV[i])){
+                        this.dataForm.minAmount = newV.replace(newV[i],"")
+                    }
                 }
                 // 有小数点 截取0到小数点后2位间的数据
-               if(newV.toString().indexOf('.') !== -1 && newV.toString().substr(newV.indexOf('.') + 1).length > 2){
-                    this.dataForm.minAmount=newV.substr(0,newV.indexOf('.')+3)
+               if(newV.toString().indexOf('.') !== -1){
+                    this.dataForm.minAmount=newV.toString().substr(0,newV.toString().indexOf('.')+3)
                }
             },
             'dataForm.maxAmount':function(newV,oldV) {
-                if(newV){
-                    this.dataForm.maxAmount=newV.toString().replace(/[^\d|\.]/g,'')
+                for(let i=0;i<newV.length;i++){
+                    // 删除非数字和小数点之外的输入
+                    if(/[^\d|\.]/g.test(newV[i])){
+                        this.dataForm.maxAmount = newV.replace(newV[i],"")
+                    }
                 }
                 // 有小数点 截取0到小数点后2位间的数据
-                if(newV.toString().indexOf('.') !== -1 && newV.toString().substr(newV.indexOf('.') + 1).length > 2){
-                    this.dataForm.maxAmount=newV.substr(0,newV.indexOf('.')+3)
+                if(newV.toString().indexOf('.') !== -1){
+                    this.dataForm.maxAmount=newV.toString().substr(0,newV.toString().indexOf('.')+3)
                 }
-            }
+            },
+            // 分
+            'dataForm.expirationTimeMinute':function(newV,oldV) {
+                for (let i = 0; i < newV.length; i++) {
+                    // 只能输入数字,限2位数
+                    if (!/[0-9]/g.test(newV[i])) {
+                        this.dataForm.expirationTimeMinute = newV.replace(newV[i], "")
+                    }
+                    if(newV.length>2){
+                        this.dataForm.expirationTimeMinute = newV.substr(0,2)
+                    }
+                }
+            },
+            // 秒
+            'dataForm.expirationTimeSecond':function(newV,oldV) {
+                for (let i = 0; i < newV.length; i++) {
+                    // 只能输入数字,限2位数
+                    if (!/[0-9]/g.test(newV[i])) {
+                        this.dataForm.expirationTimeSecond = newV.replace(newV[i], "")
+                    }
+                    if(newV.length>2){
+                        this.dataForm.expirationTimeSecond = newV.substr(0,2)
+                    }
+                }
+            },
+            // 自动确认收货时间
+            'dataForm.autoConfirmReceiptTime':function(newV,oldV) {
+                for (let i = 0; i < newV.length; i++) {
+                    // 只能输入数字,限3位数
+                    if (!/[0-9]/g.test(newV[i])) {
+                        this.dataForm.autoConfirmReceiptTime = newV.replace(newV[i], "")
+                    }
+                    if(newV.length>3){
+                        this.dataForm.autoConfirmReceiptTime = newV.substr(0,3)
+                    }
+                }
+            },
+            // 单笔订单最小金额
+            'dataForm.auditOrderMinAmount':function(newV,oldV) {
+                for (let i = 0; i < newV.length; i++) {
+                    // 只能输入数字
+                    if (!/[0-9|\.]/g.test(newV[i])) {
+                        this.dataForm.auditOrderMinAmount = newV.replace(newV[i], "")
+                    }
+                    if(newV.toString().indexOf('.') !== -1){// 截取到小数点后2位
+                        this.dataForm.auditOrderMinAmount=newV.toString().substr(0,newV.toString().indexOf('.')+3)
+                    }else{// 没有小数点
+                        if(newV.length>6){
+                            this.dataForm.auditOrderMinAmount = newV.substr(0,6)
+                        }
+                    }
+                }
+            },
+            // 上调幅度
+            'dataForm.riseIn':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    // 只能输入数字
+                    if(!/[0-9|\.]/g.test(newV[i])){
+                        this.dataForm.riseIn = newV.replace(newV[i],"")
+                    }
+                }
+            },
         },
         created(){
             this.getData();
