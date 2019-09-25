@@ -61,7 +61,7 @@
 			</el-table-column>
 		</el-table>
 		  <el-dialog title="消息模板设置" :visible.sync="dialogTableVisible">
-			  <el-form>
+			  <el-form :rules="dataRule" :model="ShopmessagetemplateList">
 				  <el-form-item label="消息类型：">
 					  <span>{{ShopmessagetemplateList.messageTypeName}}</span>
 				  </el-form-item>
@@ -80,10 +80,10 @@
                 </el-tag>
 					  </span>
 				  </el-form-item>
-				  <el-form-item label="消息标题：" style="height: 100%!important;">
+				  <el-form-item label="消息标题：" style="height: 100%!important;" prop="messageTitle">
 					  <el-input type="text" v-model="ShopmessagetemplateList.messageTitle" placeholder="请输入标题名称"></el-input>
 				  </el-form-item>
-				  <el-form-item label="消息内容：" style="height: 100%!important;">
+				  <el-form-item label="消息内容：" style="height: 100%!important;" prop="messageContent">
 					  <el-input  type="textarea" v-model="ShopmessagetemplateList.messageContent" :rows="5" placeholder="请输入内容"></el-input>
 				  </el-form-item>
 			  </el-form>
@@ -133,8 +133,32 @@ export default {
 			},
             dataForm: {},
 			changeSwitchVisible: false,
-            selectVal:""
+            selectVal:"",
+			dataRule:{
+				messageTitle: [
+					{ required: true, message: '必填项不能为空', trigger: 'blur' }
+				],
+				messageContent: [
+					{ required: true, message: '必填项不能为空', trigger: 'blur' }
+				],
+			},
 	    }
+	},
+	watch: {
+		'ShopmessagetemplateList.messageTitle': function (newV, oldV) {
+			var chineseCount = 0, characterCount = 0;
+			for (let i = 0; i < newV.length; i++) {
+				if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+					chineseCount = chineseCount + 2;
+				} else { //字符
+					characterCount = characterCount + 1;
+				}
+				var count = chineseCount + characterCount;
+				if (count > 200) { //输入字符大于200的时候过滤
+					this.ShopmessagetemplateList.messageTitle = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
+				}
+			}
+		}
 	},
 	created() {
         getmessagepage().then((res)=>{

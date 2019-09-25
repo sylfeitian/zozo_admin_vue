@@ -2,13 +2,13 @@
   <div>
     	<el-form :model="dataForm" label-width="140px" 	:rules="dataRule" class="demo-ruleForm" ref="addForm">
         <el-form-item label="优惠券名称：" prop="name">
-            <el-input v-model="dataForm.name" type="text" maxlength="50" placeholder="请输入50字以内的内容" show-word-limit style="width:400px;"></el-input>
+            <el-input v-model="dataForm.name" type="text" placeholder="请输入50字以内的内容" style="width:400px;"></el-input>
         </el-form-item>
         <el-form-item label="总发行量：" prop="totalNums">
-            <el-input v-model="dataForm.totalNums" type="number" min="0"  max="1000000" placeholder="1000"  style="width:400px;"></el-input>
+            <el-input v-model="dataForm.totalNums" type="text" min="0"  max="1000000" placeholder="1000"  style="width:400px;"></el-input>
         </el-form-item>
         <el-form-item label="面额：" prop="faceValue">
-             <el-input placeholder="20" v-model="dataForm.faceValue" show-word-limit style="width:220px;">
+             <el-input placeholder="20" v-model="dataForm.faceValue" style="width:220px;">
 					    <template slot="append">元</template>
 					  </el-input>
 					  <div>面值只能是数值，0.01-1000000，限2位小数</div>
@@ -37,11 +37,11 @@
 
         <el-form-item class="artfromitem" label="使用门槛：" prop="threshold">
         		<div>单笔订单满</div>
-            <el-input v-model="dataForm.threshold"  type="number"  max="1000000" placeholder="0"  style="width:400px;"></el-input>
+            <el-input v-model="dataForm.threshold"  type="text"  max="1000000" placeholder="0"  style="width:400px;"></el-input>
         		<div>元可用（输入“0”为无门槛优惠券）</div>
         </el-form-item>
         <el-form-item class="artfromitem" label="每人限领：" prop="limitNum">
-            <el-input v-model="dataForm.limitNum" type="number"  max="1000000" placeholder="1"  style="width:400px;"></el-input>
+            <el-input v-model="dataForm.limitNum" type="text"  max="1000000" placeholder="1"  style="width:400px;"></el-input>
             <div>张 &nbsp;&nbsp;&nbsp;&nbsp; 0代表不限制，每人最多限制5张</div>
         </el-form-item>
         <el-form-item label="有效期：" prop="totalNums">
@@ -73,7 +73,6 @@
                 type="textarea"
                 placeholder="请输入内容"
                 v-model="dataForm.bei"
-                maxlength="300"
                 style="width:400px;">
             </el-input>
         </el-form-item>
@@ -88,11 +87,20 @@
 <script>
 import { addActivityNormal, editActivityNormal, backScanActivity } from '@/api/api'
 import vueFilter from '@/utils/filter'
-var validnumber =(rule, value,callback)=>{
+// 仅可输入3位数字
+// var validnumber =(rule, value,callback)=>{
+//     debugger
+//     if (value.length>3){
+//       callback(new Error('仅可输入3位数字'))
+//     }else if(value <= 0){
+//     	callback(new Error('只能输入大于0的数'))
+//     }else {
+//       callback()
+//     }
+// };
+var validthreshold =(rule, value,callback)=>{
     if (value/1 > 1000000){
       callback(new Error('请输入1000000以内的数字'))
-    }else if(value.toString().indexOf('.') != -1){
-    	callback(new Error('只能输入整数'))
     }else if(value <= 0){
     	callback(new Error('只能输入大于0的数'))
     }else {
@@ -150,7 +158,11 @@ export default {
                 ],
                 totalNums :[
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
-                        { validator: validnumber, trigger: 'blur' },
+                        // { validator: validnumber, trigger: 'blur' },
+                ],
+                threshold :[
+                        { required: true, message: '必填项不能为空', trigger: 'blur' },
+                        { validator: validthreshold, trigger: 'blur' },
                 ],
                 faceValue :[
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -170,6 +182,68 @@ export default {
     },
     components:{
 
+    },
+    watch: {
+        'dataForm.name': function (newV, oldV) {
+            var chineseCount = 0, characterCount = 0;
+            for (let i = 0; i < newV.length; i++) {
+                if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                    chineseCount = chineseCount + 2;
+                } else { //字符
+                    characterCount = characterCount + 1;
+                }
+                var count = chineseCount + characterCount;
+                if (count > 100) { //输入字符大于100的时候过滤
+                    this.dataForm.name = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
+                }
+            }
+        },
+        'dataForm.totalNums':function(newV,oldV) {
+            for(let i=0;i<newV.length;i++){
+                // 只能输入数字
+                if(!/[0-9]/g.test(newV[i])){
+                    this.dataForm.totalNums = newV.replace(newV[i],"")
+                }
+            }
+        },
+        'dataForm.faceValue':function(newV,oldV) {
+            for(let i=0;i<newV.length;i++){
+                // 只能输入数字和小数点
+                if(!/[0-9|\.]/g.test(newV[i])){
+                    this.dataForm.faceValue = newV.replace(newV[i],"")
+                }
+            }
+        },
+        'dataForm.threshold':function(newV,oldV) {
+            for(let i=0;i<newV.length;i++){
+                // 只能输入数字
+                if(!/[0-9]/g.test(newV[i])){
+                    this.dataForm.threshold = newV.replace(newV[i],"")
+                }
+            }
+        },
+        'dataForm.limitNum':function(newV,oldV) {
+            for(let i=0;i<newV.length;i++){
+                // 只能输入数字
+                if(!/[0-9]/g.test(newV[i])){
+                    this.dataForm.limitNum = newV.replace(newV[i],"")
+                }
+            }
+        },
+        'dataForm.bei': function (newV, oldV) {
+            var chineseCount = 0, characterCount = 0;
+            for (let i = 0; i < newV.length; i++) {
+                if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                    chineseCount = chineseCount + 2;
+                } else { //字符
+                    characterCount = characterCount + 1;
+                }
+                var count = chineseCount + characterCount;
+                if (count > 6) { //输入字符大于600的时候过滤
+                    this.dataForm.bei = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
+                }
+            }
+        }
     },
     created(){
         console.log('999999',this.type,this.editSatusId)

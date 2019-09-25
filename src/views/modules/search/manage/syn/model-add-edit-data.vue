@@ -14,7 +14,7 @@
                 label-width="120px"
         >
             <el-form-item label="同义词：">
-                <el-input type="textarea" v-model="dataForm.name" placeholder="" :rows="4"></el-input>
+                <el-input type="textarea" v-model="dataForm.name" placeholder="请输入300字以内的内容" :rows="4"></el-input>
                 <span style="color: #999999;">多词请用英文逗号“,”隔开</span>
             </el-form-item>
 <!--            <el-form-item style="text-align: center;margin-left: -120px!important;">-->
@@ -45,6 +45,22 @@
                 title:'',
                 row:"",
                 formLabelWidth: '120px'
+            }
+        },
+        watch: {
+            'dataForm.name': function (newV, oldV) {
+                var chineseCount = 0, characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 600) { //输入字符大于600的时候过滤
+                        this.dataForm.name = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
+                    }
+                }
             }
         },
         methods: {

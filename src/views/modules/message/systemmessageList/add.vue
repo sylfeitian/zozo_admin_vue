@@ -34,7 +34,7 @@
 					  </span>
             </el-form-item>
             <el-form-item label="消息标题：" prop="messageTitle" :label-width="formLabelWidth">
-                <el-input v-model="addDataForm.messageTitle" maxlength="100" auto-complete="off" placeholder="请填写标题" style="width: 1200px;"></el-input>
+                <el-input v-model="addDataForm.messageTitle" auto-complete="off" placeholder="请填写标题" style="width: 1200px;"></el-input>
             </el-form-item>
             <el-form-item label="消息内容：" prop="messageContent" :label-width="formLabelWidth" style="vertical-align:top;">
                 <template slot-scope="scope">
@@ -168,6 +168,22 @@
             quillEditorImg,
             imgCropper,
             Bread
+        },
+        watch: {
+            'addDataForm.messageTitle': function (newV, oldV) {
+                var chineseCount = 0, characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 200) { //输入字符大于200的时候过滤
+                        this.addDataForm.messageTitle = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
+                    }
+                }
+            }
         },
         methods: {
             decl(){

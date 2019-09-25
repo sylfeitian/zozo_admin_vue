@@ -77,6 +77,12 @@
 		    label="优惠券名称"
 		    width="180"
 			align="center">
+			<template slot-scope="scope">
+				<div :title="scope.row.name">
+					{{scope.row.name}}
+				</div>
+			</template>
+
 		</el-table-column>
 		<el-table-column
 		    prop="type"
@@ -286,4 +292,11 @@ export default {
   width: 170px;
   height: 40px;
 }
+.cell div{
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+}
+
 </style>

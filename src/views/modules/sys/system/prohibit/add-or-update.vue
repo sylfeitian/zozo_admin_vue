@@ -15,7 +15,7 @@
                 label-width="120px"
         >
             <el-form-item label="禁用词名称：" prop="name" :label-width="formLabelWidth">
-                <el-input v-model="dataForm && dataForm.name" auto-complete="off"></el-input>
+                <el-input v-model="dataForm && dataForm.name" auto-complete="off" placeholder="请输入10字以内的内容"></el-input>
             </el-form-item>
 <!--            <el-form-item style="text-align: center;margin-left: -120px!important;">-->
 <!--                <el-button  @click="dataFormCancel()">取消</el-button>-->
@@ -48,14 +48,30 @@
                 formLabelWidth: '120px',
                 dataRule:{
 		          name: [
-		            { required: true, message: '请输入名称', trigger: 'blur' },
-		            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+		            { required: true, message: '必填项不能为空', trigger: 'blur' }
 		          ],
                 },
             }
         },
         components:{
         },
+        watch: {
+            'dataForm.name': function (newV, oldV) {
+                var chineseCount = 0, characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 20) { //输入字符大于20的时候过滤
+                        this.dataForm.name = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
+                    }
+                }
+            }
+        },
+
         computed:{
         	
         },
