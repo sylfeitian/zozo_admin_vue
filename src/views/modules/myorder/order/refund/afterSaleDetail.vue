@@ -13,7 +13,7 @@
             >
                 <el-table-column label="商品图片" align="center">\
                     <template slot-scope="scope">
-                        <img :src="scope.row.goodsImage | filterImgUrl" alt="">
+                        <img :src="scope.row.goodsImage | filterImgUrl" alt="" style="width:80px;height:80px">
                     </template>
                 </el-table-column>
                 <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
