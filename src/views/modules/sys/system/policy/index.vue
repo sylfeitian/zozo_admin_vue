@@ -133,7 +133,7 @@
 			      callback(new Error('请输入1000000以内的数字'))
 			    }else if(value <= 0){
 			    	callback(new Error('只能输入大于0的数'))
-			    }else if(value.toString().indexOf('.') != -1 && value.toString().substr(value.indexOf('.') + 1).length > 2){
+			    }else if(value.toString().indexOf('.') != -1 && value.toString().substr(value.toString().indexOf('.') + 1).length > 2){
 			    	callback(new Error('小数点后只能有两位'))
 			    }else if(this.dataForm.maxAmount && value/1 > this.dataForm.maxAmount){
 			      callback(new Error('最小值应该小于最大值'))
@@ -142,7 +142,7 @@
 			    }
 			};
 			var valid =(rule, value,callback)=>{
-			    if(value.toString().indexOf('.') != -1 && value.toString().substr(value.indexOf('.') + 1).length > 2){
+			    if(value.toString().indexOf('.') != -1 && value.toString().substr(value.toString().indexOf('.') + 1).length > 2){
 			    	callback(new Error('小数点后只能有两位'))
 			    }else {
 			      callback()
@@ -156,7 +156,7 @@
 			    }
 			};
 			var validriseIn =(rule, value,callback)=>{
-			    if(value.toString().indexOf('.') != -1 && value.toString().substr(value.indexOf('.') + 1).length > 4){
+			    if(value.toString().indexOf('.') != -1 && value.toString().substr(value.toString().indexOf('.') + 1).length > 4){
 			    	callback(new Error('小数点后只能有四位'))
 			    }else if(value/1 > 100){
 			      callback('最大值100')
@@ -165,7 +165,7 @@
 			    }
             };
             var validVpt =(rule, value,callback)=>{
-			    if(value.toString().indexOf('.') != -1 && value.toString().substr(value.indexOf('.') + 1).length > 4){
+			    if(value.toString().indexOf('.') != -1 && value.toString().substr(value.toString().indexOf('.') + 1).length > 4){
 			    	callback(new Error('小数点后只能有四位'))
 			    }else if(value/1 > 100){
 			      callback('最大值100')
@@ -181,7 +181,7 @@
 			    }
 			};
 			var validnummax =(rule, value,callback)=>{
-			    if(value.indexOf('.') !==-1){// 存在小数点
+			    if(value.toString().indexOf('.') !==-1){// 存在小数点
 			        if(value.length>9){
                         callback('最高可输入6位数,可输入2位小数')
                     }else{
