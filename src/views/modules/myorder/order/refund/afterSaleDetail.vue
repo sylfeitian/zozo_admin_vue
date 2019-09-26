@@ -102,9 +102,7 @@
                 </el-table-column>
                 <el-table-column label="操作" min-width="100" align="center">
                     <template slot-scope="scope">
-                        <span>同意退款</span>
-                        <span>售后取消</span>
-                        <span>未收货</span>
+                         <span>{{scope.row.message}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="remark" label="备注" align="center"></el-table-column>

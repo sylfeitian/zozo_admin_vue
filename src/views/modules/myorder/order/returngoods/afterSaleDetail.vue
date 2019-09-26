@@ -61,16 +61,18 @@
                             </el-form-item>
                             <el-form-item label="售后状态：">
                                 <!-- 售后状态 退货退款（10待退货、20待入库、30待退款、40退款中、50退款完成、60退款失败、70售后取消） 仅退款（10退款中、20退款完成、30退款失败） , -->
-                                <!-- <span v-if="returnInfo.status==10">待退货</span>
+                                <span v-if="returnInfo.status==10">待退货</span>
                                 <span v-else-if="returnInfo.status==20">待入库</span>
                                 <span v-else-if="returnInfo.status==30">待退款</span>
                                 <span v-else-if="returnInfo.status==40">退款中</span>
                                 <span v-else-if="returnInfo.status==50">退款完成</span>
                                 <span v-else-if="returnInfo.status==60">退款失败</span>
-                                <span v-else-if="returnInfo.status==70">售后取消</span> -->
-                                <span v-if="returnInfo.status==10">退款中</span>
+                                <span v-else-if="returnInfo.status==70">售后取消</span>
+                                <!-- <span v-if="returnInfo.status==10">退款中</span>
                                 <span v-else-if="returnInfo.status==20">退款完成</span>
-                                <span v-else-if="returnInfo.status==30">退款失败</span>
+                                <span v-else-if="returnInfo.status==30">退款失败</span> -->
+                          
+
                             </el-form-item>
 
                             <el-form-item label="订单编号：" >
@@ -170,12 +172,20 @@
                 >
                     <el-table-column prop="creator" label="操作者：" align="center"></el-table-column>
                     <el-table-column prop="createDate" label="操作时间：" align="center"></el-table-column>
-                    <el-table-column prop="status" label="操作时售后单状态：" align="center"></el-table-column>
+                    <el-table-column prop="status" label="操作时售后单状态：" align="center">
+                        <template slot-scope="scope">
+                            <el-tag v-if="scope.row.status==10" type="danger">待退货</el-tag>
+                            <el-tag v-else-if="scope.row.status==20" type="danger">待入库</el-tag>
+                            <el-tag v-else-if="scope.row.status==30" type="danger">待退款</el-tag>
+                            <el-tag v-else-if="scope.row.status==40" type="danger">退款中</el-tag>
+                            <el-tag v-else-if="scope.row.status==50" type="danger">退款完成</el-tag>
+                            <el-tag v-else-if="scope.row.status==60" type="danger">退款失败</el-tag>
+                            <el-tag v-else-if="scope.row.status==70" type="danger">售后取消</el-tag>
+                        </template>
+                    </el-table-column>
                     <el-table-column label="操作" min-width="100" align="center">
                         <template slot-scope="scope">
-                        <span>同意退款</span>
-                        <span>售后取消</span>
-                        <span>未收货</span>
+                                <span>{{scope.row.message}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column prop="remark" label="备注" align="center"></el-table-column>
