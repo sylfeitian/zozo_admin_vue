@@ -7,7 +7,8 @@
       <!-- 查看商品列表页面 -->
       <detailist v-if='!showStatus&&detailistStatus' @detailshowList='detailshowList' @addlistFun='addlistFun' :activityId="activityId"></detailist>
       <!-- 添加秒杀商品页面 -->
-      <addlist v-if='!showStatus&&addlistStatus' @addshowList='addshowList' @detailistFun='detailistFun'></addlist>
+      <addlist v-if='!showStatus&&addlistStatus' @addshowList='addshowList' @addlistFun='addlistFun' :activityId="activityId"></addlist>
+       <!-- @detailistFun='detailistFun' -->
   </div>
 </template>
 

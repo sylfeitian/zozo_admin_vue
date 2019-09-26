@@ -29,7 +29,7 @@
 
 		<el-form-item label="评价类型：" prop="appraisal" v-if="erjishow">
 			    <!-- <el-input v-model="dataForm.appraisal " type="text" placeholder="请输入4个汉字/8个字符以内的内容" show-word-limit style="width:400px;"></el-input> -->
-	        <el-input v-model="dataForm.appraisal" type="text" maxlength="6" placeholder="请输入6字以内的内容" show-word-limit style="width:400px;"></el-input>
+	        <el-input v-model="dataForm.appraisal" type="text" placeholder="请输入6字以内的内容" style="width:400px;"></el-input>
 	    </el-form-item>
     
 
@@ -233,6 +233,21 @@
 					var count = chineseCount + characterCount;
 					if (count > 8) { //输入字符大于8的时候过滤
 						this.dataForm.name = newV.substr(0,(chineseCount/2+characterCount)-1)
+					}
+				}
+			},
+			// 评价类型
+			'dataForm.appraisal':function(newV,oldV) {
+				var chineseCount = 0,characterCount = 0;
+				for (let i = 0; i < newV.length; i++) {
+					if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+						chineseCount = chineseCount + 2;
+					} else { //字符
+						characterCount = characterCount + 1;
+					}
+					var count = chineseCount + characterCount;
+					if (count > 12) { //输入字符大于12的时候过滤
+						this.dataForm.appraisal = newV.substr(0,(chineseCount/2+characterCount)-1)
 					}
 				}
 			}

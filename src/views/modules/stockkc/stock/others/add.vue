@@ -81,9 +81,7 @@
             return {
                 importAndExportOptions:{
                     importUrl:tudo,//导入接口
-                    importWord:"导入商品",
-                    // exportUrl:exportRegisterUrl,//导出接口
-                    // exportWord:"导出数据",
+                    importWord:"导入商品"
                 },
             	// mixinViewModuleOptions: {
 		        //   getDataListURL: '',

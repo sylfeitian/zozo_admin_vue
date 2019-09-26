@@ -34,7 +34,9 @@
                 :total="total"
                 layout="total, sizes, prev, pager, next, jumper">
         </el-pagination> -->
-
+        <div class="importBtn">
+            <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"></importAndExport>
+        </div>
         <MyTableTree 
             v-loading="dataListLoading"
             :firstColName="'分类条件ID'"
@@ -70,6 +72,8 @@
     import addEditData from './model-add-edit-data'
   
     import MyTableTree from "@/components/treeTable/MyTableTree.vue";
+    import importAndExport from "@/components/import-and-export"
+    import { importTag} from '@/api/io'
     // import {tagPage} from "@/api/url.js"
 
     import {tagPage} from "@/api/api.js"
@@ -77,6 +81,10 @@
         // mixins: [mixinViewModule],
         data () {
             return {
+                importAndExportOptions:{
+                    importUrl:importTag,//导入接口
+                    importWord:"导入信息"
+                },
                 // mixinViewModuleOptions: {
                 //     getDataListURL: tagPage,
                 //     getDataListIsPage: true,
@@ -89,6 +97,7 @@
                 // },
                 breaddata: [ "基础资料管理", "分类条件信息"],
                 dataListLoading: false,
+                dataForm:{},
                 dataFormShow: {
                     conditionId: "",//分类条件ID
                     conditionName: "",//分类条件信息名称
@@ -144,7 +153,8 @@
         components: {
             Bread,
             addEditData,
-            MyTableTree
+            MyTableTree,
+            importAndExport
         },
         created(){
             this.getTree();
@@ -243,5 +253,10 @@
 </script>
 
 <style scoped>
-
+.importBtn{
+    float:right;
+    margin-bottom: 8px;
+    z-index: 99;
+    position: relative;
+}
 </style>
