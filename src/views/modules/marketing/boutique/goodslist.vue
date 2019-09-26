@@ -3,10 +3,10 @@
         <Bread :breaddata="breaddata" :index = "'1'" @changePage = "changePage"></Bread>
         <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()" >
             <el-form-item label="商品货号：">
-                <el-input v-model="dataForm.goodsName"  placeholder="请输入商品货号" clearable></el-input>
+                <el-input v-model="dataForm.goodsId"  placeholder="请输入商品货号" clearable></el-input>
             </el-form-item>
             <el-form-item label="商品名称：">
-                <el-input v-model="dataForm.goodsId" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
+                <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
             </el-form-item>
             <el-form-item >
                 <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
@@ -14,7 +14,7 @@
             </el-form-item>
             <el-form-item style="float:right">
                 <el-button type="primary" @click="deleteRow()">批量删除</el-button>
-                <el-button type="primary">保存排序</el-button>
+                <el-button type="primary" @click="saveSort">保存排序</el-button>
                 <el-button type="primary" @click="addGoods()">添加商品</el-button>
             </el-form-item>
         </el-form>
@@ -51,7 +51,10 @@
                 prop="sort"
                 label="排序"
                 align="center"
-                width="180">
+                width="210">
+                <template slot-scope="scope">
+                    <el-input-number v-model="scope.row.sort" :step="1" :min="0" :max="999999" ></el-input-number>
+                </template>
             </el-table-column>
             <el-table-column
                 prop="goodsName"
@@ -97,7 +100,7 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import { categoryactivitygoodsPageUrl } from '@/api/url'
-    import { categoryactivitygoodsBatch,deleteCateActgoods } from '@/api/api'
+    import { categoryactivitygoodsBatch,deleteCateActgoods,categoryactivitygoodsUpdateBach } from '@/api/api'
     import Bread from "@/components/bread";
     import modelEditSku from "./modules/model-edit-sku";
 
@@ -168,6 +171,26 @@
                 this.modelEditSkuVisible = true;
                 this.$nextTick(()=>{
                     this.$refs.modelEditSkuCompon.init(this.row);
+                })
+            },
+             // 保存排序
+            saveSort(){
+                let dataArr = [];
+                this.dataList.forEach((item,index)=>{
+                    dataArr.push({
+                        id:item.id,//主键id
+                        goodsId:item.goodsId,//活动商品id ,
+                        sort:item.sort,// 排序
+                    })
+                })
+                var obj = dataArr
+                categoryactivitygoodsUpdateBach(obj).then((res)=>{
+                            if(res.code==200){
+                            this.$message.success(res.msg);
+                            // this.getDataList();
+                        }else{
+                            this.$message.error(res.msg);
+                        }
                 })
             },
             // 单个删除和批量删除

@@ -996,6 +996,10 @@ export const backScanCategoryactivityDetail = params => { return http.get(`${bas
 export const categoryactivitygoodsBatch = params => { return http.post(`${base}/categoryactivitygoods/batch`, params).then(res => res.data); };
 // 删除
 export const  deleteCateActgoods= params => { return http.delete(`${base}/categoryactivitygoods`, params).then(res => res.data); };
+// 批量修改
+export const categoryactivitygoodsUpdateBach = params => { return http.put(`${base}/categoryactivitygoods/updateBach`, params).then(res => res.data); };
+
+
 
 //Q&A----------------------------------------------------------------------------------------------------------
 //问题类型删除

@@ -3,10 +3,10 @@
     <Bread :breaddata="breaddata"></Bread>
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="分类名称：">
-            <el-input v-model="dataForm.name" placeholder="请输入优惠券名称" clearable></el-input>
+            <el-input v-model="dataForm.title" placeholder="请输入优惠券名称" clearable></el-input>
         </el-form-item>
         <el-form-item  label="状态：">
-            <el-select v-model="dataForm.storeType" clearable  placeholder="请选择">
+            <el-select v-model="dataForm.stopFlag" clearable  placeholder="请选择">
                 <el-option
                     v-for="item in storeTypes"
                     :key="item.id"
@@ -127,10 +127,11 @@
                     radio:'0'
                 },
                 dataForm: {
-                    storeType:'0',
-                    name:''
+                    stopFlag:'',//状态(0:启用，1：停用)
+                    title:''//分类名称
                 },
                 storeTypes:[
+                    {id: '',label: '全部'},
                     {id: '0',label: '启用'},
                     {id: '1',label: '停用'}
                 ],
@@ -166,8 +167,9 @@
             },
             //重置
             reset() {
-                this.dataForm = {storeType:'0',name:''};
-                this.getDataList();
+                this.dataForm.stopFlag = ""
+                this.dataForm.title = "";
+                this.getData();
             },
             //打开新增编辑活动弹框
             addActivity(row){
