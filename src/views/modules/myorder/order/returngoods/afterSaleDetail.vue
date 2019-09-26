@@ -20,7 +20,7 @@
                     <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
                     <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
                     <el-table-column prop="storeName" label="店铺" align="center"></el-table-column>
-                    <el-table-column prop="" label="规格" align="center"></el-table-column>
+                    <el-table-column prop="specName" label="规格" align="center"></el-table-column>
                     <el-table-column prop="goodsNum" label="数量" align="center"></el-table-column>
                     <el-table-column prop="sellPrice" label="商品售价" align="center">
                         <template slot-scope="scope">
@@ -105,7 +105,7 @@
                             
                             <el-form-item label="图片：" >
                                 <div v-for="(item,index) in aftersalePics ">
-                                    <img :src="item | filterImgUrl" alt="">
+                                    <img :src="item | filterImgUrl" alt="" style="height:80px;width:auto">
                                 </div>
                             </el-form-item>
                     </div>
@@ -369,7 +369,7 @@
 }
 .saleOrderInfo{
     .formWarp{
-        margin: 20px auto;
+        // margin: 20px auto;
     }
     .el-form-item {
         border-top:1px solid #ebeef5;

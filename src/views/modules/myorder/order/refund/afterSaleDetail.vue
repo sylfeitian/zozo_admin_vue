@@ -19,7 +19,7 @@
                 <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
                 <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
                 <el-table-column prop="storeName" label="店铺" align="center"></el-table-column>
-                <el-table-column prop="" label="规格" align="center"></el-table-column>
+                <el-table-column prop="specName" label="规格" align="center"></el-table-column>
                 <el-table-column prop="goodsNum" label="数量" align="center"></el-table-column>
                 <el-table-column prop="sellPrice" label="商品售价" align="center">
                     <template slot-scope="scope">
