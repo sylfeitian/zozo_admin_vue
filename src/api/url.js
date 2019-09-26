@@ -422,7 +422,13 @@ export const categoryactivityPageUrl = `${base}/categoryactivity/page`;
 // 删除
 export const deleteCategoryactivity = `${base}/categoryactivity`;
 // 商品列表分页
-export const categoryactivityGoodsPageUrl = `${base}/categoryactivity/goods/page`;
+export const categoryactivityGoodsPagePopUrl = `${base}/categoryactivity/goods/page`;
+
+//精选分类 ----------------------------------------------------------------------------------------------------------------
+// 分类商品分页
+export const categoryactivitygoodsPageUrl = `${base}/categoryactivitygoods/page`;
+// 删除
+// export const deletecategoryactivitygoods = `${base}/categoryactivitygoods`;
 
 //异常日志-------------------------------------------------------------------------------------------------------------
 // 列表

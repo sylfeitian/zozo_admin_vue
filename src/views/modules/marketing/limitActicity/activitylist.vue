@@ -74,8 +74,11 @@
 		    prop="startTime"
             align="center"
 		    label="活动时间">
+             <template slot-scope="scope">
+                    <span>{{scope.row.startTime}} 至 {{scope.row.endTime}}</span>
+             </template> 
 		</el-table-column>
-		<el-table-column
+		<el-table-column 
             align="center"
 		    label="审核状态">
              <template slot-scope="scope">

@@ -3,7 +3,7 @@
       <!-- 精品分类主页面 -->
       <list v-if='showStatus'  @goodsListFun='goodsListFun'></list>
       <!-- 商品列表页面 -->
-      <goodslist v-else @showListFun='showListFun' :classId="classId"></goodslist>
+      <goodslist v-else @showListFun='showListFun' ref="goodsListComon" ></goodslist>
   </div>
 </template>
 
@@ -22,9 +22,11 @@ export default {
   	list,goodslist
   },
   methods: {
-      goodsListFun(id){
+      goodsListFun(row){
           this.showStatus = false;
-          this.classId = id;
+          this.$nextTick(()=>{
+            this.$refs.goodsListComon.init(row);
+          })
       },
       showListFun(){
           this.showStatus = true;

@@ -239,7 +239,7 @@
         },
         methods:{
             init(row){
-                row.aftersaleSn = 111;
+                // row.aftersaleSn = 111;
                 this.row = row;
                 this.getAfterSaleDetail();
                 // 售后状态 退货退款（10待审核、20待退货、30待入库、40待退款、50退款中、60退款完成、70退款失败、80售后取消）；仅退款（10退款中、20退款完成、30退款失败）

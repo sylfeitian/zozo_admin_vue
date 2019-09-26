@@ -20,8 +20,7 @@
             <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
         </el-form-item>
         <el-form-item style="float:right">
-            <!-- <el-button type="primary" @click="addActivity()">添加分类</el-button> -->
-            <el-button type="primary" @click="toGoodsList('31313121212')">商品列表</el-button>
+            <el-button type="primary" @click="addActivity()">添加分类</el-button>
         </el-form-item>
     </el-form>
     <el-table
@@ -40,25 +39,31 @@
             </template>
 		</el-table-column>
 		<el-table-column
-		    prop="id"
+		    prop="title"
 		    label="分类名称"
+            align="center"
 		    width="180">
 		</el-table-column>
         <el-table-column
-		    prop="account"
+		    prop="sort"
+            align="center"
 		    label="排序">
 		</el-table-column>
 		<el-table-column
-		    prop="account"
+            align="center"
 		    label="状态">
+            <template slot-scope="scope">
+                <span v-if="scope.row.stopFlag==1">已停用</span>
+                <span v-else-if="scope.row.stopFlag==0">已启用</span>
+            </template>
 		</el-table-column>		
 	    <el-table-column
-	   		prop="address"
+            align="center"
 	    	label="操作">
 		    <template slot-scope="scope">
-		    	<el-button type="text" size="small" @click="toGoodsList(scope.row.id)">商品列表</el-button>
-		    	<el-button type="text" size="small" @click="addActivity(scope.row.id)">编辑</el-button>
-		    	<el-button class="artdanger" type="text" size="small">删除</el-button>
+		    	<el-button type="text" size="small" @click="toGoodsList(scope.row)">商品列表</el-button>
+		    	<el-button type="text" size="small" @click="addActivity(scope.row)">编辑</el-button>
+		    	<el-button class="artdanger" type="text" size="small"  @click="deleteHandle(scope.row.id)">删除</el-button>
 		    </template>
 	  	</el-table-column>
 	</el-table>
@@ -74,32 +79,19 @@
     </el-pagination>
 
     <!-- 新增编辑分类弹框 -->
-    <el-dialog
+    <!-- <el-dialog
         :title="activiTitle"
         :visible.sync="activiVisible"
         :close-on-click-modal = "false"
         :show-close = "false"
         class="activiDialog"
         width="40%">
-        <el-form :model="activiDataForm" :rules="dataRule" ref="activiDataForm" @keyup.enter.native="subActivity()" label-width="120px">
-            <el-form-item label="分类名称：" prop="sgName">
-                <el-input v-model="activiDataForm.sgName" placeholder="最多可输入4个汉字" :maxlength="4"></el-input>
-            </el-form-item>
-            <el-form-item label="排序：" prop="sort">
-                <el-input style="width:140px;margin-right:20px;" v-model="activiDataForm.sort" type="number" :maxlength="4"></el-input>数字越大越靠前
-            </el-form-item>
-            <el-form-item label="是否启用：" prop="radio">
-               <el-radio-group v-model="activiDataForm.radio">
-                    <el-radio label="0">启用</el-radio>
-                    <el-radio label="1">停用</el-radio>
-                </el-radio-group>
-            </el-form-item>
-        </el-form>
-        <span slot="footer" class="dialog-footer">
-            <el-button @click="noCheck('activiDataForm')">取 消</el-button>
-            <el-button type="primary" @click="subActivity('activiDataForm')" :loading="buttonStatus">确 定</el-button>
-        </span>
-    </el-dialog>
+       
+    </el-dialog> -->
+
+    <!-- 添加或者编辑 -->
+    <modelAddOrEdit v-if="modelAddOrEditVisible" ref="modelAddOrEditCompon" @searchDataList="getDataList" ></modelAddOrEdit>
+    
   </div>
 </template>
 
@@ -108,10 +100,13 @@
     import { categoryactivityPageUrl,deleteCategoryactivity } from '@/api/url'
     import { storeGrade } from '@/api/api'
     import Bread from "@/components/bread";
-    
+    import modelAddOrEdit from "./modules/model-add-or-edit"
     export default {
-    mixins: [mixinViewModule],
-    components:{Bread},
+        mixins: [mixinViewModule],
+        components:{
+            Bread,
+            modelAddOrEdit
+        },
         data () {
             return {
                 mixinViewModuleOptions: {
@@ -122,6 +117,7 @@
                     deleteIsBatch: true,
                     // deleteIsBatchKey: 'id'
                 },
+                modelAddOrEditVisible:false,
                 buttonStatus:false,
                 activiVisible:false,
                 activiTitle:'添加分类',
@@ -165,8 +161,8 @@
                 this.getDataList();
             },
             //回调跳到商品列表页面
-            toGoodsList(id){
-                this.$emit("goodsListFun",id);
+            toGoodsList(row){
+                this.$emit("goodsListFun",row);
             },
             //重置
             reset() {
@@ -174,14 +170,18 @@
                 this.getDataList();
             },
             //打开新增编辑活动弹框
-            addActivity(id){
-                this.activiVisible = true;
-                if(id){
-                    this.activiTitle = '编辑分类';
-                    this.getInfo(id);//判断是编辑情况下调详情方法
-                }else{
-                    this.activiTitle = '添加分类';
-                }
+            addActivity(row){
+                // this.activiVisible = true;
+                this.modelAddOrEditVisible = true;
+                this.$nextTick(()=>{
+                    this.$refs.modelAddOrEditCompon.init(row);
+                })
+                // if(id){
+                //     this.activiTitle = '编辑分类';
+                //     this.getInfo(id);//判断是编辑情况下调详情方法
+                // }else{
+                //     this.activiTitle = '添加分类';
+                // }
             },
             //取消弹框
             noCheck(formName){
