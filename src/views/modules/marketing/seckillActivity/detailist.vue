@@ -22,40 +22,40 @@
             width="50">
         </el-table-column>
 		<el-table-column
-		    prop="id"
+		    prop="activityId"
 		    label="商品id"
 		    width="180">
 		</el-table-column>
         <el-table-column
-		    prop="storeName"
+		    prop="sort"
 		    label="排序">
 		</el-table-column>
 		<el-table-column
-		    prop="storeName"
+		    prop="goodsName"
 		    label="商品名称">
 		</el-table-column>
 		<el-table-column
-		    prop="gradeName"
+		    prop="sellPrice"
 		    label="销售价格">
 		</el-table-column>
 		<el-table-column
-		    prop="createDate"
+		    prop="activityPrice"
 		    label="秒杀价格"
              width="180">
 		</el-table-column>
         <el-table-column
-            prop="asassa"
+            prop="activityQuantity"
             label="活动库存">
         </el-table-column>
         <el-table-column
-		    prop="creator"
+		    prop="personLimit"
 		    label="每人限购">
 		</el-table-column>
 	    <el-table-column
 	   		prop="address"
 	    	label="操作">
 		    <template slot-scope="scope">
-		    	<el-button type="text" size="small" @click="lookShow(scope.row.id)">查看</el-button>
+		    	<el-button type="text" size="small" @click="lookShow(scope.row.activityId,scope.row.goodsId)">查看</el-button>
 		    	<el-button type="text" size="small">删除</el-button>
 		    </template>
 	  	</el-table-column>
@@ -79,16 +79,16 @@
         class="editDialog"
         width="50%">
             <div class="goodsPresent">
-                <img src="@/assets/img/avatar.png" alt="" />
+                <img :src="$imgDomain+goodsInfo.mainImageUrl?'goodsInfo.mainImageUrl':'@/assets/img/avatar.png'" alt="" />
                 <div class="goodsPresentModle">
-                    <div class="goodsTitle">施华洛初恋珍珠耳环</div>
-                    <div class="goodsmoney">￥ {{moneyNum}}</div>
-                    <div class="goodsClass">秒杀价格：<span style="color:red">￥121</span></div>
+                    <div class="goodsTitle">{{goodsInfo.name}}</div>
+                    <div class="goodsmoney">￥ {{goodsInfo.sellPrice}}</div>
+                    <div class="goodsClass">秒杀价格：<span style="color:red">￥{{goodsInfo.activityPrice}}</span></div>
                 </div>
             </div>
            <!-- scope.$index+1+(parseInt(page)-1)* parseInt(limit) -->
             <el-table
-                :data="dataList"
+                :data="goodsList"
                 v-loading="dataListLoading"
                 border
                 style="width: 100%">
@@ -98,19 +98,19 @@
                     width="180">
                 </el-table-column>
                 <el-table-column
-                    prop="storeName"
+                    prop="specInfo"
                     label="规格">
                 </el-table-column>
                 <el-table-column
-                    prop="storeName"
+                    prop="activityQuantity"
                     label="活动库存">
                 </el-table-column>
                 <el-table-column
-                    prop="gradeName"
+                    prop="cartLimit"
                     label="日本限购数量">
                 </el-table-column>
                 <el-table-column
-                    prop="createDate"
+                    prop="personLimit"
                     label="每人限购">
                 </el-table-column>
             </el-table>
@@ -120,8 +120,8 @@
 
 <script>
     import mixinViewModule from '@/mixins/view-module'
-    import { businessPageUrl } from '@/api/url'
-    import { storeGrade } from '@/api/api'
+    // import { seckillProPage } from '@/api/url'
+    import { seckillProPage,seckillProDet } from '@/api/api'
     import Bread from "@/components/bread";
 
     export default {
@@ -131,8 +131,8 @@
         data () {
             return {
                 mixinViewModuleOptions: {
-                    getDataListURL: businessPageUrl,
-                    getDataListIsPage: true,
+                    getDataListURL: seckillProPage,
+                    getDataListIsPage: false,
                     exportURL: '/admin-api/store/export',
                     deleteURL: '/admin-api/store',
                     deleteIsBatch: true,
@@ -142,13 +142,28 @@
                 lookVisible:false,//弹框状态
                 buttonStatus:false,
                 moneyNum:99.9,
+                goodsInfo:{},
+                goodsList:{}
             }
         },
         created(){
-            console.log('活动id',this.activityId)
+            console.log(this.dataForm,'活动id',this.activityId)
+            this.getDataList()
             this.demo();
         },
         methods: {
+            //获取商品数据
+            getDataList(){
+                seckillProPage({activityId:this.activityId}).then(res=>{
+                    if(res.code==200){
+                        console.log(res.data.list,'shijinfeng')
+                        this.dataList=res.data.list;
+                        this.total=res.data.total;
+                    }else{
+                        console.log('error')
+                    }
+                })
+            },
                 //回调跳转添加商品页面
                 addGoods(id){
                     this.$emit("addlistFun",id);
@@ -157,7 +172,18 @@
                 changePage(){
                     this.$emit('detailshowList')
                 },
-                lookShow(id){
+                lookShow(actId,id){
+                    const obj={
+                        goodsId:id,
+                        activityId:actId
+                    }
+                    seckillProDet(obj).then(res=>{
+                        if(res.code==200){
+                            this.goodsList=res.data.activityGoodsChoiceSkuVOList;
+                            this.goodsInfo=res.data;
+                            console.log(res,'000')
+                        }
+                    })
                     this.lookVisible = true;
                 },
                 demo(){

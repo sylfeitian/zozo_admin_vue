@@ -1001,3 +1001,17 @@ export const saveQuestionanswer = params => { return http.post(`${base}/question
 export const putQuestionanswer = params => { return http.put(`${base}/questionanswer/update`, params).then(res => res.data); };
 //Q&A信息
 export const getQuestionanswer = params => { return http.get(`${base}/questionanswer/${params.id}`, params).then(res => res.data); };
+
+
+
+
+//秒杀活动
+//秒杀关联商品
+export const seckillProPage = params => { return http.get(`${base}/seckill/goods/choiced/page/${params.activityId}`, params).then(res => res.data); };
+//关联商品详情
+export const seckillProDet = params => { return http.get(`${base}/seckill/goods/sku/choice?goodsId=${params.goodsId}&activityId=${params.activityId}`, params).then(res => res.data); };
+//秒杀场次审核
+export const seckillActAudit = params => { return http.get(`${base}/seckill/activity/audit?id=${params.id}&auditState=${params.auditState}`, params).then(res => res.data); };
+//秒杀添加商品列表
+export const addSckillPro = params => { return http.get(`${base}/seckill/goods/page/${params.activityId}?page=${params.page}&limit=${params.limit}&brandName=${params.brandName}&name=${params.name}&categoryId=${params.categoryId}&id=${params.id}&storeName=${params.storeName}`, params).then(res => res.data); };;
+

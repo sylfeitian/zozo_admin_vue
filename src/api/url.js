@@ -458,4 +458,9 @@ export const activityMemberCouponsPage = `${base}/activity/coupon/member/coupons
 
 
 
+//秒杀活动
+//秒杀列表
+export const seckillPage = `${base}/seckill/activity/page`;
+//秒杀关联商品列表
+// export const seckillProPage = `${base}/seckill/goods/choiced/page`;
 
