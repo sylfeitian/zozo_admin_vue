@@ -1,5 +1,5 @@
 <template>
-    <el-dialog :visible.sync="visible" :title="!pageId ? $t('add') : $t('update')" :close-on-click-modal="false"
+    <el-dialog :visible.sync="visible" :title="(!pageId ? '添加' : '编辑')+'管理员'" :close-on-click-modal="false"
                :close-on-press-escape="false">
         <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmitHandle()"
                  label-width="120px">
@@ -11,7 +11,7 @@
                 <el-input v-model="dataForm.realName" placeholder="请输入姓名"></el-input>
             </el-form-item>
             <el-form-item prop="mobile" label="手机号：">
-                <el-input v-model="dataForm.mobile" placeholder="请输入手机号"></el-input>
+                <el-input v-model="dataForm.mobile" placeholder="请输入手机号" maxlength="11"></el-input>
             </el-form-item>
             <el-form-item prop="password" label="密码：" :class="{ 'is-required': !pageId }">
                 <el-input v-model="dataForm.password" type="password" placeholder="请输入6-12位的密码" minlength="6"
@@ -22,15 +22,12 @@
                           maxlength="12"></el-input>
             </el-form-item>
             <el-form-item
-                    :label="'角色' + (index+1) + '：'"
                     v-for="(roleItem, index) in dataForm.roleIds"
-                    :key="roleItem.key"
-                    :prop="'roleIds.' + index + '.id'"
-                    :rules="{
-      required: true, message: '必填项不能为空', trigger: 'change'
-    }"
+                    :label="index===0?'角色：':''"
+                    :key="index"
+                    :prop="index===0?'roleIds.0.id':''"
             >
-                <el-select v-model="roleItem.id" :placeholder="$t('user.roleIdList')" class="distance-btn"
+                <el-select v-model="roleItem.id" :placeholder="dataForm.roleIds.id?'角色'+(index+1):'请选择'" class="distance-btn"
                            @change="selected">
                     <el-option
                             v-for="item in roleList"
@@ -39,8 +36,13 @@
                             :value="item.id">
                     </el-option>
                 </el-select>
-                <el-button v-if="index>0" type="text" @click.prevent="removeRoleItem(roleItem)">删除</el-button>
-                <el-button type="text" @click="addRoleItem">添加</el-button>
+                <template v-if="dataForm.roleIds.length<2">
+                    <el-button type="text" @click="addRoleItem">添加</el-button>
+                 </template>
+                <template v-else>
+                    <el-button v-if="index===0" type="text" @click.prevent="removeRoleItem">删除</el-button>
+                    <el-button v-if="index>0" type="text" @click="addRoleItem">添加</el-button>
+                 </template>
             </el-form-item>
         </el-form>
         <template slot="footer">
@@ -65,8 +67,7 @@
                 // roleIdListDefault: [],
                 dataForm: {
                     roleIds: [{
-                        id: '',
-                        key: Date.now()
+                        id: ''
                     }],
                     id: '',
                     username: '',
@@ -116,6 +117,7 @@
         },
         computed: {
             dataRule() {
+                // 账号
                 var validateUsername = (rule, value, callback) => {
                     if (!/\S/.test(value)) {
                         return callback(new Error(this.$t('validate.required')))
@@ -125,6 +127,7 @@
                     }
                     callback()
                 }
+                // 姓名
                 var validateRealName = (rule, value, callback) => {
                     if (!/\S/.test(value)) {
                         return callback(new Error(this.$t('validate.required')))
@@ -186,7 +189,7 @@
                     confirmPasswd: [
                         {required: true, validator: validateComfirmPassword, trigger: 'blur'}
                     ],
-                    roleIds: [
+                    'roleIds.0.id': [
                         {required: true, validator: validateRoleId, trigger: 'change'}
                     ],
                     mobile: [
@@ -195,41 +198,48 @@
                 }
             }
         },
+        watch:{
+            'dataForm.mobile':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    // 只能输入数字
+                    if(!/[0-9]/g.test(newV[i])){
+                        this.dataForm.mobile = newV.replace(newV[i],"")
+                    }
+                }
+            }
+        },
         methods: {
             // 筛选重复的角色
             selected(query) {
-                var selectItem = [];
-                for (let i = 0; i < this.dataForm.roleIds.length; i++) {
-                    selectItem.push(this.dataForm.roleIds[i].id)
-                }
-                if (selectItem.indexOf(query) !== selectItem.lastIndexOf(query)) { // 所选角色重复
-                    this.dataForm.roleIds[selectItem.lastIndexOf(query)].name = ''
-                    this.dataForm.roleIds[selectItem.lastIndexOf(query)].id = ''
-                    this.dataForm.roleIds[selectItem.lastIndexOf(query)].key = Date.now()
-                    this.$message("该角色已经被选了,请选择其他角色")
-                }
+                    var selectItem = [];
+                    for (let i = 0; i < this.dataForm.roleIds.length; i++) {
+                        selectItem.push(this.dataForm.roleIds[i].id)
+                    }
+                    if (selectItem.indexOf(query) !== selectItem.lastIndexOf(query)) { // 所选角色重复
+                        this.dataForm.roleIds[selectItem.lastIndexOf(query)].name = ''
+                        this.dataForm.roleIds[selectItem.lastIndexOf(query)].id = ''
+                        this.dataForm.roleIds[selectItem.lastIndexOf(query)].key = Date.now()
+                        this.$message("该角色已经被选了,请选择其他角色")
+                    }
+
             },
             // 弹窗关闭
             noCheck() {
                 this.visible = false
                 this.$refs['dataForm'].resetFields();
                 this.dataForm.roleIds = [{
-                    id: '',
-                    key: Date.now()
+                    id: ''
+                    // key: Date.now()
                 }]
             },
             // 删除角色
-            removeRoleItem(roleItem) {
-                var index = this.dataForm.roleIds.indexOf(roleItem)
-                if (index > 0) {
-                    this.dataForm.roleIds.splice(index, 1)
-                }
+            removeRoleItem() {
+                this.dataForm.roleIds.splice(this.dataForm.roleIds.length-1, 1)
             },
             // 新增角色
             addRoleItem() {
                 this.dataForm.roleIds.push({
-                    id: '',
-                    key: Date.now()
+                    id: ''
                 });
             },
             init(id) {
@@ -244,8 +254,7 @@
                     }
                     this.getRoleList()
                     this.dataForm.roleIds = [{
-                        id: '',
-                        key: Date.now()
+                        id: ''
                     }]
                 })
             },
@@ -299,37 +308,42 @@
             // },
             // 表单提交
             dataFormSubmitHandle: debounce(function () {
-                this.$refs['dataForm'].validate((valid) => {
-                    if (!valid) {
-                        return false
-                    }
-                    var roleData = []
-                    for (var i = 0; i < this.dataForm.roleIds.length; i++) {
-                        roleData.push(this.dataForm.roleIds[i].id)
-                    }
-                    this.dataForm.roleIds = roleData
-                    this.$http[!this.pageId ? 'post' : 'put']('/admin-api/user', {
-                        ...this.dataForm
-                    }).then(({data: res}) => {
-                        if (res.code !== 200) {
-                            return this.$message.error(res.msg)
-                        }
-                        this.$message({
-                            message: this.$t('prompt.success'),
-                            type: 'success',
-                            duration: 500,
-                            onClose: () => {
-                                this.visible = false
-                                this.$emit('refreshDataList')
-                            }
-                        })
-                    }).catch(() => {
-                    })
-                    this.dataForm.roleIds = [{
-                        id: '',
-                        key: Date.now()
-                    }]
-                })
+                var that = this;
+                       that.$refs['dataForm'].validate((valid) => {
+                           if (!valid) {
+                               return false
+                           }
+                           var roleData = []
+                           for (var i = 0; i < that.dataForm.roleIds.length; i++) {
+                               if(that.dataForm.roleIds[i].id !==""){
+                                   roleData.push(that.dataForm.roleIds[i].id)
+                               }else{// 没有填写角色时
+                                   that.$message("请先填上角色")
+                                          return
+                               }
+                           }
+                           that.dataForm.roleIds = roleData
+                           that.$http[!this.pageId ? 'post' : 'put']('/admin-api/user', {
+                               ...that.dataForm
+                           }).then(({data: res}) => {
+                               if (res.code !== 200) {
+                                   return that.$message.error(res.msg)
+                               }
+                               that.$message({
+                                   message: that.$t('prompt.success'),
+                                   type: 'success',
+                                   duration: 500,
+                                   onClose: () => {
+                                       that.visible = false
+                                       that.$emit('refreshDataList')
+                                   }
+                               })
+                           }).catch(() => {
+                           })
+                           that.dataForm.roleIds = [{
+                               id: ''
+                           }]
+                       })
             }, 1000, {'leading': true, 'trailing': false})
         }
     }

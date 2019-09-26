@@ -200,7 +200,7 @@
         width="44%">
         <el-form :inline="true" :model="goodsdataForm">
             <el-form-item label="商品名称：">
-                <el-input v-model="goodsdataForm.goodsName" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
+                <el-input v-model="goodsdataForm.goodsName" placeholder="商品名称/商品货号" clearable maxlength="300"></el-input>
             </el-form-item>
             <el-form-item label="选择分类：">
                 <el-cascader
@@ -224,20 +224,33 @@
             border
             style="width: 100%">
             <el-table-column
-                prop="id"
+                prop="name"
                 label="商品名称"
                 align="center"
                 width="240">
+                <template slot-scope="scope">
+                    <div :title="scope.row.name">
+                        {{scope.row.name}}
+                    </div>
+                </template>
             </el-table-column>
             <el-table-column
-                prop="account"
+                prop="idJp"
                 align="center"
                 label="商品ID">
             </el-table-column>
             <el-table-column
-                prop="gradeName"
+                prop="sellPrice"
                 align="center"
                 label="价格">
+                <template slot-scope="scope">
+                    <div v-if="scope.row.priceType == 'sale'">
+                        {{scope.row.discountPrice}}
+                    </div>
+                    <div v-if="scope.row.priceType == 'proper'">
+                        {{scope.row.sellPrice}}
+                    </div>
+                </template>
             </el-table-column>
             <el-table-column
                 align="center"
@@ -733,9 +746,16 @@
         border-radius: 50%;
         background: #2260D2;
     }
-    /deep/ .cell {
+/*    /deep/ .cell {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }*/
+    /deep/ .cell{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
     }
+
 </style>
