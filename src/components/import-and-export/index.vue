@@ -2,7 +2,7 @@
     <div style="display: inline-block;">
        <el-button v-if="importAndExportOptions && importAndExportOptions.exportUrl" class="btn" type="primary" @click="exportExcel">{{importAndExportOptions.exportWord}}</el-button>
         <el-upload
-            v-if="importAndExportOptions && importAndExportOptions.importUrl" 
+            v-if="importAndExportOptions && importAndExportOptions.importUrl"
             style="display:inline-block;margin-left:20px;"
             class="upload-demo"
             ref="upload"
@@ -57,6 +57,7 @@ export default {
             },
             // 导入之前
             beforeAvatarUpload(file) {
+                debugger
                 this.$refs.upload.abort();
                 // this.progress = 0;
                 console.log(file);

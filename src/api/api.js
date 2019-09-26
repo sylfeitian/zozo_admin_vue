@@ -983,6 +983,23 @@ export const presellActivityAudit = params => { return http.put(`${base}/presell
 // 停止限量活动
 export const presellActivityStop = params => { return http.put(`${base}/presell/activity/stop?id=${params.id}`, params).then(res => res.data); };
 
+// 精选分类 ----------------------------------------------------------------------------------------------------------
+// 保存
+export const categoryactivityAdd = params => { return http.post(`${base}/categoryactivity/add`, params).then(res => res.data); };
+// 修改编辑
+export const categoryactivityUpdate = params => { return http.put(`${base}/categoryactivity/update`, params).then(res => res.data); };
+// 根据ID获取信息
+export const backScanCategoryactivityDetail = params => { return http.get(`${base}/categoryactivity/${params.id}`, params).then(res => res.data); };
+
+// 精选分类商品表 ----------------------------------------------------------------------------------------------------------
+// 批量保存
+export const categoryactivitygoodsBatch = params => { return http.post(`${base}/categoryactivitygoods/batch`, params).then(res => res.data); };
+// 删除
+export const  deleteCateActgoods= params => { return http.delete(`${base}/categoryactivitygoods`, params).then(res => res.data); };
+// 批量修改
+export const categoryactivitygoodsUpdateBach = params => { return http.put(`${base}/categoryactivitygoods/updateBach`, params).then(res => res.data); };
+
+
 
 //Q&A----------------------------------------------------------------------------------------------------------
 //问题类型删除

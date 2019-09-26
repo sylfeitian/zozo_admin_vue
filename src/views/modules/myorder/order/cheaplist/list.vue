@@ -106,7 +106,7 @@
                         <span v-else-if="scope.row.orderStatus==90 || scope.row.orderStatus==100">JD申报失败</span>
                         <span v-else-if="scope.row.orderStatus==110">清关中</span>
                         <!-- <span v-else-if="scope.row.orderStatus==120">清关失败</span> -->
-                        <span v-else-if="scope.row.orderStatus==120">待收货</span>
+                        <span v-else-if="scope.row.orderStatus==130">待收货</span>
                         <!-- 已完成 -->
                         <span v-else-if="scope.row.orderStatus==140">交易完成</span>
                         <span v-else-if="scope.row.orderStatus==0">已取消</span>
@@ -119,9 +119,9 @@
                 <template slot-scope="scope">
                     <!-- <el-button type="primary" @click="submitStore()">{{ $t('confirm') }}</el-button> -->
                     <el-button size="mini" type="text" @click="orderDetFn(scope.row)">查看</el-button>
-                    <el-button size="mini" type="text" @click="cancleOrderFn(scope.row)"  v-if="scope.row.orderStatus==10  ||  scope.row.orderStatus==70 || scope.row.orderStatus==90 || scope.row.orderStatus==100">取消订单</el-button>
+                    <el-button size="mini" type="text" @click="cancleOrderFn(scope.row)"  v-if="scope.row.orderStatus==10  ||   scope.row.orderStatus==50 || scope.row.orderStatus==70 || scope.row.orderStatus==90 || scope.row.orderStatus==100">取消订单</el-button>
                     <el-button size="mini" type="text" @click="exammineFn(scope.row)" v-if="scope.row.orderStatus==30">审核</el-button>
-                    <el-button size="mini" type="text" @click="declareSthFn(scope.row)" v-if="scope.row.orderStatus==70 || scope.row.orderStatus==100">重新申报</el-button>
+                    <el-button size="mini" type="text" @click="declareSthFn(scope.row)" v-if="scope.row.orderStatus==100">重新申报</el-button>
                     <!-- <el-button size="mini" type="text"  @click="clearancFailureFn(scope.row)"  v-if="scope.row.orderStatus==80">清关失败</el-button> -->
                     <!-- <el-button size="mini" type="text"  @click="writeLogisticsInfo(scope.row)"  v-if="scope.row.orderStatus==80">填写物流</el-button> -->
                     
@@ -210,8 +210,8 @@
                     memberName: "",
                     paymentId: "",
                     // paymentStatus: "",
-                    startCreateDate: "",
-                    endCreateDate: "",
+                    startTime: "",
+                    endTime: "",
                     endPaymentTime: "",
                     startPaymentTime: "",
                     orderType: "bc",//订单类型：bc,cc
@@ -273,8 +273,8 @@
                 this.$emit("orderDetFn",row);
             },
             getData() {
-                this.dataForm.startCreateDate = this.timeArr && this.timeArr[0];
-                this.dataForm.endCreateDate = this.timeArr && this.timeArr[1];
+                this.dataForm.startTime = this.timeArr && this.timeArr[0];
+                this.dataForm.endTime = this.timeArr && this.timeArr[1];
                 this.dataForm.startPaymentTime = this.timeArr2[0];
                 this.dataForm.endPaymentTime = this.timeArr2[1];
                 this.page = 1;
@@ -325,7 +325,7 @@
             reset(formName) {
                 this.timeArr = [];
                 this.timeArr2 = [];
-                this.dataForm.startCreateDate = "";
+                this.dataForm.startTime = "";
                 this.dataForm.endtime = "";
                 this.dataForm.startPaymentTime = "";
                 this.dataForm.endPaymentTime = "";

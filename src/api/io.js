@@ -20,3 +20,5 @@ export const importAdvertisingbanUrl = `${allBase}/advertisingban/import`;
 export const importShopStore = `${allBase}/shopStore/import`;
 // 添加出库单-导入商品(模拟接口)
 export const tudo = `${allBase}/shopStore/import`;
+// 导入分类条件信息
+export const importTag = `${allBase}/tag/import`;

@@ -74,6 +74,9 @@
 		    prop="startTime"
             align="center"
 		    label="活动时间">
+            <template slot-scope="scope">
+                    <span>{{scope.row.startTime}} 至 {{scope.row.endTime}}</span>
+             </template> 
 		</el-table-column>
 		<el-table-column
             align="center"
@@ -93,6 +96,7 @@
                     <span v-if="scope.row.state ==0">未开始</span>
                     <span v-else-if="scope.row.state ==1">进行中</span>
                     <span v-else-if="scope.row.state ==2">已结束</span>
+                    <span v-else-if="scope.row.state ==3">未开售</span>
                 </template>   
 		</el-table-column>
 	    <el-table-column
@@ -171,9 +175,10 @@ export default {
       ],
       activitesstatesOption: [
           { id: '', name: "全部" },
-          { id: 1, name: "未开始" },
-          { id: 2, name: "进行中" },
-          { id: 3, name: "已结束" },
+          { id: 0, name: "未开始" },
+          { id: 1, name: "进行中" },
+          { id: 2, name: "已结束" },
+          { id: 3, name: "未开售" },
         ],
       breaddata: ["营销管理", "预售活动"],
       valuetime:"",

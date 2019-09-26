@@ -138,7 +138,7 @@
         },
         methods:{
             init(row){
-                row.aftersaleSn = 111;
+                // row.aftersaleSn = 111;
                 this.row = row;
                 this.getAfterSaleDetail();
                

@@ -7,7 +7,7 @@
                 <el-input v-model="dataFormShow.goodsName" placeholder="商品名称"  maxlength="300"></el-input>
             </el-form-item>
             <el-form-item label="商品sku ID：">
-                <el-input v-model="dataFormShow.goodsCsIdJp" placeholder="商品skuid" maxlength="30"></el-input>
+                <el-input v-model="dataFormShow.skuIdJp" placeholder="商品skuid" maxlength="30"></el-input>
             </el-form-item>
             <el-form-item label="分类：">
                 <el-cascader
@@ -153,7 +153,7 @@
             <el-table-column prop="jdThirdCategory" label="京东三级分类"  align="center" v-if="dataFormShow.isTofileFlag=='1'">
                 <template slot-scope="scope">
                     <div>
-                        {{scope.row.jdThirdCategory}}
+                        {{scope.row.thirdCategoryNo}}
                     </div>
                 </template>
             </el-table-column>
@@ -210,7 +210,7 @@
                 activeName: "",
                 dataFormShow: {
                     goodsName: "",// 商品名称
-                    goodsCsIdJp: "",// 商品sku ID
+                    skuIdJp: "",// 商品sku ID
                     firstCategory: "",// 分类
                     storeName: "",// 店铺名称
                     brandName:"",// 品牌
@@ -253,14 +253,14 @@
         },
         // ID类搜索框仅可输入数字、英文，最多可输入30个字符
         watch:{
-            'dataFormShow.goodsCsIdJp':function(newV,oldV) {
+            'dataFormShow.skuIdJp':function(newV,oldV) {
                 for(let i=0;i<newV.length;i++){
                     if(!/[a-zA-Z0-9]/.test(newV[i])){
-                        this.dataFormShow.goodsCsIdJp = newV.replace(newV[i],"")
+                        this.dataFormShow.skuIdJp = newV.replace(newV[i],"")
                     }
                 }
                 if(newV.length>30){
-                    this.dataFormShow.goodsCsIdJp = newV.substr(0,30)
+                    this.dataFormShow.skuIdJp = newV.substr(0,30)
                 }
             }
         },
@@ -328,7 +328,7 @@
                 this.$emit("detShowChange",row);
             },
             reset() {
-                this.dataFormShow.goodsCsIdJp = "";//商品sku ID
+                this.dataFormShow.skuIdJp = "";//商品sku ID
                 this.dataFormShow.goodsName = "";//商品名称/商品货号
                 this.dataFormShow.brandName = "";//品牌名称
                 this.dataFormShow.storeName = "";//店铺名称
@@ -336,7 +336,7 @@
                 this.dataFormShow.categoryId = "";
                 this.dataFormShow.isTofile = "";
                 this.dataForm.categoryId = "";
-                this.dataForm.goodsCsIdJp = "";//商品sku ID
+                this.dataForm.skuIdJp = "";//商品sku ID
                 this.dataForm.goodsName = "";//商品名称/商品货号
                 this.dataForm.brandName = "";//品牌名称
                 this.dataForm.storeName = "";//店铺名称

@@ -192,8 +192,8 @@
                     memberName: "",
                     paymentId: "",
                     // paymentStatus: "",
-                    startCreateDate: "",
-                    endCreateDate: "",
+                    startTime: "",
+                    endTime: "",
                     endPaymentTime: "",
                     startPaymentTime: "",
                     orderType: "",//订单类型：bc,cc
@@ -245,8 +245,8 @@
                 this.$emit("orderDetFn",row);
             },
             getData() {
-                this.dataForm.startCreateDate = this.timeArr && this.timeArr[0];
-                this.dataForm.endCreateDate = this.timeArr && this.timeArr[1];
+                this.dataForm.startTime = this.timeArr && this.timeArr[0];
+                this.dataForm.endTime = this.timeArr && this.timeArr[1];
                 this.dataForm.startPaymentTime = this.timeArr2[0];
                 this.dataForm.endPaymentTime = this.timeArr2[1];
                 this.page = 1;
@@ -271,7 +271,7 @@
             reset(formName) {
                 this.timeArr = [];
                 this.timeArr2 = [];
-                this.dataForm.startCreateDate = "";
+                this.dataForm.startTime = "";
                 this.dataForm.endtime = "";
                 this.dataForm.startPaymentTime = "";
                 this.dataForm.endPaymentTime = "";
