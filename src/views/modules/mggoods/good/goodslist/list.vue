@@ -536,23 +536,38 @@ export default {
         ids: ids,
         showWeb: showWeb
       };
-      showBatchGoods(obj).then(res => {
-        let status = "";
-        let msg = "";
-        if (res.code == "200") {
-          status = "success";
-          msg = showWeb == 1 ? "商品上架成功" : "商品下架成功";
-          this.getDataList();
-        } else {
-          status = "error";
-          msg = res.msg;
-        }
-        this.$message({
-          message: msg,
-          type: status,
-          duration: 1500
-        });
+
+      let that = this
+      var msg = showWeb == 1? "是否确定上架操作": "是否确定下架操作";
+      this.$confirm(msg, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+      }).then(() => {
+          that.upAndDownGoods(obj,showWeb);
+      }).catch(() => {
       });
+
+    },
+    // 执行上下架
+    upAndDownGoods(obj,showWeb){
+        showBatchGoods(obj).then(res => {
+          let status = "";
+          let msg = "";
+          if (res.code == "200") {
+            status = "success";
+            msg = showWeb == 1 ? "商品上架成功" : "商品下架成功";
+            this.getDataList();
+          } else {
+            status = "error";
+            msg = res.msg;
+          }
+          this.$message({
+            message: msg,
+            type: status,
+            duration: 1500
+          });
+        });
     },
     getIds() {
       var ids = [];

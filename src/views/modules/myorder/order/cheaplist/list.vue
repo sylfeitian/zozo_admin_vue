@@ -212,8 +212,8 @@
                     // paymentStatus: "",
                     startTime: "",
                     endTime: "",
-                    endPaymentTime: "",
-                    startPaymentTime: "",
+                    // endPaymentTime: "",
+                    // startPaymentTime: "",
                     orderType: "bc",//订单类型：bc,cc
                     isWaitDeal:'0',//是否为等待处理订单 0不是 1是 默认为不是
                 },
@@ -275,8 +275,8 @@
             getData() {
                 this.dataForm.startTime = this.timeArr && this.timeArr[0];
                 this.dataForm.endTime = this.timeArr && this.timeArr[1];
-                this.dataForm.startPaymentTime = this.timeArr2[0];
-                this.dataForm.endPaymentTime = this.timeArr2[1];
+                // this.dataForm.startPaymentTime = this.timeArr2[0];
+                // this.dataForm.endPaymentTime = this.timeArr2[1];
                 this.page = 1;
                 this.limit = 10;
                 //  this.dataForm.orderStatus  = this.dataForm.paymentStatus 
@@ -327,8 +327,8 @@
                 this.timeArr2 = [];
                 this.dataForm.startTime = "";
                 this.dataForm.endtime = "";
-                this.dataForm.startPaymentTime = "";
-                this.dataForm.endPaymentTime = "";
+                // this.dataForm.startPaymentTime = "";
+                // this.dataForm.endPaymentTime = "";
                 this.$refs[formName].resetFields();
                 this.page = 1;
                 this.limit = 10;

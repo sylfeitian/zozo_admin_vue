@@ -149,7 +149,7 @@
 
             // 提交
             dataFormSubmit(formName){
-                var ids = this.$refs.treeCategory.getCheckedKeys();
+                var ids = this.$refs.treeCategory.getCheckedKeys(true);
                 // alert([this.dataForm.name,this.dataForm.domainAddress]);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
