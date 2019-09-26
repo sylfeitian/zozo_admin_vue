@@ -13,16 +13,16 @@
             <el-form-item style="background-color: #f3f3f3;">
                 <p style="margin-left: -100px;">客服审单设置</p>
             </el-form-item>
-            <el-form-item label="留言审核开关：" prop="isLeaveMessage">
+            <el-form-item label="留言审核开关：" >
                 <el-switch
-                        v-model="dataForm.isLeaveMessage"
+                        v-model="dataForm.isLeaveMessageTemp"
                         active-color="#1890ff"
                         inactive-color="#ff4949"
                 ></el-switch>
             </el-form-item>
-            <el-form-item label="黑名单审核开关：" prop="isEnableBlacklist">
+            <el-form-item label="黑名单审核开关：" >
                 <el-switch
-                        v-model="dataForm.isEnableBlacklist"
+                        v-model="dataForm.isEnableBlacklistTemp"
                         active-color="#1890ff"
                         inactive-color="#ff4949"
                 ></el-switch>
@@ -225,8 +225,10 @@
                 saveLoading:false,
                 breaddata: ["系统管理", "策略设置"],
                 dataForm: {
-                	isLeaveMessage: 0, //留言审核开关    0关  1开
-                	isEnableBlacklist: 0, //黑名单审核开关   0关  1开
+                    isLeaveMessage: 0, //留言审核开关    0关  1开
+                    isLeaveMessageTemp:false,
+                    isEnableBlacklist: 0, //黑名单审核开关   0关  1开
+                    isEnableBlacklistTemp:false,
                 	minAmount:'', //订单最小金额
                 	maxAmount:'', //订单最大金额
                 	expirationTimeMinute:'',  //订单失效时间   分
@@ -458,6 +460,16 @@
                          this.rate =this.dataForm.addPriceRate;
                         console.log("回显数据");
                         console.log(this.dataForm);
+                        if(this.dataForm.isLeaveMessage==1){
+                            this.dataForm.isLeaveMessageTemp = true;
+                        }else{
+                             this.dataForm.isLeaveMessageTemp = false
+                        }
+                        if(this.dataForm.isEnableBlacklist==1){
+                            this.dataForm.isEnableBlacklistTemp = true;
+                        }else{
+                             this.dataForm.isEnableBlacklistTemp = false
+                        }
                     }
                 })
             },
@@ -549,6 +561,16 @@
                     return;
                 }
                 console.log(this.$refs[formName]);
+                if(this.dataForm.isLeaveMessageTemp){
+                     this.dataForm.isLeaveMessage = 1;
+                }else{
+                    this.dataForm.isLeaveMessage = 0;
+                }
+                if(this.dataForm.isEnableBlacklistTemp){
+                    this.dataForm.isEnableBlacklist = 1;
+                }else{
+                    this.dataForm.isEnableBlacklist = 0;
+                }
             	this.$refs[formName].validate((valid) => {
 			        if (valid) {
                         // this.dataForm.addPriceRate = JSON.stringify(this.rate);

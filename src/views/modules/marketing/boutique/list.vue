@@ -105,7 +105,7 @@
 
 <script>
     import mixinViewModule from '@/mixins/view-module'
-    import { businessPageUrl } from '@/api/url'
+    import { categoryactivityPageUrl,deleteCategoryactivity } from '@/api/url'
     import { storeGrade } from '@/api/api'
     import Bread from "@/components/bread";
     
@@ -115,10 +115,10 @@
         data () {
             return {
                 mixinViewModuleOptions: {
-                    getDataListURL: businessPageUrl,
+                    getDataListURL: categoryactivityPageUrl,
                     getDataListIsPage: true,
                     exportURL: '/admin-api/store/export',
-                    deleteURL: '/admin-api/store',
+                    deleteURL: deleteCategoryactivity,
                     deleteIsBatch: true,
                     // deleteIsBatchKey: 'id'
                 },
