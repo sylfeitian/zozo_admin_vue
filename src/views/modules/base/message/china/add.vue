@@ -250,6 +250,7 @@
 					}
 				}
 			},
+			// 评价类型
             'dataForm.appraisal':function(newV,oldV) {
 				var chineseCount = 0,characterCount = 0;
 				for (let i = 0; i < newV.length; i++) {
