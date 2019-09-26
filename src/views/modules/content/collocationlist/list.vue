@@ -338,8 +338,8 @@
                     "operating":row.sate==1?2:1  //
                 }
                 var msg = ""
-                row.sate==1?msg="禁用":msg="启用"
-                this.$confirm('是否'+msg+'该分组?', '提示', {
+                row.sate==1?msg="取消":msg=""
+                this.$confirm('确定要'+msg+'发布该内容吗?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'

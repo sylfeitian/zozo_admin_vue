@@ -153,7 +153,7 @@
             <el-table-column prop="jdThirdCategory" label="京东三级分类"  align="center" v-if="dataFormShow.isTofileFlag=='1'">
                 <template slot-scope="scope">
                     <div>
-                        {{scope.row.jdThirdCategory}}
+                        {{scope.row.thirdCategoryNo}}
                     </div>
                 </template>
             </el-table-column>
