@@ -46,7 +46,7 @@
                 单笔订单满
                  <el-input-number style="width:120px" @blur="bluerule1" v-model="activiDataForm.rule1"  :precision="2" :step="1" :min="0" :max="999999" controls-position="right"></el-input-number>
                 元立减
-                <el-input-number style="width:120px" v-model="activiDataForm.rule2" @blur="bluerule2"  :step="1" :max="999999" :min="0" controls-position="right"></el-input-number>
+                <el-input-number style="width:120px" v-model="activiDataForm.rule2" @blur="bluerule2"  :precision="0" :step="1" :max="999999" :min="0" controls-position="right"></el-input-number>
                 元
             </el-form-item>
             <el-form-item label="开始时间：" prop="startTime">
@@ -191,7 +191,7 @@
                 if(this.activiDataForm.rule1){
                     this.ruleName = 'rule1';
                 }
-                this.activiDataForm.reducePrice =this.activiDataForm.rule1 
+                this.activiDataForm.reducePrice =this.activiDataForm.rule2
                 console.log('====',this.ruleName)
             },
             // 提交
