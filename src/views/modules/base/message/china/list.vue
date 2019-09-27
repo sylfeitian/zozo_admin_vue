@@ -281,8 +281,9 @@ export default {
    },
      // 编辑回调
     eidtRowFn(row){
-    	this.editdialogTableVisible = true;
+		this.editdialogTableVisible = true;
     	this.$nextTick(()=>{
+      	// this.$refs.editshow.actselectchange();
       	this.$refs.editshow.init(row);
     	})
     },
@@ -452,5 +453,4 @@ export default {
 .grey{
 		color: #999;
 	}
-
 </style>
