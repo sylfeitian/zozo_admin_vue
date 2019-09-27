@@ -214,8 +214,8 @@
                 </div>
                 <!-- 待退款时显示 -->
                 <div class="bottomBtns" v-if="row.auditStatus ==1 && row.status ==30">
-                    <el-button type="primary" @click="confirmGoodsFn(1)">同意退款</el-button>
-                    <el-button type="danger" @click="confirmGoodsFn(0)">拒绝退款</el-button>
+                    <el-button type="primary" @click="returnMoneyFn(1)">同意退款</el-button>
+                    <el-button type="danger" @click="returnMoneyFn(0)">拒绝退款</el-button>
                 </div>
        </div>
 

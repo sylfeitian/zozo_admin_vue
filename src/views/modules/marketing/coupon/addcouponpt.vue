@@ -305,7 +305,7 @@ export default {
                   
                     this.dataForm.validityDays = res.data.validityDays// 有效天数 ,
                     this.dataForm.memberPoints =  res.data.memberPoints//兑换优惠券用的积分数
-                    this.validityPeriodType =  res.data.validityPeriodType//有效期类型，0：日期范围，1：固定天数
+                    this.validityPeriodType =  res.data.validityPeriodType.toString();//有效期类型，0：日期范围，1：固定天数
                     this.dataForm.startTime = this.dateToStr(new Date(res.data.startTime)) //生效日期
                     this.dataForm.endTime =  this.dateToStr(new Date(res.data.endTime)) // 截止日期 
                     if(res.data.startTime && res.data.endTime){
