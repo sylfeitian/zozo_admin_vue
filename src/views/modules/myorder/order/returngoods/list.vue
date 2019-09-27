@@ -23,14 +23,22 @@
                 <!-- 10待审核、20待退货、30待入库、40待退款、50退款中、60退款完成、70退款失败、80售后取消 -->
                 <el-select v-model="dataForm.status" placeholder="请选择">
                     <el-option label="全部" value=""></el-option>
-                    <el-option label="待审核" value="10"></el-option>
+                    <!-- <el-option label="待审核" value="10"></el-option>
                     <el-option label="待退货" value="20"></el-option>
                     <el-option label="待入库" value="30"></el-option>
                     <el-option label="待退款" value="40"></el-option>
                     <el-option label="退款中" value="50"></el-option>
                     <el-option label="退款完成" value="60"></el-option>
                     <el-option label="退款失败" value="70"></el-option>
-                    <el-option label="售后取消" value="80"></el-option>
+                    <el-option label="售后取消" value="80"></el-option> -->
+                    <el-option label="待审核" value="0"></el-option>
+                    <el-option label="待退货" value="10"></el-option>
+                    <el-option label="待入库" value="20"></el-option>
+                    <el-option label="待退款" value="30"></el-option>
+                    <!-- <el-option label="退款中" value="40"></el-option> -->
+                    <el-option label="退款完成" value="50"></el-option>
+                    <!-- <el-option label="退款失败" value="60"></el-option> -->
+                    <el-option label="售后取消" value="70"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="申请时间：">
@@ -89,6 +97,7 @@
                     <template slot-scope="scope">
                         <el-tag v-if="scope.row.auditStatus==0" type="danger">待审核</el-tag>
                         <el-tag v-else-if="scope.row.auditStatus==2" type="danger">审核不通过</el-tag>
+                        <el-tag v-else-if="scope.row.auditStatus==3" type="danger">取消</el-tag>
                         <!-- 审核通过 -->
                         <div  v-else-if="scope.row.auditStatus==1">
                             <el-tag v-if="scope.row.status==10" type="danger">待退货</el-tag>
