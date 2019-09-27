@@ -62,7 +62,16 @@
                     >
                 </template>
             </el-table-column>
-            <el-table-column prop="title" label="标题" align="center"></el-table-column>
+            <el-table-column prop="title" label="标题" align="center">
+                <template slot-scope="scope">
+                    <div :title="scope.row.title" v-if="scope.row.title">
+                        {{scope.row.title}}
+                    </div>
+                    <div :title="scope.row.titleJp" v-else-if="scope.row.titleJp">
+                        {{scope.row.titleJp}}
+                    </div>
+                </template>
+            </el-table-column>
             <el-table-column prop="userNickname" label="用户" align="center"></el-table-column>
             <el-table-column prop="lookCount" width="80" label="搭配数量" align="center"></el-table-column>
             <el-table-column prop="sate" width="120" label="发布状态" align="center">

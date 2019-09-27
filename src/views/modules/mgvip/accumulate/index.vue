@@ -51,11 +51,17 @@
             </div>
         </div>
 
-        <div class="topItem">
-            <label class="topItemLeft" for="">分享获取积分</label>
-            <div class="topItemRight">
-                <span>积分奖励：</span>
-                <el-input-number v-model="dataForm.shareSettingPoints" :step="1" :min="0" :max="1000000"></el-input-number><span>&nbsp;分</span>
+        <div class="topItem" style="height:100px;">
+            <label class="topItemLeft" for="" style="height:100px;line-height:100px">分享获取积分</label>
+            <div class="topItemRight" style="flex-direction: column;align-items: flex-start;height:100px;">
+                <div>
+                  <span>积分奖励：</span>
+                  <el-input-number v-model="dataForm.shareSettingPoints" :step="1" :min="0" :max="1000000"></el-input-number><span>&nbsp;分</span>
+                </div>
+                <div>
+                  <span>最高次数：</span>
+                  <el-input-number v-model="dataForm.limitShareTimes" :step="1" :min="0" :max="1000000"></el-input-number><span>&nbsp;次</span>
+                </div>
             </div>
         </div>
      </div>

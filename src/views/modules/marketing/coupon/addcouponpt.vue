@@ -267,6 +267,32 @@ export default {
         }
     },
     methods: {
+        dateToStr: function (datatime){   //获取当前时间
+            var dateTime = datatime || new Date();
+            var year = dateTime.getFullYear();
+            var month = dateTime.getMonth()+1;//js从0开始取
+            var date = dateTime.getDate();
+            var hour = dateTime.getHours();
+            var minutes = dateTime.getMinutes();
+            var second = dateTime.getSeconds();
+    
+            if(month<10){
+                month = "0" + month;
+            }
+            if(date<10){
+                date = "0" + date;
+            }
+            if(hour <10){
+                hour = "0" + hour;
+            }
+            if(minutes <10){
+                minutes = "0" + minutes;
+            }
+            if(second <10){
+                second = "0" + second ;
+            }
+            return year+"-"+month+"-"+date+" "+hour+":"+minutes+":"+second;
+        },
         //编辑详情接口方法
         getInfo(){
             var obj  = {
@@ -279,9 +305,9 @@ export default {
                   
                     this.dataForm.validityDays = res.data.validityDays// 有效天数 ,
                     this.dataForm.memberPoints =  res.data.memberPoints//兑换优惠券用的积分数
-                    this.validityPeriodType =  res.data.validityPeriodType//有效期类型，0：日期范围，1：固定天数
-                    this.dataForm.startTime =  res.data.startTime//生效日期
-                    this.dataForm.endTime =  res.data.endTime// 截止日期 
+                    this.validityPeriodType =  res.data.validityPeriodType.toString();//有效期类型，0：日期范围，1：固定天数
+                    this.dataForm.startTime = this.dateToStr(new Date(res.data.startTime)) //生效日期
+                    this.dataForm.endTime =  this.dateToStr(new Date(res.data.endTime)) // 截止日期 
                     if(res.data.startTime && res.data.endTime){
                         this.valuetime = [res.data.startTime,res.data.endTime]
                     }
@@ -306,16 +332,6 @@ export default {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     this.loading = true;
-                    // var obj = {
-                    //     bei:  this.dataForm.bei,//备注 ,
-                    //     faceValue:  this.dataForm.faceValue,//面额 ,
-                    //     getEndTime:  this.dataForm.getEndTime,//领取结束时间
-                    //     getStartTime:  this.dataForm.getStartTime,//: 领取开始时间 ,
-                    //     name:  this.dataForm.name,//优惠券名称 ,
-                    //     threshold:  this.dataForm.threshold,//使用门槛 ,
-                    //     totalNums:  this.dataForm.totalNums,//总发行量 ,
-                    //     validityDays:  this.dataForm.validityDays,// 有效天数
-                    // }
                     var obj = {
                         bei:  this.dataForm.bei,//备注 ,
                         faceValue:  this.dataForm.faceValue,//面额 ,

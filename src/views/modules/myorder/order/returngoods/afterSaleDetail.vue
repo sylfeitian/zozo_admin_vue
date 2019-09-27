@@ -61,18 +61,22 @@
                             </el-form-item>
                             <el-form-item label="售后状态：">
                                 <!-- 售后状态 退货退款（10待退货、20待入库、30待退款、40退款中、50退款完成、60退款失败、70售后取消） 仅退款（10退款中、20退款完成、30退款失败） , -->
-                                <span v-if="returnInfo.status==10">待退货</span>
-                                <span v-else-if="returnInfo.status==20">待入库</span>
-                                <span v-else-if="returnInfo.status==30">待退款</span>
-                                <span v-else-if="returnInfo.status==40">退款中</span>
-                                <span v-else-if="returnInfo.status==50">退款完成</span>
-                                <span v-else-if="returnInfo.status==60">退款失败</span>
-                                <span v-else-if="returnInfo.status==70">售后取消</span>
+                                <span v-if="returnInfo.auditStatus==0">待审核</span>
+                                <span v-else-if="returnInfo.auditStatus==2">审核不通过</span>
+                                 <span v-else-if="returnInfo.auditStatus==3">取消</span>
+                                <!-- 审核通过 -->
+                                <div v-else-if="returnInfo.auditStatus==1">
+                                    <span v-if="returnInfo.status==10">待退货</span>
+                                    <span v-else-if="returnInfo.status==20">待入库</span>
+                                    <span v-else-if="returnInfo.status==30">待退款</span>
+                                    <span v-else-if="returnInfo.status==40">退款中</span>
+                                    <span v-else-if="returnInfo.status==50">退款完成</span>
+                                    <span v-else-if="returnInfo.status==60">退款失败</span>
+                                    <span v-else-if="returnInfo.status==70">售后取消</span>
+                                </div>
                                 <!-- <span v-if="returnInfo.status==10">退款中</span>
                                 <span v-else-if="returnInfo.status==20">退款完成</span>
                                 <span v-else-if="returnInfo.status==30">退款失败</span> -->
-                          
-
                             </el-form-item>
 
                             <el-form-item label="订单编号：" >
@@ -116,11 +120,19 @@
                             </el-form-item>
                             
                             <el-form-item label="确认退款金额：" >
-                                <span>¥{{returnInfo.refundAmount}}</span>
+                                <div v-if="row.auditStatus!=0">
+                                     ¥<span >{{returnInfo.refundAmount}}</span>
+                                </div>
+                               <!-- 审核时才能编辑 -->
+                               <div v-else>
+                            <el-input-number  v-model="returnInfo.refundAmount"  :precision="2" :step="1" :min="0"  controls-position="right"></el-input-number>
+                               </div>
+                                    
+                                
                             </el-form-item>
-                            <el-form-item label="退货仓："  v-if="row.status ==10">
-                                <span v-if="row.status!=10">{{returnInfo.warehouse}}</span>
-                            <!-- 审核时才能编辑 -->
+                            <el-form-item label="退货仓：" >
+                                <span v-if="row.auditStatus!=0">{{returnInfo.warehouse}}</span>
+                                 <!-- 审核时才能编辑 -->
                                 <el-select
                                     v-else
                                     v-model="returnInfo.warehouseId"
@@ -155,9 +167,9 @@
 
                     <div class="formWarp formWarp3">
                         <el-form-item label="处理备注：" >
-                            <span v-if="row.status!=10">{{returnInfo.remark}}</span>
+                            <span v-if="row.auditStatus!=0">{{returnInfo.remark}}</span>
                             <!-- 审核时才能编辑 -->
-                            <el-input v-else v-model="returnInfo.remark"></el-input>
+                            <el-input v-else v-model="returnInfo.remark" style="width:400px;"></el-input>
                         </el-form-item>
                     </div>
                 </el-form>
@@ -191,19 +203,19 @@
                     <el-table-column prop="remark" label="备注" align="center"></el-table-column>
                 </el-table>
                 <!-- 待审核时候显示 -->
-                <div class="bottomBtns" v-if="row.status ==10">
+                <div class="bottomBtns" v-if="row.auditStatus ==0">
                     <el-button type="primary" @click="exammineFn(1)">通过</el-button>
                     <el-button type="danger"  @click="exammineFn(0)">不通过</el-button>
                 </div>
                 <!-- 待入库时候显示 -->
-                <div class="bottomBtns" v-else-if="row.status ==30">
+                <div class="bottomBtns" v-else-if="row.auditStatus ==1 && row.status ==20">
                     <el-button type="primary" @click="confirmGoodsFn(1)">确认收货</el-button>
                     <el-button type="danger"  @click="confirmGoodsFn(0)">未收货</el-button>
                 </div>
                 <!-- 待退款时显示 -->
-                <div class="bottomBtns" v-if="row.status ==40">
-                    <el-button type="primary" @click="confirmGoodsFn(1)">同意退款</el-button>
-                    <el-button type="danger" @click="confirmGoodsFn(0)">拒绝退款</el-button>
+                <div class="bottomBtns" v-if="row.auditStatus ==1 && row.status ==30">
+                    <el-button type="primary" @click="returnMoneyFn(1)">同意退款</el-button>
+                    <el-button type="danger" @click="returnMoneyFn(0)">拒绝退款</el-button>
                 </div>
        </div>
 
@@ -253,7 +265,7 @@
                 this.row = row;
                 this.getAfterSaleDetail();
                 // 售后状态 退货退款（10待审核、20待退货、30待入库、40待退款、50退款中、60退款完成、70退款失败、80售后取消）；仅退款（10退款中、20退款完成、30退款失败）
-               if(this.row.status==10){//只有待审核才能选择退货仓下拉
+               if(this.row.auditStatus==0){//只有待审核才能选择退货仓下拉
                     this.getWareListByType(); 
                 }
             },
@@ -304,6 +316,7 @@
                         // Object.assign(this.returnInfo,res.data);
                         this.returnInfo.remareceiptNamerk = res.data.name;//收货人姓名
                         // 所在区域
+                        this.returnInfo.receiptName = res.data.name// 省
                         this.returnInfo.province = res.data.provinceName// 省
                         this.returnInfo.city = res.data.cityName// 市
                         this.returnInfo.area = res.data.areaName// 区
