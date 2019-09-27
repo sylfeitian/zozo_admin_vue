@@ -1,9 +1,9 @@
 <template>
 	<!--新增的弹窗-->
-		<el-dialog title="编辑分类" :visible.sync="showListVisible" width="50%" :before-close="handleClose">
+		<el-dialog title="编辑分类" :visible.sync="showListVisible" width="50%" :before-close="handleClose" v-if="delay">
 			<el-form :model="dataForm" label-width="140px" 	:rules="dataRule" class="demo-ruleForm" ref="editForm">
 		    <el-form-item v-if='dataForm.parentname' label="上级分类：" prop="gcName">
-            <el-input v-model="dataForm.parentname" type="text" :disabled="true" placeholder="dataForm.parentname" show-word-limit style="width:400px;"></el-input>
+            <el-input v-model="dataForm.parentname" type="text" :disabled="true" placeholder="dataForm.parentname" style="width:400px;"></el-input>
         </el-form-item>
         <el-form-item v-else label="上级分类：">  
 	        <el-select
@@ -129,10 +129,6 @@
             <el-button @click="closeadd">取消</el-button>
             <el-button type="primary" @click="actuploaddata('editForm')">确定</el-button>
         </span>
-<!--	  <span slot="footer" class="dialog-footer artFooter">-->
-<!--	    <el-button @click="closeadd" style="margin-right: 20px;">取 消</el-button>-->
-<!--	    <el-button type="primary" @click="actuploaddata('editForm')">确 定</el-button>-->
-<!--	  </span>-->
 </el-dialog>
 
 </template>
@@ -232,6 +228,7 @@
 				],
 			 },
 			 row:"",
+			delay:false
 	    };
 	  },
 	  components: {
@@ -269,6 +266,7 @@
 			}
 		},
 	  created () {
+		  this.actselectchange()
 	  },
 	  methods: {
 	  	actselectchange(){
@@ -286,53 +284,52 @@
 		  		}
 	  	},
 	  	init(row){
-			  console.log(row);
 			this.row = row;
-			this.tempName = this.row.label; // 暂存当前名字，校验用
+			if(this.row){
+				this.tempName = this.row.label; // 暂存当前名字，校验用
+			}
 	  		this.showListVisible = true;
-	  		backScanCategoryCn(row).then((res)=>{
-	  			if(res.code == 200){
-					 Object.assign(this.dataForm ,res.data) ;
-					if(res.data.methodUrl) this.dataForm.methodUrlshow =JSON.parse(res.data.methodUrl);
-	  				this.actselectchange();
-	  			}else{
-	  				this.$message(res.msg);
-	  			}
-	  		}).catch(()=>{
-	  			this.$message("服务器错误");
-	  		})
-	  		
-	  		//获取一级分类
-	  		categoryCn().then((res)=>{
-	  			if(res.code == 200){
-	  				console.log(res.data);
-	  				res.data.forEach((item)=>{
-	  					this.goodKindList1.push(item);
-	  				})
-//	  				this.goodKindList1.concat(res.data);
-	  				console.log(this.goodKindList1);
-	  			}else{
-	  				this.$message(res.msg);
-	  			}
-	  		}).catch(()=>{
-	  			this.$message("服务器错误");
-	  		})
-	  		
-	  		//获取关联日本分类
-	  		searchCategoryJp().then((res)=>{
-	  			if(res.code == 200){
-	  				console.log(res.data);
-	  				res.data.forEach((item)=>{
-	  					this.goodKindList2.push(item);
-	  				})
-	  			}else{
-	  				this.$message(res.msg);
-	  			}
-	  		}).catch(()=>{
-	  			this.$message("服务器错误");
-	  		})
-	  		
-	  		
+			this.$nextTick(()=> {
+				backScanCategoryCn(row).then((res) => {
+					if (res.code == 200) {
+						Object.assign(this.dataForm, res.data);
+						if (res.data.methodUrl)
+							this.dataForm.methodUrlshow = JSON.parse(res.data.methodUrl);
+						this.actselectchange();
+						this.delay=true
+					} else {
+						this.$message(res.msg);
+					}
+				}).catch(() => {
+					this.$message("服务器错误");
+				})
+				//获取关联日本分类
+				searchCategoryJp().then((res) => {
+					if (res.code == 200) {
+						console.log(res.data);
+						res.data.forEach((item) => {
+							this.goodKindList2.push(item);
+						})
+					} else {
+						this.$message(res.msg);
+					}
+				}).catch(() => {
+					this.$message("服务器错误");
+				})
+				//获取一级分类
+				categoryCn().then((res) => {
+					if (res.code == 200) {
+						res.data.forEach((item) => {
+							this.goodKindList1.push(item);
+						})
+					} else {
+						this.$message(res.msg);
+					}
+				}).catch(() => {
+					this.$message("服务器错误");
+				})
+			})
+
 	  	},
 		actuploaddata(formName){  //确定提交 
 		 var methodUrlshow = cloneDeep(this.dataForm.methodUrlshow);

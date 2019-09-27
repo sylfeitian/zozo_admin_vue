@@ -229,7 +229,6 @@
                 this.$refs['dataForm'].resetFields();
                 this.dataForm.roleIds = [{
                     id: ''
-                    // key: Date.now()
                 }]
             },
             // 删除角色
