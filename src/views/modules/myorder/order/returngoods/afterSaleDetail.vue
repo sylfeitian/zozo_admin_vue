@@ -316,6 +316,7 @@
                         // Object.assign(this.returnInfo,res.data);
                         this.returnInfo.remareceiptNamerk = res.data.name;//收货人姓名
                         // 所在区域
+                        this.returnInfo.receiptName = res.data.name// 省
                         this.returnInfo.province = res.data.provinceName// 省
                         this.returnInfo.city = res.data.cityName// 市
                         this.returnInfo.area = res.data.areaName// 区
