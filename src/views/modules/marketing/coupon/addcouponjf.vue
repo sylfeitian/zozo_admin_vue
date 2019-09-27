@@ -18,52 +18,11 @@
                 </el-input>
                 <div>面值只能是数值，0.01-1000000，限2位小数</div>
             </el-form-item>
-            <!--        <el-form-item label="领取开始时间："  prop="getStartTime">-->
-            <!--        	&lt;!&ndash;:default-time="startsecond"&ndash;&gt;-->
-            <!--            	<el-date-picker-->
-            <!--                v-model="dataForm.getStartTime"-->
-            <!--                type="date"-->
-            <!--                value-format="yyyy-MM-dd"-->
-            <!--                clearable-->
-            <!--                :picker-options="pickerOptions0"-->
-            <!--                placeholder="请选择时间："-->
-            <!--                style="width:220px;">-->
-            <!--            </el-date-picker>-->
-            <!--      </el-form-item>-->
-            <!--      <el-form-item label=""  prop="value1" class="artvalue12time">  -->
-            <!--						<el-time-picker-->
-            <!--							v-if="value1isshow"-->
-            <!--						  v-model="dataForm.value1"-->
-            <!--					    :picker-options="value1Time"-->
-            <!--					    @blur ="artvalue1time"-->
-            <!--					    placeholder="选择时间">-->
-            <!--  					</el-time-picker>-->
-            <!--     </el-form-item>-->
-            <!--      <el-form-item label="领取结束时间：" prop="getEndTime">-->
-            <!--            <el-date-picker-->
-            <!--                v-model="dataForm.getEndTime"-->
-            <!--                type="date"-->
-            <!--                value-format="yyyy-MM-dd"-->
-            <!--                clearable-->
-            <!--                :picker-options="pickerOptions1"-->
-            <!--                placeholder="请选择时间："-->
-            <!--                style="width:220px;">-->
-            <!--            </el-date-picker>-->
-            <!--    	</el-form-item>-->
-            <!--    	<el-form-item label="" prop="value2" class="artvalue12time">-->
-            <!--            <el-time-picker-->
-            <!--            	v-if="value2isshow"-->
-            <!--						  v-model="dataForm.value2"-->
-            <!--						  :picker-options="value2Time"-->
-            <!--						  :disabled = "value2timedisabled"-->
-            <!--						  @focus ="artvalue2time"-->
-            <!--						  placeholder="选择时间">-->
-            <!--						</el-time-picker>-->
-            <!--    	</el-form-item>-->
             <el-form-item label="领取开始时间：" prop="getStartTime">
                 <el-date-picker
                         v-model="dataForm.getStartTime"
                         type="datetime"
+                         value-format="yyyy-MM-dd HH:mm:ss"
                         placeholder="选择开始时间"
                         style="width: 200px">
                 </el-date-picker>
@@ -73,6 +32,7 @@
                 <el-date-picker
                         v-model="dataForm.getEndTime"
                         type="datetime"
+                         value-format="yyyy-MM-dd HH:mm:ss"
                         placeholder="选择结束时间"
                         style="width: 200px">
                 </el-date-picker>
@@ -94,6 +54,7 @@
                     <span>日期范围</span>&nbsp;
                     <el-date-picker
                             v-model="valuetime"
+                             format="yyyy-MM-dd HH:mm:ss"
                             type="daterange"
                             value-format="yyyy-MM-dd HH:mm:ss"
                             align="right"
@@ -398,6 +359,32 @@
 
         },
         methods: {
+            dateToStr: function (datatime){   //获取当前时间
+                var dateTime = datatime || new Date();
+                var year = dateTime.getFullYear();
+                var month = dateTime.getMonth()+1;//js从0开始取
+                var date = dateTime.getDate();
+                var hour = dateTime.getHours();
+                var minutes = dateTime.getMinutes();
+                var second = dateTime.getSeconds();
+        
+                if(month<10){
+                    month = "0" + month;
+                }
+                if(date<10){
+                    date = "0" + date;
+                }
+                if(hour <10){
+                    hour = "0" + hour;
+                }
+                if(minutes <10){
+                    minutes = "0" + minutes;
+                }
+                if(second <10){
+                    second = "0" + second ;
+                }
+                return year+"-"+month+"-"+date+" "+hour+":"+minutes+":"+second;
+            },
             //编辑详情接口方法
             getInfo() {
                 var obj = {
@@ -407,6 +394,14 @@
                     console.log(res);
                     if (res.code == 200) {
                         this.dataForm = res.data;
+                        this.dataForm.validityDays = res.data.validityDays// 有效天数 ,
+                        this.dataForm.memberPoints =  res.data.memberPoints//兑换优惠券用的积分数
+                        this.validityPeriodType =  res.data.validityPeriodType//有效期类型，0：日期范围，1：固定天数
+                        this.dataForm.startTime = this.dateToStr(new Date(res.data.startTime)) //生效日期
+                        this.dataForm.endTime =  this.dateToStr(new Date(res.data.endTime)) // 截止日期 
+                        if(res.data.startTime && res.data.endTime){
+                            this.valuetime = [res.data.startTime,res.data.endTime]
+                        }
                     }
                 })
             },
@@ -441,8 +436,8 @@
             },
             //开始结束时间
             acttime() {
-                this.dataForm.getStartTime = this.valuetime[0];
-                this.dataForm.getEndTime = this.valuetime[1];
+                this.dataForm.startTime = this.valuetime[0];
+                this.dataForm.endTime = this.valuetime[1];
             },
             // 提交
             dataFormSubmit(formName) {
@@ -466,7 +461,7 @@
                             validityPeriodType: this.validityPeriodType,//有效期类型，0：日期范围，1：固定天数
                         }
                         if (this.editSatusId) obj.id = this.editSatusId//优惠券活动id
-                        var fn = this.type ? editActivityPoint : addActivityPoint;
+                        var fn = this.type ?addActivityPoint:editActivityPoint ;
                         fn(obj).then((res) => {
                             this.loading = false;
                             // alert(JSON.stringify(res));
