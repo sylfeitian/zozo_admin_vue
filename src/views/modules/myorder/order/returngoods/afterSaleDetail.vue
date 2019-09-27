@@ -120,11 +120,19 @@
                             </el-form-item>
                             
                             <el-form-item label="确认退款金额：" >
-                                <span>¥{{returnInfo.refundAmount}}</span>
+                                <div v-if="row.auditStatus!=0">
+                                     ¥<span >{{returnInfo.refundAmount}}</span>
+                                </div>
+                               <!-- 审核时才能编辑 -->
+                               <div v-else>
+                            <el-input-number  v-model="returnInfo.refundAmount"  :precision="2" :step="1" :min="0"  controls-position="right"></el-input-number>
+                               </div>
+                                    
+                                
                             </el-form-item>
-                            <el-form-item label="退货仓："  v-if="row.status ==10">
-                                <span v-if="row.status!=10">{{returnInfo.warehouse}}</span>
-                            <!-- 审核时才能编辑 -->
+                            <el-form-item label="退货仓：" >
+                                <span v-if="row.auditStatus!=0">{{returnInfo.warehouse}}</span>
+                                 <!-- 审核时才能编辑 -->
                                 <el-select
                                     v-else
                                     v-model="returnInfo.warehouseId"
@@ -159,9 +167,9 @@
 
                     <div class="formWarp formWarp3">
                         <el-form-item label="处理备注：" >
-                            <span v-if="row.status!=10">{{returnInfo.remark}}</span>
+                            <span v-if="row.auditStatus!=0">{{returnInfo.remark}}</span>
                             <!-- 审核时才能编辑 -->
-                            <el-input v-else v-model="returnInfo.remark"></el-input>
+                            <el-input v-else v-model="returnInfo.remark" style="width:400px;"></el-input>
                         </el-form-item>
                     </div>
                 </el-form>
@@ -257,7 +265,7 @@
                 this.row = row;
                 this.getAfterSaleDetail();
                 // 售后状态 退货退款（10待审核、20待退货、30待入库、40待退款、50退款中、60退款完成、70退款失败、80售后取消）；仅退款（10退款中、20退款完成、30退款失败）
-               if(this.row.status==10){//只有待审核才能选择退货仓下拉
+               if(this.row.auditStatus==0){//只有待审核才能选择退货仓下拉
                     this.getWareListByType(); 
                 }
             },

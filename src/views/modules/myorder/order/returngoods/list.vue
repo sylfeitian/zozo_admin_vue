@@ -23,14 +23,6 @@
                 <!-- 10待审核、20待退货、30待入库、40待退款、50退款中、60退款完成、70退款失败、80售后取消 -->
                 <el-select v-model="dataForm.status" placeholder="请选择">
                     <el-option label="全部" value=""></el-option>
-                    <!-- <el-option label="待审核" value="10"></el-option>
-                    <el-option label="待退货" value="20"></el-option>
-                    <el-option label="待入库" value="30"></el-option>
-                    <el-option label="待退款" value="40"></el-option>
-                    <el-option label="退款中" value="50"></el-option>
-                    <el-option label="退款完成" value="60"></el-option>
-                    <el-option label="退款失败" value="70"></el-option>
-                    <el-option label="售后取消" value="80"></el-option> -->
                     <el-option label="待审核" value="0"></el-option>
                     <el-option label="待退货" value="10"></el-option>
                     <el-option label="待入库" value="20"></el-option>
