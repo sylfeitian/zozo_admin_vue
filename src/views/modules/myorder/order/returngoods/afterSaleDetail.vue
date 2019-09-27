@@ -283,6 +283,9 @@
                          this.aftersalePics = this.returnInfo.aftersalePics.split(",");
                         this.logs = res.data.logs
                         this.goodsInfo = [res.data.goodsInfo]
+                        if(this.returnInfo){
+                            this.row.auditStatus = this.returnInfo.auditStatus;
+                        }
                     }else{
                         this.$message({
                             message:res.msg,

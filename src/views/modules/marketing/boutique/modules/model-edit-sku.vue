@@ -91,7 +91,7 @@
 
 <script>
     import mixinViewModule from '@/mixins/view-module'
-    import {limitActivitySkuChoice,editLimitActivityGoods,getdatacategory} from "@/api/api.js"
+    import {editLimitActivityGoods,getdatacategory} from "@/api/api.js"
      import {categoryactivitygoodsBatch} from "@/api/api.js" 
      import {categoryactivityGoodsPagePopUrl} from "@/api/url.js"
     export default {

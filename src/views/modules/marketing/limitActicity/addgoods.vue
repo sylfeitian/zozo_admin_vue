@@ -109,14 +109,14 @@
 	    layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
 
-    <editGoodsSku v-if="modelEditSkuVisible" ref="editGoodsSkuCompon"></editGoodsSku>
+    <editGoodsSku v-if="modelEditSkuVisible" ref="editGoodsSkuCompon" @searchDataList="getDataList"></editGoodsSku>
   </div>
 </template>
 
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import { limitActivityGoodsList } from '@/api/url'
-    import { storeGrade,getdatacategory,limitActivitySkuChoice} from '@/api/api'
+    import { storeGrade,getdatacategory} from '@/api/api'
     import Bread from "@/components/bread";
     import editGoodsSku from "./modules/model-eidt-sku.vue"
 
@@ -225,36 +225,16 @@
                 },
                 // 选择或取消选择
                 chooseFn(row){
-                    alert("没找到接口");
-                    // let that = this;
-                    // if(row.selfActivityState==0){
-                    //     msgContent="是否确认选择"
-                    // }else{
-                    //        msgContent="是否确定取消选择"
-                    // }
-                    // this.$confirm(msgContent, "提示", {
-                    //     confirmButtonText: "确定",
-                    //     cancelButtonText:"取消",
-                    //     type: 'warning'
-                    // }).then(() => {
-                    //     var obj = {
-                    //         params:{
-                    //             goodsId:123,//商品spuid
-                    //             activityId:that.row.id,//活动id
-                    //         }
-                    //     }
-                    //     limitActivitySkuChoice(obj).then((res)=>{
-
-                    //     })
-
-                    // }).catch(() => { 
-                    //  })
+                   this.modelEditSkuVisible = true;
+                    this.$nextTick(()=>{
+                        this.$refs.editGoodsSkuCompon.init(this.row,row,"choose");
+                    })
                 },
                 //弹出修改弹框
                 editGoodsSku(row){
                     this.modelEditSkuVisible = true;
                     this.$nextTick(()=>{
-                        this.$refs.editGoodsSkuCompon.init(this.row,row);
+                        this.$refs.editGoodsSkuCompon.init(this.row,row,"edit");
                     })
                 },
                 noCheck(){
