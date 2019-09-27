@@ -107,8 +107,8 @@
                 <template slot-scope="scope">
                     <el-button size="mini" type="text" @click="afterSaleDetailFn(scope.row)">查看</el-button>
                     <!-- <el-button size="mini" type="text" @click="exammineFn(scope.row)" >审核</el-button> -->
-                    <el-button size="mini" type="text" @click="confirmGoodsFn(scope.row)" v-if="scope.row.status==30">确认收货</el-button>
-                    <el-button size="mini" type="text" @click="returnMoneyFn(scope.row)"  v-if="scope.row.status==40">同意退款</el-button>
+                    <el-button size="mini" type="text" @click="confirmGoodsFn(scope.row)" v-if="scope.row.status==40">确认收货</el-button>
+                    <el-button size="mini" type="text" @click="returnMoneyFn(scope.row)"  v-if="scope.row.status==30">同意退款</el-button>
                 </template>
             </el-table-column>
         </el-table>
