@@ -173,13 +173,14 @@
                     } else { //字符
                         characterCount = characterCount + 1;
                     }
-                    var count = chineseCount + characterCount;
-                    if (count < 4 ) {
-                        callback('至少输入2个字，对应4个字符的内容');
-                    }else{
-                        callback();
-                    }
                 }
+			var count = chineseCount + characterCount;
+			if (count < 4 ) {
+				// return callback(new Error('aaa'))
+				return callback('至少输入2个字，对应4个字符的内容');
+			}else{
+				return callback()
+			}
 		};
 	    return {
 			loading:false,
@@ -252,18 +253,20 @@
 			},
 			// 评价类型
             'dataForm.appraisal':function(newV,oldV) {
-				var chineseCount = 0,characterCount = 0;
-				for (let i = 0; i < newV.length; i++) {
-					if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
-						chineseCount = chineseCount + 2;
-					} else { //字符
-						characterCount = characterCount + 1;
-					}
-					var count = chineseCount + characterCount;
-					if (count > 12) { //输入字符大于12的时候过滤
-						this.dataForm.appraisal = newV.substr(0,(chineseCount/2+characterCount)-1)
-					}
-				}
+			    if(newV){
+                    var chineseCount = 0,characterCount = 0;
+                    for (let i = 0; i < newV.length; i++) {
+                        if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                            chineseCount = chineseCount + 2;
+                        } else { //字符
+                            characterCount = characterCount + 1;
+                        }
+                        var count = chineseCount + characterCount;
+                        if (count > 12) { //输入字符大于12的时候过滤
+                            this.dataForm.appraisal = newV.substr(0,(chineseCount/2+characterCount)-1)
+                        }
+                    }
+                }
 			}
 			},
 			created () {

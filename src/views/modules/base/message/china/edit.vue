@@ -171,7 +171,22 @@
 	    		callback('排序值在0-255之间');
 	    	}
 		};
-		
+		  var validateAppraisal = (rule, value, callback) => {
+			  var chineseCount = 0,characterCount = 0;
+			  for (let i = 0; i < value.length; i++) {
+				  if (/^[\u4e00-\u9fa5]*$/.test(value[i])) { //汉字
+					  chineseCount = chineseCount + 2;
+				  } else { //字符
+					  characterCount = characterCount + 1;
+				  }
+			  }
+			  var count = chineseCount + characterCount;
+			  if (count < 4 ) {
+				  return callback('至少输入2个字，对应4个字符的内容');
+			  }else{
+				  return callback()
+			  }
+		  };
 	    return {
 	    	erjishow: true,  //二级没有评价类型
 	    	yijishow: true,  //一级不用上传图片
@@ -213,6 +228,7 @@
 				],
 	        	appraisal: [
 					{ required: true, message: '必填项不能为空', trigger: 'blur' },
+					{ validator: validateAppraisal,trigger: 'blur'},
 				],
 			 },
 			 row:"",
