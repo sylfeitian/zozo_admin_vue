@@ -88,12 +88,17 @@
             align="center"
 	    	label="操作">
 		    <template slot-scope="scope">
+                <!-- activityState ： 0 添加  
+activityState ： 1 ， selfActivityState 0 冲突  
+activityState ： 1 ， selfActivityState 1 修改 -->
                 <div v-if="scope.row.activityState ==0">
                     <el-button  v-if="scope.row.selfActivityState==1" type="text" size="small" @click="chooseFn(scope.row)" >取消选择</el-button>
                     <el-button v-else type="text" size="small" @click="chooseFn(scope.row)">选择</el-button>
-		        	<el-button type="text" size="small" @click="editGoodsSku(scope.row)">修改</el-button>
                 </div>
-                <span v-else>与其他活动冲突</span>
+                <div  v-else-if="scope.row.activityState ==1">
+                    <span v-if="scope.row.selfActivityState ==0">与其他活动冲突</span>
+                    <el-button v-if="scope.row.selfActivityState ==1" type="text" size="small" @click="editGoodsSku(scope.row)">修改</el-button>
+                </div>
 		    	
 		    </template>
 	  	</el-table-column>
