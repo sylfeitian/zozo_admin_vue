@@ -41,7 +41,7 @@ export const getsizeCndata = `${base}/sizeCn/page`;
 export const delsizeCndata = `${base}/sizeCn`;
 //中国尺码分页
 export const getshoplabel = `${base}/shoplabel/page`;
-//日本尺码分页      
+//日本尺码分页
 export const getsizeJPdata = `${base}/sizejp/page`;
 
 
@@ -73,7 +73,7 @@ export const goodsVerifyPageUrl = `${base}/goods/verify/page`;
 
 // 商品规格管理----------------------------------------------------------------------------------------------------------------
 //分页查询商品SKU列表
-export const goodsSpecPage = `${base}/goods/spec/page`; 
+export const goodsSpecPage = `${base}/goods/spec/page`;
 
 // 价格管理 价格修改记录管理---------------------------------------------------------------------------------------------------
 // 分页查询
@@ -127,9 +127,9 @@ export const deleteBrandUrl = `${base}/brand`;
 
 //  满减活动-------------------------------------------------------------------------------------------------------------
 // 满减活动分页查询
-export const activityReduceUrl =  `${base}/activity/reduce/page`; 
+export const activityReduceUrl =  `${base}/activity/reduce/page`;
 
-export const deleteActivityReduceUrl =  `${base}/activity/reduce/`; 
+export const deleteActivityReduceUrl =  `${base}/activity/reduce/`;
 // 满减活动订单分页查询
 export const reduceOrderUrl =  `${base}/activity/reduce/order/page/`; // /activity/reduce/order/page/{reductionId}
 
@@ -343,20 +343,20 @@ export const deleteShopkeywordUrl = `${base}/shophotkeyword`;
 // 删除
 export const deleteShophotkeywordUrl = `${base}/shophotkeyword/keyword`;
 
-// GET 
-// GET 
+// GET
+// GET
 export const keywordcountpageUrl = `${base}/shophotkeyword/keywordcountpage`;
 export const keywordpageUrl = `${base}/shophotkeyword/keywordpage`;
 
 //消息-------------------------------------------------------------------------------------------------------------
-//消息列表分页  
+//消息列表分页
 export const getmessagepage = `${base}/shopmessagetemplate/messagepage`;
 //用户信息
 export const getUser = `${base}/shopmessagetemplate/messageuser`;
 
 
 //查看库存----------------------------------------------------------------------------------------------------
-//查看库存分类  
+//查看库存分类
 export const getdatagoods = `${base}/stock/goods`;
 
 
@@ -400,8 +400,10 @@ export const dictList = `${base}/dict/list`;
 export const limitActivityPage = `${base}/limit/activity/page`;
 // 限量活动删除
 export const deleteLimitActivity = `${base}/limit/activity`;
-// 查询活动添加商品分页列表
+// 查询限量活动添加商品分页列表
 export const limitActivityGoodsList = `${base}/limit/activity/goods/list`;
+// 查询预售活动添加商品分页列表
+export const presellActivityGoodsList = `${base}/presell/activity/goods/list`;
 
 // 查询限量/预售活动关联的商品列表
 export const limitActivityReleGoodsList = `${base}/limit/activity/rele/goods/list`;

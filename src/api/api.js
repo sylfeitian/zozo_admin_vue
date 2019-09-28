@@ -99,7 +99,7 @@ export const getStyleName = params => { return http.get(`${base}/look/folder/sty
 
 // 获取弹框仓库商品
 export const getallstock = params => { return http.get(`${base}/wareHouse/odoGoods/stock/page`, params).then(res => res.data); };
-// 保存商品  
+// 保存商品
 // export const addodoGoods = params => { return http.post(`${base}/wareHouse/odoGoods/add`, params).then(res => res.data); };
 export const warehouserecordsodoAdd = params => { return http.post(`${base}/warehouserecordsodo/add`, params).then(res => res.data); };
 
@@ -1031,4 +1031,8 @@ export const seckillProDet = params => { return http.get(`${base}/seckill/goods/
 export const seckillActAudit = params => { return http.get(`${base}/seckill/activity/audit?id=${params.id}&auditState=${params.auditState}`, params).then(res => res.data); };
 //秒杀添加商品列表
 export const addSckillPro = params => { return http.get(`${base}/seckill/goods/page/${params.activityId}?page=${params.page}&limit=${params.limit}&brandName=${params.brandName}&name=${params.name}&categoryId=${params.categoryId}&id=${params.id}&storeName=${params.storeName}`, params).then(res => res.data); };;
+//编辑添加列表
+export const seckillProUpdate = params => { return http.put(`${base}/seckill/goods/activity`, params).then(res => res.data); };
+//保存添加列表
+export const seckillProSave = params => { return http.post(`${base}/seckill/goods/activity`, params).then(res => res.data); };
 

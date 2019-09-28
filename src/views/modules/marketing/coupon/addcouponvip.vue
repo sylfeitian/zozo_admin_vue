@@ -41,7 +41,7 @@
         		<div>元可用（输入“0”为无门槛优惠券）</div>
         </el-form-item>
         <el-form-item label="有效期：" prop="validityDays">
-            <el-input v-model="dataForm.validityDays" placeholder="领取后到期天数" style="width:220px;">
+            <el-input v-model="dataForm.validityDays" placeholder="领取后到期天数" maxlength="3" style="width:220px;">
                 <template slot="append">天</template>
             </el-input>
         </el-form-item>
@@ -95,13 +95,6 @@
           callback()
         }
     };
-    var validityDay =(rule, value,callback)=>{
-        if (value.length >3){
-          callback(new Error('仅可输入3位数字'))
-        }else {
-          callback()
-        }
-    };
 export default {
     props: ['type','editSatusId'],
   data () {
@@ -147,9 +140,6 @@ export default {
             value2 : [
                     { required: true, message: '必填项不能为空', trigger: 'blur' },
             ],
-            validityDays: [
-                { required: true, message: '必填项不能为空', trigger: 'blur' },
-            ],
             totalNums :[
                     { required: true, message: '必填项不能为空', trigger: 'blur' },
                     { validator: validnumber, trigger: 'blur' },
@@ -170,7 +160,7 @@ export default {
             ],
             validityDays : [
                 { required: true, message: '必填项不能为空', trigger: 'blur' },
-                { validator: validityDay, trigger: 'blur' },
+                // { validator: validityDay, trigger: 'blur' },
             ],
         },
         pickerOptions0: {

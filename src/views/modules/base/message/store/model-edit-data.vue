@@ -82,7 +82,7 @@
                         :remote-method="remoteMethod"
                         :loading="loading"
                         style="width: 100%;"
-                        :multiple-limit="2"
+                        :multiple-limit="10"
                 >
                     <el-option
                             v-for="item in dataArray"

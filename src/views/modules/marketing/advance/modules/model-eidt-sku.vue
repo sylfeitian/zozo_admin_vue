@@ -98,7 +98,7 @@
                 row2:'',
                 type:'',//choose修改；edit编辑
             }
-            
+
         },
         methods: {
             init (row,row2,type) {
@@ -119,6 +119,7 @@
                     activityId:this.row.id,//活动ID
                     goodsId:this.row2.id,//商品ID
                     activityType:2,//活动类型 0秒杀 1限量 2预售
+                    type:1,//操作类型 2 回显 1 修改、添加
                    }
 
                 }
@@ -133,7 +134,7 @@
                                 this.multipleSelection = this.dataList.filter((item,index)=>{
                                     //   return item;
                                     return item.checkFlag==1;
-                                
+
                                 })
                                 this.$nextTick(()=>{
                                     this.multipleSelection.forEach(row => {
@@ -144,7 +145,7 @@
                         }else{
                             this.dataList = []
                         }
-                      
+
                     }
                 })
             },
@@ -166,7 +167,7 @@
                         item.personLimit = row.personLimit
                     })
 
-                }).catch(() => { 
+                }).catch(() => {
                 })
             },
             // 提交
@@ -179,19 +180,20 @@
                             this.$message.warning("至少勾选一个sku");
                             return
                         }
-                        var activityGoodsList = [];
+                        var activityGoodsSkuVOList = [];
                         this.multipleSelection.forEach((item,index)=>{
-                            activityGoodsList.push({
+                          activityGoodsSkuVOList.push({
                                 "activityQuantity": item.activityQuantity?item.activityQuantity:0, //活动库存 ,
-                                "goodsCsId": item.id, // 商品skuid ,
-                                "goodsId": this.row2.id,  // 商品spuid ,
+                                "id": item.id, // 商品skuid ,
+                                // "goodsId": this.row2.id,  // 商品spuid ,
                                 "personLimit": item.personLimit?item.personLimit:0 // 每人限购数量
                             })
                         })
                         var obj={
-                            "activityGoodsList":activityGoodsList ,//活动商品新增集合 ,
+                            "activityGoodsSkuVOList":activityGoodsSkuVOList ,//活动商品新增集合 ,
                             "activityId": this.row.id,//活动id ,
-                            "isAllCheck": this.multipleSelection.length==this.dataList.length?1:0,// 商品下的规格是否全部选中（ 默认0未全部选中，1全部选中）
+                            "id": this.row2.id,//商品spuid ,
+                            // "isAllCheck": this.multipleSelection.length==this.dataList.length?1:0,// 商品下的规格是否全部选中（ 默认0未全部选中，1全部选中）
                         }
                          this.saveLoading = true;
                         editPresellActivityGoods(obj).then((res) => {
