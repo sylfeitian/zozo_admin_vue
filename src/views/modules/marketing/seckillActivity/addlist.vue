@@ -63,7 +63,8 @@
                     <el-button
                         type="text"
                         size="small"
-                        v-if="scope.row.selfActivityState==1 && scope.row.activityState ==0"
+                        @click="cancelIt(scope.row.id,activityId)"
+                        v-if="scope.row.selfActivityState==1 && scope.row.activityState ==1"
                     >取消选择</el-button>
                     <el-button
                         type="text"
@@ -74,10 +75,12 @@
                     <el-button
                         type="text"
                         size="small"
-                        v-if="scope.row.selfActivityState==1 && scope.row.activityState ==0"
+                        v-if="scope.row.selfActivityState==1 && scope.row.activityState ==1"
                         @click="editGoods(scope.row.id,activityId)"
                     >修改</el-button>
-                    <el-button type="text" size="small" v-if="scope.row.activityState==1 ">与其他活动冲突</el-button>
+                    <span
+                        v-if="scope.row.activityState==1  && scope.row.selfActivityState==0"
+                    >与其他活动冲突</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -99,12 +102,7 @@
             class="editDialog"
             width="70%"
         >
-            <el-form
-                :model="editDataForm"
-                :rules="dataRule"
-                ref="editDataForm"
-                label-width="82px"
-            >
+            <el-form :model="editDataForm" :rules="dataRule" ref="editDataForm" label-width="82px">
                 <div class="goodsPresent">
                     <img src="@/assets/img/avatar.png" alt="">
                     <div class="goodsPresentModle">
@@ -133,7 +131,11 @@
                     <el-table-column prop="specInfo" label="规格" width="180"></el-table-column>
                     <el-table-column label="活动库存" width="220" align="center">
                         <template slot-scope="scope">
-                            <el-form-item  class="specError" :prop="'goodsSpecList.'+ scope.$index + '.activityQuantity' "  :rules="dataRule.activityQuantity">
+                            <el-form-item
+                                class="specError"
+                                :prop="'goodsSpecList.'+ scope.$index + '.activityQuantity' "
+                                :rules="dataRule.activityQuantity"
+                            >
                                 <el-input
                                     v-model="scope.row.activityQuantity"
                                     @change="changeQuantity"
@@ -147,7 +149,11 @@
                     <el-table-column prop="cartLimit" label="日本限购数量" width="120"></el-table-column>
                     <el-table-column label="每人限购" width="220" align="center">
                         <template slot-scope="scope">
-                            <el-form-item  class="specError" :prop=" 'goodsSpecList.' + scope.$index + '.personLimit' "  :rules="dataRule.personLimit">
+                            <el-form-item
+                                class="specError"
+                                :prop=" 'goodsSpecList.' + scope.$index + '.personLimit' "
+                                :rules="dataRule.personLimit"
+                            >
                                 <el-input
                                     v-model="scope.row.personLimit"
                                     @change="changeLimit"
@@ -165,17 +171,11 @@
                         </template>
                     </el-table-column>
                 </el-table>
-             </el-form>
+            </el-form>
             <span slot="footer" class="dialog-footer">
-             
                 <el-button @click="noCheck('editDataForm')">取 消</el-button>
-                <el-button
-                    type="primary"
-                    @click="subEdit('editDataForm')"
-            
-                >确 定</el-button>
+                <el-button type="primary" @click="subEdit('editDataForm')">确 定</el-button>
             </span>
-           
         </el-dialog>
     </div>
 </template>
@@ -187,7 +187,8 @@ import {
   backScanCategorys,
   addSckillPro,
   seckillProDet,
-  seckillProSave
+  seckillProSave,
+  seckillProRemove
 } from "@/api/api";
 import Bread from "@/components/bread";
 
@@ -196,45 +197,45 @@ export default {
   props: ["activityId"],
   components: { Bread },
   data() {
-      var validnumber = (rule, value, callback) => {
-        if (!value) {
-          callback(new Error("必填项不能为空"));
-        } else if (Number(value) > this.moneyNum) {
-          callback(new Error("秒杀价格不能超过销售价"));
+    var validnumber = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error("必填项不能为空"));
+      } else if (Number(value) > this.moneyNum) {
+        callback(new Error("秒杀价格不能超过销售价"));
+      } else {
+        callback();
+      }
+    };
+    var quantityNumber = (rule, value, callback) => {
+      console.log(Number(value), "11", Number(value) == 0);
+      if (!value) {
+        callback(new Error("活动库存不能为空"));
+      } else if (Number(value) == 0) {
+        callback(new Error("活动库存不得为0"));
+      } else if (Number(value) >= 1000000) {
+        callback(new Error("活动库存不得大于999999"));
+      } else {
+        callback();
+      }
+    };
+    var limitNumber = (rule, value, callback) => {
+      console.log(Number(value), "22");
+      if (!value) {
+        callback(new Error("每人限购不能为空"));
+      } else if (Number(value) == 0) {
+        callback(new Error("每人限购不得为0"));
+      } else if (this.isLimit == 0) {
+        if (Number(value) >= 1000000) {
+          callback(new Error("每人限购不得大于999999"));
         } else {
           callback();
         }
-      };
-      var quantityNumber = (rule, value, callback) => {
-        console.log(Number(value), "11",Number(value) == 0);
-        if (!value) {
-          callback(new Error("活动库存不能为空"));
-        } else if (Number(value) == 0) {
-          callback(new Error("活动库存不得为0"));
-        } else if (Number(value) >= 1000000) {
-          callback(new Error("活动库存不得大于999999"));
-        } else {
-          callback();
-        }
-      };
-      var limitNumber = (rule, value, callback) => {
-        console.log(Number(value), "22");
-        if (!value) {
-          callback(new Error("每人限购不能为空"));
-        } else if (Number(value) == 0) {
-          callback(new Error("每人限购不得为0"));
-        } else if (this.isLimit == 0) {
-          if (Number(value) >= 1000000) {
-            callback(new Error("每人限购不得大于999999"));
-          }else{
-              callback();
-          }
-        } else if (this.isLimit != 0 && Number(value) > this.isLimit) {
-          callback(new Error("每人限购不得大于日本限购数量"));
-        } else {
-          callback();
-        }
-      };
+      } else if (this.isLimit != 0 && Number(value) > this.isLimit) {
+        callback(new Error("每人限购不得大于日本限购数量"));
+      } else {
+        callback();
+      }
+    };
     return {
       mixinViewModuleOptions: {
         getDataListURL: addSckillPro,
@@ -263,16 +264,19 @@ export default {
         number: "",
         activityQuantity: "",
         personLimit: "",
-        goodsSpecList:""
+        goodsSpecList: ""
       },
       limit: 10,
       page: 1,
-       dataRule:{
-      
-    //   return {
+      dataRule: {
+        //   return {
         number: [
-          { required: true, message: "秒杀价格不能为空", trigger: "blur" },
-          { validator: validnumber, trigger: "change" }
+          {
+            required: true,
+            message: "秒杀价格不能为空",
+            trigger: ["blur", "change"]
+          },
+          { validator: validnumber, trigger: ["blur", "change"] }
         ],
         activityQuantity: [
           { required: true, message: "活动库存不能为空", trigger: "blur" },
@@ -286,7 +290,6 @@ export default {
     };
   },
   computed: {
-   
     // }
   },
   created() {
@@ -297,6 +300,41 @@ export default {
     this.demo();
   },
   methods: {
+    //取消当前商品选择
+    cancelIt(id, activityId) {
+      //   console.log(id, "活动", activityId);
+const obj = {
+            activityId: activityId,
+            goodsIdList: [id]
+          };
+      this.$confirm("此操作将删除该秒杀商品, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {          
+            console.log(obj)
+          seckillProRemove(obj).then(res => {
+            if (res.code == 200) {
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+            } else {
+              this.$message({
+                type: "error",
+                message: "删除失败!"
+              });
+            }
+          });
+        })
+        .catch(() => {
+          //   this.$message({
+          //     type: 'info',
+          //     message: '已取消删除'
+          //   });
+        });
+    },
     //获取当前操作行
     onRowClick(row) {
       console.log(row.cartLimit, "日本限购");
@@ -360,15 +398,15 @@ export default {
           this.goodsMain = res.data;
           this.moneyNum = Number(res.data.sellPrice);
           this.goodsSpecList = res.data.activityGoodsChoiceSkuVOList;
-          this.editDataForm.goodsSpecList=this.goodsSpecList
-          console.warn(this.editDataForm,'-----更改数据格式')
-        //   this.goodsSpecList[0].cartLimit=5;
+          this.editDataForm.goodsSpecList = this.goodsSpecList;
+          console.warn(this.editDataForm, "-----更改数据格式");
+          //   this.goodsSpecList[0].cartLimit=5;
           this.editVisible = true;
         }
       });
     },
     noCheck() {
-        this.editDataForm.number='';
+      this.editDataForm.number = "";
       this.$refs["editDataForm"].clearValidate();
       this.editVisible = false;
     },
@@ -380,16 +418,13 @@ export default {
       this.editDataForm.activityQuantity = val;
     },
     async subEdit() {
-   
-      console.log(this.$refs["editDataForm"], "提交数据",this.$refs);
-     console.log(this.editDataForm,'form',this.$refs["editDataForm"].validate())
-     
-      this.$refs.editDataForm.validate((valid) => {
-
-          console.log('33333',valid)
+      console.log(
+        this.editDataForm,
+        "form",
+        this.$refs["editDataForm"].validate()
+      );
+      this.$refs.editDataForm.validate(valid => {
         if (valid) {
-          
-        console.log(valid,'---')
           var activityGoodsList = [];
           this.goodsSpecList.forEach((item, index) => {
             activityGoodsList.push({
@@ -411,7 +446,7 @@ export default {
             if (res.code == "200") {
               status = "success";
               this.visible = false;
-              this.$emit("searchDataList");
+              this.getDataList();
               this.editVisible = false;
               //   this.closeDialog();
             } else {

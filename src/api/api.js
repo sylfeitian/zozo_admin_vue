@@ -1026,7 +1026,7 @@ export const getQuestionanswer = params => { return http.get(`${base}/questionan
 
 //秒杀活动
 //秒杀关联商品
-export const seckillProPage = params => { return http.get(`${base}/seckill/goods/choiced/page/${params.activityId}`, params).then(res => res.data); };
+export const seckillProPage = params => { return http.get(`${base}/seckill/goods/choiced/page?activityId=${params.activityId}&page=${params.page}&limit=${params.limit}`, params).then(res => res.data); };
 //关联商品详情
 export const seckillProDet = params => { return http.get(`${base}/seckill/goods/sku/choice?goodsId=${params.goodsId}&activityId=${params.activityId}`, params).then(res => res.data); };
 //秒杀场次审核
@@ -1036,5 +1036,9 @@ export const addSckillPro = params => { return http.get(`${base}/seckill/goods/p
 //编辑添加列表
 export const seckillProUpdate = params => { return http.put(`${base}/seckill/goods/activity`, params).then(res => res.data); };
 //保存添加列表
-export const seckillProSave = params => { return http.post(`${base}/seckill/goods/activity`, params).then(res => res.data); };
+export const seckillProSave = params => { return http.put(`${base}/seckill/goods/activity`, params).then(res => res.data); };
+//删除已选中秒杀商品
+export const seckillProRemove = params => { return http.delete(`${base}/seckill/goods/activity`, params).then(res => res.data); };
+
+
 
