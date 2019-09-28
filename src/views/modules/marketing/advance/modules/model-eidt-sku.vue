@@ -74,7 +74,7 @@
 </template>
 
 <script>
-    import {limitActivitySkuChoice,editPresellActivityGoods} from "@/api/api.js"
+    import {limitActivitySkuChoice,savePresellActivityGoods,editPresellActivityGoods} from "@/api/api.js"
     export default {
         name: "model-add-edit-data",
         data () {
@@ -134,7 +134,7 @@
                                 this.multipleSelection = this.dataList.filter((item,index)=>{
                                     //   return item;
                                     return item.checkFlag==1;
-                                
+
                                 })
                                 this.$nextTick(()=>{
                                     this.multipleSelection.forEach(row => {
@@ -180,22 +180,24 @@
                             this.$message.warning("至少勾选一个sku");
                             return
                         }
-                        var activityGoodsList = [];
+                        var activityGoodsSkuVOList = [];
                         this.multipleSelection.forEach((item,index)=>{
-                            activityGoodsList.push({
+                          activityGoodsSkuVOList.push({
                                 "activityQuantity": item.activityQuantity?item.activityQuantity:0, //活动库存 ,
-                                "goodsCsId": item.id, // 商品skuid ,
-                                "goodsId": this.row2.id,  // 商品spuid ,
+                                "id": item.id, // 商品skuid ,
+                                // "goodsId": this.row2.id,  // 商品spuid ,
                                 "personLimit": item.personLimit?item.personLimit:0 // 每人限购数量
                             })
                         })
                         var obj={
-                            "activityGoodsList":activityGoodsList ,//活动商品新增集合 ,
+                            "activityGoodsSkuVOList":activityGoodsSkuVOList ,//活动商品新增集合 ,
                             "activityId": this.row.id,//活动id ,
-                            "isAllCheck": this.multipleSelection.length==this.dataList.length?1:0,// 商品下的规格是否全部选中（ 默认0未全部选中，1全部选中）
+                            "id": this.row2.id,//商品spuid ,
+                            // "isAllCheck": this.multipleSelection.length==this.dataList.length?1:0,// 商品下的规格是否全部选中（ 默认0未全部选中，1全部选中）
                         }
                          this.saveLoading = true;
-                        editPresellActivityGoods(obj).then((res) => {
+                         var fn = this.type=="edit"?editPresellActivityGoods:savePresellActivityGoods
+                        fn(obj).then((res) => {
                             this.saveLoading = false;
                             // alert(JSON.stringify(res));
                             let status = null;
