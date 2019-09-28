@@ -6,7 +6,7 @@
 		    :visible.sync="visible"
 			width="35%"
 			:before-close="closeDialog">
-				<h3 v-if="this.row.operating==1">请确认审核不通过?</h3>
+				<h3 v-if="this.row.operating==1">请确认审核通过?</h3>
 				<h3 v-else>请确认审核不通过?</h3>
                 <!-- <p style="color:red">请确认已与用户沟通达成一致</p> -->
 			    <span slot="footer" class="dialog-footer"  >

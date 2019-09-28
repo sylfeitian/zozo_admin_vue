@@ -64,15 +64,21 @@
             </el-table-column>
             <el-table-column prop="title" label="标题" align="center">
                 <template slot-scope="scope">
-                    <div :title="scope.row.title">
+                    <div :title="scope.row.title" v-if="scope.row.title">
                         {{scope.row.title}}
+                    </div>
+                    <div :title="scope.row.titleJp" v-else-if="scope.row.titleJp">
+                        {{scope.row.titleJp}}
                     </div>
                 </template>
             </el-table-column>
             <el-table-column prop="shopName" label="店铺" align="center">
                 <template slot-scope="scope">
-                    <div :title="scope.row.shopName">
+                    <div :title="scope.row.shopName" v-if="scope.row.shopName">
                         {{scope.row.shopName}}
+                    </div>
+                    <div :title="scope.row.shopNameJp" v-else-if="scope.row.shopNameJp">
+                        {{scope.row.shopNameJp}}
                     </div>
                 </template>
             </el-table-column>

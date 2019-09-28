@@ -13,65 +13,25 @@
 					  </el-input>
 					  <div>面值只能是数值，0.01-1000000，限2位小数</div>
         </el-form-item>
-<!--        <el-form-item label="领取开始时间："  prop="getStartTime">-->
-<!--        	&lt;!&ndash;:default-time="startsecond"&ndash;&gt;-->
-<!--            	<el-date-picker-->
-<!--                v-model="dataForm.getStartTime"-->
-<!--                type="date"-->
-<!--                value-format="yyyy-MM-dd"-->
-<!--                clearable-->
-<!--                :picker-options="pickerOptions0"-->
-<!--                placeholder="请选择时间："-->
-<!--                style="width:220px;">-->
-<!--            </el-date-picker>-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label=""  prop="value1" class="artvalue12time">-->
-<!--						<el-time-picker-->
-<!--							v-if="value1isshow"-->
-<!--						  v-model="dataForm.value1"-->
-<!--					    :picker-options="value1Time"-->
-<!--					    @blur ="artvalue1time"-->
-<!--					    placeholder="选择时间">-->
-<!--  					</el-time-picker>-->
-<!--     </el-form-item>-->
-<!--      <el-form-item label="领取结束时间：" prop="getEndTime">-->
-<!--            <el-date-picker-->
-<!--                v-model="dataForm.getEndTime"-->
-<!--                type="date"-->
-<!--                value-format="yyyy-MM-dd"-->
-<!--                clearable-->
-<!--                :picker-options="pickerOptions1"-->
-<!--                placeholder="请选择时间："-->
-<!--                style="width:220px;">-->
-<!--            </el-date-picker>-->
-<!--    	</el-form-item>-->
-<!--    	<el-form-item label="" prop="value2" class="artvalue12time">-->
-<!--            <el-time-picker-->
-<!--            	v-if="value2isshow"-->
-<!--						  v-model="dataForm.value2"-->
-<!--						  :picker-options="value2Time"-->
-<!--						  :disabled = "value2timedisabled"-->
-<!--						  @focus ="artvalue2time"-->
-<!--						  placeholder="选择时间">-->
-<!--						</el-time-picker>-->
-<!--    	</el-form-item>-->
-            <el-form-item label="领取开始时间："  prop="getStartTime">
+        <el-form-item label="领取开始时间："  prop="getStartTime">
                 <el-date-picker
                         v-model="dataForm.getStartTime"
                         type="datetime"
+                        value-format="yyyy-MM-dd HH:mm:ss"
                         placeholder="选择开始时间"
                         style="width: 200px">
                 </el-date-picker>
-            </el-form-item>
+        </el-form-item>
 
-            <el-form-item label="领取结束时间："  prop="getEndTime">
+        <el-form-item label="领取结束时间："  prop="getEndTime">
                 <el-date-picker
                         v-model="dataForm.getEndTime"
                         type="datetime"
+                         value-format="yyyy-MM-dd HH:mm:ss"
                         placeholder="选择结束时间"
                         style="width: 200px">
                 </el-date-picker>
-            </el-form-item>
+        </el-form-item>
         <el-form-item class="artfromitem" label="每人限领：" prop="men">
             <span>1张</span>
         </el-form-item>
@@ -81,7 +41,7 @@
         		<div>元可用（输入“0”为无门槛优惠券）</div>
         </el-form-item>
         <el-form-item label="有效期：" prop="validityDays">
-            <el-input v-model="dataForm.validityDays" placeholder="领取后到期天数" style="width:220px;">
+            <el-input v-model="dataForm.validityDays" placeholder="领取后到期天数" maxlength="3" style="width:220px;">
                 <template slot="append">天</template>
             </el-input>
         </el-form-item>
@@ -135,13 +95,6 @@
           callback()
         }
     };
-    var validityDay =(rule, value,callback)=>{
-        if (value.length >3){
-          callback(new Error('仅可输入3位数字'))
-        }else {
-          callback()
-        }
-    };
 export default {
     props: ['type','editSatusId'],
   data () {
@@ -187,9 +140,6 @@ export default {
             value2 : [
                     { required: true, message: '必填项不能为空', trigger: 'blur' },
             ],
-            validityDays: [
-                { required: true, message: '必填项不能为空', trigger: 'blur' },
-            ],
             totalNums :[
                     { required: true, message: '必填项不能为空', trigger: 'blur' },
                     { validator: validnumber, trigger: 'blur' },
@@ -210,7 +160,7 @@ export default {
             ],
             validityDays : [
                 { required: true, message: '必填项不能为空', trigger: 'blur' },
-                { validator: validityDay, trigger: 'blur' },
+                // { validator: validityDay, trigger: 'blur' },
             ],
         },
         pickerOptions0: {

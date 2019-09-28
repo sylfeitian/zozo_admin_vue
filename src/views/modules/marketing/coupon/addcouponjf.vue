@@ -18,52 +18,11 @@
                 </el-input>
                 <div>面值只能是数值，0.01-1000000，限2位小数</div>
             </el-form-item>
-            <!--        <el-form-item label="领取开始时间："  prop="getStartTime">-->
-            <!--        	&lt;!&ndash;:default-time="startsecond"&ndash;&gt;-->
-            <!--            	<el-date-picker-->
-            <!--                v-model="dataForm.getStartTime"-->
-            <!--                type="date"-->
-            <!--                value-format="yyyy-MM-dd"-->
-            <!--                clearable-->
-            <!--                :picker-options="pickerOptions0"-->
-            <!--                placeholder="请选择时间："-->
-            <!--                style="width:220px;">-->
-            <!--            </el-date-picker>-->
-            <!--      </el-form-item>-->
-            <!--      <el-form-item label=""  prop="value1" class="artvalue12time">  -->
-            <!--						<el-time-picker-->
-            <!--							v-if="value1isshow"-->
-            <!--						  v-model="dataForm.value1"-->
-            <!--					    :picker-options="value1Time"-->
-            <!--					    @blur ="artvalue1time"-->
-            <!--					    placeholder="选择时间">-->
-            <!--  					</el-time-picker>-->
-            <!--     </el-form-item>-->
-            <!--      <el-form-item label="领取结束时间：" prop="getEndTime">-->
-            <!--            <el-date-picker-->
-            <!--                v-model="dataForm.getEndTime"-->
-            <!--                type="date"-->
-            <!--                value-format="yyyy-MM-dd"-->
-            <!--                clearable-->
-            <!--                :picker-options="pickerOptions1"-->
-            <!--                placeholder="请选择时间："-->
-            <!--                style="width:220px;">-->
-            <!--            </el-date-picker>-->
-            <!--    	</el-form-item>-->
-            <!--    	<el-form-item label="" prop="value2" class="artvalue12time">-->
-            <!--            <el-time-picker-->
-            <!--            	v-if="value2isshow"-->
-            <!--						  v-model="dataForm.value2"-->
-            <!--						  :picker-options="value2Time"-->
-            <!--						  :disabled = "value2timedisabled"-->
-            <!--						  @focus ="artvalue2time"-->
-            <!--						  placeholder="选择时间">-->
-            <!--						</el-time-picker>-->
-            <!--    	</el-form-item>-->
             <el-form-item label="领取开始时间：" prop="getStartTime">
                 <el-date-picker
                         v-model="dataForm.getStartTime"
                         type="datetime"
+                         value-format="yyyy-MM-dd HH:mm:ss"
                         placeholder="选择开始时间"
                         style="width: 200px">
                 </el-date-picker>
@@ -73,6 +32,7 @@
                 <el-date-picker
                         v-model="dataForm.getEndTime"
                         type="datetime"
+                         value-format="yyyy-MM-dd HH:mm:ss"
                         placeholder="选择结束时间"
                         style="width: 200px">
                 </el-date-picker>
@@ -94,6 +54,7 @@
                     <span>日期范围</span>&nbsp;
                     <el-date-picker
                             v-model="valuetime"
+                             format="yyyy-MM-dd HH:mm:ss"
                             type="daterange"
                             value-format="yyyy-MM-dd HH:mm:ss"
                             align="right"
@@ -107,7 +68,7 @@
                 <br>
                 <el-radio v-model="validityPeriodType" label="1">
                     <span>固定天数</span>&nbsp;
-                    <el-input placeholder="20" v-model="dataForm.validityDays" show-word-limit style="width:220px;">
+                    <el-input placeholder="20" v-model="dataForm.validityDays" maxlength="3" style="width:220px;">
                         <template slot="append">天</template>
                     </el-input>
                 </el-radio>
@@ -262,85 +223,6 @@
             }
         },
         components: {},
-        watch: {
-            // 优惠卷名称
-            'dataForm.name': function (newV, oldV) {
-                debugger
-                var chineseCount = 0, characterCount = 0;
-                for (let i = 0; i < newV.length; i++) {
-                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
-                        chineseCount = chineseCount + 2;
-                    } else { //字符
-                        characterCount = characterCount + 1;
-                    }
-                    var count = chineseCount + characterCount;
-                    if (count > 100) { //输入字符大于100的时候过滤
-                        this.dataForm.name = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
-                    }
-                }
-            },
-            // 总发行量
-            'dataForm.totalNums':function(newV,oldV) {
-                for(let i=0;i<newV.length;i++){
-                    // 只能输入数字
-                    if(!/[0-9]/g.test(newV[i])){
-                        this.dataForm.totalNums = newV.replace(newV[i],"")
-                    }
-                }
-            },
-            // 面额
-            'dataForm.faceValue':function(newV,oldV) {
-                for(let i=0;i<newV.length;i++){
-                    // 只能输入数字和小数点
-                    if(!/[0-9|\.]/g.test(newV[i])){
-                        this.dataForm.faceValue = newV.replace(newV[i],"")
-                    }
-                }
-            },
-            // 使用门槛
-            'dataForm.threshold': function (newV, oldV) {
-                for (let i = 0; i < newV.length; i++) {
-                    // 只能输入数字
-                    if (!/[0-9]/g.test(newV[i])) {
-                        this.dataForm.threshold = newV.replace(newV[i], "")
-                    }
-                }
-            },
-            // 所需积分
-            'dataForm.memberPoints': function (newV, oldV) {
-                debugger
-                for (let i = 0; i < newV.length; i++) {
-                    // 只能输入数字
-                    if (!/[0-9]/g.test(newV[i])) {
-                        this.dataForm.memberPoints = newV.replace(newV[i], "")
-                    }
-                }
-            },
-            // 没人限领
-            'dataForm.limitNum':function(newV,oldV) {
-                for(let i=0;i<newV.length;i++){
-                    // 只能输入数字
-                    if(!/[0-9]/g.test(newV[i])){
-                        this.dataForm.limitNum = newV.replace(newV[i],"")
-                    }
-                }
-            },
-            // 备注
-            'dataForm.bei': function (newV, oldV) {
-                var chineseCount = 0, characterCount = 0;
-                for (let i = 0; i < newV.length; i++) {
-                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
-                        chineseCount = chineseCount + 2;
-                    } else { //字符
-                        characterCount = characterCount + 1;
-                    }
-                    var count = chineseCount + characterCount;
-                    if (count > 6) { //输入字符大于600的时候过滤
-                        this.dataForm.bei = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
-                    }
-                }
-            }
-        },
         created() {
             if (!this.type) {
                 this.getInfo();//判断为编辑时获取详情
@@ -394,10 +276,116 @@
                         this.dataForm.value2 = '';
                     }
                 }
+            },
+            // 优惠卷名称
+            'dataForm.name': function (newV, oldV) {
+                debugger
+                var chineseCount = 0, characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 100) { //输入字符大于100的时候过滤
+                        this.dataForm.name = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
+                    }
+                }
+            },
+            // 总发行量
+            'dataForm.totalNums':function(newV,oldV) {
+                debugger
+                for(let i=0;i<newV.length;i++){
+                    // 只能输入数字
+                    if(!/[0-9]/g.test(newV[i])){
+                        this.dataForm.totalNums = newV.replace(newV[i],"")
+                    }
+                }
+            },
+            // 面额
+            'dataForm.faceValue':function(newV,oldV) {
+                debugger
+                for(let i=0;i<newV.length;i++){
+                    // 只能输入数字和小数点
+                    if(!/[0-9|\.]/g.test(newV[i])){
+                        this.dataForm.faceValue = newV.replace(newV[i],"")
+                    }
+                }
+            },
+            // 使用门槛
+            'dataForm.threshold': function (newV, oldV) {
+                debugger
+                for (let i = 0; i < newV.length; i++) {
+                    // 只能输入数字
+                    if (!/[0-9]/g.test(newV[i])) {
+                        this.dataForm.threshold = newV.replace(newV[i], "")
+                    }
+                }
+            },
+            // 所需积分
+            'dataForm.memberPoints': function (newV, oldV) {
+                debugger
+                for (let i = 0; i < newV.length; i++) {
+                    // 只能输入数字
+                    if (!/[0-9]/g.test(newV[i])) {
+                        this.dataForm.memberPoints = newV.replace(newV[i], "")
+                    }
+                }
+            },
+            // 没人限领
+            'dataForm.limitNum':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    // 只能输入数字
+                    if(!/[0-9]/g.test(newV[i])){
+                        this.dataForm.limitNum = newV.replace(newV[i],"")
+                    }
+                }
+            },
+            // 备注
+            'dataForm.bei': function (newV, oldV) {
+                var chineseCount = 0, characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 6) { //输入字符大于600的时候过滤
+                        this.dataForm.bei = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
+                    }
+                }
             }
 
         },
         methods: {
+            dateToStr: function (datatime){   //获取当前时间
+                var dateTime = datatime || new Date();
+                var year = dateTime.getFullYear();
+                var month = dateTime.getMonth()+1;//js从0开始取
+                var date = dateTime.getDate();
+                var hour = dateTime.getHours();
+                var minutes = dateTime.getMinutes();
+                var second = dateTime.getSeconds();
+        
+                if(month<10){
+                    month = "0" + month;
+                }
+                if(date<10){
+                    date = "0" + date;
+                }
+                if(hour <10){
+                    hour = "0" + hour;
+                }
+                if(minutes <10){
+                    minutes = "0" + minutes;
+                }
+                if(second <10){
+                    second = "0" + second ;
+                }
+                return year+"-"+month+"-"+date+" "+hour+":"+minutes+":"+second;
+            },
             //编辑详情接口方法
             getInfo() {
                 var obj = {
@@ -407,6 +395,14 @@
                     console.log(res);
                     if (res.code == 200) {
                         this.dataForm = res.data;
+                        this.dataForm.validityDays = res.data.validityDays// 有效天数 ,
+                        this.dataForm.memberPoints =  res.data.memberPoints//兑换优惠券用的积分数
+                        this.validityPeriodType =  res.data.validityPeriodType.toString();//有效期类型，0：日期范围，1：固定天数
+                        this.dataForm.startTime = this.dateToStr(new Date(res.data.startTime)) //生效日期
+                        this.dataForm.endTime =  this.dateToStr(new Date(res.data.endTime)) // 截止日期 
+                        if(res.data.startTime && res.data.endTime){
+                            this.valuetime = [res.data.startTime,res.data.endTime]
+                        }
                     }
                 })
             },
@@ -441,8 +437,8 @@
             },
             //开始结束时间
             acttime() {
-                this.dataForm.getStartTime = this.valuetime[0];
-                this.dataForm.getEndTime = this.valuetime[1];
+                this.dataForm.startTime = this.valuetime[0];
+                this.dataForm.endTime = this.valuetime[1];
             },
             // 提交
             dataFormSubmit(formName) {
@@ -466,7 +462,7 @@
                             validityPeriodType: this.validityPeriodType,//有效期类型，0：日期范围，1：固定天数
                         }
                         if (this.editSatusId) obj.id = this.editSatusId//优惠券活动id
-                        var fn = this.type ? editActivityPoint : addActivityPoint;
+                        var fn = this.type ?addActivityPoint:editActivityPoint ;
                         fn(obj).then((res) => {
                             this.loading = false;
                             // alert(JSON.stringify(res));

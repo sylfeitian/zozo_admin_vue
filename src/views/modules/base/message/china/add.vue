@@ -1,7 +1,8 @@
 <template>
 	<!--新增的弹窗-->
-	<el-dialog title="新增分类" :visible.sync="showListVisible" width="50%" :before-close="handleClose" >
-			<el-form :model="dataForm" label-width="140px" 	:rules="dataRule" class="demo-ruleForm" ref="addForm"  v-loading="loading">
+	<div>
+	<el-dialog title="新增分类" :visible="showListVisible" width="50%" :before-close="handleClose">
+			<el-form :model="dataForm" label-width="140px" 	:rules="dataRule" class="demo-ruleForm" ref="addForm">
 			<el-form-item v-if='dataForm.parentname' label="上级分类：" prop="gcName">
 				<el-input v-model="dataForm.parentname" type="text" :disabled="true" placeholder="dataForm.parentname" show-word-limit style="width:400px;"></el-input>
 			</el-form-item>
@@ -118,15 +119,12 @@
     		</el-form-item>
 		</el-form>
 
-		<span slot="footer" class="dialog-footer" v-if="!loading">
+		<span slot="footer" class="dialog-footer">
             <el-button @click="closeadd">取消</el-button>
             <el-button type="primary" @click="actuploaddata('addForm')">确 定</el-button>
         </span>
-<!--	  <span slot="footer" class="dialog-footer artFooter">-->
-<!--	    <el-button @click="closeadd" style="margin-right: 20px;">取 消</el-button>-->
-<!--	    <el-button type="primary" @click="actuploaddata('addForm')">确 定</el-button>-->
-<!--	  </span>-->
 	</el-dialog>
+	</div>
 </template>
 
 <script>
@@ -173,16 +171,19 @@
                     } else { //字符
                         characterCount = characterCount + 1;
                     }
-                    var count = chineseCount + characterCount;
-                    if (count < 4 ) {
-                        callback('至少输入2个字，对应4个字符的内容');
-                    }else{
-                        callback();
-                    }
                 }
+			var count = chineseCount + characterCount;
+			if (count < 4 ) {
+				// return callback(new Error('aaa'))
+				return callback('至少输入2个字，对应4个字符的内容');
+			}else{
+				return callback()
+			}
 		};
 	    return {
-			loading:false,
+            fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'},
+                {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
+            // loading:false,
 	    	erjishow: true,  //二级没有评价类型
 	    	yijishow: true,  //一级不用上传图片
 //	    	selectdisabled: false, //是否可以选择一级分类
@@ -252,18 +253,20 @@
 			},
 			// 评价类型
             'dataForm.appraisal':function(newV,oldV) {
-				var chineseCount = 0,characterCount = 0;
-				for (let i = 0; i < newV.length; i++) {
-					if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
-						chineseCount = chineseCount + 2;
-					} else { //字符
-						characterCount = characterCount + 1;
-					}
-					var count = chineseCount + characterCount;
-					if (count > 12) { //输入字符大于12的时候过滤
-						this.dataForm.appraisal = newV.substr(0,(chineseCount/2+characterCount)-1)
-					}
-				}
+			    if(newV){
+                    var chineseCount = 0,characterCount = 0;
+                    for (let i = 0; i < newV.length; i++) {
+                        if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                            chineseCount = chineseCount + 2;
+                        } else { //字符
+                            characterCount = characterCount + 1;
+                        }
+                        var count = chineseCount + characterCount;
+                        if (count > 12) { //输入字符大于12的时候过滤
+                            this.dataForm.appraisal = newV.substr(0,(chineseCount/2+characterCount)-1)
+                        }
+                    }
+                }
 			}
 			},
 			created () {
@@ -275,12 +278,12 @@
 				if(row){
 					this.dataForm.parentId = row.id;
 				}
-				this.loading =  true;
+				// this.loading =  true;
 				Promise.all([
 					this.getGoodKindList1(),
 					this.getCategoryJp()
 				]).then(() => {
-					this.loading = false
+					// this.loading = false
 				})
 			   this.actselectchange();
 			})
@@ -471,7 +474,7 @@
 		},
 		//新增关闭
 	    handleClose(done) {
-	      done();
+	  	    this.showListVisible = false;
 	      this.$emit("addshow")
 	    },
 	    closeadd(){

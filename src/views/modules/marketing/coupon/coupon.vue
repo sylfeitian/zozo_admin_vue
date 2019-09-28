@@ -247,7 +247,6 @@ export default {
         addCoupon(row){
             console.log(row);
             if(row){
-
                 if(row.type==0){
                     row.editType = "普通优惠券";
                 }else if(row.type==1){
@@ -255,8 +254,6 @@ export default {
                 }else if(row.type==2){
                     row.editType =  "积分兑换券";
                 }
-
-
         	    this.$emit('showAddOrEditCoupon',row)//编辑优惠券
             }else{
         	    this.$emit('showAddOrEditCoupon')//新增优惠券

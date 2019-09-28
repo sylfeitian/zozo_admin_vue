@@ -111,6 +111,7 @@
                     activityId:this.row.id,//活动ID
                     goodsId:this.row2.goodsId,//商品ID
                     activityType:2,//活动类型 0秒杀 1限量 2预售
+                    type:2,
                    }
 
                 }

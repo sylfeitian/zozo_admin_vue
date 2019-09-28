@@ -18,6 +18,7 @@
             :data="dataList"
             v-loading="loading"
             border
+             ref="multipleTable"
              @selection-change="handleSelectionChange"
             style="width: 100%">
             
@@ -96,16 +97,18 @@
                 kucun:'',
                 row:'',
                 row2:'',
+                type:'',//choose修改；edit编辑
             }
             
         },
         methods: {
-            init (row,row2) {
+            init (row,row2,type) {
                 this.visible = true;
                 this.saveLoading = false;
                 this.$nextTick(() => {
                     this.row = row;
                     this.row2 = row2;
+                    this.type = type;
                     this.title = "修改";
                     this.backScan();
                 })
@@ -126,7 +129,20 @@
                     if(res.code == 200){
                         Object.assign(this.dataForm,res.data);
                         if(res.data && res.data.activityGoodsChoiceSkuVOList){
-                            this.dataList =  res.data.activityGoodsChoiceSkuVOList
+                            this.dataList =  res.data.activityGoodsChoiceSkuVOList;
+                           if(this.type=="edit"){
+                                this.multipleSelection = this.dataList.filter((item,index)=>{
+                                    //   return item;
+                                    return item.checkFlag==1;
+                                
+                                })
+                                this.$nextTick(()=>{
+                                    this.multipleSelection.forEach(row => {
+                                        this.$refs.multipleTable.toggleRowSelection(row);
+                                    });
+                                })
+                           }
+                            
                         }else{
                             this.dataList = []
                         }

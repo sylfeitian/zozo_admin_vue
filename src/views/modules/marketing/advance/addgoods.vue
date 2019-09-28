@@ -88,13 +88,19 @@
             align="center"
 	    	label="操作">
 		    <template slot-scope="scope">
+                <!-- activityState ： 0 添加
+activityState ： 1 ， selfActivityState 0 冲突
+activityState ： 1 ， selfActivityState 1 修改 -->
                 <div v-if="scope.row.activityState ==0">
                     <el-button  v-if="scope.row.selfActivityState==1" type="text" size="small" @click="chooseFn(scope.row)" >取消选择</el-button>
                     <el-button v-else type="text" size="small" @click="chooseFn(scope.row)">选择</el-button>
-		        	<el-button type="text" size="small" @click="editGoodsSku(scope.row)">修改</el-button>
+                </div>
+                <div  v-else-if="scope.row.activityState ==1">
+                    <span v-if="scope.row.selfActivityState ==0">与其他活动冲突</span>
+                    <el-button v-if="scope.row.selfActivityState ==1" type="text" size="small" @click="editGoodsSku(scope.row)">修改</el-button>
                 </div>
                 <span v-else>与其他活动冲突</span>
-		    	
+
 		    </template>
 	  	</el-table-column>
 	</el-table>
@@ -115,22 +121,22 @@
 
 <script>
     import mixinViewModule from '@/mixins/view-module'
-    import { limitActivityGoodsList } from '@/api/url'
-    import { storeGrade,getdatacategory,limitActivitySkuChoice} from '@/api/api'
+    import { presellActivityGoodsList } from '@/api/url'
+    import { storeGrade,getdatacategory} from '@/api/api'
     import Bread from "@/components/bread";
     import editGoodsSku from "./modules/model-eidt-sku.vue"
 
     export default {
         mixins: [mixinViewModule],
         props:['activityId'],
-        components:{ 
+        components:{
             Bread,
             editGoodsSku
         },
         data () {
             return {
                 mixinViewModuleOptions: {
-                    getDataListURL: limitActivityGoodsList,
+                    getDataListURL: presellActivityGoodsList,
                     activatedIsNeed:false,
                     getDataListIsPage: true,
                     exportURL: '/admin-api/store/export',
@@ -225,36 +231,16 @@
                 },
                 // 选择或取消选择
                 chooseFn(row){
-                    alert("没找到接口");
-                    // let that = this;
-                    // if(row.selfActivityState==0){
-                    //     msgContent="是否确认选择"
-                    // }else{
-                    //        msgContent="是否确定取消选择"
-                    // }
-                    // this.$confirm(msgContent, "提示", {
-                    //     confirmButtonText: "确定",
-                    //     cancelButtonText:"取消",
-                    //     type: 'warning'
-                    // }).then(() => {
-                    //     var obj = {
-                    //         params:{
-                    //             goodsId:123,//商品spuid
-                    //             activityId:that.row.id,//活动id
-                    //         }
-                    //     }
-                    //     limitActivitySkuChoice(obj).then((res)=>{
-
-                    //     })
-
-                    // }).catch(() => { 
-                    //  })
+                     this.modelEditSkuVisible = true;
+                    this.$nextTick(()=>{
+                        this.$refs.editGoodsSkuCompon.init(this.row,row,"choose");
+                    })
                 },
                 //弹出修改弹框
                 editGoodsSku(row){
                     this.modelEditSkuVisible = true;
                     this.$nextTick(()=>{
-                        this.$refs.editGoodsSkuCompon.init(this.row,row);
+                        this.$refs.editGoodsSkuCompon.init(this.row,row,"edit");
                     })
                 },
                 noCheck(){
@@ -302,5 +288,5 @@
             }
         }
     }
-        
+
 </style>
