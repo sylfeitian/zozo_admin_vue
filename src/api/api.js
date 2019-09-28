@@ -1031,7 +1031,8 @@ export const seckillProDet = params => { return http.get(`${base}/seckill/goods/
 export const seckillActAudit = params => { return http.get(`${base}/seckill/activity/audit?id=${params.id}&auditState=${params.auditState}`, params).then(res => res.data); };
 //秒杀添加商品列表
 export const addSckillPro = params => { return http.get(`${base}/seckill/goods/page/${params.activityId}?page=${params.page}&limit=${params.limit}&brandName=${params.brandName}&name=${params.name}&categoryId=${params.categoryId}&id=${params.id}&storeName=${params.storeName}`, params).then(res => res.data); };;
+//编辑添加列表
+export const seckillProUpdate = params => { return http.put(`${base}/seckill/goods/activity`, params).then(res => res.data); };
 //保存添加列表
-export const seckillProSave = params => { return http.put(`${base}/seckill/goods/activity`, params).then(res => res.data); };
-
+export const seckillProSave = params => { return http.post(`${base}/seckill/goods/activity`, params).then(res => res.data); };
 
