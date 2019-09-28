@@ -1026,7 +1026,7 @@ export const getQuestionanswer = params => { return http.get(`${base}/questionan
 
 //秒杀活动
 //秒杀关联商品
-export const seckillProPage = params => { return http.get(`${base}/seckill/goods/choiced/page/${params.activityId}`, params).then(res => res.data); };
+export const seckillProPage = params => { return http.get(`${base}/seckill/goods/choiced/page?activityId=${params.activityId}&page=${params.page}&limit=${params.limit}`, params).then(res => res.data); };
 //关联商品详情
 export const seckillProDet = params => { return http.get(`${base}/seckill/goods/sku/choice?goodsId=${params.goodsId}&activityId=${params.activityId}`, params).then(res => res.data); };
 //秒杀场次审核
