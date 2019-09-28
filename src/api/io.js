@@ -31,3 +31,10 @@ export const colorImportExcel = `${allBase}/color/importExcel`;
 
 // 日本分类
 export const categoryJpImport = `${allBase}/categoryJp/import`;
+// 品牌管理
+export const shopBrandImport = `${allBase}/shopBrand/import`;
+// 分类条件
+export const tagImport = `${allBase}/tag/import`;
+
+// 查看库存
+export const stockExportt= `${allBase}/stock/exportt`;

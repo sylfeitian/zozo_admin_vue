@@ -390,8 +390,10 @@ export const auditOperating  = params => { return http.post(`${base}/order/audit
 export const managerRemark  = params => { return http.get(`${base}/order/${params.id}/manager/remark?remark=${params.remarks}`, params).then(res => res.data); }
 // 取消订单
 export const orderCancel = params => { return http.post(`${base}/order/cancel/${params.id}`, params).then(res => res.data); }
-// 订单申报
-export const orderRedeclare = params => { return http.post(`${base}/order/redeclare/${params.id}`, params).then(res => res.data); }
+// jd订单申报
+export const orderRedeclareJd = params => { return http.post(`${base}/order/redeclare/${params.id}`, params).then(res => res.data); }
+// lakala订单申报
+export const orderRedeclareLakala = params => { return http.post(`${base}/order/lakala/redeclare`, params).then(res => res.data); }
 // 清关失败
 export const clearCustomFail = params => { return http.post(`${base}/order/${params.id}/clear/custom/fail`, params).then(res => res.data); }
 // 填写物流信息
