@@ -74,7 +74,7 @@
 </template>
 
 <script>
-    import {limitActivitySkuChoice,editPresellActivityGoods} from "@/api/api.js"
+    import {limitActivitySkuChoice,savePresellActivityGoods,editPresellActivityGoods} from "@/api/api.js"
     export default {
         name: "model-add-edit-data",
         data () {
@@ -196,7 +196,8 @@
                             // "isAllCheck": this.multipleSelection.length==this.dataList.length?1:0,// 商品下的规格是否全部选中（ 默认0未全部选中，1全部选中）
                         }
                          this.saveLoading = true;
-                        editPresellActivityGoods(obj).then((res) => {
+                         var fn = this.type=="edit"?editPresellActivityGoods:savePresellActivityGoods
+                        fn(obj).then((res) => {
                             this.saveLoading = false;
                             // alert(JSON.stringify(res));
                             let status = null;

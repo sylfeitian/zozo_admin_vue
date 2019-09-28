@@ -972,7 +972,7 @@ export const addPresellActivity = params => { return http.post(`${base}/presell/
 export const editPresellActivity = params => { return http.put(`${base}/presell/activity`, params).then(res => res.data); };
 // 编辑回显预售活动
 export const backScanPresellActivityDetail = params => { return http.get(`${base}/presell/activity/detail/${params.id}`, params).then(res => res.data); };
-// 增加限量活动商品
+// 增加预售活动商品
 export const savePresellActivityGoods = params => { return http.post(`${base}/presell/activity/goods`, params).then(res => res.data); };
 // 编辑限量活动商品
 export const editPresellActivityGoods = params => { return http.put(`${base}/presell/activity/goods`, params).then(res => res.data); };
