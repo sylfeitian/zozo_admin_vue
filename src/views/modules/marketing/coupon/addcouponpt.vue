@@ -63,7 +63,7 @@
             <br>
             <el-radio v-model="validityPeriodType" :label="1">
                 <span>固定天数</span>&nbsp;
-                <el-input placeholder="20" v-model="dataForm.validityDays" show-word-limit style="width:220px;">
+                <el-input placeholder="20" v-model="dataForm.validityDays" maxlength="3" style="width:220px;">
                     <template slot="append">天</template>
                 </el-input>
             </el-radio>
@@ -87,17 +87,15 @@
 <script>
 import { addActivityNormal, editActivityNormal, backScanActivity } from '@/api/api'
 import vueFilter from '@/utils/filter'
-// 仅可输入3位数字
-// var validnumber =(rule, value,callback)=>{
-//     debugger
-//     if (value.length>3){
-//       callback(new Error('仅可输入3位数字'))
-//     }else if(value <= 0){
-//     	callback(new Error('只能输入大于0的数'))
-//     }else {
-//       callback()
-//     }
-// };
+var validnumber = (rule, value, callback) => {
+    if (value / 1 > 1000000) {
+        callback(new Error('请输入1000000以内的数字'))
+    } else if (value <= 0) {
+        callback(new Error('只能输入大于0的数'))
+    } else {
+        callback()
+    }
+};
 var validthreshold =(rule, value,callback)=>{
     if (value/1 > 1000000){
       callback(new Error('请输入1000000以内的数字'))
@@ -149,16 +147,12 @@ export default {
                 getEndTime : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                 ],
-
-                threshold: [
-                        { required: true, message: '必填项不能为空', trigger: 'blur' },
-                ],
                 limitNum: [
                     { required: true, message: '必填项不能为空', trigger: 'blur' },
                 ],
                 totalNums :[
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
-                        // { validator: validnumber, trigger: 'blur' },
+                        { validator: validnumber, trigger: 'blur' },
                 ],
                 threshold :[
                         { required: true, message: '必填项不能为空', trigger: 'blur' },

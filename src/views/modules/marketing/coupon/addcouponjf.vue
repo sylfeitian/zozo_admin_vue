@@ -68,7 +68,7 @@
                 <br>
                 <el-radio v-model="validityPeriodType" label="1">
                     <span>固定天数</span>&nbsp;
-                    <el-input placeholder="20" v-model="dataForm.validityDays" show-word-limit style="width:220px;">
+                    <el-input placeholder="20" v-model="dataForm.validityDays" maxlength="3" style="width:220px;">
                         <template slot="append">天</template>
                     </el-input>
                 </el-radio>
@@ -223,85 +223,6 @@
             }
         },
         components: {},
-        watch: {
-            // 优惠卷名称
-            'dataForm.name': function (newV, oldV) {
-                debugger
-                var chineseCount = 0, characterCount = 0;
-                for (let i = 0; i < newV.length; i++) {
-                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
-                        chineseCount = chineseCount + 2;
-                    } else { //字符
-                        characterCount = characterCount + 1;
-                    }
-                    var count = chineseCount + characterCount;
-                    if (count > 100) { //输入字符大于100的时候过滤
-                        this.dataForm.name = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
-                    }
-                }
-            },
-            // 总发行量
-            'dataForm.totalNums':function(newV,oldV) {
-                for(let i=0;i<newV.length;i++){
-                    // 只能输入数字
-                    if(!/[0-9]/g.test(newV[i])){
-                        this.dataForm.totalNums = newV.replace(newV[i],"")
-                    }
-                }
-            },
-            // 面额
-            'dataForm.faceValue':function(newV,oldV) {
-                for(let i=0;i<newV.length;i++){
-                    // 只能输入数字和小数点
-                    if(!/[0-9|\.]/g.test(newV[i])){
-                        this.dataForm.faceValue = newV.replace(newV[i],"")
-                    }
-                }
-            },
-            // 使用门槛
-            'dataForm.threshold': function (newV, oldV) {
-                for (let i = 0; i < newV.length; i++) {
-                    // 只能输入数字
-                    if (!/[0-9]/g.test(newV[i])) {
-                        this.dataForm.threshold = newV.replace(newV[i], "")
-                    }
-                }
-            },
-            // 所需积分
-            'dataForm.memberPoints': function (newV, oldV) {
-                debugger
-                for (let i = 0; i < newV.length; i++) {
-                    // 只能输入数字
-                    if (!/[0-9]/g.test(newV[i])) {
-                        this.dataForm.memberPoints = newV.replace(newV[i], "")
-                    }
-                }
-            },
-            // 没人限领
-            'dataForm.limitNum':function(newV,oldV) {
-                for(let i=0;i<newV.length;i++){
-                    // 只能输入数字
-                    if(!/[0-9]/g.test(newV[i])){
-                        this.dataForm.limitNum = newV.replace(newV[i],"")
-                    }
-                }
-            },
-            // 备注
-            'dataForm.bei': function (newV, oldV) {
-                var chineseCount = 0, characterCount = 0;
-                for (let i = 0; i < newV.length; i++) {
-                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
-                        chineseCount = chineseCount + 2;
-                    } else { //字符
-                        characterCount = characterCount + 1;
-                    }
-                    var count = chineseCount + characterCount;
-                    if (count > 6) { //输入字符大于600的时候过滤
-                        this.dataForm.bei = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
-                    }
-                }
-            }
-        },
         created() {
             if (!this.type) {
                 this.getInfo();//判断为编辑时获取详情
@@ -353,6 +274,86 @@
                     } else {    //清空了结束时间
                         this.value2isshow = false;
                         this.dataForm.value2 = '';
+                    }
+                }
+            },
+            // 优惠卷名称
+            'dataForm.name': function (newV, oldV) {
+                debugger
+                var chineseCount = 0, characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 100) { //输入字符大于100的时候过滤
+                        this.dataForm.name = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
+                    }
+                }
+            },
+            // 总发行量
+            'dataForm.totalNums':function(newV,oldV) {
+                debugger
+                for(let i=0;i<newV.length;i++){
+                    // 只能输入数字
+                    if(!/[0-9]/g.test(newV[i])){
+                        this.dataForm.totalNums = newV.replace(newV[i],"")
+                    }
+                }
+            },
+            // 面额
+            'dataForm.faceValue':function(newV,oldV) {
+                debugger
+                for(let i=0;i<newV.length;i++){
+                    // 只能输入数字和小数点
+                    if(!/[0-9|\.]/g.test(newV[i])){
+                        this.dataForm.faceValue = newV.replace(newV[i],"")
+                    }
+                }
+            },
+            // 使用门槛
+            'dataForm.threshold': function (newV, oldV) {
+                debugger
+                for (let i = 0; i < newV.length; i++) {
+                    // 只能输入数字
+                    if (!/[0-9]/g.test(newV[i])) {
+                        this.dataForm.threshold = newV.replace(newV[i], "")
+                    }
+                }
+            },
+            // 所需积分
+            'dataForm.memberPoints': function (newV, oldV) {
+                debugger
+                for (let i = 0; i < newV.length; i++) {
+                    // 只能输入数字
+                    if (!/[0-9]/g.test(newV[i])) {
+                        this.dataForm.memberPoints = newV.replace(newV[i], "")
+                    }
+                }
+            },
+            // 没人限领
+            'dataForm.limitNum':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    // 只能输入数字
+                    if(!/[0-9]/g.test(newV[i])){
+                        this.dataForm.limitNum = newV.replace(newV[i],"")
+                    }
+                }
+            },
+            // 备注
+            'dataForm.bei': function (newV, oldV) {
+                var chineseCount = 0, characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 6) { //输入字符大于600的时候过滤
+                        this.dataForm.bei = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
                     }
                 }
             }
