@@ -105,8 +105,8 @@
 		    	<el-button type="text" size="small" @click="exammineActivity(scope.row)" v-if="scope.row.auditState==0">审核</el-button>
                 <el-button type="text" size="small" @click="stopActivity(scope.row)" v-if="scope.row.state ==1">停止</el-button>
 		    	<el-button type="text" size="small" @click="showDetail(scope.row)">查看商品</el-button>
-		    	<el-button type="text" size="small" @click="addAdit(scope.row)" v-if="scope.row.state ==0">添加商品</el-button>
-		    	<el-button type="text" size="small" @click="addActivity(scope.row)" v-if="scope.row.state ==0">编辑</el-button>
+		    	<el-button type="text" size="small" @click="addAdit(scope.row)" v-if="scope.row.auditState!=1 && scope.row.state ==0">添加商品</el-button>
+		    	<el-button type="text" size="small" @click="addActivity(scope.row)" v-if="scope.row.auditState!=1 && scope.row.state ==0">编辑</el-button>
 		    	<el-button class="artdanger" type="text" size="small" @click="deleteHandle(scope.row.id)" v-if="scope.row.auditState==2 && scope.row.state ==0">删除</el-button>
 		    </template>
 	  	</el-table-column>
