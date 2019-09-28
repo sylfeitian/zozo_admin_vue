@@ -71,7 +71,7 @@
                     </el-form-item>
                 </el-col>
             </el-row>
-            <el-form-item label="选择风格标签1：" prop="mainTag">
+            <el-form-item label="选择风格标签：" prop="mainTag">
                 <el-select
                         v-model="dataForm.mainTag"
                         multiple
