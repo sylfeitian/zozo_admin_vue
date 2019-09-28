@@ -99,7 +99,7 @@ export const getStyleName = params => { return http.get(`${base}/look/folder/sty
 
 // 获取弹框仓库商品
 export const getallstock = params => { return http.get(`${base}/wareHouse/odoGoods/stock/page`, params).then(res => res.data); };
-// 保存商品  
+// 保存商品
 // export const addodoGoods = params => { return http.post(`${base}/wareHouse/odoGoods/add`, params).then(res => res.data); };
 export const warehouserecordsodoAdd = params => { return http.post(`${base}/warehouserecordsodo/add`, params).then(res => res.data); };
 

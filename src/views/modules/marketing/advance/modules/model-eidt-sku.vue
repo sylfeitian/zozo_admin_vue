@@ -98,7 +98,7 @@
                 row2:'',
                 type:'',//choose修改；edit编辑
             }
-            
+
         },
         methods: {
             init (row,row2,type) {
@@ -119,6 +119,7 @@
                     activityId:this.row.id,//活动ID
                     goodsId:this.row2.id,//商品ID
                     activityType:2,//活动类型 0秒杀 1限量 2预售
+                    type:1,//操作类型 2 回显 1 修改、添加
                    }
 
                 }
@@ -144,7 +145,7 @@
                         }else{
                             this.dataList = []
                         }
-                      
+
                     }
                 })
             },
@@ -166,7 +167,7 @@
                         item.personLimit = row.personLimit
                     })
 
-                }).catch(() => { 
+                }).catch(() => {
                 })
             },
             // 提交

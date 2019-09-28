@@ -88,8 +88,8 @@
             align="center"
 	    	label="操作">
 		    <template slot-scope="scope">
-                <!-- activityState ： 0 添加  
-activityState ： 1 ， selfActivityState 0 冲突  
+                <!-- activityState ： 0 添加
+activityState ： 1 ， selfActivityState 0 冲突
 activityState ： 1 ， selfActivityState 1 修改 -->
                 <div v-if="scope.row.activityState ==0">
                     <el-button  v-if="scope.row.selfActivityState==1" type="text" size="small" @click="chooseFn(scope.row)" >取消选择</el-button>
@@ -99,7 +99,8 @@ activityState ： 1 ， selfActivityState 1 修改 -->
                     <span v-if="scope.row.selfActivityState ==0">与其他活动冲突</span>
                     <el-button v-if="scope.row.selfActivityState ==1" type="text" size="small" @click="editGoodsSku(scope.row)">修改</el-button>
                 </div>
-		    	
+                <span v-else>与其他活动冲突</span>
+
 		    </template>
 	  	</el-table-column>
 	</el-table>
@@ -120,7 +121,7 @@ activityState ： 1 ， selfActivityState 1 修改 -->
 
 <script>
     import mixinViewModule from '@/mixins/view-module'
-    import { limitActivityGoodsList } from '@/api/url'
+    import { presellActivityGoodsList } from '@/api/url'
     import { storeGrade,getdatacategory} from '@/api/api'
     import Bread from "@/components/bread";
     import editGoodsSku from "./modules/model-eidt-sku.vue"
@@ -128,14 +129,14 @@ activityState ： 1 ， selfActivityState 1 修改 -->
     export default {
         mixins: [mixinViewModule],
         props:['activityId'],
-        components:{ 
+        components:{
             Bread,
             editGoodsSku
         },
         data () {
             return {
                 mixinViewModuleOptions: {
-                    getDataListURL: limitActivityGoodsList,
+                    getDataListURL: presellActivityGoodsList,
                     activatedIsNeed:false,
                     getDataListIsPage: true,
                     exportURL: '/admin-api/store/export',
@@ -287,5 +288,5 @@ activityState ： 1 ， selfActivityState 1 修改 -->
             }
         }
     }
-        
+
 </style>
