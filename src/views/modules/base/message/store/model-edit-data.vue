@@ -71,7 +71,7 @@
                     </el-form-item>
                 </el-col>
             </el-row>
-            <el-form-item label="选择风格标签：" prop="mainTag">
+            <el-form-item label="选择风格标签1：" prop="mainTag">
                 <el-select
                         v-model="dataForm.mainTag"
                         multiple
@@ -82,7 +82,7 @@
                         :remote-method="remoteMethod"
                         :loading="loading"
                         style="width: 100%;"
-                        :multiple-limit="2"
+                        :multiple-limit="10"
                 >
                     <el-option
                             v-for="item in dataArray"
