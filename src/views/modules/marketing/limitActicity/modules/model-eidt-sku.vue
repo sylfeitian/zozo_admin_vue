@@ -20,6 +20,7 @@
             border
              @selection-change="handleSelectionChange"
             style="width: 100%">
+            
              <el-table-column
                 type="selection"
                 width="70">
