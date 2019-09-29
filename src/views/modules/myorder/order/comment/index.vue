@@ -29,8 +29,8 @@
 		          loading-text="加载中···">
                 <el-option label="全部" value=""></el-option>
                 <el-option label="合适" value="0"></el-option>
-                <el-option label="偏小" value="1"></el-option>
-                <el-option label="偏大" value="2"></el-option>
+                <el-option label="偏大" value="1"></el-option>
+                <el-option label="偏小" value="2"></el-option>
           </el-select>
       </el-form-item>
 
@@ -129,7 +129,7 @@
             <img :src="scope.row.imgUrl | filterImgUrl"  style="width:60px;height:60px" alt="">
           </template>
       </el-table-column>
-      <el-table-column prop="goodsCsId" label="skuid" align="center" width="200"></el-table-column>
+      <el-table-column prop="goodsCsIdJp" label="skuid" align="center" width="200"></el-table-column>
       <el-table-column prop="goodsName" label="商品名称" align="center">
           <template slot-scope="scope">
               <div :title="scope.row.goodsName">

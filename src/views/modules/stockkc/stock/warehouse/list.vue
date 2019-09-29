@@ -2,7 +2,7 @@
     <div>
         <Bread :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
-            <el-form-item label="仓库名称/ID：">
+            <el-form-item label="仓库名称：">
                 <el-input v-model="dataForm.warehousename" maxlength="30" ></el-input>
             </el-form-item>
             <el-form-item label="仓库种类：">

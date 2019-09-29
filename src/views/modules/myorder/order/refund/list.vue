@@ -163,7 +163,7 @@
         },
         methods: {
              orderDetFn(row){
-                  row.id = row.orderSn
+                  row.id = row.orderId
                 this.$emit("orderDetFn",row);
             },
              afterSaleDetailFn(row){
