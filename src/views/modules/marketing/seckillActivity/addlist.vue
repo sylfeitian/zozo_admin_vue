@@ -70,13 +70,13 @@
                         type="text"
                         size="small"
                         v-if="scope.row.selfActivityState==0 && scope.row.activityState ==0"
-                        @click="editGoods(scope.row.id)"
+                        @click="editGoods(scope.row.id,'creat')"
                     >选择</el-button>
                     <el-button
                         type="text"
                         size="small"
                         v-if="scope.row.selfActivityState==1 && scope.row.activityState ==1"
-                        @click="editGoods(scope.row.id,activityId)"
+                        @click="editGoods(scope.row.id,'update')"
                     >修改</el-button>
                     <span
                         v-if="scope.row.activityState==1  && scope.row.selfActivityState==0"
@@ -98,6 +98,7 @@
         <el-dialog
             :visible.sync="editVisible"
             :close-on-click-modal="false"
+            :validate-on-rule-change="false"
             :show-close="false"
             class="editDialog"
             width="70%"
@@ -188,7 +189,8 @@ import {
   addSckillPro,
   seckillProDet,
   seckillProSave,
-  seckillProRemove
+  seckillProRemove,
+  seckillProEdit
 } from "@/api/api";
 import Bread from "@/components/bread";
 
@@ -260,6 +262,7 @@ export default {
       editVisible: false, //弹框状态
       buttonStatus: false,
       moneyNum: Number,
+      action:'',//当前操作，create 选择  update 修改
       editDataForm: {
         number: "",
         activityQuantity: "",
@@ -294,7 +297,6 @@ export default {
   },
   created() {
     console.log("活动id", this.activityId);
-    // this.dataForm.activityId=this.props.activityId;
     this.getbackScanCategorys();
     this.getDataList();
     this.demo();
@@ -302,38 +304,34 @@ export default {
   methods: {
     //取消当前商品选择
     cancelIt(id, activityId) {
-      //   console.log(id, "活动", activityId);
-const obj = {
-            activityId: activityId,
-            goodsIdList: [id]
-          };
-      this.$confirm("此操作将删除该秒杀商品, 是否继续?", "提示", {
+      const obj = {
+        data: {
+          activityId: activityId,
+          goodsIdList: [id]
+        }
+      };
+      this.$confirm("此操作将取消该秒杀商品, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
-        .then(() => {          
-            console.log(obj)
+        .then(() => {
           seckillProRemove(obj).then(res => {
             if (res.code == 200) {
               this.$message({
                 type: "success",
-                message: "删除成功!"
+                message: "取消成功!"
               });
+              this.getDataList();
             } else {
               this.$message({
                 type: "error",
-                message: "删除失败!"
+                message: "取消失败!"
               });
             }
           });
         })
-        .catch(() => {
-          //   this.$message({
-          //     type: 'info',
-          //     message: '已取消删除'
-          //   });
-        });
+        .catch(() => {});
     },
     //获取当前操作行
     onRowClick(row) {
@@ -387,8 +385,9 @@ const obj = {
     changePage() {
       this.$emit("addshowList");
     },
-    //弹出修改弹框
-    editGoods(id) {
+    //新建/修改弹框
+    editGoods(id,type) {
+    this.action=type;
       const obj = {
         goodsId: id,
         activityId: this.activityId
@@ -406,7 +405,10 @@ const obj = {
       });
     },
     noCheck() {
-      this.editDataForm.number = "";
+        console.log(this.action,'操作类型')
+        if(this.action=='creat'){
+            this.editDataForm.number = "";
+        }      
       this.$refs["editDataForm"].clearValidate();
       this.editVisible = false;
     },
@@ -418,11 +420,6 @@ const obj = {
       this.editDataForm.activityQuantity = val;
     },
     async subEdit() {
-      console.log(
-        this.editDataForm,
-        "form",
-        this.$refs["editDataForm"].validate()
-      );
       this.$refs.editDataForm.validate(valid => {
         if (valid) {
           var activityGoodsList = [];
@@ -440,7 +437,9 @@ const obj = {
             id: this.goodsMain.id
           };
           this.saveLoading = true;
-          seckillProSave(obj).then(res => {
+        //   console.log(this.action,'操作类型')
+          if(this.action=='creat'){
+              seckillProSave(obj).then(res => {
             this.saveLoading = false;
             let status = null;
             if (res.code == "200") {
@@ -448,7 +447,6 @@ const obj = {
               this.visible = false;
               this.getDataList();
               this.editVisible = false;
-              //   this.closeDialog();
             } else {
               status = "error";
             }
@@ -458,6 +456,26 @@ const obj = {
               duration: 1500
             });
           });
+          }else{
+              seckillProEdit(obj).then(res => {
+            this.saveLoading = false;
+            let status = null;
+            if (res.code == "200") {
+              status = "success";
+              this.visible = false;
+              this.getDataList();
+              this.editVisible = false;
+            } else {
+              status = "error";
+            }
+            this.$message({
+              message: res.msg,
+              type: status,
+              duration: 1500
+            });
+          });
+          }
+          
         } else {
           console.log("error submit!!");
           return false;
