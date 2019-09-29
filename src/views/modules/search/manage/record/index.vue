@@ -121,6 +121,7 @@ export default {
       this.timeArr = [];
       this.dataForm.startTime = "";
       this.dataForm.endTime = "";
+      this.dataForm.memberName = "";
       this.dataForm.hotKeyword = ""; //关键字搜索
       this.dataForm.memberId = "";
       this.page = 1;
