@@ -455,6 +455,7 @@
             //打开新增编辑活动弹框
             addActivity(id){
                 this.activiVisible = true;
+                this.buttonStatus = false
                 if(id){
                     this.advId = id;
                     this.activiTitle = '编辑轮播图';
