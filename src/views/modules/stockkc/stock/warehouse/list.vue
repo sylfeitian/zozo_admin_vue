@@ -155,18 +155,18 @@
             // showData
         },
         // ID类搜索框仅可输入数字、英文，最多可输入30个字符
-        watch:{
-            'dataForm.warehousename':function(newV,oldV) {
-                for(let i=0;i<newV.length;i++){
-                    if(!/[a-zA-Z0-9]/.test(newV[i])){
-                        this.dataForm.warehousename = newV.replace(newV[i],"")
-                    }
-                }
-                if(newV.length>30){
-                    this.dataForm.warehousename = newV.substr(0,30)
-                }
-            }
-        },
+        // watch:{
+        //     'dataForm.warehousename':function(newV,oldV) {
+        //         for(let i=0;i<newV.length;i++){
+        //             if(!/[a-zA-Z0-9]/.test(newV[i])){
+        //                 this.dataForm.warehousename = newV.replace(newV[i],"")
+        //             }
+        //         }
+        //         if(newV.length>30){
+        //             this.dataForm.warehousename = newV.substr(0,30)
+        //         }
+        //     }
+        // },
         created () {
             // 第一次请求数据
             // this.activeName =  this.status == undefined ? "" : this.status;
