@@ -15,10 +15,10 @@
       @selection-change="dataListSelectionChangeHandle"
       border
 	  style="width: 100%">
-        <el-table-column 
-            type="selection" 
-            header-align="center" 
-            align="center" 
+        <el-table-column
+            type="selection"
+            header-align="center"
+            align="center"
             width="50">
         </el-table-column>
 		<el-table-column
@@ -136,6 +136,8 @@
                     exportURL: '/admin-api/store/export',
                     deleteURL: '/admin-api/store',
                     deleteIsBatch: true,
+                  limit: 10,
+                  page: 1,
                 },
                 dataForm: {},
                 breaddata: ["营销管理", "秒杀活动","查看商品列表"],
@@ -154,7 +156,12 @@
         methods: {
             //获取商品数据
             getDataList(){
-                seckillProPage({activityId:this.activityId}).then(res=>{
+              const params = {
+                limit: this.limit,
+                page: this.page,
+                activityId: this.activityId
+              };
+                seckillProPage(params).then(res=>{
                     if(res.code==200){
                         console.log(res.data.list,'shijinfeng')
                         this.dataList=res.data.list;
@@ -240,5 +247,5 @@
             }
         }
     }
-        
+
 </style>

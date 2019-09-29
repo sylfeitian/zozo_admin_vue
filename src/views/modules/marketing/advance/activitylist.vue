@@ -78,6 +78,11 @@
                     <span>{{scope.row.startTime}} 至 {{scope.row.endTime}}</span>
              </template> 
 		</el-table-column>
+        <el-table-column
+		    prop="presellTime"
+            align="center"
+		    label="开售时间">
+		</el-table-column>
 		<el-table-column
             align="center"
 		    label="审核状态">

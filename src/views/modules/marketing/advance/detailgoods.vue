@@ -53,7 +53,7 @@
 		<el-table-column
 		    prop="sellPrice"
             align="center"
-		    label="销售价格">
+		    label="价格">
             <template slot-scope="scope">
 		    	<span>￥{{scope.row.sellPrice?scope.row.sellPrice:'0.00'}}</span>
 		    </template>

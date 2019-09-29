@@ -136,11 +136,6 @@
             },
             // 下拉切换风格标签
             changeSelect (val) {
-                if(this.dataArray.length>9){
-                    this.$message.warning("最多添加十个");
-                    this.dataForm.styleName = "";
-                    return
-                }
                 console.log(val);
                 console.log(this.value);
                 // 找到下拉选中的obj

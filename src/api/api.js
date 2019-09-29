@@ -390,8 +390,10 @@ export const auditOperating  = params => { return http.post(`${base}/order/audit
 export const managerRemark  = params => { return http.get(`${base}/order/${params.id}/manager/remark?remark=${params.remarks}`, params).then(res => res.data); }
 // 取消订单
 export const orderCancel = params => { return http.post(`${base}/order/cancel/${params.id}`, params).then(res => res.data); }
-// 订单申报
-export const orderRedeclare = params => { return http.post(`${base}/order/redeclare/${params.id}`, params).then(res => res.data); }
+// jd订单申报
+export const orderRedeclareJd = params => { return http.post(`${base}/order/redeclare/${params.id}`, params).then(res => res.data); }
+// lakala订单申报
+export const orderRedeclareLakala = params => { return http.post(`${base}/order/lakala/redeclare`, params).then(res => res.data); }
 // 清关失败
 export const clearCustomFail = params => { return http.post(`${base}/order/${params.id}/clear/custom/fail`, params).then(res => res.data); }
 // 填写物流信息
@@ -1026,7 +1028,7 @@ export const getQuestionanswer = params => { return http.get(`${base}/questionan
 
 //秒杀活动
 //秒杀关联商品
-export const seckillProPage = params => { return http.get(`${base}/seckill/goods/choiced/page/${params.activityId}`, params).then(res => res.data); };
+export const seckillProPage = params => { return http.get(`${base}/seckill/goods/choiced/page?activityId=${params.activityId}&page=${params.page}&limit=${params.limit}`, params).then(res => res.data); };
 //关联商品详情
 export const seckillProDet = params => { return http.get(`${base}/seckill/goods/sku/choice?goodsId=${params.goodsId}&activityId=${params.activityId}`, params).then(res => res.data); };
 //秒杀场次审核
