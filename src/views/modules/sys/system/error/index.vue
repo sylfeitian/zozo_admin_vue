@@ -9,11 +9,12 @@
                 </el-form-item>
                 <el-form-item label="操作模块：">
                     <el-select v-model="dataForm.module" placeholder="请选择操作模块" clearable>
+                        <el-option label="全部" value=""> </el-option>
                         <el-option
-                                v-for="item in moduleOption"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.id">
+                                v-for="(item,index) in moduleOption"
+                                :key="index"
+                                :label="item.module"
+                                :value="item.module">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -94,16 +95,16 @@
                 }
             },
         },
+         created() {
+            // this.getDataList();
+            this.listModule()
+        },
         methods: {
             listModule(){
-                var obj  = {
-                    id:this.row.id,
-                    module:this.row.module
-                }
-                errorListModule(obj).then((res)=>{
+                errorListModule().then((res)=>{
                     if(res.code == 200 && res.data){
                         // Object.assign(this.dataForm,res.data);
-                        this.moduleOption = [{id:"",name:"全部"}].concat(res.data)
+                        this.moduleOption =  [].concat(res.data)
 
                     }else{
                         // this.$message.error(res.msg)
