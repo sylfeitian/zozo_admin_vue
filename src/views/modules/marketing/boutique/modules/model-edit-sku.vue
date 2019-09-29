@@ -91,7 +91,7 @@
 
 <script>
     import mixinViewModule from '@/mixins/view-module'
-    import {limitActivitySkuChoice,editLimitActivityGoods,getdatacategory} from "@/api/api.js"
+    import {editLimitActivityGoods,getdatacategory} from "@/api/api.js"
      import {categoryactivitygoodsBatch} from "@/api/api.js" 
      import {categoryactivityGoodsPagePopUrl} from "@/api/url.js"
     export default {
@@ -118,6 +118,7 @@
                     goodsId: null,//商品id ,
                     goodsName: null,//商品名称
                     categoryId:'',//分类ID
+                    categoryActivityId:'',//精选分类分类ID
                 },
                 moneyNum:99.9,
                 kucun:'',
@@ -138,6 +139,7 @@
                 this.saveLoading = false;
                 this.$nextTick(() => {
                     this.row = row;
+                    this.dataForm.categoryActivityId = row.id
                     this.title = "修改";
                     // this.backScan();
                     this.getData();

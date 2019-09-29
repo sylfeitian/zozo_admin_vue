@@ -63,7 +63,7 @@
             <br>
             <el-radio v-model="validityPeriodType" :label="1">
                 <span>固定天数</span>&nbsp;
-                <el-input placeholder="20" v-model="dataForm.validityDays" show-word-limit style="width:220px;">
+                <el-input placeholder="20" v-model="dataForm.validityDays" maxlength="3" style="width:220px;">
                     <template slot="append">天</template>
                 </el-input>
             </el-radio>
@@ -87,17 +87,15 @@
 <script>
 import { addActivityNormal, editActivityNormal, backScanActivity } from '@/api/api'
 import vueFilter from '@/utils/filter'
-// 仅可输入3位数字
-// var validnumber =(rule, value,callback)=>{
-//     debugger
-//     if (value.length>3){
-//       callback(new Error('仅可输入3位数字'))
-//     }else if(value <= 0){
-//     	callback(new Error('只能输入大于0的数'))
-//     }else {
-//       callback()
-//     }
-// };
+var validnumber = (rule, value, callback) => {
+    if (value / 1 > 1000000) {
+        callback(new Error('请输入1000000以内的数字'))
+    } else if (value <= 0) {
+        callback(new Error('只能输入大于0的数'))
+    } else {
+        callback()
+    }
+};
 var validthreshold =(rule, value,callback)=>{
     if (value/1 > 1000000){
       callback(new Error('请输入1000000以内的数字'))
@@ -149,16 +147,12 @@ export default {
                 getEndTime : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                 ],
-
-                threshold: [
-                        { required: true, message: '必填项不能为空', trigger: 'blur' },
-                ],
                 limitNum: [
                     { required: true, message: '必填项不能为空', trigger: 'blur' },
                 ],
                 totalNums :[
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
-                        // { validator: validnumber, trigger: 'blur' },
+                        { validator: validnumber, trigger: 'blur' },
                 ],
                 threshold :[
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -267,6 +261,32 @@ export default {
         }
     },
     methods: {
+        dateToStr: function (datatime){   //获取当前时间
+            var dateTime = datatime || new Date();
+            var year = dateTime.getFullYear();
+            var month = dateTime.getMonth()+1;//js从0开始取
+            var date = dateTime.getDate();
+            var hour = dateTime.getHours();
+            var minutes = dateTime.getMinutes();
+            var second = dateTime.getSeconds();
+    
+            if(month<10){
+                month = "0" + month;
+            }
+            if(date<10){
+                date = "0" + date;
+            }
+            if(hour <10){
+                hour = "0" + hour;
+            }
+            if(minutes <10){
+                minutes = "0" + minutes;
+            }
+            if(second <10){
+                second = "0" + second ;
+            }
+            return year+"-"+month+"-"+date+" "+hour+":"+minutes+":"+second;
+        },
         //编辑详情接口方法
         getInfo(){
             var obj  = {
@@ -279,9 +299,9 @@ export default {
                   
                     this.dataForm.validityDays = res.data.validityDays// 有效天数 ,
                     this.dataForm.memberPoints =  res.data.memberPoints//兑换优惠券用的积分数
-                    this.validityPeriodType =  res.data.validityPeriodType//有效期类型，0：日期范围，1：固定天数
-                    this.dataForm.startTime =  res.data.startTime//生效日期
-                    this.dataForm.endTime =  res.data.endTime// 截止日期 
+                    this.validityPeriodType =  res.data.validityPeriodType.toString();//有效期类型，0：日期范围，1：固定天数
+                    this.dataForm.startTime = this.dateToStr(new Date(res.data.startTime)) //生效日期
+                    this.dataForm.endTime =  this.dateToStr(new Date(res.data.endTime)) // 截止日期 
                     if(res.data.startTime && res.data.endTime){
                         this.valuetime = [res.data.startTime,res.data.endTime]
                     }
@@ -306,16 +326,6 @@ export default {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     this.loading = true;
-                    // var obj = {
-                    //     bei:  this.dataForm.bei,//备注 ,
-                    //     faceValue:  this.dataForm.faceValue,//面额 ,
-                    //     getEndTime:  this.dataForm.getEndTime,//领取结束时间
-                    //     getStartTime:  this.dataForm.getStartTime,//: 领取开始时间 ,
-                    //     name:  this.dataForm.name,//优惠券名称 ,
-                    //     threshold:  this.dataForm.threshold,//使用门槛 ,
-                    //     totalNums:  this.dataForm.totalNums,//总发行量 ,
-                    //     validityDays:  this.dataForm.validityDays,// 有效天数
-                    // }
                     var obj = {
                         bei:  this.dataForm.bei,//备注 ,
                         faceValue:  this.dataForm.faceValue,//面额 ,

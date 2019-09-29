@@ -110,7 +110,7 @@
       <el-radio-button label="lower">下架</el-radio-button>
       <el-radio-button label="not">待上架</el-radio-button>
     </el-radio-group>
-    <el-button @click="editList()" class="btn" type="primary" style="float: right;">导出信息</el-button>
+    <!-- <el-button  class="btn" type="primary" style="float: right;">导出信息</el-button> -->
     <el-table
       width="100%"
       :data="dataList"

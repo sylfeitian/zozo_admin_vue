@@ -13,7 +13,8 @@
                 <el-button   class="btn" type="primary" plain @click="reset()">重置</el-button>
             </el-form-item>
         </el-form>
-        <el-button @click="addOrEditHandle()"  class="btn" type="primary">导入信息</el-button>
+        <!-- <el-button @click="addOrEditHandle()"  class="btn" type="primary">导入信息</el-button> -->
+         <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"></importAndExport>
         <el-table width="100%" :data="dataList" border v-loading="dataListLoading" style="width: 100%;margin-top: 10px">
             <el-table-column prop="idJp" label="颜色组ID" align="center"></el-table-column>
             <el-table-column prop="nameJp" label="日本颜色组名称" align="center"></el-table-column>
@@ -44,10 +45,18 @@
     import Bread from "@/components/bread";
     import addEditData from './model-add-edit-data'
     import { colorcategoryUrl } from '@/api/url'
+    import importAndExport from "@/components/import-and-export"
+    import { colorcategoryImportExcel} from '@/api/io'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
+                 importAndExportOptions:{
+                    importUrl:colorcategoryImportExcel,//导入接口
+                    importWord:"导入信息",
+                    // exportUrl:exportRegisterUrl,//导出接口
+                    // exportWord:"导出数据",
+                },
                 mixinViewModuleOptions: {
                     getDataListURL: colorcategoryUrl,
                     getDataListIsPage: true,
@@ -58,6 +67,9 @@
                     deleteIsBatchKey: 'id'
                 },
                 breaddata: [ "商品管理", "颜色组"],
+                dataForm:{
+
+                },
                 dataFormShow: {
                     idJp: null,//颜色组id
                     name: null,//颜色组名称
@@ -71,7 +83,8 @@
         },
         components: {
             Bread,
-            addEditData
+            addEditData,
+            importAndExport
         },
         // ID类搜索框仅可输入数字、英文，最多可输入30个字符
         watch:{

@@ -40,6 +40,7 @@ export default {
             importExcel(){
                 // importRegister
             },
+            // https://gitbook.cn/books/5d81cd6b90dbf8361802570f/index.html
             // 导出
             exportExcel(){
                 let url = ""
@@ -57,7 +58,6 @@ export default {
             },
             // 导入之前
             beforeAvatarUpload(file) {
-                debugger
                 this.$refs.upload.abort();
                 // this.progress = 0;
                 console.log(file);

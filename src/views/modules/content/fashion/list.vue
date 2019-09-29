@@ -63,9 +63,23 @@
                     >
                 </template>
             </el-table-column>
-            <el-table-column prop="title" label="标题" align="center"></el-table-column>
+            <el-table-column prop="title" label="标题" align="center">
+                 <template slot-scope="scope">
+                    <div :title="scope.row.title" v-if="scope.row.title">
+                        {{scope.row.title}}
+                    </div>
+                    <div :title="scope.row.titleJp" v-else-if="scope.row.titleJp">
+                        {{scope.row.titleJp}}
+                    </div>
+                </template>
+            </el-table-column>
             <el-table-column prop="itmeCount" label="相关商品" align="center"></el-table-column>
-            <el-table-column prop="publisher" label="发布人" align="center"></el-table-column>
+            <el-table-column  label="发布人" align="center">
+                 <template slot-scope="scope">
+                    <span v-if="scope.row.mediaName">{{scope.row.mediaName}}</span>
+                    <span v-else-if="scope.row.publisher">{{scope.row.publisher}}</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="state" label="发布状态" align="center">
                 <template slot-scope="scope">
                     <el-tag v-if="scope.row.state == 1" type="success">已发布</el-tag>

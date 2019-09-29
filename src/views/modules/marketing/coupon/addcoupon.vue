@@ -5,6 +5,7 @@
     <add-coupon-pt v-if="editSatusId&&editType == '普通优惠券'" :editSatusId="editSatusId" @changePage = "changePage"></add-coupon-pt>
     <add-coupon-jf v-if="editSatusId&&editType == '积分兑换券'" :editSatusId="editSatusId" @changePage = "changePage"></add-coupon-jf>
     <add-coupon-vip v-if="editSatusId&&editType == '新会员专享'" :editSatusId="editSatusId" @changePage = "changePage"></add-coupon-vip>
+    
     <!-- 判断为新增情况下需要tab切换 -->
     <el-tabs v-if="!editSatusId" v-model="activeName2" type="card" @tab-click="handleClick">
 	    <el-tab-pane label="普通优惠券" name="first">

@@ -25,7 +25,7 @@
         <el-table-column
 		    prop="sort"
             align="center"
-            min-width="180">
+            min-width="180"
 		    label="排序">
              <template slot-scope="scope">
                 <el-input-number v-model="scope.row.sort" :step="1" :min="0" :max="255" ></el-input-number>
@@ -47,7 +47,7 @@
 		    label="规格">
             <template slot-scope="scope">
                 <el-button  v-if="scope.row.isAllCheck==0" type="text" size="small" @click="lookShow(scope.row)">部分规格</el-button>
-                <el-button v-else-if="scope.row.isAllCheck==1" type="text" size="small" @click="lookShow(scope.row)">部分规格</el-button>
+                <el-button v-else-if="scope.row.isAllCheck==1" type="text" size="small" @click="lookShow(scope.row)">全部规格</el-button>
 		    </template>
 		</el-table-column>
 		<el-table-column

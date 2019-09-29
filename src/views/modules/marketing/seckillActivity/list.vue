@@ -210,6 +210,7 @@ export default {
     //重置
     reset() {
       this.dataForm = {};
+      this.page=1;
       this.valuetime = [];
       this.getDataList();
     },

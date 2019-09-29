@@ -15,13 +15,13 @@
        @selection-change="handleSelectionChange"
       border
 	  style="width: 100%">
-        <el-table-column 
-            type="selection" 
-            header-align="center" 
-            align="center" 
+        <el-table-column
+            type="selection"
+            header-align="center"
+            align="center"
             width="50">
         </el-table-column>
-		
+
         <el-table-column
 		    prop="sort"
             align="center"
@@ -47,13 +47,13 @@
 		    label="规格">
             <template slot-scope="scope">
                 <el-button  v-if="scope.row.isAllCheck==0" type="text" size="small" @click="lookShow(scope.row)">部分规格</el-button>
-                <el-button v-else-if="scope.row.isAllCheck==1" type="text" size="small" @click="lookShow(scope.row)">部分规格</el-button>
+                <el-button v-else-if="scope.row.isAllCheck==1" type="text" size="small" @click="lookShow(scope.row)">全部规格</el-button>
 		    </template>
 		</el-table-column>
 		<el-table-column
 		    prop="sellPrice"
             align="center"
-		    label="销售价格">
+		    label="价格">
             <template slot-scope="scope">
 		    	<span>￥{{scope.row.sellPrice?scope.row.sellPrice:'0.00'}}</span>
 		    </template>
@@ -104,11 +104,11 @@
     import { deletePresellActivityGoods,limitActivityGoodsSorts } from '@/api/api'
     import Bread from "@/components/bread";
     import showGoodsSku from "./modules/model-show-sku.vue"
-    
+
 
     export default {
         mixins: [mixinViewModule],
-        components:{ 
+        components:{
             Bread,
             showGoodsSku
         },
@@ -215,7 +215,7 @@
                                 that.$message.error(res.msg);
                             }
                         })
-                    }).catch(() => { 
+                    }).catch(() => {
                     })
                 },
                 //重置
@@ -266,5 +266,5 @@
             }
         }
     }
-        
+
 </style>
