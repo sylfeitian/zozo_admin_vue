@@ -51,14 +51,14 @@
                 {{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}
             </template>
             </el-table-column>-->
-            <el-table-column prop="id" label="商品id" width="180"></el-table-column>
-            <el-table-column prop="name" label="商品名称"></el-table-column>
-            <el-table-column prop="sellPrice" label="销售价格"></el-table-column>
-            <el-table-column prop="goodsTypeName" label="所属分类"></el-table-column>
-            <el-table-column prop="storeName" label="所属店铺" width="180"></el-table-column>
-            <el-table-column prop="brandName" label="品牌"></el-table-column>
-            <el-table-column prop="cartLimit" label="日本限购数量"></el-table-column>
-            <el-table-column label="操作">
+            <el-table-column prop="id" label="商品id" width="180" align="center"></el-table-column>
+            <el-table-column prop="name" label="商品名称" align="center"></el-table-column>
+            <el-table-column prop="sellPrice" label="销售价格" align="center"></el-table-column>
+            <el-table-column prop="goodsTypeName" label="所属分类" align="center"></el-table-column>
+            <el-table-column prop="storeName" label="所属店铺" width="180" align="center"></el-table-column>
+            <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
+            <el-table-column prop="cartLimit" label="日本限购数量" align="center"></el-table-column>
+            <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button
                         type="text"
@@ -102,15 +102,15 @@
             :show-close="false"
             class="editDialog"
             width="70%"
+            @close="closeDialog"
         >
             <el-form :model="editDataForm" :rules="dataRule" ref="editDataForm" label-width="82px">
                 <div class="goodsPresent">
                     <!-- <img :src="goodsMain.mainImageUrl" alt=""> -->
-                    <el-image :src="goodsMain.mainImageUrl || '~@assets/img/default.png'">
-                        <div slot="placeholder" class="image-slot">加载中
+                    <img :src="goodsMain.mainImageUrl || defaultImg" :onerror="defaultImg">
+                    <!-- <div slot="placeholder" class="image-slot">加载中
                             <span class="dot">...</span>
-                        </div>
-                    </el-image>
+                    </div>-->
                     <div class="goodsPresentModle">
                         <div class="goodsTitle">{{goodsMain.name}}</div>
                         <div class="goodsmoney">￥{{goodsMain.sellPrice}}</div>
@@ -133,8 +133,8 @@
                     border=""
                     style="width: 100%"
                 >
-                    <el-table-column prop="id" label="skuID" width="180"></el-table-column>
-                    <el-table-column prop="specInfo" label="规格" width="180"></el-table-column>
+                    <el-table-column prop="id" label="skuID" width="180" align="center"></el-table-column>
+                    <el-table-column prop="specInfo" label="规格" width="180" align="center"></el-table-column>
                     <el-table-column label="活动库存" width="220" align="center">
                         <template slot-scope="scope">
                             <el-form-item
@@ -152,7 +152,7 @@
                             </el-form-item>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="cartLimit" label="日本限购数量" width="120"></el-table-column>
+                    <el-table-column prop="cartLimit" label="日本限购数量" width="120" align="center"></el-table-column>
                     <el-table-column label="每人限购" width="220" align="center">
                         <template slot-scope="scope">
                             <el-form-item
@@ -170,7 +170,7 @@
                             </el-form-item>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="address" label="操作" min-width="80">
+                    <el-table-column prop="address" label="操作" min-width="80" align="center">
                         <template slot-scope="scope">
                             <el-button
                                 type="text"
@@ -253,6 +253,8 @@ export default {
         deleteIsBatch: true
       },
       categories: [], //选择分类集合
+      defaultImg:
+        'this.src="' + require("../../../../assets/img/default.png") + '"', //默认图地址
       dataForm: {
         name: "",
         id: "",
@@ -287,24 +289,35 @@ export default {
           { validator: validnumber, trigger: ["blur", "change"] }
         ],
         activityQuantity: [
-          { required: true, message: "活动库存不能为空", trigger: ["blur", "change"] },
+          {
+            required: true,
+            message: "活动库存不能为空",
+            trigger: ["blur", "change"]
+          },
           { validator: quantityNumber, trigger: ["blur", "change"] }
         ],
         personLimit: [
-          { required: true, message: "每人限购不能为空", trigger: ["blur", "change"] },
+          {
+            required: true,
+            message: "每人限购不能为空",
+            trigger: ["blur", "change"]
+          },
           { validator: limitNumber, trigger: ["blur", "change"] }
         ]
       }
     };
   },
-  computed: {
-  },
+  computed: {},
   created() {
     this.getbackScanCategorys();
     this.getDataList();
     this.demo();
   },
+
   methods: {
+    closeDialog() {
+      this.$refs.editDataForm.resetFields();
+    },
     //同步列表所填数据
     changeAll(row) {
       console.log(row, "同步更改数据");
@@ -341,6 +354,7 @@ export default {
                 type: "success",
                 message: "取消成功!"
               });
+              //   this.$ref
               this.getDataList();
             } else {
               this.$message({
@@ -354,7 +368,7 @@ export default {
     },
     //获取当前操作行
     onRowClick(row) {
-    //   console.log(row.cartLimit, "日本限购");
+      //   console.log(row.cartLimit, "日本限购");
       this.isLimit = row.cartLimit;
     },
     //获取商品分类集合
@@ -416,14 +430,14 @@ export default {
           this.editDataForm.number = Number(res.data.activityPrice) || "";
           this.goodsSpecList = res.data.activityGoodsChoiceSkuVOList;
           this.editDataForm.goodsSpecList = this.goodsSpecList;
-        //   console.warn(this.editDataForm, "-----更改数据格式");
+          //   console.warn(this.editDataForm, "-----更改数据格式");
           //   this.goodsSpecList[0].cartLimit=5;
           this.editVisible = true;
         }
       });
     },
     noCheck() {
-    //   console.log(this.action, "操作类型");
+      //   console.log(this.action, "操作类型");
       if (this.action == "creat") {
         this.editDataForm.number = "";
       }
@@ -532,6 +546,14 @@ export default {
       margin-bottom: 20px;
       /deep/ .el-image,
       /deep/.el-image__inner {
+        text-align: center;
+        width: 110px;
+        height: 110px;
+        line-height: 110px;
+        object-fit: contain;
+        margin-right: 20px;
+      }
+      img {
         text-align: center;
         width: 110px;
         height: 110px;

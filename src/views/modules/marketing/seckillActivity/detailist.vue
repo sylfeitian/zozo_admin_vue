@@ -17,7 +17,7 @@
                 style="width: 100%"
             >
                 <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
-                <el-table-column prop="activityId" label="商品id" width="180"></el-table-column>
+                <el-table-column prop="activityId" label="商品id" width="180" align="center"></el-table-column>
                 <el-table-column prop="sort" label="排序" align="center">
                     <template slot-scope="scope">
                         <el-form-item prop="sort">
@@ -30,12 +30,12 @@
                         </el-form-item>
                     </template>
                 </el-table-column>
-                <el-table-column prop="goodsName" label="商品名称"></el-table-column>
-                <el-table-column prop="sellPrice" label="销售价格"></el-table-column>
-                <el-table-column prop="activityPrice" label="秒杀价格" width="180"></el-table-column>
-                <el-table-column prop="activityQuantity" label="活动库存"></el-table-column>
-                <el-table-column prop="personLimit" label="每人限购"></el-table-column>
-                <el-table-column prop="address" label="操作">
+                <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
+                <el-table-column prop="sellPrice" label="销售价格" align="center"></el-table-column>
+                <el-table-column prop="activityPrice" label="秒杀价格" width="180" align="center"></el-table-column>
+                <el-table-column prop="activityQuantity" label="活动库存" align="center"></el-table-column>
+                <el-table-column prop="personLimit" label="每人限购" align="center"></el-table-column>
+                <el-table-column prop="address" label="操作" align="center">
                     <template slot-scope="scope">
                         <el-button
                             type="text"
@@ -65,7 +65,7 @@
         <el-dialog :visible.sync="lookVisible" class="editDialog" width="50%">
             <div class="goodsPresent">
                 <img
-                    :src="$imgDomain+goodsInfo.mainImageUrl?'goodsInfo.mainImageUrl':'@/assets/img/avatar.png'"
+                    :src="goodsInfo.mainImageUrl|| defaultImg" :onerror="defaultImg"
                     alt=""
                 >
                 <div class="goodsPresentModle">
@@ -78,11 +78,11 @@
                 </div>
             </div>
             <el-table :data="goodsList" v-loading="dataListLoading" border="" style="width: 100%">
-                <el-table-column prop="id" label="skuID" width="180"></el-table-column>
-                <el-table-column prop="specInfo" label="规格"></el-table-column>
-                <el-table-column prop="activityQuantity" label="活动库存"></el-table-column>
-                <el-table-column prop="cartLimit" label="日本限购数量"></el-table-column>
-                <el-table-column prop="personLimit" label="每人限购"></el-table-column>
+                <el-table-column prop="id" label="skuID" width="180" align="center"></el-table-column>
+                <el-table-column prop="specInfo" label="规格" align="center"></el-table-column>
+                <el-table-column prop="activityQuantity" label="活动库存" align="center"></el-table-column>
+                <el-table-column prop="cartLimit" label="日本限购数量" align="center"></el-table-column>
+                <el-table-column prop="personLimit" label="每人限购" align="center"></el-table-column>
             </el-table>
         </el-dialog>
     </div>
@@ -116,6 +116,7 @@ export default {
       dataForm: {},
       sortDataList: {},
       breaddata: ["营销管理", "秒杀活动", "查看商品列表"],
+      defaultImg: 'this.src="' + require('../../../../assets/img/default.png') + '"' ,//默认图地址
       lookVisible: false, //弹框状态
       buttonStatus: false,
       moneyNum: 99.9,
