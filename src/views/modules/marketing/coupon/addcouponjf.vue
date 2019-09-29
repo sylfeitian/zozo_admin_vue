@@ -279,7 +279,7 @@
             },
             // 优惠卷名称
             'dataForm.name': function (newV, oldV) {
-                debugger
+
                 var chineseCount = 0, characterCount = 0;
                 for (let i = 0; i < newV.length; i++) {
                     if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
@@ -295,7 +295,7 @@
             },
             // 总发行量
             'dataForm.totalNums':function(newV,oldV) {
-                debugger
+
                 for(let i=0;i<newV.length;i++){
                     // 只能输入数字
                     if(!/[0-9]/g.test(newV[i])){
@@ -305,7 +305,7 @@
             },
             // 面额
             'dataForm.faceValue':function(newV,oldV) {
-                debugger
+
                 for(let i=0;i<newV.length;i++){
                     // 只能输入数字和小数点
                     if(!/[0-9|\.]/g.test(newV[i])){
@@ -315,7 +315,7 @@
             },
             // 使用门槛
             'dataForm.threshold': function (newV, oldV) {
-                debugger
+
                 for (let i = 0; i < newV.length; i++) {
                     // 只能输入数字
                     if (!/[0-9]/g.test(newV[i])) {
@@ -325,7 +325,7 @@
             },
             // 所需积分
             'dataForm.memberPoints': function (newV, oldV) {
-                debugger
+
                 for (let i = 0; i < newV.length; i++) {
                     // 只能输入数字
                     if (!/[0-9]/g.test(newV[i])) {
