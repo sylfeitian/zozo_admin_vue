@@ -131,9 +131,9 @@
                 activeName: "",
                 breaddata: [ "内容管理", "搭配管理"],
                 dataForm: {
-                	id:null,  //编号
+                	idJp:null,  //编号
                 	state:null,    //发布状态
-                	nickname: null,  //用户昵称
+                	nickName: null,  //用户昵称
                 	publishStartTime: null,  //发布开始时间
                 	publishEndTime: null,  //发布结束时间
                 	publishStartTimeJp: null,  //日本发布开始时间
@@ -218,7 +218,7 @@
                 this.valuetime2 = [];
                 this.dataForm.idJp = null;
                 this.dataForm.state = null;
-                this.dataForm.nickname = null;
+                this.dataForm.nickName = null;
                 this.dataForm.publishStartTime = null;
                 this.dataForm.publishEndTime = null;
                 this.dataForm.publishStartTimeJp = null;

@@ -162,7 +162,11 @@
                 },
                 activeName: "",
                 breaddata: [ "内容管理", "店铺新闻管理"],
-                dataForm: {},
+                dataForm: {
+                    idJp:'',//编号
+                    title:'',//标题
+                    storeName:'',//店铺名称
+                },
                 selectVal:"",
                 multipleSelection:[],
                 dataList: [],
@@ -215,7 +219,7 @@
             reset() {
                 this.timeArr = [];
                 this.timeArr2 = [];
-                this.dataForm.id = "";
+                this.dataForm.idJp = "";
                 this.dataForm.title = "";
                 this.dataForm.storeName = "";
                 this.dataForm.showWeb = "";
