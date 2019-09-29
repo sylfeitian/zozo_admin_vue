@@ -1054,6 +1054,11 @@ export const seckillState = params => { return http.put(`${base}/seckill/period/
 export const seckillTimeDel = params => { return http.delete(`${base}/seckill/period/${params.id}`, params).then(res => res.data); };
 //时间段详情
 export const periodDetail = params => { return http.get(`${base}/seckill/period/${params.id}`, params).then(res => res.data); };
+//编辑秒杀详情
+export const periodEdit= params => { return http.put(`${base}/seckill/period`, params).then(res => res.data); };
+//保存秒杀商品排序
+export const seckillSortSave = params => { return http.put(`${base}/seckill/goods/sort`, params).then(res => res.data); };
+
 
 
 

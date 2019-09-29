@@ -5,10 +5,10 @@
       <!-- 秒杀时间段页面 -->
       <timelist v-if='!showStatus&&timelistStatus' @timeshowList='timeshowList'></timelist>
       <!-- 查看商品列表页面 -->
-      <detailist v-if='!showStatus&&detailistStatus' @detailshowList='detailshowList'  @detailistFun='detailistFun' :activityId="activityId"></detailist>
+      <detailist v-if='!showStatus&&detailistStatus' @detailshowList='detailshowList'  @addlistFun='addlistFun' :activityId="activityId"></detailist>
       <!-- 添加秒杀商品页面 -->
-      <addlist v-if='!showStatus&&addlistStatus' @addshowList='addshowList' @addlistFun='addlistFun' :activityId="activityId"></addlist>
-       <!-- @detailistFun='detailistFun' -->
+      <addlist v-if='!showStatus&&addlistStatus' @addshowList='addshowList' @detailistFun='detailistFun' @addlistFun='addlistFun' :activityId="activityId"></addlist>
+       <!--  -->
   </div>
 </template>
 

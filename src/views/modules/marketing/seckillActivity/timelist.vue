@@ -63,7 +63,6 @@
                         :maxlength="50"
                     ></el-input>
                 </el-form-item>
-             
                 <el-form-item label="每日开始时间：" prop="startTime">
                     <el-time-picker
                         v-model="activiDataForm.startTime"
@@ -115,7 +114,14 @@
 <script>
 import mixinViewModule from "@/mixins/view-module";
 // import { periodPage } from '@/api/url'
-import { periodPage, newSeckillTime, seckillState,seckillTimeDel,periodDetail } from "@/api/api";
+import {
+  periodPage,
+  newSeckillTime,
+  seckillState,
+  seckillTimeDel,
+  periodDetail,
+  periodEdit
+} from "@/api/api";
 import Bread from "@/components/bread";
 
 export default {
@@ -131,8 +137,10 @@ export default {
         deleteIsBatch: true
         // deleteIsBatchKey: 'id'
       },
+      isAdd: true, //默认操作类型为添加
       buttonStatus: false,
       activiVisible: false,
+      editId: "",
       activiDataForm: {
         sgName: "",
         startTime: "",
@@ -168,7 +176,7 @@ export default {
     console.log(this.dataList, "集合");
   },
   methods: {
-      //获取时间段数据集合
+    //获取时间段数据集合
     getDataList() {
       periodPage().then(res => {
         if (res.code == 200) {
@@ -205,12 +213,35 @@ export default {
       });
     },
     //编辑时间段
-    endTime(id){
-        periodDetail({id:id}).then(res=>{
-            if(res.code==200){
-                console.log(res,'data')
-            }
-        })
+    editTime(id) {
+      periodDetail({ id: id }).then(res => {
+        if (res.code == 200) {
+          console.log(res, "data");
+          (this.isAdd = false), //false--编辑，true--添加
+            (this.activiDataForm.sgName = res.data.title);
+          this.activiDataForm.startTime = res.data.dayStartTime;
+          this.activiDataForm.endTime = res.data.dayEndTime;
+          this.activiDataForm.status = res.data.delFlag;
+          this.editId = res.data.id; //编辑的时间段id
+          this.activiDataForm.restrict = [
+            "不可同时参加满减活动",
+            "不可同时使用优惠券"
+          ];
+
+          //需求---暂做死数据
+          //   this.activiDataForm.restrict =
+          //     res.data.reduceLimit == 0
+          //       ? []
+          //       : this.activiDataForm.restrict.push("不可同时参加满减活动");
+          //   this.activiDataForm.restrict =
+          //     res.data.couponsLimit == 0
+          //       ? this.activiDataForm.restrict
+          //       : this.activiDataForm.restrict.push("不可同时使用优惠券");
+          this.activiVisible = true;
+        } else {
+          console.log("error");
+        }
+      });
     },
     //取消弹框
     noCheck(formName) {
@@ -219,11 +250,11 @@ export default {
     },
     //提交新增编辑活动
     subActivity(formName) {
-        this.buttonStatus=true;
+      this.buttonStatus = true;
       this.$refs[formName].validate(valid => {
         if (valid) {
-          //   console.log(this.activiDataForm.status,this.activiDataForm.restrict.length);
-          //   return;
+          console.log(this.activiDataForm.restrict, "----");
+          // return;
           const obj = {
             couponsLimit:
               this.activiDataForm.restrict.indexOf("不可同时使用优惠券") == -1
@@ -238,15 +269,60 @@ export default {
             stopFlag: this.activiDataForm.status == 1 ? 1 : 0,
             title: this.activiDataForm.sgName
           };
-          newSeckillTime(obj).then(res => {
-               this.buttonStatus=false;
-               this.$refs['activiDataForm'].resetFields();
+          if (this.isAdd) {
+            newSeckillTime(obj).then(res => {
+              this.buttonStatus = false;
+              this.$refs["activiDataForm"].resetFields();
+              if (res.code == 200) {
+                this.$message({
+                  type: "success",
+                  message: "保存成功!"
+                });
+                this.activiVisible = false;
+                this.getDataList();
+              } else {
+                this.activiVisible = false;
+                this.$message({
+                  type: "error",
+                  message: res.msg
+                });
+              }
+            });
+          } else {
+            obj.id = this.editId;
+            periodEdit(obj).then(res => {
+              if (res.code == 200) {
+                this.$message({
+                  type: "success",
+                  message: "修改成功!"
+                });
+                this.activiVisible = false;
+                this.getDataList();
+              } else {
+                this.$message({
+                  type: "error",
+                  message: res.msg
+                });
+              }
+            });
+          }
+        }
+      });
+    },
+    //删除时间段
+    delTime(id) {
+      this.$confirm("此操作将删除该时间段, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          seckillTimeDel({ id: id }).then(res => {
             if (res.code == 200) {
               this.$message({
                 type: "success",
-                message: "保存成功!"
+                message: "删除成功!"
               });
-              this.activiVisible = false;
               this.getDataList();
             } else {
               this.$message({
@@ -255,38 +331,13 @@ export default {
               });
             }
           });
-        }
-      });
-    },
-    //删除时间段
-    delTime(id){
-         this.$confirm('此操作将删除该时间段, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-            seckillTimeDel({id:id}).then(res=>{
-            if(res.code==200){
-                this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
-          this.getDataList()
-            }else{
-                this.$message({
-            type: 'error',
-            message: res.msg
-          });
-            }
         })
-          
-        }).catch(() => {
-        //   this.$message({
-        //     type: 'info',
-        //     message: '已取消删除'
-        //   });          
+        .catch(() => {
+          //   this.$message({
+          //     type: 'info',
+          //     message: '已取消删除'
+          //   });
         });
-        
     },
     demo() {
       function placeholderPic() {
