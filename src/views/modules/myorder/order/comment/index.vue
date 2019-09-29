@@ -48,7 +48,7 @@
 
       <el-form-item label="订单评价：">
           <el-select
-		          v-model="dataForm.comfortGrade"
+		          v-model="dataForm.access"
 		          placeholder="请选择"
 		          loading-text="加载中···">
               <el-option label="全部" value=""></el-option>
@@ -220,6 +220,7 @@ export default {
         qualityGrade: "",//	质量星级 1（1星） 2（2星） 3（3星） 4（4星） 5（5星）
         comfortGrade: "",//	舒适度星级 1（1星） 2（2星） 3（3星） 4（4星） 5（5星）
         faceValueGrade: "",//颜值星级 1（1星） 2（2星） 3（3星） 4（4星） 5（5星）
+        access:'',//'订单评价(0超赞、1一般、2满意)',
       },
       evaDetails: "", //评价详情
       dataListLoading: false,
