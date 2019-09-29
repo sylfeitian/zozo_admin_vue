@@ -174,9 +174,9 @@ export default {
       ],
       activitesstatesOption: [
           { id: '', name: "全部" },
-          { id: 1, name: "未开始" },
-          { id: 2, name: "进行中" },
-          { id: 3, name: "已结束" },
+          { id: 0, name: "未开始" },
+          { id: 1, name: "进行中" },
+          { id: 2, name: "已结束" },
         ],
       breaddata: ["营销管理", "限量活动"],
       valuetime:"",
