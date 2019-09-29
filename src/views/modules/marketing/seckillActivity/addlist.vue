@@ -105,7 +105,12 @@
         >
             <el-form :model="editDataForm" :rules="dataRule" ref="editDataForm" label-width="82px">
                 <div class="goodsPresent">
-                    <img src="@/assets/img/avatar.png" alt="">
+                    <!-- <img :src="goodsMain.mainImageUrl" alt=""> -->
+                    <el-image :src="goodsMain.mainImageUrl || '~@assets/img/default.png'">
+                        <div slot="placeholder" class="image-slot">加载中
+                            <span class="dot">...</span>
+                        </div>
+                    </el-image>
                     <div class="goodsPresentModle">
                         <div class="goodsTitle">{{goodsMain.name}}</div>
                         <div class="goodsmoney">￥{{goodsMain.sellPrice}}</div>
@@ -162,13 +167,16 @@
                                     :min="0"
                                     type="number"
                                 ></el-input>
-                                <!-- {{scope.row.cartLimit==0?'999999':scope.row.cartLimit}} -->
                             </el-form-item>
                         </template>
                     </el-table-column>
                     <el-table-column prop="address" label="操作" min-width="80">
                         <template slot-scope="scope">
-                            <el-button type="text" size="small">适用于全部规格</el-button>
+                            <el-button
+                                type="text"
+                                size="small"
+                                @click="changeAll(scope.row)"
+                            >适用于全部规格</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -209,7 +217,6 @@ export default {
       }
     };
     var quantityNumber = (rule, value, callback) => {
-      console.log(Number(value), "11", Number(value) == 0);
       if (!value) {
         callback(new Error("活动库存不能为空"));
       } else if (Number(value) == 0) {
@@ -221,7 +228,6 @@ export default {
       }
     };
     var limitNumber = (rule, value, callback) => {
-      console.log(Number(value), "22");
       if (!value) {
         callback(new Error("每人限购不能为空"));
       } else if (Number(value) == 0) {
@@ -262,7 +268,7 @@ export default {
       editVisible: false, //弹框状态
       buttonStatus: false,
       moneyNum: Number,
-      action:'',//当前操作，create 选择  update 修改
+      action: "", //当前操作，create 选择  update 修改
       editDataForm: {
         number: "",
         activityQuantity: "",
@@ -272,7 +278,6 @@ export default {
       limit: 10,
       page: 1,
       dataRule: {
-        //   return {
         number: [
           {
             required: true,
@@ -282,26 +287,40 @@ export default {
           { validator: validnumber, trigger: ["blur", "change"] }
         ],
         activityQuantity: [
-          { required: true, message: "活动库存不能为空", trigger: "blur" },
-          { validator: quantityNumber, trigger: "blur" }
+          { required: true, message: "活动库存不能为空", trigger: ["blur", "change"] },
+          { validator: quantityNumber, trigger: ["blur", "change"] }
         ],
         personLimit: [
-          { required: true, message: "每人限购不能为空", trigger: "blur" },
-          { validator: limitNumber, trigger: "blur" }
+          { required: true, message: "每人限购不能为空", trigger: ["blur", "change"] },
+          { validator: limitNumber, trigger: ["blur", "change"] }
         ]
       }
     };
   },
   computed: {
-    // }
   },
   created() {
-    console.log("活动id", this.activityId);
     this.getbackScanCategorys();
     this.getDataList();
     this.demo();
   },
   methods: {
+    //同步列表所填数据
+    changeAll(row) {
+      console.log(row, "同步更改数据");
+      if (row.activityQuantity && row.personLimit) {
+        this.editDataForm.goodsSpecList.forEach(function(val, index, arr) {
+          val.activityQuantity = row.activityQuantity;
+          val.personLimit = row.personLimit;
+        });
+      } else {
+        this.$message({
+          type: "error",
+          message: "活动库存和限购数量均不得为空!"
+        });
+        return;
+      }
+    },
     //取消当前商品选择
     cancelIt(id, activityId) {
       const obj = {
@@ -335,7 +354,7 @@ export default {
     },
     //获取当前操作行
     onRowClick(row) {
-      console.log(row.cartLimit, "日本限购");
+    //   console.log(row.cartLimit, "日本限购");
       this.isLimit = row.cartLimit;
     },
     //获取商品分类集合
@@ -372,11 +391,9 @@ export default {
     //回调跳转查看商品页面
     showDetail(id) {
       this.$emit("detailistFun", id);
-      // this.$router.push({'name': 'marketing-coupon',})
     },
     //重置
     reset() {
-      //   this.dataForm = {};
       this.$refs["dataForm"].resetFields();
       this.page = 1;
       this.getDataList();
@@ -386,8 +403,8 @@ export default {
       this.$emit("addshowList");
     },
     //新建/修改弹框
-    editGoods(id,type) {
-    this.action=type;
+    editGoods(id, type) {
+      this.action = type;
       const obj = {
         goodsId: id,
         activityId: this.activityId
@@ -396,19 +413,20 @@ export default {
         if (res.code == 200) {
           this.goodsMain = res.data;
           this.moneyNum = Number(res.data.sellPrice);
+          this.editDataForm.number = Number(res.data.activityPrice) || "";
           this.goodsSpecList = res.data.activityGoodsChoiceSkuVOList;
           this.editDataForm.goodsSpecList = this.goodsSpecList;
-          console.warn(this.editDataForm, "-----更改数据格式");
+        //   console.warn(this.editDataForm, "-----更改数据格式");
           //   this.goodsSpecList[0].cartLimit=5;
           this.editVisible = true;
         }
       });
     },
     noCheck() {
-        console.log(this.action,'操作类型')
-        if(this.action=='creat'){
-            this.editDataForm.number = "";
-        }      
+    //   console.log(this.action, "操作类型");
+      if (this.action == "creat") {
+        this.editDataForm.number = "";
+      }
       this.$refs["editDataForm"].clearValidate();
       this.editVisible = false;
     },
@@ -437,51 +455,49 @@ export default {
             id: this.goodsMain.id
           };
           this.saveLoading = true;
-        //   console.log(this.action,'操作类型')
-          if(this.action=='creat'){
-              seckillProSave(obj).then(res => {
-            this.saveLoading = false;
-            let status = null;
-            if (res.code == "200") {
-              status = "success";
-              this.visible = false;
-              this.getDataList();
-              this.editVisible = false;
-            } else {
-              status = "error";
-            }
-            this.$message({
-              message: res.msg,
-              type: status,
-              duration: 1500
+          //   console.log(this.action,'操作类型')
+          if (this.action == "creat") {
+            seckillProSave(obj).then(res => {
+              this.saveLoading = false;
+              let status = null;
+              if (res.code == "200") {
+                status = "success";
+                this.visible = false;
+                this.getDataList();
+                this.editVisible = false;
+              } else {
+                status = "error";
+              }
+              this.$message({
+                message: res.msg,
+                type: status,
+                duration: 1500
+              });
             });
-          });
-          }else{
-              seckillProEdit(obj).then(res => {
-            this.saveLoading = false;
-            let status = null;
-            if (res.code == "200") {
-              status = "success";
-              this.visible = false;
-              this.getDataList();
-              this.editVisible = false;
-            } else {
-              status = "error";
-            }
-            this.$message({
-              message: res.msg,
-              type: status,
-              duration: 1500
+          } else {
+            seckillProEdit(obj).then(res => {
+              this.saveLoading = false;
+              let status = null;
+              if (res.code == "200") {
+                status = "success";
+                this.visible = false;
+                this.getDataList();
+                this.editVisible = false;
+              } else {
+                status = "error";
+              }
+              this.$message({
+                message: res.msg,
+                type: status,
+                duration: 1500
+              });
             });
-          });
           }
-          
         } else {
           console.log("error submit!!");
           return false;
         }
       });
-      //   this.editVisible = false;
     },
 
     demo() {
@@ -514,9 +530,12 @@ export default {
       width: 100%;
       display: flex;
       margin-bottom: 20px;
-      img {
+      /deep/ .el-image,
+      /deep/.el-image__inner {
+        text-align: center;
         width: 110px;
         height: 110px;
+        line-height: 110px;
         object-fit: contain;
         margin-right: 20px;
       }
