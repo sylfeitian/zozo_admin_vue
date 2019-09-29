@@ -94,6 +94,11 @@
                 this.getDataList();
                 console.log(this.row);
             },
+            // 搜索
+            handleClick(){
+                this.$refs['addForm'].resetFields();
+                this.getDataList();
+            }
         }
     }
 </script>

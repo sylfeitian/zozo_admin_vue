@@ -98,19 +98,11 @@
                     }
                 }
             },
-            'dataForm.mobile': function (newV, oldV) {
-                var chineseCount = 0,characterCount = 0;
-                for (let i = 0; i < newV.length; i++) {
-                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
-                        chineseCount = chineseCount + 2;
-                    } else if(/ /.test(newV[i])){ //空格
-                        this.dataForm.mobile = newV.replace(newV[i], "") //删除空格
-                    }else{
-                        characterCount = characterCount + 1;
-                    }
-                    var count = chineseCount + characterCount;
-                    if (count > 11) { //输入字符大于11的时候过滤
-                        this.dataForm.mobile = newV.substr(0,(chineseCount/2+characterCount)-1)
+            'dataForm.mobile':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    // 只能输入数字
+                    if(!/[0-9]/g.test(newV[i])){
+                        this.dataForm.mobile = newV.replace(newV[i],"")
                     }
                 }
             }
@@ -198,16 +190,6 @@
                 }
             }
         },
-        watch:{
-            'dataForm.mobile':function(newV,oldV) {
-                for(let i=0;i<newV.length;i++){
-                    // 只能输入数字
-                    if(!/[0-9]/g.test(newV[i])){
-                        this.dataForm.mobile = newV.replace(newV[i],"")
-                    }
-                }
-            }
-        },
         methods: {
             // 筛选重复的角色
             selected(query) {
@@ -221,7 +203,6 @@
                         this.dataForm.roleIds[selectItem.lastIndexOf(query)].key = Date.now()
                         this.$message("该角色已经被选了,请选择其他角色")
                     }
-
             },
             // 弹窗关闭
             noCheck() {
