@@ -15,7 +15,9 @@
             </el-form-item>
         </el-form>
         <el-form>
-        	<el-button @click="addOrEditHandle()"  class="btn" type="primary">导入信息</el-button>
+        	<!-- <el-button @click="addOrEditHandle()"  class="btn" type="primary">导入信息</el-button> -->
+            
+             <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
         </el-form>
         <el-table width="100%" :data="dataList" border v-loading="dataListLoading" style="width: 100%;margin-top: 10px;">
             <el-table-column prop="idJp" label="尺码ID" align="center"></el-table-column>
@@ -53,10 +55,19 @@
     import addEditData from './model-add-edit-data'
     import addEdit from './model-add-edit'
     import { getsizeJPdata } from '@/api/url'
+    
+    import importAndExport from "@/components/import-and-export"	
+    import { sizejpImportExcel} from '@/api/io'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
+                importAndExportOptions:{
+                    importUrl:sizejpImportExcel,//导入接口
+                    importWord:"导入信息",
+                    // exportUrl:exportRegisterUrl,//导出接口
+                    // exportWord:"导出数据",
+                },
             	mixinViewModuleOptions: {
 			        // activatedIsNeed: false,
 			        getDataListURL: getsizeJPdata,
@@ -84,7 +95,8 @@
         components: {
             Bread,
             addEditData,
-            addEdit
+            addEdit,
+            importAndExport
         },
         // ID类搜索框仅可输入数字、英文，最多可输入30个字符
         watch:{

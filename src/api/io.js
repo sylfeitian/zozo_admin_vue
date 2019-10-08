@@ -37,4 +37,21 @@ export const shopBrandImport = `${allBase}/shopBrand/import`;
 export const tagImport = `${allBase}/tag/import`;
 
 // 查看库存
-export const stockExportt= `${allBase}/stock/exportt`;
+export const stockExport= `${allBase}/stock/export`;
+
+// 会员
+export const vipExport= `${allBase}/?????/会员导出不写`;
+
+
+// 日本尺码导入
+export const sizejpImportExcel= `${allBase}/sizejp/importExcel`;
+
+// 尺码项列表  尺码描述
+export const shoplabelImport = `${allBase}/shoplabel/import`;
+
+
+// 中日词库
+// 导出
+export const syslexiconExport = `${allBase}/syslexicon/export`;
+// 导入
+export const syslexiconImport = `${allBase}//?????/暂时没接口`;

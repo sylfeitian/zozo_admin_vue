@@ -40,14 +40,14 @@
             </el-form-item>
         </el-form>
         <el-table :data="dataList" v-loading="dataListLoading" border="" style="width: 100%">
-            <el-table-column type="index" prop="$index" align="center" label="序号" width="70">
+            <el-table-column type="index" prop="$index" align="center" label="序号" width="70 ">
                 <template slot-scope="scope">{{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}</template>
             </el-table-column>
-            <el-table-column prop="id" label="活动场次" width="180"></el-table-column>
-            <el-table-column prop="auditState" :formatter="auditStateType" label="审核状态"></el-table-column>
-            <el-table-column prop="state" :formatter="stateType" label="活动状态"></el-table-column>
-            <el-table-column prop="title" label="秒杀时间段"></el-table-column>
-            <el-table-column prop="address" label="操作">
+            <el-table-column prop="id" label="活动场次" width="180" align="center"></el-table-column>
+            <el-table-column prop="auditState" :formatter="auditStateType" label="审核状态" align="center"></el-table-column>
+            <el-table-column prop="state" :formatter="stateType" label="活动状态" align="center"></el-table-column>
+            <el-table-column prop="title" label="秒杀时间段" align="center"></el-table-column>
+            <el-table-column prop="address" label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button
                         type="text"

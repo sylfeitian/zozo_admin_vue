@@ -10,10 +10,10 @@
             <el-table-column type="index" prop="$index" align="center" label="序号" width="70">
                 <template slot-scope="scope">{{scope.$index+1}}</template>
             </el-table-column>
-            <el-table-column prop="title" label="秒杀时段名称" width="180"></el-table-column>
-            <el-table-column prop="dayStartTime" label="每日开始时间"></el-table-column>
-            <el-table-column prop="dayEndTime" label="每日结束时间"></el-table-column>
-            <el-table-column prop="stopFlag " label="启用">
+            <el-table-column prop="title" label="秒杀时段名称" width="180" align="center"></el-table-column>
+            <el-table-column prop="dayStartTime" label="每日开始时间" align="center"></el-table-column>
+            <el-table-column prop="dayEndTime" label="每日结束时间" align="center"></el-table-column>
+            <el-table-column prop="stopFlag " label="启用" align="center">
                 <template slot-scope="scope">
                     <el-switch
                         v-model="scope.row.stopFlag==0?false:true"
@@ -23,7 +23,7 @@
                     ></el-switch>
                 </template>
             </el-table-column>
-            <el-table-column prop="address" label="操作">
+            <el-table-column prop="address" label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button type="text" size="small" @click="editTime(scope.row.id)">编辑</el-button>
                     <el-button type="text" size="small" @click="delTime(scope.row.id)">删除</el-button>

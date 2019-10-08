@@ -16,9 +16,10 @@
                 <el-radio-button label="two">材质</el-radio-button>
             </el-radio-group>
             <el-form style="float: right;">
-                <el-button @click="addOrEditHandle()" type="primary">添加对照词</el-button>
-                <el-button @click="" type="primary">导入</el-button>
-                <el-button @click="">下载模板</el-button>
+                <el-button @click="addOrEditHandle()" type="primary" style="margin-right:20px;">添加对照词</el-button>
+                <!-- <el-button @click="" type="primary">导入</el-button> -->
+                <!-- <el-button @click="">下载模板</el-button> -->
+                 <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
             </el-form>
             <el-table
                     v-loading="dataListLoading"
@@ -67,11 +68,19 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import { syslexiconUrl,deleteSyslexicon,exportSyslexicon } from '@/api/url'
+    import importAndExport from "@/components/import-and-export"	
+    import { syslexiconImport,syslexiconExport} from '@/api/io'
 
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
+                importAndExportOptions:{
+                    importUrl:syslexiconImport,//导入接口
+                    importWord:"导入",
+                    exportUrl:syslexiconExport,//导出接口
+                    exportWord:"下载模板",
+                },
                 mixinViewModuleOptions: {
                     getDataListURL: syslexiconUrl,
                     getDataListIsPage: true,
@@ -93,7 +102,8 @@
         },
         components: {
             addEditData,
-            Bread
+            Bread,
+            importAndExport
         },
         created() {
             this.handleClick();

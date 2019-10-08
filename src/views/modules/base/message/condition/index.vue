@@ -35,7 +35,7 @@
                 layout="total, sizes, prev, pager, next, jumper">
         </el-pagination> -->
         <div class="importBtn">
-            <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"></importAndExport>
+            <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getTree"></importAndExport>
         </div>
         <MyTableTree 
             v-loading="dataListLoading"

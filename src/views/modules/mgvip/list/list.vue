@@ -30,8 +30,9 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="getData()">搜索</el-button>
-        <el-button @click="reset()" type="primary" plain >重置</el-button>
-        <el-button type="primary" plain>导出</el-button>
+        <el-button @click="reset()" type="primary" plain style="margin-right:20px;" >重置</el-button>
+        <!-- <el-button type="primary" plain>导出</el-button> -->
+         <!-- <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport> -->
       </el-form-item>
       <br />
     </el-form>
@@ -124,11 +125,18 @@
   import Bread from "@/components/bread";
   import mixinViewModule from "@/mixins/view-module";
   import {zozomemberPageUrl,} from "@/api/url.js"
-
+ import importAndExport from "@/components/import-and-export"
+ import { vipExport} from '@/api/io'
   export default {
     mixins: [mixinViewModule],
     data() {
       return {
+        importAndExportOptions:{
+            // importUrl:colorImportExcel,//导入接口
+            // importWord:"导入信息",
+            exportUrl:vipExport,//导出接口
+            exportWord:"导出",
+        },
         mixinViewModuleOptions: {
           getDataListURL: zozomemberPageUrl,
           activatedIsNeed:false,
@@ -153,7 +161,8 @@
       };
     },
     components: {
-      Bread
+      Bread,
+      importAndExport
     },
     // ID类搜索框仅可输入数字、英文，最多可输入30个字符
     watch:{
