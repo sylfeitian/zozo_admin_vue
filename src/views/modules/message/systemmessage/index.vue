@@ -204,7 +204,7 @@ export default {
                 }
 			}else{
                 var res =  /^[0-9A-Z_]+$/g
-                if(!res.test(this.ShopmessagetemplateList.messageCode)){
+                if(!res.test(this.ShopmessagetemplateList.messageTitle)){
                     this.$message({
                         message:"请输入正确格式的模板编码",
                         type: 'error',
@@ -215,7 +215,8 @@ export default {
                 obj = {
                     templateType:this.ShopmessagetemplateList.templateType,
                     messageId:this.ShopmessagetemplateList.messageId,
-                    messageCode:this.ShopmessagetemplateList.messageCode
+					messageCode:this.ShopmessagetemplateList.messageCode,
+					messageTitle:this.ShopmessagetemplateList.messageTitle,
                 }
 			}
 
@@ -254,6 +255,8 @@ export default {
             this.ShopmessagetemplateList.messageContent = this.ShopmessagetemplateList.messageContent+val;
 		},
   	    show(name,id,open){
+			this.ShopmessagetemplateList.messageTitle = ""
+			this.ShopmessagetemplateList.messageCode = ""
   	        // if(open == 1){
   	        	// 短信
                 if(name == 2) {
@@ -274,7 +277,8 @@ export default {
                             this.ShopmessagetemplateList.messageTitle = res.data.messAgeTemplate.umengTitle;
                             this.ShopmessagetemplateList.messageContent = res.data.messAgeTemplate.tempUmentContent;
                         }else if(name == 2){
-                            this.ShopmessagetemplateList.messageCode = res.data.messAgeTemplate.tempSmsCode;
+							this.ShopmessagetemplateList.messageCode = res.data.messAgeTemplate.tempSmsCode;
+							this.ShopmessagetemplateList.messageTitle = res.data.messAgeTemplate.tempSmsCode;
                         }
                     }
                 })
