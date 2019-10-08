@@ -14,7 +14,7 @@
             <el-form>
                 <el-button type="primary" @click="addOrUpdateHandle()" >添加禁用词</el-button>
                 <!-- <el-button type="primary" @click="">导入</el-button> -->
-                 <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"></importAndExport>
+                 <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
             </el-form>
 
             <!--            <el-form>-->

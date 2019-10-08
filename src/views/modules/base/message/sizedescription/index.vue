@@ -16,7 +16,8 @@
         </el-form>
         <el-form>
         	<el-form-item>
-                <el-button @click="addOrEditHandle()"  class="btn" type="primary">导入信息</el-button>
+                <!-- <el-button @click="addOrEditHandle()"  class="btn" type="primary">导入信息</el-button> -->
+                <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
             </el-form-item>
         </el-form>
         <el-table width="100%" :data="dataList" border v-loading="dataListLoading" style="width: 100%;">
@@ -49,10 +50,18 @@
     import Bread from "@/components/bread";
     import addEditData from './model-add-edit-data'
     import {getshoplabel} from '@/api/url'
+    import importAndExport from "@/components/import-and-export"	
+    import { shoplabelImport} from '@/api/io'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
+                importAndExportOptions:{
+                    importUrl:shoplabelImport,//导入接口
+                    importWord:"导入信息",
+                    // exportUrl:exportRegisterUrl,//导出接口
+                    // exportWord:"导出数据",
+                },
             	mixinViewModuleOptions: {
 		          getDataListURL: getshoplabel,
 		          getDataListIsPage: true,
@@ -67,6 +76,10 @@
                     name: "",//尺码项目名称
                     idJp: "", //ID
                 },
+                dataForm:{
+                    name: "",//尺码项目名称
+                    idJp: "", //ID
+                },
                 value: '',
                 addEditDataVisible:false,
                 dataListLoading: false,
@@ -76,7 +89,8 @@
         },
         components: {
             Bread,
-            addEditData
+            addEditData,
+            importAndExport
         },
         // ID类搜索框仅可输入数字、英文，最多可输入30个字符
         watch:{

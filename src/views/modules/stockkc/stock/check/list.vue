@@ -63,7 +63,7 @@
                 <el-button class="btn" type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
             <el-form-item>
-                <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"></importAndExport>
+                <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
             </el-form-item>
         </el-form>
         
@@ -137,7 +137,7 @@
     import { getdatagoods,} from "@/api/url"
     import { getdatabrands, getdatacategory, getdatastores} from "@/api/api"
     //import detail from "./detail";
-  import { stockExportt} from '@/api/io'
+  import { stockExport} from '@/api/io'
     
     export default {
         mixins: [mixinViewModule],
@@ -146,7 +146,7 @@
                 importAndExportOptions:{
                     // importUrl:colorcategoryImportExcel,//导入接口
                     // importWord:"导入信息",
-                    exportUrl:stockExportt,//导出接口
+                    exportUrl:stockExport,//导出接口
                     exportWord:"导出数据",
                 },
             	mixinViewModuleOptions: {

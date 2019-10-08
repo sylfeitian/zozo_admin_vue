@@ -106,6 +106,7 @@ export default {
                         duration: 1500
                     })
                     // that.dataFormSubmit();
+                    that.$emit("getDataList");
                 }else{
                     // that.progress = 0;
                     that.$message({
