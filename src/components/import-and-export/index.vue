@@ -23,6 +23,7 @@
 </template>
 <script>
 import Cookies from 'js-cookie'
+import qs from 'qs'
 export default {
     name:'bread',
     props: ['importAndExportOptions','dataForm'],
@@ -43,18 +44,25 @@ export default {
             // https://gitbook.cn/books/5d81cd6b90dbf8361802570f/index.html
             // 导出
             exportExcel(){
-                let url = ""
-                let kvArr = Object.entries(this.dataForm);
-                kvArr.forEach(v=>{
-                    if(Object.prototype.toString.call(v[1]) =='[object Object]'){
-                        arguments.callee(v[1]);
-                    }else{
-                        url += v.join('=')+'&'
-                    }
+                // let url = ""
+                // let kvArr = Object.entries(this.dataForm);
+                // kvArr.forEach(v=>{
+                //     if(Object.prototype.toString.call(v[1]) =='[object Object]'){
+                //         arguments.callee(v[1]);
+                //     }else{
+                //         url += v.join('=')+'&'
+                //     }
+                // })
+                // url  = url.substring(0,url.length-1);
+                // url = this.importAndExportOptions.exportUrl + "?"+url;
+                // window.open(url);
+
+                 var params = qs.stringify({
+                    'token': Cookies.get('token'),
+                    ...this.dataForm
                 })
-                url  = url.substring(0,url.length-1);
-                url = this.importAndExportOptions.exportUrl + "?"+url
-                window.open(url);
+                window.location.href = `${this.importAndExportOptions.exportUrl}?${params}`
+                //  window.open(`${this.importAndExportOptions.exportUrl}?${params}`);
             },
             // 导入之前
             beforeAvatarUpload(file) {
