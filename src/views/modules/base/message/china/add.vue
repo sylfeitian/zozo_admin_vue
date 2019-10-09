@@ -50,7 +50,7 @@
 				<div class="pcCoverUrl imgUrl" v-for="(item,index) in dataForm.methodUrlshow" @click="imgtype = 'rule'">
 					<img-cropper
 						ref="cropperImg1"
-						:index="'1'"
+						:index="index"
 						:imgWidth='"100px"'
 						:imgHeight='"100px"'
 						:cropImg = "item"
@@ -399,16 +399,16 @@
 				}
 			})
 	  	},
-	  	GiftUrlHandle(val){
+	  	GiftUrlHandle(val,index){
 			console.log("base64上传图片接口");
 			console.log(val);
-			this.uploadPic(val);
+			this.uploadPic(val,index);
 			// if(this.imgtype == 'rule'){
 			// 	this.dataForm.methodUrlshow.push('');
 			// }
 		},
 		//上传图片
-		uploadPic(base64){
+		uploadPic(base64,_index){
 			const params = { "imgStr": base64 };
 			const that = this;
 			this.uploading = true;
@@ -422,17 +422,30 @@
 								this.$message("最多可上传10张图片");
 								return;
 							}
+							let isAddImg = true;
 							//过滤空的
-							that.dataForm.methodUrlshow = that.dataForm.methodUrlshow.filter((item,index)=>{
-								if(item){
-									return item;
-								}
+							var methodUrlshow = []
+							console.log(_index);
+							console.log("_index")
+							that.dataForm.methodUrlshow.forEach((item,index)=>{
+									console.log([index==_index,that.dataForm.methodUrlshow.length-1!=_index]);
+									if(index==_index && that.dataForm.methodUrlshow.length-1!=_index){
+										isAddImg = false;
+										item = url
+									}
+									if(item){
+										methodUrlshow.push(item);
+									}
 							})
 							// 追加新的
 							console.log("新的");
-							that.dataForm.methodUrlshow.push(url);
+							if(isAddImg){
+								methodUrlshow.push(url);
+							}
 							// 追加最后一个展位
-							that.dataForm.methodUrlshow.push('');
+							methodUrlshow.push('');
+							console.log(methodUrlshow);
+							that.dataForm.methodUrlshow = [].concat(methodUrlshow)
 						}else if(that.imgtype == 'all'){
 							that.dataForm.genderMain = url;
 						}else if(that.imgtype == 'm'){
