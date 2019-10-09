@@ -52,9 +52,9 @@
                     sizeName: "",//尺码名称
                 },
                 dataRule : {
-                    sizeName : [
+                    name : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
-                    ]
+                    ],
                 },
                 optionsApplication: [],
                 optionsRight: [],
