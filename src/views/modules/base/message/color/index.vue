@@ -107,7 +107,6 @@
                     this.dataFormShow.idJp = newV.substr(0,30)
                 }
             },
-
             'dataFormShow.name':function(newV,oldV) {
                 var chineseCount = 0,characterCount = 0;
                 for (let i = 0; i < newV.length; i++) {
