@@ -147,13 +147,7 @@
                 });
             },
             returnRelat(row){
-                console.log("......//////");
-                console.log(row);
-                if(row.level==1|| row.level==2){
-                    return "";
-                } else{
                     return "关联分类";
-                }
             },
             // 新建和编辑
             addOrEditHandle(row){
