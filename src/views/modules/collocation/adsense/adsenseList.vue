@@ -151,7 +151,7 @@
                     :http-request="upLoad"
                     :show-file-list="false"
                     :before-upload="beforeAvatarUpload">
-                    <img v-if="activiDataForm.imageSrc" :src="activiDataForm.imageSrc" class="avatar">
+                    <img v-if="activiDataForm.imageSrc" :src="activiDataForm.imageSrc | filterImgUrl" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
             </el-form-item>
@@ -495,7 +495,8 @@
                         console.log(res)
                         if(res.code == 200){
                             that.activiDataForm.fileList = [{name: '文件',url:that.$imgDomain + res.data.url}]
-                            that.activiDataForm.imageSrc = that.$imgDomain + res.data.url;
+                            // that.activiDataForm.imageSrc = that.$imgDomain + res.data.url;
+                             that.activiDataForm.imageSrc = res.data.url;
                         }else{
                             that.$message.error('上传失败');
                         }

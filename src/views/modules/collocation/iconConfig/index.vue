@@ -28,7 +28,7 @@
             align="center"
             width="320">
             <template slot-scope="scope">
-		    	<img style="width:200px;height:100px;object-fit: contain" :src="scope.row.selectedIcon" alt="">
+		    	<img style="width:200px;height:100px;object-fit: contain" :src="scope.row.selectedIcon | filterImgUrl " alt="">
 		    </template>
 		</el-table-column>
 		<el-table-column
@@ -37,7 +37,7 @@
 		    label="未选中图标"
 		    width="320">
             <template slot-scope="scope">
-                <img style="width:200px;height:100px;object-fit: contain" :src="scope.row.unselectedIcon" alt="">
+                <img style="width:200px;height:100px;object-fit: contain" :src="scope.row.unselectedIcon | filterImgUrl" alt="">
 		    </template>
 		</el-table-column>		
 	    <el-table-column
@@ -199,9 +199,9 @@
                         console.log(res)
                         if(res.code == 200){
                             if(who == '1'){
-                                that.editDataForm.selectedIcon = that.$imgDomain + res.data.url;
+                                that.editDataForm.selectedIcon = res.data.url;
                             }else{
-                                that.editDataForm.unselectedIcon = that.$imgDomain + res.data.url;
+                                that.editDataForm.unselectedIcon = res.data.url;
                             }
                         }else{
                             that.$message.error('上传失败');
