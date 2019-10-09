@@ -574,7 +574,17 @@
             	this.$refs[formName].validate((valid) => {
 			        if (valid) {
                         // this.dataForm.addPriceRate = JSON.stringify(this.rate);
-                        this.dataForm.addPriceRate = this.rate;
+                        let preItem = "";
+                        this.dataForm.addPriceRate = this.rate.filter((item,index)=>{
+                                if(index==0){
+                                    preItem  = item.end;
+                                    return item;
+                                }else{
+                                    item.start = preItem;
+                                    preItem  = item.end;
+                                    return item;
+                                }
+                        });
                         this.saveLoading = true;
 			            addsetting(this.dataForm).then((res)=>{
                             this.saveLoading = false;

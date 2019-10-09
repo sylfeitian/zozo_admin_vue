@@ -220,6 +220,9 @@
                 },
                 changeVal: "",
                 alreadyOptions: [{
+                    id: '',
+                    label: '全部'
+                },{
                     id: '0',
                     label: '待备案'
                 },{
@@ -321,6 +324,14 @@
                 }else if(this.dataForm.isTofileFlag==0){
                     this.dataForm.transportFlag  =""
                     // delete this.dataForm.transportFlag
+                }
+
+                if(this.dataFormShow.isTofileFlag==0){//待备案备案
+                    if(this.dataFormShow.isTofile==0 || this.dataFormShow.isTofile ==""){
+                        this.dataForm.isTofileFlag = 0
+                    }else if(this.dataFormShow.isTofile==3){
+                        this.dataForm.isTofileFlag = 3
+                    }
                 }
                 this.getDataList()
             },
