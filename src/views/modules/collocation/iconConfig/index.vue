@@ -1,8 +1,7 @@
 <template>
   <div>
     <Bread :breaddata="breaddata"></Bread>
-		    	<el-button type="text" size="small" @click="editConfig()">编辑</el-button>
-
+		<!-- <el-button type="text" size="small" @click="editConfig()">编辑</el-button> -->
     <el-table
         :data="dataList"
         v-loading="dataListLoading"
@@ -68,7 +67,7 @@
         :close-on-click-modal = "false"
         class="activiDialog"
         width="40%">
-        <el-form :model="editDataForm" :rules="dataRule" ref="editDataForm" @keyup.enter.native="subActivity()" label-width="120px">
+        <el-form :model="editDataForm" :rules="dataRule" ref="editDataForm"  label-width="120px">
             <el-form-item label="名称：" prop="menuName">
                 <el-input v-model="editDataForm.menuName" placeholder="请输入5字以内的名称"></el-input>
             </el-form-item>

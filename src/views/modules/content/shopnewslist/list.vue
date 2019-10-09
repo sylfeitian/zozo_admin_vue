@@ -124,10 +124,12 @@
         <div class="bottomFun">
             <div class="bottomFunLeft">
                 <el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                <el-select v-model="selectVal" @change="cotrolGoodsShow(selectVal)" placeholder="批量操作" style="margin-left: 10px;width: 140px;">
+                <!-- <el-select v-model="selectVal" @change="cotrolGoodsShow(selectVal)" placeholder="批量操作" style="margin-left: 10px;width: 140px;">
                     <el-option label="批量发布"  value="0"></el-option>
                     <el-option label="取消批量发布" value="1"></el-option>
-                </el-select>
+                </el-select> -->
+                <el-button @click="cotrolGoodsShow(0)" style="margin-left: 20px;"  type="primary" >批量发布</el-button>
+                <el-button @click="cotrolGoodsShow(1)"  type="primary" >取消批量发布</el-button>
             </div>
             <!-- 分页 -->
             <el-pagination
