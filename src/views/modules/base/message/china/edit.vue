@@ -33,7 +33,7 @@
 	    </el-form-item>
     
 
-        <el-form-item v-show="yijishow"  prop="categoryJpId" v-for="(item, index) in dataForm.categoryJpId" :key="index" :label="index == 0 ? '关联日本分类：' : '' ">
+        <el-form-item v-if="yijishow"  prop="categoryJpId" v-for="(item, index) in dataForm.categoryJpId" :key="index" :label="index == 0 ? '关联日本分类：' : '' ">
 	        <el-select
 	          v-model="dataForm.categoryJpId[index]"
 	          placeholder="请选择"
@@ -126,7 +126,7 @@
 	</el-form>
 		<span slot="footer" class="dialog-footer">
             <el-button @click="closeadd">取消</el-button>
-            <el-button type="primary" @click="actuploaddata('editForm')">确定</el-button>
+            <el-button type="primary" @click="actuploaddata('editForm')">{{saveLoading?'提交中...':'确 定'}}</el-button>
         </span>
 </el-dialog>
 
@@ -183,6 +183,7 @@
 			  }
 		  };
 	    return {
+			saveLoading:false,
 	    	erjishow: true,  //二级没有评价类型
 	    	yijishow: true,  //一级不用上传图片
 	    	imgtype:'',  //img的类型
@@ -284,6 +285,7 @@
 	  	},
 	  	init(row){
 			this.row = row;
+			this.saveLoading = false;
 			if(this.row){
 				this.tempName = this.row.label; // 暂存当前名字，校验用
 			}
@@ -331,6 +333,9 @@
 
 	  	},
 		actuploaddata(formName){  //确定提交 
+		if(this.saveLoading){
+			return;
+		}
 		 var methodUrlshow = cloneDeep(this.dataForm.methodUrlshow);
 	 		if(typeof methodUrlshow =="string"){
 				methodUrlshow = JSON.parse(methodUrlshow);
@@ -371,9 +376,12 @@
 			this.$refs[formName].validate((valid) => {
 				if (valid) {
 					//确定提交
+					this.saveLoading = true,
 					updataCategoryCn(this.dataForm).then((res)=>{
+						this.saveLoading = false;
 						if(res.code == 200){
 							console.log(res.data);
+							this.$message.success(res.msg);
 							this.closeadd();
 						}else{
 							this.$message(res.msg);
@@ -447,6 +455,7 @@
 						resolve("true")
 					}else {
 						// that.currentIndex = -1;//不能这样写，防止网络延迟
+						this.$message.error(res.msg)
 						resolve("false")
 					}
 				})
