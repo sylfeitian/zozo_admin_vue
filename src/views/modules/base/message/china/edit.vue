@@ -48,7 +48,6 @@
 	        </el-select>
 	        <el-button v-if="index+1 == dataForm.categoryJpId.length" @click="actadd" type="primary" style="margin-left: 20px;">添加</el-button>
 		</el-form-item>
-		 {{dataForm.methodUrlshow}}
        <el-form-item label="测量方法：" prop="methodUrl" v-if="yijishow">
 				<div class="pcCoverUrl imgUrl" v-for="(item,index) in dataForm.methodUrlshow" @click="imgtype = 'rule'">
 					<img-cropper
@@ -423,7 +422,7 @@
 										item = url
 									}
 									if(item){
-										methodUrlshow.push(item);
+										methodUrlshow.push(item)	;
 									}
 							})
 							// 追加新的
