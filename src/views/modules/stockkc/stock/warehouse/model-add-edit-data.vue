@@ -102,10 +102,14 @@
                         }
                     }
                     verifyWare(obj).then((res) => {
-                        if (res) {
-                            callback()
+                        if (res.code==200) {
+                            if(res.data){
+                                callback()
+                            }else{
+                                callback(new Error('仓库名称已经存在'))
+                            }
                         } else {
-                            callback(new Error('仓库名称已经存在'))
+                            callback()
                         }
                     })
 
