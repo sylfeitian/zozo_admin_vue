@@ -38,7 +38,7 @@
                 <el-col :span="5"><div class="grid-content bg-purple-light">会员账号</div></el-col>
             </el-row>
             <el-row>
-                <el-col :span="5"><div class="grid-content">{{orderBase.orderId}}</div></el-col>
+                <el-col :span="5"><div class="grid-content">{{orderBase.orderSn}}</div></el-col>
                 <el-col :span="5"><div class="grid-content">{{orderBase.paymentName}}</div></el-col>
                 <el-col :span="4">
                     <div class="grid-content">
