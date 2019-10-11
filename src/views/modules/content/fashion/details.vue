@@ -22,7 +22,7 @@
                     <span>{{dataForm.totalViewsNums}}</span>
                 </el-form-item>
                 <el-form-item label="发布状态：">
-                    <span>{{dataForm.isOpen == 1?"发布":dataForm.isOpen == 0?"未发布":""}}</span>
+                    <span>{{dataForm.isOpen == 1?"已发布":dataForm.isOpen == 2?"待发布":""}}</span>
                 </el-form-item>
                 <el-form-item label="背景图：" style="height: 100%!important;">
                     <template slot-scope="scope">

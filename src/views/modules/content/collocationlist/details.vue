@@ -28,7 +28,7 @@
                     <span>{{dataForm.totalViewsNum}}</span>
                 </el-form-item>
                 <el-form-item label="发布状态：">
-                    <span>{{dataForm.jpPublishState == 0?"取消发布":dataForm.jpPublishState == 1?"已发布":""}}</span>
+                    <span>{{dataForm.jpPublishState == 0?"待发布":dataForm.jpPublishState == 1?"已发布":""}}</span>
                 </el-form-item>
                 <el-form-item label="主图：" style="height: 100%!important;">
                     <template slot-scope="scope">

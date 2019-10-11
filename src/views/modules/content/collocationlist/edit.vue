@@ -28,7 +28,7 @@
                     <span>{{dataForm.totalViewsNum}}</span>
                 </el-form-item>
                 <el-form-item label="发布状态：">
-                    <span>{{dataForm.jpPublishState == 0?"取消发布":dataForm.jpPublishState == 1?"已发布":""}}</span>
+                    <span>{{dataForm.jpPublishState == 0?"待发布":dataForm.jpPublishState == 1?"已发布":""}}</span>
                 </el-form-item>
                 <el-form-item label="主图：" style="height: 100%!important;">
                     <template slot-scope="scope">
@@ -149,18 +149,24 @@
         <div style="margin-left:20px;">
             <div>
                 <span style="margin-right: 10px;"><span style="color: #F56C6C;margin-right: 5px;">*</span>关联标签：</span>
-                <el-input v-model="stylesName" type="text" placeholder="请输入标签名称"></el-input>
-                <el-button class="btn" type="primary" @click="addStyleName()" style="margin-left: 10px;">添加</el-button>
+                <el-select v-model="stylesName" :filter-method="getStyle" @change="saveList" filterable placeholder="请选择">
+                    <el-option
+                            v-for="(item,index) in options"
+                            :key="index"
+                            :label="item.styleName"
+                            :value="index">
+                    </el-option>
+                </el-select>
             </div>
             <span style="margin-left: 30px;">
                 <el-tag
                         :key="index"
                         style="margin-bottom: 10px;"
-                        v-for="(tag,index) in ac"
+                        v-for="(tag,index) in styleList"
                         closable
                         :disable-transitions="false"
                         @close="handleClose(index)">
-                    {{tag.name}}
+                    {{tag.styleName}}
                 </el-tag>
             </span>
         </div>
@@ -169,7 +175,7 @@
                 <span style="font-size: 20px;margin-right: 20px;">状态：{{dataForm.sate == 0?"未发布":dataForm.sate == 1?"已发布":dataForm.sate == 2?"取消发布 ":""}}</span>
                 <el-button class="btn" @click="reset()">取消</el-button>
                 <el-button class="btn" @click="getData(0)">保存</el-button>
-                <el-button class="btn" type="primary" @click="getData(1)">保存并发布</el-button>
+                <el-button class="btn" :disabled="dataForm.jpPublishState == 0" type="primary" @click="getData(1)">保存并发布</el-button>
             </div>
         </el-col>
     </div>
@@ -177,7 +183,7 @@
 
 <script>
     import Bread from "@/components/bread";
-    import {  getlookfolderdetail,saveFolderdetail } from '@/api/api'
+    import {  getlookfolderdetail,saveFolderdetail,getStyleName } from '@/api/api'
     export default {
         data () {
             return {
@@ -185,11 +191,15 @@
                 dataForm: {},
                 stylesName:"",
                 dataListLoading: false,
-                ac:[]
+                styleList:[],
+                options:""
             }
         },
         components: {
             Bread
+        },
+        created(){
+            this.getStyle();
         },
         methods: {
             init(row){
@@ -201,33 +211,35 @@
                         getlookfolderdetail(obj).then((res)=>{
                             if(res.code == 200){
                                 this.dataForm = res.data;
-                                if(this.dataForm.styles) this.ac = this.dataForm.styles;
-                                else this.ac = [];
+                                if(this.dataForm.styles) this.styleList = this.dataForm.styles;
+                                else this.styleList = [];
                             }
                         })
                     }
                 })
             },
-            addStyleName(){
-                if(!this.stylesName){
-                    this.$message({
-                        message: "标签名称不能为空!",
-                        type: 'error',
-                    });
-                }else{
-                    let obj = {id:"",name:this.stylesName};
-                    if(this.ac.length>10) {
+            saveList(val){
+                let is = true;
+                this.styleList.map((v)=>{
+                    if(v.id == this.options[val].id){
                         this.$message({
-                            message: "新建标签不能超过10个!",
+                            message: "风格标签不能重复选择",
                             type: 'error',
                         });
-                    }else{
-                        this.ac.unshift(obj)
+                        is = false
                     }
-                }
+                })
+                if(is) this.styleList.push(this.options[val])
+            },
+            getStyle(){
+                getStyleName({
+                    params:{styleName:this.styleName}
+                }).then((res)=>{
+                    this.options = res;
+                })
             },
             handleClose(index) {
-                this.ac.splice(index, 1);
+                this.styleList.splice(index, 1);
             },
             changePage(){
                 this.$emit("addoraditList");
@@ -245,7 +257,7 @@
             getData(saveType){
                 let that = this;
                 this.dataForm.saveFlag = saveType;
-                this.dataForm.styles = this.ac;
+                this.dataForm.styles = this.styleList;
                 saveFolderdetail(this.dataForm).then((res)=>{
                     if(res.code == 200){
                         this.$message({
