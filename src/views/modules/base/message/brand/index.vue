@@ -14,7 +14,8 @@
                 <el-button  class="btn" type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
-        <el-button  @click="uploadHandle()" class="btn" type="primary">导入信息</el-button>
+        <!-- <el-button  @click="uploadHandle()" class="btn" type="primary">导入信息</el-button> -->
+         <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm" @getDataList="getDataList"></importAndExport>
         <el-table
                 width="100%"
                 :data="dataList"
@@ -49,21 +50,29 @@
         <!-- 弹窗, 新建 -->
         <addEditData  v-if="addEditDataVisible" ref="addEditData" @searchDataList="getDataList"></addEditData>
         <!-- 弹窗, 上传文件 -->
-        <upload v-if="uploadVisible" ref="upload" @refreshDataList="getDataList"></upload>
+        <!-- <upload v-if="uploadVisible" ref="upload" @refreshDataList="getDataList"></upload> -->
     </div>
 </template>
 
 <script>
-    import Upload from './import_model'
+    // import Upload from './import_model'
+    import importAndExport from "@/components/import-and-export"
     import addEditData from './model-add-edit-data'
     //import importModal from './import_model'
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import { shopBrandUrl,deleteShopBrandUrl } from '@/api/url'
+    import { shopBrandImport} from '@/api/io'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
+                importAndExportOptions:{
+                    importUrl:shopBrandImport,//导入接口
+                    importWord:"导入信息",
+                    // exportUrl:exportRegisterUrl,//导出接口
+                    // exportWord:"导出数据",
+                },
                 mixinViewModuleOptions: {
                     getDataListURL: shopBrandUrl,
                     getDataListIsPage: true,
@@ -74,6 +83,9 @@
                     deleteIsBatchKey: 'id'
                 },
                 breaddata: [ "商品管理", "品牌"],
+                dataForm:{
+
+                },
                 dataFormShow: {
                     idJp: "",
                     brandName: "",
@@ -82,14 +94,15 @@
                 formLabelWidth: '120px',
                 addEditDataVisible:false,
                 dataListLoading: false,
-                uploadVisible: false,
+                // uploadVisible: false,
                 check: null,
             }
         },
         components: {
             Bread,
             addEditData,
-            Upload
+            // Upload,
+            importAndExport
         },
         // ID类搜索框仅可输入数字、英文，最多可输入30个字符
         watch:{
@@ -140,12 +153,12 @@
                 this.addEditDataVisible =  boolargu;
             },
             // 上传文件
-            uploadHandle () {
-                this.uploadVisible = true;
-                this.$nextTick(() => {
-                    this.$refs.upload.init()
-                })
-            }
+            // uploadHandle () {
+            //     this.uploadVisible = true;
+            //     this.$nextTick(() => {
+            //         this.$refs.upload.init()
+            //     })
+            // }
         }
     }
 </script>

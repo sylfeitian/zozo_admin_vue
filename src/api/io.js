@@ -22,3 +22,36 @@ export const importShopStore = `${allBase}/shopStore/import`;
 export const tudo = `${allBase}/shopStore/import`;
 // 导入分类条件信息
 export const importTag = `${allBase}/tag/import`;
+
+// 颜色组
+export const colorcategoryImportExcel = `${allBase}/color/colorcategory/importExcel`;
+// 颜色
+export const colorImportExcel = `${allBase}/color/importExcel`;
+
+
+// 日本分类
+export const categoryJpImport = `${allBase}/categoryJp/import`;
+// 品牌管理
+export const shopBrandImport = `${allBase}/shopBrand/import`;
+// 分类条件
+export const tagImport = `${allBase}/tag/import`;
+
+// 查看库存
+export const stockExport= `${allBase}/stock/export`;
+
+// 会员
+export const vipExport= `${allBase}/?????/会员导出不写`;
+
+
+// 日本尺码导入
+export const sizejpImportExcel= `${allBase}/sizejp/importExcel`;
+
+// 尺码项列表  尺码描述
+export const shoplabelImport = `${allBase}/shoplabel/import`;
+
+
+// 中日词库
+// 导出
+export const syslexiconExport = `${allBase}/syslexicon/export`;
+// 导入
+export const syslexiconImport = `${allBase}//?????/暂时没接口`;

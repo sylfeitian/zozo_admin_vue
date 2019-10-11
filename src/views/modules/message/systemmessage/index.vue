@@ -19,7 +19,7 @@
 			    <template slot-scope="scope">
 					<div style="position: relative;">
 						<el-switch
-						  v-model="scope.row.isSendInner"
+						  v-model="scope.row.isSendInner" active-text="开" inactive-text="关"
 						  @change="putState(scope.row.id,scope.row.isSendInner,1)"
 						  >
 						</el-switch>
@@ -35,7 +35,7 @@
 				<template slot-scope="scope">
 					<div style="position: relative;">
 						<el-switch
-								v-model="scope.row.isSendUmeng"
+								v-model="scope.row.isSendUmeng" active-text="开" inactive-text="关"
 								@change="putState(scope.row.id,scope.row.isSendUmeng,2)"
 								>
 						</el-switch>
@@ -50,8 +50,8 @@
 			    align="center">
 				<template slot-scope="scope">
 					<div style="position: relative;">
-						<el-switch v-model="scope.row.isSendSms"
-								@change="putState(scope.row.id,scope.row.isSendSms,3)"
+						<el-switch v-model="scope.row.isSendSms" active-text="开" inactive-text="关"
+								   @change="putState(scope.row.id,scope.row.isSendSms,3)"
 								>
 						</el-switch>
 						<span class="artblue" @click="show(2,scope.row.messageTypeId,scope.row.smsCanOpen)">模板设置</span>
@@ -99,7 +99,7 @@
 				  <span>{{ShopmessagetemplateList.messageTypeName}}</span>
 			  </el-form-item>
 			  <el-form-item label="模板编码：" style="height: 100%!important;">
-				  <el-input type="text" maxlength="30" v-model="ShopmessagetemplateList.messageCode" placeholder="请输入短信模板编码" show-word-limit></el-input>
+				  <el-input type="text" v-model="ShopmessagetemplateList.messageTitle" placeholder="请输入短信模板编码"></el-input>
 				  <p style="color: #bebebe;line-height: 14px;">请填写在阿里短信后台配置的短信模板编码</p>
 			  </el-form-item>
 		  </el-form>
@@ -204,7 +204,7 @@ export default {
                 }
 			}else{
                 var res =  /^[0-9A-Z_]+$/g
-                if(!res.test(this.ShopmessagetemplateList.messageCode)){
+                if(!res.test(this.ShopmessagetemplateList.messageTitle)){
                     this.$message({
                         message:"请输入正确格式的模板编码",
                         type: 'error',
@@ -215,7 +215,8 @@ export default {
                 obj = {
                     templateType:this.ShopmessagetemplateList.templateType,
                     messageId:this.ShopmessagetemplateList.messageId,
-                    messageCode:this.ShopmessagetemplateList.messageCode
+					messageCode:this.ShopmessagetemplateList.messageCode,
+					messageTitle:this.ShopmessagetemplateList.messageTitle,
                 }
 			}
 
@@ -254,7 +255,10 @@ export default {
             this.ShopmessagetemplateList.messageContent = this.ShopmessagetemplateList.messageContent+val;
 		},
   	    show(name,id,open){
-  	        if(open == 1){
+			this.ShopmessagetemplateList.messageTitle = ""
+			this.ShopmessagetemplateList.messageCode = ""
+  	        // if(open == 1){
+  	        	// 短信
                 if(name == 2) {
                     this.dialogTableVisibleOne = true;
                 } else{
@@ -273,11 +277,12 @@ export default {
                             this.ShopmessagetemplateList.messageTitle = res.data.messAgeTemplate.umengTitle;
                             this.ShopmessagetemplateList.messageContent = res.data.messAgeTemplate.tempUmentContent;
                         }else if(name == 2){
-                            this.ShopmessagetemplateList.messageCode = res.data.messAgeTemplate.tempSmsCode;
+							this.ShopmessagetemplateList.messageCode = res.data.messAgeTemplate.tempSmsCode;
+							this.ShopmessagetemplateList.messageTitle = res.data.messAgeTemplate.tempSmsCode;
                         }
                     }
                 })
-			}
+			// }
 		},
   	    putState(id,isCheck,type){
             let that = this;
@@ -352,6 +357,23 @@ export default {
 	 height: 100%;
 	 top: 0;
 	 left: 0;
+ }
+/*文字显示在开关内部*/
+/deep/ .el-switch__label--left{
+	 position: relative;
+	 left: 46px;
+	 color: #fff;
+	 z-index: -1111;
+ }
+ /deep/ .el-switch__label--right{
+	 position: relative;
+	 right: 46px;
+	 color: #fff;
+	 z-index: -1111;
+ }
+ /deep/ .el-switch__label.is-active {
+	 z-index: 1111;
+	 color: #fff;
  }
 </style>
 

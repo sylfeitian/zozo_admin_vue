@@ -124,10 +124,12 @@
         <div class="bottomFun">
             <div class="bottomFunLeft">
                 <el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                <el-select v-model="selectVal" @change="cotrolGoodsShow(selectVal)" placeholder="批量操作" style="margin-left: 10px;width: 140px;">
+                <!-- <el-select v-model="selectVal" @change="cotrolGoodsShow(selectVal)" placeholder="批量操作" style="margin-left: 10px;width: 140px;">
                     <el-option label="批量发布"  value="0"></el-option>
                     <el-option label="取消批量发布" value="1"></el-option>
-                </el-select>
+                </el-select> -->
+                <el-button @click="cotrolGoodsShow(0)" style="margin-left: 20px;"  type="primary" >批量发布</el-button>
+                <el-button @click="cotrolGoodsShow(1)"  type="primary" >取消批量发布</el-button>
             </div>
             <!-- 分页 -->
             <el-pagination
@@ -162,7 +164,11 @@
                 },
                 activeName: "",
                 breaddata: [ "内容管理", "店铺新闻管理"],
-                dataForm: {},
+                dataForm: {
+                    idJp:'',//编号
+                    title:'',//标题
+                    storeName:'',//店铺名称
+                },
                 selectVal:"",
                 multipleSelection:[],
                 dataList: [],
@@ -215,7 +221,7 @@
             reset() {
                 this.timeArr = [];
                 this.timeArr2 = [];
-                this.dataForm.id = "";
+                this.dataForm.idJp = "";
                 this.dataForm.title = "";
                 this.dataForm.storeName = "";
                 this.dataForm.showWeb = "";

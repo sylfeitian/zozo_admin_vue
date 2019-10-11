@@ -329,8 +329,8 @@ export const deleteShopsynonymUrl = `${base}/shopsynonym`;
 
 // 日志管理--------------------------------------------------------------------------------------------------------------------
 // 列表
-export const shophotkeywordrecordUrl = `${base}/shophotkeywordrecord/page`;
-// 删除
+export const shophotkeywordrecordUrl = `${base}/shophotkeyword/keywordRecordpage`;
+ // 删除
 export const deleteShophotkeywordrecordUrl = `${base}/shophotkeywordrecord`;
 
 

@@ -29,7 +29,7 @@
       </el-form-item>
     </el-form>
     <!-- <el-button @click class="btn" type="primary">导入店铺信息</el-button> -->
-     <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"></importAndExport>
+     <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
     <el-table
       width="100%"
       :data="dataList"
@@ -64,7 +64,13 @@
         </template>
       </el-table-column>
       <el-table-column prop="updateDate" label="更新时间" align="center"></el-table-column>
-      <el-table-column prop="mainTag" label="店铺主风格标签" align="center"></el-table-column>
+      <el-table-column prop="mainTag" label="店铺主风格标签" align="center">
+        <template slot-scope="scope">
+          <div :title="scope.row.mainTag">
+            {{scope.row.mainTag}}
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column prop="subTag" label="店铺副风格标签" align="center">
         <template slot-scope="scope">
           <div :title="scope.row.subTag">

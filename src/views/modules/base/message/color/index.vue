@@ -18,7 +18,8 @@
             </el-form-item>
         </el-form>
         <el-form>
-            <el-button @click="addOrEditHandle()"  class="btn" type="primary">导入信息</el-button>
+            <!-- <el-button @click="addOrEditHandle()"  class="btn" type="primary">导入信息</el-button> -->
+            <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
         </el-form>
         <el-table width="100%" :data="dataList" border v-loading="dataListLoading" style="width: 100%;margin-top: 10px;">
             <el-table-column prop="idJp" label="颜色ID" align="center"></el-table-column>
@@ -52,10 +53,18 @@
     import Bread from "@/components/bread";
     import addEditData from './model-add-edit-data'
     import { colorUrl } from '@/api/url'
+     import importAndExport from "@/components/import-and-export"
+     import { colorImportExcel} from '@/api/io'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
+                importAndExportOptions:{
+                    importUrl:colorImportExcel,//导入接口
+                    importWord:"导入信息",
+                    // exportUrl:exportRegisterUrl,//导出接口
+                    // exportWord:"导出数据",
+                },
                 mixinViewModuleOptions: {
                     getDataListURL: colorUrl,
                     getDataListIsPage: true,
@@ -66,6 +75,9 @@
                     deleteIsBatchKey: 'id'
                 },
                 breaddata: [ "商品管理", "颜色"],
+                dataForm:{
+
+                },
                 dataFormShow: {
                     idJp: "",//颜色ID
                     name: "",//颜色名称
@@ -80,7 +92,8 @@
         },
         components: {
             Bread,
-            addEditData
+            addEditData,
+            importAndExport
         },
         // ID类搜索框仅可输入数字、英文，最多可输入30个字符
         watch:{
@@ -93,7 +106,35 @@
                 if(newV.length>30){
                     this.dataFormShow.idJp = newV.substr(0,30)
                 }
-            }
+            },
+            'dataFormShow.name':function(newV,oldV) {
+                var chineseCount = 0,characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 300) { //输入字符大于300的时候过滤
+                        this.dataFormShow.name = newV.substr(0,(chineseCount/2+characterCount)-1)
+                    }
+                }
+            },
+            'dataFormShow.colorCategoryName':function(newV,oldV) {
+                var chineseCount = 0,characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 300) { //输入字符大于300的时候过滤
+                        this.dataFormShow.colorCategoryName = newV.substr(0,(chineseCount/2+characterCount)-1)
+                    }
+                }
+            },
         },
         created () {
             this.getDataList();

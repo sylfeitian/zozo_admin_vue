@@ -9,11 +9,12 @@
                 </el-form-item>
                 <el-form-item label="操作模块：">
                     <el-select v-model="dataForm.module" placeholder="请选择操作模块" clearable>
+                        <el-option label="全部" value=""> </el-option>
                         <el-option
-                                v-for="item in moduleOption"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.id">
+                                v-for="(item,index) in moduleOption"
+                                :key="index"
+                                :label="item.module"
+                                :value="item.module">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -93,17 +94,31 @@
                     this.dataForm.createDateEnd = '';
                 }
             },
+            'dataForm.creator':function(newV,oldV) {
+                var chineseCount = 0,characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 300) { //输入字符大于300的时候过滤
+                        this.dataForm.creator = newV.substr(0,(chineseCount/2+characterCount)-1)
+                    }
+                }
+            },
+        },
+         created() {
+            // this.getDataList();
+            this.listModule()
         },
         methods: {
             listModule(){
-                var obj  = {
-                    id:this.row.id,
-                    module:this.row.module
-                }
-                errorListModule(obj).then((res)=>{
+                errorListModule().then((res)=>{
                     if(res.code == 200 && res.data){
                         // Object.assign(this.dataForm,res.data);
-                        this.moduleOption = [{id:"",name:"全部"}].concat(res.data)
+                        this.moduleOption =  [].concat(res.data)
 
                     }else{
                         // this.$message.error(res.msg)

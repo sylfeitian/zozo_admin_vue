@@ -16,7 +16,7 @@
 </template>
 <script>
 	
-	import { orderRedeclare} from '@/api/api'
+	import { orderRedeclareJd,orderRedeclareLakala} from '@/api/api'
 
 	export default{
 		name: "model-add-edit-data",
@@ -38,7 +38,8 @@
 				},
 				orderBase:'',
 				title:'',
-                row:'',
+				row:'',
+				type:'',//jd 申报失败重新申报；lakala 申报失败重新申报
 			}
 		},
 		components:{
@@ -46,9 +47,10 @@
 		computed:{},
 		mounted(){},
 		methods:{
-			init (row) {
+			init (row,type) {
 				this.visible = true;
 				this.row = row;
+				this.type= type;
 			},
 			// 提交
 			dataFormSubmit(formName){
@@ -57,8 +59,10 @@
 								this.loading = true;
 								var obj=  {
 									id:this.row.id,//物流单号
+									orderId:this.row.id,//物流单号
 								}
-								orderRedeclare(obj).then((res) => {
+								var fn = this.type=="jd"?orderRedeclareJd:orderRedeclareLakala
+								fn(obj).then((res) => {
 									this.loading = false;
 									// alert(JSON.stringify(res));
 									let status = null;

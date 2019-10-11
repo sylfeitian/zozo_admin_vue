@@ -1,8 +1,8 @@
 <template>
     <div>
         <Bread  :breaddata="breaddata"></Bread>
-        <el-button @click="addOrEditHandle()"  class="btn" type="primary">导入信息</el-button>
-
+        <!-- <el-button @click="addOrEditHandle()"  class="btn" type="primary">导入信息</el-button> -->
+        <importAndExport :importAndExportOptions="importAndExportOptions" class="btn" :dataForm="dataForm"  @getDataList="getTree"></importAndExport>
         <MyTableTree
                 v-loading="dataListLoading"
                 :children="'list'"
@@ -39,10 +39,18 @@
     import addEditData from './model-add-edit-data'
     import { categoryJpPageTier } from '@/api/api'
     // import { categoryJpUrl } from '@/api/url'
+     import importAndExport from "@/components/import-and-export"
+      import { categoryJpImport} from '@/api/io'
     export default {
         // mixins: [mixinViewModule],
         data () {
             return {
+                importAndExportOptions:{
+                    importUrl:categoryJpImport,//导入接口
+                    importWord:"导入信息",
+                    // exportUrl:exportRegisterUrl,//导出接口
+                    // exportWord:"导出数据",
+                },
                 dataListLoading:false,
                 // mixinViewModuleOptions: {
                 //     getDataListURL: categoryJpUrl,
@@ -54,9 +62,9 @@
                 //     deleteIsBatchKey: 'id'
                 // },
                 breaddata: [ "商品管理", "日本分类"],
-                // dataForm: {
-                //     selectName: "",//分类名称
-                // },
+                dataForm: {
+                    selectName: "",//分类名称
+                },
                 formData:{  
                     page:1,   
                     limit: 10,
@@ -105,7 +113,8 @@
             Bread,
             addEditData,
             TableTreeColumn,
-            MyTableTree
+            MyTableTree,
+            importAndExport
         },
         created() {
             this.getTree();

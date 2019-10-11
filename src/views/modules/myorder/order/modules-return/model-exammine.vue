@@ -72,7 +72,7 @@
 									if(res.code == "200"){
 										status = "success";
 										this.visible = false;
-										// this.$emit('searchDataList');
+										this.$emit('searchDataList');
 					         			 this.closeDialog();
 									}else{
 										status = "error";
@@ -93,7 +93,8 @@
 					this.closeDialog();
 			},
 			closeDialog() {
-                this.visible = false;
+				this.visible = false;
+				this.$emit('searchDataList');
 				this.$parent.exammineVisible = false;
 			},
 		},

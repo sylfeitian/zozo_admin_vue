@@ -21,7 +21,7 @@
             </el-form-item>
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
-                <el-button  class="btn"type="primary" plain @click="reset()" >搜索</el-button>
+                <el-button  class="btn"type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
         <el-button @click="add()" type="primary" style="float: left;margin-bottom: 10px;">推送消息</el-button>

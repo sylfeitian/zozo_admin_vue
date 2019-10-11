@@ -1,8 +1,7 @@
 <template>
   <div>
     <Bread :breaddata="breaddata"></Bread>
-		    	<el-button type="text" size="small" @click="editConfig()">编辑</el-button>
-
+		<!-- <el-button type="text" size="small" @click="editConfig()">编辑</el-button> -->
     <el-table
         :data="dataList"
         v-loading="dataListLoading"
@@ -28,7 +27,7 @@
             align="center"
             width="320">
             <template slot-scope="scope">
-		    	<img style="width:200px;height:100px;object-fit: contain" :src="scope.row.selectedIcon" alt="">
+		    	<img style="width:200px;height:100px;object-fit: contain" :src="scope.row.selectedIcon | filterImgUrl " alt="">
 		    </template>
 		</el-table-column>
 		<el-table-column
@@ -37,7 +36,7 @@
 		    label="未选中图标"
 		    width="320">
             <template slot-scope="scope">
-                <img style="width:200px;height:100px;object-fit: contain" :src="scope.row.unselectedIcon" alt="">
+                <img style="width:200px;height:100px;object-fit: contain" :src="scope.row.unselectedIcon | filterImgUrl" alt="">
 		    </template>
 		</el-table-column>		
 	    <el-table-column
@@ -68,7 +67,7 @@
         :close-on-click-modal = "false"
         class="activiDialog"
         width="40%">
-        <el-form :model="editDataForm" :rules="dataRule" ref="editDataForm" @keyup.enter.native="subActivity()" label-width="120px">
+        <el-form :model="editDataForm" :rules="dataRule" ref="editDataForm"  label-width="120px">
             <el-form-item label="名称：" prop="menuName">
                 <el-input v-model="editDataForm.menuName" placeholder="请输入5字以内的名称"></el-input>
             </el-form-item>
@@ -199,9 +198,9 @@
                         console.log(res)
                         if(res.code == 200){
                             if(who == '1'){
-                                that.editDataForm.selectedIcon = that.$imgDomain + res.data.url;
+                                that.editDataForm.selectedIcon = res.data.url;
                             }else{
-                                that.editDataForm.unselectedIcon = that.$imgDomain + res.data.url;
+                                that.editDataForm.unselectedIcon = res.data.url;
                             }
                         }else{
                             that.$message.error('上传失败');

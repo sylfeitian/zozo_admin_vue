@@ -3,10 +3,10 @@
         <Bread :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
             <el-form-item label="ID：">
-                <el-input v-model="dataForm.idJp" maxlength="30" ></el-input>
+                <el-input v-model="dataForm.idJp" maxlength="30" placeholder="请输入编号"></el-input>
             </el-form-item>
             <el-form-item label="用户：">
-                <el-input v-model="dataForm.nickName" ></el-input>
+                <el-input v-model="dataForm.nickName" placeholder="请输入用户昵称"></el-input>
             </el-form-item>
             <el-form-item label="日本发布时间：">
                 <el-date-picker
@@ -91,10 +91,12 @@
         <div class="bottomFun">
             <div class="bottomFunLeft">
                 <el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                <el-select v-model="selectVal" placeholder="批量操作" @change="cotrolGoodsShow(selectVal)" style="margin-left: 10px;width: 140px;">
+                <!-- <el-select v-model="selectVal" placeholder="批量操作" @change="cotrolGoodsShow(selectVal)" style="margin-left: 10px;width: 140px;">
                     <el-option label="批量发布"  value="0"></el-option>
                     <el-option label="取消批量发布"  value="1"></el-option>
-                </el-select>
+                </el-select> -->
+                <el-button @click="cotrolGoodsShow(0)" style="margin-left: 20px;"  type="primary" >批量发布</el-button>
+                <el-button @click="cotrolGoodsShow(1)"  type="primary" >取消批量发布</el-button>
             </div>
             <!-- 分页 -->
             <el-pagination
@@ -131,9 +133,9 @@
                 activeName: "",
                 breaddata: [ "内容管理", "搭配管理"],
                 dataForm: {
-                	id:null,  //编号
+                	idJp:null,  //编号
                 	state:null,    //发布状态
-                	nickname: null,  //用户昵称
+                	nickName: null,  //用户昵称
                 	publishStartTime: null,  //发布开始时间
                 	publishEndTime: null,  //发布结束时间
                 	publishStartTimeJp: null,  //日本发布开始时间
@@ -218,7 +220,7 @@
                 this.valuetime2 = [];
                 this.dataForm.idJp = null;
                 this.dataForm.state = null;
-                this.dataForm.nickname = null;
+                this.dataForm.nickName = null;
                 this.dataForm.publishStartTime = null;
                 this.dataForm.publishEndTime = null;
                 this.dataForm.publishStartTimeJp = null;

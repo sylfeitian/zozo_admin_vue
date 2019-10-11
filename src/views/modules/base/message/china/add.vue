@@ -30,7 +30,7 @@
 			<el-form-item label="评价类型：" prop="appraisal" v-if="erjishow">
 				<el-input v-model="dataForm.appraisal" type="text" placeholder="请输入6字以内的内容" style="width:400px;"></el-input>
 			</el-form-item>
-			<el-form-item v-show="yijishow" prop="categoryJpId" v-for="(item, index) in dataForm.categoryJpId" :key="index" :label="index == 0 ? '关联日本分类：' : '' ">
+			<el-form-item v-if="yijishow" prop="categoryJpId" v-for="(item, index) in dataForm.categoryJpId" :key="index" :label="index == 0 ? '关联日本分类：' : '' ">
 				<el-select
 				v-model="dataForm.categoryJpId[index]"
 				placeholder="请选择"
@@ -50,7 +50,7 @@
 				<div class="pcCoverUrl imgUrl" v-for="(item,index) in dataForm.methodUrlshow" @click="imgtype = 'rule'">
 					<img-cropper
 						ref="cropperImg1"
-						:index="'1'"
+						:index="index"
 						:imgWidth='"100px"'
 						:imgHeight='"100px"'
 						:cropImg = "item"
@@ -121,7 +121,7 @@
 
 		<span slot="footer" class="dialog-footer">
             <el-button @click="closeadd">取消</el-button>
-            <el-button type="primary" @click="actuploaddata('addForm')">确 定</el-button>
+            <el-button type="primary" @click="actuploaddata('addForm')">{{saveLoading?'提交中...':'确 定'}}</el-button>
         </span>
 	</el-dialog>
 	</div>
@@ -181,6 +181,7 @@
 			}
 		};
 	    return {
+			saveLoading:false,
             fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'},
                 {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
             // loading:false,
@@ -273,7 +274,8 @@
 	  },
 	  methods: {
 	  	init(row){
-	  		this.showListVisible = true;
+			this.showListVisible = true;
+			this.saveLoading = false;
 	  		this.$nextTick(()=>{
 				if(row){
 					this.dataForm.parentId = row.id;
@@ -335,7 +337,10 @@
 			// this.dataForm.methodUrlshow= [""];
 		  },
 		//   提交
-		actuploaddata(formName){  //确定提交  
+		actuploaddata(formName){  //确定提交 
+			if(this.saveLoading){
+				return;
+			} 
 		  	// if(this.yijishow && this.dataForm.methodUrlshow.length==0){
 			// 	this.$message("测量方法至少上传一张图片");
 			// 	return
@@ -382,10 +387,15 @@
 			console.log(this.dataForm);
 			this.$refs[formName].validate((valid) => {
 				if (valid) {
-
-					updataCategoryCn(this.dataForm).then((res)=>{
+					this.saveLoading = true;
+					var obj = {};
+					Object.assign(obj,this.dataForm);
+					if(obj.parentId=="0") obj.categoryJpId = [];
+					updataCategoryCn(obj).then((res)=>{
+						this.saveLoading = false;
 						if(res.code == 200){
 							console.log(res.data);
+							this.$message.success(res.msg);
 							this.closeadd();
 						}else{
 							this.$message(res.msg);
@@ -399,16 +409,16 @@
 				}
 			})
 	  	},
-	  	GiftUrlHandle(val){
+	  	GiftUrlHandle(val,index){
 			console.log("base64上传图片接口");
 			console.log(val);
-			this.uploadPic(val);
+			this.uploadPic(val,index);
 			// if(this.imgtype == 'rule'){
 			// 	this.dataForm.methodUrlshow.push('');
 			// }
 		},
 		//上传图片
-		uploadPic(base64){
+		uploadPic(base64,_index){
 			const params = { "imgStr": base64 };
 			const that = this;
 			this.uploading = true;
@@ -422,17 +432,30 @@
 								this.$message("最多可上传10张图片");
 								return;
 							}
+							let isAddImg = true;
 							//过滤空的
-							that.dataForm.methodUrlshow = that.dataForm.methodUrlshow.filter((item,index)=>{
-								if(item){
-									return item;
-								}
+							var methodUrlshow = []
+							console.log(_index);
+							console.log("_index")
+							that.dataForm.methodUrlshow.forEach((item,index)=>{
+									console.log([index==_index,that.dataForm.methodUrlshow.length-1!=_index]);
+									if(index==_index && that.dataForm.methodUrlshow.length-1!=_index){
+										isAddImg = false;
+										item = url
+									}
+									if(item){
+										methodUrlshow.push(item);
+									}
 							})
 							// 追加新的
 							console.log("新的");
-							that.dataForm.methodUrlshow.push(url);
+							if(isAddImg){
+								methodUrlshow.push(url);
+							}
 							// 追加最后一个展位
-							that.dataForm.methodUrlshow.push('');
+							methodUrlshow.push('');
+							console.log(methodUrlshow);
+							that.dataForm.methodUrlshow = [].concat(methodUrlshow)
 						}else if(that.imgtype == 'all'){
 							that.dataForm.genderMain = url;
 						}else if(that.imgtype == 'm'){
@@ -445,6 +468,7 @@
 						// that.currentIndex = -1;//不能这样写，防止网络延迟
 						resolve("true")
 					}else {
+						this.$message.error(res.msg)
 						// that.currentIndex = -1;//不能这样写，防止网络延迟
 						resolve("false")
 					}

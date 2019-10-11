@@ -390,8 +390,10 @@ export const auditOperating  = params => { return http.post(`${base}/order/audit
 export const managerRemark  = params => { return http.get(`${base}/order/${params.id}/manager/remark?remark=${params.remarks}`, params).then(res => res.data); }
 // 取消订单
 export const orderCancel = params => { return http.post(`${base}/order/cancel/${params.id}`, params).then(res => res.data); }
-// 订单申报
-export const orderRedeclare = params => { return http.post(`${base}/order/redeclare/${params.id}`, params).then(res => res.data); }
+// jd订单申报
+export const orderRedeclareJd = params => { return http.post(`${base}/order/redeclare/${params.id}`, params).then(res => res.data); }
+// lakala订单申报
+export const orderRedeclareLakala = params => { return http.post(`${base}/order/lakala/redeclare`, params).then(res => res.data); }
 // 清关失败
 export const clearCustomFail = params => { return http.post(`${base}/order/${params.id}/clear/custom/fail`, params).then(res => res.data); }
 // 填写物流信息
@@ -972,8 +974,10 @@ export const addPresellActivity = params => { return http.post(`${base}/presell/
 export const editPresellActivity = params => { return http.put(`${base}/presell/activity`, params).then(res => res.data); };
 // 编辑回显预售活动
 export const backScanPresellActivityDetail = params => { return http.get(`${base}/presell/activity/detail/${params.id}`, params).then(res => res.data); };
-// 增加(编辑)限量活动商品
-export const editPresellActivityGoods = params => { return http.post(`${base}/presell/activity/goods`, params).then(res => res.data); };
+// 增加预售活动商品
+export const savePresellActivityGoods = params => { return http.post(`${base}/presell/activity/goods`, params).then(res => res.data); };
+// 编辑限量活动商品
+export const editPresellActivityGoods = params => { return http.put(`${base}/presell/activity/goods`, params).then(res => res.data); };
 // 删除限量活动商品
 export const deletePresellActivityGoods = params => { return http.delete(`${base}/presell/activity/goods`, params).then(res => res.data); };
 
@@ -1024,11 +1028,40 @@ export const getQuestionanswer = params => { return http.get(`${base}/questionan
 
 //秒杀活动
 //秒杀关联商品
-export const seckillProPage = params => { return http.get(`${base}/seckill/goods/choiced/page/${params.activityId}`, params).then(res => res.data); };
+export const seckillProPage = params => { return http.get(`${base}/seckill/goods/choiced/page?activityId=${params.activityId}&page=${params.page}&limit=${params.limit}`, params).then(res => res.data); };
 //关联商品详情
 export const seckillProDet = params => { return http.get(`${base}/seckill/goods/sku/choice?goodsId=${params.goodsId}&activityId=${params.activityId}`, params).then(res => res.data); };
 //秒杀场次审核
 export const seckillActAudit = params => { return http.get(`${base}/seckill/activity/audit?id=${params.id}&auditState=${params.auditState}`, params).then(res => res.data); };
 //秒杀添加商品列表
 export const addSckillPro = params => { return http.get(`${base}/seckill/goods/page/${params.activityId}?page=${params.page}&limit=${params.limit}&brandName=${params.brandName}&name=${params.name}&categoryId=${params.categoryId}&id=${params.id}&storeName=${params.storeName}`, params).then(res => res.data); };;
+//编辑添加列表
+export const seckillProUpdate = params => { return http.put(`${base}/seckill/goods/activity`, params).then(res => res.data); };
+//保存添加商品规格
+export const seckillProSave = params => { return http.post(`${base}/seckill/goods/activity`, params).then(res => res.data); };
+//修改选中商品规格
+export const seckillProEdit = params => { return http.put(`${base}/seckill/goods/activity`, params).then(res => res.data); };
+
+//删除已选中秒杀商品
+export const seckillProRemove = params => { return http.delete(`${base}/seckill/goods/activity`, params).then(res => res.data); };
+//秒杀时间段列表
+export const periodPage = params => { return http.get(`${base}/seckill/period/list/all`, params).then(res => res.data); };
+//新建秒杀时间段
+export const newSeckillTime = params => { return http.post(`${base}/seckill/period`, params).then(res => res.data); };
+//修改秒杀时间段状态
+export const seckillState = params => { return http.put(`${base}/seckill/period/stop?id=${params.id}&stopFlag=${params.stopFlag}`, params).then(res => res.data); };
+//删除秒杀时间
+export const seckillTimeDel = params => { return http.delete(`${base}/seckill/period/${params.id}`, params).then(res => res.data); };
+//时间段详情
+export const periodDetail = params => { return http.get(`${base}/seckill/period/${params.id}`, params).then(res => res.data); };
+//编辑秒杀详情
+export const periodEdit= params => { return http.put(`${base}/seckill/period`, params).then(res => res.data); };
+//保存秒杀商品排序
+export const seckillSortSave = params => { return http.put(`${base}/seckill/goods/sort`, params).then(res => res.data); };
+
+
+
+
+
+
 

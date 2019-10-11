@@ -14,10 +14,10 @@
             @keyup.enter.native="dataFormSubmit('addForm')"
             label-width="120px"
         >
-            <el-form-item label="尺码ID：">
+            <el-form-item label="尺码ID：" prop="idJp">
                 <span>{{dataForm.idJp}}</span>
             </el-form-item>
-            <el-form-item label="尺码名称：">
+            <el-form-item label="尺码名称：" prop="name">
                 <span>{{dataForm.name}}</span>
             </el-form-item>
             <el-form-item label="关联尺码：" prop="cnSizeId">
@@ -65,9 +65,15 @@
                 },
                 goodKindList1:[],
                 dataRule : {
-                    cnSizeName : [
+                    idJp : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
-                    ]
+                    ],
+                    name : [
+                        { required: true, message: '必填项不能为空', trigger: 'blur' },
+                    ],
+                    cnSizeId : [
+                        { required: true, message: '必填项不能为空', trigger: 'blur' },
+                    ],
                 },
                 optionsApplication: [],
                 optionsRight: [],
