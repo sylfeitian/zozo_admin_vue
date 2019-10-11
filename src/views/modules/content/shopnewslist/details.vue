@@ -19,7 +19,7 @@
                     <span>{{dataForm.shopName}}</span>
                 </el-form-item>
                 <el-form-item label="发布状态：">
-                    <span>{{dataForm.showWeb == 1?"已发布":dataForm.showWeb == 0?"待发布":"取消发布"}}</span>
+                    <span>{{dataForm.showWebJp == 1?"已发布":dataForm.showWebJp == 0?"待发布":""}}</span>
                 </el-form-item>
                 <el-form-item label="背景图：">
                     <template slot-scope="scope">

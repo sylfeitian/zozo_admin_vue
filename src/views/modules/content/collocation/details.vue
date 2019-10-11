@@ -28,7 +28,7 @@
                     <span>{{dataForm.totalFavNum}}</span>
                 </el-form-item>
                 <el-form-item label="发布状态：">
-                    <span>{{dataForm.state == 2?"取消发布":dataForm.state == 1?"已发布":""}}</span>
+                    <span>{{dataForm.jpPublishState == 0?"待发布":dataForm.jpPublishState == 1?"已发布":""}}</span>
                 </el-form-item>
                 <el-form-item label="主图：" style="height: 100%!important;">
                     <template slot-scope="scope">
