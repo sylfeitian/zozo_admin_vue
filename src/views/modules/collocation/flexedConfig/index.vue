@@ -287,9 +287,9 @@
                 })
             },
             addActivity4() {
-                if (!this.dataForm4.all && !this.dataForm4.child && !this.dataForm4.man && !this.dataForm4.woman) {
-                    this.$message.warning('配置不能为空！');
-                } else {
+                // if (!this.dataForm4.all && !this.dataForm4.child && !this.dataForm4.man && !this.dataForm4.woman) {
+                //     this.$message.warning('配置不能为空！');
+                // } else {
                     settingSearch(this.dataForm4).then((res) => {
                         console.log('默认搜索词配置', res)
                         if (res.code == 200) {
@@ -299,7 +299,7 @@
                             this.$message.success(res.msg);
                         }
                     })
-                }
+                // }
 
 
             }

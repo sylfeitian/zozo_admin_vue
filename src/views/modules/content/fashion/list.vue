@@ -14,7 +14,7 @@
             <el-form-item label="日本发布时间：">
                 <el-date-picker
                         v-model="timeArr"
-                        type="datetimerange"
+                        type="daterange"
                         value-format="yyyy-MM-dd"
                         align="left"
                         start-placeholder="开始日期"
@@ -24,7 +24,7 @@
             <el-form-item label="发布时间：">
                 <el-date-picker
                         v-model="timeArr2"
-                        type="datetimerange"
+                        type="daterange"
                         value-format="yyyy-MM-dd"
                         align="left"
                         start-placeholder="开始日期"
@@ -196,10 +196,23 @@
                 this.$emit("add",id);
             },
             getData() {
+                console.log("timeArr::::");
+                console.log(this.timeArr);
+              if(this.timeArr && this.timeArr.length!=0){
                 this.dataForm.publishJpStartTime =  this.timeArr[0];
                 this.dataForm.publishJpEndTime = this.timeArr[1];
-                this.dataForm.publishStartTime = this.timeArr2[0];
+             }else{
+                this.dataForm.publishJpStartTime = ""
+                this.dataForm.publishJpEndTime = ""
+              }
+
+              if(this.timeArr2 && this.timeArr2.length!=0){
+               this.dataForm.publishStartTime = this.timeArr2[0];
                 this.dataForm.publishEndTime = this.timeArr2[1];
+              }else{
+                this.dataForm.publishStartTime = ""
+                this.dataForm.publishEndTime = ""
+              }
                 this.page = 1;
                 this.getDataList();
             },

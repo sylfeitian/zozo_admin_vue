@@ -319,6 +319,7 @@
                         console.log('添加结果',res)
                         if(res.code == 200){
                             this.$message.success('添加成功');
+                            this.getDataList();
                             done();
                         }else{
                             this.$message.error(res.msg)

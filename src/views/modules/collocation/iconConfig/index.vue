@@ -103,7 +103,7 @@
                     
                 </el-form-item>
             </div>
-            <div style="margin-left:120px;width:280px;color:#999;">只能上传jpg/png格式文件，文件不能超过5M,建议尺寸：100*100px；建议大小：100kb</div>
+            <div style="margin-left:120px;width:280px;color:#999;">只能上传jpg/png格式文件，文件不能超过200kb,建议尺寸：100*100px；建议大小：200kb</div>
             
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -217,13 +217,13 @@
                 if(file.type == 'image/jpeg'||file.type=='image/png'){
                     isJPG = true;
                 }
-                let isLt2M = file.size / 1024 / 1024 < 5;
+                let isLt2M = file.size / 1024  < 200;
                 console.log(file.type,isJPG)
                 if (!isJPG) {
                     this.$message.error('上传头像图片只能是jpg/png格式!');
                 }
                 if (!isLt2M) {
-                    this.$message.error('上传头像图片大小不能超过 5MB!');
+                    this.$message.error('上传头像图片大小不能超过 200k!');
                 }
                 return isJPG && isLt2M;
             },
@@ -236,13 +236,13 @@
                 if(file.type == 'image/jpeg'||file.type=='image/png'){
                     isJPG = true;
                 }
-                let isLt2M = file.size / 1024 / 1024 < 5;
+                let isLt2M = file.size / 1024  < 200;
                 console.log(file.type,isJPG)
                 if (!isJPG) {
                     this.$message.error('上传头像图片只能是jpg/png格式!');
                 }
                 if (!isLt2M) {
-                    this.$message.error('上传头像图片大小不能超过 5MB!');
+                    this.$message.error('上传头像图片大小不能超过 200k!');
                 }
                 return isJPG && isLt2M;
             },

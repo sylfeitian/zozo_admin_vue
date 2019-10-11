@@ -16,7 +16,7 @@
                     <span>{{dataForm.userNickname}}</span>
                 </el-form-item>
                 <el-form-item label="用户身高：">
-                    <span>{{dataForm.heightCm}}</span>
+                    <span>{{dataForm.heightCm}}</span><span v-if="dataForm.heightCm">cm</span>
                 </el-form-item>
                 <el-form-item label="用户地区：">
                     <span>日本</span>
@@ -88,7 +88,7 @@
                     <span>{{dataForm.userNickname}}</span>
                 </el-form-item>
                 <el-form-item label="用户身高：">
-                    <span>{{dataForm.heightCm}}</span>
+                    <span>{{dataForm.heightCm}}</span><span v-if="dataForm.heightCm">cm</span>
                 </el-form-item>
                 <el-form-item label="用户地区：">
                     <span>日本</span>

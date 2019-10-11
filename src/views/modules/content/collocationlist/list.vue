@@ -14,7 +14,7 @@
             <el-form-item label="日本发布时间：">
                 <el-date-picker
                         v-model="timeArr"
-                        type="datetimerange"
+                        type="daterange"
                         value-format="yyyy-MM-dd"
                         align="left"
                         start-placeholder="开始日期"
@@ -24,7 +24,7 @@
             <el-form-item label="发布时间：">
                 <el-date-picker
                         v-model="timeArr2"
-                        type="datetimerange"
+                        type="daterange"
                         value-format="yyyy-MM-dd"
                         align="left"
                         start-placeholder="开始日期"
@@ -203,8 +203,8 @@
                 forbitLoading:false,
                 multipleSelection:[],
                 selectVal:"",
-                timeArr: "", //日本发布时间数据
-                timeArr2: "", //发布时间数据
+                timeArr: [], //日本发布时间数据
+                timeArr2: [], //发布时间数据
                 startCreateDate: "",
                 endCreateDate: "",
                 endPaymentTime: "",
@@ -307,10 +307,23 @@
                 this.$emit("addOrAdit",id);
             },
             getData() {
+                 console.log("timeArr::::");
+                console.log(this.timeArr);
+              if(this.timeArr && this.timeArr.length!=0){
                 this.dataForm.publishStartTimeJp =  this.timeArr[0];
                 this.dataForm.publishEndTimeJp = this.timeArr[1];
+             }else{
+                this.dataForm.publishStartTimeJp = ""
+                this.dataForm.publishEndTimeJp = ""
+              }
+
+              if(this.timeArr2 && this.timeArr2.length!=0){
                 this.dataForm.publishStartTime = this.timeArr2[0];
                 this.dataForm.publishEndTime = this.timeArr2[1];
+              }else{
+                this.dataForm.publishStartTime = ""
+                this.dataForm.publishEndTime = ""
+              }
                 this.page =1;
                 this.getDataList();
             },

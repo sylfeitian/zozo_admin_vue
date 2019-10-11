@@ -207,13 +207,24 @@
             },
             //发布开始结束时间
 		    acttime2(){
-		    	this.dataForm.publishStartTime = this.valuetime2[0];
-		    	this.dataForm.publishEndTime = this.valuetime2[1];
+                if(this.valuetime2.length!=0){
+                    this.dataForm.publishStartTime = this.valuetime2[0];
+                    this.dataForm.publishEndTime = this.valuetime2[1];
+                }else{
+                    this.dataForm.publishStartTime = "";
+                    this.dataForm.publishEndTime = "";
+                }
 		    },
 		    //日本发布开始结束时间
 		    acttime1(){
-		    	this.dataForm.publishStartTimeJp = this.valuetime1[0];
-		    	this.dataForm.publishEndTimeJp = this.valuetime1[1];
+                if(this.valuetime1.length!=0){
+                    this.dataForm.publishStartTimeJp = this.valuetime1[0];
+                    this.dataForm.publishEndTimeJp = this.valuetime1[1];
+                }else{
+                    this.dataForm.publishStartTimeJp = "";
+                    this.dataForm.publishEndTimeJp = "";
+                }
+		    	
 		    },
             reset() {
                 this.valuetime1 = [];
