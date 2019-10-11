@@ -81,11 +81,12 @@
             	<div class="artaddrate" v-for="(item,index) in rate" :key="index">
             		<el-input type="number"  v-model="rate[index-1] && rate[index-1].end || item.start"  :disabled="datadisabled" auto-complete="off" placeholder="0" style="width: 150px;"></el-input>
 	                <span> —— </span>
-	                <el-input v-if="rate.length==1 || index!=rate.length-1" type="number"  @blur="actendnum(item.end,item.start)" v-model="item.end"  placeholder="请输入" style="width: 150px;"></el-input>
+	                <el-input v-if="rate.length==1 || index!=rate.length-1" type="number"  @blur="actendnum(item,index)" v-model="item.end"  placeholder="请输入" style="width: 150px;"></el-input>
                     <el-input v-else :disabled="true"   placeholder="..." style="width: 150px;"></el-input>
 	                <span> 元（日元） </span>
 	                <el-input type="number"  @blur="actratenum(item.rate)" v-model="item.rate" placeholder="请输入加价率" style="width: 100px;"></el-input>
 	                <span> % </span>  
+
 	                <span v-if="rate.length-1 == index" > 
 	                	&nbsp; &nbsp;
 	                	<i @click="artaddclick" class="el-icon-circle-plus"></i>
@@ -473,11 +474,17 @@
                     }
                 })
             },
-        	actendnum(val,start){
+        	actendnum(item,index){
+                if(index==0){
+                    return;
+                }
+                var start = this.rate[index-1].end;
+                var val = item.end;
+                console.log([val,start]);
         		this.actendnumflag = true;
         		if(val > 100000000){
         			this.$message("最大值为100000000");
-        		}else if(val.indexOf('.') != -1 && val.substr(val.indexOf('.') + 1).length > 2){
+        		}else if(val.toString().indexOf('.') != -1 && val.toString().substr(val.toString().indexOf('.') + 1).length > 2){
 			    	this.$message('小数点后只能有两位');
 			    }else if(val*1 <= start*1){
 			    	this.$message('最大值应该大于最小值');
@@ -489,7 +496,7 @@
         		this.actratenumflag = true;
         		if(val > 100 || val < 0){
         			this.$message("加价率应为0-100之间");
-        		}else if(val.toString().indexOf('.') != -1 && val.substr(val.toString().indexOf('.') + 1).length > 4){
+        		}else if(val.toString().indexOf('.') != -1 && val.toString().substr(val.toString().indexOf('.') + 1).length > 4){
 			    	this.$message('小数点后只能有四位');
 			    }else{
 			    	this.actratenumflag = false;
@@ -552,6 +559,7 @@
                 this.$emit("addList");
             },
             dataFormSubmit(formName){
+                console.log([this.actendnumflag,this.actratenumflag]);
             	if( this.actendnumflag || this.actratenumflag){
 	        		this.$message("加价率填写有误");
 	        		return;

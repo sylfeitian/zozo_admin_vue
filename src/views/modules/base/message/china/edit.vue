@@ -21,7 +21,7 @@
 	        </el-select>
 		    </el-form-item>
         <el-form-item label="分类名称：" prop="name">
-            <el-input v-model="dataForm.name " type="text" placeholder="请输入4个汉字/8个字符以内的内容" style="width:400px;"></el-input>
+            <el-input v-model="dataForm.name " type="text" placeholder="请输入10个汉字/20个字符以内的内容" style="width:400px;"></el-input>
         </el-form-item>
         <el-form-item label="排序：" prop="sort">
             <el-input v-model="dataForm.sort" type="text" placeholder="0-255(数字越大越靠前)" show-word-limit style="width:200px;"></el-input>
@@ -244,7 +244,7 @@
 						characterCount = characterCount + 1;
 					}
 					var count = chineseCount + characterCount;
-					if (count > 8) { //输入字符大于8的时候过滤
+					if (count > 20) { //输入字符大于20的时候过滤
 						this.dataForm.name = newV.substr(0,(chineseCount/2+characterCount)-1)
 					}
 				}
