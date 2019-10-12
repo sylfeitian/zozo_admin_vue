@@ -4,7 +4,7 @@
         <div class="mod-sys__user">
             <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getData()">
                 <el-form-item label="账号：">
-                    <el-input v-model="dataForm.username" placeholder="请输入账号" clearable></el-input>
+                    <el-input v-model="dataForm.username" placeholder="请输入账号" clearable maxlength="30"></el-input>
                 </el-form-item>
                 <el-form-item label="角色：">
                     <el-select v-model="dataForm.roleId" placeholder="请选择">
@@ -165,6 +165,19 @@
                     newPassword: [
                         { required: false, validator: validateComfirmPassword, trigger: 'blur' }
                     ]
+                }
+            }
+        },
+        // ID类搜索框仅可输入数字、英文，最多可输入30个字符
+        watch:{
+            'dataForm.username':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    if(!/[a-zA-Z0-9]/.test(newV[i])){
+                        this.dataForm.username = newV.replace(newV[i],"")
+                    }
+                }
+                if(newV.length>30){
+                    this.dataForm.username = newV.substr(0,30)
                 }
             }
         },

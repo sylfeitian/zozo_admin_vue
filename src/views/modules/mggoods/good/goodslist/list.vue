@@ -9,7 +9,7 @@
     >
       <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
       <el-form-item label="商品名称：">
-        <el-input v-model="dataFormShow.goodsName" placeholder="请输入商品名称" maxlength="300"></el-input>
+        <el-input v-model="dataFormShow.goodsName" placeholder="请输入商品名称"></el-input>
       </el-form-item>
       <el-form-item label="商品ID：">
         <el-input v-model="dataFormShow.idJp" placeholder="请输入spuID" maxlength="30"></el-input>
@@ -356,7 +356,7 @@ export default {
       if(newV.length>30){
         this.dataFormShow.idJp = newV.substr(0,30)
       }
-    }
+    },
   },
   created() {
     // 第一次请求数据

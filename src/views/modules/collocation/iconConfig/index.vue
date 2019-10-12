@@ -82,7 +82,7 @@
                             :show-file-list="false"
                             :on-success="handleAvatarSuccess1"
                             :before-upload="beforeAvatarUpload1">
-                            <img v-if="editDataForm.selectedIcon" :src="editDataForm.selectedIcon" class="avatar">
+                            <img v-if="editDataForm.selectedIcon" :src="editDataForm.selectedIcon | filterImgUrl" class="avatar">
                             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
                         <span style="width:100px;text-align:center;">选中状态</span>
@@ -95,7 +95,7 @@
                             :http-request="upLoad2"
                             :show-file-list="false"
                             :before-upload="beforeAvatarUpload2">
-                            <img v-if="editDataForm.unselectedIcon" :src="editDataForm.unselectedIcon" class="avatar">
+                            <img v-if="editDataForm.unselectedIcon" :src="editDataForm.unselectedIcon | filterImgUrl" class="avatar">
                             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
                         <span style="width:100px;text-align:center;">未选中状态</span>
@@ -185,6 +185,7 @@
             },
             upLoad2(file) {
                 const that = this;
+                console.log('上传')
                 that.getBease64(URL.createObjectURL(file.file),file.file.type,'2')
             },
             editConfig(item){
@@ -200,6 +201,7 @@
                             if(who == '1'){
                                 that.editDataForm.selectedIcon = res.data.url;
                             }else{
+                                console.log('type==2')
                                 that.editDataForm.unselectedIcon = res.data.url;
                             }
                         }else{
@@ -220,10 +222,10 @@
                 let isLt2M = file.size / 1024  < 200;
                 console.log(file.type,isJPG)
                 if (!isJPG) {
-                    this.$message.error('上传头像图片只能是jpg/png格式!');
+                    this.$message.error('上传图标只能是jpg/png格式!');
                 }
                 if (!isLt2M) {
-                    this.$message.error('上传头像图片大小不能超过 200k!');
+                    this.$message.error('上传图标大小不能超过 200k!');
                 }
                 return isJPG && isLt2M;
             },
