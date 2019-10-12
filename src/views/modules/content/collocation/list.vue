@@ -3,10 +3,10 @@
         <Bread :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
             <el-form-item label="ID：">
-                <el-input v-model="dataForm.idJp" maxlength="30" ></el-input>
+                <el-input v-model="dataForm.idJp" maxlength="30" placeholder="请输入编号"></el-input>
             </el-form-item>
             <el-form-item label="用户：">
-                <el-input v-model="dataForm.nickName" ></el-input>
+                <el-input v-model="dataForm.nickName" placeholder="请输入用户昵称"></el-input>
             </el-form-item>
             <el-form-item label="日本发布时间：">
                 <el-date-picker
@@ -79,11 +79,11 @@
             <el-table-column prop="totalFavNum" label="收藏量" width="80" align="center"></el-table-column>
             <el-table-column label="操作" align="center" width="240">
                 <template slot-scope="scope">
-                    <el-button @click.native.prevent="showDetail(scope.row)"type="text"size="mini">查看</el-button>
-                    <el-button @click.native.prevent="addOrAdit(scope.row)"type="text"size="mini">编辑</el-button>
-                    <el-button v-if="scope.row.jpPublishState == 1" @click.native.prevent="forbitHandle(scope.$index,scope.row)"type="text"size="mini">
-                        <span v-if="scope.row.state==1" class="artdisable">{{scope.$index==currentIndex&&forbitLoading?"取消发布中..":"取消发布"}}</span>
-                        <span v-else class="artstart">{{scope.$index==currentIndex && forbitLoading?"发布中..":"发布"}}</span>
+                    <el-button @click.native.prevent="showDetail(scope.row)" type="text" size="mini">查看</el-button>
+                    <el-button @click.native.prevent="addOrAdit(scope.row)" type="text" size="mini">编辑</el-button>
+                    <el-button :disabled="scope.row.jpPublishState == 0" @click.native.prevent="forbitHandle(scope.$index,scope.row)" type="text" size="mini">
+                        <span v-if="scope.row.state==1" class="artdisable" :class="{'artclose':scope.row.jpPublishState == 0}">{{scope.$index==currentIndex&&forbitLoading?"取消发布中..":"取消发布"}}</span>
+                        <span v-else class="artstart" :class="{'artclose':scope.row.jpPublishState == 0}">{{scope.$index==currentIndex && forbitLoading?"发布中..":"发布"}}</span>
                     </el-button>
                 </template>
             </el-table-column>
@@ -91,10 +91,12 @@
         <div class="bottomFun">
             <div class="bottomFunLeft">
                 <el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                <el-select v-model="selectVal" placeholder="批量操作" @change="cotrolGoodsShow(selectVal)" style="margin-left: 10px;width: 140px;">
+                <!-- <el-select v-model="selectVal" placeholder="批量操作" @change="cotrolGoodsShow(selectVal)" style="margin-left: 10px;width: 140px;">
                     <el-option label="批量发布"  value="0"></el-option>
                     <el-option label="取消批量发布"  value="1"></el-option>
-                </el-select>
+                </el-select> -->
+                <el-button @click="cotrolGoodsShow(0)" style="margin-left: 20px;"  type="primary" >批量发布</el-button>
+                <el-button @click="cotrolGoodsShow(1)"  type="primary" >取消批量发布</el-button>
             </div>
             <!-- 分页 -->
             <el-pagination
@@ -205,13 +207,24 @@
             },
             //发布开始结束时间
 		    acttime2(){
-		    	this.dataForm.publishStartTime = this.valuetime2[0];
-		    	this.dataForm.publishEndTime = this.valuetime2[1];
+                if(this.valuetime2.length!=0){
+                    this.dataForm.publishStartTime = this.valuetime2[0];
+                    this.dataForm.publishEndTime = this.valuetime2[1];
+                }else{
+                    this.dataForm.publishStartTime = "";
+                    this.dataForm.publishEndTime = "";
+                }
 		    },
 		    //日本发布开始结束时间
 		    acttime1(){
-		    	this.dataForm.publishStartTimeJp = this.valuetime1[0];
-		    	this.dataForm.publishEndTimeJp = this.valuetime1[1];
+                if(this.valuetime1.length!=0){
+                    this.dataForm.publishStartTimeJp = this.valuetime1[0];
+                    this.dataForm.publishEndTimeJp = this.valuetime1[1];
+                }else{
+                    this.dataForm.publishStartTimeJp = "";
+                    this.dataForm.publishEndTimeJp = "";
+                }
+		    	
 		    },
             reset() {
                 this.valuetime1 = [];
@@ -255,13 +268,13 @@
                         if(res.code==200){
                             this.getDataList();
                             this.$message({
-                                message:res.msg,
+                                message:res.data,
                                 type: 'success',
                                 duration: 1500,
                             })
                         }else{
                             this.$message({
-                                message:res.msg,
+                                message:res.data,
                                 type: 'error',
                                 duration: 1500,
                             })
@@ -271,7 +284,7 @@
                 }).catch(() => {});
             },
             cotrolGoodsShow(type){
-                var ids = this.getIds();
+                var ids = this.getIds(type);
                 var obj = {
                     ids:ids,
                     operating:type==1?0:1,
@@ -287,13 +300,13 @@
                         if(res.code==200){
                             this.getDataList();
                             this.$message({
-                                message:res.msg,
+                                message:res.data,
                                 type: 'success',
                                 duration: 1500,
                             })
                         }else{
                             this.$message({
-                                message:res.msg,
+                                message:res.data,
                                 type: 'error',
                                 duration: 1500,
                             })
@@ -302,14 +315,13 @@
 
                 }).catch(() => {});
             },
-            getIds(){
+            getIds(type){
                 var ids= [];
                 console.log(this.multipleSelection);
                 this.multipleSelection.forEach((item,index)=>{
-                    if("object" == typeof(item)){
-                        ids.push(item.id);
-                    }else{
-                        ids.push(id);
+                    if("object" == typeof(item)&&item.jpPublishState == 1){
+                        if(type == 0 && item.state != 1) ids.push(item.id);
+                        else if(type == 1&&item.state == 1) ids.push(item.id);
                     }
                 })
                 return ids;

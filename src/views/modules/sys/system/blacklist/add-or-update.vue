@@ -236,7 +236,7 @@
             //取消
             cancel() {
                 this.outerVisible = false;
-                this.$emit("changeWindow");
+                // this.$emit("refreshDataList");
                 //回传主页面。false
             },
             //重置密码
@@ -276,7 +276,7 @@
                                         type: "success",
                                         duration: 1000
                                     });
-                                    this.$emit("changeWindow");
+                                    this.$emit("refreshDataList");
                                     this.cancel();
                                     this.$parent.addOrUpdateVisible = false;
                                 } else {

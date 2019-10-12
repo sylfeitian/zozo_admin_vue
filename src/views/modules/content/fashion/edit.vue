@@ -22,7 +22,7 @@
                     <span>{{dataForm.viewsNum}}</span>
                 </el-form-item>
                 <el-form-item label="发布状态：">
-                    <span>{{dataForm.isOpen == 0?"发布":dataForm.isOpen == 1?"未发布":""}}</span>
+                    <span>{{dataForm.isOpen == 1?"发布":dataForm.isOpen == 2?"未发布":""}}</span>
                 </el-form-item>
                 <el-form-item label="背景图：" style="height: 100%!important;">
                     <template slot-scope="scope">
@@ -117,7 +117,7 @@
                 <span style="font-size: 20px;margin-right: 20px;">状态：{{dataForm.state == 0?"未发布":dataForm.state == 1?"已发布":dataForm.state == 2?"取消发布 ":""}}</span>
                 <el-button class="btn" @click="reset()">取消</el-button>
                 <el-button class="btn" @click="getData(0)">保存</el-button>
-                <el-button class="btn" type="primary" @click="getData(1)">保存并发布</el-button>
+                <el-button class="btn" :disabled="dataForm.isOpen == 2" type="primary" @click="getData(1)">保存并发布</el-button>
             </div>
         </el-col>
     </div>

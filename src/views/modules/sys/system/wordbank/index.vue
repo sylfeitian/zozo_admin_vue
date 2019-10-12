@@ -16,9 +16,10 @@
                 <el-radio-button label="two">材质</el-radio-button>
             </el-radio-group>
             <el-form style="float: right;">
-                <el-button @click="addOrEditHandle()" type="primary">添加对照词</el-button>
-                <el-button @click="" type="primary">导入</el-button>
-                <el-button @click="">下载模板</el-button>
+                <el-button @click="addOrEditHandle()" type="primary" style="margin-right:20px;">添加对照词</el-button>
+                <!-- <el-button @click="" type="primary">导入</el-button> -->
+                <!-- <el-button @click="">下载模板</el-button> -->
+                 <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
             </el-form>
             <el-table
                     v-loading="dataListLoading"
@@ -67,11 +68,19 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import { syslexiconUrl,deleteSyslexicon,exportSyslexicon } from '@/api/url'
+    import importAndExport from "@/components/import-and-export"	
+    import { syslexiconImport,syslexiconExport} from '@/api/io'
 
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
+                importAndExportOptions:{
+                    importUrl:syslexiconImport,//导入接口
+                    importWord:"导入",
+                    exportUrl:syslexiconExport,//导出接口
+                    exportWord:"下载模板",
+                },
                 mixinViewModuleOptions: {
                     getDataListURL: syslexiconUrl,
                     getDataListIsPage: true,
@@ -93,7 +102,24 @@
         },
         components: {
             addEditData,
-            Bread
+            Bread,
+            importAndExport
+        },
+        watch:{
+            'dataForm.chineseVocabulary':function(newV,oldV) {
+                var chineseCount = 0,characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 300) { //输入字符大于300的时候过滤
+                        this.dataForm.chineseVocabulary = newV.substr(0,(chineseCount/2+characterCount)-1)
+                    }
+                }
+            },
         },
         created() {
             this.handleClick();

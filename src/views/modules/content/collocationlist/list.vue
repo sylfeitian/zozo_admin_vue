@@ -14,7 +14,7 @@
             <el-form-item label="日本发布时间：">
                 <el-date-picker
                         v-model="timeArr"
-                        type="datetimerange"
+                        type="daterange"
                         value-format="yyyy-MM-dd"
                         align="left"
                         start-placeholder="开始日期"
@@ -24,7 +24,7 @@
             <el-form-item label="发布时间：">
                 <el-date-picker
                         v-model="timeArr2"
-                        type="datetimerange"
+                        type="daterange"
                         value-format="yyyy-MM-dd"
                         align="left"
                         start-placeholder="开始日期"
@@ -77,8 +77,8 @@
             <el-table-column prop="sate" width="120" label="发布状态" align="center">
                 <template slot-scope="scope">
                     <el-tag v-if="scope.row.sate == 1" type="success">已发布</el-tag>
-                    <el-tag v-if="scope.row.sate == 2" type="success">取消发布</el-tag>
-                    <el-tag v-if="scope.row.sate == 0" type="info">未发布</el-tag>
+                    <el-tag v-if="scope.row.sate == 2" type="info">取消发布</el-tag>
+                    <el-tag v-if="scope.row.sate == 0" type="info">待发布</el-tag>
                 </template>
             </el-table-column>
             <el-table-column width="120" prop="jpPublishState"  label="日本发布状态" align="center">
@@ -99,9 +99,9 @@
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="showDetail(scope.row)" type="text" size="mini">查看</el-button>
                     <el-button @click.native.prevent="addOrAdit(scope.row)" type="text" size="mini">编辑</el-button>
-                    <el-button @click.native.prevent="forbitHandle(scope.$index,scope.row)"type="text"size="mini">
-                        <span v-if="scope.row.sate==1" class="artdisable">{{scope.$index==currentIndex&&forbitLoading?"取消发布中..":"取消发布"}}</span>
-                        <span v-else class="artstart">{{scope.$index==currentIndex && forbitLoading?"发布中..":"发布"}}</span>
+                    <el-button :disabled="scope.row.jpPublishState == 0" @click.native.prevent="forbitHandle(scope.$index,scope.row)"type="text"size="mini">
+                        <span v-if="scope.row.sate==1" class="artdisable" :class="{'artclose':scope.row.jpPublishState == 0}">{{scope.$index==currentIndex&&forbitLoading?"取消发布中..":"取消发布"}}</span>
+                        <span v-else class="artstart" :class="{'artclose':scope.row.jpPublishState == 0}">{{scope.$index==currentIndex && forbitLoading?"发布中..":"发布"}}</span>
                     </el-button>
                     <el-button @click.native.prevent="openStyle(scope.row.id)" type="text" size="mini">管理风格标签</el-button>
                     <el-dialog title="管理风格标签" :visible.sync="dialogTableVisible">
@@ -141,10 +141,12 @@
         <div class="bottomFun">
             <div class="bottomFunLeft">
                 <el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                <el-select v-model="selectVal" @change="cotrolGoodsShow(selectVal)" placeholder="批量操作" style="margin-left: 10px;width: 140px;">
+                <!-- <el-select v-model="selectVal" @change="cotrolGoodsShow(selectVal)" placeholder="批量操作" style="margin-left: 10px;width: 140px;">
                     <el-option label="批量发布"  value="0"></el-option>
                     <el-option label="取消批量发布"  value="1"></el-option>
-                </el-select>
+                </el-select> -->
+               <el-button @click="cotrolGoodsShow(0)" style="margin-left: 20px;"  type="primary" >批量发布</el-button>
+                <el-button @click="cotrolGoodsShow(1)"  type="primary" >取消批量发布</el-button>
             </div>
             <!-- 分页 -->
             <el-pagination
@@ -201,8 +203,8 @@
                 forbitLoading:false,
                 multipleSelection:[],
                 selectVal:"",
-                timeArr: "", //日本发布时间数据
-                timeArr2: "", //发布时间数据
+                timeArr: [], //日本发布时间数据
+                timeArr2: [], //发布时间数据
                 startCreateDate: "",
                 endCreateDate: "",
                 endPaymentTime: "",
@@ -251,7 +253,8 @@
             },
             openStyle(id){
                 this.dialogTableVisible = true;
-                this.id = id
+                this.id = id;
+                this.getStyle();
             },
             getStyle(){
                 getStyleName({
@@ -305,10 +308,23 @@
                 this.$emit("addOrAdit",id);
             },
             getData() {
+                 console.log("timeArr::::");
+                console.log(this.timeArr);
+              if(this.timeArr && this.timeArr.length!=0){
                 this.dataForm.publishStartTimeJp =  this.timeArr[0];
                 this.dataForm.publishEndTimeJp = this.timeArr[1];
+             }else{
+                this.dataForm.publishStartTimeJp = ""
+                this.dataForm.publishEndTimeJp = ""
+              }
+
+              if(this.timeArr2 && this.timeArr2.length!=0){
                 this.dataForm.publishStartTime = this.timeArr2[0];
                 this.dataForm.publishEndTime = this.timeArr2[1];
+              }else{
+                this.dataForm.publishStartTime = ""
+                this.dataForm.publishEndTime = ""
+              }
                 this.page =1;
                 this.getDataList();
             },
@@ -360,13 +376,13 @@
                         if(res.code==200){
                             this.getDataList();
                             this.$message({
-                                message:res.msg,
+                                message:res.data,
                                 type: 'success',
                                 duration: 1500,
                             })
                         }else{
                             this.$message({
-                                message:res.msg,
+                                message:res.data,
                                 type: 'error',
                                 duration: 1500,
                             })
@@ -376,7 +392,7 @@
                 }).catch(() => {});
             },
             cotrolGoodsShow(type){
-                var ids = this.getIds();
+                var ids = this.getIds(type);
                 var obj = {
                     ids:ids,
                     operating:type==1?0:1,
@@ -392,13 +408,13 @@
                         if(res.code==200){
                             this.getDataList();
                             this.$message({
-                                message:res.msg,
+                                message:res.data,
                                 type: 'success',
                                 duration: 1500,
                             })
                         }else{
                             this.$message({
-                                message:res.msg,
+                                message:res.data,
                                 type: 'error',
                                 duration: 1500,
                             })
@@ -407,14 +423,13 @@
 
                 }).catch(() => {});
             },
-            getIds(){
+            getIds(type){
                 var ids= [];
                 console.log(this.multipleSelection);
                 this.multipleSelection.forEach((item,index)=>{
-                    if("object" == typeof(item)){
-                        ids.push(item.id);
-                    }else{
-                        ids.push(id);
+                    if("object" == typeof(item)&&item.jpPublishState == 1){
+                        if(type == 0 && item.sate != 1) ids.push(item.id);
+                        else if(type == 1&&item.sate == 1) ids.push(item.id);
                     }
                 })
                 return ids;

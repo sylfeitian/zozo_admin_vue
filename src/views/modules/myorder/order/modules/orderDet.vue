@@ -11,11 +11,11 @@
             <el-form-item style="width: 100%;text-align: right;padding-right: 6%;">
                 <el-button class="btn" type="primary" @click="clearancFailureFn()"  v-if="orderBase.orderStatus==80">清关失败</el-button>
                 <el-button class="btn" type="primary" @click="writeLogisticsInfo()" v-if="orderBase.orderStatus==80">填写物流信息</el-button>
-                <el-button class="btn" type="primary" @click="lookLogistics()">查看物流</el-button>
-                <el-button class="btn" type="primary" @click="modifyReciverInfo()" >修改收货人信息</el-button>
+                <el-button class="btn" type="primary" @click="lookLogistics()" v-if="orderBase.orderStatus==110 || orderBase.orderStatus==120 || orderBase.orderStatus==140">查看物流</el-button>
+                <el-button class="btn" type="primary" @click="modifyReciverInfo()" v-if="orderBase.orderStatus==50 || orderBase.orderStatus==90 || orderBase.orderStatus==100">修改收货人信息</el-button>
                 <el-button class="btn" type="primary" @click="exammineFn()" v-if="orderBase.orderStatus==30">审核</el-button>
                 <el-button class="btn" type="primary" @click="remarkInfoFn()" >备注信息</el-button>
-                <el-button class="btn" type="primary" @click="cancleOrderFn()"  v-if="orderBase.orderStatus==10 || orderBase.orderStatus==50 || orderBase.orderStatus==70">取消订单</el-button>
+                <el-button class="btn" type="primary" @click="cancleOrderFn()"  v-if="orderBase.orderStatus==50 || orderBase.orderStatus==90 || orderBase.orderStatus==100">取消订单</el-button>
             </el-form-item>
             <!-- step步骤 -->
             <el-steps align-center :active="active" style="margin-top: 20px;">
@@ -25,7 +25,7 @@
                 <el-step title="待收货" icon="el-icon-time" description=""></el-step>
                 <el-step :title="orderBase.orderStatus==0?'订单取消':'交易完成'" icon="el-icon-circle-check-outline" description=""></el-step>
                 <el-step title="完成评价" icon="el-icon-star-on" description=""></el-step> -->
-                <el-step :title="item.name" :description="item.time" v-for="(item,index) in scheduleList" :key="index"></el-step>
+                <el-step :title="item.name" :description="item.time?item.time:item.childName" v-for="(item,index) in scheduleList" :key="index"></el-step>
             </el-steps>
 
              <!-- 订单信息 -->
@@ -38,7 +38,7 @@
                 <el-col :span="5"><div class="grid-content bg-purple-light">会员账号</div></el-col>
             </el-row>
             <el-row>
-                <el-col :span="5"><div class="grid-content">{{orderBase.orderId}}</div></el-col>
+                <el-col :span="5"><div class="grid-content">{{orderBase.orderSn}}</div></el-col>
                 <el-col :span="5"><div class="grid-content">{{orderBase.paymentName}}</div></el-col>
                 <el-col :span="4">
                     <div class="grid-content">
@@ -107,7 +107,7 @@
             <!-- 收货人信息 -->
             <p>
                 <span class="title">收货人信息</span>
-                <span style="margin-left: 20px;color: #2260D2;">查看详情</span>
+                <span style="margin-left: 20px;color: #2260D2;cursor: pointer;" @click="showUserDetail">查看详情</span>
             </p>
             <el-row>
                 <el-col :span="8"><div class="grid-content bg-purple-light">收货人</div></el-col>
@@ -116,9 +116,11 @@
             </el-row>
             <el-row>
                 <el-col :span="8"><div class="grid-content" v-if="receiverInfo">{{receiverInfo.memberRealName}}</div></el-col>
-                <el-col :span="8"><div class="grid-content" v-if="receiverInfo">{{receiverInfo.mobPhone}}</div></el-col>
-                <el-col :span="8"><div class="grid-content" v-if="receiverInfo">{{receiverInfo.province}}{{receiverInfo.city}}{{receiverInfo.area}}{{receiverInfo.townArea}}{{receiverInfo.address}}</div></el-col>
+                <el-col :span="8"><div class="grid-content" v-if="receiverInfo && receiverInfo.mobPhone">{{receiverInfo.mobPhone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')}}</div></el-col>
+                <el-col :span="8"><div class="grid-content" v-if="receiverInfo">{{receiverInfo.province}}{{receiverInfo.city}}{{receiverInfo.area}}{{receiverInfo.townArea}}<!-- {{receiverInfo.address}} --></div></el-col>
             </el-row>
+
+            <modelUserInforDetail v-if="modelUserInforDetailVisible" ref="modelUserInforDetailCompon"></modelUserInforDetail>
 
               <!-- 订单信息 -->
             <p class="title">商品信息</p>
@@ -256,6 +258,7 @@
                          <!-- 待发货 -->
                         <span v-else-if="scope.row.orderStatus==20">付款中</span>
                         <span v-else-if="scope.row.orderStatus==30">待审核</span>
+                         <span v-else-if="scope.row.orderStatus==35">审核未通过</span>
                         <span v-else-if="scope.row.orderStatus==40">lakala申报中</span>
                         <span v-else-if="scope.row.orderStatus==50">lakala申报失败</span>
                         <span v-else-if="scope.row.orderStatus==60">待日方发货</span>
@@ -297,6 +300,7 @@
 <script>
     // import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
+    import modelUserInforDetail from "./model-userInfor-detail"
     import Clipboard from "clipboard";
     // import orderData from './model-order-data'
     
@@ -313,6 +317,7 @@
         // mixins: [mixinViewModule],
         data() {
             return {
+                modelUserInforDetailVisible:false,
                 dialogVisible:false,
                 active:0,
                 textarea: "",
@@ -339,6 +344,7 @@
         },
         components: {
             Bread,
+            modelUserInforDetail,
             // orderData,
             clearancFailure,
             writeLogisticsInfo,
@@ -356,6 +362,12 @@
                 this.row = row;
                 this.getOrderDetail();    
             },
+            showUserDetail(){
+                this.modelUserInforDetailVisible = true;
+                this.$nextTick(()=>{
+                    this.$refs.modelUserInforDetailCompon.init(this.receiverInfo);
+                })
+            },
             getOrderDetail(){
                 var obj = {
                     id:this.row.id,
@@ -372,7 +384,7 @@
                         this.preferInfo = res.data.preferInfo;
                         this.receiverInfo = res.data.receiverInfo;
                         if(res.data.scheduleList.length){
-                            this.active = res.data.scheduleList.length-1;
+                            this.active = res.data.scheduleList.length;
                         }else{
                             this.active = 0;
                         }
@@ -380,28 +392,28 @@
                         for(var i= res.data.scheduleList.length;i<6;i++){
                              this.scheduleList.push({})
                         }
-                        switch(this.orderBase.orderStatus){
-                            case 10:
-                                // 待支付
-                                this.active = 0
-                                break;
-                            case 20:
-                                // 待发货
-                                this.active = 2
-                                break;
-                            case 30:
-                                // 待收货
-                                 this.active = 3
-                                break;
-                            case 40:
-                                // 交易成功
-                                 this.active = 4
-                                break;
-                            case 0:
-                                // 订单取消
-                                 this.active = 4
-                                break;
-                        }
+                        // switch(this.orderBase.orderStatus){
+                        //     case 10:
+                        //         // 待支付
+                        //         this.active = 0
+                        //         break;
+                        //     case 20:
+                        //         // 待发货
+                        //         this.active = 2
+                        //         break;
+                        //     case 30:
+                        //         // 待收货
+                        //          this.active = 3
+                        //         break;
+                        //     case 40:
+                        //         // 交易成功
+                        //          this.active = 4
+                        //         break;
+                        //     case 0:
+                        //         // 订单取消
+                        //          this.active = 4
+                        //         break;
+                        // }
                     }else{
                         this.$message({
                             message:res.msg,

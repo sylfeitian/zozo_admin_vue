@@ -34,12 +34,12 @@
             </el-form-item>
             <el-form-item label="主品牌：" class="item">
                 <template>
-                    <span v-if="dataForm.brands && dataForm.brands.length!=0 && dataForm.brands[0].isMainBrand==1">{{dataForm.brands[0].brandName}}</span>
+                    <span v-if="dataForm.brands && dataForm.brands.length!=0 && dataForm.brands[0].isMainBrand==0">{{dataForm.brands[0].brandName}}</span>
                 </template>
             </el-form-item>
             <el-form-item label="副品牌：" class="item">
                 <template>
-                    <span v-if="dataForm.brands && dataForm.brands.length!=0 &&dataForm.brands[0].isMainBrand==0">{{dataForm.brands[0].brandName}}</span>
+                    <span v-if="dataForm.brands && dataForm.brands.length!=0 &&dataForm.brands[0].isMainBrand==1">{{dataForm.brands[0].brandName}}</span>
                 </template>
             </el-form-item>
             <el-form-item label="主性别：" class="item">

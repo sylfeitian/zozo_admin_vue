@@ -14,7 +14,7 @@
             </el-form-item>
             <el-form-item style="float:right">
                 <el-button type="primary" @click="deleteRow()">批量删除</el-button>
-                <el-button type="primary" @click="saveSort">保存排序</el-button>
+                <!-- <el-button type="primary" @click="saveSort">保存排序</el-button> -->
                 <el-button type="primary" @click="addGoods()">添加商品</el-button>
             </el-form-item>
         </el-form>
@@ -47,7 +47,7 @@
                 align="center"
                 width="180">
             </el-table-column>
-             <el-table-column
+             <!-- <el-table-column
                 prop="sort"
                 label="排序"
                 align="center"
@@ -55,7 +55,7 @@
                 <template slot-scope="scope">
                     <el-input-number v-model="scope.row.sort" :step="1" :min="0" :max="999999" ></el-input-number>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
                 prop="goodsName"
                 label="商品名称"
