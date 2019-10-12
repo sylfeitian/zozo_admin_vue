@@ -4,7 +4,7 @@
         <div class="mod-sys__user">
             <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getData()">
                 <el-form-item label="账号：">
-                    <el-input v-model="dataForm.member_name" placeholder="请输入账号" clearable></el-input>
+                    <el-input v-model="dataForm.member_name" placeholder="请输入账号" clearable maxlength="30"></el-input>
                 </el-form-item>
                 <el-form-item label="黑名单类型：">
                     <el-select v-model="dataForm.type" placeholder="请选择">
@@ -130,6 +130,19 @@
         components: {
             AddOrUpdate,
             Bread
+        },
+        // ID类搜索框仅可输入数字、英文，最多可输入30个字符
+        watch:{
+            'dataForm.member_name':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    if(!/[a-zA-Z0-9\s]/.test(newV[i])){
+                        this.dataForm.member_name = newV.replace(newV[i],"")
+                    }
+                }
+                if(newV.length>30){
+                    this.dataForm.member_name = newV.substr(0,30)
+                }
+            }
         },
         created(){
         	this.dataForm.type = this.options[0].value;

@@ -181,7 +181,17 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="链接：" v-if="activiDataForm.linkType == '3'" prop="linkUrl">
-                <el-input v-model="activiDataForm.linkUrl"></el-input>
+                <!-- <el-input v-model="activiDataForm.linkUrl"></el-input> -->
+                <el-input
+                    type="textarea"
+                    placeholder="请输入链接"
+                    v-model="activiDataForm.linkUrl"
+                    maxlength="500"
+                    clearable
+                    
+                    show-word-limit
+                    >
+                    </el-input>
             </el-form-item>
             <el-form-item label="链接：" v-if="activiDataForm.linkType == '2'" prop="linkValue">
                 <div @click="toOpen()">{{checkItem}}</div>
@@ -430,7 +440,21 @@
                         this.activiDataForm.linkUrl = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
                     }
                 }
-            }
+            },
+            'dataForm.name':function(newV,oldV) {
+                var chineseCount = 0,characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 300) { //输入字符大于300的时候过滤
+                        this.dataForm.name = newV.substr(0,(chineseCount/2+characterCount)-1)
+                    }
+                }
+            },
             },
             created(){
             this.getClassList();

@@ -21,7 +21,7 @@
             <div class="modleItem">
                 <el-form :model="dataForm2" label-width="70px">
                     <el-form-item label="文案：">
-                        <el-input type="textarea" :rows="10" placeholder="请输入内容"
+                        <el-input type="textarea" :rows="10" :maxlength="1000"  show-word-limit placeholder="请输入内容"
                                   v-model="dataForm2.copywriting"></el-input>
                     </el-form-item>
                     <el-form-item label="是否显示：">

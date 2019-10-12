@@ -4,7 +4,7 @@
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" @keyup.enter.native="getDataList()" style="margin-top: 20px;">
             <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
             <el-form-item label="商品名称：">
-                <el-input v-model="dataFormShow.goodsName" placeholder="商品名称"  maxlength="300"></el-input>
+                <el-input v-model="dataFormShow.goodsName" placeholder="商品名称"></el-input>
             </el-form-item>
             <el-form-item label="商品sku ID：">
                 <el-input v-model="dataFormShow.skuIdJp" placeholder="商品skuid" maxlength="30"></el-input>
@@ -254,14 +254,56 @@
         watch:{
             'dataFormShow.skuIdJp':function(newV,oldV) {
                 for(let i=0;i<newV.length;i++){
-                    if(!/[a-zA-Z0-9]/.test(newV[i])){
+                    if(!/[a-zA-Z0-9\s]/.test(newV[i])){
                         this.dataFormShow.skuIdJp = newV.replace(newV[i],"")
                     }
                 }
                 if(newV.length>30){
                     this.dataFormShow.skuIdJp = newV.substr(0,30)
                 }
-            }
+            },
+                'dataFormShow.storeName':function(newV,oldV) {
+                    var chineseCount = 0,characterCount = 0;
+                    for (let i = 0; i < newV.length; i++) {
+                        if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                            chineseCount = chineseCount + 2;
+                        } else { //字符
+                            characterCount = characterCount + 1;
+                        }
+                        var count = chineseCount + characterCount;
+                        if (count > 300) { //输入字符大于300的时候过滤
+                            this.dataFormShow.storeName = newV.substr(0,(chineseCount/2+characterCount)-1)
+                        }
+                    }
+                },
+            'dataFormShow.brandName':function(newV,oldV) {
+                    var chineseCount = 0,characterCount = 0;
+                    for (let i = 0; i < newV.length; i++) {
+                        if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                            chineseCount = chineseCount + 2;
+                        } else { //字符
+                            characterCount = characterCount + 1;
+                        }
+                        var count = chineseCount + characterCount;
+                        if (count > 300) { //输入字符大于300的时候过滤
+                            this.dataFormShow.brandName = newV.substr(0,(chineseCount/2+characterCount)-1)
+                        }
+                    }
+                },
+            'dataFormShow.goodsName':function(newV,oldV) {
+                    var chineseCount = 0,characterCount = 0;
+                    for (let i = 0; i < newV.length; i++) {
+                        if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                            chineseCount = chineseCount + 2;
+                        } else { //字符
+                            characterCount = characterCount + 1;
+                        }
+                        var count = chineseCount + characterCount;
+                        if (count > 300) { //输入字符大于300的时候过滤
+                            this.dataFormShow.goodsName = newV.substr(0,(chineseCount/2+characterCount)-1)
+                        }
+                    }
+                },
         },
         created() {
             // 第一次请求数据

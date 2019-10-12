@@ -21,7 +21,12 @@
 
                         <el-form-item  label="收货地址：" >
                             <span class="grid-content" v-if="receiverInfo">
-                                {{receiverInfo.province}}{{receiverInfo.city}}{{receiverInfo.area}}{{receiverInfo.townArea}}{{receiverInfo.address}}
+                                {{receiverInfo.areaInfo}}
+                            </span>
+                        </el-form-item><br>
+						 <el-form-item  label="详细地址：" >
+                            <span class="grid-content" v-if="receiverInfo">
+                                {{receiverInfo.address}}
                             </span>
                         </el-form-item>
 
