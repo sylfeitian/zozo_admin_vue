@@ -117,7 +117,8 @@
             <el-row>
                 <el-col :span="8"><div class="grid-content" v-if="receiverInfo">{{receiverInfo.memberRealName}}</div></el-col>
                 <el-col :span="8"><div class="grid-content" v-if="receiverInfo && receiverInfo.mobPhone">{{receiverInfo.mobPhone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')}}</div></el-col>
-                <el-col :span="8"><div class="grid-content" v-if="receiverInfo">{{receiverInfo.province}}{{receiverInfo.city}}{{receiverInfo.area}}{{receiverInfo.townArea}}<!-- {{receiverInfo.address}} --></div></el-col>
+                <!-- <el-col :span="8"><div class="grid-content" v-if="receiverInfo">{{receiverInfo.province}}{{receiverInfo.city}}{{receiverInfo.area}}{{receiverInfo.townArea}}</div></el-col> -->
+                <el-col :span="8"><div class="grid-content" v-if="receiverInfo">{{receiverInfo.areaInfo}}<!-- {{receiverInfo.address}} --></div></el-col>
             </el-row>
 
             <modelUserInforDetail v-if="modelUserInforDetailVisible" ref="modelUserInforDetailCompon"></modelUserInforDetail>
