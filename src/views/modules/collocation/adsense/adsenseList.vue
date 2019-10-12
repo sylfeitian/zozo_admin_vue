@@ -151,7 +151,7 @@
                     :http-request="upLoad"
                     :show-file-list="false"
                     :before-upload="beforeAvatarUpload">
-                    <img v-if="activiDataForm.imageSrc" :src="activiDataForm.imageSrc" class="avatar">
+                    <img v-if="activiDataForm.imageSrc" :src="activiDataForm.imageSrc | filterImgUrl" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
             </el-form-item>
@@ -181,7 +181,17 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="链接：" v-if="activiDataForm.linkType == '3'" prop="linkUrl">
-                <el-input v-model="activiDataForm.linkUrl"></el-input>
+                <!-- <el-input v-model="activiDataForm.linkUrl"></el-input> -->
+                <el-input
+                    type="textarea"
+                    placeholder="请输入链接"
+                    v-model="activiDataForm.linkUrl"
+                    maxlength="500"
+                    clearable
+                    
+                    show-word-limit
+                    >
+                    </el-input>
             </el-form-item>
             <el-form-item label="链接：" v-if="activiDataForm.linkType == '2'" prop="linkValue">
                 <div @click="toOpen()">{{checkItem}}</div>
@@ -335,8 +345,8 @@
                 selectedOptions:[],
                 activitesstates: [
                     {id:'',name:'全部'},
-                    {id:'0',name:'启用'},
-                    {id:'1',name:'禁用'}
+                    {id:'1',name:'启用'},
+                    {id:'0',name:'禁用'}
                 ],
                 address:[
                     {id:'',name:'全部'},
@@ -491,11 +501,13 @@
             upLoad(file) {
                 const that = this;
                 getUrlBase64(URL.createObjectURL(file.file),file.file.type,function (base) {
+                    console.log(base);
                     uploadPicBase64({"imgStr": base}).then(res =>{
                         console.log(res)
                         if(res.code == 200){
                             that.activiDataForm.fileList = [{name: '文件',url:that.$imgDomain + res.data.url}]
-                            that.activiDataForm.imageSrc = that.$imgDomain + res.data.url;
+                            // that.activiDataForm.imageSrc = that.$imgDomain + res.data.url;
+                             that.activiDataForm.imageSrc = res.data.url;
                         }else{
                             that.$message.error('上传失败');
                         }
@@ -544,8 +556,8 @@
                         if(!this.advId){
                             plainAdveAdd(this.activiDataForm).then((res)=>{
                                 console.log('新增结果',res)
+                                this.buttonStatus = false;
                                 if(res.code == 200){
-                                    this.buttonStatus = false;
                                     this.$message.success('新增成功');
                                     this.$refs[formName].resetFields();
                                     this.activiDataForm.imageSrc = '';
@@ -563,8 +575,8 @@
                         }else{
                             plainAdveUpdate(this.activiDataForm).then((res)=>{
                                 console.log('编辑结果',res)
+                                this.buttonStatus = false;
                                 if(res.code == 200){
-                                    this.buttonStatus = false;
                                     this.$message.success('编辑成功');
                                     this.$refs[formName].resetFields();
                                     this.activiDataForm.imageSrc = '';

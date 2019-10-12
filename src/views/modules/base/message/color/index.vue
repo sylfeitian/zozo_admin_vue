@@ -106,7 +106,35 @@
                 if(newV.length>30){
                     this.dataFormShow.idJp = newV.substr(0,30)
                 }
-            }
+            },
+            'dataFormShow.name':function(newV,oldV) {
+                var chineseCount = 0,characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 300) { //输入字符大于300的时候过滤
+                        this.dataFormShow.name = newV.substr(0,(chineseCount/2+characterCount)-1)
+                    }
+                }
+            },
+            'dataFormShow.colorCategoryName':function(newV,oldV) {
+                var chineseCount = 0,characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 300) { //输入字符大于300的时候过滤
+                        this.dataFormShow.colorCategoryName = newV.substr(0,(chineseCount/2+characterCount)-1)
+                    }
+                }
+            },
         },
         created () {
             this.getDataList();

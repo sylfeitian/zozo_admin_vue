@@ -16,7 +16,7 @@
                     <span>{{dataForm.nickname}}</span>
                 </el-form-item>
                 <el-form-item label="用户身高：">
-                    <span>{{dataForm.height}}</span>
+                    <span>{{dataForm.height}}</span><span v-if="dataForm.height">cm</span>
                 </el-form-item>
                 <el-form-item label="用户地区：">
                     <span>日本</span>
@@ -28,7 +28,7 @@
                     <span>{{dataForm.totalFavNum}}</span>
                 </el-form-item>
                 <el-form-item label="发布状态：">
-                    <span>{{dataForm.state == 2?"取消发布":dataForm.state == 1?"已发布":""}}</span>
+                    <span>{{dataForm.jpPublishState == 0?"待发布":dataForm.jpPublishState == 1?"已发布":""}}</span>
                 </el-form-item>
                 <el-form-item label="主图：" style="height: 100%!important;">
                     <template slot-scope="scope">
@@ -96,7 +96,7 @@
                     <span>{{dataForm.nickname}}</span>
                 </el-form-item>
                 <el-form-item label="用户身高：">
-                    <span>{{dataForm.height }}</span>
+                    <span>{{dataForm.height }}</span><span v-if="dataForm.height">cm</span>
                 </el-form-item>
                 <el-form-item label="用户地区：">
                     <span>日本</span>
