@@ -437,11 +437,11 @@ export default {
     },
     //回显
     backScan() {
-      var obj = {
-        id: this.dataForm.id,
-        brandName: this.dataForm.brandName
-      };
-      searchStoreName(obj).then(res => {
+      // var obj = {
+      //   id: this.dataForm.id,
+      //   brandName: this.dataForm.brandName
+      // };
+      searchStoreName().then(res => {
         if (res.code == 200) {
           this.selectStoreOption = res.data;
         } else {
@@ -449,11 +449,11 @@ export default {
       });
     },
     backScan1() {
-      var obj = {
-        id: this.dataForm.id,
-        storeName: this.dataForm.storeName
-      };
-      searchBrandName(obj).then(res => {
+      // var obj = {
+      //   id: this.dataForm.id,
+      //   storeName: this.dataForm.storeName
+      // };
+      searchBrandName().then(res => {
         if (res.code == 200) {
           this.selectBrandOption = res.data;
         } else {

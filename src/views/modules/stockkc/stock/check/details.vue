@@ -84,7 +84,8 @@
 </template>
 
 <script>
-    import addEditData from './record'
+    // import addEditData from './record'
+    import addEditData from '@/views/modules/mggoods/good/goodslist/recordList'
     import Bread from "@/components/bread";
     import Table from "@/components/table";
     import quillEditorImg from "@/components/quillEditor"

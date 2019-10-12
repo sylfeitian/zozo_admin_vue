@@ -205,14 +205,14 @@
             <p class="title">费用信息</p>
             <el-table
                     width="100%"
-                    :data="orderGoods"
+                    :data="moneyInfo"
                     border
                     v-loading="dataListLoading"
                     style="width: 40%;margin-left: 5%;"
             >
                 <el-table-column prop="" label="商品总价" align="center">
                     <template slot-scope="scope">
-                        ￥{{scope.row.sellPrice?scope.row.sellPrice:'0.00'}}
+                        ￥{{scope.row.goodsAmount?scope.row.goodsAmount:'0.00'}}
                     </template>
                 </el-table-column>
 
@@ -234,9 +234,9 @@
                     </template>
                 </el-table-column>
 
-                 <el-table-column prop="realSalePrice" label="应付款金额" align="center">
+                 <el-table-column prop="orderAmount" label="应付款金额" align="center">
                     <template slot-scope="scope">
-                        ￥{{scope.row.realSalePrice?scope.row.realSalePrice:'0.00'}}
+                        ￥{{scope.row.orderAmount?scope.row.orderAmount:'0.00'}}
                     </template>
                 </el-table-column>
             </el-table>
@@ -273,6 +273,7 @@
                         <!-- 已完成 -->
                         <span v-else-if="scope.row.orderStatus==140">交易完成</span>
                         <span v-else-if="scope.row.orderStatus==0">已取消</span>
+                        <span v-else>——</span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="statusInfo" label="操作内容" align="center"></el-table-column>
@@ -336,6 +337,7 @@
                 authenticationInfo:"", //是个弹框
                 orderBase:{},
                 orderGoods:[],
+                moneyInfo:[],//费用信息
                 orderLogs:[],
                 preferInfo:[],
                 receiverInfo:{},
@@ -381,6 +383,18 @@
                         this.authenticationInfo = res.data.authenticationInfo;
                         this.orderBase = res.data.orderBase;
                         this.orderGoods = res.data.orderGoods;
+                        // 商品总价  goodsAmount           
+                        //  折扣金额  dicountAmount       
+                        //  优惠券  couponAmount    
+                        //  满减  reduceAmount   
+                        //  应付金额 orderAmount
+                         this.moneyInfo = [{
+                                goodsAmount:this.orderBase.goodsAmount,
+                                dicountAmount:this.orderBase.dicountAmount,
+                                couponAmount:this.orderBase.couponAmount,
+                                reduceAmount:this.orderBase.reduceAmount,
+                                orderAmount:this.orderBase.orderAmount
+                         }]
                         this.orderLogs = res.data.orderLogs;
                         this.preferInfo = res.data.preferInfo;
                         this.receiverInfo = res.data.receiverInfo;

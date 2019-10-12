@@ -95,10 +95,19 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
+    import {statisticsGoodsPage} from "@/api/url"
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
+                mixinViewModuleOptions: {
+                    getDataListURL: statisticsGoodsPage,
+                    getDataListIsPage: true,
+                    exportURL: "",
+                    // deleteURL: deleteAttributeUrl,
+                    deleteIsBatch: true,
+                    deleteIsBatchKey: "id"
+                },
                 breaddata: [ "报表中心", "商品销量统计"],
                 operateShopStore:[{ id: '0', name: '明细' },{ id: '1', name: '汇总' }],//统计维度
                 timeArr: "", //搜索时间数据
