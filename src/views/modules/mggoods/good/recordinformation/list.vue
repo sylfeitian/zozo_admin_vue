@@ -254,7 +254,7 @@
         watch:{
             'dataFormShow.skuIdJp':function(newV,oldV) {
                 for(let i=0;i<newV.length;i++){
-                    if(!/[a-zA-Z0-9]/.test(newV[i])){
+                    if(!/[a-zA-Z0-9\s]/.test(newV[i])){
                         this.dataFormShow.skuIdJp = newV.replace(newV[i],"")
                     }
                 }
@@ -287,6 +287,20 @@
                         var count = chineseCount + characterCount;
                         if (count > 300) { //输入字符大于300的时候过滤
                             this.dataFormShow.brandName = newV.substr(0,(chineseCount/2+characterCount)-1)
+                        }
+                    }
+                },
+            'dataFormShow.goodsName':function(newV,oldV) {
+                    var chineseCount = 0,characterCount = 0;
+                    for (let i = 0; i < newV.length; i++) {
+                        if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                            chineseCount = chineseCount + 2;
+                        } else { //字符
+                            characterCount = characterCount + 1;
+                        }
+                        var count = chineseCount + characterCount;
+                        if (count > 300) { //输入字符大于300的时候过滤
+                            this.dataFormShow.goodsName = newV.substr(0,(chineseCount/2+characterCount)-1)
                         }
                     }
                 },

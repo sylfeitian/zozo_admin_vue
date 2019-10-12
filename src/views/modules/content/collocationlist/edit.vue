@@ -149,7 +149,7 @@
         <div style="margin-left:20px;">
             <div>
                 <span style="margin-right: 10px;"><span style="color: #F56C6C;margin-right: 5px;">*</span>关联标签：</span>
-                <el-select v-model="stylesName" :filter-method="getStyle" @change="saveList" filterable placeholder="请选择">
+                <el-select :filter-method="getStyle" @change="saveList" filterable placeholder="请选择">
                     <el-option
                             v-for="(item,index) in options"
                             :key="index"
@@ -189,7 +189,6 @@
             return {
                 breaddata: [ "内容管理",  "搭配集合管理","编辑搭配集合"],
                 dataForm: {},
-                stylesName:"",
                 dataListLoading: false,
                 styleList:[],
                 options:""
@@ -231,9 +230,9 @@
                 })
                 if(is) this.styleList.push(this.options[val])
             },
-            getStyle(){
+            getStyle(val){
                 getStyleName({
-                    params:{styleName:this.styleName}
+                    params:{styleName:val}
                 }).then((res)=>{
                     this.options = res;
                 })
