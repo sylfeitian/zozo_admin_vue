@@ -349,7 +349,7 @@ export default {
     // ID类搜索框仅可输入数字、英文，最多可输入30个字符
     "dataFormShow.idJp": function(newV, oldV) {
       for (let i = 0; i < newV.length; i++) {
-        if (!/[a-zA-Z0-9]/.test(newV[i])) {
+        if (!/[a-zA-Z0-9\s]/.test(newV[i])) {
           this.dataFormShow.idJp = newV.replace(newV[i], "");
         }
       }
