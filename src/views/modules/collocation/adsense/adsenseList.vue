@@ -181,7 +181,17 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="链接：" v-if="activiDataForm.linkType == '3'" prop="linkUrl">
-                <el-input v-model="activiDataForm.linkUrl"></el-input>
+                <!-- <el-input v-model="activiDataForm.linkUrl"></el-input> -->
+                <el-input
+                    type="textarea"
+                    placeholder="请输入链接"
+                    v-model="activiDataForm.linkUrl"
+                    maxlength="500"
+                    clearable
+                    
+                    show-word-limit
+                    >
+                    </el-input>
             </el-form-item>
             <el-form-item label="链接：" v-if="activiDataForm.linkType == '2'" prop="linkValue">
                 <div @click="toOpen()">{{checkItem}}</div>
