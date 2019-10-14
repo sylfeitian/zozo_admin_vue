@@ -13,8 +13,20 @@
                     </el-row>
                 </div>
                 <div class="myGridTree">
-                    <el-tree :data="mate.rows" node-key="id" :props="defaultProps" v-bind="mate.options" @check-change="handleCheckChange" :render-content='renderContent'
-                             @node-click="handleClick" @current-change="handleCurrentChange" ref="myTreeGrid"></el-tree>
+                    <el-tree 
+                    	:data="mate.rows" 
+                    	node-key="id" 
+                    	:props="defaultProps"
+                    	v-bind="mate.options"
+                        @check-change="handleCheckChange" 
+                        :render-content='renderContent'
+                        @node-click="handleClick" 
+                        @current-change="handleCurrentChange" 
+                        ref="myTreeGrid"
+                        @node-expand='handleIsExpand'
+						@node-collapse='handleIsCollapse'
+						:default-expanded-keys='openrowid'
+                        ></el-tree>
                 </div>
             </el-col>
         </el-row>
@@ -22,6 +34,16 @@
 </template>
 
 <script>
+	//删除数组一个元素
+	function arrRemove(arr, value) {
+	    var i = arr.length;
+	    while (i--) {
+	        if (arr[i] === value) {
+	            return i;
+	        }
+	    }
+	    return false;
+	}	
     import MyButton from './MyButton.vue';
 
     export default {
@@ -60,7 +82,8 @@
                 },
                 tree: null,
                 btnDisable: true,
-                actionSpan: 0
+                actionSpan: 0,
+                openrowid:[], //默认打开的节点id
             };
         },
         mounted () {
@@ -70,6 +93,12 @@
             this.execSpan();
         },
         methods: {
+        	handleIsExpand(d,n,s){  //点击>和节点name时       节点展开时触发的事件
+				this.openrowid.push(d.id);   //开启时   加到数组中
+			},
+			handleIsCollapse(d,n,s){   //点击>和节点name时   节点关闭时触发的事件
+				this.openrowid.splice(arrRemove(this.openid,d.id), 1);  //关闭时   从去掉默认打开的目录
+			},
             // 计算按钮宽度
             execSpan () {
                 let sum = 0;

@@ -10,11 +10,12 @@
         <el-form
                 :model="dataForm"
                 ref="addForm"
+                :rules="rules" 
                 @keyup.enter.native="dataFormSubmit('addForm')"
                 label-width="120px"
         >
-            <el-form-item label="同义词：">
-                <el-input type="textarea" v-model="dataForm.name" placeholder="请输入300字以内的内容" :rows="4"></el-input>
+            <el-form-item label="同义词：" prop="name">
+                <el-input type="textarea" v-model="dataForm.name" placeholder="请输入300字以内的内容" :rows="5"></el-input>
                 <span style="color: #999999;">多词请用英文逗号“,”隔开</span>
             </el-form-item>
 <!--            <el-form-item style="text-align: center;margin-left: -120px!important;">-->
@@ -44,7 +45,12 @@
                 },
                 title:'',
                 row:"",
-                formLabelWidth: '120px'
+                formLabelWidth: '120px',
+                rules: {
+		          name: [
+		            { required: true, message: '请输入同义词', trigger: 'blur' }
+		          ],
+		        },
             }
         },
         watch: {
@@ -102,6 +108,7 @@
                         this.loading = true;
                         var obj = {
                             "name":  this.dataForm.name,
+                            "state":1,
                         }
                         if(this.row) obj.id = this.row.id
                         var fn = this.row?editShopsynonym:shopsynonymSave;
@@ -144,9 +151,9 @@
 
 <style lang="scss" scoped>
     /deep/ .el-form-item__label {
-        width: 60px!important;
+        width: 66px!important;
     }
     /deep/ .el-form-item__content {
-        margin-left: 60px!important;
+        margin-left: 66px!important;
     }
 </style>
