@@ -12,9 +12,9 @@
       </el-form-item>
       <el-form-item label="消费金额：">
         <div style="display:flex">
-          <el-input v-model="dataForm.minConsumeAmount" placeholder=""></el-input>
+          <el-input v-model="dataForm.minConsumeAmount" placeholder="" @blur="compare"></el-input>
           <span>&nbsp 至 &nbsp</span>
-          <el-input v-model="dataForm.maxConsumeAmount" placeholder=""></el-input>
+          <el-input v-model="dataForm.maxConsumeAmount" placeholder="" @blur="compare"></el-input>
 
         </div>
       </el-form-item>
@@ -175,12 +175,80 @@
         if(newV.length>30){
           this.dataForm.memeberNameOrId = newV.substr(0,30)
         }
+      },
+      // 消费金额 可输入2小数点 最大99999
+      'dataForm.minConsumeAmount':function (newV,oldV) {
+        if(newV.toString().indexOf('.') !==-1){
+          // 截取到小数点后2位
+          this.dataForm.minConsumeAmount = newV.substr(0,newV.indexOf('.')+3)
+          // 小数点之前的长度>5位 不让输入整数位
+          if(newV.split(".")[0].length>5){
+            this.dataForm.minConsumeAmount = oldV
+          }
+        // 加上小数点 截取8位
+          if(newV.length>8){
+            this.dataForm.minConsumeAmount = newV.substr(0,8)
+          }
+        }else{
+          this.dataForm.minConsumeAmount = newV.substr(0,5)
+        }
+        for (let i = 0; i < newV.length; i++) {
+          // 只能输入数字
+          if (!/[0-9]/g.test(newV[i])) {
+            this.dataForm.minConsumeAmount = newV.replace(newV[i], "")
+          }
+        }
+      },
+      // 消费金额 可输入2小数点 最大99999
+      'dataForm.maxConsumeAmount':function (newV,oldV) {
+        if(newV.toString().indexOf('.') !==-1){
+          // 截取到小数点后2位
+          this.dataForm.maxConsumeAmount = newV.substr(0,newV.indexOf('.')+3)
+          // 小数点之前的长度>5位 不让输入整数位
+          if(newV.split(".")[0].length>5){
+            this.dataForm.maxConsumeAmount = oldV
+          }
+        // 加上小数点 截取8位
+          if(newV.length>8){
+            this.dataForm.maxConsumeAmount = newV.substr(0,8)
+          }
+        }else{
+          this.dataForm.maxConsumeAmount = newV.substr(0,5)
+        }
+        for (let i = 0; i < newV.length; i++) {
+          // 只能输入数字
+          if (!/[0-9]/g.test(newV[i])) {
+            this.dataForm.minConsumeAmount = newV.replace(newV[i], "")
+          }
+        }
       }
     },
     created() {
       this.getData();
     },
     methods: {
+      // input失去焦点时判断金额大小 置换位置
+      compare(){
+        var temp=this.dataForm.maxConsumeAmount;
+        // 比较整数的大小
+        if(parseInt(this.dataForm.maxConsumeAmount)<parseInt(this.dataForm.minConsumeAmount)){
+          this.dataForm.maxConsumeAmount=this.dataForm.minConsumeAmount
+          this.dataForm.minConsumeAmount=temp
+        }else if(parseInt(this.dataForm.maxConsumeAmount)===parseInt(this.dataForm.minConsumeAmount)){ // 整数相等的情况下 比较小数点后的大小
+          var minTemp,maxTemp = 0;
+          if(this.dataForm.minConsumeAmount.indexOf('.') !==-1){
+            minTemp = this.dataForm.minConsumeAmount.substr(this.dataForm.minConsumeAmount.indexOf('.')+1)
+          }
+         if(this.dataForm.maxConsumeAmount.indexOf('.') !==-1){
+            maxTemp = this.dataForm.maxConsumeAmount.substr(this.dataForm.maxConsumeAmount.indexOf('.')+1)
+         }
+          if(parseInt(maxTemp)<parseInt(minTemp)){
+            this.dataForm.maxConsumeAmount=this.dataForm.minConsumeAmount
+            this.dataForm.minConsumeAmount=temp
+          }
+
+        }
+      },
       getData(){
         this.page = 1
         this.getDataList()
