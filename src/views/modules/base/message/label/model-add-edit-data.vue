@@ -148,15 +148,15 @@
                     }
                     
                     
-//                  if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
-//                      chineseCount = chineseCount + 2;
-//                  } else { //字符
-//                      characterCount = characterCount + 1;
-//                  }
-//                  var count = chineseCount + characterCount;
-//                  if (count > 12) { //输入字符大于12的时候过滤
-//                      this.dataForm.styleName = newV.substr(0,(chineseCount/2+characterCount)-1)
-//                  }
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 12) { //输入字符大于12的时候过滤
+                        this.dataForm.styleName = newV.substr(0,(chineseCount/2+characterCount)-1)
+                    }
                     
                 }
             }

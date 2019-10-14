@@ -322,7 +322,7 @@
     /*    margin-left: 5%;*/
     /*}*/
     /deep/ .el-form-item__label {
-        width: 100px!important;
+        width: 135px!important;
     }
     .item {
         height: 26px!important;
@@ -337,7 +337,7 @@
         text-align: center
     }
     .info {
-        margin-left: 100px;
+        margin-left: 135px;
     }
     .cell div{
         display: -webkit-box;
