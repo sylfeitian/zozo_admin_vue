@@ -60,6 +60,10 @@ export const syslexiconImport = `${allBase}//?????/暂时没接口`;
 
 // 报表，统计
 // 店铺导出
-export const statisticsStoreExport= `${base}/statistics/store/export`;
+export const statisticsStoreExport= `${allBase}/statistics/store/export`;
 // 商品导出
-export const statisticsExport = `${base}GET /statistics/export`;
+export const statisticsExport = `${allBase}GET /statistics/export`;
+//售后统计导出数据
+export const afterExportRegisterUrl = `${allBase}/statistics/aftersale/export`;
+//优惠券统计导出
+export const couponsExportRegisterUrl = `${allBase}/statistics/coupons/export`;

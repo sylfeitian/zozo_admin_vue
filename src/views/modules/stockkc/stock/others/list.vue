@@ -3,7 +3,7 @@
         <Bread :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
             <el-form-item prop="documentNo" label="单据单号：">
-                <el-input v-model="dataForm.documentNo" placeholder="请输入单据单号"></el-input>
+                <el-input v-model="dataForm.documentNo" placeholder="请输入单据单号" maxlength="30"></el-input>
             </el-form-item>
             <el-form-item prop="creator" label="操作人：">
                 <el-input v-model="dataForm.creator" placeholder="请输入操作人账号"></el-input>
@@ -109,7 +109,31 @@
 		      	this.dataForm.strTime = '';
 		    	this.dataForm.endTime = '';
 		      }
-		    }
+		    },
+            'dataForm.documentNo':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    if(!/[a-zA-Z0-9\s]/.test(newV[i])){
+                        this.dataForm.documentNo = newV.replace(newV[i],"")
+                    }
+                }
+                if(newV.length>30){
+                    this.dataForm.documentNo = newV.substr(0,30)
+                }
+            },
+            'dataForm.creator':function(newV,oldV) {
+                var chineseCount = 0,characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 300) { //输入字符大于300的时候过滤
+                        this.dataForm.creator = newV.substr(0,(chineseCount/2+characterCount)-1)
+                    }
+                }
+            },
 		},
         methods: {
             getData(){

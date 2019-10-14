@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isList">
+  <div v-if="isList" class="goodssales">
     <Bread :breaddata="breaddata"></Bread>
     <el-form
       :inline="true"
@@ -116,10 +116,10 @@
           {{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}
         </template>
 	  	</el-table-column>      
-      <el-table-column prop="memberId" label="会员账号" align="center">
+      <el-table-column prop="memberName" label="会员账号" align="center">
           <template slot-scope="scope">
-              <div :title="scope.row.memberId">
-                  {{scope.row.memberId}}
+              <div :title="scope.row.memberName">
+                  {{scope.row.memberName}}
               </div>
           </template>
       </el-table-column>
@@ -162,7 +162,7 @@
           </template>
       </el-table-column>
 
-      <el-table-column prop="evaluateContent" label="评论内容" align="center"> </el-table-column>
+      <el-table-column prop="evaluateContent" label="评论内容" align="center" :show-overflow-tooltip="true" min-width="200"> </el-table-column>
 
       <el-table-column prop="createDate" label="评论时间" align="center">
           <template slot-scope="scope">
@@ -417,7 +417,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-    /deep/ .cell{
+     /deep/ .cell{
         display: -webkit-box;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
@@ -428,5 +428,4 @@ export default {
         overflow: hidden;
         text-overflow: ellipsis;
     }*/
-
 </style>

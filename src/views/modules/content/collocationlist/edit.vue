@@ -226,6 +226,12 @@
                             type: 'error',
                         });
                         is = false
+                    }else if(this.styleList.length>=10){
+                        this.$message({
+                            message: "最多只能关联10个标签",
+                            type: 'error',
+                        });
+                        is = false
                     }
                 })
                 if(is) this.styleList.push(this.options[val])
