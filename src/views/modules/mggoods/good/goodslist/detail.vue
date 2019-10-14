@@ -142,7 +142,7 @@
                         <el-table-column prop="goodsNum" label="图片" align="center">
                             <template slot-scope="scope">
                                 <img
-                                        :src="scope.row.itemsImageUrl | filterImgUrl"
+                                        :src="scope.row.imageUrl | filterImgUrl"
                                         style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                                 >
                             </template>
@@ -157,12 +157,15 @@
 <!--                    <Table class="inforRight" style="display: inline-block;" :tableData="tableData" :tableStyle="{ width:'600px' }"></Table>-->
                 </el-form-item>
                 <el-form-item label="商品图片：">
-                    <template slot-scope="scope">
-                        <div class="goodsImg">
-                            <!--                        <img :src="scope.row.imageUrl | filterImgUrl" style="width:60px;height:60px;object-fit: contain;" alt=""/>-->
-                            <img :src="dataForm.imageUrl320" alt=""/>
-                        </div>
-                    </template>
+                        <template slot-scope="scope">
+                            <div class="goodsImg" style="display:flex">
+        <!--                        <img  :src="scope.row.imageUrl | filterImgUrl" style="width:60px;height:60px;object-fit: contain;" alt=""/>-->
+                                <!-- <img :src="dataForm.imageUrl | filterImgUrl" alt=""/> -->
+                            <div v-for="(item,index) in  dataForm.imgs" style="width:100px;height:100px;margin-right:5px;">
+                                    <img :src="item.sizeOriginal | filterImgUrl" alt="" style="width:100%;height:100%"/>
+                            </div>
+                            </div>
+                        </template>
                 </el-form-item>
                 <el-form-item label="日本商品详情：" class="item" style="height: auto!important;">
                     <span v-html="dataForm.descriptionJp"></span>
