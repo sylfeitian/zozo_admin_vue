@@ -12,6 +12,7 @@
                 ref="addForm"
                 @keyup.enter.native="dataFormSubmit('addForm')"
                 label-width="120px"
+                :rules="dataRule"
         >
             <el-form-item label="中文词汇：" prop="chineseVocabulary" :label-width="formLabelWidth">
                 <el-input v-model="dataForm.chineseVocabulary" placeholder="请输入"></el-input>
@@ -35,9 +36,42 @@
 
 <script>
     import { backScanSyslexicon,syslexiconSave,editSyslexicon } from '@/api/api'
+    import {syslexiconVerifyvocabulary} from '@/api/api'
     export default {
         name: "model-add-edit-data",
         data () {
+            var verifychineseVocabulary = (rule, value,callback)=>{
+                var obj  = {
+                    params:{
+                        id:this.row?this.row.id:'',
+                        chineseVocabulary:value,
+                         japaneseWord:'',
+                    }
+                }
+                syslexiconVerifyvocabulary(obj).then((res)=>{
+                    if(res.code==200){
+                        callback()
+                    }else{
+                        callback(new Error(res.msg))
+                    }
+                })
+            };
+            var verifyJapaneseWord = (rule, value,callback)=>{
+                var obj  = {
+                    params:{
+                         id:this.row?this.row.id:'',
+                        chineseVocabulary:"",
+                        japaneseWord:value,
+                    }
+                }
+                syslexiconVerifyvocabulary(obj).then((res)=>{
+                    if(res.code==200){
+                        callback()
+                    }else{
+                        callback(new Error(res.msg))
+                    }
+                })
+            };
             return {
                 visible : false,
                 loading : false,
@@ -51,6 +85,16 @@
                 row:"",
                 formLabelWidth: '120px',
                 lexiconType:'1',
+                dataRule : {
+			        chineseVocabulary : [
+                        { required: true, message: '必填项不能为空', trigger: 'blur' },
+                        { validator: verifychineseVocabulary, trigger: 'blur' },
+                    ],
+                    japaneseWord : [
+                      { required: true, message: '必填项不能为空', trigger: 'blur' },
+                      { validator: verifyJapaneseWord, trigger: 'blur' },
+			        ],
+				},
             }
         },
         components:{
