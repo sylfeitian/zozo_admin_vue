@@ -345,16 +345,30 @@ export default {
     Bread,
     detail
   },
-  // ID类搜索框仅可输入数字、英文，最多可输入30个字符
   watch: {
+    // ID类搜索框仅可输入数字、英文，最多可输入30个字符
     "dataFormShow.idJp": function(newV, oldV) {
       for (let i = 0; i < newV.length; i++) {
-        if (!/[a-zA-Z0-9]/.test(newV[i])) {
+        if (!/[a-zA-Z0-9\s]/.test(newV[i])) {
           this.dataFormShow.idJp = newV.replace(newV[i], "");
         }
       }
       if(newV.length>30){
         this.dataFormShow.idJp = newV.substr(0,30)
+      }
+    },
+    'dataFormShow.goodsName':function(newV,oldV) {
+      var chineseCount = 0,characterCount = 0;
+      for (let i = 0; i < newV.length; i++) {
+        if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+          chineseCount = chineseCount + 2;
+        } else { //字符
+          characterCount = characterCount + 1;
+        }
+        var count = chineseCount + characterCount;
+        if (count > 300) { //输入字符大于300的时候过滤
+          this.dataFormShow.goodsName = newV.substr(0,(chineseCount/2+characterCount)-1)
+        }
       }
     },
   },
@@ -437,11 +451,11 @@ export default {
     },
     //回显
     backScan() {
-      var obj = {
-        id: this.dataForm.id,
-        brandName: this.dataForm.brandName
-      };
-      searchStoreName(obj).then(res => {
+      // var obj = {
+      //   id: this.dataForm.id,
+      //   brandName: this.dataForm.brandName
+      // };
+      searchStoreName().then(res => {
         if (res.code == 200) {
           this.selectStoreOption = res.data;
         } else {
@@ -449,11 +463,11 @@ export default {
       });
     },
     backScan1() {
-      var obj = {
-        id: this.dataForm.id,
-        storeName: this.dataForm.storeName
-      };
-      searchBrandName(obj).then(res => {
+      // var obj = {
+      //   id: this.dataForm.id,
+      //   storeName: this.dataForm.storeName
+      // };
+      searchBrandName().then(res => {
         if (res.code == 200) {
           this.selectBrandOption = res.data;
         } else {

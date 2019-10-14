@@ -479,3 +479,9 @@ export const seckillPage = `${base}/seckill/activity/page`;
 //秒杀关联商品列表
 // export const seckillProPage = `${base}/seckill/goods/choiced/page`;
 
+
+// 报表，统计
+// 商品销量统计
+export const statisticsGoodsPage = `${base}/statistics/goods/page`;
+// 店铺销量统计
+export const statisticsStorePage = `${base}/statistics/store/page`;

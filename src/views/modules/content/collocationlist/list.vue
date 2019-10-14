@@ -107,7 +107,7 @@
                     <el-dialog title="管理风格标签" :visible.sync="dialogTableVisible">
                         <el-form :inline="true" style="text-align:left;" class="grayLine topGapPadding"  >
                             <el-form-item label="关联风格标签：">
-                                <el-select v-model="name" :filter-method="getStyle" @change="saveList" filterable placeholder="请选择">
+                                <el-select :filter-method="getStyle" @change="saveList" filterable placeholder="请选择">
                                     <el-option
                                             v-for="(item,index) in options"
                                             :key="index"
@@ -184,7 +184,6 @@
                 activeName: "",
                 dialogTableVisible:false,
                 breaddata: [ "内容管理","搭配集合管理"],
-                name:"",
                 dataForm: {
                 	idJp:null,
                 	title:null,
@@ -221,7 +220,7 @@
         watch:{
             'dataForm.idJp':function(newV,oldV) {
                 for(let i=0;i<newV.length;i++){
-                    if(!/[a-zA-Z0-9]/.test(newV[i])){
+                    if(!/[a-zA-Z0-9\s]/.test(newV[i])){
                         this.dataForm.idJp = newV.replace(newV[i],"")
                     }
                 }
@@ -256,16 +255,15 @@
                 this.id = id;
                 this.getStyle();
             },
-            getStyle(){
+            getStyle(val){
                 getStyleName({
-                    params:{styleName:this.name}
+                    params:{styleName:val}
                 }).then((res)=>{
                     this.options = res;
                 })
             },
             res(){
               this.dialogTableVisible = false;
-              this.name = "";
               this.id = "";
               this.styleList = [];
               this.options = [];
@@ -395,7 +393,7 @@
                 var ids = this.getIds(type);
                 var obj = {
                     ids:ids,
-                    operating:type==1?0:1,
+                    operating:type==1?2:1,
                 }
                 var msg = ""
                 type==1?msg="取消发布":msg="发布"

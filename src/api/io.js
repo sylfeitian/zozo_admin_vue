@@ -55,3 +55,11 @@ export const shoplabelImport = `${allBase}/shoplabel/import`;
 export const syslexiconExport = `${allBase}/syslexicon/export`;
 // 导入
 export const syslexiconImport = `${allBase}//?????/暂时没接口`;
+
+
+
+// 报表，统计
+// 店铺导出
+export const statisticsStoreExport= `${base}/statistics/store/export`;
+// 商品导出
+export const statisticsExport = `${base}GET /statistics/export`;

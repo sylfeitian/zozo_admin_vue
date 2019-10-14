@@ -168,7 +168,7 @@
         watch:{
             'dataForm.idJp':function(newV,oldV) {
                 for(let i=0;i<newV.length;i++){
-                    if(!/[a-zA-Z0-9]/.test(newV[i])){
+                    if(!/[a-zA-Z0-9\s]/.test(newV[i])){
                         this.dataForm.idJp = newV.replace(newV[i],"")
                     }
                 }
