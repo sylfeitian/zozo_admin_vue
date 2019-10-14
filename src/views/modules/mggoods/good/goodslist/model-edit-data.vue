@@ -5,7 +5,7 @@
             :close-on-click-modal="false"
             :visible.sync="visible"
             :before-close="closeDialog"
-            width="26%"
+            width="400px"
     >
         <el-form
                 :model="dataForm"

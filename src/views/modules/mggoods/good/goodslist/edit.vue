@@ -87,7 +87,6 @@
             <el-form-item label="材质：" class="item">
                 <span>{{dataForm.materialJp}}</span>
                 <el-input v-model="dataForm.material" placeholder="请输入" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
-                 <span style="color: #bebebe;">最多可输入10个文字</span>
             </el-form-item>
             <el-form-item label="上架状态：" class="item">
                 <template>
@@ -176,7 +175,7 @@
             <div style="position: fixed;bottom: 0;margin: 0 auto;width: 86%;text-align: center;z-index: 999;background-color: #e6e6e6;padding: 10px 0;">
                 <el-button class="btn" @click="reset()">取消</el-button>
                 <el-button class="btn" @click="saveData(0)">仅保存</el-button>
-                <el-button class="btn" type="primary" @click="saveData(1)">保存并上架</el-button>
+                <el-button v-if="dataForm.showWeb!=1" class="btn" type="primary" @click="saveData(1)">保存并上架</el-button>
             </div>
         </el-col>
         <!-- 弹窗, 新建 -->
@@ -260,21 +259,6 @@
                     var count = chineseCount + characterCount;
                     if (count > 20) { //最大输入20个字符
                         this.dataForm.madeIn = newV.substr(0,(chineseCount/2+characterCount)-1)
-                    }
-                }
-            },
-            'dataForm.material': function (newV, oldV) {
-                if(!newV) return
-                var chineseCount = 0,characterCount = 0;
-                for (let i = 0; i < newV.length; i++) {
-                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
-                        chineseCount = chineseCount + 2;
-                    } else { //字符
-                        characterCount = characterCount + 1;
-                    }
-                    var count = chineseCount + characterCount;
-                    if (count > 20) { //最大输入20个字符
-                        this.dataForm.material = newV.substr(0,(chineseCount/2+characterCount)-1)
                     }
                 }
             },
