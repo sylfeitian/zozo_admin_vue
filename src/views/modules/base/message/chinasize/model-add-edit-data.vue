@@ -16,7 +16,7 @@
                   <el-input v-model="dataForm.name" placeholder="请输入10个字以内的内容"></el-input>
             </el-form-item>
             <el-form-item label="排序：" prop="sort">
-                 <el-input-number v-model="dataForm.sort" :step="1" :min="0"></el-input-number><br>
+                 <el-input-number v-model="dataForm.sort" :step="1" :min="0" :max="255"></el-input-number><br>
                  <span>数字越大越靠前</span>
             </el-form-item>
 <!--            <el-form-item style="text-align: center;margin-left: -120px!important;">-->

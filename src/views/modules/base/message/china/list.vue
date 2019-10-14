@@ -95,6 +95,7 @@ export default {
       specData:[],//规格table
       attrData:[],//属性table
       formLabelWidth: "120px",
+      openrowid:[], //默认打开的节点id
       treeConfig: {
           //等于 el-tree 的选项配置
           options: {

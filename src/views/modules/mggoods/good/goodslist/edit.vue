@@ -6,6 +6,7 @@
         </div>
         <el-form
                 ref="dataForm"
+                :rules="rules"
                 class="grayLine topGapPadding"
                 :model="dataForm"
                 style="margin-left: 20px;margin-bottom: 100px;"
@@ -22,9 +23,9 @@
             <el-form-item label="日本商品名称：" class="item">
                 <span>{{dataForm.nameJp}}</span>
             </el-form-item>
-            <el-form-item label="商品名称：" class="item">
+            <el-form-item label="商品名称：" prop="name" class="item">
                 <el-input v-model="dataForm.name" placeholder="请输入" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
-                <span style="color: #bebebe;">最多可输入60个文字</span>
+                <span style="color: #bebebe;">必填且最多可输入60个文字</span>
             </el-form-item>
             <el-form-item label="品牌：" class="item">
                 <span>{{dataForm.brandName}}</span>
@@ -138,7 +139,7 @@
                     <el-table-column prop="goodsNum" label="图片" align="center">
                         <template slot-scope="scope">
                             <img
-                                    :src="scope.row.itemsImageUrl | filterImgUrl"
+                                    :src="scope.row.imageUrl | filterImgUrl"
                                     style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                             >
                         </template>
@@ -154,9 +155,12 @@
             </el-form-item>
             <el-form-item label="商品图片：">
                 <template slot-scope="scope">
-                    <div class="goodsImg">
+                    <div class="goodsImg" style="display:flex">
 <!--                        <img  :src="scope.row.imageUrl | filterImgUrl" style="width:60px;height:60px;object-fit: contain;" alt=""/>-->
-                        <img :src="dataForm.imageUrl | filterImgUrl" alt=""/>
+                        <!-- <img :src="dataForm.imageUrl | filterImgUrl" alt=""/> -->
+                       <div v-for="(item,index) in  dataForm.imgs" style="width:100px;height:100px;margin-right:5px;">
+                             <img :src="item.sizeOriginal | filterImgUrl" alt="" style="width:100%;height:100%"/>
+                       </div>
                     </div>
                 </template>
             </el-form-item>
@@ -211,6 +215,11 @@
                 },
                 sizeDataVisible: false,
                 row:'',
+                rules: {
+				          name: [
+				            { required: true, message: '长度在 0到 60 个汉字', trigger: 'blur' }
+				          ],
+                },
             }
         },
         components: {
@@ -395,6 +404,9 @@
     /*}*/
     /deep/ .el-form-item__label {
         width: 100px!important;
+    }
+    /deep/ .el-form-item__error{
+    		margin-left:108px;
     }
     .item {
         height: 26px!important;
