@@ -140,15 +140,24 @@
             'dataForm.styleName':function(newV,oldV) {
                 var chineseCount = 0,characterCount = 0;
                 for (let i = 0; i < newV.length; i++) {
-                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
-                        chineseCount = chineseCount + 2;
-                    } else { //字符
-                        characterCount = characterCount + 1;
+                	
+                    if(!(/[^#￥*%&',;=?$\x22]+/.test(newV[i]))){
+                    	console.log(i,newV[i],!(/[^#￥*%&',;=?$\x22]+/.test(newV[i])));
+						this.dataForm.styleName = this.dataForm.styleName.substring(0,i)+this.dataForm.styleName.substring(i+1); 
+                    	
                     }
-                    var count = chineseCount + characterCount;
-                    if (count > 12) { //输入字符大于12的时候过滤
-                        this.dataForm.styleName = newV.substr(0,(chineseCount/2+characterCount)-1)
-                    }
+                    
+                    
+//                  if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+//                      chineseCount = chineseCount + 2;
+//                  } else { //字符
+//                      characterCount = characterCount + 1;
+//                  }
+//                  var count = chineseCount + characterCount;
+//                  if (count > 12) { //输入字符大于12的时候过滤
+//                      this.dataForm.styleName = newV.substr(0,(chineseCount/2+characterCount)-1)
+//                  }
+                    
                 }
             }
             },

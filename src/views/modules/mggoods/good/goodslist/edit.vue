@@ -6,6 +6,7 @@
         </div>
         <el-form
                 ref="dataForm"
+                :rules="rules"
                 class="grayLine topGapPadding"
                 :model="dataForm"
                 style="margin-left: 20px;margin-bottom: 100px;"
@@ -22,9 +23,9 @@
             <el-form-item label="日本商品名称：" class="item">
                 <span>{{dataForm.nameJp}}</span>
             </el-form-item>
-            <el-form-item label="商品名称：" class="item">
+            <el-form-item label="商品名称：" prop="name" class="item">
                 <el-input v-model="dataForm.name" placeholder="请输入" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
-                <span style="color: #bebebe;">最多可输入60个文字</span>
+                <span style="color: #bebebe;">必填且最多可输入60个文字</span>
             </el-form-item>
             <el-form-item label="品牌：" class="item">
                 <span>{{dataForm.brandName}}</span>
@@ -214,6 +215,11 @@
                 },
                 sizeDataVisible: false,
                 row:'',
+                rules: {
+				          name: [
+				            { required: true, message: '长度在 0到 60 个汉字', trigger: 'blur' }
+				          ],
+                },
             }
         },
         components: {
@@ -398,6 +404,9 @@
     /*}*/
     /deep/ .el-form-item__label {
         width: 100px!important;
+    }
+    /deep/ .el-form-item__error{
+    		margin-left:108px;
     }
     .item {
         height: 26px!important;

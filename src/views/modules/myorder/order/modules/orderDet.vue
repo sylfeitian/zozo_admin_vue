@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Bread :breaddata="breaddata" @changePage="changePage" :index="'2'"></Bread>
+        <Bread :breaddata="breaddata" @changePage="changePage" :index="'1'"></Bread>
         <el-form
                 :inline="true"
                 class="grayLine topGapPadding"

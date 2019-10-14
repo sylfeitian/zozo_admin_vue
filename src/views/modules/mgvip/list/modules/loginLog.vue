@@ -12,7 +12,7 @@
             </template>
             </el-table-column>
         <el-table-column prop="createDate" align="center" label="时间"></el-table-column>
-        <el-table-column prop="ip" align="center" label="ip"></el-table-column>
+        <el-table-column prop="ip" align="center" label="IP"></el-table-column>
         <el-table-column prop="loginArea" align="center" label="地区"></el-table-column>
         <el-table-column prop="source" align="center" label="机型">
            <template slot-scope="scope">

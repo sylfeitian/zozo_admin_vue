@@ -71,12 +71,12 @@
                         {
                             label: '京东分类名称',
                             prop: 'categoryName',
-                            span: 9
+                            span: 5
                         },
                         {
                             label: "关联分类",
                             prop: 'name',
-                            span: 9
+                            span: 16
                         }
                     ],
 

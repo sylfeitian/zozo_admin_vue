@@ -13,7 +13,7 @@
             return {
                 mainVisible:true,
                 orderDetVisible:false,
-                subBreaddata:["订单管理", "BC订单管理", "订单列表","订单详情"],
+                subBreaddata:["订单管理", "BC订单管理","订单详情"],
             }
         },
         components:{

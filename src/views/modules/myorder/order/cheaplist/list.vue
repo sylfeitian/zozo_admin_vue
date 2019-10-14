@@ -191,7 +191,7 @@
                 paymentList: "", //支付方式
                 formInline: {}, //订单优惠明细
                 textarea: "",
-                breaddata: ["订单系统", "BC订单管理", "订单列表"],
+                breaddata: ["订单系统", "BC订单管理"],
                 dataListLoading: false,
                 clearancFailureVisible:false,
                 writeLogisticsInfoVisible:false,

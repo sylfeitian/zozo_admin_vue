@@ -138,7 +138,7 @@
                                 item.leaf = true;
                             }
                             item.relateList && item.relateList.forEach((item2, index2) => {
-                                item.name += item2.name;
+                                item.name +=   item2.name + ',';
                             });
 
                         })
@@ -318,6 +318,9 @@
 
         .textIndex5 {
             text-indent: $textIn;
+            overflow: hidden;
+            white-space:nowrap;
+            text-overflow: ellipsis;
         }
 
         .last {
