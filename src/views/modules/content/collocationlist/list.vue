@@ -246,6 +246,12 @@
                             type: 'error',
                         });
                        is = false
+                    }else if(this.styleList.length>=10){
+                        this.$message({
+                            message: "最多只能关联10个标签",
+                            type: 'error',
+                        });
+                        is = false
                     }
                 })
                 if(is) this.styleList.push(this.options[val])
@@ -306,8 +312,6 @@
                 this.$emit("addOrAdit",id);
             },
             getData() {
-                 console.log("timeArr::::");
-                console.log(this.timeArr);
               if(this.timeArr && this.timeArr.length!=0){
                 this.dataForm.publishStartTimeJp =  this.timeArr[0];
                 this.dataForm.publishEndTimeJp = this.timeArr[1];

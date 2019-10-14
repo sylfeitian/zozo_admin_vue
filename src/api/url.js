@@ -485,3 +485,7 @@ export const seckillPage = `${base}/seckill/activity/page`;
 export const statisticsGoodsPage = `${base}/statistics/goods/page`;
 // 店铺销量统计
 export const statisticsStorePage = `${base}/statistics/store/page`;
+//售后统计
+export const afterStorePage = `${base}/statistics/aftersale/page`;
+//优惠券统计
+export const couponStorePage = `${base}/statistics/coupons/page`;
