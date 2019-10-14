@@ -137,6 +137,7 @@
                     <el-table-column prop="specInfo" label="规格" width="180" align="center"></el-table-column>
                     <el-table-column label="活动库存" width="220" align="center">
                         <template slot-scope="scope">
+                            {{scope.$index}}
                             <el-form-item
                                 class="specError"
                                 :prop="'goodsSpecList.'+ scope.$index + '.activityQuantity' "
@@ -147,7 +148,7 @@
                                     @change="changeQuantity"
                                     :maxlength="6"
                                     :min="0"
-                                    type="number"
+                                    type="text"
                                 ></el-input>
                             </el-form-item>
                         </template>
@@ -163,9 +164,10 @@
                                 <el-input
                                     v-model="scope.row.personLimit"
                                     @change="changeLimit"
+                                    :maxlength="6"
                                     :max="scope.row.cartLimit==0?'999999':scope.row.cartLimit"
                                     :min="0"
-                                    type="number"
+                                    type="text"
                                 ></el-input>
                             </el-form-item>
                         </template>
@@ -313,7 +315,18 @@ export default {
     this.getDataList();
     this.demo();
   },
-
+// watch:{
+//       // 活动库存 只能输入数字 最大999999
+//       'goodsSpecList.scope.$index.activityQuantity':function (newV,oldV) {
+//           debugger
+//           for(let i=0;i<newV.length;i++){
+//               // 删除非数字的输入
+//               if(!/[0-9]/g.test(newV[i].activityQuantity)){
+//                   this.goodsSpecList[i].activityQuantity= newV.replace(newV[i],"")
+//               }
+//           }
+//       },
+// },
   methods: {
     closeDialog() {
       this.$refs.editDataForm.resetFields();

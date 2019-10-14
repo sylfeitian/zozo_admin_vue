@@ -102,7 +102,19 @@
         },
         props:['dataId','showdata'],
         watch:{
-		},
+        	'dataForm.goodsName':function(newV,oldV) {
+                var chineseCount = 0,characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                	
+                    if(!(/[^#￥*%&',;=?$\x22]+/.test(newV[i]))){
+                    	console.log(i,newV[i],!(/[^#￥*%&',;=?$\x22]+/.test(newV[i])));
+						this.dataForm.goodsName = this.dataForm.goodsName.substring(0,i)+this.dataForm.goodsName.substring(i+1); 
+                    	
+                    }
+                    
+                }
+            }
+        },
         created(){
         },
         methods: {

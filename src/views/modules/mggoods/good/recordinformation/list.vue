@@ -81,7 +81,7 @@
                 <template slot-scope="scope">
                     <div class="goodsPropsWrap">
                         <div class="goodsImg">
-                            <img :src="scope.row.imageUrl | filterImgUrl" alt="" style=" object-fit: contain;width: 70px;height:70px;"/>
+                            <img :src="scope.row.imageUrl | filterImgUrl" preview="2" alt="" style=" object-fit: contain;width: 70px;height:70px;"/>
                         </div>
                     </div>
                 </template>
@@ -420,6 +420,7 @@
    		-webkit-line-clamp: 2;
 		overflow: hidden;
    }
+	
     /*/deep/ .cell {
         white-space: nowrap;
         overflow: hidden;

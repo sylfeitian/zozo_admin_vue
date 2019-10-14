@@ -10,10 +10,11 @@
         <el-form
                 :model="dataForm"
                 ref="addForm"
+                :rules="rules"
                 @keyup.enter.native="dataFormSubmit('addForm')"
                 label-width="120px"
         >
-            <el-form-item label="搜索词：">
+            <el-form-item label="搜索词：" prop="hotKeyword">
                 <el-input v-model="dataForm.hotKeyword" placeholder="请输入30字以内的内容"></el-input>
 <!--                <span style="color: #999999;">0/30</span>-->
             </el-form-item>
@@ -49,7 +50,13 @@
                 },
                 title:'',
                 row:"",
-                formLabelWidth: '120px'
+                formLabelWidth: '120px',
+                rules: {
+		          hotKeyword: [
+		            { required: true, message: '请输入搜索词', trigger: 'blur' },
+		            { min:1,max:30 , message: '1-30个汉字', trigger: 'blur' }
+		          ],
+		        },
             }
         },
         watch: {
