@@ -481,10 +481,14 @@ export const seckillPage = `${base}/seckill/activity/page`;
 
 
 // 报表，统计
+// 业绩统计分页
+export const statisticsPerformancePage = `${base}/statistics/performance/page`;
 // 商品销量统计
 export const statisticsGoodsPage = `${base}/statistics/goods/page`;
 // 店铺销量统计
 export const statisticsStorePage = `${base}/statistics/store/page`;
+// 订单统计
+export const statisticsOrderPage = `${base}/statistics/order/page`;
 //售后统计
 export const afterStorePage = `${base}/statistics/aftersale/page`;
 //优惠券统计

@@ -105,15 +105,12 @@
                         <span v-else-if="scope.row.orderStatus==80">JD申报中</span>
                         <span v-else-if="scope.row.orderStatus==90 || scope.row.orderStatus==100">JD申报失败</span>
                         <span v-else-if="scope.row.orderStatus==110">清关中</span>
-                        <!-- <span v-else-if="scope.row.orderStatus==120">清关失败</span> -->
+                        <span v-else-if="scope.row.orderStatus==120">清关失败</span>
                         <span v-else-if="scope.row.orderStatus==130">待收货</span>
                         <!-- 已完成 -->
                         <span v-else-if="scope.row.orderStatus==140">交易完成</span>
                         <span v-else-if="scope.row.orderStatus==0">已取消</span>
                  </template>
-            </el-table-column>
-            <el-table-column prop="orderType" label="订单类型" align="center" >
-                <!-- :formatter="orderState" -->
             </el-table-column>
             <el-table-column label="操作" align="center" width="200">
                 <template slot-scope="scope">

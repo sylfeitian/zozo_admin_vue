@@ -387,7 +387,8 @@ export const paymentOrder= params => { return http.get(`${base}/order/orderSn/${
 //订单审核/order/audit/{operating}/{id}
 export const auditOperating  = params => { return http.post(`${base}/order/audit/${params.operating}/${params.id}?remark=${params.remarks}`, params).then(res => res.data); }
 // 修改订单运营备注
-export const managerRemark  = params => { return http.get(`${base}/order/${params.id}/manager/remark?remark=${params.remarks}`, params).then(res => res.data); }
+// export const managerRemark  = params => { return http.get(`${base}/order/${params.id}/manager/remark?remark=${params.remarks}`, params).then(res => res.data); }
+export const managerRemark  = params => { return http.post(`${base}/order/manager/remark`, params).then(res => res.data); }
 // 取消订单
 export const orderCancel = params => { return http.post(`${base}/order/cancel/${params.id}`, params).then(res => res.data); }
 // jd订单申报
@@ -841,12 +842,14 @@ export const editSyslexicon = params => { return http.put(`${base}/syslexicon`, 
 // 导出
 export const exportSyslexicon = params => { return http.get(`${base}/syslexicon/export`, params).then(res => res.data); };
 // 分页
-export const syslexiconPage = params => { return http.get(`${base}/syslexicon/page`, params).then(res => res.data); };
+// export const syslexiconPage = params => { return http.get(`${base}/syslexicon/page`, params).then(res => res.data); };
 // 删除
-export const deleteSyslexicon = params => { return http.delete(`${base}/syslexicon/${params.id}`, params).then(res => res.data); };
+// export const deleteSyslexicon = params => { return http.delete(`${base}/syslexicon/${params.id}`, params).then(res => res.data); };
 // 信息
 export const backScanSyslexicon = params => { return http.get(`${base}/syslexicon/${params.id}`, params).then(res => res.data); };
 
+// 校验词汇是否重复,包括中文和日文
+export const syslexiconVerifyvocabulary = params => { return http.get(`${base}/syslexicon/verifyvocabulary`, params).then(res => res.data); };
 
 
 

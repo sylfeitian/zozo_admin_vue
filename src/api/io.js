@@ -59,10 +59,14 @@ export const syslexiconImport = `${allBase}//?????/暂时没接口`;
 
 
 // 报表，统计
+// 业绩导出GET 
+export const statisticsPerformanceExport = `${allBase}/statistics/performance/export`;
 // 店铺导出
 export const statisticsStoreExport= `${allBase}/statistics/store/export`;
 // 商品导出
-export const statisticsExport = `${allBase}GET /statistics/export`;
+export const statisticsExport = `${allBase}/statistics/goods/export`;
+// 订单导出
+export const statisticsOrderExport = `${allBase}/statistics/order/export`
 //售后统计导出数据
 export const afterExportRegisterUrl = `${allBase}/statistics/aftersale/export`;
 //优惠券统计导出

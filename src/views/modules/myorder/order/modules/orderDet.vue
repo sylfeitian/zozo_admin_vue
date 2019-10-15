@@ -9,10 +9,10 @@
         >
             <!-- 上层button组 -->
             <el-form-item style="width: 100%;text-align: right;padding-right: 6%;">
-                <el-button class="btn" type="primary" @click="clearancFailureFn()"  v-if="orderBase.orderStatus==80">清关失败</el-button>
+                <!-- <el-button class="btn" type="primary" @click="clearancFailureFn()"  v-if="orderBase.orderStatus==80">清关失败</el-button> -->
                 <el-button class="btn" type="primary" @click="writeLogisticsInfo()" v-if="orderBase.orderStatus==80">填写物流信息</el-button>
                 <el-button class="btn" type="primary" @click="lookLogistics()" v-if="orderBase.orderStatus==110 || orderBase.orderStatus==120 || orderBase.orderStatus==140">查看物流</el-button>
-                <el-button class="btn" type="primary" @click="modifyReciverInfo()" v-if="orderBase.orderStatus==10 || orderBase.orderStatus==90 || orderBase.orderStatus==100">修改收货人信息</el-button>
+                <el-button class="btn" type="primary" @click="modifyReciverInfo()" v-if="orderBase.orderStatus==10 || orderBase.orderStatus==30 || orderBase.orderStatus==40 || orderBase.orderStatus==50 || orderBase.orderStatus==60 || orderBase.orderStatus==90 || orderBase.orderStatus==100">修改收货人信息</el-button>
                 <el-button class="btn" type="primary" @click="exammineFn()" v-if="orderBase.orderStatus==30">审核</el-button>
                 <el-button class="btn" type="primary" @click="remarkInfoFn()" >备注信息</el-button>
                 <el-button class="btn" type="primary" @click="cancleOrderFn()"  v-if="orderBase.orderStatus==50 || orderBase.orderStatus==90 || orderBase.orderStatus==100">取消订单</el-button>

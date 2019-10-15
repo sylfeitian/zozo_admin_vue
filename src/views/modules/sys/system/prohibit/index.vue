@@ -109,7 +109,7 @@
                         characterCount = characterCount + 1;
                     }
                     var count = chineseCount + characterCount;
-                    if (count > 300) { //输入字符大于300的时候过滤
+                    if (count > 600) { //输入字符大于600的时候过滤
                         this.dataForm.name = newV.substr(0,(chineseCount/2+characterCount)-1)
                     }
                 }

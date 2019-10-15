@@ -102,7 +102,7 @@
     import {statisticsStorePage} from "@/api/url"
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
-      import importAndExport from "@/components/import-and-export"
+    import importAndExport from "@/components/import-and-export"
     import {searchStoreName,searchBrandName} from "@/api/api";
     import { statisticsStoreExport } from "@/api/io";
     export default {
@@ -139,7 +139,6 @@
                 dataList: [],
                 dataListLoading: false,
                 selectStoreOption: [],
-                selectCategoryOption: [],
                 selectBrandOption: []
             }
         },
@@ -169,13 +168,14 @@
                     this.dataForm.endCreateDate = ""
                 }
                 if(this.dataForm.dimension == "0"){//如果统计维度是明细的话
-                    this.page =1;
-                    this.getDataList();
                 }else{//如果统计维度是汇总的话，时间必填
                     if( this.timeArr==""  || this.timeArr.length!=2){
                         this.$message.warning("请选择时间再查询!");
+                        return
                     }
                 }
+                 this.page =1;
+                this.getDataList();
                 
             },
             // 获取店铺下拉
