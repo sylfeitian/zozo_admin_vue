@@ -134,6 +134,7 @@
                 }else if(tab== "two"){
                     this.dataForm.lexiconType = "2"
                 }
+                this.importAndExportOptions.importUrl = syslexiconImport+"?lexiconType="+this.dataForm.lexiconType
                 this.changeVal = val;
                 console.log(this.changeVal)
                 this.getDataList();

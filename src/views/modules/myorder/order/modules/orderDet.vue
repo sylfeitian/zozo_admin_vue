@@ -79,10 +79,11 @@
                     <div class="grid-content" style="display:flex;flex-direction: column;align-items: center;line-height: 24px;">
                         <span>{{authenticationInfo.memberRealName}}</span>
                         <span>
-                            {{authenticationInfo.idCard&&authenticationInfo.idCard.length==18?
+                            {{authenticationInfo.idCard}}
+                            <!-- {{authenticationInfo.idCard&&authenticationInfo.idCard.length==18?
                             authenticationInfo.idCard.substring(0,12)+"*******":
-                            authenticationInfo.idCard}}
-                            <span style="color:#02A7F0" @click="dialogVisible = true">查看</span>
+                            authenticationInfo.idCard}} -->
+                            <span style="color:#02A7F0" @click="lookMemberDeatilInfo">查看</span>
                         </span>
                     </div>
                 </el-col>
@@ -93,14 +94,14 @@
                 <el-col :span="5"><div class="grid-content bg-purple-light">描述</div></el-col>
                 <el-col :span="19"><div class="grid-content">{{orderBase.orderMessage}}</div></el-col>
             </el-row>
-            <el-dialog title="身份证信息" :visible.sync="dialogVisible" width="30%" v-if="authenticationInfo">
+            <el-dialog title="身份证信息" :visible.sync="dialogVisible" width="30%" v-if="memberDeatilInfo">
                 <h3>身份证号码： </h3>
-                <p>{{authenticationInfo.idCard}}</p>
+                <p>{{memberDeatilInfo.idCard}}</p>
 
                 <h3>身份证正反面：</h3>
                 <div class="idCardWarp"> 
-                    <img :src="authenticationInfo.idcartPositiveUrl | filterImgUrl" alt="">
-                    <img :src="authenticationInfo.idcartReverseUrl | filterImgUrl" alt="">
+                    <img :src="memberDeatilInfo.idcartPositiveUrl  | filterImgUrl" alt="">
+                    <img :src="memberDeatilInfo.idcartReverseUrl | filterImgUrl" alt="">
                 </div>
             </el-dialog>
 
@@ -314,7 +315,7 @@
     import remarkInfo from '../modules/model-remark-info.vue'
     import cancleOrder from '../modules/model-cancle-order.vue'
      
-    import {orderDetail } from "@/api/api";
+    import {orderDetail,memberDeatilInfo } from "@/api/api";
     export default {
         // mixins: [mixinViewModule],
         data() {
@@ -343,6 +344,7 @@
                 receiverInfo:{},
                 scheduleList:[],
                 row:"",
+                memberDeatilInfo:'',
             };
         },
         components: {
@@ -369,6 +371,20 @@
                 this.modelUserInforDetailVisible = true;
                 this.$nextTick(()=>{
                     this.$refs.modelUserInforDetailCompon.init(this.receiverInfo);
+                })
+            },
+            lookMemberDeatilInfo(){
+                this.dialogVisible = true;
+                var obj  = {
+                    params:{
+                        memberId:this.orderBase.memberId,
+                        orderId:this.orderBase.orderId,
+                    }
+                }
+                memberDeatilInfo(obj).then((res)=>{
+                    if(res.code==200){
+                        this.memberDeatilInfo = res.data;
+                    }
                 })
             },
             getOrderDetail(){
