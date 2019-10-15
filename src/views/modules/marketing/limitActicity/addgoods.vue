@@ -57,7 +57,7 @@
 		    width="180">
 		</el-table-column>
 		<el-table-column
-		    prop="name"
+		    prop="goodsName"
 		    label="商品名称">
 		</el-table-column>
 		<el-table-column
@@ -102,7 +102,7 @@
                     <span v-if="scope.row.selfActivityState ==0">与其他活动冲突</span>
                     <el-button v-if="scope.row.selfActivityState ==1" type="text" size="small" @click="editGoodsSku(scope.row)">修改</el-button>
                 </div>
-		    	
+
 		    </template>
 	  	</el-table-column>
 	</el-table>
@@ -131,7 +131,7 @@
     export default {
         mixins: [mixinViewModule],
         props:['activityId'],
-        components:{ 
+        components:{
             Bread,
             editGoodsSku
         },
@@ -290,5 +290,5 @@
             }
         }
     }
-        
+
 </style>

@@ -15,13 +15,13 @@
        @selection-change="handleSelectionChange"
       border
 	  style="width: 100%">
-        <el-table-column 
-            type="selection" 
-            header-align="center" 
-            align="center" 
+        <el-table-column
+            type="selection"
+            header-align="center"
+            align="center"
             width="50">
         </el-table-column>
-		
+
         <el-table-column
 		    prop="sort"
             align="center"
@@ -38,7 +38,7 @@
 		    width="180">
 		</el-table-column>
 		<el-table-column
-		    prop="name"
+		    prop="goodsName"
 		    label="商品名称">
 		</el-table-column>
         <el-table-column
@@ -104,11 +104,11 @@
     import { deleteLimitActivityGoods,limitActivityGoodsSorts } from '@/api/api'
     import Bread from "@/components/bread";
     import showGoodsSku from "./modules/model-show-sku.vue"
-    
+
 
     export default {
         mixins: [mixinViewModule],
-        components:{ 
+        components:{
             Bread,
             showGoodsSku
         },
@@ -215,7 +215,7 @@
                                 that.$message.error(res.msg);
                             }
                         })
-                    }).catch(() => { 
+                    }).catch(() => {
                     })
                 },
                 //重置
@@ -266,5 +266,5 @@
             }
         }
     }
-        
+
 </style>
