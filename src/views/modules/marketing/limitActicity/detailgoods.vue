@@ -165,6 +165,7 @@
                 // 保存排序
                 saveSort(){
                     let dataArr = [];
+                    let that = this;
                     this.dataList.forEach((item,index)=>{
                         dataArr.push({
                             id:item.goodsId,//活动商品id ,
@@ -175,7 +176,7 @@
                     limitActivityGoodsSorts(obj).then((res)=>{
                              if(res.code==200){
                                 this.$message.success(res.msg);
-                                // that.getDataList();
+                                that.getDataList();
                             }else{
                                 this.$message.error(res.msg);
                             }
