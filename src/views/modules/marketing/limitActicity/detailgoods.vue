@@ -28,7 +28,7 @@
             min-width="180"
 		    label="排序">
              <template slot-scope="scope">
-                <el-input-number v-model="scope.row.sort" :step="1" :min="0" :max="255" ></el-input-number>
+                <el-input-number v-model="scope.row.sort" :step="1" :min="0" :max="10000000" ></el-input-number>
             </template>
 		</el-table-column>
         <el-table-column

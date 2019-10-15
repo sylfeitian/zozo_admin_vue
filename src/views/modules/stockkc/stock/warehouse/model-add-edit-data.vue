@@ -327,7 +327,7 @@
                             provinceId: this.dataForm.provinceId,
                             streetId: this.dataForm.streetId,
                             addressInfo: this.dataForm.addressInfo,
-                            // isEnable: 1
+                            isEnable: 1
                         }
                         console.log(obj)
                         if (this.row) obj.id = this.row.id;

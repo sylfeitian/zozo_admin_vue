@@ -129,8 +129,8 @@
             <img :src="scope.row.imgUrl | filterImgUrl"  style="width:60px;height:60px" alt="">
           </template>
       </el-table-column>
-      <el-table-column prop="goodsCsIdJp" label="skuid" align="center" width="200"></el-table-column>
-      <el-table-column prop="goodsName" label="商品名称" align="center">
+      <el-table-column prop="goodsCsIdJp" label="skuid"  align="center" width="200"></el-table-column>
+      <el-table-column prop="goodsName" label="商品名称" width="155" align="center">
           <template slot-scope="scope">
               <div :title="scope.row.goodsName">
                   {{scope.row.goodsName}}
@@ -138,11 +138,19 @@
           </template>
       </el-table-column>
       <el-table-column prop="" label="规格" align="center" ></el-table-column>
-      <el-table-column prop="access " label="订单评价" align="center" >
+      <el-table-column prop="access"  width="150"  label="订单评价" align="center" >
           <template slot-scope="scope">
-            <span v-if="scope.row.access==0">超赞</span>
+            <!--<span v-if="scope.row.access==0">超赞</span>
             <span v-else-if="scope.row.access==1">一般</span>
-            <span v-else-if="scope.row.access==2">满意</span>
+            <span v-else-if="scope.row.access==2">满意</span>-->
+            <el-rate
+						  v-model="scope.row.access"
+						  disabled
+						  show-score
+						  text-color="#ff9900"
+						  score-template="{scope.row.access}">
+						</el-rate>
+
           </template>
       </el-table-column>
 
@@ -164,7 +172,7 @@
 
       <el-table-column prop="evaluateContent" label="评论内容" align="center" :show-overflow-tooltip="true" min-width="200"> </el-table-column>
 
-      <el-table-column prop="createDate" label="评论时间" align="center">
+      <el-table-column prop="createDate" label="评论时间" width="155"  align="center">
           <template slot-scope="scope">
               <div :title="scope.row.createDate">
                   {{scope.row.createDate}}

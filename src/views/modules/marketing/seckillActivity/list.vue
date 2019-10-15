@@ -227,8 +227,8 @@ export default {
     },
     // //开始结束时间
     acttime() {
-      this.dataForm.startTime = this.valuetime[0];
-      this.dataForm.endTime = this.valuetime[1];
+      this.dataForm.startTime =this.valuetime[0] ? this.valuetime[0]+' 00:00:00' : '';
+      this.dataForm.endTime =this.valuetime[1]? this.valuetime[1]+' 23:59:59': '';
     }
   }
 };
