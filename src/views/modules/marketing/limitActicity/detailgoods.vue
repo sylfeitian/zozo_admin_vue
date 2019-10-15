@@ -175,7 +175,7 @@
                     limitActivityGoodsSorts(obj).then((res)=>{
                              if(res.code==200){
                                 this.$message.success(res.msg);
-                                // that.getDataList();
+                                that.getDataList();
                             }else{
                                 this.$message.error(res.msg);
                             }
