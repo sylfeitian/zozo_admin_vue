@@ -54,9 +54,9 @@
                     <span>日期范围</span>&nbsp;
                     <el-date-picker
                             v-model="valuetime"
-                             format="yyyy-MM-dd HH:mm:ss"
+                             format="yyyy-MM-dd "
                             type="daterange"
-                            value-format="yyyy-MM-dd HH:mm:ss"
+                            value-format="yyyy-MM-dd "
                             align="right"
                             unlink-panels
                             range-separator="-"
