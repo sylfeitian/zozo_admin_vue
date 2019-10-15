@@ -112,9 +112,6 @@
                         <span v-else-if="scope.row.orderStatus==0">已取消</span>
                  </template>
             </el-table-column>
-            <el-table-column prop="orderType" label="订单类型" align="center" >
-                <!-- :formatter="orderState" -->
-            </el-table-column>
             <el-table-column label="操作" align="center" width="200">
                 <template slot-scope="scope">
                     <!-- <el-button type="primary" @click="submitStore()">{{ $t('confirm') }}</el-button> -->

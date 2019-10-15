@@ -155,7 +155,7 @@
                 },
                 goodsData: [],
                 isOrderDet: true,
-                breaddata: ["订单系统", "售后管理", "退货管理"],
+                breaddata: ["订单管理","退货退款"],
                 detdata: ["订单系统", "售后管理", "退货管理", "退货详情"],
                 tableData: [],
                 timeArr: "", //下单时间
