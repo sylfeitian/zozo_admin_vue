@@ -137,7 +137,6 @@
                     <el-table-column prop="specInfo" label="规格" width="180" align="center"></el-table-column>
                     <el-table-column label="活动库存" width="220" align="center">
                         <template slot-scope="scope">
-                            {{scope.$index}}
                             <el-form-item
                                 class="specError"
                                 :prop="'goodsSpecList.'+ scope.$index + '.activityQuantity' "
@@ -146,6 +145,7 @@
                                 <el-input
                                     v-model="scope.row.activityQuantity"
                                     @change="changeQuantity"
+                                    @input="watchkc(scope.$index,$event)"
                                     :maxlength="6"
                                     :min="0"
                                     type="text"
@@ -164,6 +164,7 @@
                                 <el-input
                                     v-model="scope.row.personLimit"
                                     @change="changeLimit"
+                                    @input="watchxg(scope.$index,$event)"
                                     :maxlength="6"
                                     :max="scope.row.cartLimit==0?'999999':scope.row.cartLimit"
                                     :min="0"
@@ -315,19 +316,31 @@ export default {
     this.getDataList();
     this.demo();
   },
-// watch:{
-//       // 活动库存 只能输入数字 最大999999
-//       'goodsSpecList.scope.$index.activityQuantity':function (newV,oldV) {
-//           debugger
-//           for(let i=0;i<newV.length;i++){
-//               // 删除非数字的输入
-//               if(!/[0-9]/g.test(newV[i].activityQuantity)){
-//                   this.goodsSpecList[i].activityQuantity= newV.replace(newV[i],"")
-//               }
-//           }
-//       },
-// },
   methods: {
+      watchkc(index,val){
+          for(let j=0;j<3;j++){
+              // 最大输入6位数 循环多遍达到删除非数字输入效果
+              for(let i=0;i<val.length;i++){
+                  // 删除非数字的输入
+                  if(!/[0-9]/g.test(val[i])){
+                      val= val.replace(val[i],"")
+                  }
+              }
+          }
+          this.goodsSpecList[index].activityQuantity= val
+      },
+      watchxg(index,val){
+          for(let j=0;j<3;j++){
+              // 最大输入6位数 循环3遍达到删除非数字输入效果
+              for(let i=0;i<val.length;i++){
+                  // 删除非数字的输入
+                  if(!/[0-9]/g.test(val[i])){
+                      val= val.replace(val[i],"")
+                  }
+              }
+          }
+          this.goodsSpecList[index].personLimit= val
+      },
     closeDialog() {
       this.$refs.editDataForm.resetFields();
     },
