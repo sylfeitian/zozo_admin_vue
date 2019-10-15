@@ -122,8 +122,14 @@ import { isMobile,isIdCard } from '@/utils/validate'
 				},
             }
         },
+
         components:{
          
+        },
+        watch:{
+            'dataForm.idCard':function(newV,oldV) {
+               this.dataForm.idCardTemp =   this.dataForm.idCard.slice(0,12)+"******"
+            },
         },
         methods:{
             init(row){

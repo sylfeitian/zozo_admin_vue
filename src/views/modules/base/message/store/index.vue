@@ -11,7 +11,7 @@
         <el-input v-model="dataFormShow.idJp" placeholder="请输入" maxlength="30" ></el-input>
       </el-form-item>
       <el-form-item label="店铺名称：">
-        <el-input v-model="dataFormShow.storeName" placeholder="请输入"></el-input>
+        <el-input v-model="dataFormShow.stName" placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item label="营业状态：">
         <el-select v-model="dataFormShow.operateFlag" placeholder="请选择">
@@ -174,7 +174,7 @@ export default {
       dataFormShow: {
         id: "",
         idJp: "", //店铺ID
-        storeName: "", //店铺名称
+        stName: "", //店铺名称
         operateFlag: "", //营业状态:0待营业;1营业中;2已停业
         operateFlagJp: "" //日本营业状态:0营业;1停业
       },
@@ -246,10 +246,10 @@ export default {
     // 重置
     reset() {
       this.dataFormShow.idJp = ""; //店铺ID
-      this.dataFormShow.storeName = ""; //店铺名称
+      this.dataFormShow.stName = ""; //店铺名称
       this.dataFormShow.operateFlag = ""; //营业状态
       this.dataForm.idJp = ""; //店铺ID
-      this.dataForm.storeName = ""; //店铺名称
+      this.dataForm.stName = ""; //店铺名称
       this.dataForm.operateFlag = ""; //营业状态
       this.getAndHandleDataList();
     },
