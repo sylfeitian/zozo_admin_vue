@@ -459,7 +459,7 @@
                             startTime: this.dataForm.startTime,//生效日期 ,
                             threshold: this.dataForm.threshold,//使用门槛 ,
                             totalNums: this.dataForm.totalNums,//总发行量 ,
-                            validityDays: this.dataForm.validityDays,//有效天数 ,
+                            validityDays:this.validityPeriodType==0?0:this.dataForm.validityDays,//有效天数 ,
                             validityPeriodType: this.validityPeriodType,//有效期类型，0：日期范围，1：固定天数
                         }
                         if (this.editSatusId) obj.id = this.editSatusId//优惠券活动id

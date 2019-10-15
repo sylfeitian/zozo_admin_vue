@@ -126,6 +126,7 @@ export default {
 }
 /deep/ .el-breadcrumb{margin-bottom: 25px;}
 /deep/ .aui-content__wrapper{
+  // z-index: 1;
    margin-right: 10px;
    margin-top: 56px;
    border-top-left-radius: 5px;

@@ -45,13 +45,13 @@
             <div>张 &nbsp;&nbsp;&nbsp;&nbsp; 0代表不限制，每人最多限制5张</div>
         </el-form-item>
         <el-form-item label="有效期：" prop="totalNums">
-            <el-radio v-model="validityPeriodType" :label="0">
+            <el-radio v-model="validityPeriodType" :label="'0'">
                 <span>日期范围</span>&nbsp;
                 <el-date-picker
                         v-model="valuetime"
                         format="yyyy-MM-dd "
                         type="daterange"
-                        value-format="yyyy-MM-dd "
+                        value-format="yyyy-MM-dd"
                         align="right"
                         unlink-panels
                         range-separator="-"
@@ -61,7 +61,7 @@
                 </el-date-picker>
             </el-radio>
             <br>
-            <el-radio v-model="validityPeriodType" :label="1">
+            <el-radio v-model="validityPeriodType" :label="'1'">
                 <span>固定天数</span>&nbsp;
                 <el-input placeholder="20" v-model="dataForm.validityDays" maxlength="3" style="width:220px;">
                     <template slot="append">天</template>
@@ -136,7 +136,7 @@ export default {
                 startTime:'',//生效日期
                 endTime:'',// 截止日期
             },
-            validityPeriodType:0,//有效期类型，0：日期范围，1：固定天数
+            validityPeriodType:'0',//有效期类型，0：日期范围，1：固定天数
             dataRule : {
                 name : [
                     { required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -338,7 +338,7 @@ export default {
                         name:  this.dataForm.name,//优惠券名称 ,
                         threshold: parseInt(this.dataForm.threshold),//使用门槛 ,
                         totalNums:  this.dataForm.totalNums,//总发行量 , ,
-                        validityDays:  this.dataForm.validityDays,// 有效天数 ,
+                        validityDays: this.validityPeriodType==0?0:this.dataForm.validityDays,// 有效天数 ,
                         limitNum: this.dataForm.limitNum,//每人限领数量 ,
                         memberPoints:this.dataForm.memberPoints?parseInt(this.dataForm.memberPoints):0,//兑换优惠券用的积分数
                         validityPeriodType:parseInt(this.validityPeriodType),//有效期类型，0：日期范围，1：固定天数

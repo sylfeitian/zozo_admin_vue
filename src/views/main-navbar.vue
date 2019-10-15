@@ -339,6 +339,9 @@ export default {
     }
   }
 }
+.aui-navbar{
+  z-index: 2000;
+}
 .aui-sidebar--fold {
   .aui-navbar__header {
     //  width: 64px;
