@@ -54,7 +54,7 @@ export const shoplabelImport = `${allBase}/shoplabel/import`;
 // 导出
 export const syslexiconExport = `${allBase}/syslexicon/export`;
 // 导入
-export const syslexiconImport = `${allBase}//?????/暂时没接口`;
+export const syslexiconImport = `${allBase}/syslexicon/importExcel`;
 
 
 

@@ -18,17 +18,17 @@
                 <el-button type="primary" @click="addGoods()">添加商品</el-button>
             </el-form-item>
         </el-form>
-        
+
         <el-table
            :data="dataList"
             v-loading="dataListLoading"
             @selection-change="handleSelectionChange"
             border
             style="width: 100%">
-            <el-table-column 
-                type="selection" 
-                header-align="center" 
-                align="center" 
+            <el-table-column
+                type="selection"
+                header-align="center"
+                align="center"
                 width="50">
             </el-table-column>
             <!-- <el-table-column
@@ -187,7 +187,7 @@
                 categoryactivitygoodsUpdateBach(obj).then((res)=>{
                             if(res.code==200){
                             this.$message.success(res.msg);
-                            // this.getDataList();
+                            this.getDataList();
                         }else{
                             this.$message.error(res.msg);
                         }
@@ -227,12 +227,12 @@
                             that.$message.error(res.msg);
                         }
                     })
-                }).catch(() => { 
+                }).catch(() => {
                 })
             },
         }
     };
 </script>
 <style lang="scss" scoped>
-    
+
 </style>

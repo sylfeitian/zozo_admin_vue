@@ -329,6 +329,10 @@ export const setMemberPass = params => { return http.put(`${base}/member`, param
 export const areaList = params => { return http.get(`${base}/area/first/list`, params).then(res => res.data); };
 //二级、三级、四级
 export const proList = params => { return http.get(`${base}/area/parent/${params.id}`, params).then(res => res.data); };
+// 查询用户认证详细信息
+export const memberDeatilInfo = params => { return http.get(`${base}/member/deatil/info`, params).then(res => res.data); };
+
+
 
 // zozo会员管理--------------------------------------------------------------------------------------------------------------------
 // 会员详情

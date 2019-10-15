@@ -107,6 +107,14 @@
                     :loading="buttonStatus"
                 >确 定</el-button>
             </span>
+            <el-popover
+                    placement="top-start"
+                    width="200"
+                    trigger="click"
+                    content=" 场次启用后会自动帮您生成7天的秒杀活动场次，每过一天自动生成一场，若您关闭或删除该场次，不会再继续生成场次，但已生成的场次不可删除">
+                <div class="ques" slot="reference">?</div>
+            </el-popover>
+
         </el-dialog>
     </div>
 </template>
@@ -362,4 +370,19 @@ export default {
     width: 300px;
   }
 }
+    .ques{
+        display: inline-block;
+        background: #666666;
+        color: #ffffff;
+        border-radius: 100%;
+        width: 18px;
+        height: 18px;
+        text-align: center;
+        line-height: 18px;
+        font-size: 10px;
+        position: absolute;
+        top: 23px;
+        left: 120px;
+        cursor: pointer;
+    }
 </style>

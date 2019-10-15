@@ -54,9 +54,9 @@
                     <span>日期范围</span>&nbsp;
                     <el-date-picker
                             v-model="valuetime"
-                             format="yyyy-MM-dd HH:mm:ss"
+                             format="yyyy-MM-dd "
                             type="daterange"
-                            value-format="yyyy-MM-dd HH:mm:ss"
+                            value-format="yyyy-MM-dd "
                             align="right"
                             unlink-panels
                             range-separator="-"
@@ -301,50 +301,51 @@
             },
             // 总发行量
             'dataForm.totalNums':function(newV,oldV) {
-
-                for(let i=0;i<newV.length;i++){
+                newV=~~newV;
+                for(let i=0;i<newV.toString().length;i++){
                     // 只能输入数字
                     if(!/[0-9]/g.test(newV[i])){
-                        this.dataForm.totalNums = newV.replace(newV[i],"")
+                        this.dataForm.totalNums = newV.toString().replace(newV[i],"")
                     }
                 }
             },
             // 面额
             'dataForm.faceValue':function(newV,oldV) {
-
-                for(let i=0;i<newV.length;i++){
+                newV=~~newV;
+                for(let i=0;i<newV.toString().length;i++){
                     // 只能输入数字和小数点
                     if(!/[0-9|\.]/g.test(newV[i])){
-                        this.dataForm.faceValue = newV.replace(newV[i],"")
+                        this.dataForm.faceValue = newV.toString().replace(newV[i],"")
                     }
                 }
             },
             // 使用门槛
             'dataForm.threshold': function (newV, oldV) {
-
-                for (let i = 0; i < newV.length; i++) {
+                newV=~~newV;
+                for (let i = 0; i < newV.toString().length; i++) {
                     // 只能输入数字
                     if (!/[0-9]/g.test(newV[i])) {
-                        this.dataForm.threshold = newV.replace(newV[i], "")
+                        this.dataForm.threshold = newV.toString().replace(newV[i], "")
                     }
                 }
             },
             // 所需积分
             'dataForm.memberPoints': function (newV, oldV) {
-
-                for (let i = 0; i < newV.length; i++) {
+                newV=~~newV;
+                for (let i = 0; i < newV.toString().length; i++) {
                     // 只能输入数字
                     if (!/[0-9]/g.test(newV[i])) {
-                        this.dataForm.memberPoints = newV.replace(newV[i], "")
+                        this.dataForm.memberPoints = newV.toString().replace(newV[i], "")
                     }
                 }
             },
-            // 没人限领
+            // 每人限领
             'dataForm.limitNum':function(newV,oldV) {
-                for(let i=0;i<newV.length;i++){
+                newV=~~newV;
+                for(let i=0;i<newV.toString().length;i++){
                     // 只能输入数字
                     if(!/[0-9]/g.test(newV[i])){
-                        this.dataForm.limitNum = newV.replace(newV[i],"")
+                        this.dataForm.limitNum = newV.toString().replace(newV[i],"")
                     }
                 }
             },
