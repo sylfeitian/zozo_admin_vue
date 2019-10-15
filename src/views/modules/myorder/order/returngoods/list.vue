@@ -11,7 +11,7 @@
                 <el-input v-model="dataForm.aftersaleSn" placeholder="请输入售后单号" clearable></el-input>
             </el-form-item>
             <el-form-item label="订单号：" prop="orderSn">
-                <el-input v-model="dataForm.orderSn" placeholder="请输入订单号" clearable></el-input>
+                <el-input  v-model="dataForm.orderSn" placeholder="请输入订单号" clearable></el-input>
             </el-form-item>
 <!--            <el-form-item label="商户名称：" prop="storeName">-->
 <!--                <el-input v-model="dataForm.storeName" placeholder="商户名称" clearable></el-input>-->
@@ -85,7 +85,6 @@
                     align="center"
             >
             <!-- （退货退款 10待审核、20待退货、30待入库、40待退款、50退款中、60退款完成、70退款失败、80售后取消） 仅退款（10退款中、20退款完成、30退款失败） -->
-                    auditStatus
                     <template slot-scope="scope">
                         <el-tag v-if="scope.row.auditStatus==0" type="danger">待审核</el-tag>
                         <el-tag v-else-if="scope.row.auditStatus==2" type="danger">审核不通过</el-tag>
@@ -107,7 +106,7 @@
                 <template slot-scope="scope">
                     <el-button size="mini" type="text" @click="afterSaleDetailFn(scope.row)">查看</el-button>
                     <!-- <el-button size="mini" type="text" @click="exammineFn(scope.row)" >审核</el-button> -->
-                    <el-button size="mini" type="text" @click="confirmGoodsFn(scope.row)" v-if="scope.row.status==40">确认收货</el-button>
+                    <el-button size="mini" type="text" @click="confirmGoodsFn(scope.row)" v-if="scope.row.status==20">确认收货</el-button>
                     <el-button size="mini" type="text" @click="returnMoneyFn(scope.row)"  v-if="scope.row.status==30">同意退款</el-button>
                 </template>
             </el-table-column>
@@ -190,6 +189,31 @@
             // exammine,
             confirmGoodsModel,
             returnMoneyModel,
+        },
+        watch:{
+        	'dataForm.orderSn':function(newV,oldV) {
+                var chineseCount = 0,characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                  
+                    if(!(/[^#￥*%&',;=? $\x22]+/.test(newV[i]))){
+//                    console.log(i,newV[i],!(/[^#￥*%&',;=? $\x22]+/.test(newV[i])));?
+            this.dataForm.orderSn = this.dataForm.orderSn.substring(0,i)+this.dataForm.orderSn.substring(i+1); 
+                      
+                    }
+                    
+                    
+//                  if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+//                      chineseCount = chineseCount + 2;
+//                  } else { //字符
+//                      characterCount = characterCount + 1;
+//                  }
+//                  var count = chineseCount + characterCount;
+//                  if (count > 12) { //输入字符大于12的时候过滤
+//                      this.dataForm.styleName = newV.substr(0,(chineseCount/2+characterCount)-1)
+//                  }
+                    
+                }
+            }
         },
         methods: {
              orderDetFn(row){

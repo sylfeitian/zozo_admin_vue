@@ -57,7 +57,7 @@
 		    width="180">
 		</el-table-column>
 		<el-table-column
-		    prop="name"
+		    prop="goodsName"
 		    label="商品名称">
 		</el-table-column>
 		<el-table-column

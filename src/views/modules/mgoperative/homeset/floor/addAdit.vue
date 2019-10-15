@@ -106,7 +106,7 @@
             </el-radio-group>
         </el-form-item>
         <el-form-item prop="sort" label="优先级排序：">
-            <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :max="255" class="floorInput"></el-input-number>
+            <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :max="10000000" class="floorInput"></el-input-number>
         </el-form-item>
         <div class="btnSub">
             <el-button @click="changePage">{{ $t('cancel') }}</el-button>

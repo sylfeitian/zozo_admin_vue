@@ -133,8 +133,12 @@
             }
             
         },
+        created(){
+        	
+        },
         methods: {
             init (row) {
+            	this.getDatacategoryFn();
                 this.visible = true;
                 this.saveLoading = false;
                 this.$nextTick(() => {
@@ -143,6 +147,7 @@
                     this.title = "修改";
                     // this.backScan();
                     this.getData();
+                   
                 })
             },
             //编辑回显
@@ -203,7 +208,7 @@
                 this.dataForm.categoryId = "";//分类id
 
                 }
-                console.log(this.dataFormShow.categoryId)
+                console.log(this.dataForm.categoryId)
             },
             // 表格前端的checkbox
             handleSelectionChange(val) {

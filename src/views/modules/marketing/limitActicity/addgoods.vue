@@ -57,7 +57,7 @@
 		    width="180">
 		</el-table-column>
 		<el-table-column
-		    prop="name"
+		    prop="goodsName"
 		    label="商品名称">
 		</el-table-column>
 		<el-table-column
@@ -102,7 +102,7 @@
                     <el-button  v-if="scope.row.selfActivityState==1" type="text" size="small" @click="chooseFn(scope.row)" >取消选择</el-button>
                     <el-button v-if="scope.row.selfActivityState ==1" type="text" size="small" @click="editGoodsSku(scope.row)">修改</el-button>
                 </div>
-		    	
+
 		    </template>
 	  	</el-table-column>
 	</el-table>
@@ -131,7 +131,7 @@
     export default {
         mixins: [mixinViewModule],
         props:['activityId'],
-        components:{ 
+        components:{
             Bread,
             editGoodsSku
         },
@@ -290,5 +290,5 @@
             }
         }
     }
-        
+
 </style>

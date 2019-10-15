@@ -72,6 +72,23 @@
         },
         computed:{},
         mounted(){},
+        watch: {
+              'dataForm.name': function (newV, oldV) {
+                  debugger
+                  var chineseCount = 0, characterCount = 0;
+                  for (let i = 0; i < newV.length; i++) {
+                      if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                          chineseCount = chineseCount + 2;
+                      } else { //字符
+                          characterCount = characterCount + 1;
+                      }
+                      var count = chineseCount + characterCount;
+                      if (count > 500) { //后台字段长度大概是255 限制250汉字
+                          this.dataForm.name = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
+                      }
+                  }
+              }
+        },
         methods: {
             init (row) {
                 this.visible = true;

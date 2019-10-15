@@ -76,7 +76,7 @@
 								this.loading = true;
 								var obj=  {
 									id:this.orderBase.orderId,//物流单号
-									remarks:this.dataForm.remarks,//备注
+									remark:this.dataForm.remarks,//备注
 								}
 								managerRemark(obj).then((res) => {
 									this.loading = false;

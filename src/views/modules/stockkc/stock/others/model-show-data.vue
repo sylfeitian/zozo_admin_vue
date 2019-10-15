@@ -17,7 +17,7 @@
                 <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" maxlength="300"></el-input>
             </el-form-item>
             <el-form-item label="商品货号：">
-                <el-input v-model="dataForm.goodCsId" placeholder="请输入spu编号"></el-input>
+                <el-input v-model="dataForm.goodCsId" placeholder="请输入spu编号" maxlength="30"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="search()">查询</el-button>
@@ -102,6 +102,16 @@
         },
         props:['dataId','showdata'],
         watch:{
+            'dataForm.goodCsId':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    if(!/[a-zA-Z0-9\s]/.test(newV[i])){
+                        this.dataForm.goodCsId = newV.replace(newV[i],"")
+                    }
+                }
+                if(newV.length>30){
+                    this.dataForm.goodCsId = newV.substr(0,30)
+                }
+            },
         	'dataForm.goodsName':function(newV,oldV) {
                 var chineseCount = 0,characterCount = 0;
                 for (let i = 0; i < newV.length; i++) {

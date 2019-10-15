@@ -25,7 +25,7 @@
                 </el-option>
             </el-select>
         </el-form-item>
-         <el-form-item label="上传日期：">
+         <el-form-item label="活动时间：">
 		        <el-date-picker
 			        v-model="valuetime"
 			        type="daterange"
@@ -37,7 +37,7 @@
 					value-format="yyyy-MM-dd"
 			        @blur='acttime'>
 			    </el-date-picker>
-		    </el-form-item> 
+		    </el-form-item>
         <el-form-item  label="审核状态：">
             <el-select v-model="dataForm.auditState" clearable  placeholder="请选择">
                 <el-option
@@ -194,7 +194,7 @@ import { storeGrade } from '@/api/api'
 import Bread from "@/components/bread";
 import exammine from './model-exammine.vue'
 import stopModel from './model-stop.vue'
-  
+
 export default {
   mixins: [mixinViewModule],
   data () {
@@ -216,7 +216,7 @@ export default {
       ],
 	  stopModelVisible:false,
 	  exammineVisible:false,
-      couponKindList1: [{ id: '', name: "全部" },{ id: 0, name: "普通优惠券" },{ id: 1, name: "新人专享券" },{ id: 3, name: "积分兑换券" }],
+      couponKindList1: [{ id: '', name: "全部" },{ id: 0, name: "普通优惠券" },{ id: 1, name: "新人专享券" },{ id: 2, name: "积分兑换券" }],
       activitesstates: [{ id: '', name: "全部" },{ id: 0, name: "未开始" },{ id: 1, name: "进行中" },{ id: 2, name: "已结束" }],
       breaddata: ["营销管理", "优惠券"],
       valuetime:"",
@@ -280,7 +280,7 @@ export default {
 			  this.$refs.stopModelCompon.init(row);
 		  })
 	  },
-        
+
   }
 };
 </script>
