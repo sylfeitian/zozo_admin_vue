@@ -10,9 +10,9 @@
           <el-input v-model="dataForm.memberName" placeholder="请输入会员账号" clearable></el-input>
       </el-form-item>
 
-      <!-- <el-form-item label="订单号：">
-          <el-input v-model="dataForm.goodsCsIdJp" placeholder="请输入售后单号" clearable></el-input>
-      </el-form-item> -->
+      <el-form-item label="订单号：">
+          <el-input v-model="dataForm.orderSn" placeholder="请输入订单号" clearable></el-input>
+      </el-form-item>
 
       <el-form-item label="skuid：">
           <el-input v-model="dataForm.goodsCsIdJp" placeholder="请输入skuid" clearable maxlength="30" ></el-input>
@@ -220,6 +220,7 @@ export default {
       breaddata: ["订单管理", "评论管理"],
       dataForm: {
         memberName: "",//会员账号
+        orderSn:'',//订单号
         goodsCsIdJp: "",//skuId
         goodsName: "",//商品名称
         sizeFeeling: "",//尺码感受 0合适 1偏大 2偏小

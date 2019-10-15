@@ -293,6 +293,7 @@
             // 同意退货
              returnMoneyFn(row){
                 this.returnMoneyVisible = true;
+                row.isAgree= 1;
                 this.$nextTick(() => {
                    this.$refs.returnMoneyCompon.init(row)
                 })

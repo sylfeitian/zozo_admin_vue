@@ -109,7 +109,7 @@
         width="30%"
         :before-close="handleClose">
         
-         <el-form label-width="100px" :model="dataForm" :rules="dataRule"  class="elForm" ref="editForm">
+         <el-form label-width="100px"   class="elForm" ref="editForm">
             <el-form-item label="身份证号码：">
                  <span>{{myIdCardInfo.idCard}}</span>
             </el-form-item>

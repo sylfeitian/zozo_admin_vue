@@ -1,6 +1,6 @@
 <template>
     <div>
-     <Bread :breaddata="breaddata" @changePage="changePage" :index="'1'"></Bread>
+     <Bread :breaddata="breaddata" @changePage="changePage" :index="index"></Bread>
        <el-radio-group v-model="activeName" @change="handleClick">
             <el-radio-button label="vipDetail">会员详情</el-radio-button>
             <el-radio-button label="editVip">编辑资料</el-radio-button>
@@ -23,9 +23,9 @@ import Bread from "@/components/bread";
             return {
               row:"",
               activeName: "",
-              breaddata: ["会员管理", "会员列表"],
             }   
         },
+        props:["breaddata","index"],
         components:{
             vipDetail,
             editVip,
@@ -44,7 +44,7 @@ import Bread from "@/components/bread";
                 // }else if(tab== "loginLog"){
                 // }
                 this.$nextTick(()=>{
-                    this.$refs[tab+"Compon"].init(this.row)
+                     this.$refs[tab+"Compon"].init(this.row)
                 })
             },
             changePage(){
