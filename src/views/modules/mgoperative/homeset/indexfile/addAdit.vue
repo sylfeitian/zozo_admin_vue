@@ -28,7 +28,7 @@
             </img-cropper>
         </el-form-item>
         <el-form-item prop="sort" label="排序：">
-            <el-input-number v-model="dataForm.sort" controls-position="right" :min="1" :max="255" class="floorInput"></el-input-number>
+            <el-input-number v-model="dataForm.sort" controls-position="right" :min="1" :max="10000000" class="floorInput"></el-input-number>
         </el-form-item>
         <el-form-item prop="showFlag" label="是否显示：">
             <el-radio-group v-model="dataForm.showFlag">

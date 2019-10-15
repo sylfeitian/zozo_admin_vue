@@ -49,7 +49,7 @@
             </el-date-picker>
         </el-form-item>
         <el-form-item prop="sort" label="排序：">
-            <el-input-number v-model="dataForm.sort" controls-position="right" :min="1" :max="255"></el-input-number>
+            <el-input-number v-model="dataForm.sort" controls-position="right" :min="1" :max="10000000"></el-input-number>
         </el-form-item>
         <div class="btnSub">
             <el-button @click="changePage">{{ $t('cancel') }}</el-button>

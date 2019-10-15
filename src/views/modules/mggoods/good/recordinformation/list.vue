@@ -354,6 +354,7 @@
                 })
             },
             handleClick(tab) {
+            	this.page = 1;
                 if(tab== ""){
                     this.dataFormShow.isTofile  = "1"
                     this.dataFormShow.isTofile2  =""
@@ -365,6 +366,7 @@
                 // this.changeVal = val;
                 this.dataForm.isTofile =  this.dataFormShow.isTofile;
                 this.getDataList();
+                
             },
             getData(){
                 this.page = 1;

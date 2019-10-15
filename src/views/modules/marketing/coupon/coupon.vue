@@ -25,7 +25,7 @@
                 </el-option>
             </el-select>
         </el-form-item>
-         <el-form-item label="上传日期：">
+         <el-form-item label="活动时间：">
 		        <el-date-picker
 			        v-model="valuetime"
 			        type="daterange"

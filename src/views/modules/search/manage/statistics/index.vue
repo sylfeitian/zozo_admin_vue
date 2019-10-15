@@ -21,6 +21,7 @@
                 border
                 v-loading="dataListLoading"
                 style="width: 100%;margin-top: 10px;"
+                @sort-change = "actsortchange"
         >
             <el-table-column label="序号" width="140" align="center">
                 <template slot-scope="scope">
@@ -96,6 +97,14 @@
                 this.dataForm.keyword = "";//关键字搜索
                 this.getDataList();
             },
+            //排序
+            actsortchange(column, prop, order ){
+//          	order=="ascending"  "descending"
+//	            prop="totalSearchNum"  总搜索数
+//	            prop="monthSearchNum" "本月搜索次数"
+//	            prop="daySearchNum" "今日搜索次数"
+            
+            }
         }
     }
 </script>

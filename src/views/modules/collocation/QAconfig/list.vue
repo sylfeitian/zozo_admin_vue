@@ -70,7 +70,7 @@
                 <el-input v-model="editDataForm.sgName" placeholder="请输入10字以内的名称"></el-input>
             </el-form-item>
             <el-form-item label="排序：" prop="sort">
-                <el-input v-model="editDataForm.sort" type="number"></el-input>
+            	 <el-input-number v-model="editDataForm.sort" min="1" max="10000000"></el-input-number>
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
