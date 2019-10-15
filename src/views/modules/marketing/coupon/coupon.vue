@@ -207,7 +207,11 @@ export default {
           deleteIsBatch: false,
           deleteIsBatchKey: 'id'
       },
-      dataForm: {},
+      dataForm: {
+      	type:null,
+      	state:null,
+      	auditState:null
+      },
       storeTypes:[
 		  {id: '',label: '全部'},
           {id: '0',label: '未审核'},
@@ -242,6 +246,9 @@ export default {
         },
         reset() {
             this.dataForm = {};
+            this.dataForm.getStartTime =  '';
+						this.dataForm.getEndTime = '';
+            this.valuetime = '',
             this.getDataList();
         },
         addCoupon(row){
@@ -261,8 +268,8 @@ export default {
         },
         //开始结束时间
 		acttime(){
-			this.dataForm.getStartTime = this.valuetime[0];
-			this.dataForm.getEndTime = this.valuetime[1];
+			this.dataForm.getStartTime = this.valuetime[0] || '';
+			this.dataForm.getEndTime = this.valuetime[1] || '';
 		},
 		deleteHandleLocal(row){
 			this.deleteHandle(row.id);

@@ -62,13 +62,14 @@
                             range-separator="-"
                             start-placeholder="开始日期"
                             end-placeholder="结束日期"
+                            :picker-options="pickerOptionsvalidityPeriodType"
                             @blur='acttime'>
                     </el-date-picker>
                 </el-radio>
                 <br>
                 <el-radio v-model="validityPeriodType" label="1">
                     <span>固定天数</span>&nbsp;
-                    <el-input placeholder="20" v-model="dataForm.validityDays" maxlength="3" style="width:220px;">
+                     <el-input-number style="width:220px;" v-model="dataForm.validityDays"  placeholder="20" :min="1" :max="999" label="20"></el-input-number>
                         <template slot="append">天</template>
                     </el-input>
                 </el-radio>
@@ -117,7 +118,7 @@
     var validthreshold = (rule, value, callback) => {
         if (value / 1 > 1000000) {
             callback(new Error('请输入1000000以内的数字'))
-        } else if (value <= 0) {
+        } else if (value < 0) {
             callback(new Error('只能输入大于0的数'))
         } else {
             callback()
@@ -214,6 +215,11 @@
                         }
                     }
                 },
+                pickerOptionsvalidityPeriodType: { 
+			        disabledDate(time) {
+			            return time.getTime() < Date.now() - 8.64e7;//如果没有后面的-8.64e7就是不可以选择今天的 
+			        }
+			  	},
                 value1isshow: false,
                 value2isshow: false,
                 value1Time: {},
@@ -398,10 +404,12 @@
                         this.dataForm.validityDays = res.data.validityDays// 有效天数 ,
                         this.dataForm.memberPoints =  res.data.memberPoints//兑换优惠券用的积分数
                         this.validityPeriodType =  res.data.validityPeriodType.toString();//有效期类型，0：日期范围，1：固定天数
-                        this.dataForm.startTime = this.dateToStr(new Date(res.data.startTime)) //生效日期
-                        this.dataForm.endTime =  this.dateToStr(new Date(res.data.endTime)) // 截止日期 
-                        if(res.data.startTime && res.data.endTime){
+                       if(res.data.startTime && res.data.endTime){
+                        	this.dataForm.startTime = this.dateToStr(new Date(res.data.startTime)) //生效日期
+                        	this.dataForm.endTime =  this.dateToStr(new Date(res.data.endTime)) // 截止日期 
                             this.valuetime = [res.data.startTime,res.data.endTime]
+                        }else{
+                        	this.valuetime='';
                         }
                     }
                 })
