@@ -38,7 +38,7 @@
 		    width="180">
 		</el-table-column>
 		<el-table-column
-		    prop="name"
+		    prop="goodsName"
 		    label="商品名称">
 		</el-table-column>
         <el-table-column
@@ -175,7 +175,7 @@
                     limitActivityGoodsSorts(obj).then((res)=>{
                              if(res.code==200){
                                 this.$message.success(res.msg);
-                                // that.getDataList();
+                                that.getDataList();
                             }else{
                                 this.$message.error(res.msg);
                             }

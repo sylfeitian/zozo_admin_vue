@@ -148,7 +148,8 @@ import { isMobile,isIdCard } from '@/utils/validate'
                         if(this.dataForm.idCard){
                             this.dataForm.idCardTemp =   this.dataForm.idCard.slice(0,12)+"******"
                         }
-                        
+                        if(this.dataForm.memberState == 0) this.dataForm.memberState = true;
+                        else if(this.dataForm.memberState == 1) this.dataForm.memberState = false;
                     }
                 })
             },
@@ -156,11 +157,14 @@ import { isMobile,isIdCard } from '@/utils/validate'
             dataFormSubmit(formName){
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        if(this.dataForm.memberState == true) this.dataForm.memberState = 0;
+                        else if(this.dataForm.memberState == false) this.dataForm.memberState = 1;
                         var obj = cloneDeep(this.dataForm);
                         updateZozomember(obj).then((res)=>{
                             console.log(res);
                             if(res.code==200){
-                            this.$message.success(res.msg)
+                                this.$message.success(res.msg)
+                                this.$emit("changePage")
                             }else{
                                 this.$message.error(res.msg)
                             }
