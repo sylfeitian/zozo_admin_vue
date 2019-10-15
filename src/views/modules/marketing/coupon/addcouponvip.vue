@@ -78,7 +78,7 @@
     var validthreshold =(rule, value,callback)=>{
         if (value/1 > 1000000){
             callback(new Error('请输入1000000以内的数字'))
-        }else if(value <= 0){
+        }else if(value < 0){
             callback(new Error('只能输入大于0的数'))
         }else {
             callback()

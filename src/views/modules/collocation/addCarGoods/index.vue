@@ -101,7 +101,7 @@
         width="60%">
         <el-form :inline="true" :model="goodsdataForm">
             <el-form-item label="商品名称：">
-                <el-input v-model="goodsdataForm.storeId" placeholder="商品名称/商品货号" clearable maxlength="300"></el-input>
+                <el-input v-model="goodsdataForm.goodsName" placeholder="商品名称/商品货号" clearable maxlength="300"></el-input>
             </el-form-item>
             <el-form-item label="选择分类：">
                 <el-cascader
@@ -242,6 +242,9 @@
             },
             //打开新增编辑活动弹框
             addActivity(id){
+                this.goodsdataForm.goodsName = '';
+                this.goodsdataForm.categoryId = '';
+                this.selectedOptions = [];
                 this.goodsVisible = true;
                 this.getgoodsList();
             },
