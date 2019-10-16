@@ -87,36 +87,13 @@
 </template>
 
 <script>
+    import Cookies from 'js-cookie'
     import {backScanWare, addWare, updataWare} from '@/api/api'
     import {areaFirst, areaByParentId, verifyWare} from "@/api/api"
 
     export default {
         name: "model-add-edit-data",
         data() {
-            var validatorWarehouseName = (rule, value, callback) => {
-                if (value != '') {
-                    var obj = {
-                        params: {
-                            id: this.row ? this.row.id : "",
-                            name: value
-                        }
-                    }
-                    verifyWare(obj).then((res) => {
-                        if (res.code==200) {
-                            if(res.data){
-                                callback()
-                            }else{
-                                callback(new Error('仓库名称已经存在'))
-                            }
-                        } else {
-                            callback()
-                        }
-                    })
-
-                } else {
-                    callback()
-                }
-            }
             return {
                 visible: false,
                 loading: false,
@@ -140,24 +117,6 @@
                 optionsArea2: [],
                 optionsArea3: [],
                 optionsArea4: [],
-                dataRule: {
-                    warehouseName: [
-                        {required: true, message: '必填项不能为空', trigger: 'blur'},
-                        {validator: validatorWarehouseName, trigger: 'blur'}
-                    ],
-                    type: [
-                        {required: true, message: '必填项不能为空', trigger: 'blur'},
-                    ],
-                    name: [
-                        {required: true, message: '必填项不能为空', trigger: 'blur'},
-                    ],
-                    phone: [
-                        {required: true, message: '必填项不能为空', trigger: 'blur'},
-                    ],
-                    addressInfo: [
-                        {required: true, message: '必填项不能为空', trigger: 'blur'},
-                    ]
-                },
                 optionsApplication: [],
                 optionsRight: [],
                 title: '',
@@ -201,6 +160,67 @@
                     if (!/[0-9|\-]/g.test(newV[i])) { //数字、字母
                         this.dataForm.phone = newV.replace(newV[i], "")
                     }
+                }
+            }
+        },
+        computed: {
+            dataRule () {
+                var validatorWarehouseName = (rule, value, callback) => {
+                    if (value != '') {
+                        var obj = {
+                            params: {
+                                id: this.row ? this.row.id : "",
+                                name: value
+                            }
+                        }
+                        verifyWare(obj).then((res) => {
+                            if (res.code==200) {
+                                if(res.data){
+                                    callback()
+                                }else{
+                                    callback(new Error('仓库名称已经存在'))
+                                }
+                            } else {
+                                callback()
+                            }
+                        })
+
+                    } else {
+                        callback()
+                    }
+                };
+                var validateAddressInfo = (rule, value, callback) =>{
+                    var tempForm={
+                        provinceId:Cookies.get("provinceId"),
+                        cityId:Cookies.get("cityId"),
+                        areaId:Cookies.get("areaId"),
+                        streetId:Cookies.get("streetId"),
+                        addressInfo:Cookies.get("addressInfo"),
+                    }
+                    if(tempForm.provinceId === "" || tempForm.streetId === "" || tempForm.addressInfo === "" || tempForm.areaId === "" || tempForm.cityId === ""){
+                        callback(new Error('必填项不能为空'))
+                    }else{
+                        callback()
+                    }
+                };
+                return{
+                    warehouseName: [
+                        {required: true, message: '必填项不能为空', trigger: 'blur'},
+                        {validator: validatorWarehouseName, trigger: 'blur'}
+                    ],
+                    type: [
+                        {required: true, message: '必填项不能为空', trigger: 'blur'},
+                    ],
+                    name: [
+                        {required: true, message: '必填项不能为空', trigger: 'blur'},
+                    ],
+                    phone: [
+                        {required: true, message: '必填项不能为空', trigger: 'blur'},
+                    ],
+                    addressInfo: [
+                        {required: true, message: '必填项不能为空', trigger: 'blur'},
+                        { validator: validateAddressInfo, trigger: 'blur' }
+                    ]
                 }
             }
         },
@@ -310,6 +330,11 @@
             },
             // 提交
             dataFormSubmit(formName) {
+                Cookies.set('provinceId', this.dataForm.provinceId)
+                Cookies.set('cityId', this.dataForm.cityId)
+                Cookies.set('areaId', this.dataForm.areaId)
+                Cookies.set('streetId', this.dataForm.streetId)
+                Cookies.set('addressInfo', this.dataForm.addressInfo)
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                     	if(this.optionsArea4.length != 0 && this.dataForm.streetId==""){
