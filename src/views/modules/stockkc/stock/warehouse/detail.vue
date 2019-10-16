@@ -1,32 +1,32 @@
 <template>
     <div>
         <Bread :breaddata="breaddata" @changePage="changePage" :index="'0'"></Bread>
-        <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm"  >
+        <el-form :inline="true" class="grayLine topGapPadding" :model="form"  >
             <el-form-item prop="id" label="仓库ID：">
-                <span>{{dataForm.id}}</span>
+                <span>{{form.id}}</span>
             </el-form-item>
             <el-form-item prop="warehouseName" label="仓库名称：">
-                <span>{{dataForm.warehouseName}}</span>
+                <span>{{form.warehouseName}}</span>
             </el-form-item>
             <el-form-item prop="addressInfo" label="仓库所在地：">
-                <span>{{dataForm.addressInfo}}</span>
+                <span>{{form.addressInfo}}</span>
             </el-form-item>
             <el-form-item prop="type" label="仓库种类：">
                 <template slot-scope="scope">
-                    <span  v-if="dataForm.type==0">发货仓</span>
-                    <span  v-if="dataForm.type==1">退货仓</span>
+                    <span  v-if="form.type==0">发货仓</span>
+                    <span  v-if="form.type==1">退货仓</span>
                 </template>
             </el-form-item>
             <el-form-item prop="name" label="负责人：">
-                <span>{{dataForm.name}}</span>
+                <span>{{form.name}}</span>
             </el-form-item>
             <el-form-item prop="phone" label="联系方式：">
-                <span>{{dataForm.phone}}</span>
+                <span>{{form.phone}}</span>
             </el-form-item>
             <el-form-item prop="isEnable" label="状态：">
                 <template slot-scope="scope">
-                    <span  v-if="dataForm.isEnable==0">不启用</span>
-                    <span  v-if="dataForm.isEnable==1">启用</span>
+                    <span  v-if="form.isEnable==0">不启用</span>
+                    <span  v-if="form.isEnable==1">启用</span>
                 </template>
             </el-form-item>
         </el-form>
@@ -55,7 +55,7 @@
             </el-form-item>
             <el-form-item>
                 <el-button class="btn" type="primary" @click="getData()">查询</el-button>
-                <el-button class="btn" @click="reset('dataForm')" type="primary" plain>重置</el-button>
+                <el-button class="btn" @click="reset('dataFormShow')" type="primary" plain>重置</el-button>
             </el-form-item>
         </el-form>
         <el-button type="primary"  plain @click="exportHandle()">导出</el-button>
@@ -137,7 +137,7 @@
                     brandName: "",
                     categoryId:""
                 },
-                dataForm:{},
+                form:{},
                 dataList: [],
                 dataListLoading: false,
                 selectCategoryOption:[],
@@ -301,7 +301,7 @@
                 //
                 //     }
                 // })
-                this.dataForm = row;
+                this.form = row;
             },
             changePage(){
                 this.goList();
