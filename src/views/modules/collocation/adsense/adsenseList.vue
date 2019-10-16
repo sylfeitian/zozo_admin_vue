@@ -188,7 +188,6 @@
                     v-model="activiDataForm.linkUrl"
                     maxlength="500"
                     clearable
-                    
                     show-word-limit
                     >
                     </el-input>
