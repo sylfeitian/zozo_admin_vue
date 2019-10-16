@@ -337,10 +337,10 @@
                 Cookies.set('addressInfo', this.dataForm.addressInfo)
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                    	if(this.optionsArea4.length != 0 && this.dataForm.streetId==""){
-                    		this.$message.error('街道不能为空');
-                    		return;
-                    	}
+                    	// if(this.optionsArea4.length != 0 && this.dataForm.streetId==""){
+                    	// 	this.$message.error('街道不能为空');
+                    	// 	return;
+                    	// }
                         this.loading = true;
                         var obj = {
                             warehouseName: this.dataForm.warehouseName,
