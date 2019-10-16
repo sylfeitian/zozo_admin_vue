@@ -341,6 +341,21 @@ export default {
                         startTime:this.dataForm.startTime,//生效日期
                         endTime:this.dataForm.endTime,// 截止日期
                     }
+                    if(parseInt(this.dataForm.threshold)<=parseInt(this.dataForm.faceValue)) {
+                        this.$message({
+                            message: "提交失败，面额必须小于使用门槛",
+                            type: "error",
+                            duration: 1500
+                        })
+                        return false
+                    }else if(parseInt(this.dataForm.limitNum)>parseInt(this.dataForm.totalNums)){
+                        this.$message({
+                            message: "提交失败，限领数量不能大于总发行量",
+                            type: "error",
+                            duration: 1500
+                        })
+                        return false
+                    }
                     if(this.editSatusId) obj.id = this.editSatusId//优惠券活动id
                     var fn = this.type?addActivityNormal:editActivityNormal
                     fn(obj).then((res) => {

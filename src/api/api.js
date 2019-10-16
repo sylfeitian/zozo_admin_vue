@@ -485,6 +485,10 @@ export const settlAdvSave = params => { return http.post(`${base}/setting/expres
 
 //评价详情
 export const evaDets = params => { return http.get(`${base}/evaluate/${params.id}`, params).then(res => res.data); }
+//单条评论删除
+export const evaDel = params => { return http.delete(`${base}/zozogoods/evaluate/${params.id}`, params).then(res => res.data); }
+//评论批量删除
+export const evaDels = params => { return http.delete(`${base}/zozogoods/evaluate/batch`, params).then(res => res.data); }
 //商品评价--回复
 export const msgReply = params => { return http.put(`${base}/evaluate/reply`, params).then(res => res.data); }
 //商品评价--显示/隐藏
