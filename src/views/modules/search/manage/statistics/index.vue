@@ -117,11 +117,19 @@
             },
             //排序
             actsortchange(column, prop, order ){
+            	console.log( order);
 //          	order=="ascending"  "descending"
 //	            prop="totalSearchNum"  总搜索数
 //	            prop="monthSearchNum" "本月搜索次数"
 //	            prop="daySearchNum" "今日搜索次数"
-            
+				//排序字段
+                this.orderField = prop == 'totalSearchNum' ? 'total_search_num' 
+                				: prop == "monthSearchNum" ? 'month_search_num'
+                				: 'day_search_num';
+                //排序方式
+                this.order = order == 'ascending' ? 'asc' : 'desc'
+   		
+            	this.getData();
             }
         }
     }

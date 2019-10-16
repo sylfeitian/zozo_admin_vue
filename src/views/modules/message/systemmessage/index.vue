@@ -60,8 +60,8 @@
 				</template>
 			</el-table-column>
 		</el-table>
-		  <el-dialog title="消息模板设置" :visible.sync="dialogTableVisible">
-			  <el-form :rules="dataRule" :model="ShopmessagetemplateList">
+		  <el-dialog title="消息模板设置" :visible.sync="dialogTableVisible" v-if="dialogTableVisible">
+			  <el-form :rules="dataRule" :model="ShopmessagetemplateList" ref="addForm1">
 				  <el-form-item label="消息类型：">
 					  <span>{{ShopmessagetemplateList.messageTypeName}}</span>
 				  </el-form-item>
@@ -94,7 +94,10 @@
 		  </el-dialog>
 
 	  <el-dialog title="短信模板设置" :visible.sync="dialogTableVisibleOne">
-		  <el-form>
+		  <el-form 
+			:model="ShopmessagetemplateList"
+			:rules="dataRule"
+			ref="addForm2">
 			  <el-form-item label="消息类型：">
 				  <span>{{ShopmessagetemplateList.messageTypeName}}</span>
 			  </el-form-item>
@@ -193,63 +196,69 @@ export default {
             }
 		},
         saveTemplate(type){
-            let that = this;
-            let obj = {};
-            if(type == 0){
-                obj = {
-                    templateType:this.ShopmessagetemplateList.templateType,
-                    messageTitle:this.ShopmessagetemplateList.messageTitle,
-                    messageContent:this.ShopmessagetemplateList.messageContent,
-                    messageId:this.ShopmessagetemplateList.messageId
-                }
-			}else{
-                var res =  /^[0-9A-Z_]+$/g
-                if(!res.test(this.ShopmessagetemplateList.messageTitle)){
-                    this.$message({
-                        message:"请输入正确格式的模板编码",
-                        type: 'error',
-                        duration: 1500,
-                    })
-					return
-				}
-                obj = {
-                    templateType:this.ShopmessagetemplateList.templateType,
-                    messageId:this.ShopmessagetemplateList.messageId,
-					messageCode:this.ShopmessagetemplateList.messageCode,
-					messageTitle:this.ShopmessagetemplateList.messageTitle,
-                }
-			}
-
-            saveShopmessagetemplate(obj).then((res)=>{
-                if(res.code==200){
-                    if(type == 0) that.dialogTableVisible = false;
-                    else that.dialogTableVisibleOne = false;
-                    getmessagepage().then((res)=>{
-                        if(res.code == 200){
-                            that.dataForm = res.data;
-                            that.dataForm.map((v,i)=>{
-                                if(v.isSendInner) v.isSendInner = false;
-                                else v.isSendInner = true;
-                                if(v.isSendSms) v.isSendSms = false;
-                                else v.isSendSms  = true;
-                                if(v.isSendUmeng) v.isSendUmeng = false;
-                                else v.isSendUmeng  = true;
-                            })
-                        }
-                    })
-                    this.$message({
-                        message:res.msg,
-                        type: 'success',
-                        duration: 1500,
-                    })
-                }else{
-                    this.$message({
-                        message:res.msg,
-                        type: 'error',
-                        duration: 1500,
-                    })
-                }
-            })
+					let that = this;
+					let obj = {};
+					var formName="addForm1" 
+					if(type == 0){
+						formName="addForm1"
+						obj = {
+							templateType:this.ShopmessagetemplateList.templateType,
+							messageTitle:this.ShopmessagetemplateList.messageTitle,
+							messageContent:this.ShopmessagetemplateList.messageContent,
+							messageId:this.ShopmessagetemplateList.messageId
+						}
+					}else{
+						formName="addForm2"
+						var res =  /^[0-9A-Z_]+$/g
+						if(!res.test(this.ShopmessagetemplateList.messageTitle)){
+							this.$message({
+								message:"请输入正确格式的模板编码",
+								type: 'error',
+								duration: 1500,
+							})
+							return
+						}
+						obj = {
+							templateType:this.ShopmessagetemplateList.templateType,
+							messageId:this.ShopmessagetemplateList.messageId,
+							messageCode:this.ShopmessagetemplateList.messageCode,
+							messageTitle:this.ShopmessagetemplateList.messageTitle,
+						}
+					}
+					this.$refs[formName].validate((valid) => {
+						if (valid) {
+							saveShopmessagetemplate(obj).then((res)=>{
+								if(res.code==200){
+									if(type == 0) that.dialogTableVisible = false;
+									else that.dialogTableVisibleOne = false;
+									getmessagepage().then((res)=>{
+										if(res.code == 200){
+											that.dataForm = res.data;
+											that.dataForm.map((v,i)=>{
+												if(v.isSendInner) v.isSendInner = false;
+												else v.isSendInner = true;
+												if(v.isSendSms) v.isSendSms = false;
+												else v.isSendSms  = true;
+												if(v.isSendUmeng) v.isSendUmeng = false;
+												else v.isSendUmeng  = true;
+											})
+										}
+									})
+									this.$message({
+										message:res.msg,
+										type: 'success',
+										duration: 1500,
+									})
+								}else{
+									this.$message({
+										message:res.msg,
+										type: 'error',
+										duration: 1500,
+									})
+								}
+							})
+						}
+					})
 		},
         handleClose(val){
             this.ShopmessagetemplateList.messageContent = this.ShopmessagetemplateList.messageContent+val;

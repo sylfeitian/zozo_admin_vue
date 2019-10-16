@@ -45,25 +45,26 @@
             <div>张 &nbsp;&nbsp;&nbsp;&nbsp; 0代表不限制，每人最多限制5张</div>
         </el-form-item>
         <el-form-item label="有效期：" prop="totalNums">
-            <el-radio v-model="validityPeriodType" :label="0">
+            <el-radio v-model="validityPeriodType" :label="'0'">
                 <span>日期范围</span>&nbsp;
                 <el-date-picker
                         v-model="valuetime"
-                        format="yyyy-MM-dd HH:mm:ss"
+                        format="yyyy-MM-dd "
                         type="daterange"
-                        value-format="yyyy-MM-dd HH:mm:ss"
+                        value-format="yyyy-MM-dd"
                         align="right"
                         unlink-panels
                         range-separator="-"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
+                        :picker-options="pickerOptionsvalidityPeriodType"
                         @blur='acttime'>
                 </el-date-picker>
             </el-radio>
             <br>
-            <el-radio v-model="validityPeriodType" :label="1">
+            <el-radio v-model="validityPeriodType" :label="'1'">
                 <span>固定天数</span>&nbsp;
-                <el-input placeholder="20" v-model="dataForm.validityDays" maxlength="3" style="width:220px;">
+                <el-input-number style="width:220px;" v-model="dataForm.validityDays"  placeholder="20" :min="1" :max="999" label="20"></el-input-number>
                     <template slot="append">天</template>
                 </el-input>
             </el-radio>
@@ -99,7 +100,7 @@ var validnumber = (rule, value, callback) => {
 var validthreshold =(rule, value,callback)=>{
     if (value/1 > 1000000){
       callback(new Error('请输入1000000以内的数字'))
-    }else if(value <= 0){
+    }else if(value < 0){
     	callback(new Error('只能输入大于0的数'))
     }else {
       callback()
@@ -136,7 +137,7 @@ export default {
                 startTime:'',//生效日期
                 endTime:'',// 截止日期
             },
-            validityPeriodType:0,//有效期类型，0：日期范围，1：固定天数
+            validityPeriodType:'0',//有效期类型，0：日期范围，1：固定天数
             dataRule : {
                 name : [
                     { required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -172,6 +173,11 @@ export default {
             },
             row:"",
             valuetime:"",
+            pickerOptionsvalidityPeriodType: { 
+			         disabledDate(time) {
+			            return time.getTime() < Date.now() - 8.64e7;//如果没有后面的-8.64e7就是不可以选择今天的 
+			         }
+			  		},
         }
     },
     components:{
@@ -193,34 +199,38 @@ export default {
             }
         },
         'dataForm.totalNums':function(newV,oldV) {
-            for(let i=0;i<newV.length;i++){
+            newV=~~newV;
+            for(let i=0;i<newV.toString().length;i++){
                 // 只能输入数字
                 if(!/[0-9]/g.test(newV[i])){
-                    this.dataForm.totalNums = newV.replace(newV[i],"")
+                    this.dataForm.totalNums = newV.toString().replace(newV[i],"")
                 }
             }
         },
         'dataForm.faceValue':function(newV,oldV) {
-            for(let i=0;i<newV.length;i++){
+            newV=~~newV;
+            for(let i=0;i<newV.toString().length;i++){
                 // 只能输入数字和小数点
                 if(!/[0-9|\.]/g.test(newV[i])){
-                    this.dataForm.faceValue = newV.replace(newV[i],"")
+                    this.dataForm.faceValue = newV.toString().replace(newV[i],"")
                 }
             }
         },
         'dataForm.threshold':function(newV,oldV) {
-            for(let i=0;i<newV.length;i++){
+            newV=~~newV;
+            for(let i=0;i<newV.toString().length;i++){
                 // 只能输入数字
                 if(!/[0-9]/g.test(newV[i])){
-                    this.dataForm.threshold = newV.replace(newV[i],"")
+                    this.dataForm.threshold = newV.toString().replace(newV[i],"")
                 }
             }
         },
         'dataForm.limitNum':function(newV,oldV) {
-            for(let i=0;i<newV.length;i++){
+            newV=~~newV;
+            for(let i=0;i<newV.toString().length;i++){
                 // 只能输入数字
                 if(!/[0-9]/g.test(newV[i])){
-                    this.dataForm.limitNum = newV.replace(newV[i],"")
+                    this.dataForm.limitNum = newV.toString().replace(newV[i],"")
                 }
             }
         },
@@ -300,10 +310,13 @@ export default {
                     this.dataForm.validityDays = res.data.validityDays// 有效天数 ,
                     this.dataForm.memberPoints =  res.data.memberPoints//兑换优惠券用的积分数
                     this.validityPeriodType =  res.data.validityPeriodType.toString();//有效期类型，0：日期范围，1：固定天数
-                    this.dataForm.startTime = this.dateToStr(new Date(res.data.startTime)) //生效日期
-                    this.dataForm.endTime =  this.dateToStr(new Date(res.data.endTime)) // 截止日期 
+                    
                     if(res.data.startTime && res.data.endTime){
-                        this.valuetime = [res.data.startTime,res.data.endTime]
+                    	this.dataForm.startTime = this.dateToStr(new Date(res.data.startTime)) //生效日期
+                    	this.dataForm.endTime =  this.dateToStr(new Date(res.data.endTime)) // 截止日期 
+                      this.valuetime = [res.data.startTime,res.data.endTime]
+                    }else{
+                        	this.valuetime='';
                     }
 
                 }
@@ -334,7 +347,7 @@ export default {
                         name:  this.dataForm.name,//优惠券名称 ,
                         threshold: parseInt(this.dataForm.threshold),//使用门槛 ,
                         totalNums:  this.dataForm.totalNums,//总发行量 , ,
-                        validityDays:  this.dataForm.validityDays,// 有效天数 ,
+                        validityDays: this.validityPeriodType==0?0:this.dataForm.validityDays,// 有效天数 ,
                         limitNum: this.dataForm.limitNum,//每人限领数量 ,
                         memberPoints:this.dataForm.memberPoints?parseInt(this.dataForm.memberPoints):0,//兑换优惠券用的积分数
                         validityPeriodType:parseInt(this.validityPeriodType),//有效期类型，0：日期范围，1：固定天数

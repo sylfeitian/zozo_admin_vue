@@ -92,19 +92,28 @@
                 </template>
             </el-table-column> -->
             <el-table-column
-                prop="memberId"
+                prop=""
                 label="会员账号"
-                width="180">
+                width="180"
+                align="center">
+                <template slot-scope="scope">
+                    <span  v-if="scope.row.memberName">{{scope.row.memberName}}</span>
+                    <span  v-else-if="scope.row.memberId">{{scope.row.memberId}}</span>
+                </template>
             </el-table-column>
             <el-table-column
                 prop="createDate"
-                label="领取时间">
+                label="领取时间"
+                align="center">
             </el-table-column>
             <el-table-column
-                prop="untitled"
-                label="当前状态">
+                prop=""
+                label="当前状态"
+                align="center">
                 <template slot-scope="scope">
                     <span  v-if="scope.row.untitled==0">未使用</span>
+                    <span  v-if="scope.row.untitled==1">新到</span>
+                    <span  v-if="scope.row.untitled==2">将过期</span>
                     <span  v-if="scope.row.untitled==3">已使用</span>
                     <span  v-if="scope.row.untitled==4">已过期</span>
                 </template>
@@ -112,11 +121,13 @@
             <el-table-column
                 prop="usedTime"
                 label="使用时间"
-                width="180">
+                width="180"
+                align="center">
             </el-table-column>
             <el-table-column
                 prop="orderSn"
-                label="订单编号">
+                label="订单编号"
+                align="center">
             </el-table-column>
         </el-table>
         <!-- 分页 -->

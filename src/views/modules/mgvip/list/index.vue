@@ -2,7 +2,7 @@
     <div>
         <!-- <button @click="getData">123132</button> -->
         <list v-if="showPage==1" ref="listCompon" @controlShowPage="controlShowPage" ></list>
-        <tabFn  v-if="showPage==2" @controlShowPage="controlShowPage" ref="tabFnCompon"></tabFn>
+        <tabFn  v-if="showPage==2" @controlShowPage="controlShowPage" ref="tabFnCompon" :breaddata="nextBreaddata" :index="index"></tabFn>
     </div>
 </template>
 
@@ -14,6 +14,8 @@
         data () {
             return {
                 showPage:1,//
+                nextBreaddata: ["会员管理", "会员列表"],
+                index:"1",
                 // orderDetVisible:false,
                 // afterSaleDetailVisible:false,
                 // subBreaddata:["订单管理", "退货退款", "退货退款列表","订单详情"],

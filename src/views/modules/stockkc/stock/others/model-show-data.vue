@@ -131,7 +131,7 @@
 			init(wareItem){
 				console.log(wareItem);
 		      	this.visible = true;
-				this.title="查看详情";
+				this.title="选择商品";
 				// this.dataForm.wareHouseId = this.dataId;
 				this.dataForm.wareHouseId = wareItem.id;
         		this.showdatacurrent = this.showdata;
