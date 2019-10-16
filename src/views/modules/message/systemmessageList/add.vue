@@ -242,7 +242,7 @@
                             .then(() => {
                                 var list = [];
                                 that.userLsit.map((v)=>{
-                                    list.push(v.memberName)
+                                    list.push(v.id)
                                 })
                                 that.addDataForm.receiver = list.join(",");
                                 saveMessage(that.addDataForm).then((res)=>{

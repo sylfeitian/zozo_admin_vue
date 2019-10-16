@@ -12,14 +12,11 @@
                 <el-input v-model="dataForm.name" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
             </el-form-item>
             <el-form-item label="选择分类：" prop="categoryId">
-                <el-select v-model="dataForm.categoryId" placeholder="请选择商品分类">
-                    <el-option
-                        :label="item.name"
-                        :value="item.id"
-                        v-for="(item,index) in this.categories"
-                        :key="index"
-                    >{{item.name}}</el-option>
-                </el-select>
+                <el-cascader
+                        :show-all-levels="false"
+                        :options="categories"
+                        clearable
+                        @change="handleChange"></el-cascader>
             </el-form-item>
             <el-form-item label="商品货号：" prop="id">
                 <el-input v-model="dataForm.id" placeholder="请输入spu编号" clearable></el-input>
@@ -399,9 +396,46 @@ export default {
     },
     //获取商品分类集合
     getbackScanCategorys() {
+        this.categories = [];
       backScanCategorys().then(res => {
         if (res.code == 200) {
-          this.categories = res.data;
+          res.data.map((v,i)=>{
+              if(v.list[0]){
+                  this.categories[i] = {
+                      value:v.id,
+                      label:v.name,
+                      children:[]
+                  };
+                  let list = this.categories[i].children;
+                  v.list.map((va,is)=>{
+                      if(va.list[0]){
+                          list[is] = {
+                              value:va.id,
+                              label:va.name,
+                              children:[]
+                          };
+                          let list1 = list[is].children;
+                          va.list.map((vs,ia)=>{
+                              list1[ia] = {
+                                  value:vs.id,
+                                  label:vs.name,
+                              };
+                          })
+                      }else{
+                          list[is] = {
+                              value:va.id,
+                              label:va.name,
+                          };
+                      }
+
+                  })
+              }else{
+                  this.categories[i] = {
+                      value:v.id,
+                      label:v.name,
+                  };
+              }
+          })
         } else {
           console.log("error");
         }
@@ -435,6 +469,7 @@ export default {
     //重置
     reset() {
       this.$refs["dataForm"].resetFields();
+      this.getbackScanCategorys();
       this.page = 1;
       this.getDataList();
     },
@@ -549,7 +584,11 @@ export default {
       window.onresize = function() {
         placeholderPic();
       };
-    }
+    },
+      handleChange(value) {
+          this.dataForm.categoryId = value[value.length-1]
+          console.log(this.dataForm.categoryId);
+      }
   }
 };
 </script>
