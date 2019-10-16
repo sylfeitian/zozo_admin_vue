@@ -347,7 +347,7 @@ export default {
                         name:  this.dataForm.name,//优惠券名称 ,
                         threshold: parseInt(this.dataForm.threshold),//使用门槛 ,
                         totalNums:  this.dataForm.totalNums,//总发行量 , ,
-                        validityDays: this.validityPeriodType==0?0:this.dataForm.validityDays,// 有效天数 ,
+                        validityDays: this.dataForm.validityDays,// 有效天数 ,
                         limitNum: this.dataForm.limitNum,//每人限领数量 ,
                         memberPoints:this.dataForm.memberPoints?parseInt(this.dataForm.memberPoints):0,//兑换优惠券用的积分数
                         validityPeriodType:parseInt(this.validityPeriodType),//有效期类型，0：日期范围，1：固定天数
