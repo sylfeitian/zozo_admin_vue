@@ -20,11 +20,11 @@
             addoradit
         },
         methods:{
-            addOrAdit(id){
+            addOrAdit(){
                 this.addoraditVisible = true;
                 this.mainVisible = false;
                 this.$nextTick(()=>{
-                    this.$refs.addoraditCompon.init(id);
+                    this.$refs.addoraditCompon.init();
                 })
             },
             addoraditList(){

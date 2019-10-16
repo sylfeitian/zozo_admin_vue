@@ -129,6 +129,7 @@
         },
         methods: {
 			init(wareItem){
+			    debugger
 				console.log(wareItem);
 		      	this.visible = true;
 				this.title="选择商品";
@@ -163,6 +164,7 @@
 	      	// },
         	//单个去选商品    //点击全选
         	onTableSelect(rows, row) {
+			    debugger
         		let selected = rows.length && rows.indexOf(row) !== -1
 				if(selected){   //true    添加
 					row.wareHouseId = this.dataId;
@@ -179,6 +181,7 @@
         		console.log(this.showdatacurrent);
 			},
 			onTableSelectall(rows){
+			    debugger
 				if(this.$refs.dataList.selection[0]){     //全选
 					var flag = true;    //添加进去
 					rows.forEach((item)=>{
@@ -207,6 +210,7 @@
 				console.log(this.showdatacurrent);
 			},
 			handleClose(done) {    //带回到父级页面
+			    debugger
 				console.log(this.showdatacurrent);
 				this.showdatacurrent = [].concat(this.showdatacurrent);
 			    this.$emit('searchDataList',this.showdatacurrent);
