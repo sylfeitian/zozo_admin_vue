@@ -99,7 +99,7 @@
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="showDetail(scope.row)" type="text" size="mini">查看</el-button>
                     <el-button @click.native.prevent="addOrAdit(scope.row)" type="text" size="mini">编辑</el-button>
-                    <el-button :disabled="scope.row.isOpen == 2" @click.native.prevent="forbitHandle(scope.$index,scope.row)" type="text" size="mini">
+                    <el-button :disabled="scope.row.isOpen !== 1" @click.native.prevent="forbitHandle(scope.$index,scope.row)" type="text" size="mini">
                         <span v-if="scope.row.state==1" class="artdisable" :class="{'artclose':scope.row.isOpen == 2}">{{scope.$index==currentIndex&&forbitLoading?"取消发布中..":"取消发布"}}</span>
                         <span v-else class="artstart" :class="{'artclose':scope.row.isOpen == 2}">{{scope.$index==currentIndex && forbitLoading?"发布中..":"发布"}}</span>
                     </el-button>
