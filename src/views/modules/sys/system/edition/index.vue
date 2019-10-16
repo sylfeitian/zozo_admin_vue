@@ -1,0 +1,295 @@
+<template>
+    <div>
+        <Bread :breaddata="breaddata"></Bread>
+
+        <div class="mod-sys__log-error">
+            <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getDataList()">
+                <el-form-item>
+                    <el-button  class="btn" type="primary" @click="showedition">更新版本</el-button>
+                </el-form-item>
+                <br />
+            </el-form>
+            <el-table v-loading="dataListLoading" :data="dataList" border @sort-change="dataListSortChangeHandle" style="width: 100%;">
+                <el-table-column
+			    	type="index"
+				    prop="$index"
+					align="center"
+				    label="序号"
+				    width="70">
+				    <template slot-scope="scope">
+			          {{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}
+			        </template>
+			    </el-table-column>
+                <el-table-column prop="systemType" width="90" label="端口" header-align="center" align="center"></el-table-column>
+                <el-table-column prop="versionNum" width="100" label="版本号" header-align="center" align="center"></el-table-column>
+                <el-table-column prop="versionDescription" label="版本描述" header-align="center" align="center"></el-table-column>
+                <el-table-column prop="forceUpdateFlag" width="110" label="是否强制更新" header-align="center" align="center">
+                	<template slot-scope="scope">
+                		{{scope.row.forceUpdateFlag ? '是' : '否'}}
+                	</template>
+                </el-table-column>
+                <el-table-column prop="createDate " label="创建时间" width="200"  header-align="center" align="center"></el-table-column>
+            	<el-table-column
+			   		prop="address"
+			    	label="操作"
+					align="center"
+					fixed="right"
+					width="100">
+					<template slot-scope="scope">
+						<el-button type="text" size="small" @click="showDetail(scope.row)">查看</el-button>
+					</template>
+			  	</el-table-column>
+            </el-table>
+            <el-pagination
+                    :current-page="page"
+                    :page-sizes="[10, 20, 50, 100]"
+                    :page-size="limit"
+                    :total="total"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    @size-change="pageSizeChangeHandle"
+                    @current-change="pageCurrentChangeHandle">
+            </el-pagination>
+        </div>
+        <el-dialog
+            class="modeledit"
+            :title="title"
+            :close-on-click-modal="false"
+            :visible.sync="visible"
+            :before-close="closeDialog"
+            width="500px"
+    	>
+    	<div><span style="display:inline-block; width:100px; margin-right: 10px; text-align: right;">端口：</span> <span class="artccc">{{detail && detail.systemType}}</span></div>
+    	<div><span style="display:inline-block; width:100px; margin-right: 10px; text-align: right;">版本号：</span>  <span class="artccc">{{detail &&  detail.versionNum}}</span></div>
+    	<div><span style="display:inline-block; width:100px; margin-right: 10px; text-align: right;">版本描述：</span>  <span class="artccc">{{detail &&  detail.versionDescription}}</span></div>
+    	<div><span style="display:inline-block; width:100px; margin-right: 10px; text-align: right;">文件包：</span>  <span class="artccc">{{detail &&  detail.filePath }}</span></div>
+    	<div><span style="display:inline-block; width:100px; margin-right: 10px; text-align: right;">是否强制更新：</span>  <span class="artccc"> {{detail &&  detail.forceUpdateFlag ? '是' : '否'}}</span></div>
+    	</el-dialog>
+    	
+    	<el-dialog
+            class="modeledit"
+            :title="'更新版本'"
+            :close-on-click-modal="false"
+            :visible.sync="visiblecopy"
+            :before-close="closeDialogcopy"
+            width="30%"
+    	>
+    	<el-form
+            :model="dataForm"
+            :rules="dataRule"
+            ref="addForm"
+            @keyup.enter.native="dataFormSubmit('addForm')"
+            label-width="120px"
+        >
+            <el-form-item label="端口号：" prop="systemType">
+                <el-radio v-model="dataForm.systemType" label="1">Android</el-radio>
+  				<el-radio v-model="dataForm.systemType" label="2">IOS</el-radio>
+            </el-form-item>
+            <el-form-item label="版本号：" prop="versionNum">
+                <el-input v-model="dataForm.versionNum" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item label="版本描述：" prop="versionDescription">
+                 <el-input type="textarea" placeholder="请输入200字以内的内容" v-model="dataForm.versionDescription"></el-input>
+            </el-form-item>
+            <el-form-item label="签名MD5：" prop="md5Sign" >
+                <el-input v-model="dataForm.md5Sign" placeholder="请输入"></el-input>
+           </el-form-item>
+            <el-form-item label="文件包：" prop="filePath" >
+                <uploud-model ref="refuploud"></uploud-model>
+            </el-form-item>
+            <el-form-item label="是否强制更新：" prop="forceUpdateFlag">
+                <el-radio v-model="dataForm.forceUpdateFlag" label="1">是</el-radio>
+  				<el-radio v-model="dataForm.forceUpdateFlag" label="0">否</el-radio>
+            </el-form-item>
+            <el-form-item style="text-align: center;margin-left: -120px!important;">
+                <el-button  @click="dataFormCancel()">取消</el-button>
+                <el-button type="primary" @click="dataFormSubmit('addForm')"
+                           :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
+            </el-form-item>
+        </el-form>
+    	</el-dialog>
+    </div>
+</template>
+
+<script>
+    import mixinViewModule from '@/mixins/view-module'
+    import Bread from "@/components/bread";
+    import { getsysversionmange,exportError } from '@/api/url'
+    import uploudModel from './import_model'
+    import { sysversionmangedetail } from '@/api/api'
+
+    export default {
+        mixins: [mixinViewModule],
+        data () {
+            return {
+                mixinViewModuleOptions: {
+			        getDataListURL: getsysversionmange,
+			        getDataListIsPage: true,
+			        exportURL: '',
+			        deleteURL: '',
+			        deleteIsBatch: false,
+			        deleteIsBatchKey: 'id'
+			    },
+                dataForm: {
+                    systemType: "1",
+                    versionNum:"",
+                    forceUpdateFlag:'0',
+                    creator:""
+                },
+                breaddata: ["系统管理", "版本管理"],
+                timeArr: "", //操作时间数据
+                dataListLoading: false,
+                moduleOption:[],
+                title:'查看',
+                visible : false,
+                visiblecopy : false,
+                loading : false,
+                detail:null,
+                dataRule:{
+                	systemType: [
+			            { required: true, message: '请输入', trigger: 'blur' },
+			        ],
+			        versionNum: [
+			            { required: true, message: '请输入', trigger: 'blur' },
+			        ],
+			        versionDescription: [
+			            { required: true, message: '请输入', trigger: 'blur' },
+			            { min:1,max:200 ,message: '最大可输入200字以内的内容', trigger: 'blur' },
+			        ],
+			        md5Sign: [
+			            { required: true, message: '请输入', trigger: 'blur' },
+			        ],
+			        forceUpdateFlag: [
+			            { required: true, message: '请选择', trigger: 'blur' },
+			        ],
+			        filePath: [
+			            { required: true, message: '请选择', trigger: 'blur' },
+			        ],
+                }
+            }
+        },
+        components: {
+            Bread,
+            uploudModel
+        },
+        watch:{
+            timeArr(val){
+                if(!val){
+                    this.dataForm.createDateStart = '';
+                    this.dataForm.createDateEnd = '';
+                }
+            },
+            'dataForm.creator':function(newV,oldV) {
+                var chineseCount = 0,characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 300) { //输入字符大于300的时候过滤
+                        this.dataForm.creator = newV.substr(0,(chineseCount/2+characterCount)-1)
+                    }
+                }
+            },
+        },
+        created() {
+            
+        },
+        mounted(){
+        	//this.$refs.refuploud.init();
+        },
+        methods: {
+           	showDetail(row){
+           		sysversionmangedetail(row).then((res)=>{
+           			if (res.code == "200") {
+           				this.detail = res.data;
+                    } 
+                    this.$message({
+                        message: res.msg,
+                        type: status,
+                        duration: 1500
+                    })
+           		})
+           		this.visible = true;
+           		
+           	},
+           	closeDialog() {
+                this.visible = false;
+            },
+            closeDialogcopy() {
+            	this.visiblecopy = false;
+            },
+           	showedition(){
+           		this.visiblecopy = true;
+           	},
+           	dataFormCancel(){
+                this.visiblecopy = false;
+                this.closeDialogcopy();
+            },
+            // 提交
+            dataFormSubmit(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                    	if(this.optionsArea4.length != 0 && this.dataForm.streetId==""){
+                    		this.$message.error('街道不能为空');
+                    		return;
+                    	}
+                        this.loading = true;
+                        var obj = {
+                            warehouseName: this.dataForm.warehouseName,
+                            type: this.dataForm.type,
+                            name: this.dataForm.name,
+                            phone: this.dataForm.phone,
+                            areaId: this.dataForm.areaId,
+                            cityId: this.dataForm.cityId,
+                            provinceId: this.dataForm.provinceId,
+                            streetId: this.dataForm.streetId,
+                            addressInfo: this.dataForm.addressInfo,
+                            isEnable: 1
+                        }
+                        console.log(obj)
+                        if (this.row) obj.id = this.row.id;
+                        var fn = this.row ? updataWare : addWare;
+                        fn(obj).then((res) => {
+                            this.loading = false;
+                            // alert(JSON.stringify(res));
+                            let status = null;
+                            if (res.code == "200") {
+                                status = "success";
+                                this.visible = false;
+                                this.$emit('searchDataList');
+                                this.closeDialog();
+                            } else {
+                                status = "error";
+                            }
+
+                            this.$message({
+                                message: res.msg,
+                                type: status,
+                                duration: 1500
+                            })
+                        })
+                    } else {
+                        //console.log('error 添加失败!!');
+                        return false;
+                    }
+                })
+            },
+        }
+    }
+</script>
+
+<style lang="scss">
+    .mod-sys__log-error {
+        &-view-info {
+            width: 80%;
+        }
+    }
+    .modeledit .artccc{
+    	color: #ccc;
+    }
+    .el-dialog__body>div{
+    	margin-top: 15px;
+    }
+</style>

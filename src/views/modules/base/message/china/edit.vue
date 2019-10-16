@@ -151,6 +151,7 @@
 					}
 					categoryCnVerifyName(obj).then((res)=>{
 						if(res.code == 200){
+
 							callback();
 						}else{
 							callback(new Error(res.msg));

@@ -342,6 +342,14 @@ export default {
                       totalNums:  this.dataForm.totalNums,//总发行量 ,
                       validityDays:  this.dataForm.validityDays,// 有效天数
                   }
+                  if(parseInt(this.dataForm.threshold)<=parseInt(this.dataForm.faceValue)) {
+                      this.$message({
+                          message: "提交失败，面额必须小于使用门槛",
+                          type: "error",
+                          duration: 1500
+                      })
+                      return false
+                  }
                   if(this.editSatusId) obj.id = this.editSatusId//优惠券活动id 
                   var fn = this.type?addActivityNewMember:editActivityNewMember
                   fn(obj).then((res) => {

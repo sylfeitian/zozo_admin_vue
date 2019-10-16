@@ -485,6 +485,10 @@ export const settlAdvSave = params => { return http.post(`${base}/setting/expres
 
 //评价详情
 export const evaDets = params => { return http.get(`${base}/evaluate/${params.id}`, params).then(res => res.data); }
+//单条评论删除
+export const evaDel = params => { return http.delete(`${base}/zozogoods/evaluate/${params.id}`, params).then(res => res.data); }
+//评论批量删除
+export const evaDels = params => { return http.delete(`${base}/zozogoods/evaluate/batch`, params).then(res => res.data); }
 //商品评价--回复
 export const msgReply = params => { return http.put(`${base}/evaluate/reply`, params).then(res => res.data); }
 //商品评价--显示/隐藏
@@ -891,6 +895,10 @@ export const sethomeIndexPage = params => { return http.post(`${base}/folderreco
 export const addGoodscarList = params => { return http.post(`${base}/cartrecom/add`, params).then(res => res.data); };
 //添加商品未推荐列表
 export const goodsListVisible = params => { return http.get(`${base}/cartrecom/goodslist`, params).then(res => res.data); };
+//购物车修改
+export const cartConfigSort = params => { return http.post(`${base}/cartrecom/update`, params).then(res => res.data); };
+//修改排序
+export const updateSortNum = params => { return http.post(`${base}/cartrecom/update`, params).then(res => res.data); };
 
 //  满减活动-------------------------------------------------------------------------------------------------------------
 // 新增满减活动
@@ -1067,6 +1075,8 @@ export const periodEdit= params => { return http.put(`${base}/seckill/period`, p
 export const seckillSortSave = params => { return http.put(`${base}/seckill/goods/sort`, params).then(res => res.data); };
 
 
+//版本管理  
+export const sysversionmangedetail = params => { return http.get(`${base}/sysversionmange/${params.id}`, params).then(res => res.data); };
 
 
 

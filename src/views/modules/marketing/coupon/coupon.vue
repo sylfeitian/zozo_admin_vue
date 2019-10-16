@@ -28,13 +28,13 @@
          <el-form-item label="活动时间：">
 		        <el-date-picker
 			        v-model="valuetime"
-			        type="daterange"
+			        type="datetimerange"
 			        align="right"
 	      			unlink-panels
-					range-separator="-"
-					start-placeholder="开始日期"
-					end-placeholder="结束日期"
-					value-format="yyyy-MM-dd"
+							range-separator="-"
+							start-placeholder="开始日期"
+							end-placeholder="结束日期"
+							value-format="yyyy-MM-dd HH:mm:ss"
 			        @blur='acttime'>
 			    </el-date-picker>
 		    </el-form-item>

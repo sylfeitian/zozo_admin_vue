@@ -1,7 +1,7 @@
 <template>
     <div>
         <Bread :breaddata="breaddata"></Bread>
-        <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
+        <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getData()" >
             <el-form-item label="ID：">
                 <el-input v-model="dataForm.idJp" maxlength="30" placeholder="请输入编号"></el-input>
             </el-form-item>
@@ -236,6 +236,7 @@
                 this.dataForm.publishEndTime = null;
                 this.dataForm.publishStartTimeJp = null;
                 this.dataForm.publishEndTimeJp = null;
+                this.page = 1;
                 this.getDataList();
             },
             handleClick(tab,val) {
@@ -285,35 +286,43 @@
             },
             cotrolGoodsShow(type){
                 var ids = this.getIds(type);
-                var obj = {
-                    ids:ids,
-                    operating:type==1?0:1,
-                }
-                var msg = ""
-                type==1?msg="取消发布":msg="发布"
-                this.$confirm('是否'+msg+'该分组?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    putoperatingAll(obj).then((res)=>{
-                        if(res.code==200){
-                            this.getDataList();
-                            this.$message({
-                                message:res.data,
-                                type: 'success',
-                                duration: 1500,
-                            })
-                        }else{
-                            this.$message({
-                                message:res.data,
-                                type: 'error',
-                                duration: 1500,
-                            })
-                        }
-                    })
+                if(ids[0]){
+                    var obj = {
+                        ids:ids,
+                        operating:type==1?0:1,
+                    }
+                    var msg = ""
+                    type==1?msg="取消发布":msg="发布"
+                    this.$confirm('是否'+msg+'该分组?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        putoperatingAll(obj).then((res)=>{
+                            if(res.code==200){
+                                this.getDataList();
+                                this.$message({
+                                    message:res.data,
+                                    type: 'success',
+                                    duration: 1500,
+                                })
+                            }else{
+                                this.$message({
+                                    message:res.data,
+                                    type: 'error',
+                                    duration: 1500,
+                                })
+                            }
+                        })
 
-                }).catch(() => {});
+                    }).catch(() => {});
+                }else{
+                    this.$message({
+                        message:"未勾选列表数据",
+                        type: 'error',
+                        duration: 1500,
+                    })
+                }
             },
             getIds(type){
                 var ids= [];
