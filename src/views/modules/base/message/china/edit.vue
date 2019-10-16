@@ -140,7 +140,7 @@
 	export default {
 	  data() {
 	    var checkName = (rule, value, callback) => {
-	    	debugger
+
 					// 校验中国分类名称是否重复
 					if(value){
 						if(value===this.tempName){
@@ -288,7 +288,7 @@
 			this.row = row;
 			this.saveLoading = false;
 			if(this.row){
-				debugger
+
 				this.tempName = this.row.label; // 暂存当前名字，校验用
 			}
 	  		this.showListVisible = true;

@@ -86,7 +86,7 @@
         watch: {
             // 关键字搜索
             'dataFormShow.hotKeyword':function(newV,oldV) {
-                debugger
+
                 var chineseCount = 0,characterCount = 0;
                 for (let i = 0; i < newV.length; i++) {
                     if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
