@@ -154,12 +154,26 @@
             </el-form-item>
             <el-form-item label="商品图片：">
                 <template slot-scope="scope">
-                    <div class="goodsImg" style="display:flex">
-<!--                        <img  :src="scope.row.imageUrl | filterImgUrl" style="width:60px;height:60px;object-fit: contain;" alt=""/>-->
-                        <!-- <img :src="dataForm.imageUrl | filterImgUrl" alt=""/> -->
-                       <div v-for="(item,index) in  dataForm.imgs" style="width:100px;height:100px;margin-right:5px;">
-                             <img :src="item.sizeOriginal | filterImgUrl" alt="" style="width:100%;height:100%"/>
-                       </div>
+                    <div style="display:flex">
+                        <div style="display:inline-block;" v-loading="uploading">
+                            <img-cropper
+                                ref="cropperImg"
+                                :index="0"
+                                :imgWidth='"100px"'
+                                :imgHeight='"100px"'
+                                :cropImg='tempImage'
+                                @GiftUrlHandle="GiftUrlHandle"
+                            ></img-cropper>
+                             <div  class="uploadCover" v-if="uploading" style="position:absolute;top:0;left:0;width: 190px;height: 190px;  z-index: 1000;"></div>
+                        </div>
+                        <div class="goodsImg" style="display:flex;margin-left:5px;">
+                            <div v-for="(item,index) in  dataForm.imgs" style="position: relative;width:100px;height:100px;margin-right:5px;">
+                                  <img :src="item.sizeOriginal | filterImgUrl" alt="" style="width:100%;height:100%"/>
+                                  <div class="deletaImg" @click="deletaImgFn(index)">
+                                      X
+                                  </div>
+                            </div>
+                        </div>
                     </div>
                 </template>
             </el-form-item>
@@ -192,7 +206,8 @@
     import addEditData from './model-edit-data'
     import { backScanZozogoods, saveZozogoods } from '@/api/api'
     import sizeData from './model-size'
-
+    import imgCropper from "@/components/model-photo-cropper";
+    import { uploadPicBase64 } from '@/api/api'
     import 'quill/dist/quill.core.css';
     import 'quill/dist/quill.snow.css';
     import 'quill/dist/quill.bubble.css';
@@ -219,13 +234,16 @@
 				            { required: true, message: '长度在 0到 60 个汉字', trigger: 'blur' }
 				          ],
                 },
+                tempImage:'',//上传图片展位图
+                uploading:false,
             }
         },
         components: {
             Bread,
             quillEditorImg,
             addEditData,
-            sizeData
+            sizeData,
+            imgCropper
         },
         // props: [
         //     "detdata",
@@ -363,7 +381,54 @@
                         });
                     }
                 })
-            }
+            },
+            deletaImgFn(index){
+                this.dataForm.imgs.splice(index,1);
+            },
+            //上传图片
+            uploadPic(base64){
+                if(this.currentIndex == -1){
+                    alert("前端未捕捉到图片的下标,请重新点击上传!");
+                    return;
+                }
+                const params = { "imgStr": base64 };
+                const that = this;
+                this.uploading = true;
+                return new Promise(function(resolve){
+                    uploadPicBase64(params).then(res =>{
+                        that.uploading = false
+                        if(res && res.code == "200"){
+                            var url = res.data.url
+                            that.tempImage = "";
+                            that.$refs.cropperImg.cropper.cropImg = ""
+                            console.log(that.dataForm);
+                             that.dataForm.imgs.push({
+                                sizeOriginal:url
+                            })
+                            that.$message({
+                            message: "图片上传成功!",
+                            type: 'success',
+                            duration: 800,
+                            })
+                            resolve("true")
+                        }else {
+                            that.tempImage = "";
+                            that.$refs.cropperImg.cropper.cropImg = ""
+                            that.$message({
+                                message: res.msg,
+                                type: 'error',
+                                duration: 1500,
+                            })
+                            resolve("false")
+                        }
+                    })
+                });
+            },
+            GiftUrlHandle(val){
+                console.log("base64上传图片接口");
+                // console.log(val);
+                this.uploadPic(val);
+            },
 
         }
     }
@@ -414,5 +479,18 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+    .deletaImg{
+        text-align: center;position: absolute;top: 0;
+        right: 0;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        cursor: pointer;
+        background-color: #09dc6d;
+        color:white;
+        top: 5px;
+        right: 10px;
+        border-radius: 50%;
     }
 </style>

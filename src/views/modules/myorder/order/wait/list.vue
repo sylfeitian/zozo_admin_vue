@@ -27,7 +27,7 @@
                     <!-- <el-option label="待发货" value="60" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option> -->
                     <!-- 待收货 -->
                      <el-option label="日本取消订单" value="70" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitshipped'" ></el-option>
-                    <el-option label="JD申报失败" value="90" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
+                    <el-option label="JD申报失败" value="100" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
                     <!-- <el-option label="清关中" value="80" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option> -->
                     <!-- <el-option label="待收货" value="90" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option> -->
                     <!-- 已完成 -->
