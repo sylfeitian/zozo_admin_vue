@@ -317,7 +317,7 @@
                     }).catch(() => {});
                 }else{
                     this.$message({
-                        message:"未选择需要操作的分组",
+                        message:"未勾选列表数据",
                         type: 'error',
                         duration: 1500,
                     })

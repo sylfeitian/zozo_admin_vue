@@ -103,15 +103,15 @@
                         <span v-if="scope.row.sate==1" class="artdisable" :class="{'artclose':scope.row.jpPublishState == 0}">{{scope.$index==currentIndex&&forbitLoading?"取消发布中..":"取消发布"}}</span>
                         <span v-else class="artstart" :class="{'artclose':scope.row.jpPublishState == 0}">{{scope.$index==currentIndex && forbitLoading?"发布中..":"发布"}}</span>
                     </el-button>
-                    <el-button @click.native.prevent="openStyle(scope.row.id)" type="text" size="mini">管理风格标签</el-button>
+                    <el-button @click.native.prevent="openStyle(scope.row,scope.$index)" type="text" size="mini">管理风格标签</el-button>
                     <el-dialog title="管理风格标签" :visible.sync="dialogTableVisible">
                         <el-form :inline="true" style="text-align:left;" class="grayLine topGapPadding"  >
                             <el-form-item label="关联风格标签：">
-                                <el-select :filter-method="getStyle" @change="saveList" filterable placeholder="请选择">
+                                <el-select :filter-method="getStyle" v-model="value" @change="saveList" filterable placeholder="请选择">
                                     <el-option
                                             v-for="(item,index) in options"
                                             :key="index"
-                                            :label="item.styleName"
+                                            :label="item.name"
                                             :value="index">
                                     </el-option>
                                 </el-select>
@@ -125,7 +125,7 @@
                                                 :disable-transitions="false"
                                                 closable
                                                 @close="handleClose(index)">
-                                            {{tag.styleName}}
+                                            {{tag.name}}
                                         </el-tag>
                                 </div>
                             </el-form-item>
@@ -256,9 +256,15 @@
                 })
                 if(is) this.styleList.push(this.options[val])
             },
-            openStyle(id){
+            openStyle(v,i){
                 this.dialogTableVisible = true;
-                this.id = id;
+                this.id = v.id;
+                v.styles.map((c,ia)=>{
+                    this.styleList[ia] = {
+                        id:c.id,
+                        name:c.name
+                    }
+                })
                 this.getStyle();
             },
             getStyle(val){
@@ -266,12 +272,20 @@
                     params:{styleName:val}
                 }).then((res)=>{
                     this.options = res;
+                    res.map((v,i)=>{
+                        this.options[i] = {
+                            id:v.id,
+                            name:v.styleName
+                        }
+                    })
+                    console.log(this.options)
                 })
             },
             res(){
               this.dialogTableVisible = false;
               this.id = "";
               this.styleList = [];
+              this.value = "";
               this.options = [];
             },
             saveStyle(id){
@@ -426,7 +440,7 @@
 
                     }).catch(() => {});}else{
                     this.$message({
-                        message:"未选择需要操作的分组",
+                        message:"未勾选列表数据",
                         type: 'error',
                         duration: 1500,
                     })
