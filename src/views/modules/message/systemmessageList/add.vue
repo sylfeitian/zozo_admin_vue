@@ -44,7 +44,7 @@
             <el-form-item style="text-align: center;margin-left: -120px!important;">
                 <el-button  @click="dataFormSubmit()">推送消息</el-button>
             </el-form-item>
-            <el-dialog title="选择接收用户" :visible.sync="dialogTableVisible">
+            <el-dialog title="选择接收用户" :visible.sync="dialogTableVisible" width="80%">
                 <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
                     <el-form-item label="会员账号：">
                         <el-input v-model="dataForm.memberName" ></el-input>

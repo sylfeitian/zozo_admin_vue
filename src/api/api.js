@@ -897,6 +897,8 @@ export const addGoodscarList = params => { return http.post(`${base}/cartrecom/a
 export const goodsListVisible = params => { return http.get(`${base}/cartrecom/goodslist`, params).then(res => res.data); };
 //购物车修改
 export const cartConfigSort = params => { return http.post(`${base}/cartrecom/update`, params).then(res => res.data); };
+//修改排序
+export const updateSortNum = params => { return http.post(`${base}/cartrecom/update`, params).then(res => res.data); };
 
 //  满减活动-------------------------------------------------------------------------------------------------------------
 // 新增满减活动
