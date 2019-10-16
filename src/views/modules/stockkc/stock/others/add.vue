@@ -23,7 +23,12 @@
             <el-form-item>
                 <!--<el-button type="primary"  @click="addOrEditHandle()" >导入商品</el-button>-->
                 <el-button type="primary" plain @click="addGoods()" >添加商品</el-button>
-                <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"></importAndExport>
+                <div  class="parentImport" >
+                   <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"></importAndExport>
+                   <div class="hiddenImportCompon" v-show="!dataForm.wareHouseName" @click="messageChouseWareHouseFn()">
+                       <!-- 我是遮罩层 -->
+                   </div>
+                </div>
             </el-form-item>
         </el-form>
       
@@ -74,13 +79,13 @@
     import showData from './model-show-data'
     import { warehouserecordsodoAdd,warelistByType} from "@/api/api"      //获取仓库，保存商品
     import importAndExport from "@/components/import-and-export"
-    import { tudo} from '@/api/io'
+    import { wareHouseImport} from '@/api/io'
     export default {
         // mixins: [mixinViewModule],
         data () {
             return {
                 importAndExportOptions:{
-                    importUrl:tudo,//导入接口
+                    importUrl:wareHouseImport,//导入接口
                     importWord:"导入商品"
                 },
             	// mixinViewModuleOptions: {
@@ -133,6 +138,15 @@
                 }
             },
         methods: {
+            init () {
+                this.visible = true;
+                // this.row = row;
+               
+                this.$nextTick(() => {
+                    //this.$refs['addForm'].resetFields();
+                    // this.getApplyPullList();
+                })
+            },
         	//显示所选的商品
         	searchDataList(rows){
                 var dataList = rows;
@@ -196,6 +210,7 @@
 		    handleSelect(item) {
                 console.log(item);
                 this.wareItem = item;
+                 this.importAndExportOptions.importUrl = wareHouseImport+"?warehouseId="+item.id//导入接口
                 //   this.dataForm.wareHouseId = item.id;
 		    },
 		    //变更数量
@@ -241,14 +256,6 @@
         	changePage(){
 		    	this.$emit("addoraditList");
 		    },
-            init (row) {
-                this.visible = true;
-                this.row = row;
-                this.$nextTick(() => {
-                    //this.$refs['addForm'].resetFields();
-                    // this.getApplyPullList();
-                })
-            },
             addGoods(){
             	if(!this.wareItem){
             		this.$message('请先选择所属仓库')
@@ -263,6 +270,9 @@
             setShowDataVisible(boolargu){
                 this.showDataVisible =  boolargu;
             },
+            messageChouseWareHouseFn(){
+                this.$message.warning('请先选择所属仓库')
+            },
         }
     }
 </script>
@@ -272,5 +282,18 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+    .parentImport{
+        position: relative;
+        width:300px;
+        display: inline-block;
+    }
+    .hiddenImportCompon{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 200px;
+        height: 100px;
+        display: inline-block;
     }
 </style>
