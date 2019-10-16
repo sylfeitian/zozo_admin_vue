@@ -135,13 +135,15 @@
         methods: {
         	//显示所选的商品
         	searchDataList(rows){
+        	    debugger
                 var dataList = rows;
                 // js对象数组去重
-                var obj = {};
-                this.dataList = dataList.reduce(function(item, next) {
-                obj[next.key] ? '' : obj[next.key] = true && item.push(next);
-                return item;
-                }, []);
+                // var obj = {};
+                // this.dataList = dataList.reduce(function(item, next) {
+                // obj[next.key] ? '' : obj[next.key] = true && item.push(next);
+                // debugger
+                // return item;
+                // }, []);
         	},
         	saveGoods(){
         		if(this.dataList.length < 1){
@@ -250,6 +252,7 @@
                 })
             },
             addGoods(){
+        	    debugger
             	if(!this.wareItem){
             		this.$message('请先选择所属仓库')
             		return;

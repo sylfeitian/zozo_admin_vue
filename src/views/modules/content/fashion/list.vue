@@ -6,7 +6,7 @@
                 <el-input v-model="dataForm.idJp" maxlength="30" placeholder="请输入编号"></el-input>
             </el-form-item>
             <el-form-item label="标题：">
-                <el-input v-model="dataForm.title" ></el-input>
+                <el-input v-model="dataForm.title" placeholder="请输入标题关键字"></el-input>
             </el-form-item>
             <el-form-item label="发布人：">
                 <el-input v-model="dataForm.publisher" ></el-input>
