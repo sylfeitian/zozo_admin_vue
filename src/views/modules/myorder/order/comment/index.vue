@@ -101,8 +101,9 @@
      <el-table
       width="100%"
       :data="dataList"
-      @selection-change="dataListSelectionChangeHandle"
+      @selection-change="handleSelectionChange"
       v-loading="dataListLoading"
+      ref="multipleTable"
       style="width: 100%;maigin-top:20px;"
     > 
      <el-table-column type="selection" width="70" align="center"></el-table-column>
@@ -204,20 +205,27 @@
 
       <el-table-column label="操作" min-width="100" align="center" width="120">
         <template slot-scope="scope">
-          <el-button class="artdanger" size="mini" type="text" @click="deleteHandle( scope.row.id)">删除</el-button>
+          <el-button class="artdanger" size="mini" type="text" @click="delEva( scope.row.id)">删除</el-button>
         </template>
       </el-table-column> 
 
     </el-table>
-    <el-pagination
-      @size-change="pageSizeChangeHandle"
-      @current-change="pageCurrentChangeHandle"
-      :current-page="page"
-      :page-sizes="[10, 20, 50, 100]"
-      :page-size="limit"
-      :total="total"
-      layout="total, sizes, prev, pager, next, jumper"
-    ></el-pagination>
+      <div class="bottomFun">
+          <div class="bottomFunLeft">
+              <el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+              <el-button @click="delEvas" style="margin-left: 20px;"  type="primary" >批量删除</el-button>
+          </div>
+          <!-- 分页 -->
+          <el-pagination
+                  @size-change="pageSizeChangeHandle"
+                  @current-change="pageCurrentChangeHandle"
+                  :current-page="page"
+                  :page-sizes="[10, 20, 50, 100]"
+                  :page-size="limit"
+                  :total="total"
+                  layout="total, sizes, prev, pager, next, jumper">
+          </el-pagination>
+      </div>
   </div>
   <!-- <evaDet v-else @changeState="changeModel" :evaDetails="evaDetails"></evaDet> -->
 </template>
@@ -225,7 +233,7 @@
 import Bread from "@/components/bread";
 // import evaDet from "./evaDet.vue";
 import { goodseva, deleva } from "@/api/url";
-import { msgReply, changeStatus, evaDets } from "@/api/api";
+import { msgReply, changeStatus, evaDets,evaDel,evaDels } from "@/api/api";
 import mixinViewModule from "@/mixins/view-module";
 export default {
   mixins: [mixinViewModule],
@@ -263,6 +271,8 @@ export default {
       },
       timeArr: "", //下单时间
       dataList: [],
+        checkAll: false,
+        multipleSelection:[],
     };
   },
   created() {},
@@ -443,7 +453,80 @@ export default {
           //   message: "已取消"
           // });
         });
-    }
+    },
+      delEva(id){
+          var obj = {
+              "id": id,
+          }
+          this.$confirm('是否删除该评论?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+          }).then(() => {
+              evaDel(obj).then((res)=>{
+                  if(res.code==200){
+                      this.getDataList();
+                      this.$message({
+                          message:res.data,
+                          type: 'success',
+                          duration: 1500,
+                      })
+                  }else{
+                      this.$message({
+                          message:res.data,
+                          type: 'error',
+                          duration: 1500,
+                      })
+                  }
+              })
+          }).catch(() => {});
+      },
+      getIds(){
+          var ids= [];
+          this.multipleSelection.forEach((item,index)=>{
+              if("object" == typeof(item)){
+                  ids.push(item.id);
+              }
+          })
+          return ids;
+      },
+      delEvas(){
+          var ids = this.getIds();
+          var obj = {
+              "ids": ids,
+          }
+          this.$confirm('是否删除所选评论?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+          }).then(() => {
+              evaDels({data:obj}).then((res)=>{
+                  if(res.code==200){
+                      this.getDataList();
+                      this.$message({
+                          message:res.data,
+                          type: 'success',
+                          duration: 1500,
+                      })
+                  }else{
+                      this.$message({
+                          message:res.data,
+                          type: 'error',
+                          duration: 1500,
+                      })
+                  }
+              })
+          }).catch(() => {});
+      },
+      handleSelectionChange(val) {
+          this.multipleSelection = val;
+          if(this.multipleSelection.length == this.dataList.length) this.checkAll = true;
+          else this.checkAll = false;
+      },
+      handleCheckAllChange(val) {
+          if(val) this.$refs.multipleTable.toggleAllSelection();
+          else this.$refs.multipleTable.clearSelection();
+      },
   }
 };
 </script>
@@ -459,4 +542,15 @@ export default {
         overflow: hidden;
         text-overflow: ellipsis;
     }*/
+     .bottomFun {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+
+         .bottomFunLeft {
+             width: 450px;
+             display: flex;
+             align-items: center;
+         }
+     }
 </style>

@@ -1,12 +1,12 @@
 <template>
     <div>
         <Bread  :breaddata="breaddata"></Bread>
-        <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
+        <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getData()" >
             <el-form-item label="ID：">
-                <el-input v-model="dataForm.idJp" maxlength="30" ></el-input>
+                <el-input v-model="dataForm.idJp" maxlength="30" placeholder="请输入编号"></el-input>
             </el-form-item>
             <el-form-item label="标题：">
-                <el-input v-model="dataForm.title" ></el-input>
+                <el-input v-model="dataForm.title" placeholder="请输入标题关键字"></el-input>
             </el-form-item>
             <el-form-item label="发布人：">
                 <el-input v-model="dataForm.publisher" ></el-input>
@@ -99,7 +99,7 @@
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="showDetail(scope.row)" type="text" size="mini">查看</el-button>
                     <el-button @click.native.prevent="addOrAdit(scope.row)" type="text" size="mini">编辑</el-button>
-                    <el-button :disabled="scope.row.isOpen == 2" @click.native.prevent="forbitHandle(scope.$index,scope.row)" type="text" size="mini">
+                    <el-button :disabled="scope.row.isOpen !== 1" @click.native.prevent="forbitHandle(scope.$index,scope.row)" type="text" size="mini">
                         <span v-if="scope.row.state==1" class="artdisable" :class="{'artclose':scope.row.isOpen == 2}">{{scope.$index==currentIndex&&forbitLoading?"取消发布中..":"取消发布"}}</span>
                         <span v-else class="artstart" :class="{'artclose':scope.row.isOpen == 2}">{{scope.$index==currentIndex && forbitLoading?"发布中..":"发布"}}</span>
                     </el-button>
@@ -227,6 +227,7 @@
                 this.dataForm.publishJpEndTime = "";
                 this.dataForm.publishStartTime = "";
                 this.dataForm.publishEndTime = "";
+                this.page = 1;
                 this.getDataList();
             },
             handleClick(tab,val) {
@@ -285,35 +286,44 @@
             },
             cotrolGoodsShow(type){
                 var ids = this.getIds(type);
-                var obj = {
-                    ids:ids,
-                    operating:type==1?2:1,
-                }
-                var msg = ""
-                type==2?msg="取消发布":msg="发布"
-                this.$confirm('是否'+msg+'该分组?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    fashionPutoperatingAll(obj).then((res)=>{
-                        if(res.code==200){
-                            this.getDataList();
-                            this.$message({
-                                message:res.data,
-                                type: 'success',
-                                duration: 1500,
-                            })
-                        }else{
-                            this.$message({
-                                message:res.data,
-                                type: 'error',
-                                duration: 1500,
-                            })
-                        }
-                    })
+                if(ids[0]){
+                    var obj = {
+                        ids:ids,
+                        operating:type==1?2:1,
+                    }
+                    var msg = ""
+                    type==2?msg="取消发布":msg="发布"
+                    this.$confirm('是否'+msg+'该分组?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        fashionPutoperatingAll(obj).then((res)=>{
+                            if(res.code==200){
+                                this.getDataList();
+                                this.$message({
+                                    message:res.data,
+                                    type: 'success',
+                                    duration: 1500,
+                                })
+                            }else{
+                                this.$message({
+                                    message:res.data,
+                                    type: 'error',
+                                    duration: 1500,
+                                })
+                            }
+                        })
 
-                }).catch(() => {});
+                    }).catch(() => {});
+                }else{
+                    this.$message({
+                        message:"未勾选列表数据",
+                        type: 'error',
+                        duration: 1500,
+                    })
+                }
+
             },
             getIds(type){
                 var ids= [];

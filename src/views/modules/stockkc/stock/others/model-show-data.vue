@@ -108,8 +108,46 @@
         	this.getDataList();
         },
         methods: {
+<<<<<<< HEAD
+=======
+			init(wareItem){
+			    debugger
+				console.log(wareItem);
+		      	this.visible = true;
+				this.title="选择商品";
+				// this.dataForm.wareHouseId = this.dataId;
+				this.dataForm.wareHouseId = wareItem.id;
+        		this.showdatacurrent = this.showdata;
+				this.$nextTick(()=>{
+					this.search();
+				})
+			},
+	      	search(){
+	          	// this.getDataList().then((res)=>{
+				// 	this.backScanHook();
+				// });
+				// this.dataForm.wareHouseId =  this.dataForm.wareHouseId
+				this.getDataList();
+	      	},
+			//   处理回显数据
+	       	// backScanHook(){
+	        //   	this.dataListSelections = [];
+	        //   	var specIds = [];
+	        //   	this.showdatacurrent = this.showdata;
+	        //  	this.showdatacurrent.forEach((item,index)=>{
+	        //   		specIds[index] = item.id;
+	        //   	})
+	        //   	this.dataList.forEach((item,index)=>{
+	        //        	if(specIds.indexOf(item.id)!=-1){
+	        //            this.dataListSelections.push(item);
+	        //        	}
+	        //    	})
+	        //     this.toggleSelection(this.dataListSelections);
+	      	// },
+>>>>>>> 17efa00dbbdbf6b2d83eb551b85ff87677938612
         	//单个去选商品    //点击全选
         	onTableSelect(rows, row) {
+			    debugger
         		let selected = rows.length && rows.indexOf(row) !== -1
         		if(selected){   //true    添加
         			this.showdatacurrent.push(row);
@@ -123,6 +161,7 @@
         		console.log(this.showdatacurrent);
 			},
 			onTableSelectall(rows){
+			    debugger
 				if(this.$refs.dataList.selection[0]){     //全选
 					var flag = true;    //添加进去
 					rows.forEach((item)=>{
@@ -148,6 +187,7 @@
 				console.log(this.showdatacurrent);
 			},
 			handleClose(done) {    //带回到父级页面
+			    debugger
 				console.log(this.showdatacurrent);
 			    this.$emit('searchDataList',this.showdatacurrent);
 		        done();

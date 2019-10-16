@@ -21,7 +21,7 @@
                 <span>{{dataForm.nameJp}}</span>
             </el-form-item>
             <el-form-item label="分类条件信息：" prop="name" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.name" auto-complete="off"></el-input>
+                <el-input v-model="dataForm.name" auto-complete="off" maxlength="250"></el-input>
             </el-form-item>
 <!--            <el-form-item style="text-align: center;margin-left: -120px!important;">-->
 <!--                <el-button type="primary" @click="dataFormSubmit('addForm')"-->
@@ -72,23 +72,6 @@
         },
         computed:{},
         mounted(){},
-        watch: {
-              'dataForm.name': function (newV, oldV) {
-                  debugger
-                  var chineseCount = 0, characterCount = 0;
-                  for (let i = 0; i < newV.length; i++) {
-                      if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
-                          chineseCount = chineseCount + 2;
-                      } else { //字符
-                          characterCount = characterCount + 1;
-                      }
-                      var count = chineseCount + characterCount;
-                      if (count > 500) { //后台字段长度大概是255 限制250汉字
-                          this.dataForm.name = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
-                      }
-                  }
-              }
-        },
         methods: {
             init (row) {
                 this.visible = true;

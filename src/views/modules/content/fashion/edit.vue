@@ -34,7 +34,7 @@
                     </template>
                 </el-form-item>
                 <el-form-item label="标题：" style="height: 100%!important;">
-                    <span>{{dataForm.title}}</span>
+                    <span>{{dataForm.titleJp}}</span>
                 </el-form-item>
                 <el-form-item label="详情：" style="height: 100%!important;">
                     <template slot-scope="scope">
@@ -44,7 +44,7 @@
                                 {{v.text}}
                             </div>
                             <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
-                                <div class="goodsPropsWrap">
+                                <div class="goodsPropsWrap" style="text-align: center;">
                                     <div class="goodsImg">
                                         <img :src="v.imageUrl" style="width:200px;" alt=""/>
                                     </div>
@@ -97,7 +97,7 @@
                         <div v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
                             <div style="height: 20px;"></div>
                             <div class="contentChild" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
-                                <el-input v-model="v.textCn" type="textarea" :rows="5" ></el-input>
+                                <el-input style="width: 80%;margin: auto;" v-model="v.textCn" type="textarea" :rows="5" ></el-input>
                             </div>
                             <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
                                 <div class="goodsPropsWrap" style="text-align: center;">

@@ -467,8 +467,23 @@
                             startTime: this.dataForm.startTime,//生效日期 ,
                             threshold: this.dataForm.threshold,//使用门槛 ,
                             totalNums: this.dataForm.totalNums,//总发行量 ,
-                            validityDays: this.dataForm.validityDays,//有效天数 ,
+                            validityDays:this.validityPeriodType==0?0:this.dataForm.validityDays,//有效天数 ,
                             validityPeriodType: this.validityPeriodType,//有效期类型，0：日期范围，1：固定天数
+                        }
+                        if(parseInt(this.dataForm.threshold)<=parseInt(this.dataForm.faceValue)) {
+                            this.$message({
+                                message: "提交失败，面额必须小于使用门槛",
+                                type: "error",
+                                duration: 1500
+                            })
+                            return false
+                        }else if(parseInt(this.dataForm.limitNum)>parseInt(this.dataForm.totalNums)){
+                            this.$message({
+                                message: "提交失败，限领数量不能大于总发行量",
+                                type: "error",
+                                duration: 1500
+                            })
+                            return false
                         }
                         if (this.editSatusId) obj.id = this.editSatusId//优惠券活动id
                         var fn = this.type ?addActivityPoint:editActivityPoint ;
