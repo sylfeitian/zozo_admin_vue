@@ -1,7 +1,7 @@
 <template>
     <div>
         <Bread  :breaddata="breaddata"></Bread>
-        <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
+        <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getData()" >
             <el-form-item label="ID：">
                 <el-input v-model="dataForm.idJp" maxlength="30" ></el-input>
             </el-form-item>
@@ -32,8 +32,8 @@
                 ></el-date-picker>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>
-                <el-button  class="btn" type="primary" plain @click="reset()" >重置</el-button>
+                <el-button  class="btn" type="primary" @click.native.prevent="getData()">搜索</el-button>
+                <el-button  class="btn" type="primary" plain @click.native.prevent="reset()" >重置</el-button>
             </el-form-item>
         </el-form>
         <el-radio-group v-model="activeName" @change="handleClick">
@@ -225,7 +225,6 @@
                 this.dataForm.publishStartTime = ""
                 this.dataForm.publishEndTime = ""
               }
-            
                 this.page = 1;
                 this.getDataList();
             },
@@ -240,6 +239,7 @@
                 this.dataForm.publishJpEndTime = "";
                 this.dataForm.publishStartTime = "";
                 this.dataForm.publishEndTime = "";
+                this.page = 1;
                 this.getDataList();
             },
             handleClick(tab,val) {
@@ -298,35 +298,42 @@
             },
             cotrolGoodsShow(type){
                 var ids = this.getIds(type);
-                var obj = {
+                if(ids[0]){ var obj = {
                     ids:ids,
                     operating:type==1?0:1,
                 }
-                var msg = ""
-                type==1?msg="取消发布":msg="发布"
-                this.$confirm('是否'+msg+'该分组?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    storeNewsPutoperatingAll(obj).then((res)=>{
-                        if(res.code==200){
-                            this.getDataList();
-                            this.$message({
-                                message:res.data,
-                                type: 'success',
-                                duration: 1500,
-                            })
-                        }else{
-                            this.$message({
-                                message:res.data,
-                                type: 'error',
-                                duration: 1500,
-                            })
-                        }
-                    })
+                    var msg = ""
+                    type==1?msg="取消发布":msg="发布"
+                    this.$confirm('是否'+msg+'该分组?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        storeNewsPutoperatingAll(obj).then((res)=>{
+                            if(res.code==200){
+                                this.getDataList();
+                                this.$message({
+                                    message:res.data,
+                                    type: 'success',
+                                    duration: 1500,
+                                })
+                            }else{
+                                this.$message({
+                                    message:res.data,
+                                    type: 'error',
+                                    duration: 1500,
+                                })
+                            }
+                        })
 
-                }).catch(() => {});
+                    }).catch(() => {});}else{
+                    this.$message({
+                        message:"未选择需要操作的分组",
+                        type: 'error',
+                        duration: 1500,
+                    })
+                }
+
             },
             getIds(type){
                 var ids= [];

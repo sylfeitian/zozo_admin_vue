@@ -1,7 +1,7 @@
 <template>
     <div>
         <Bread  :breaddata="breaddata"></Bread>
-        <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
+        <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getData()" >
             <el-form-item label="ID：">
                 <el-input v-model="dataForm.idJp" maxlength="30" placeholder="请输入编号"></el-input>
             </el-form-item>
@@ -342,6 +342,7 @@
                 this.dataForm.startPaymentTime = "";
                 this.dataForm.publishEndTime = "";
                 this.dataForm.publishStartTime = "";
+                this.page = 1;
                 this.getDataList();
             },
             handleClick(tab,val) {
@@ -395,35 +396,41 @@
             },
             cotrolGoodsShow(type){
                 var ids = this.getIds(type);
-                var obj = {
+                if(ids[0]){var obj = {
                     ids:ids,
                     operating:type==1?2:1,
                 }
-                var msg = ""
-                type==1?msg="取消发布":msg="发布"
-                this.$confirm('是否'+msg+'该分组?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    folderPutoperatingAll(obj).then((res)=>{
-                        if(res.code==200){
-                            this.getDataList();
-                            this.$message({
-                                message:res.data,
-                                type: 'success',
-                                duration: 1500,
-                            })
-                        }else{
-                            this.$message({
-                                message:res.data,
-                                type: 'error',
-                                duration: 1500,
-                            })
-                        }
-                    })
+                    var msg = ""
+                    type==1?msg="取消发布":msg="发布"
+                    this.$confirm('是否'+msg+'该分组?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        folderPutoperatingAll(obj).then((res)=>{
+                            if(res.code==200){
+                                this.getDataList();
+                                this.$message({
+                                    message:res.data,
+                                    type: 'success',
+                                    duration: 1500,
+                                })
+                            }else{
+                                this.$message({
+                                    message:res.data,
+                                    type: 'error',
+                                    duration: 1500,
+                                })
+                            }
+                        })
 
-                }).catch(() => {});
+                    }).catch(() => {});}else{
+                    this.$message({
+                        message:"未选择需要操作的分组",
+                        type: 'error',
+                        duration: 1500,
+                    })
+                }
             },
             getIds(type){
                 var ids= [];
