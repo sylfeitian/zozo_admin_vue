@@ -190,14 +190,8 @@
                     }
                 };
                 var validateAddressInfo = (rule, value, callback) =>{
-                    var tempForm={
-                        provinceId:Cookies.get("provinceId"),
-                        cityId:Cookies.get("cityId"),
-                        areaId:Cookies.get("areaId"),
-                        streetId:Cookies.get("streetId"),
-                        addressInfo:Cookies.get("addressInfo"),
-                    }
-                    if(tempForm.provinceId === "" || tempForm.streetId === "" || tempForm.addressInfo === "" || tempForm.areaId === "" || tempForm.cityId === ""){
+                      var flag =  Cookies.get("flag");
+                    if(flag==='0'){
                         callback(new Error('必填项不能为空'))
                     }else{
                         callback()
@@ -330,11 +324,11 @@
             },
             // 提交
             dataFormSubmit(formName) {
-                Cookies.set('provinceId', this.dataForm.provinceId)
-                Cookies.set('cityId', this.dataForm.cityId)
-                Cookies.set('areaId', this.dataForm.areaId)
-                Cookies.set('streetId', this.dataForm.streetId)
-                Cookies.set('addressInfo', this.dataForm.addressInfo)
+                if(this.dataForm.provinceId === "" ||this.dataForm.cityId === "" || this.dataForm.areaId === "" || this.dataForm.streetId === "" ||  this.dataForm.addressInfo === ""){
+                    Cookies.set('flag', 0)
+                }else {
+                    Cookies.set('flag', 1)
+                }
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                     	// if(this.optionsArea4.length != 0 && this.dataForm.streetId==""){

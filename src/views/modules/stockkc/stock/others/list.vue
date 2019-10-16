@@ -175,6 +175,7 @@
                 this.dataForm.creator = null;
                 this.dataForm.startTime = null;
                 this.dataForm.endTime = null;
+                this.valuetime = '',
                 this.getDataList();
             },
         }
