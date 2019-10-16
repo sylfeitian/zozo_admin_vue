@@ -17,9 +17,10 @@
         </el-form-item>
     </el-form>
     <el-table
+      @selection-change="handleSelectionChange"
+      ref="multipleTable"
 	  :data="dataList"
       v-loading="dataListLoading"
-      @selection-change="dataListSelectionChangeHandle"
       border
 	  style="width: 100%">
         <el-table-column 
@@ -48,6 +49,9 @@
 		    prop="sortNum"
             align="center"
 		    label="排序">
+            <template slot-scope="scope">
+                <input type="text" v-model="scope.row.sortNum" style="width:100px;height:30px">
+		    </template>
 		</el-table-column>
 		<el-table-column
 		    prop="goodsName"
@@ -81,16 +85,33 @@
 		    </template>
 	  	</el-table-column>
 	</el-table>
-	<!-- 分页 -->
-    <el-pagination
-	    @size-change="pageSizeChangeHandle"
-	    @current-change="pageCurrentChangeHandle"
-	    :current-page="page"
-	    :page-sizes="[10, 20, 50, 100]"
-	    :page-size="limit"
-	    :total="total"
-	    layout="total, sizes, prev, pager, next, jumper">
-    </el-pagination>
+
+    <div class="bottomFun">
+      <div class="bottomFunLeft">
+        <el-checkbox
+          :indeterminate="isIndeterminate"
+          v-model="checkAll"
+          @change="handleCheckAllChange"
+        >全选</el-checkbox>
+        <el-button
+          class="btn"
+          type="primary"
+          @click="deleteRow()"
+          style="margin-left: 20px;"
+        >批量删除</el-button>
+        <el-button class="btn" type="primary" @click="handleSortNum()" :loading="sortLoading">保存排序</el-button>
+      </div>
+      <!-- 分页 -->
+      <el-pagination
+        @size-change="pageSizeChangeHandle"
+        @current-change="pageCurrentChangeHandle"
+        :current-page="page"
+        :page-sizes="[10, 20, 50, 100]"
+        :page-size="limit"
+        :total="total"
+        layout="total, sizes, prev, pager, next, jumper"
+      ></el-pagination>
+    </div>
 
     <!-- 商品弹框 -->
     <el-dialog
@@ -119,7 +140,8 @@
             </el-form-item>
         </el-form>
         <el-table
-
+            @selection-change="handleSelectionChange"
+            ref="multipleTable"
             :data="goodsdataList"
             v-loading="goodsdataListLoading"
             border
@@ -170,8 +192,9 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import { goodsCarlist,goodsCarlistDelete } from '@/api/url'
-    import { goodsListVisible,categoryCnList,addGoodscarList } from '@/api/api'
+    import { goodsListVisible,categoryCnList,addGoodscarList,updateSortNum } from '@/api/api'
     import Bread from "@/components/bread";
+import { stat } from 'fs';
     
     export default {
         mixins: [mixinViewModule],
@@ -211,6 +234,9 @@
                 limits:10,
                 totals:0,
                 breaddata: ["配置管理", "购物车推荐商品配置"],
+                isIndeterminate: false,
+                checkAll: false,
+                sortLoading:false,
             }
         },
         // ID类搜索框仅可输入数字、英文，最多可输入30个字符
@@ -388,6 +414,54 @@
                     placeholderPic();
                 }
             },
+            // 删除前的全选
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+                if (this.multipleSelection.length == this.dataList.length)
+                    this.checkAll = true;
+                else this.checkAll = false;
+            },
+            handleCheckAllChange(val) {
+                if (val) this.$refs.multipleTable.toggleAllSelection();
+                else this.$refs.multipleTable.clearSelection();
+            },
+            // 全删
+            deleteRow(row){
+                if(!row && this.multipleSelection.length==0){
+                    this.$message.warning("至少选择一个商品")
+                    return;
+                }
+                this.dataListSelections = this.multipleSelection;
+                this.deleteHandle();
+            },
+            // 修改排序
+            handleSortNum () {
+                // this.$refs[formName].validate((valid) => {
+                //     if (valid) {
+                        this.sortLoading = true;
+                        // if(this.row) obj.id = this.row.id
+                        updateSortNum(this.dataList).then((res) => {
+                            this.sortLoading = false;
+                            let status = null;
+                            if(res.code==200){
+                                status = "success"
+                                this.getDataList();
+                            }else{
+                                status = "error"
+                            }
+                            
+                            this.$message({
+                                message: res.msg,
+                                type: status,
+                                duration: 1500
+                            })
+                        })
+                //     } else {
+                //         //console.log('error 添加失败!!');
+                //         return false;
+                //     }
+                // })
+            }
         }
     };
 </script>
@@ -412,5 +486,15 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }*/
+.bottomFun {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
+  .bottomFunLeft {
+    width: 450px;
+    display: flex;
+    align-items: center;
+  }
+}
 </style>

@@ -895,6 +895,8 @@ export const sethomeIndexPage = params => { return http.post(`${base}/folderreco
 export const addGoodscarList = params => { return http.post(`${base}/cartrecom/add`, params).then(res => res.data); };
 //添加商品未推荐列表
 export const goodsListVisible = params => { return http.get(`${base}/cartrecom/goodslist`, params).then(res => res.data); };
+//修改排序
+export const updateSortNum = params => { return http.post(`${base}/cartrecom/update`, params).then(res => res.data); };
 
 //  满减活动-------------------------------------------------------------------------------------------------------------
 // 新增满减活动
