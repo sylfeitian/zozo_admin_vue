@@ -138,27 +138,49 @@
           </template>
       </el-table-column>
       <el-table-column prop="" label="规格" align="center" ></el-table-column>
-      <el-table-column prop="access"  width="150"  label="订单评价" align="center" >
+      <el-table-column prop="access"    label="订单评价" align="center" >
           <template slot-scope="scope">
-            <!--<span v-if="scope.row.access==0">超赞</span>
+            <span v-if="scope.row.access==0">超赞</span>
             <span v-else-if="scope.row.access==1">一般</span>
-            <span v-else-if="scope.row.access==2">满意</span>-->
-            <el-rate
-						  v-model="scope.row.access"
-						  disabled
-						  show-score
-						  text-color="#ff9900"
-						  score-template="{scope.row.access}">
-						</el-rate>
+            <span v-else-if="scope.row.access==2">满意</span>
+            
 
           </template>
       </el-table-column>
 
-       <el-table-column prop="evaluateState" label="评价星级" align="center" >
+       <el-table-column prop="evaluateState" width="210" label="评价星级" align="center" >
           <template slot-scope="scope">
-            <span v-if="scope.row.sizeFeeling==0">合适</span>
+            <!--<span v-if="scope.row.sizeFeeling==0">合适</span>
             <span v-else-if="scope.row.sizeFeeling==1">偏大</span>
-            <span v-else-if="scope.row.sizeFeeling==2">偏小</span>
+            <span v-else-if="scope.row.sizeFeeling==2">偏小</span>-->
+           	<div>
+           		<span style="float:left;">质量：</span>
+           		<el-rate
+						  v-model="scope.row.qualityGrade "
+						  disabled
+						  show-score
+						  text-color="#ff9900">
+						</el-rate>
+           	</div>
+           	<div>
+           		<span style="float:left;">颜值：</span>
+           		<el-rate
+						  v-model="scope.row.faceValueGrade "
+						  disabled
+						  show-score
+						  text-color="#ff9900">
+						</el-rate>
+           	</div>
+           	<div>
+           		<span style="float:left;">舒适度：</span>
+           		<el-rate
+						  v-model="scope.row.comfortGrade "
+						  disabled
+						  show-score
+						  text-color="#ff9900">
+						</el-rate>
+           	</div>
+            
           </template>
        </el-table-column>
 

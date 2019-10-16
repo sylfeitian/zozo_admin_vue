@@ -1067,6 +1067,8 @@ export const periodEdit= params => { return http.put(`${base}/seckill/period`, p
 export const seckillSortSave = params => { return http.put(`${base}/seckill/goods/sort`, params).then(res => res.data); };
 
 
+//版本管理  
+export const sysversionmangedetail = params => { return http.get(`${base}/sysversionmange/${params.id}`, params).then(res => res.data); };
 
 
 

@@ -230,6 +230,7 @@
                 this.getDataList();
             },
             handleClick(tab,val) {
+            	this.page = 1;
                 if(tab== ""){
                     this.dataForm.state = null
                 }else if(tab== "1"){

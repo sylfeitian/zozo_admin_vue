@@ -16,17 +16,12 @@
             <el-form-item label="商品名称：">
                 <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" maxlength="300"></el-input>
             </el-form-item>
-            <el-form-item label="商品ID：">
-                <el-input v-model="dataForm.goodCsId" placeholder="请输入skuID" maxlength="30"></el-input>
+            <el-form-item label="商品货号：">
+                <el-input v-model="dataForm.goodCsId" placeholder="请输入spu编号" maxlength="30"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button  class="btn" type="primary" @click="getData()">查询</el-button>
+                <el-button  class="btn" type="primary" @click="search()">查询</el-button>
             </el-form-item>
-            <p>
-            <el-form-item label="备注：">
-                <span></span>
-            </el-form-item>
-            </p>
         </el-form>
         <el-table
             width="100%"
@@ -34,21 +29,31 @@
             ref='dataList'
             border=""
             v-loading="dataListLoading"
+            @select-all = "onTableSelectall"
+            @select = "onTableSelect"
             style="width: 100%;margin-top:20px;"
         >
-        	<!-- <el-table-column
+        	<el-table-column
 		      	type="selection"
 		     	width="70"
 		     	label="操作"
 		      	align="center">
-		  	</el-table-column> -->
-            <el-table-column prop="skuIdJp" label="skuID" align="center"></el-table-column>
+		  	</el-table-column>
+		  	<el-table-column
+		    	type="index"
+			    prop="$index"
+			    label="序号"
+			    align="center"
+			    width="70">
+			    <template slot-scope="scope">
+	          		{{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}
+	        	</template>
+			</el-table-column>
+            <el-table-column prop="goodsCsId" label="spuID" align="center"></el-table-column>
             <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
             <el-table-column prop="spe" label="规格" align="center"></el-table-column>
             <el-table-column prop="warehouseName" label="所属仓库" align="center"></el-table-column>
-            <el-table-column prop="beforeQty" label="修改前仓库数" align="center"></el-table-column>
-            <el-table-column prop="changeQty" label="扣减库存数" align="center"></el-table-column>
-            <el-table-column prop="afterQty" label="修改后库存数" align="center"></el-table-column>
+            <el-table-column prop="quantity" label="库存" align="center"></el-table-column>
         </el-table>
         <!-- 分页 -->
         <el-pagination
@@ -65,7 +70,7 @@
 
 <script>
     import mixinViewModule from '@/mixins/view-module'
-	import {warehouserecordsodoStockPageUrl} from '@/api/url'
+	import {warehouserecordsodoPageUrl,tock,delstock} from '@/api/url'
 	// import {wareInfoById} from  "@/api/api.js"
     export default {
         mixins: [mixinViewModule],
@@ -74,7 +79,7 @@
 				
             	mixinViewModuleOptions: {
 				  activatedIsNeed: false,   
-				  getDataListURL: warehouserecordsodoStockPageUrl,
+				  getDataListURL: warehouserecordsodoPageUrl,
 		          getDataListIsPage: true,
 		          // exportURL: '/admin-api/log/login/export',
 		          deleteURL: '',
@@ -82,9 +87,10 @@
 		          deleteIsBatchKey: 'id'
 			    },
                 dataForm:{
-                    goodCsId:'',//商品的日本skuid
-                    documentNo:"",//出库单号
-                	goodsName:""//商品名
+                	// houseName: '', //所属仓库名  
+                	wareHouseId: '',   //仓库id  
+                	goodsName:'',  //商品名
+                	goodCsId:'',  //商品的日本skuid
                 },
                 title:'',
                 visible : false,
@@ -94,6 +100,7 @@
                 showdatacurrent:[],      //页面回显
             }
         },
+        props:['dataId','showdata'],
         watch:{
             'dataForm.goodCsId':function(newV,oldV) {
                 for(let i=0;i<newV.length;i++){
@@ -121,30 +128,100 @@
         created(){
         },
         methods: {
-			init(row){
-				console.log(row);
+			init(wareItem){
+				console.log(wareItem);
 		      	this.visible = true;
 				this.title="查看详情";
+				// this.dataForm.wareHouseId = this.dataId;
+				this.dataForm.wareHouseId = wareItem.id;
+        		this.showdatacurrent = this.showdata;
 				this.$nextTick(()=>{
-					this.getData(row);
+					this.search();
 				})
 			},
-	      	getData(row){
-	          	// this.getDataList().then((res)=>{
-                // 	this.backScanHook();
-                if(row){
-                	this.dataForm.documentNo = row.documentNo  ////出库单号
-                }
-                
-                //    this.dataForm.goodCsId //商品的日本skuid
-                // this.dataForm.goodsName =  //商品名
+	      	search(){
+	          	 this.getDataList().then((res)=>{
+				 	this.backScanHook();
+				 });
+				 this.dataForm.wareHouseId =  this.dataForm.wareHouseId
 				this.getDataList();
 	      	},
+			//   处理回显数据
+	       	 backScanHook(){
+	           	this.dataListSelections = [];
+	           	var specIds = [];
+	           	this.showdatacurrent = this.showdata;
+	          	this.showdatacurrent.forEach((item,index)=>{
+	           		specIds[index] = item.id;
+	           	})
+	           	this.dataList.forEach((item,index)=>{
+	                	if(specIds.indexOf(item.id)!=-1){
+	                    this.dataListSelections.push(item);
+	                	}
+	            	})
+	             this.toggleSelection(this.dataListSelections);
+	      	 },
+        	//单个去选商品    //点击全选
+        	onTableSelect(rows, row) {
+        		let selected = rows.length && rows.indexOf(row) !== -1
+				if(selected){   //true    添加
+					row.wareHouseId = this.dataId;
+					row.skuId = row.id;
+					// delete row.id;
+        			this.showdatacurrent.push(row);
+        		}else{          //删除
+			        for (var i = 0; i < this.showdatacurrent.length; i++) {
+				        if (this.showdatacurrent[i].id == row.id){
+						    this.showdatacurrent.splice(i, 1);
+				        }
+				    }
+        		}
+        		console.log(this.showdatacurrent);
+			},
+			onTableSelectall(rows){
+				if(this.$refs.dataList.selection[0]){     //全选
+					var flag = true;    //添加进去
+					rows.forEach((item)=>{
+						flag = true; 
+						for (var i = 0; i < this.showdatacurrent.length; i++) {
+					        if (this.showdatacurrent[i].id == item.id){
+							    flag = false;   //已经存在不用添加
+					        }
+					   }
+						if (flag){
+							item.wareHouseId = this.dataId;
+							item.skuId = item.id;
+							// delete item.id;
+							this.showdatacurrent.push(item);
+						}
+					})
+				}else{     //全不选
+					this.dataList.forEach((item)=>{
+						for (var i = 0; i < this.showdatacurrent.length; i++) {
+					        if (this.showdatacurrent[i].id == item.id){
+						    	this.showdatacurrent.splice(i, 1);
+					        }
+					   }
+					})
+				}
+				console.log(this.showdatacurrent);
+			},
 			handleClose(done) {    //带回到父级页面
-			    this.$emit('searchDataList');
+				console.log(this.showdatacurrent);
+				this.showdatacurrent = [].concat(this.showdatacurrent);
+			    this.$emit('searchDataList',this.showdatacurrent);
 		        done();
 		   },
-	     
+	      	//  处理回显事件
+	      	toggleSelection(rows) {
+	        if (rows) {
+		        	console.log(rows);
+		          	rows.forEach(row => {
+		            	this.$refs.dataList.toggleRowSelection(row);
+		          	});
+	        	}
+	      	},
+		    
 			// 每页数
 			sizeChangeHandle (val) {
 				this.page = 1;

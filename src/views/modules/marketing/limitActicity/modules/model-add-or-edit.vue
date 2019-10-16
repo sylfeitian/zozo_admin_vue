@@ -49,10 +49,16 @@
             var validateTime = (rule, value, callback) => {
                 console.log(this.startTime);
                 if(new  Date(this.dataForm.startTime).getTime()>new Date(this.dataForm.endTime).getTime()){
-                    console.log("123123123123");
-                    callback(new Error("开始时间不能小于结束时间"))
-                }else{
-                     console.log("22222222");
+                    callback(new Error("开始时间不能大于结束时间"))
+                } else{
+                    callback();
+                }
+            };
+            var validateTimestart = (rule, value, callback) => {
+                console.log(this.startTime);
+                if(new Date().getTime() > new Date(this.dataForm.startTime).getTime()){
+                	callback(new Error("开始时间必须大于今日当前时间"))
+				} else{
                     callback();
                 }
             };
@@ -67,11 +73,12 @@
                     ],
                     startTime : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
-                         { validator: validateTime, trigger: 'blur' }
+                        { validator: validateTime, trigger: 'blur' },
+                        { validator: validateTimestart, trigger: 'blur' }
                     ],
                     endTime : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
-                         { validator: validateTime, trigger: 'blur' }
+                        { validator: validateTime, trigger: 'blur' }
                     ],
                 },
                 dataForm:{
@@ -90,7 +97,7 @@
 			  	},
 			  	pickerOptions1: {
 	                disabledDate: (time) => {
-	                    return time.getTime() < new Date(this.dataForm.startTime).getTime();//减去一天的时间代表可以选择同一天;
+	                    return time.getTime() < new Date(this.dataForm.startTime).getTime()- 8.64e7;//减去一天的时间代表可以选择同一天;
 	                }
 	            },
             }
