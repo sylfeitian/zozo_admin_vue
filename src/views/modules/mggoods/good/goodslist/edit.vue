@@ -188,8 +188,8 @@
         <el-col :span="24">
             <div style="position: fixed;bottom: 0;margin: 0 auto;width: 86%;text-align: center;z-index: 999;background-color: #e6e6e6;padding: 10px 0;">
                 <el-button class="btn" @click="reset()">取消</el-button>
-                <el-button class="btn" @click="saveData(0,'dataForm')">仅保存</el-button>
-                <el-button v-if="dataForm.showWeb!=1" class="btn" type="primary" @click="saveData(1,'dataForm')">保存并上架</el-button>
+                <el-button class="btn" @click="saveData(0,'dataForm')" :loading="saveLoading0">仅保存</el-button>
+                <el-button v-if="dataForm.showWeb!=1" class="btn" type="primary" @click="saveData(1,'dataForm')" :loading="saveLoading1">保存并上架</el-button>
             </div>
         </el-col>
         <!-- 弹窗, 新建 -->
@@ -236,6 +236,8 @@
                 },
                 tempImage:'',//上传图片展位图
                 uploading:false,
+                saveLoading0:false,
+                saveLoading1:false,
             }
         },
         components: {
@@ -284,6 +286,7 @@
         methods: {
             init(row){
                 this.row = row;
+                this.saveLoading = false;
                 this.$nextTick(()=>{
                     if(row){
                         this.backScan(row);
@@ -301,12 +304,16 @@
                     console.log('详情',res.data)
                     if(res.code == 200){
                         this.dataForm = res.data;
+                        this.$nextTick(()=>{
+                            this.$refs.refmessageContent.dataForm.messageContent =  this.dataForm.description 
+                        })
                     }
                 })
             },
             // 富文本编辑器修改值
             artmessageContent(messageContent){
-                this.dataForm.messageContent = messageContent;
+                // this.dataForm.messageContent = messageContent;
+                this.dataForm.description = messageContent
             },
             //备案信息
             // logMore() {
@@ -366,16 +373,27 @@
 	                    "material": this.dataForm.material,//材质中文 ,
 	                    "name":  this.dataForm.name,//商品中文名 ,
 	                    "saveFlag": saveType // 0：仅保存，1：保存并上架
-	                }
+                    }
+                    if(saveType==0){
+                         this.saveLoading0 = true;
+                    }else{
+                        this.saveLoading1 = true;
+                    }
 	                saveZozogoods(obj).then((res)=>{
+                         if(saveType==0){
+                            this.saveLoading0 = false;
+                        }else{
+                            this.saveLoading1 = false;
+                        }
 	                    if(res.code == 200){
 	                        this.$message({
 	                            message: res.msg,
 	                            type: 'success',
-	                            onClose:function () {
-	                                that.changePage();
-	                            }
-	                        });
+	                            // onClose:function () {
+	                            //     that.changePage();
+	                            // }
+                            });
+                             that.changePage();
 	                    }else{
 	                        this.$message({
 	                            message: res.msg,

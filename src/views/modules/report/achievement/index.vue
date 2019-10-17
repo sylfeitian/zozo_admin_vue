@@ -161,7 +161,7 @@
             // 重置
             reset() {
                 this.timeArr = [];
-                this.dataForm.dimension=="day"
+                this.dataForm.dimension="day"
                 this.getDataList();
             },
         }

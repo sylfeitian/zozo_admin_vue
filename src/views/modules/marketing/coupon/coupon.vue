@@ -245,9 +245,12 @@ export default {
 	    	this.$emit("showDetail",id);
         },
         reset() {
-            this.dataForm = {};
             this.dataForm.getStartTime =  '';
-						this.dataForm.getEndTime = '';
+			this.dataForm.getEndTime = '';
+			this.dataForm.name = '';
+			this.dataForm.type = '';
+			this.dataForm.state = '';
+			this.dataForm.auditState  =""
             this.valuetime = '',
             this.getDataList();
         },

@@ -124,6 +124,10 @@
 		    prop="orderSnJp"
 		    label="日方发货订单号"
 				align="center">
+			<template slot-scope="scope">
+				{{scope.row.orderSnJp || '/'}}
+			</template>
+
 		</el-table-column>
 		<el-table-column
 		    prop="orderType"
@@ -170,6 +174,9 @@
 		    prop="finishDate"
 		    label="完成时间"
 			align="center">
+			<template slot-scope="scope">
+				{{scope.row.finishDate || '/'}}
+			</template>
 		</el-table-column>
 		<el-table-column
 		    prop="payType"
