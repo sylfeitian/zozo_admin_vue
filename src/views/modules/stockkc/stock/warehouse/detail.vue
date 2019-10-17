@@ -66,27 +66,26 @@
                 v-loading="dataListLoading"
                 style="width: 100%;margin-top:10px;"
         >
-            <el-table-column prop="aftersaleSn" label="skuID" align="center"></el-table-column>
+            <el-table-column prop="skuId" label="skuId" align="center"></el-table-column>
             <el-table-column prop="specSerial" label="图片" align="center">
                 <template slot-scope="scope">
                     <div class="goodsPropsWrap">
                         <div class="goodsImg">
-                            <img :src="scope.row.pictureUrl | filterImgUrl" alt=""/>
+                            <img :src="scope.row.imageUrl | filterImgUrl" alt=""/>
                         </div>
                     </div>
                 </template>
             </el-table-column>
             <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
-            <el-table-column prop="memberName" label="品牌" align="center"></el-table-column>
+            <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
             <el-table-column prop="storeName" label="所属店铺" align="center"></el-table-column>
-            <el-table-column prop="spe" label="规格" align="center"></el-table-column>
-            <el-table-column label="分类" align="center ">
-                <template slot-scope="scope">
-                    <span>{{dataForm.firstCategory}}</span>>
-                    <span>{{dataForm.secondCategory}}</span>
+            <el-table-column prop="specValue" label="规格" align="center"></el-table-column>
+            <el-table-column prop="category" label="分类" align="center "></el-table-column>
+            <el-table-column prop="sellPrice" label="商品售价" align="center">
+                  <template slot-scope="scope">
+                    <span>￥{{scope.rowsellPrice?scope.rowsellPrice:'0.00'}}</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="sellPrice" label="商品售价" align="center"></el-table-column>
             <el-table-column prop="stockQuantity" label="库存数量" align="center"></el-table-column>
         </el-table>
         <!-- 分页 -->
@@ -115,6 +114,7 @@
                 mixinViewModuleOptions: {
                     getDataListURL: skuGoods,
                     getDataListIsPage: true,
+                    activatedIsNeed:false,
                     // exportURL: '/admin-api/log/login/export',
                     // deleteURL: deleteWare,
                     deleteIsBatch: false,
@@ -212,6 +212,27 @@
             this.backScan1();
         },
         methods: {
+             init (row) {
+                this.visible = true;
+                this.row = row;
+                console.log(row);
+                this.backScan(row);
+                // this.$nextTick(() => {
+                //     this.$refs['addForm'].resetFields();
+                //     // this.getApplyPullList();
+                // })
+                 console.log(11112);
+                console.log(row);
+                this.dataFormShow.id = row.id
+                this.getData();
+            },
+            getData(){
+                this.page = 1;
+               
+
+                this.dataForm = cloneDeep(this.dataFormShow);
+                this.getDataList();
+            },
             handleChange(){
                 if(this.classList.length!=0){
                     this.dataFormShow.categoryId = this.classList[this.classList.length-1]
@@ -238,21 +259,7 @@
                     }
                 })
             },
-            init (row) {
-                this.visible = true;
-                this.row = row;
-                console.log(row);
-                this.backScan(row);
-                // this.$nextTick(() => {
-                //     this.$refs['addForm'].resetFields();
-                //     // this.getApplyPullList();
-                // })
-            },
-            getData(){
-                this.page = 1;
-                this.dataForm = cloneDeep(this.dataFormShow);
-                this.getDataList();
-            },
+            
             // 编辑回显
             backScan(row){
                 console.log(row);
@@ -303,5 +310,14 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+    .goodsPropsWrap{
+        text-align: center;
+    }
+    .goodsImg{
+        img{
+             width: 100px;
+             height: 100px;
+        }
     }
 </style>
