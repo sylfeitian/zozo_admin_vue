@@ -119,13 +119,26 @@
             importAndExport
         },
         // watch:{
-        //     timeArr(val){
-        //         if(!val){
-        //             this.dataForm.startTime = '';
-        //             this.dataForm.endTime = '';
+        //     'dataFormShow.dimension':function(newV,oldV) {
+        //         if(newV=="day"){
+
+        //         }else if(newV=="day"){
+
+        //         }else if(newV=="day"){
+
+        //         }else if(newV=="day"){
+
         //         }
         //     }
         // },
+        watch:{
+            timeArr(val){
+                if(!val){
+                    this.dataForm.startTime = '';
+                    this.dataForm.endTime = '';
+                }
+            }
+        },
         methods: {
             getData() {
                 if(this.timeArr.length == 2 ){
