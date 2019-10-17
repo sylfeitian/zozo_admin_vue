@@ -785,7 +785,8 @@ export const getShopmessagetemplate = params => { return http.get(`${base}/shopm
 export const saveShopmessagetemplate = params => { return http.post(`${base}/shopmessagetemplate`, params).then(res => res.data); };
 //消息详情
 export const getMessageDetail = params => { return http.get(`${base}/shopmessagetemplate/messageDetails/${params.id}`, params).then(res => res.data); };
-
+// 消息类型
+export const messageTypePage = params => { return http.get(`${base}/shopmessagetemplate/messagetypepage`, params).then(res => res.data); };
 
 
 
