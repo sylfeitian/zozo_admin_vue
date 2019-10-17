@@ -346,7 +346,6 @@
                     that.changePage();
                 }).catch();
             },
-<<<<<<< HEAD
             saveData(saveType,formName){
             	this.$refs[formName].validate((valid) => {
 		          if (valid) {
@@ -388,44 +387,8 @@
 		            return false;
 		          }
 		        });
-                
-=======
-            saveData(saveType){
-                let that = this;
-                // this.dataForm.saveFlag = saveType;
-                // this.dataForm.goodsTypeId  = this.dataForm.secondCategoryIsd 
-                // console.log(this.dataForm);
-                var imgs =[]
-                 this.dataForm.imgs.forEach((item,index)=>{
-                        imgs.push(item.sizeOriginal); 
-                })
-                var obj = {
-                    "description": this.dataForm.description,//中方商品描述 ,
-                    "goodsTypeId": this.dataForm.secondCategoryIsd ,//商品的二级分类id ,
-                    "id": this.dataForm.id,//商品spu的id ,
-                    "imgs": imgs,//商品的图片列表 ,
-                    "madeIn": this.dataForm.madeIn,//生产地中文 ,
-                    "material": this.dataForm.material,//材质中文 ,
-                    "name":  this.dataForm.name,//商品中文名 ,
-                    "saveFlag": saveType // 0：仅保存，1：保存并上架
-                }
-                saveZozogoods(obj).then((res)=>{
-                    if(res.code == 200){
-                        this.$message({
-                            message: res.msg,
-                            type: 'success',
-                            onClose:function () {
-                                that.changePage();
-                            }
-                        });
-                    }else{
-                        this.$message({
-                            message: res.msg,
-                            type: 'error',
-                        });
-                    }
-                })
-            },
+            },    
+
             deletaImgFn(index){
                 this.dataForm.imgs.splice(index,1);
             },
@@ -472,7 +435,6 @@
                 console.log("base64上传图片接口");
                 // console.log(val);
                 this.uploadPic(val);
->>>>>>> 74d9edacb642d632b4899c83b1af50e586a2bd38
             },
 
         }
