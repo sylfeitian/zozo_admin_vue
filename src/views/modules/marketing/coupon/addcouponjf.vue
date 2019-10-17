@@ -470,7 +470,7 @@
                             validityDays:this.dataForm.validityDays,//有效天数 ,
                             validityPeriodType: this.validityPeriodType,//有效期类型，0：日期范围，1：固定天数
                         }
-                        if(parseInt(this.dataForm.threshold)<=parseInt(this.dataForm.faceValue)) {
+                        if(parseInt(this.dataForm.threshold)>0&&parseInt(this.dataForm.threshold)<=parseInt(this.dataForm.faceValue)) {
                             this.$message({
                                 message: "提交失败，面额必须小于使用门槛",
                                 type: "error",

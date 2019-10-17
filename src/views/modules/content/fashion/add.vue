@@ -225,8 +225,8 @@
                         this.addDataForm.favNumCn = newV.replace(newV[i],"")
                     }
                 }
-                if(newV.length>999){
-                    this.addDataForm.favNumCn = newV.substr(0,999)
+                if(newV.length>3){
+                    this.addDataForm.favNumCn = newV.substr(0,3)
                 }
             },
             'addDataForm.viewsNumCn':function(newV,oldV) {
@@ -236,8 +236,8 @@
                         this.addDataForm.viewsNumCn = newV.replace(newV[i],"")
                     }
                 }
-                if(newV.length>999){
-                    this.addDataForm.viewsNumCn = newV.substr(0,2)
+                if(newV.length>3){
+                    this.addDataForm.viewsNumCn = newV.substr(0,3)
                 }
             }
     },

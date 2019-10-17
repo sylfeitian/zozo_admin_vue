@@ -157,8 +157,8 @@
 					this.value = "";
 					return;
 				}
-				if(file.size/(1024*1024) > 10){
-					this.$message.error('图片大小不能大于10M');
+				if(file.size/(1024*1024) > 3){
+					this.$message.error('图片大小不能大于3M');
 					//    this.value = file
 					var cropImg = this.cropper.cropImg;
 					this.cropper.cropImg = ""
