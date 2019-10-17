@@ -59,7 +59,7 @@
 						@GiftUrlHandle="GiftUrlHandle"
 					></img-cropper>
 				</div>
-			</el-form-item>
+		</el-form-item>
 		
     	<el-form-item label="分类性别：" prop=""  v-if="yijishow">
     		<div class="pcCoverUrl imgUrl"  @click="imgtype = 'all'" style="display: flex;">
@@ -140,25 +140,25 @@
 	export default {
 	  data() {
 	    var checkName = (rule, value, callback) => {
+			// 校验中国分类名称是否重复
+			if(value){
+				if(value===this.tempName){
+					callback();
+				}else{
+					var obj={name:value, parentId:0}
+					if(this.dataForm.parentId !==0){ //不是一级分类时
+						obj.parentId=this.dataForm.parentId
+					}
+					categoryCnVerifyName(obj).then((res)=>{
+						if(res.code == 200){
 
-					// 校验中国分类名称是否重复
-					if(value){
-						if(value===this.tempName){
 							callback();
 						}else{
-							var obj={name:value, parentId:0}
-							if(this.dataForm.parentId !==0){ //不是一级分类时
-								obj.parentId=this.dataForm.parentId
-							}
-							categoryCnVerifyName(obj).then((res)=>{
-								if(res.code == 200){
-									callback();
-								}else{
-									callback(new Error(res.msg));
-								}
-							})
+							callback(new Error(res.msg));
 						}
-					}
+					})
+				}
+			}
 	    };
 	    var sortminmax = (rule, value, callback) => {
 	    	if(value >= 0 && value < 255){
@@ -275,7 +275,9 @@
 	  			this.erjishow = true;
 	  			this.yijishow = false;
 	  		}else{
-	  			this.dataForm.methodUrlshow.push('');
+				if(this.dataForm.methodUrlshow && this.dataForm.methodUrlshow.length<10){
+					this.dataForm.methodUrlshow.push('');
+				}
 	  			this.erjishow = false;
 				this.yijishow = true;
 				  
@@ -288,52 +290,61 @@
 			this.row = row;
 			this.saveLoading = false;
 			if(this.row){
-
 				this.tempName = this.row.label; // 暂存当前名字，校验用
 			}
 	  		this.showListVisible = true;
 			this.$nextTick(()=> {
-				backScanCategoryCn(row).then((res) => {
-					if (res.code == 200) {
-						Object.assign(this.dataForm, res.data);
-						if (res.data.methodUrl)
-							this.dataForm.methodUrlshow = JSON.parse(res.data.methodUrl);
-						this.actselectchange();
-						this.delay=true
-					} else {
-						this.$message(res.msg);
-					}
-				}).catch(() => {
-					this.$message("服务器错误");
-				})
-				//获取关联日本分类
-				searchCategoryJp().then((res) => {
-					if (res.code == 200) {
-						console.log(res.data);
-						res.data.forEach((item) => {
-							this.goodKindList2.push(item);
-						})
-					} else {
-						this.$message(res.msg);
-					}
-				}).catch(() => {
-					this.$message("服务器错误");
-				})
-				//获取一级分类
-				categoryCn().then((res) => {
-					if (res.code == 200) {
-						res.data.forEach((item) => {
-							this.goodKindList1.push(item);
-						})
-					} else {
-						this.$message(res.msg);
-					}
-				}).catch(() => {
-					this.$message("服务器错误");
-				})
+				this.backScan();	// 编辑时回显数据
+				this.getCategoryJp();// 获取关联日本分类
+				this.getCategoryCn();//获取一级分类
+				
 			})
-
 	  	},
+		// 编辑时回显数据
+		backScan(){
+			backScanCategoryCn(this.row).then((res) => {
+				if (res.code == 200) {
+					Object.assign(this.dataForm, res.data);
+					if (res.data.methodUrl)
+						this.dataForm.methodUrlshow = JSON.parse(res.data.methodUrl);
+					this.actselectchange();
+					this.delay=true
+				} else {
+					this.$message(res.msg);
+				}
+			}).catch(() => {
+				this.$message("服务器错误");
+			})
+		},
+		// 获取关联日本分类
+		getCategoryJp(){
+			searchCategoryJp().then((res) => {
+				if (res.code == 200) {
+					console.log(res.data);
+					res.data.forEach((item) => {
+						this.goodKindList2.push(item);
+					})
+				} else {
+					this.$message(res.msg);
+				}
+			}).catch(() => {
+				this.$message("服务器错误");
+			})
+		},
+		//获取一级分类
+		getCategoryCn(){
+			categoryCn().then((res) => {
+				if (res.code == 200) {
+					res.data.forEach((item) => {
+						this.goodKindList1.push(item);
+					})
+				} else {
+					this.$message(res.msg);
+				}
+			}).catch(() => {
+				this.$message("服务器错误");
+			})
+		},
 		actuploaddata(formName){  //确定提交 
 		if(this.saveLoading){
 			return;

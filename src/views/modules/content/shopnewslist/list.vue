@@ -269,7 +269,7 @@
                     "operating":row.showWeb==1?0:1  //
                 }
                 var msg = ""
-                row.showWeb==1?msg="禁用":msg="启用"
+                row.showWeb==1?msg="取消发布":msg="发布"
                 this.$confirm('是否'+msg+'该分组?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -328,7 +328,7 @@
 
                     }).catch(() => {});}else{
                     this.$message({
-                        message:"未选择需要操作的分组",
+                        message:"未勾选列表数据",
                         type: 'error',
                         duration: 1500,
                     })

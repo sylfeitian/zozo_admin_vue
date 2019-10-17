@@ -80,7 +80,7 @@
                             </el-form-item>
 
                             <el-form-item label="订单编号：" >
-                                <span>{{returnInfo.orderId}}</span>
+                                <span>{{returnInfo.orderSn}}</span>
                             </el-form-item>
                             
                             <el-form-item label="申请时间：">
@@ -125,7 +125,7 @@
                                 </div>
                                <!-- 审核时才能编辑 -->
                                <div v-else>
-                            <el-input-number  v-model="returnInfo.refundAmount"  :precision="2" :step="1" :min="0"  controls-position="right"></el-input-number>
+                                     <el-input-number  v-model="returnInfo.refundAmount"  :precision="2" :step="1" :min="0" :max="parseFloat(returnInfo.shouldRefundAmount)" controls-position="right"></el-input-number>
                                </div>
                                     
                                 
@@ -262,7 +262,7 @@
         watch: {
             'returnInfo.remark': function (newV, oldV) {
                 var chineseCount = 0, characterCount = 0;
-                for (let i = 0; i < newV.length; i++) {
+                for (let i = 0; i < newV?newV.length:0; i++) {
                     if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
                         chineseCount = chineseCount + 2;
                     } else { //字符
@@ -270,7 +270,7 @@
                     }
                     var count = chineseCount + characterCount;
                     if (count > 600) { //输入字符大于600的时候过滤
-                        this.returnInfo.remark = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
+                        this.returnInfo.remark = newV.toString().substr(0, (chineseCount / 2 + characterCount) - 1)
                     }
                 }
             },

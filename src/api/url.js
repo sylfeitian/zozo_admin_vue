@@ -493,3 +493,10 @@ export const statisticsOrderPage = `${base}/statistics/order/page`;
 export const afterStorePage = `${base}/statistics/aftersale/page`;
 //优惠券统计
 export const couponStorePage = `${base}/statistics/coupons/page`;
+
+
+
+
+
+//版本管理 
+export const getsysversionmange = `${base}/sysversionmange/page`;

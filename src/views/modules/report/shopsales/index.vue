@@ -137,6 +137,7 @@
                     dimension:"0",//统计维度
                 },
                 dataList: [],
+                loading:false,
                 dataListLoading: false,
                 selectStoreOption: [],
                 selectBrandOption: []
@@ -149,8 +150,8 @@
         // watch:{
         //     timeArr(val){
         //         if(!val){
-        //             this.dataForm.startCreateDate = '';
-        //             this.dataForm.endCreateDate = '';
+        //             this.dataForm.statisticsStart = '';
+        //             this.dataForm.statisticsEnd = '';
         //         }
         //     }
         // },
@@ -161,11 +162,11 @@
         methods: {
             getData() {
                 if(this.timeArr && this.timeArr.length==2){
-                    this.dataForm.startCreateDate =  this.timeArr[0];
-                    this.dataForm.endCreateDate = this.timeArr[1];
+                    this.dataForm.statisticsStart =  this.timeArr[0];
+                    this.dataForm.statisticsEnd = this.timeArr[1];
                 }else{
-                    this.dataForm.startCreateDate = ""
-                    this.dataForm.endCreateDate = ""
+                    this.dataForm.statisticsStart = ""
+                    this.dataForm.statisticsEnd = ""
                 }
                 if(this.dataForm.dimension == "0"){//如果统计维度是明细的话
                 }else{//如果统计维度是汇总的话，时间必填
@@ -196,8 +197,8 @@
             },
             // 重置
             reset() {
-                this.dataForm.startCreateDate = ""
-                this.dataForm.endCreateDate = ""
+                this.dataForm.statisticsStart = ""
+                this.dataForm.statisticsEnd = ""
                 this.timeArr = [];
                 this.dataForm.brandId = ""
                 this.dataForm.storeId = ""

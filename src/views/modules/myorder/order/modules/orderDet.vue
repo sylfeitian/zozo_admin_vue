@@ -306,7 +306,7 @@
          <!-- 取消订单弹框 -->  
         <cancleOrder v-if="cancleOrderVisible" ref="cancleOrderCompon" @searchDataList="getOrderDetail"></cancleOrder>
 
-        <tabFn  v-if="showPage==2" @controlShowPage="controlShowPage" ref="tabFnCompon" :breaddata="nextBreaddata" :index="index"></tabFn>
+        <tabFn  v-if="showPage==2" @controlShowPage="controlShowPage" ref="tabFnCompon" :breaddata="nextBreaddata" :index="index" :showTab='false'></tabFn>
     </div>
 </template>
 <script>

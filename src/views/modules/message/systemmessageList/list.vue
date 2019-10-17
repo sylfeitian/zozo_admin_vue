@@ -88,7 +88,7 @@
                     <span>{{messageDetail.messageTitle}}</span>
                 </el-form-item>
                 <el-form-item label="消息内容：">
-                    <span>{{messageDetail.messageCount}}</span>
+                    <div style="overflow: auto;" v-html="messageDetail.messageContent"></div>
                 </el-form-item>
             </el-form>
         </el-dialog>

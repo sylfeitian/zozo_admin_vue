@@ -2,7 +2,7 @@
     <div>
         <!-- <button @click="getData">123132</button> -->
         <list v-if="showPage==1" ref="listCompon" @controlShowPage="controlShowPage" ></list>
-        <tabFn  v-if="showPage==2" @controlShowPage="controlShowPage" ref="tabFnCompon" :breaddata="nextBreaddata" :index="index"></tabFn>
+        <tabFn  v-if="showPage==2" @controlShowPage="controlShowPage" ref="tabFnCompon" :breaddata="nextBreaddata" :index="index" :showTab="true"></tabFn>
     </div>
 </template>
 

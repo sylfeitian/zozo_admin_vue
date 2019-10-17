@@ -149,11 +149,11 @@
         <div style="margin-left:20px;">
             <div>
                 <span style="margin-right: 10px;"><span style="color: #F56C6C;margin-right: 5px;">*</span>关联标签：</span>
-                <el-select :filter-method="getStyle" @change="saveList" filterable placeholder="请选择">
+                <el-select :filter-method="getStyle" v-model="value" @change="saveList" filterable placeholder="请选择">
                     <el-option
                             v-for="(item,index) in options"
                             :key="index"
-                            :label="item.styleName"
+                            :label="item.name"
                             :value="index">
                     </el-option>
                 </el-select>
@@ -166,7 +166,7 @@
                         closable
                         :disable-transitions="false"
                         @close="handleClose(index)">
-                    {{tag.styleName}}
+                    {{tag.name}}
                 </el-tag>
             </span>
         </div>
@@ -191,7 +191,8 @@
                 dataForm: {},
                 dataListLoading: false,
                 styleList:[],
-                options:""
+                options:"",
+                value:""
             }
         },
         components: {
@@ -241,6 +242,12 @@
                     params:{styleName:val}
                 }).then((res)=>{
                     this.options = res;
+                    res.map((v,i)=>{
+                        this.options[i] = {
+                            id:v.id,
+                            name:v.styleName
+                        }
+                    })
                 })
             },
             handleClose(index) {
@@ -261,9 +268,19 @@
             },
             getData(saveType){
                 let that = this;
-                this.dataForm.saveFlag = saveType;
-                this.dataForm.styles = this.styleList;
-                saveFolderdetail(this.dataForm).then((res)=>{
+                let list = [];
+                that.styleList.map((v,i)=>{
+                    list.push(v.id)
+                })
+                let obj = {
+                    contryName:this.dataForm.contryName,
+                    description:this.dataForm.description,
+                    id:this.dataForm.id,
+                    saveFlag:saveType,
+                    styleIds:list,
+                    title:this.dataForm.title
+                }
+                saveFolderdetail(obj).then((res)=>{
                     if(res.code == 200){
                         this.$message({
                             message: res.msg,

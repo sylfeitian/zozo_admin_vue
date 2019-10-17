@@ -158,8 +158,8 @@
 				this.page = val;
 				this.getDataList();
 			},
-            addOrAdit(id){
-                this.$emit("addOrAdit",id);
+            addOrAdit(){
+                this.$emit("addOrAdit");
             },
             showDetail(index=-1,row=""){
                 this.setShowDetailVisible(true);

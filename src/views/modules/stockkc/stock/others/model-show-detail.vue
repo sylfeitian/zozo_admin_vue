@@ -132,7 +132,10 @@
 	      	getData(row){
 	          	// this.getDataList().then((res)=>{
                 // 	this.backScanHook();
-                this.dataForm.documentNo = row.documentNo  ////出库单号
+                if(row){
+                	this.dataForm.documentNo = row.documentNo  ////出库单号
+                }
+                
                 //    this.dataForm.goodCsId //商品的日本skuid
                 // this.dataForm.goodsName =  //商品名
 				this.getDataList();

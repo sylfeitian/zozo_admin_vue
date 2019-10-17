@@ -49,7 +49,7 @@
 	          		{{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}
 	        	</template>
 			</el-table-column>
-            <el-table-column prop="goodsCsId" label="skuID" align="center"></el-table-column>
+            <el-table-column prop="goodsCsId" label="spuID" align="center"></el-table-column>
             <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
             <el-table-column prop="spe" label="规格" align="center"></el-table-column>
             <el-table-column prop="warehouseName" label="所属仓库" align="center"></el-table-column>
@@ -131,7 +131,8 @@
 			init(wareItem){
 				console.log(wareItem);
 		      	this.visible = true;
-				this.title="选择商品";
+		      	this.row = wareItem;
+				this.title="查看详情";
 				// this.dataForm.wareHouseId = this.dataId;
 				this.dataForm.wareHouseId = wareItem.id;
         		this.showdatacurrent = this.showdata;
@@ -140,27 +141,27 @@
 				})
 			},
 	      	search(){
-	          	// this.getDataList().then((res)=>{
-				// 	this.backScanHook();
-				// });
-				// this.dataForm.wareHouseId =  this.dataForm.wareHouseId
+	          	 this.getDataList().then((res)=>{
+				 	this.backScanHook();
+				 });
+				 this.dataForm.wareHouseId =  this.dataForm.wareHouseId
 				this.getDataList();
 	      	},
 			//   处理回显数据
-	       	// backScanHook(){
-	        //   	this.dataListSelections = [];
-	        //   	var specIds = [];
-	        //   	this.showdatacurrent = this.showdata;
-	        //  	this.showdatacurrent.forEach((item,index)=>{
-	        //   		specIds[index] = item.id;
-	        //   	})
-	        //   	this.dataList.forEach((item,index)=>{
-	        //        	if(specIds.indexOf(item.id)!=-1){
-	        //            this.dataListSelections.push(item);
-	        //        	}
-	        //    	})
-	        //     this.toggleSelection(this.dataListSelections);
-	      	// },
+	       	 backScanHook(){
+	           	this.dataListSelections = [];
+	           	var specIds = [];
+	           	this.showdatacurrent = this.showdata;
+	          	this.showdatacurrent.forEach((item,index)=>{
+	           		specIds[index] = item.id;
+	           	})
+	           	this.dataList.forEach((item,index)=>{
+	                	if(specIds.indexOf(item.id)!=-1){
+	                    this.dataListSelections.push(item);
+	                	}
+	            	})
+	             this.toggleSelection(this.dataListSelections);
+	      	 },
         	//单个去选商品    //点击全选
         	onTableSelect(rows, row) {
         		let selected = rows.length && rows.indexOf(row) !== -1
@@ -221,7 +222,6 @@
 		          	});
 	        	}
 	      	},
-		    
 			// 每页数
 			sizeChangeHandle (val) {
 				this.page = 1;

@@ -78,8 +78,20 @@
                     prop="status"
                     label="售后状态"
                     align="center"
-                    :formatter="statusRules"
-            ></el-table-column>
+            >
+            <!-- :formatter="statusRules" -->
+                     <template slot-scope="scope">
+                        <el-tag v-if="scope.row.auditStatus==0" type="danger">待审核</el-tag>
+                        <el-tag v-else-if="scope.row.auditStatus==2" type="danger">审核不通过</el-tag>
+                        <el-tag v-else-if="scope.row.auditStatus==3" type="danger">已取消</el-tag>
+                        <!-- 审核通过 -->
+                        <div  v-else-if="scope.row.auditStatus==1">
+                            <el-tag v-if="scope.row.status==10" type="danger">退款中</el-tag>
+                            <el-tag v-else-if="scope.row.status==20" type="danger">退款完成</el-tag>
+                            <el-tag v-else-if="scope.row.status==30" type="danger">退款失败</el-tag>
+                        </div>
+                    </template>
+            </el-table-column>
             <el-table-column label="操作" min-width="100" align="center" width="200">
                 <template slot-scope="scope">
                     <el-button size="mini" type="text" @click="afterSaleDetailFn(scope.row)">查看</el-button>
@@ -146,15 +158,15 @@
                     currentPage: 1, //当前页数
                     currentPageSize: 10 //每页显示的条数
                 },
-                statusRules: function(row, column) {
-                    return row.status== 10 ? (
-                        <el-tag type="info">退款中</el-tag>
-                ) : row.status == 20 ? (
-                        <el-tag type="success">退款完成</el-tag>
-                ) : row.status == 30 ? (
-                        <el-tag type="warning">退款失败</el-tag>
-                ) : (<span></span>)
-                }
+                // statusRules: function(row, column) {
+                //     return row.status== 10 ? (
+                //         <el-tag type="info">退款中</el-tag>
+                // ) : row.status == 20 ? (
+                //         <el-tag type="success">退款完成</el-tag>
+                // ) : row.status == 30 ? (
+                //         <el-tag type="warning">退款失败</el-tag>
+                // ) : (<span></span>)
+                // }
             };
         },
         components: {
