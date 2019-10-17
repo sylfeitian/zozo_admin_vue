@@ -43,7 +43,7 @@
                 <p style="margin-left: -100px;">订单设置</p>
             </el-form-item>
             <el-form-item class="artAmount" label="未支付订单失效时间：" prop="expirationTimeMinute" :label-width="formLabelWidth">
-                <el-input type="text" v-model="dataForm.expirationTimeMinute"  placeholder="请输入" style="width: 111px;"></el-input>
+                <el-input type="text" v-model="dataForm.expirationTimeMinute" placeholder="请输入" style="width: 111px;"></el-input>
                 <span> 分（min）</span>
             </el-form-item>  
             <el-form-item  class="artAmount artmaxAmount" prop="expirationTimeSecond" :label-width="formLabelWidth">
@@ -340,6 +340,10 @@
             },
             // 分
             'dataForm.expirationTimeMinute':function(newV,oldV) {
+                if(parseInt(newV)>59){
+                    this.$message('请输入0-59之内的数字');
+                    this.dataForm.expirationTimeMinute=""
+                }
                 for (let i = 0; i < newV.length; i++) {
                     // 只能输入数字,限2位数
                     if (!/[0-9]/g.test(newV[i])) {
@@ -352,6 +356,10 @@
             },
             // 秒
             'dataForm.expirationTimeSecond':function(newV,oldV) {
+                if(parseInt(newV)>59){
+                    this.$message('请输入0-59之内的数字');
+                    this.dataForm.expirationTimeSecond=""
+                }
                 for (let i = 0; i < newV.length; i++) {
                     // 只能输入数字,限2位数
                     if (!/[0-9]/g.test(newV[i])) {
