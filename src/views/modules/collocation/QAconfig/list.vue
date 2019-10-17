@@ -23,6 +23,14 @@
 		    prop="sort"
 			align="center"
 		    label="排序">
+            <template slot-scope="scope">
+                <el-input
+                        v-model="scope.row.sort"
+                        @change="changeSort(scope.row)"
+                        :min="0"
+                        type="number"
+                ></el-input>
+            </template>
 		</el-table-column>
         <el-table-column
 		    prop="type"
@@ -47,15 +55,20 @@
 	  	</el-table-column>
 	</el-table>
 	<!-- 分页 -->
-    <el-pagination
-	    @size-change="pageSizeChangeHandle"
-	    @current-change="pageCurrentChangeHandle"
-	    :current-page="page"
-	    :page-sizes="[10, 20, 50, 100]"
-	    :page-size="limit"
-	    :total="total"
-	    layout="total, sizes, prev, pager, next, jumper">
-    </el-pagination>
+    <div class="footerBox">
+        <div class="footerBtn">
+            <el-button @click="changeSortSave()" type="primary">保存排序</el-button>
+        </div>
+        <el-pagination
+            @size-change="pageSizeChangeHandle"
+            @current-change="pageCurrentChangeHandle"
+            :current-page="page"
+            :page-sizes="[10, 20, 50, 100]"
+            :page-size="limit"
+            :total="total"
+            layout="total, sizes, prev, pager, next, jumper"
+        ></el-pagination>
+    </div>
 
 
     <el-dialog
@@ -84,7 +97,7 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import { QamainList } from '@/api/url'
-    import { zozogoodsPage,delQuestiontype,saveQuestiontype,putQuestiontype,getQuestiontype } from '@/api/api'
+    import { zozogoodsPage,delQuestiontype,saveQuestiontype,putQuestiontype,getQuestiontype,putQuestionanswer,cartConfigSort } from '@/api/api'
     import Bread from "@/components/bread";
     
     export default {
@@ -112,6 +125,7 @@
                     sort:'0',
                 },
                 breaddata: ["配置管理", "Q&A配置"],
+                sortList: [],
             }
         },
         computed:{
@@ -196,7 +210,42 @@
                     this.isSave = true;
                 }
             },
-            
+            //更改排序
+            changeSort(row) {
+                this.sortList.push(row);
+            },
+            //保存排序
+            changeSortSave() {
+                if (this.sortList.length == 0) {
+                    this.$message({
+                    type: "warning",
+                    message: "请选择修改排序的数据"
+                    });
+                    return false;
+                }
+                const obj = this.sortList;
+                cartConfigSort(obj).then(res => {
+                    if (res.code == 200) {
+                    this.$message({
+                        message: res.msg,
+                        type: "success",
+                        duration: 1500,
+                        onClose: () => {
+                        this.getDataList();
+                        }
+                    });
+                    } else {
+                    this.$message({
+                        message: res.msg,
+                        type: "error",
+                        duration: 1500,
+                        onClose: () => {
+                        this.getDataList();
+                        }
+                    });
+                    }
+                });
+            },
             noCheck(formName){
                 this.$refs[formName].resetFields();
                 this.editVisible = false;
@@ -288,4 +337,9 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
+    .footerBox {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 </style>
