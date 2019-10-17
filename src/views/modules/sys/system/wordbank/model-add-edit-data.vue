@@ -88,11 +88,11 @@
                 dataRule : {
 			        chineseVocabulary : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
-                        { validator: verifychineseVocabulary, trigger: 'blur' },
+                        // { validator: verifychineseVocabulary, trigger: 'blur' },
                     ],
                     japaneseWord : [
                       { required: true, message: '必填项不能为空', trigger: 'blur' },
-                      { validator: verifyJapaneseWord, trigger: 'blur' },
+                    //   { validator: verifyJapaneseWord, trigger: 'blur' },
 			        ],
 				},
             }
