@@ -128,8 +128,10 @@
                     <el-option label="批量发布"  value="0"></el-option>
                     <el-option label="取消批量发布" value="1"></el-option>
                 </el-select> -->
-                <el-button @click="cotrolGoodsShow(0)" style="margin-left: 20px;"  type="primary" >批量发布</el-button>
-                <el-button @click="cotrolGoodsShow(1)"  type="primary" >取消批量发布</el-button>
+                <div style="margin-left: 20px;display: inline-block;" >
+                    <el-button @click="cotrolGoodsShow(0)"  type="primary" v-if="activeName=='0' || activeName=='2' || activeName==''" >批量发布</el-button>
+                    <el-button @click="cotrolGoodsShow(1)"  type="primary" v-if="activeName=='1' || activeName==''">取消批量发布</el-button>
+                </div>
             </div>
             <!-- 分页 -->
             <el-pagination
