@@ -19,14 +19,20 @@
             </el-form-item>
             <el-form-item label="时间：">
                 <el-date-picker
-                        v-model="timeArr"
-                        type="daterange"
-                        value-format="yyyy-MM-dd HH:mm:ss"
-                        align="left"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期"
-                        :default-time="['00:00:00', '23:59:59']"
-                ></el-date-picker>
+                        v-model="dataForm.startTime"
+                        :type="dataForm.dimension=='month'? 'month' : dataForm.dimension=='year' ? 'year' : 'date'"
+                        :value-format="dataForm.dimension=='month' ? 'yyyy-MM':dataForm.dimension=='year' ? 'yyyy':'yyyy-MM-dd'"
+                        placeholder="开始日期"
+                        >
+                </el-date-picker>
+                <span style="margin: 0px 5px;">~</span>
+                <el-date-picker
+                        v-model="dataForm.endTime"
+                        :type="dataForm.dimension=='month'? 'month' : dataForm.dimension=='year' ? 'year' : 'date'"
+                        :value-format="dataForm.dimension=='month' ? 'yyyy-MM':dataForm.dimension=='year' ? 'yyyy':'yyyy-MM-dd'"
+                        placeholder="结束日期"
+                        >
+                </el-date-picker>
             </el-form-item>
             <el-form-item>
                 <el-button class="btn" type="primary" @click="getData()">搜索</el-button>
@@ -104,7 +110,7 @@
                     { id: 'year', name: '按年' },
                     { id: 'summary', name: '汇总' }
                 ],//统计维度
-                timeArr:[], //搜索时间数据
+                // timeArr:[], //搜索时间数据
                 dataForm: {
                     startTime:"",
                     endTime:"",
@@ -118,49 +124,26 @@
             Bread,
             importAndExport
         },
-        // watch:{
-        //     'dataFormShow.dimension':function(newV,oldV) {
-        //         if(newV=="day"){
-
-        //         }else if(newV=="day"){
-
-        //         }else if(newV=="day"){
-
-        //         }else if(newV=="day"){
-
-        //         }
-        //     }
-        // },
         watch:{
-            timeArr(val){
-                if(!val){
-                    this.dataForm.startTime = '';
-                    this.dataForm.endTime = '';
-                }
+            'dataForm.dimension':function(newV,oldV){
+                this.dataForm.startTime=""
+                this.dataForm.endTime=""
             }
         },
         methods: {
             getData() {
-                if(this.timeArr.length == 2 ){
-                    this.dataForm.startTime = this.timeArr && this.timeArr[0];
-                    this.dataForm.endTime = this.timeArr && this.timeArr[1];
-                }else{
-                    this.dataForm.startTime = "";
-                    this.dataForm.endTime = "";
-                }
                 // summary
-                if(this.dataForm.dimension=="summary" && this.timeArr.length==0){
+                if(this.dataForm.dimension=="summary" && this.dataForm.startTime=="" &&  this.dataForm.endTime==""){
                    this.$message.warning("请选择时间");
                    return;
                 }
                 this.page =1;
                 this.getDataList();
-                
-               
             },
             // 重置
             reset() {
-                this.timeArr = [];
+                this.dataForm.startTime="";
+                this.dataForm.endTime="";
                 this.dataForm.dimension="day"
                 this.getDataList();
             },
