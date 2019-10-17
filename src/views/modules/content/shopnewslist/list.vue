@@ -64,10 +64,10 @@
             </el-table-column>
             <el-table-column prop="title" label="标题" align="center">
                 <template slot-scope="scope">
-                    <div :title="scope.row.title" v-if="scope.row.title">
+                    <div :title="scope.row.title" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" v-if="scope.row.title">
                         {{scope.row.title}}
                     </div>
-                    <div :title="scope.row.titleJp" v-else-if="scope.row.titleJp">
+                    <div :title="scope.row.titleJp" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" v-else-if="scope.row.titleJp">
                         {{scope.row.titleJp}}
                     </div>
                 </template>
@@ -327,11 +327,19 @@
                         })
 
                     }).catch(() => {});}else{
-                    this.$message({
-                        message:"未勾选列表数据",
-                        type: 'error',
-                        duration: 1500,
-                    })
+                    if(this.multipleSelection[0]){
+                        this.$message({
+                            message:"所勾选数据无法进行该操作",
+                            type: 'error',
+                            duration: 1500,
+                        })
+                    }else{
+                        this.$message({
+                            message:"未勾选数据",
+                            type: 'error',
+                            duration: 1500,
+                        })
+                    }
                 }
 
             },

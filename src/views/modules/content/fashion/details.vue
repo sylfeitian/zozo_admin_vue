@@ -185,4 +185,8 @@
     .grayLine {
         border-bottom: 0!important;
     }
+    .contentChild{
+        text-align: center;
+        padding: 0;
+    }
 </style>

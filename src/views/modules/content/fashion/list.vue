@@ -65,10 +65,10 @@
             </el-table-column>
             <el-table-column prop="title" label="标题" align="center">
                  <template slot-scope="scope">
-                    <div :title="scope.row.title" v-if="scope.row.title">
+                    <div :title="scope.row.title" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" v-if="scope.row.title">
                         {{scope.row.title}}
                     </div>
-                    <div :title="scope.row.titleJp" v-else-if="scope.row.titleJp">
+                    <div :title="scope.row.titleJp" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" v-else-if="scope.row.titleJp">
                         {{scope.row.titleJp}}
                     </div>
                 </template>
@@ -88,9 +88,14 @@
                 </template>
             </el-table-column>
             <el-table-column prop="isOpen" label="日本发布状态" align="center">
-                <template slot-scope="scope">
-                    <el-tag v-if="scope.row.isOpen == 1" type="success">已发布</el-tag>
-                    <el-tag v-else type="info">取消发布</el-tag>
+                <template slot-scope="scope" >
+                    <div v-if="scope.row.fashionFlag == 0">
+                        <el-tag v-if="scope.row.isOpen == 1" type="success">已发布</el-tag>
+                        <el-tag v-else type="info">取消发布</el-tag>
+                    </div>
+                    <div v-else>
+                        <span>/</span>
+                    </div>
                 </template>
             </el-table-column>
             <el-table-column prop="publishTimeJp" label="日本发布时间" align="center"></el-table-column>
@@ -99,7 +104,7 @@
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="showDetail(scope.row)" type="text" size="mini">查看</el-button>
                     <el-button @click.native.prevent="addOrAdit(scope.row)" type="text" size="mini">编辑</el-button>
-                    <el-button :disabled="scope.row.isOpen !== 1" @click.native.prevent="forbitHandle(scope.$index,scope.row)" type="text" size="mini">
+                    <el-button :disabled="scope.row.fashionFlag == 0&& scope.row.isOpen != 1" @click.native.prevent="forbitHandle(scope.$index,scope.row)" type="text" size="mini">
                         <span v-if="scope.row.state==1" class="artdisable" :class="{'artclose':scope.row.isOpen == 2}">{{scope.$index==currentIndex&&forbitLoading?"取消发布中..":"取消发布"}}</span>
                         <span v-else class="artstart" :class="{'artclose':scope.row.isOpen == 2}">{{scope.$index==currentIndex && forbitLoading?"发布中..":"发布"}}</span>
                     </el-button>
@@ -317,20 +322,30 @@
 
                     }).catch(() => {});
                 }else{
-                    this.$message({
-                        message:"未勾选列表数据",
-                        type: 'error',
-                        duration: 1500,
-                    })
+                    if(this.multipleSelection[0]){
+                        this.$message({
+                            message:"所勾选数据无法进行该操作",
+                            type: 'error',
+                            duration: 1500,
+                        })
+                    }else{
+                        this.$message({
+                            message:"未勾选数据",
+                            type: 'error',
+                            duration: 1500,
+                        })
+                    }
                 }
 
             },
             getIds(type){
                 var ids= [];
                 this.multipleSelection.forEach((item,index)=>{
-                    if("object" == typeof(item)&&item.isOpen == 1){
-                        if(type == 0 && item.state != 1) ids.push(item.id);
-                        else if(type == 1&&item.state == 1) ids.push(item.id);
+                    if("object" == typeof(item)){
+                        if(item.isOpen == 1||item.fashionFlag == 1){
+                            if(type == 0 && item.state != 1) ids.push(item.id);
+                            else if(type == 1&&item.state == 1) ids.push(item.id);
+                        }
                     }
                 })
                 return ids;
