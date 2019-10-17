@@ -1,12 +1,16 @@
 <template>
     <div>
      <Bread :breaddata="breaddata" @changePage="changePage" :index="index"></Bread>
-       <el-radio-group v-model="activeName" @change="handleClick">
-            <el-radio-button label="vipDetail">会员详情</el-radio-button>
-            <el-radio-button label="editVip">编辑资料</el-radio-button>
-            <el-radio-button label="loginLog">登录日志</el-radio-button>
-        </el-radio-group>
-  
+        <div v-if="showTab">
+            <el-radio-group v-model="activeName" @change="handleClick">
+                <el-radio-button label="vipDetail">会员详情</el-radio-button>
+                <el-radio-button label="editVip">编辑资料</el-radio-button>
+                <el-radio-button label="loginLog">登录日志</el-radio-button>
+            </el-radio-group>
+        </div>
+        <div v-else>
+             <el-button type="primary">会员详情</el-button>
+        </div>
         <vipDetail v-if="activeName=='vipDetail'"  ref="vipDetailCompon"></vipDetail>
         <editVip  v-else-if="activeName=='editVip'" @changePage = "changePage" ref="editVipCompon"></editVip>
         <loginLog  v-else-if="activeName=='loginLog'" ref="loginLogCompon"></loginLog>
@@ -25,7 +29,7 @@ import Bread from "@/components/bread";
               activeName: "",
             }   
         },
-        props:["breaddata","index"],
+        props:["breaddata","index","showTab"],
         components:{
             vipDetail,
             editVip,

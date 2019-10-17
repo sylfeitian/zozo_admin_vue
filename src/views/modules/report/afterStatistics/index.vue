@@ -91,15 +91,22 @@
             <el-table-column prop="applyDate" label="申请时间" align="center"></el-table-column>
             <el-table-column prop="returnDate" label="退款时间" align="center"></el-table-column>
             <el-table-column prop="status" label="售后状态" align="center">
-                <template slot-scope="scope">
-                    <span v-if="scope.row.status == 10" >待退货</span>
-                    <span v-if="scope.row.status == 20" >待入库</span>
-                    <span v-if="scope.row.status == 30" >待退款</span>
-                    <span v-if="scope.row.status == 40" >退款中</span>
-                    <span v-if="scope.row.status == 50" >退款完成</span>
-                    <span v-if="scope.row.status == 60" >退款失败</span>
-                    <span v-if="scope.row.status == 70" >售后取消</span>
-                </template>
+                   <!-- （退货退款 10待审核、20待退货、30待入库、40待退款、50退款中、60退款完成、70退款失败、80售后取消） 仅退款（10退款中、20退款完成、30退款失败） -->
+                    <template slot-scope="scope">
+                        <el-tag v-if="scope.row.auditStatus==0" type="danger">待审核</el-tag>
+                        <el-tag v-else-if="scope.row.auditStatus==2" type="danger">审核不通过</el-tag>
+                        <el-tag v-else-if="scope.row.auditStatus==3" type="danger">已取消</el-tag>
+                        <!-- 审核通过 -->
+                        <div  v-else-if="scope.row.auditStatus==1">
+                            <el-tag v-if="scope.row.status==10" type="danger">待退货</el-tag>
+                            <el-tag v-else-if="scope.row.status==20" type="danger">待入库</el-tag>
+                            <el-tag v-else-if="scope.row.status==30" type="danger">待退款</el-tag>
+                            <el-tag v-else-if="scope.row.status==40" type="danger">退款中</el-tag>
+                            <el-tag v-else-if="scope.row.status==50" type="danger">退款完成</el-tag>
+                            <el-tag v-else-if="scope.row.status==60" type="danger">退款失败</el-tag>
+                            <el-tag v-else-if="scope.row.status==70" type="danger">售后取消</el-tag>
+                        </div>
+                    </template>
             </el-table-column>
             <el-table-column prop="aftersaleType" label="售后类型" align="center">
                 <template slot-scope="scope">

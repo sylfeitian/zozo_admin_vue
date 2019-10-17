@@ -29,7 +29,8 @@
                                    style="margin-right:5px;"
                                    closable
                                    @close="handleClose(index)">
-                    {{tag.memberName}}
+                    <!-- {{tag.memberName}} -->
+                    {{tag.id}}
                 </el-tag>
 					  </span>
             </el-form-item>
@@ -243,6 +244,8 @@
                                 var list = [];
                                 that.userLsit.map((v)=>{
                                     list.push(v.id)
+                                    // list.push(v.memberName)
+
                                 })
                                 that.addDataForm.receiver = list.join(",");
                                 saveMessage(that.addDataForm).then((res)=>{

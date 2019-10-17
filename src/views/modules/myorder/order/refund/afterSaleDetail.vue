@@ -66,7 +66,7 @@
                     </el-form-item>
 
                     <el-form-item label="订单编号：" >
-                        <span>{{returnInfo.orderId}}</span>
+                        <span>{{returnInfo.orderSn}}</span>
                     </el-form-item>
                     
                     <el-form-item label="申请时间：">
