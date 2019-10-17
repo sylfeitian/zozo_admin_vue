@@ -108,10 +108,6 @@
         	this.getDataList();
         },
         methods: {
-<<<<<<< HEAD
-=======
-
->>>>>>> 74d9edacb642d632b4899c83b1af50e586a2bd38
 			init(wareItem){
 			    debugger
 				console.log(wareItem);
