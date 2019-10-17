@@ -85,7 +85,7 @@
                             <img v-if="editDataForm.selectedIcon" :src="editDataForm.selectedIcon | filterImgUrl" class="avatar">
                             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
-                        <span style="width:100px;text-align:center;">选中状态</span>
+                        <span style="width:80px;text-align:center;">选中状态</span>
                     </div>
                     
                     <div class="imgItem">
@@ -98,7 +98,7 @@
                             <img v-if="editDataForm.unselectedIcon" :src="editDataForm.unselectedIcon | filterImgUrl" class="avatar">
                             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
-                        <span style="width:100px;text-align:center;">未选中状态</span>
+                        <span style="width:80px;text-align:center;">未选中状态</span>
                     </div>
                     
                 </el-form-item>
@@ -327,8 +327,8 @@
                     text-align: center;
                 }
                 .avatar {
-                    width: 100px;
-                    height: 100px;
+                    width: 80px;
+                    height: 80px;
                     display: block;
                 }
             }
