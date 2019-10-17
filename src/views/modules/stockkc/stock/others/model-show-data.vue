@@ -108,8 +108,6 @@
         	this.getDataList();
         },
         methods: {
-<<<<<<< HEAD
-=======
 			init(wareItem){
 			    debugger
 				console.log(wareItem);
@@ -144,7 +142,6 @@
 	        //    	})
 	        //     this.toggleSelection(this.dataListSelections);
 	      	// },
->>>>>>> 17efa00dbbdbf6b2d83eb551b85ff87677938612
         	//单个去选商品    //点击全选
         	onTableSelect(rows, row) {
 			    debugger
