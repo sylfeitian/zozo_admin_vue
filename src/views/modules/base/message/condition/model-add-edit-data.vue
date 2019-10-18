@@ -103,7 +103,7 @@
             },
             // 提交
             dataFormSubmit(formName){
-                // alert([this.dataForm.name,this.dataForm.domainAddress]);
+                // alert([this.^,this.dataForm.domainAddress]);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.loading = true;
