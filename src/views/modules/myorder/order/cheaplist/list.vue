@@ -139,15 +139,15 @@
         ></el-pagination>
 
         <!-- 申报 -->
-        <declareSth v-if="declareSthVisible" ref="declareSthCompon" @searchDataList="getDataList"></declareSth>
+        <declareSth v-if="declareSthVisible" ref="declareSthCompon" @searchDataList="searchDataList"></declareSth>
          <!-- 审核 -->
-        <exammine v-if="exammineVisible" ref="exammineCompon" @searchDataList="getDataList"></exammine>
+        <exammine v-if="exammineVisible" ref="exammineCompon" @searchDataList="searchDataList"></exammine>
         <!-- 取消订单弹框 -->
-        <cancleOrder v-if="cancleOrderVisible" ref="cancleOrderCompon" @searchDataList="getDataList"></cancleOrder>
+        <cancleOrder v-if="cancleOrderVisible" ref="cancleOrderCompon" @searchDataList="searchDataList"></cancleOrder>
          <!-- 清关失败 -->
-        <clearancFailure v-if="clearancFailureVisible" ref="clearancFailureCompon" @searchDataList="getDataList"></clearancFailure>
+        <clearancFailure v-if="clearancFailureVisible" ref="clearancFailureCompon" @searchDataList="searchDataList"></clearancFailure>
          <!-- 填写物流 -->
-        <writeLogisticsInfo v-if="writeLogisticsInfoVisible" ref="writeLogisticsInfoCompon" @searchDataList="getDataList"></writeLogisticsInfo>
+        <writeLogisticsInfo v-if="writeLogisticsInfoVisible" ref="writeLogisticsInfoCompon" @searchDataList="searchDataList"></writeLogisticsInfo>
 
     </div>
     <!-- <orderDet
@@ -280,7 +280,10 @@
                 //  this.dataForm.orderStatus  = this.dataForm.paymentStatus 
                 this.getDataList();
             },
-             
+             searchDataList() {
+                this.getOrderListTop();
+                this.getDataList();
+            },
             //订单支付方式
             // getPaymentList() {
             //     paymentList().then(res => {
@@ -396,6 +399,7 @@
                 this.$nextTick(() => {
                    this.$refs.cancleOrderCompon.init(row)
                 })
+                this.searchDataList();
             },
         }
     };
