@@ -234,24 +234,25 @@
                 	}
                 })
 //              console.log(scope.row.quantity,scope.row.changeQty,scope.row.afterQty);
-				var obj = {
-					afterRepertory: scope.row.afterQty,
-					beforeRepertory:  scope.row.quantity,
-					brandName:  scope.row.brandName,
-					goodsName:  scope.row.goodsName,
-					id:  scope.row.id,
-					sku :  scope.row.sku,
-					specId:  scope.row.specId,
-					storeId:  scope.row.storeId,
-					storeName:  scope.row.storeName,
-				}
-				putScanStock(obj).then((res)=>{
-					if(res.code==200){
-                        console.log(res);
-                    }else{
-        				this.$message(res.msg)
-        			}
-				})
+//不用数量变更的接口
+//				var obj = {
+//					afterRepertory: scope.row.afterQty,
+//					beforeRepertory:  scope.row.quantity,
+//					brandName:  scope.row.brandName,
+//					goodsName:  scope.row.goodsName,
+//					id:  scope.row.id,
+//					sku :  scope.row.sku,
+//					specId:  scope.row.specId,
+//					storeId:  scope.row.storeId,
+//					storeName:  scope.row.storeName,
+//				}
+//				putScanStock(obj).then((res)=>{
+//					if(res.code==200){
+//                      console.log(res);
+//                  }else{
+//      				this.$message(res.msg)
+//      			}
+//				})
             },
             // // 查询所有仓库数据
         	// artgetallstock(){

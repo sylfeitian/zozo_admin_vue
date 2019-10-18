@@ -35,6 +35,7 @@ export default {
     },
     created() {
         this.myHeaders ={token:Cookies.get('token')} ;
+        console.log(this.importAndExportOptions);
     },
     methods: {
            // 导入

@@ -35,6 +35,7 @@ export default {
     quillEditor
   },
   created () {
+	    console.log(this.value)
 	    if(this.value) this.dataForm.messageContent = this.value;
   	var that = this;
   	/*富文本编辑图片上传配置*/

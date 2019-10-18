@@ -408,6 +408,8 @@ export const clearCustomFail = params => { return http.post(`${base}/order/${par
 export const orderLogistics = params => { return http.post(`${base}/order/logistics?orderId=${params.orderId}&companyId=${params.companyId}&logisticsSn=${params.logisticsSn}`, params).then(res => res.data); }
 // 订单列表顶部头信息
 export const orderListTop = params => { return http.get(`${base}/order/list/top`).then(res => res.data); }
+// 查询收货人详细信息
+export const receiverDetail = params => { return http.get(`${base}/order/receiver/deatil?id=${params.id}&orderId=${params.orderId}`,params).then(res => res.data); }
 
 
 // 物流公司--------------------------------------------------------------------------------------------------------------------
@@ -1083,7 +1085,8 @@ export const seckillSortSave = params => { return http.put(`${base}/seckill/good
 
 //版本管理  
 export const sysversionmangedetail = params => { return http.get(`${base}/sysversionmange/${params.id}`, params).then(res => res.data); };
-
+//版本保存 
+export const addfileupload = params => { return http.post(`${base}/sysversionmange/add`, params).then(res => res.data); };
 //apk上传
 export const postfileupload = params => { return http.post(`${base}/fileupload/appversion`, params).then(res => res.data); };
 

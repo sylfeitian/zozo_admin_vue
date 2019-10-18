@@ -418,7 +418,7 @@
                 }
                     var msg = ""
                     type==1?msg="取消发布":msg="发布"
-                    this.$confirm('是否'+msg+'该分组?', '提示', {
+                    this.$confirm('是否'+msg+'所选分组?', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
                         type: 'warning'

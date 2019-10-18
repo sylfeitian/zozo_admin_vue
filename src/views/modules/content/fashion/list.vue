@@ -9,7 +9,7 @@
                 <el-input v-model="dataForm.title" placeholder="请输入标题关键字"></el-input>
             </el-form-item>
             <el-form-item label="发布人：">
-                <el-input v-model="dataForm.publisher" ></el-input>
+                <el-input v-model="dataForm.mediaName" ></el-input>
             </el-form-item>
             <el-form-item label="日本发布时间：">
                 <el-date-picker
@@ -77,7 +77,7 @@
             <el-table-column  label="发布人" align="center">
                  <template slot-scope="scope">
                     <span v-if="scope.row.mediaName">{{scope.row.mediaName}}</span>
-                    <span v-else-if="scope.row.publisher">{{scope.row.publisher}}</span>
+                    <!--<span v-else-if="scope.row.publisher">{{scope.row.publisher}}</span>-->
                 </template>
             </el-table-column>
             <el-table-column prop="state" label="发布状态" align="center">
@@ -188,7 +188,6 @@
             // 第一次请求数据
             // this.handleClick();
             this.activeName =  this.status == undefined ? "" : this.status;
-            this.dataForm.goodsShow = this.status == undefined ? "" : this.status;
             this.getDataList();
         },
         methods: {
@@ -203,8 +202,6 @@
                 this.$emit("add",id);
             },
             getData() {
-                console.log("timeArr::::");
-                console.log(this.timeArr);
               if(this.timeArr && this.timeArr.length!=0){
                 this.dataForm.publishJpStartTime =  this.timeArr[0];
                 this.dataForm.publishJpEndTime = this.timeArr[1];
@@ -228,7 +225,7 @@
                 this.timeArr2 = [];
                 this.dataForm.idJp = "";
                 this.dataForm.title = "";
-                this.dataForm.publisher = "";
+                this.dataForm.mediaName = "";
                 this.dataForm.state = "";
                 this.dataForm.publishJpStartTime = "";
                 this.dataForm.publishJpEndTime = "";
@@ -299,8 +296,8 @@
                         operating:type==1?2:1,
                     }
                     var msg = ""
-                    type==2?msg="取消发布":msg="发布"
-                    this.$confirm('是否'+msg+'该分组?', '提示', {
+                    type==1?msg="取消发布":msg="发布"
+                    this.$confirm('是否'+msg+'所选分组?', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
                         type: 'warning'

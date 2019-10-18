@@ -146,10 +146,10 @@
 				}
 			},
 			setImage(e){
-				console.log("setImage");
 				const file = e.target.files[0];
-				if (!file.type.includes('image/')) {
-					this.$message.error('仅支持（jpg,jpeg,png,bmp,PNG,JEPG,JPG）为后缀的文件!');
+				console.log(file.type)
+				if (!file.type.includes('image/jpg')&&!file.type.includes('image/jpeg')&&!file.type.includes('image/png')&&!file.type.includes('image/jif')) {
+					this.$message.error('仅支持（jpg,jpeg,png,jif）为后缀的文件!');
 					//   this.value = file
 					var cropImg = this.cropper.cropImg;
 					this.cropper.cropImg = ""
