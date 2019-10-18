@@ -49,6 +49,7 @@
                                 @change="changeSort(scope.row)"
                                 :min="0"
                                 type="number"
+                                max="99999"
                         ></el-input>
                     </template>
                 </el-table-column>
@@ -229,7 +230,7 @@ export default {
       }
       if (newV.length > 30) {
         this.dataForm.goodsId = newV.substr(0, 30);
-      }
+      }s
     },
     dataList(val) {
       console.log(val, "tableData");
