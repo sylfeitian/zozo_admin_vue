@@ -251,6 +251,8 @@ export const updataStorage = params => { return http.put(`${base}/goods/spec/upd
 export const updateStock = params => { return http.post(`${base}/stock/log`, params).then(res => res.data); };
 // 根据ID获取信息
 export const backScanStock = params => { return http.get(`${base}/stock/log/${params.id}`, params).then(res => res.data); };
+// 修改库存
+export const putScanStock = params => { return http.get(`${base}/stock/log/`, params).then(res => res.data); };
 
 // 售后模板---------------------------------------------------------------------------------------------------
 //  列表模块(主要是下拉用)
@@ -1078,7 +1080,8 @@ export const seckillSortSave = params => { return http.put(`${base}/seckill/good
 //版本管理  
 export const sysversionmangedetail = params => { return http.get(`${base}/sysversionmange/${params.id}`, params).then(res => res.data); };
 
-
+//apk上传
+export const postfileupload = params => { return http.post(`${base}/fileupload/appversion`, params).then(res => res.data); };
 
 
 

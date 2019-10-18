@@ -77,7 +77,7 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import showData from './model-show-data'
-    import { warehouserecordsodoAdd,warelistByType} from "@/api/api"      //获取仓库，保存商品
+    import { warehouserecordsodoAdd,warelistByType,putScanStock} from "@/api/api"      //获取仓库，保存商品
     import importAndExport from "@/components/import-and-export"
     import { wareHouseImport} from '@/api/io'
     export default {
@@ -236,6 +236,13 @@
                 	}
                 })
 //              console.log(scope.row.quantity,scope.row.changeQty,scope.row.afterQty);
+				putScanStock(scope.row).then((res)=>{
+					if(res.code==200){
+                        console.log(res);
+                    }else{
+        				this.$message(res.msg)
+        			}
+				})
             },
             // // 查询所有仓库数据
         	// artgetallstock(){
@@ -266,7 +273,6 @@
 		    	this.$emit("addoraditList");
 		    },
             addGoods(){
-        	    debugger
             	if(!this.wareItem){
             		this.$message('请先选择所属仓库')
             		return;
