@@ -407,10 +407,6 @@ export default {
         console.log(this.dataFormList.list)
         let arry1 = [];
         console.log(arry1.length)
-        if (arry1.length == 0) {
-          done();
-          return
-        }
           this.dataFormList.list.map(item => {
               if(item.checked) arry1.push({
             goodsId: item.idJp,
@@ -420,6 +416,11 @@ export default {
             category: item.firstCategory + item.goodsTypeName
           });
         });
+        
+        if (arry1.length == 0) {
+          done();
+          return
+        }
         addGoodscarList({ list: JSON.stringify(arry1) }).then(res => {
           console.log("添加结果", res);
           if (res.code == 200) {

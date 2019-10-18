@@ -44,7 +44,8 @@ export const sizeCnAddAndUpdate = params => { return http.put(`${base}/sizeCn`, 
 // 根据id查询分类信息
 export const getTagInfo = params => { return http.get(`${base}/tag/${params.id}`, params).then(res => res.data); };
 // /分类条件编辑
-export const uploadtag = params => { return http.put(`${base}/tag?name=${params.name}&id=${params.id}`, params).then(res => res.data); };
+// export const uploadtag = params => { return http.put(`${base}/tag?name=${params.name}&id=${params.id}`, params).then(res => res.data); };
+export const uploadtag = params => { return http.put(`${base}/tag`, params).then(res => res.data); };
 // 商品管理列表
 export const tagPage = params => { return http.get(`${base}/tag/page`, params).then(res => res.data); };
 
@@ -714,7 +715,7 @@ export const backScanZozogoodsLog = params => { return http.get(`${base}/zozogoo
 // 商品上下架状态批量修改
 export const showBatchGoods = params => { return http.put(`${base}/zozogoods/show/?ids=${params.ids}&showWeb=${params.showWeb}`, params).then(res => res.data); };
 // 单个商品上下架状态修改
-export const showGoods = params => { return http.put(`${base}/zozogoods/show/${params.id}?showWeb=${params.showWeb}&showType=${params.showType}`, params).then(res => res.data); };
+export const showGoods = params => { return http.put(`${base}/zozogoods/show/${params.id}?showWeb=${params.showWeb}&shelfTime=${params.shelfTime}&showType=${params.showType}`, params).then(res => res.data); };
 // 获取商品尺码信息
 export const getZozogoodsSize = params => { return http.get(`${base}/zozogoods/size/item?spuId=${params.spuId}&sizeIdJp=${params.sizeIdJp}`, params).then(res => res.data); };
 // 查询中国分类列表
