@@ -124,7 +124,7 @@
                 </el-row>
                 <el-row>
                     <el-col :span="8"><div class="grid-content" v-if="receiverInfo">{{receiverInfo.memberRealName}}</div></el-col>
-                    <el-col :span="8"><div class="grid-content" v-if="receiverInfo && receiverInfo.mobPhone">{{receiverInfo.mobPhone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')}}</div></el-col>
+                    <el-col :span="8"><div class="grid-content" v-if="receiverInfo && receiverInfo.mobPhone">{{receiverInfo.mobPhone}}</div></el-col>
                     <!-- <el-col :span="8"><div class="grid-content" v-if="receiverInfo">{{receiverInfo.province}}{{receiverInfo.city}}{{receiverInfo.area}}{{receiverInfo.townArea}}</div></el-col> -->
                     <el-col :span="8"><div class="grid-content" v-if="receiverInfo">{{receiverInfo.areaInfo}}<!-- {{receiverInfo.address}} --></div></el-col>
                 </el-row>
@@ -444,6 +444,7 @@
                          }]
                         this.orderLogs = res.data.orderLogs;
                         this.preferInfo = res.data.preferInfo;
+                        debugger
                         this.receiverInfo = res.data.receiverInfo;
                         if(res.data.scheduleList.length){
                             this.active = res.data.scheduleList.length;
