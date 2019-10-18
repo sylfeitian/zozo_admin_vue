@@ -1082,7 +1082,8 @@ export const seckillSortSave = params => { return http.put(`${base}/seckill/good
 
 //版本管理  
 export const sysversionmangedetail = params => { return http.get(`${base}/sysversionmange/${params.id}`, params).then(res => res.data); };
-
+//版本保存 
+export const addfileupload = params => { return http.post(`${base}/sysversionmange/add`, params).then(res => res.data); };
 //apk上传
 export const postfileupload = params => { return http.post(`${base}/fileupload/appversion`, params).then(res => res.data); };
 
