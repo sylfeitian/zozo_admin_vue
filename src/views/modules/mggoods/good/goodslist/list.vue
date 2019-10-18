@@ -220,7 +220,7 @@
           <!--                    <el-button size="mini" type="text" @click="detShowChange(scope.row)">查看详情</el-button>-->
           <el-button @click="editList(scope.row)" type="text" size="mini">编辑</el-button>
           <el-button 
-            @click="cotrolGoodsShow('singe',scope.row)"  
+            @click.native.prevent="lowerShelf(scope.$index, scope.row)" 
             :disabled="scope.row.sellState== 0"
             v-if="scope.row.showWeb==0 || scope.row.showWeb==2" 
             type="text" size="mini">
@@ -228,7 +228,7 @@
           </el-button>
 
           <el-button  
-            @click="cotrolGoodsShow('singe',scope.row)" 
+            @click.native.prevent="lowerShelf(scope.$index, scope.row)" 
             v-else-if="scope.row.showWeb==1" class="artclose" 
             type="text" size="mini">
             <span >下架</span>
@@ -262,6 +262,7 @@
         layout="total, sizes, prev, pager, next, jumper"
       ></el-pagination>
     </div>
+    <modelLowerShelf v-if="modelLowerShelfVisible" ref="modelLowerShelfCompon" @searchDataList="getDataList"></modelLowerShelf>
   </div>
 </template>
 
@@ -270,6 +271,7 @@ import mixinViewModule from "@/mixins/view-module";
 import Bread from "@/components/bread";
 import detail from "./detail";
 import { goodsUrl } from "@/api/url";
+import modelLowerShelf from "./model-lower-shelf.vue";
 import {
   showBatchGoods,
   showGoods,
@@ -339,12 +341,14 @@ export default {
       checked: false,
       selectStoreOption: [],
       selectCategoryOption: [],
-      selectBrandOption: []
+      selectBrandOption: [],
+      modelLowerShelfVisible : false
     };
   },
   components: {
     Bread,
-    detail
+    detail,
+    modelLowerShelf
   },
   watch: {
     // ID类搜索框仅可输入数字、英文，最多可输入30个字符
@@ -516,6 +520,13 @@ export default {
     //详情页展示判断
     detShowChange(row) {
       this.$emit("detShowChange", row);
+    },
+    // 定时下架
+    lowerShelf (index=-1,row="") {
+      this.modelLowerShelfVisible =  true;
+        this.$nextTick(() => {
+            this.$refs.modelLowerShelfCompon.init(row)
+        })
     },
     // 控制上下架
     cotrolGoodsShow(type, rowOrstatus) {

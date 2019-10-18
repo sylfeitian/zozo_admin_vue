@@ -1,16 +1,26 @@
 <template>
-    <el-upload
-	  class="upload-demo"
-	  :action='importAndExportOptions.importUrl'
-	  :on-preview="handlePreview"
-	  :on-remove="handleRemove"
-	  :before-remove="beforeRemove"
-	  :limit="1"
-	  :on-exceed="handleExceed"
-	  :file-list="fileList">
-	  <el-button size="small" type="primary">点击上传</el-button>
-	  <div slot="tip" class="el-upload__tip">只能上传APK文件</div>
-	</el-upload>
+    <div style="display: inline-block;">
+       <!--<el-button v-if="importAndExportOptions && importAndExportOptions.exportUrl" class="btn" type="primary" @click="exportExcel">{{importAndExportOptions.exportWord}}</el-button>-->
+        <!--action='http://47.103.97.147:19093/admin-api/fileupload/appversion'-->
+        <el-upload
+            v-if="importAndExportOptions && importAndExportOptions.importUrl"
+            style="display:inline-block;margin-left:20px;"
+            class="upload-demo"
+            ref="upload"
+            :action='importAndExportOptions.importUrl'
+            :on-success="uploadSuccess"
+            :on-error="uploadError"
+            :show-file-list="false"
+            :headers="myHeaders"
+            :before-upload="beforeAvatarUpload"
+            name="file"
+            :on-progress="handleProgress"
+            @on-change="handleChange"
+            >
+                <el-button slot="trigger"  class="btn"  type="primary">{{uploadLoading?"导入中...":importWord}}</el-button>
+                <!-- <div slot="tip" class="el-upload__tip">只能上传excel格式视频，且不超过10M</div> -->
+        </el-upload>
+    </div>
 </template>
 <script>
 import Cookies from 'js-cookie'
@@ -22,10 +32,12 @@ export default {
         return {
             myHeaders: {},//Cookies.get(teacher_token)
             uploadLoading:false,
+            importWord:'上传文件',
         }
     },
     created() {
         this.myHeaders ={token:Cookies.get('token')} ;
+        console.log(this.importAndExportOptions);
     },
     methods: {
            // 导入
@@ -57,22 +69,16 @@ export default {
             },
             // 导入之前
             beforeAvatarUpload(file) {
-                this.$refs.upload.abort();
-                // this.progress = 0;
-                console.log(file);
-                 var reg = /^.*\.(?:xls|xlsx)$/i;//文件名可以带空格
-                // const isExcel =  file.type=== "application/vnd.ms-excel";
-                 const isExcel =  reg.test(file.name);
-                const isLt2M = file.size / 1024 / 1024 < 500;
-
-                if (!isExcel) {
-                    this.$message.error('只能上传excel文件格式!');
-                }
-                if (!isLt2M) {
-                    this.$message.error('导出的excel不能超过500MB!');
-                }
-                return isExcel && isLt2M;
-                // return isLt2M;
+                var allImageType = 'apk';
+				console.log(file.name);
+				var dessnamenum = file.name.indexOf('.') + 1;
+				console.log(file.name.substring(dessnamenum))
+		 	 	const isJPG = allImageType.indexOf(file.name.substring(dessnamenum)) != -1;
+		
+		      if (!isJPG) { 
+		        this.$message.error('仅支持（apk）为后缀的文件!');
+		      }
+		      return isJPG ;
             },
             // 导入过程中
             handleProgress(event, file, fileList){
@@ -96,8 +102,10 @@ export default {
                         type: "success",
                         duration: 1500
                     })
+                    console.log(response,file,fileList)
                     // that.dataFormSubmit();
-                    that.$emit("getDataList");
+                    that.importWord = file.name;
+                    that.$emit("getDataurl",response.data);
                 }else{
                     // that.progress = 0;
                     that.$message({

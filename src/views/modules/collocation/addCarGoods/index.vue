@@ -49,6 +49,7 @@
                                 @change="changeSort(scope.row)"
                                 :min="0"
                                 type="number"
+                                max="99999"
                         ></el-input>
                     </template>
                 </el-table-column>
@@ -100,7 +101,7 @@
             <el-form :inline="true" :model="goodsdataForm">
                 <el-form-item label="商品名称：">
                     <el-input
-                        v-model="goodsdataForm.storeId"
+                        v-model="goodsdataForm.goodsName"
                         placeholder="商品名称/商品货号"
                         clearable
                         maxlength="300"
@@ -229,7 +230,7 @@ export default {
       }
       if (newV.length > 30) {
         this.dataForm.goodsId = newV.substr(0, 30);
-      }
+      }s
     },
     dataList(val) {
       console.log(val, "tableData");
@@ -406,7 +407,9 @@ export default {
     // 关闭弹框
     handleClose(done) {
       if (this.dataFormList.list) {
+        console.log(this.dataFormList.list)
         let arry1 = [];
+        console.log(arry1.length)
           this.dataFormList.list.map(item => {
               if(item.checked) arry1.push({
             goodsId: item.idJp,
@@ -416,6 +419,11 @@ export default {
             category: item.firstCategory + item.goodsTypeName
           });
         });
+        
+        if (arry1.length == 0) {
+          done();
+          return
+        }
         addGoodscarList({ list: JSON.stringify(arry1) }).then(res => {
           console.log("添加结果", res);
           if (res.code == 200) {

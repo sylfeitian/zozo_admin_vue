@@ -80,8 +80,8 @@
                             action="123"
                             :http-request="upLoad1"
                             :show-file-list="false"
-                            :on-success="handleAvatarSuccess1"
                             :before-upload="beforeAvatarUpload1">
+                             <!-- :on-success="handleAvatarSuccess1" -->
                             <img v-if="editDataForm.selectedIcon" :src="editDataForm.selectedIcon | filterImgUrl" class="avatar">
                             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
@@ -103,7 +103,7 @@
                     
                 </el-form-item>
             </div>
-            <div style="margin-left:120px;width:280px;color:#999;">只能上传jpg/png格式文件，文件不能超过200kb,建议尺寸：100*100px；建议大小：200kb</div>
+            <div style="margin-left:120px;width:280px;color:#999;">只能上传jpg/png格式文件，文件不能超过200kb,上传尺寸：80*80px；建议大小：200kb</div>
             
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -182,6 +182,7 @@
             upLoad1(file) {
                 const that = this;
                 that.getBease64(URL.createObjectURL(file.file),file.file.type,'1')
+              
             },
             upLoad2(file) {
                 const that = this;
@@ -194,40 +195,74 @@
             },
             getBease64(obj,type,who){
                 const that = this;
-                getUrlBase64(obj,type,function (base) {
-                    uploadPicBase64({"imgStr": base}).then(res =>{
-                        console.log(res)
-                        if(res.code == 200){
-                            if(who == '1'){
-                                that.editDataForm.selectedIcon = res.data.url;
-                            }else{
-                                console.log('type==2')
-                                that.editDataForm.unselectedIcon = res.data.url;
-                            }
-                        }else{
-                            that.$message.error('上传失败');
-                        }
-                    })
-                })
+                var  img;
+                img = new Image();
+                img.onload = function () {
+            //       alert(this.width + " " + this.height);
+                    let  WH =  false;
+                    if(this.width==80 && this.height==80 ){
+                        WH = true 
+                    }
+                    if (!WH) {
+                        that.$message.error('请上传80*80px的图片');
+                    }else{
+                            getUrlBase64(obj,type,function (base) {
+                            uploadPicBase64({"imgStr": base}).then(res =>{
+                                console.log(res)
+                                if(res.code == 200){
+                                    if(who == '1'){
+                                        that.editDataForm.selectedIcon = res.data.url;
+                                    }else{
+                                        console.log('type==2')
+                                        that.editDataForm.unselectedIcon = res.data.url;
+                                    }
+                                }else{
+                                    that.$message.error('上传失败');
+                                }
+                            })
+                        })
+                    }
+                };
+                img.src = obj; 
             },
-            handleAvatarSuccess1(res, file) {
-                const that = this;
-                that.getBease64(URL.createObjectURL(file.raw),file.raw.type,'1')
-            },
+            // handleAvatarSuccess1(res, file) {
+            //     const that = this;
+            //     that.getBease64(URL.createObjectURL(file.raw),file.raw.type,'1')
+            // },
             beforeAvatarUpload1(file) {
+                let that = this
                 let isJPG = false;
                 if(file.type == 'image/jpeg'||file.type=='image/png'){
                     isJPG = true;
                 }
-                let isLt2M = file.size / 1024  < 200;
-                console.log(file.type,isJPG)
-                if (!isJPG) {
-                    this.$message.error('上传图标只能是jpg/png格式!');
-                }
-                if (!isLt2M) {
-                    this.$message.error('上传图标大小不能超过 200k!');
-                }
-                return isJPG && isLt2M;
+
+
+                // const isSize = new Promise(function (resolve, reject) {
+                //     let width = 80; // 限制图片尺寸为80X80
+                //     let height = 80;
+                //     let img = new Image();
+                //     img.onload = function () {
+                //         let valid = img.width === width && img.height === height;
+                //         valid ? resolve() : reject();
+                //     }
+                //     }).then(() => {
+                //     return file;
+                //     }, () => {
+                //     _this.$message.error('请上传80*80px的图片')
+                //     return Promise.reject();
+                // });
+                    console.log(file)
+                    let isLt2M = file.size / 1024  < 200;
+                    console.log(file.type,isJPG)
+                    if (!isJPG) {
+                        that.$message.error('上传图标只能是jpg/png格式!');
+                    }
+                    if (!isLt2M) {
+                        that.$message.error('上传图标大小不能超过 200k!');
+                    }
+                   
+                    return isJPG && isLt2M 
+                        
             },
             handleAvatarSuccess2(res, file) {
                 const that = this;
@@ -306,8 +341,8 @@
         /deep/.el-form-item__content{
             display: flex;
             .avatar-uploader{
-                width: 100px;
-                height: 100px;
+                width: 80px;
+                height: 80px;
                 .el-upload {
                     border: 1px dashed #d9d9d9;
                     border-radius: 6px;

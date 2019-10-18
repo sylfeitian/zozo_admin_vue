@@ -76,8 +76,8 @@
     	<el-form
             :model="dataForm"
             :rules="dataRule"
-            ref="addForm"
-            @keyup.enter.native="dataFormSubmit('addForm')"
+            ref="dataForm"
+            @keyup.enter.native="dataFormSubmit('dataForm')"
             label-width="120px"
         >
             <el-form-item label="端口号：" prop="systemType">
@@ -85,16 +85,16 @@
   				<el-radio v-model="dataForm.systemType" label="2">IOS</el-radio>
             </el-form-item>
             <el-form-item label="版本号：" prop="versionNum">
-                <el-input v-model="dataForm.versionNum" placeholder="请输入"></el-input>
+                <el-input type="number" v-model="dataForm.versionNum" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="版本描述：" prop="versionDescription">
                  <el-input type="textarea" placeholder="请输入200字以内的内容" v-model="dataForm.versionDescription"></el-input>
             </el-form-item>
-            <el-form-item label="签名MD5：" prop="md5Sign" >
+            <el-form-item v-if="isShow" label="签名MD5：" prop="md5Sign" >
                 <el-input v-model="dataForm.md5Sign" placeholder="请输入"></el-input>
            </el-form-item>
-            <el-form-item label="文件包：" prop="filePath" >
-                <uploud-model ref="refuploud"></uploud-model>
+            <el-form-item v-if="isShow" label="文件包：" prop="filePath" >
+                <uploud-model ref="apkupload" @getDataurl="getDataurl" :importAndExportOptions="importAndExportOptions" :dataForm="dataForm" @getDataList="getDataList"></uploud-model>
             </el-form-item>
             <el-form-item label="是否强制更新：" prop="forceUpdateFlag">
                 <el-radio v-model="dataForm.forceUpdateFlag" label="1">是</el-radio>
@@ -102,7 +102,7 @@
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
                 <el-button  @click="dataFormCancel()">取消</el-button>
-                <el-button type="primary" @click="dataFormSubmit('addForm')"
+                <el-button type="primary" @click="dataFormSubmit('dataForm')"
                            :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
             </el-form-item>
         </el-form>
@@ -115,7 +115,9 @@
     import Bread from "@/components/bread";
     import { getsysversionmange,exportError } from '@/api/url'
     import uploudModel from './import_model'
-    import { sysversionmangedetail } from '@/api/api'
+    import { sysversionmangedetail ,addfileupload} from '@/api/api'
+	import { postfileupload } from '@/api/io'
+    
 
     export default {
         mixins: [mixinViewModule],
@@ -130,10 +132,12 @@
 			        deleteIsBatchKey: 'id'
 			    },
                 dataForm: {
-                    systemType: "1",
-                    versionNum:"",
-                    forceUpdateFlag:'0',
-                    creator:""
+                    systemType: "1",   //端口
+                    versionNum:"",   //版本号
+                    versionDescription:"", //版本描述
+                    forceUpdateFlag:'0',  //是否强制更新
+                    md5Sign:"",  //签名MD5
+                    filePath:"", //apk路径   
                 },
                 breaddata: ["系统管理", "版本管理"],
                 timeArr: "", //操作时间数据
@@ -149,7 +153,7 @@
 			            { required: true, message: '请输入', trigger: 'blur' },
 			        ],
 			        versionNum: [
-			            { required: true, message: '请输入', trigger: 'blur' },
+			            { required: true, message: '请输入版本号,版本号仅数字', trigger: 'blur' },
 			        ],
 			        versionDescription: [
 			            { required: true, message: '请输入', trigger: 'blur' },
@@ -164,34 +168,47 @@
 			        filePath: [
 			            { required: true, message: '请选择', trigger: 'blur' },
 			        ],
-                }
+                },
+                isShow: true,
+                importAndExportOptions:{
+                    importUrl:postfileupload,//导入接口
+                    importWord:"上传文件",
+                    // exportUrl:exportRegisterUrl,//导出接口
+                    // exportWord:"导出数据",
+                },
+                postfileuploadurl:postfileupload,
             }
         },
         components: {
             Bread,
             uploudModel
         },
-        watch:{
+        watch:{  
             timeArr(val){
                 if(!val){
                     this.dataForm.createDateStart = '';
                     this.dataForm.createDateEnd = '';
                 }
             },
-            'dataForm.creator':function(newV,oldV) {
-                var chineseCount = 0,characterCount = 0;
-                for (let i = 0; i < newV.length; i++) {
-                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
-                        chineseCount = chineseCount + 2;
-                    } else { //字符
-                        characterCount = characterCount + 1;
-                    }
-                    var count = chineseCount + characterCount;
-                    if (count > 300) { //输入字符大于300的时候过滤
-                        this.dataForm.creator = newV.substr(0,(chineseCount/2+characterCount)-1)
-                    }
+            'dataForm.systemType':function(newV,oldV) {
+                if(newV == 1){
+                	this.isShow = true;
+                }else{
+                	this.isShow = false;
                 }
             },
+            'dataForm.md5Sign': function(newV,oldV){
+            	for (let i = 0; i < newV.length; i++) {
+                    if(!(/^[0-9a-zA-Z]+$/.test(newV))){
+            			this.dataForm.md5Sign = oldV; 
+                        this.$message({
+	                        message: '只能输入数字或字母',
+	                        type: status,
+	                        duration: 1500
+	                    })
+                    }
+              }
+            }
         },
         created() {
             
@@ -204,12 +221,14 @@
            		sysversionmangedetail(row).then((res)=>{
            			if (res.code == "200") {
            				this.detail = res.data;
-                    } 
-                    this.$message({
-                        message: res.msg,
-                        type: status,
-                        duration: 1500
-                    })
+                    } else{
+                    	this.$message({
+	                        message: res.msg,
+	                        type: status,
+	                        duration: 1500
+	                    })
+                    }
+                    
            		})
            		this.visible = true;
            		
@@ -222,53 +241,41 @@
             },
            	showedition(){
            		this.visiblecopy = true;
+           		this.isShow = true;
+                this.dataForm.systemType = "1";
+                this.dataForm.versionNum = "";
+                this.dataForm.versionDescription = "";
+                this.dataForm.forceUpdateFlag = "0";
+                this.dataForm.md5Sign = "";
+                this.dataForm.filePath = "";
+                this.$refs.apkupload.importWord = '上传文件'
            	},
            	dataFormCancel(){
                 this.visiblecopy = false;
                 this.closeDialogcopy();
             },
+            getDataurl(apkurl){
+            	this.dataForm.filePath = apkurl
+            },
             // 提交
             dataFormSubmit(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                    	if(this.optionsArea4.length != 0 && this.dataForm.streetId==""){
-                    		this.$message.error('街道不能为空');
-                    		return;
-                    	}
-                        this.loading = true;
-                        var obj = {
-                            warehouseName: this.dataForm.warehouseName,
-                            type: this.dataForm.type,
-                            name: this.dataForm.name,
-                            phone: this.dataForm.phone,
-                            areaId: this.dataForm.areaId,
-                            cityId: this.dataForm.cityId,
-                            provinceId: this.dataForm.provinceId,
-                            streetId: this.dataForm.streetId,
-                            addressInfo: this.dataForm.addressInfo,
-                            isEnable: 1
-                        }
-                        console.log(obj)
-                        if (this.row) obj.id = this.row.id;
-                        var fn = this.row ? updataWare : addWare;
-                        fn(obj).then((res) => {
-                            this.loading = false;
-                            // alert(JSON.stringify(res));
-                            let status = null;
-                            if (res.code == "200") {
-                                status = "success";
-                                this.visible = false;
-                                this.$emit('searchDataList');
-                                this.closeDialog();
-                            } else {
-                                status = "error";
-                            }
-
-                            this.$message({
-                                message: res.msg,
-                                type: status,
-                                duration: 1500
-                            })
+                        addfileupload(this.dataForm).then((res)=>{
+                        	if (res.code == "200") {
+		           				this.$message({
+			                        message: '更新版本成功',
+			                        type: 'success',
+			                        duration: 1500
+			                    })
+		           				this.visiblecopy = false;
+		                    } else{
+		                    	this.$message({
+			                        message: res.msg,
+			                        type: status,
+			                        duration: 1500
+			                    })
+		                    }
                         })
                     } else {
                         //console.log('error 添加失败!!');

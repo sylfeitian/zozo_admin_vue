@@ -252,7 +252,6 @@
                 // })
             },
             init(row){
-                text
                 this.row = row;
                 this.$nextTick(()=>{
                     if(row){
@@ -326,7 +325,7 @@
     /*    margin-left: 5%;*/
     /*}*/
     /deep/ .el-form-item__label {
-        width: 135px!important;
+        /*width: 135px!important;*/
     }
     .item {
         height: 26px!important;

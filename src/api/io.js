@@ -71,3 +71,23 @@ export const statisticsOrderExport = `${allBase}/statistics/order/export`
 export const afterExportRegisterUrl = `${allBase}/statistics/aftersale/export`;
 //优惠券统计导出
 export const couponsExportRegisterUrl = `${allBase}/statistics/coupons/export`;
+
+
+
+//apk上传
+export const postfileupload = `${allBase}/fileupload/appversion`;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
