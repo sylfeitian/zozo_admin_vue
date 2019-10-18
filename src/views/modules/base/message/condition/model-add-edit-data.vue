@@ -109,7 +109,9 @@
                         this.loading = true;
                         var obj = {
                             "id":  this.row.id,
-                            "name":  encodeURI(this.dataForm.name),
+                            // "name":  encodeURI(encodeURI(this.dataForm.name)),
+                            // "name":  encodeURI(this.dataForm.name),
+                            "name":  this.dataForm.name,
                         }
                         uploadtag(obj).then((res) => {
                             this.loading = false;
