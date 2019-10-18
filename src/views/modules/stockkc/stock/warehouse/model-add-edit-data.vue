@@ -231,7 +231,6 @@
                     this.backScan();
                 } else {
                     this.title = "添加仓库"
-
                 }
                 //获取地址一级下拉
                 this.getFirstData();
@@ -241,6 +240,7 @@
                     // this.getApplyPullList();
                 })
             },
+            // 第一级数据
             getFirstData() {
                 areaFirst().then((res) => {
                     console.log(res);
@@ -311,7 +311,7 @@
                         var receiverInfo = res.data
                         // this.preOptionsArea1 = [];
                         this.optionsArea2[0] = {id: receiverInfo.cityId, name: receiverInfo.cityName};
-                        this.optionsArea3[0] = {id: receiverInfo.areaId, name: receiverInfo.areaId};
+                        this.optionsArea3[0] = {id: receiverInfo.areaId, name: receiverInfo.areaName};
                         this.optionsArea4[0] = {id: receiverInfo.streetId, name: receiverInfo.streetName};
                         // receiverInfo.provinceId && this.changeArea(receiverInfo.provinceId,1,false);
                         // receiverInfo.cityId && this.changeArea(receiverInfo.cityId,2,false);

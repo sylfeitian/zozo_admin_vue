@@ -290,13 +290,13 @@
             </el-form>
         </div>
         <!-- 申报 -->
-        <declareSth v-if="declareSthVisible" ref="declareSthCompon" @searchDataList="getDataList"></declareSth>
+        <declareSth v-if="declareSthVisible" ref="declareSthCompon" @searchDataList="getOrderDetail"></declareSth>
         <!-- 弹窗, 新建 -->
         <!-- <orderData  v-if="orderDataVisible" ref="addEditData" @searchDataList="getDataList"></orderData> -->
         <!-- 清关失败 -->
-        <clearancFailure v-if="clearancFailureVisible" ref="clearancFailureCompon"></clearancFailure>
+        <clearancFailure v-if="clearancFailureVisible" ref="clearancFailureCompon" @searchDataList="getOrderDetail"></clearancFailure>
          <!-- 填写物流 -->
-        <writeLogisticsInfo v-if="writeLogisticsInfoVisible" ref="writeLogisticsInfoCompon"></writeLogisticsInfo>
+        <writeLogisticsInfo v-if="writeLogisticsInfoVisible" ref="writeLogisticsInfoCompon"  @searchDataList="getOrderDetail"></writeLogisticsInfo>
         <!-- 查看物流 -->
         <logistics v-if="logisticsVisible" ref="logisticsCompon"></logistics>
         <!-- 修改收货人信息 -->
@@ -393,7 +393,7 @@
                 }
                 if(num==2){
                     this.$nextTick(()=>{
-                        row.activeName = "vipDetail" 
+                    row.activeName = "vipDetail" 
                     this.$refs.tabFnCompon.init(row);
                 })
             }
