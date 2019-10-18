@@ -252,7 +252,7 @@ export const updateStock = params => { return http.post(`${base}/stock/log`, par
 // 根据ID获取信息
 export const backScanStock = params => { return http.get(`${base}/stock/log/${params.id}`, params).then(res => res.data); };
 // 修改库存
-export const putScanStock = params => { return http.get(`${base}/stock/log/`, params).then(res => res.data); };
+export const putScanStock = params => { return http.put(`${base}/stock/log/`, params).then(res => res.data); };
 
 // 售后模板---------------------------------------------------------------------------------------------------
 //  列表模块(主要是下拉用)

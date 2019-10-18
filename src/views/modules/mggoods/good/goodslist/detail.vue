@@ -326,7 +326,7 @@
     /*    margin-left: 5%;*/
     /*}*/
     /deep/ .el-form-item__label {
-        width: 135px!important;
+        /*width: 135px!important;*/
     }
     .item {
         height: 26px!important;
