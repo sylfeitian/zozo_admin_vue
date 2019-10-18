@@ -403,6 +403,9 @@ export default {
     },
     // 关闭弹框
     handleClose(done) {
+      if (this.dataFormList.list == []) {
+        return
+      }
       if (this.dataFormList.list) {
         let arry1 = [];
           this.dataFormList.list.map(item => {
@@ -433,7 +436,7 @@ export default {
     gettem($event, item,index){
         console.log($event, item,index)
         if($event){
-             this.dataFormList.list[index].checked=true;
+            this.dataFormList.list[index].checked=true;
             this.checkedCount++
         }else{
              this.dataFormList.list[index].checked=false;
