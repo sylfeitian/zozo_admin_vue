@@ -15,8 +15,12 @@
             </el-form-item>
             <el-form-item label="消息类型：">
                 <el-select v-model="dataForm.messageType" placeholder="请选择"  style="margin-left: 10px;width: 140px;">
-                    <el-option label="私信"  value="0"></el-option>
-                    <el-option label="系统信息" value="1"></el-option>
+                    <el-option
+                            v-for="item in options"
+                            :key="item.id"
+                            :label="item.messageTypeName"
+                            :value="item.id">
+                    </el-option>
                 </el-select>
             </el-form-item>
             <el-form-item>
@@ -115,7 +119,7 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import { getmessagepage } from '@/api/url';
-    import { deleteMessage,getMessageDetail } from '@/api/api';
+    import { deleteMessage,getMessageDetail,messageTypePage } from '@/api/api';
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -137,6 +141,7 @@
                 dataList: [],
                 dataListLoading: false,
                 checkAll: false,
+                options: [],
             }
         },
         components: {
@@ -144,8 +149,17 @@
         },
         created () {
             this.getDataList();
+            this.getMessageTypePage();
         },
         methods: {
+            getMessageTypePage(){
+                messageTypePage().then((res)=>{
+                    if (res.code !== 200) {
+                        return this.$message.error(res.msg)
+                    }
+                    this.options = res.data
+                }).catch(() => {})
+            },
             sortChange(val){
                 if(val.order == "descending") this.dataForm.descOrAsc = 0;
                 else if(val.order == "ascending") this.dataForm.descOrAsc = 1;

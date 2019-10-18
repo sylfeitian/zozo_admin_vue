@@ -43,7 +43,7 @@
                         <span style="color:#f56c6c;margin-right: 4px;">*</span>内容：</div>
                         <div id="content" v-for="(v,i) in content" :key="i">
                         <div class="contentChild" v-if="content[i]&&v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
-                            <quill-editor-img class="inforRight" :value="v.textCn" :index="i" ref="quillEditorCompon" style="display: inline-block;"  @artmessageContent='artmessageContent' ></quill-editor-img>
+                            <quill-editor-img class="inforRight" :value="v.text" :index="i" ref="quillEditorCompon" style="display: inline-block;"  @artmessageContent='artmessageContent' ></quill-editor-img>
                             <span style="margin-left: 10px;color:#2260d2;" @click="delContent(i)">删除</span>
                         </div>
                         <div class="contentChild" v-if="content[i]&&v.typeId=='3'">
@@ -53,7 +53,7 @@
                         <div class="contentChild" v-if="content[i]&&v.typeId=='4'">
                             <div style="display: inline-block;">
                                 <img style="width:600px;margin-bottom: 10px;" :src="$imgDomain+v.imageUrl" alt="">
-                                <div>{{v.textCn}}</div>
+                                <div>{{v.text}}</div>
                             </div>
                             <span style="margin-left: 10px;color:#2260d2;" @click="delContent(i)">删除</span>
                         </div>
@@ -86,7 +86,7 @@
                 <el-button  @click="dataFormSubmit(0)">保存</el-button>
                 <el-button type="primary" @click="dataFormSubmit(1)">保存并发布</el-button>
             </el-form-item>
-            <el-dialog title="添加商品" :visible.sync="dialogTableVisible">
+            <el-dialog title="添加商品" :before-close="res" :visible.sync="dialogTableVisible">
                 <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
                     <el-form-item label="ID：">
                         <el-input v-model="dataForm.params" ></el-input>
@@ -125,7 +125,7 @@
                     </el-pagination>
                 </div>
                 <div slot="footer" class="dialog-footer">
-                    <el-button @click="dialogTableVisible = false">取 消</el-button>
+                    <el-button @click="res">取 消</el-button>
                     <el-button type="primary" @click="saveGoods">确 定</el-button>
                 </div>
             </el-dialog>
@@ -157,13 +157,13 @@
                 dataForm:{},
                 addDataForm: {
                     fashionContents: [],
-                    favNumCn: 0,
+                    favNumCn: "",
                     mainImageUrl: "",
-                    publisher: "",
+                    publisher: "ZOZO.CN",
                     saveType: 0,
                     title: "",
                     idJp:"",
-                    viewsNumCn: 0
+                    viewsNumCn: ""
                 },
                 multipleSelection:[],
                 dataList: [],
@@ -225,8 +225,8 @@
                         this.addDataForm.favNumCn = newV.replace(newV[i],"")
                     }
                 }
-                if(newV.length>999){
-                    this.addDataForm.favNumCn = newV.substr(0,999)
+                if(newV.length>3){
+                    this.addDataForm.favNumCn = newV.substr(0,3)
                 }
             },
             'addDataForm.viewsNumCn':function(newV,oldV) {
@@ -236,8 +236,8 @@
                         this.addDataForm.viewsNumCn = newV.replace(newV[i],"")
                     }
                 }
-                if(newV.length>999){
-                    this.addDataForm.viewsNumCn = newV.substr(0,2)
+                if(newV.length>3){
+                    this.addDataForm.viewsNumCn = newV.substr(0,3)
                 }
             }
     },
@@ -258,8 +258,13 @@
                     }
                 })
             },
+            res(){
+                this.dataForm = {};
+                this.dialogTableVisible = false;
+            },
             saveGoods(){
                 this.dialogTableVisible = false;
+                this.dataForm = {};
                 this.multipleSelection.map((v,i)=>{
                     let obj = {
                         colorId :v.colorId ,//颜色id
@@ -277,14 +282,14 @@
                         id :v.id ,// 主键id
                         imageUrl :v.imageUrl ,// 图片url
                         sortId :"" ,// 排序id
-                        textCn :v.goodsName ,// 内容
+                        text :v.goodsName ,// 内容
                         typeId :"4" ,// 内容类型id
                     };
                     this.content.push(obj);
                 })
             },
             artmessageContent(messageContent,i){
-                if(this.content[i]) this.content[i].textCn = messageContent;
+                if(this.content[i]) this.content[i].text = messageContent;
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
@@ -298,14 +303,21 @@
                 this.getDataList();
             },
             delContent(i){
-                this.content.splice(i,1);
-                window.this = this;
-                this.$nextTick(()=>{
-                    this.content.forEach((item,index)=>{
-                        this.$refs.quillEditorCompon[index].dataForm.messageContent = item.textCn;
-                    })
-                    this.content = [].concat(this.content)
-                },0)
+                this.$confirm('是否删除该内容?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.content.splice(i,1);
+                    window.this = this;
+                    this.$nextTick(()=>{
+                        this.content.forEach((item,index)=>{
+                            this.$refs.quillEditorCompon[index].dataForm.messageContent = item.text;
+                        })
+                        this.content = [].concat(this.content)
+                    },0)
+                }).catch(() => {});
+
             },
             imgUpload(e){
                 let that = this;
@@ -332,7 +344,7 @@
                                     id :"" ,// 主键id
                                     imageUrl :res.data.url ,// 图片url
                                     sortId :"" ,// 排序id
-                                    textCn :"" ,// 内容
+                                    text :"" ,// 内容
                                     typeId :"3" ,// 内容类型id
                                 };
                                 that.content.push(obj);
@@ -358,7 +370,7 @@
                         id :"" ,// 主键id
                         imageUrl :"" ,// 图片url
                         sortId :"" ,// 排序id
-                        textCn :"" ,// 内容
+                        text :"" ,// 内容
                         typeId :type ,// 内容类型id
                     };
                     this.content.push(obj)
@@ -371,6 +383,20 @@
                         type: 'error',
                     });
                     return
+                }else if(that.content[0]){
+                    if(that.content[0].typeId == 3&&that.content[0].imageUrl == ""){
+                        this.$message({
+                            message: "请输入内容!",
+                            type: 'error',
+                        });
+                        return
+                    }else if(that.content[0].typeId != 3&&that.content[0].text == ""){
+                        this.$message({
+                            message: "请输入内容!",
+                            type: 'error',
+                        });
+                        return
+                    }
                 }else if(!that.addDataForm.mainImageUrl){
                     this.$message({
                         message: "请选择封面图!",

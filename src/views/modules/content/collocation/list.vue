@@ -81,7 +81,7 @@
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="showDetail(scope.row)" type="text" size="mini">查看</el-button>
                     <el-button @click.native.prevent="addOrAdit(scope.row)" type="text" size="mini">编辑</el-button>
-                    <el-button :disabled="scope.row.jpPublishState == 0" @click.native.prevent="forbitHandle(scope.$index,scope.row)" type="text" size="mini">
+                    <el-button :disabled="scope.row.jpPublishState == 2" @click.native.prevent="forbitHandle(scope.$index,scope.row)" type="text" size="mini">
                         <span v-if="scope.row.state==1" class="artdisable" :class="{'artclose':scope.row.jpPublishState == 0}">{{scope.$index==currentIndex&&forbitLoading?"取消发布中..":"取消发布"}}</span>
                         <span v-else class="artstart" :class="{'artclose':scope.row.jpPublishState == 0}">{{scope.$index==currentIndex && forbitLoading?"发布中..":"发布"}}</span>
                     </el-button>
@@ -95,8 +95,10 @@
                     <el-option label="批量发布"  value="0"></el-option>
                     <el-option label="取消批量发布"  value="1"></el-option>
                 </el-select> -->
-                <el-button @click="cotrolGoodsShow(0)" style="margin-left: 20px;"  type="primary" >批量发布</el-button>
-                <el-button @click="cotrolGoodsShow(1)"  type="primary" >取消批量发布</el-button>
+                <div style="margin-left: 20px;display: inline-block;" >
+                    <el-button @click="cotrolGoodsShow(0)"  type="primary" v-if="activeName=='0' || activeName==''" >批量发布</el-button>
+                     <el-button @click="cotrolGoodsShow(1)"  type="primary" v-if="activeName=='1' || activeName==''">取消批量发布</el-button>
+                </div>
             </div>
             <!-- 分页 -->
             <el-pagination
@@ -317,11 +319,19 @@
 
                     }).catch(() => {});
                 }else{
-                    this.$message({
-                        message:"未勾选列表数据",
-                        type: 'error',
-                        duration: 1500,
-                    })
+                    if(this.multipleSelection[0]){
+                        this.$message({
+                            message:"所勾选数据无法进行该操作",
+                            type: 'error',
+                            duration: 1500,
+                        })
+                    }else{
+                        this.$message({
+                            message:"未勾选数据",
+                            type: 'error',
+                            duration: 1500,
+                        })
+                    }
                 }
             },
             getIds(type){

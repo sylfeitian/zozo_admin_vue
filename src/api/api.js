@@ -651,7 +651,9 @@ export const deleteWare = params => { return http.delete(`${base}/ware`, params)
 
 //日本分类管理接口--------------------------------------------------------------------------------------------------------------------
 // 查询日本分类子分类(parentId为0,且无cateId)
-export const searchCategoryJp = params => { return http.get(`${base}/categoryJp/children`, params).then(res => res.data); };
+// export const searchCategoryJp = params => { return http.get(`${base}/categoryJp/children`, params).then(res => res.data); };
+export const searchCategoryJp = params => { return http.get(`${base}/categoryCn/jpchildren`, params).then(res => res.data); };
+
 // 导入日本分类
 export const importCategoryJp = params => { return http.post(`${base}/categoryJp/import`, params).then(res => res.data); };
 // 分页查询日本分类
@@ -787,7 +789,8 @@ export const getShopmessagetemplate = params => { return http.get(`${base}/shopm
 export const saveShopmessagetemplate = params => { return http.post(`${base}/shopmessagetemplate`, params).then(res => res.data); };
 //消息详情
 export const getMessageDetail = params => { return http.get(`${base}/shopmessagetemplate/messageDetails/${params.id}`, params).then(res => res.data); };
-
+// 消息类型
+export const messageTypePage = params => { return http.get(`${base}/shopmessagetemplate/messagetypepage`, params).then(res => res.data); };
 
 
 

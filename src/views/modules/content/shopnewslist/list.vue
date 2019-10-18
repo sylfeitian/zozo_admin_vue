@@ -64,10 +64,10 @@
             </el-table-column>
             <el-table-column prop="title" label="标题" align="center">
                 <template slot-scope="scope">
-                    <div :title="scope.row.title" v-if="scope.row.title">
+                    <div :title="scope.row.title" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" v-if="scope.row.title">
                         {{scope.row.title}}
                     </div>
-                    <div :title="scope.row.titleJp" v-else-if="scope.row.titleJp">
+                    <div :title="scope.row.titleJp" style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" v-else-if="scope.row.titleJp">
                         {{scope.row.titleJp}}
                     </div>
                 </template>
@@ -128,8 +128,10 @@
                     <el-option label="批量发布"  value="0"></el-option>
                     <el-option label="取消批量发布" value="1"></el-option>
                 </el-select> -->
-                <el-button @click="cotrolGoodsShow(0)" style="margin-left: 20px;"  type="primary" >批量发布</el-button>
-                <el-button @click="cotrolGoodsShow(1)"  type="primary" >取消批量发布</el-button>
+                <div style="margin-left: 20px;display: inline-block;" >
+                    <el-button @click="cotrolGoodsShow(0)"  type="primary" v-if="activeName=='0' || activeName=='2' || activeName==''" >批量发布</el-button>
+                    <el-button @click="cotrolGoodsShow(1)"  type="primary" v-if="activeName=='1' || activeName==''">取消批量发布</el-button>
+                </div>
             </div>
             <!-- 分页 -->
             <el-pagination
@@ -327,11 +329,19 @@
                         })
 
                     }).catch(() => {});}else{
-                    this.$message({
-                        message:"未勾选列表数据",
-                        type: 'error',
-                        duration: 1500,
-                    })
+                    if(this.multipleSelection[0]){
+                        this.$message({
+                            message:"所勾选数据无法进行该操作",
+                            type: 'error',
+                            duration: 1500,
+                        })
+                    }else{
+                        this.$message({
+                            message:"未勾选数据",
+                            type: 'error',
+                            duration: 1500,
+                        })
+                    }
                 }
 
             },

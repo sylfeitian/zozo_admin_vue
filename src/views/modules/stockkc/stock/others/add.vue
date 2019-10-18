@@ -149,13 +149,11 @@
             },
         	//显示所选的商品
         	searchDataList(rows){
-        	    debugger
                 var dataList = rows;
                 // js对象数组去重
                 // var obj = {};
                 // this.dataList = dataList.reduce(function(item, next) {
                 // obj[next.key] ? '' : obj[next.key] = true && item.push(next);
-                // debugger
                 // return item;
                 // }, []);
         	},

@@ -97,8 +97,7 @@
                 width="180"
                 align="center">
                 <template slot-scope="scope">
-                    <span  v-if="scope.row.memberName">{{scope.row.memberName}}</span>
-                    <span  v-else-if="scope.row.memberId">{{scope.row.memberId}}</span>
+                    <span>{{scope.row.memberName}}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -111,9 +110,7 @@
                 label="当前状态"
                 align="center">
                 <template slot-scope="scope">
-                    <span  v-if="scope.row.untitled==0">未使用</span>
-                    <span  v-if="scope.row.untitled==1">新到</span>
-                    <span  v-if="scope.row.untitled==2">将过期</span>
+                    <span  v-if="scope.row.untitled==0 || scope.row.untitled==1 || scope.row.untitled==2">未使用</span>
                     <span  v-if="scope.row.untitled==3">已使用</span>
                     <span  v-if="scope.row.untitled==4">已过期</span>
                 </template>

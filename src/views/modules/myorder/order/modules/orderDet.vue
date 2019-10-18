@@ -71,15 +71,16 @@
                     <el-col :span="5"><div class="grid-content" @click="controlShowPage(2)" style="color:#02A7F0;cursor: pointer;">{{orderBase.memberName}}</div></el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span="5"><div class="grid-content bg-purple-light">物流公司</div></el-col>
-                    <el-col :span="5"><div class="grid-content bg-purple-light">物流单号</div></el-col>
+                    <el-col :span="4"><div class="grid-content bg-purple-light">物流公司</div></el-col>
+                    <el-col :span="4"><div class="grid-content bg-purple-light">物流单号</div></el-col>
                     <el-col :span="4"><div class="grid-content bg-purple-light">实名认证信息</div></el-col>
-                    <el-col :span="5"><div class="grid-content bg-purple-light"></div></el-col>
-                    <el-col :span="5"><div class="grid-content bg-purple-light"></div></el-col>
+                    <el-col :span="4"><div class="grid-content bg-purple-light">日本订单号</div></el-col>
+                    <el-col :span="4"><div class="grid-content bg-purple-light">日方发货时间</div></el-col>
+                    <el-col :span="4"><div class="grid-content bg-purple-light">第三方支付编号</div></el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span="5"><div class="grid-content">{{orderBase.transportName}}</div></el-col>
-                    <el-col :span="5"><div class="grid-content">{{orderBase.logisticsSn}}</div></el-col>
+                    <el-col :span="4"><div class="grid-content">{{orderBase.transportName}}</div></el-col>
+                    <el-col :span="4"><div class="grid-content">{{orderBase.logisticsSn}}</div></el-col>
                     <el-col :span="4" v-if="authenticationInfo">
                         <div class="grid-content" style="display:flex;flex-direction: column;align-items: center;line-height: 24px;">
                             <span>{{authenticationInfo.memberRealName}}</span>
@@ -92,8 +93,9 @@
                             </span>
                         </div>
                     </el-col>
-                    <el-col :span="5"><div class="grid-content"></div></el-col>
-                    <el-col :span="5"><div class="grid-content"></div></el-col>
+                    <el-col :span="4"><div class="grid-content">{{orderBase.orderSnJp}}</div></el-col>
+                    <el-col :span="4"><div class="grid-content">{{orderBase.deliveryTime}}</div></el-col>
+                     <el-col :span="4"><div class="grid-content">{{orderBase.tradeSn}}</div></el-col>
                 </el-row>
                 <el-row>
                     <el-col :span="5"><div class="grid-content bg-purple-light">描述</div></el-col>

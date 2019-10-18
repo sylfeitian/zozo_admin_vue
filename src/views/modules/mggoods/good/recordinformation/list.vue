@@ -59,7 +59,7 @@
         </el-radio-group>
         <el-form style="float: right;" v-if="dataFormShow.isTofile=='0'">
             <el-form-item>
-                <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataFormShow"  @getDataList="getDataList"></importAndExport>
+                <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="Object.assign({},dataFormShow,{isTofile:dataFormShow.isTofile2?dataFormShow.isTofile2:0})"  @getDataList="getDataList"></importAndExport>
             </el-form-item>
         </el-form>
         <el-table
@@ -407,7 +407,8 @@
                 this.dataForm.storeName = "";//店铺名称
                 this.dataForm.transportFlag = "";//下发状态
                 this.dataForm.isTofile = "";
-                this.classList = [];//分类名称
+                this.dataForm.isTofile2 = "";
+                this.classList = "";//分类名称
                 this.handleClick();
                 this.getData();
             },

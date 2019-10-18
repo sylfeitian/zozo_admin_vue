@@ -186,13 +186,15 @@
                     <el-table-column prop="createDate" label="操作时间：" align="center"></el-table-column>
                     <el-table-column prop="status" label="操作时售后单状态：" align="center">
                         <template slot-scope="scope">
-                            <el-tag v-if="scope.row.status==10" type="danger">待退货</el-tag>
+                             <el-tag v-if="scope.row.status==0" type="danger">待退货</el-tag>
+                            <el-tag v-else-if="scope.row.status==10" type="danger">待退货</el-tag>
                             <el-tag v-else-if="scope.row.status==20" type="danger">待入库</el-tag>
                             <el-tag v-else-if="scope.row.status==30" type="danger">待退款</el-tag>
                             <el-tag v-else-if="scope.row.status==40" type="danger">退款中</el-tag>
                             <el-tag v-else-if="scope.row.status==50" type="danger">退款完成</el-tag>
                             <el-tag v-else-if="scope.row.status==60" type="danger">退款失败</el-tag>
                             <el-tag v-else-if="scope.row.status==70" type="danger">售后取消</el-tag>
+                            <span  v-else="info">——</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="操作" min-width="100" align="center">
