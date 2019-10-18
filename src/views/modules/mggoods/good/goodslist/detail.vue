@@ -252,7 +252,6 @@
                 // })
             },
             init(row){
-                text
                 this.row = row;
                 this.$nextTick(()=>{
                     if(row){
