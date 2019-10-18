@@ -101,7 +101,7 @@
             <el-form :inline="true" :model="goodsdataForm">
                 <el-form-item label="商品名称：">
                     <el-input
-                        v-model="goodsdataForm.storeId"
+                        v-model="goodsdataForm.goodsName"
                         placeholder="商品名称/商品货号"
                         clearable
                         maxlength="300"

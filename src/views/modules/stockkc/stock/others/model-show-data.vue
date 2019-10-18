@@ -145,7 +145,6 @@
 				 	this.backScanHook();
 				 });
 				 this.dataForm.wareHouseId =  this.dataForm.wareHouseId
-				this.getDataList();
 	      	},
 			//   处理回显数据
 	       	 backScanHook(){
