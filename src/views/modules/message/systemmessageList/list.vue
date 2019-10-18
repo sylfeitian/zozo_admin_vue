@@ -14,7 +14,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="消息类型：">
-                <el-select v-model="dataForm.messageType" placeholder="请选择"  style="margin-left: 10px;width: 140px;">
+                <el-select v-model="dataForm.messageType" placeholder="请选择"  style="margin-left: 10px;width: 140px;" :popper-append-to-body="true">
                     <el-option
                             v-for="item in options"
                             :key="item.id"
