@@ -306,8 +306,8 @@
         /deep/.el-form-item__content{
             display: flex;
             .avatar-uploader{
-                width: 100px;
-                height: 100px;
+                width: 80px;
+                height: 80px;
                 .el-upload {
                     border: 1px dashed #d9d9d9;
                     border-radius: 6px;
