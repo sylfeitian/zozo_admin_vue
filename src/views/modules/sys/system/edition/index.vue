@@ -85,16 +85,16 @@
   				<el-radio v-model="dataForm.systemType" label="2">IOS</el-radio>
             </el-form-item>
             <el-form-item label="版本号：" prop="versionNum">
-                <el-input v-model="dataForm.versionNum" placeholder="请输入"></el-input>
+                <el-input type="number" v-model="dataForm.versionNum" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="版本描述：" prop="versionDescription">
                  <el-input type="textarea" placeholder="请输入200字以内的内容" v-model="dataForm.versionDescription"></el-input>
             </el-form-item>
-            <el-form-item label="签名MD5：" prop="md5Sign" >
+            <el-form-item v-if="isShow" label="签名MD5：" prop="md5Sign" >
                 <el-input v-model="dataForm.md5Sign" placeholder="请输入"></el-input>
            </el-form-item>
-            <el-form-item label="文件包：" prop="filePath" >
-                <uploud-model ref="refuploud"></uploud-model>
+            <el-form-item v-if="isShow" label="文件包：" prop="filePath" >
+                <uploud-model :postfileuploadurl="postfileuploadurl" :importAndExportOptions="importAndExportOptions" :dataForm="dataForm" @getDataList="getDataList"></uploud-model>
             </el-form-item>
             <el-form-item label="是否强制更新：" prop="forceUpdateFlag">
                 <el-radio v-model="dataForm.forceUpdateFlag" label="1">是</el-radio>
@@ -116,6 +116,8 @@
     import { getsysversionmange,exportError } from '@/api/url'
     import uploudModel from './import_model'
     import { sysversionmangedetail } from '@/api/api'
+	import { postfileupload } from '@/api/url'
+    
 
     export default {
         mixins: [mixinViewModule],
@@ -149,7 +151,7 @@
 			            { required: true, message: '请输入', trigger: 'blur' },
 			        ],
 			        versionNum: [
-			            { required: true, message: '请输入', trigger: 'blur' },
+			            { required: true, message: '请输入版本号', trigger: 'blur' },
 			        ],
 			        versionDescription: [
 			            { required: true, message: '请输入', trigger: 'blur' },
@@ -164,34 +166,47 @@
 			        filePath: [
 			            { required: true, message: '请选择', trigger: 'blur' },
 			        ],
-                }
+                },
+                isShow: true,
+                importAndExportOptions:{
+                    importUrl:postfileupload,//导入接口
+                    importWord:"上传文件",
+                    // exportUrl:exportRegisterUrl,//导出接口
+                    // exportWord:"导出数据",
+                },
+                postfileuploadurl:postfileupload,
             }
         },
         components: {
             Bread,
             uploudModel
         },
-        watch:{
+        watch:{  
             timeArr(val){
                 if(!val){
                     this.dataForm.createDateStart = '';
                     this.dataForm.createDateEnd = '';
                 }
             },
-            'dataForm.creator':function(newV,oldV) {
-                var chineseCount = 0,characterCount = 0;
-                for (let i = 0; i < newV.length; i++) {
-                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
-                        chineseCount = chineseCount + 2;
-                    } else { //字符
-                        characterCount = characterCount + 1;
-                    }
-                    var count = chineseCount + characterCount;
-                    if (count > 300) { //输入字符大于300的时候过滤
-                        this.dataForm.creator = newV.substr(0,(chineseCount/2+characterCount)-1)
-                    }
+            'dataForm.systemType':function(newV,oldV) {
+                if(newV == 1){
+                	this.isShow = true;
+                }else{
+                	this.isShow = false;
                 }
             },
+            'dataForm.md5Sign': function(newV,oldV){
+            	for (let i = 0; i < newV.length; i++) {
+                    if(!(/^[0-9a-zA-Z]+$/.test(newV))){
+            			this.dataForm.md5Sign = oldV; 
+                        this.$message({
+	                        message: '只能输入数字或字母',
+	                        type: status,
+	                        duration: 1500
+	                    })
+                    }
+              }
+            }
         },
         created() {
             
@@ -204,12 +219,14 @@
            		sysversionmangedetail(row).then((res)=>{
            			if (res.code == "200") {
            				this.detail = res.data;
-                    } 
-                    this.$message({
-                        message: res.msg,
-                        type: status,
-                        duration: 1500
-                    })
+                    } else{
+                    	this.$message({
+	                        message: res.msg,
+	                        type: status,
+	                        duration: 1500
+	                    })
+                    }
+                    
            		})
            		this.visible = true;
            		

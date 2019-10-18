@@ -52,7 +52,7 @@
             <el-table-column prop="quantity" label="库存" align="center"></el-table-column>
             <el-table-column prop="changeQty" label="变更数量" align="center">
             	<template slot-scope="scope">
-                    <el-input v-model="scope.row.changeQty" type="number" @blur='artnumberinput(scope)' :max='Number(scope.row.quantity )' min='1'  placeholder="1" style="width:90px; text-align: center;"></el-input>
+                    <el-input v-model="scope.row.changeQty" type="number" @blur='artnumberinput(scope)' :max='Number(scope.row.quantity )' min='0'  placeholder="0" style="width:90px; text-align: center;"></el-input>
                 </template>
             </el-table-column>
             <el-table-column prop="afterQty" label="变更后库存" align="center">
@@ -77,7 +77,7 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import showData from './model-show-data'
-    import { warehouserecordsodoAdd,warelistByType} from "@/api/api"      //获取仓库，保存商品
+    import { warehouserecordsodoAdd,warelistByType,putScanStock} from "@/api/api"      //获取仓库，保存商品
     import importAndExport from "@/components/import-and-export"
     import { wareHouseImport} from '@/api/io'
     export default {
@@ -220,7 +220,7 @@
 		    		scope.row.changeQty = scope.row.quantity ;
 		    		scope.row.afterQty = 0;  
 		    	}else if(scope.row.changeQty <= 0){   //变更量  <= 0
-		    		scope.row.changeQty = 1;  //变更量  = 1
+		    		scope.row.changeQty = 0;  //变更量  = 1
 		    		scope.row.afterQty = parseInt(scope.row.quantity) - parseInt(scope.row.changeQty)
                 }else{
                      scope.row.afterQty = parseInt(scope.row.quantity) - parseInt(scope.row.changeQty)
@@ -234,6 +234,24 @@
                 	}
                 })
 //              console.log(scope.row.quantity,scope.row.changeQty,scope.row.afterQty);
+				var obj = {
+					afterRepertory: scope.row.afterQty,
+					beforeRepertory:  scope.row.quantity,
+					brandName:  scope.row.brandName,
+					goodsName:  scope.row.goodsName,
+					id:  scope.row.id,
+					sku :  scope.row.sku,
+					specId:  scope.row.specId,
+					storeId:  scope.row.storeId,
+					storeName:  scope.row.storeName,
+				}
+				putScanStock(obj).then((res)=>{
+					if(res.code==200){
+                        console.log(res);
+                    }else{
+        				this.$message(res.msg)
+        			}
+				})
             },
             // // 查询所有仓库数据
         	// artgetallstock(){

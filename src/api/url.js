@@ -500,3 +500,6 @@ export const couponStorePage = `${base}/statistics/coupons/page`;
 
 //版本管理 
 export const getsysversionmange = `${base}/sysversionmange/page`;
+//apk上传
+export const postfileupload = `${base}/fileupload/appversion`;
+
