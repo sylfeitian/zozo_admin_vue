@@ -142,7 +142,7 @@
                 <el-input v-model="activiDataForm.name" placeholder="请输入30字以内的名称"></el-input>
             </el-form-item>
             <el-form-item label="排序：">
-                <el-input v-model="activiDataForm.sort" placeholder="数字越大排序越靠前" type="number" :maxlength="3"></el-input>
+                <el-input v-model="activiDataForm.sort" placeholder="数字越大排序越靠前" maxlength="6"></el-input>
             </el-form-item>
             <el-form-item label="上传轮播图：" prop="fileList" class="imgConfig">
                 <el-upload
@@ -454,6 +454,15 @@
                     }
                 }
             },
+            'activiDataForm.sort':function(newV,oldV) {
+                newV=~~newV;
+                for (let i = 0; i < newV.toString().length; i++) {
+                    if(!/[0-9]/.test(newV[i])){
+                        this.activiDataForm.sort = newV.toString().replace(newV[i],"")
+                    }
+                }
+            },
+
             },
             created(){
             this.getClassList();

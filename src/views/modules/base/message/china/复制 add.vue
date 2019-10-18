@@ -24,7 +24,7 @@
             <el-input v-model="dataForm.name " type="text" placeholder="请输入4个汉字/8个字符以内的内容" show-word-limit style="width:400px;"></el-input>
         </el-form-item>
         <el-form-item label="排序：" prop="sort">
-            <el-input v-model="dataForm.sort" type="text" placeholder="0-255(数字越大越靠前)" show-word-limit style="width:200px;"></el-input>
+            <el-input v-model="dataForm.sort" type="text" placeholder="数字越大越靠前" show-word-limit style="width:200px;"></el-input>
         </el-form-item>
         <el-form-item v-if="yijishow" v-for="(item, index) in dataForm.categoryJpId" :key="index" :label="index == 0 ? '关联日本分类：' : '' ">
 	        <el-select

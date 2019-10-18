@@ -324,10 +324,14 @@
             },
             // 提交
             dataFormSubmit(formName) {
-                if(this.dataForm.provinceId === "" ||this.dataForm.cityId === "" || this.dataForm.areaId === "" || this.dataForm.streetId === "" ||  this.dataForm.addressInfo === ""){
+                if(this.dataForm.provinceId === "" ||this.dataForm.cityId === "" || this.dataForm.areaId === ""  ||  this.dataForm.addressInfo === ""){
                     Cookies.set('flag', 0)
                 }else {
                     Cookies.set('flag', 1)
+                }
+                // 如果有四级地址下拉，必填
+                if( this.optionsArea4.length!=0 && this.dataForm.streetId === ""){
+                     Cookies.set('flag', 0)
                 }
                 this.$refs[formName].validate((valid) => {
                     if (valid) {

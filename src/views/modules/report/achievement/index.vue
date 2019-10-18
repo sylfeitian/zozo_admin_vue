@@ -55,7 +55,7 @@
             <el-table-column prop="statisticsTime" label="日期" align="center"></el-table-column>
             <el-table-column prop="orderNum" label="订单数量" align="center"></el-table-column>
             <el-table-column prop="goodsNum" label="商品数量" align="center"></el-table-column>
-            <el-table-column prop="goodsAmount " label="订单金额" align="center"></el-table-column>
+            <el-table-column prop="goodsAmount" label="订单金额" align="center"></el-table-column>
             <el-table-column prop="orderAmount" label="订单支付金额" align="center"></el-table-column>
             <el-table-column prop="dicountAmount" label="订单折扣金额" align="center"></el-table-column>
             <el-table-column prop="couponAmount" label="优惠券金额" align="center"></el-table-column>
