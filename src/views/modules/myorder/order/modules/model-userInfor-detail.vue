@@ -53,11 +53,11 @@
 		computed:{},
 		mounted(){},
 		methods:{
-			init (id,orderId) {
+			init (orderBase) {
 			    // 此处引起争议 后台说要反过来 加油！！！
-                var obj ={
-			        id:orderId,
-                    orderId: id
+				var obj  ={
+			        id:orderBase.orderAddressId,
+                    orderId: orderBase.orderId,
                 }
                 this.visible = true;
                 receiverDetail(obj).then((res)=>{

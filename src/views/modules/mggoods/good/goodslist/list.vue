@@ -12,7 +12,7 @@
         <el-input v-model="dataFormShow.goodsName" placeholder="请输入商品名称"></el-input>
       </el-form-item>
       <el-form-item label="商品ID：">
-        <el-input v-model="dataFormShow.idJp" placeholder="请输入sku ID" maxlength="30"></el-input>
+        <el-input v-model="dataFormShow.idJp" placeholder="请输入spu ID" maxlength="30"></el-input>
       </el-form-item>
       <el-form-item label="分类：">
         <!--                <el-select-->

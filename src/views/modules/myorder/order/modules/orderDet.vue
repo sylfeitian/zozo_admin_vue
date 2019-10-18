@@ -401,7 +401,7 @@
             showUserDetail(){
                 this.modelUserInforDetailVisible = true;
                 this.$nextTick(()=>{
-                    this.$refs.modelUserInforDetailCompon.init(this.row.id,this.orderBase.orderAddressId);
+                    this.$refs.modelUserInforDetailCompon.init(this.orderBase);
                 })
             },
             lookMemberDeatilInfo(){
@@ -444,7 +444,6 @@
                          }]
                         this.orderLogs = res.data.orderLogs;
                         this.preferInfo = res.data.preferInfo;
-                        debugger
                         this.receiverInfo = res.data.receiverInfo;
                         if(res.data.scheduleList.length){
                             this.active = res.data.scheduleList.length;
