@@ -44,7 +44,8 @@ export const sizeCnAddAndUpdate = params => { return http.put(`${base}/sizeCn`, 
 // 根据id查询分类信息
 export const getTagInfo = params => { return http.get(`${base}/tag/${params.id}`, params).then(res => res.data); };
 // /分类条件编辑
-export const uploadtag = params => { return http.put(`${base}/tag?name=${params.name}&id=${params.id}`, params).then(res => res.data); };
+// export const uploadtag = params => { return http.put(`${base}/tag?name=${params.name}&id=${params.id}`, params).then(res => res.data); };
+export const uploadtag = params => { return http.put(`${base}/tag`, params).then(res => res.data); };
 // 商品管理列表
 export const tagPage = params => { return http.get(`${base}/tag/page`, params).then(res => res.data); };
 
