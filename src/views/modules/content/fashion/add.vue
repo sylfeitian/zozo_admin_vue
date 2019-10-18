@@ -44,18 +44,18 @@
                         <div id="content" v-for="(v,i) in content" :key="i">
                         <div class="contentChild" v-if="content[i]&&v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
                             <quill-editor-img class="inforRight" :value="v.text" :index="i" ref="quillEditorCompon" style="display: inline-block;"  @artmessageContent='artmessageContent' ></quill-editor-img>
-                            <span style="margin-left: 10px;color:#2260d2;" @click="delContent(i)">删除</span>
+                            <span style="margin-left: 10px;color:#2260d2;cursor:pointer;" @click="delContent(i)">删除</span>
                         </div>
                         <div class="contentChild" v-if="content[i]&&v.typeId=='3'">
                             <img style="width:600px;" :src="$imgDomain+v.imageUrl" alt="">
-                            <span style="margin-left: 10px;color:#2260d2;" @click="delContent(i)">删除</span>
+                            <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="delContent(i)">删除</span>
                         </div>
                         <div class="contentChild" v-if="content[i]&&v.typeId=='4'">
                             <div style="display: inline-block;">
                                 <img style="width:600px;margin-bottom: 10px;" :src="$imgDomain+v.imageUrl" alt="">
                                 <div>{{v.text}}</div>
                             </div>
-                            <span style="margin-left: 10px;color:#2260d2;" @click="delContent(i)">删除</span>
+                            <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="delContent(i)">删除</span>
                         </div>
                     </div>
                 </template>
@@ -377,27 +377,22 @@
             },
             dataFormSubmit(type){
                 let that = this;
-                if(!that.content[0]){
-                    this.$message({
-                        message: "请输入内容!",
-                        type: 'error',
-                    });
-                    return
-                }else if(that.content[0]){
-                    if(that.content[0].typeId == 3&&that.content[0].imageUrl == ""){
+                for (let v of that.content) {
+                    if(v.typeId == 3&&v.imageUrl == ""){
                         this.$message({
-                            message: "请输入内容!",
+                            message: "内容不能为空!",
                             type: 'error',
                         });
-                        return
-                    }else if(that.content[0].typeId != 3&&that.content[0].text == ""){
+                        return false
+                    }else if(v.typeId != 3&&v.text == ""){
                         this.$message({
-                            message: "请输入内容!",
+                            message: "内容不能为空!",
                             type: 'error',
                         });
-                        return
+                        return false
                     }
-                }else if(!that.addDataForm.mainImageUrl){
+                }
+                if(!that.addDataForm.mainImageUrl){
                     this.$message({
                         message: "请选择封面图!",
                         type: 'error',

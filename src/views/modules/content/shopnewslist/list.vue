@@ -268,7 +268,7 @@
                 this.currentIndex = index;
                 var obj = {
                     "id": row.id,
-                    "operating":row.showWeb==1?0:1  //
+                    "operating":row.showWeb==1?2:1  //
                 }
                 var msg = ""
                 row.showWeb==1?msg="取消发布":msg="发布"
@@ -302,11 +302,11 @@
                 var ids = this.getIds(type);
                 if(ids[0]){ var obj = {
                     ids:ids,
-                    operating:type==1?0:1,
+                    operating:type==1?2:1,
                 }
                     var msg = ""
                     type==1?msg="取消发布":msg="发布"
-                    this.$confirm('是否'+msg+'该分组?', '提示', {
+                    this.$confirm('是否'+msg+'所选分组?', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
                         type: 'warning'

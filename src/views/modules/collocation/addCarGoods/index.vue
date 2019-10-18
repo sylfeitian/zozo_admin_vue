@@ -270,6 +270,7 @@ export default {
             type: "success",
             duration: 1500,
             onClose: () => {
+                this.sortList = [];
               this.getDataList();
             }
           });
@@ -279,6 +280,7 @@ export default {
             type: "error",
             duration: 1500,
             onClose: () => {
+                this.sortList = [];
               this.getDataList();
             }
           });
