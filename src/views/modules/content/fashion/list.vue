@@ -326,7 +326,7 @@
                 }else{
                     if(this.multipleSelection[0]){
                         this.$message({
-                            message:"所勾选数据无法进行该操作",
+                            message:"已选的内容无法进行该操作",
                             type: 'error',
                             duration: 1500,
                         })
