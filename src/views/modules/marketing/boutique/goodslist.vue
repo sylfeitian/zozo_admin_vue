@@ -3,10 +3,10 @@
         <Bread :breaddata="breaddata" :index = "'1'" @changePage = "changePage"></Bread>
         <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()" >
             <el-form-item label="商品货号：">
-                <el-input v-model="dataForm.goodsId"  placeholder="请输入商品货号" clearable></el-input>
+                <el-input v-model.trim="dataForm.goodsId"  placeholder="请输入商品货号" clearable></el-input>
             </el-form-item>
             <el-form-item label="商品名称：">
-                <el-input v-model="dataForm.goodsName" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
+                <el-input v-model.trim="dataForm.goodsName" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
             </el-form-item>
             <el-form-item >
                 <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>

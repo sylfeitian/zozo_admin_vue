@@ -69,7 +69,7 @@
         width="40%">
         <el-form :model="editDataForm" :rules="dataRule" ref="editDataForm"  label-width="120px">
             <el-form-item label="名称：" prop="menuName">
-                <el-input v-model="editDataForm.menuName" placeholder="请输入5字以内的名称"></el-input>
+                <el-input v-model.trim="editDataForm.menuName" placeholder="请输入5字以内的名称"></el-input>
             </el-form-item>
             <div class="imgConfig">
                 <el-form-item label="上传图片：" :prop="editDataForm.selectedIcon?'unselectedIcon':'selectedIcon'">

@@ -3,10 +3,10 @@
     <Bread :breaddata="breaddata"></Bread>
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
         <!-- <el-form-item label="商家ID：">
-            <el-input v-model="dataForm.storeId" placeholder="商品ID" clearable></el-input>
+            <el-input v-model.trim="dataForm.storeId" placeholder="商品ID" clearable></el-input>
         </el-form-item> -->
         <el-form-item  label="商家名称：">
-            <el-input v-model="dataForm.storeName" placeholder="商家名称" clearable></el-input>
+            <el-input v-model.trim="dataForm.storeName" placeholder="商家名称" clearable></el-input>
         </el-form-item>
         <el-form-item  label="商家等级：">
             <el-select v-model="dataForm.gradeId" placeholder="请选择">
@@ -154,10 +154,10 @@
         width="30%">
         <el-form :model="numberDataForm" :rules="dataRule" ref="numberDataForm" @keyup.enter.native="numberSubmitHandle()" label-width="120px">
             <el-form-item label="新密码：" prop="newPassword">
-                <el-input v-model="numberDataForm.newPassword" type="password"></el-input>
+                <el-input v-model.trim="numberDataForm.newPassword" type="password"></el-input>
             </el-form-item>
             <el-form-item label="确认密码：" prop="confirmPassword">
-                <el-input v-model="numberDataForm.confirmPassword" type="password"></el-input>
+                <el-input v-model.trim="numberDataForm.confirmPassword" type="password"></el-input>
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">

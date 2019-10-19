@@ -24,7 +24,7 @@
                 <span>{{dataForm.descriptionJp}}</span>
             </el-form-item>
             <el-form-item label="品牌名称：" prop="brandName" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.brandName" placeholder="请输入品牌名称"></el-input>
+                <el-input v-model.trim="dataForm.brandName" placeholder="请输入品牌名称"></el-input>
             </el-form-item>
             <el-form-item label="品牌描述：" prop="description" :label-width="formLabelWidth">
                 <el-input type="textarea" v-model="dataForm.description" placeholder="请输入品牌描述"></el-input>

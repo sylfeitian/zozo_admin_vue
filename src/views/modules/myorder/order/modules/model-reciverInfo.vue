@@ -14,10 +14,10 @@
                     @keyup.enter.native="dataFormSubmit('addForm')"
                     label-width="120px">
                         <el-form-item label="收货人姓名：" prop="memberRealName">
-                                <el-input v-model="dataForm.memberRealName" maxlength="60" placeholder="请输入收货人姓名"></el-input>
+                                <el-input v-model.trim="dataForm.memberRealName" maxlength="60" placeholder="请输入收货人姓名"></el-input>
                         </el-form-item>
                         <el-form-item label="手机号码：" prop="mobPhone">
-                                <el-input v-model="dataForm.mobPhone" maxlength="60" placeholder="请输入手机号码"></el-input>
+                                <el-input v-model.trim="dataForm.mobPhone" maxlength="60" placeholder="请输入手机号码"></el-input>
                         </el-form-item>  
                         <el-form-item label="所在区域：" prop="areaId">
                              <el-select v-model="dataForm.provinceId" placeholder="省"
