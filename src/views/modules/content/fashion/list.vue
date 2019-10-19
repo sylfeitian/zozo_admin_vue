@@ -99,7 +99,14 @@
                 </template>
             </el-table-column>
             <el-table-column prop="publishTimeJp" label="日本发布时间" align="center"></el-table-column>
-            <el-table-column prop="publishTime" label="发布时间" align="center"></el-table-column>
+            <el-table-column prop="publishTime" label="发布时间" align="center">
+                <template slot-scope="scope" >
+                    <div v-if="scope.row.state == 1">{{scope.row.publishTime}}</div>
+                    <div v-else>
+                        <span>/</span>
+                    </div>
+                </template>
+            </el-table-column>
             <el-table-column label="操作" align="center" width="180">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="showDetail(scope.row)" type="text" size="mini">查看</el-button>
