@@ -42,7 +42,7 @@
                 <template slot-scope="scope">
                     <div style="float:left;margin-left: -55px;">
                         <span style="color:#f56c6c;margin-right: 4px;">*</span>内容：</div>
-                        <div id="content" v-for="(v,i) in content" :key="i">
+                        <div id="content" v-for="(v,i) in content" :key="i" v-loading="picloading">
                         <div class="contentChild" v-if="content[i]&&v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
                             <quill-editor-img class="inforRight" :value="v.text" :index="i" ref="quillEditorCompon" style="display: inline-block;"  @artmessageContent='artmessageContent' ></quill-editor-img>
                             <span style="margin-left: 10px;color:#2260d2;cursor:pointer;" @click="delContent(i)">删除</span>
@@ -193,6 +193,7 @@
                 formLabelWidth: '120px',
                 dialogImageUrl: "",
                 uploading:false,
+                picloading: false,
                 dialogVisible: false,
                 breaddata: [ "内容管理",  "时尚记事","新增时尚记事"],
             }
@@ -328,12 +329,14 @@
             },
             imgUpload(e){
                 let that = this;
+                this.picloading = true;
                 for (let i = 0; i < e.target.files.length; i++) {
                     var reader = new FileReader();
                     reader.readAsDataURL(e.target.files[i])
                     reader.onload = function(){
                         const params = { "imgStr": reader.result };
                         uploadPicBase64(params).then(res =>{
+                            that.picloading = false;
                             if(res && res.code == "200"){
                                 let obj = {
                                     colorId :"" ,//颜色id
