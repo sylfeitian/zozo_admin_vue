@@ -15,9 +15,10 @@
             <el-form-item label="标题：" prop="title" :label-width="formLabelWidth">
                 <el-input v-model.trim="addDataForm.title" auto-complete="off" placeholder="请填写时尚记事标题" style="width: 1200px;"></el-input>
                 <p style="color: #bebebe;line-height: 14px;">请输入120个汉字，包含汉字、数字、英文、常用字符</p>
-            </el-form-item>
-            <el-form-item label="编号：" prop="" :label-width="formLabelWidth" style="display: inline-block;vertical-align:top;">
-                <el-input v-model.trim="addDataForm.idJp" maxlength="20" auto-complete="off" placeholder="" style="width: 540px;"></el-input>
+            </el-form-item>  
+            <!--maxlength="20"-->
+            <el-form-item label="编号：" prop="idJp" :label-width="formLabelWidth" style="display: inline-block;vertical-align:top;">
+                <el-input v-model.trim="addDataForm.idJp"  auto-complete="off" placeholder="" style="width: 540px;"></el-input>
                 <p style="color: #bebebe;line-height: 14px;">请输入20个字符以内，包含英文、数字的编号</p>
             </el-form-item>
             <el-form-item label="发布人：" prop="" :label-width="formLabelWidth" style="display: inline-block;vertical-align:top;">
@@ -37,7 +38,7 @@
                     <el-button type="primary" @click="openDiog" >添加商品</el-button>
                 </div>
             </el-form-item>
-            <el-form-item :label-width="formLabelWidth" style="vertical-align:top;">
+            <el-form-item :label-width="formLabelWidth" prop='text' style="vertical-align:top;">
                 <template slot-scope="scope">
                     <div style="float:left;margin-left: -55px;">
                         <span style="color:#f56c6c;margin-right: 4px;">*</span>内容：</div>
@@ -169,7 +170,7 @@
                 dataList: [],
                 content:[],
                 list:[],
-                dataRule : {
+                dataRule : {  
                     sizeName : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ],
@@ -181,7 +182,13 @@
                     ],
                     mainImageUrl : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
-                    ]
+                    ],
+//                  text:[
+//                  	{ required: true, message: '必填项不能为空', trigger: 'blur' },
+//                  ],
+                    idJp:[
+                    	{ min:1, max:20,  message: '请输入20字符以内的数字编号', trigger: 'blur' }
+                    ],
                 },
                 formLabelWidth: '120px',
                 dialogImageUrl: "",
