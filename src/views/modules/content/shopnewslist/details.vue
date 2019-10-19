@@ -31,10 +31,14 @@
                     </template>
                 </el-form-item>
                 <el-form-item label="标题：">
-                    <span>{{dataForm.titleJp}}</span>
+                    <div class="alignment">
+                        <span>{{dataForm.titleJp}}</span>
+                    </div>
                 </el-form-item>
                 <el-form-item label="详情：">
-                    <span>{{dataForm.contentJp}}</span>
+                    <div class="alignment">
+                        <span>{{dataForm.contentJp}}</span>
+                    </div>
                 </el-form-item>
                 <div class="goods">
                     <span class="inforTit" style="vertical-align:top;">关联商品：</span>
@@ -102,10 +106,14 @@
                     </template>
                 </el-form-item>
                 <el-form-item label="标题：">
-                    <span>{{dataForm.title}}</span>
+                    <div class="alignment">
+                        <span>{{dataForm.title}}</span>
+                    </div>
                 </el-form-item>
                 <el-form-item label="详情：">
-                    <span>{{dataForm.content}}</span>
+                    <div class="alignment">
+                        <span>{{dataForm.content}}</span>
+                    </div>
                 </el-form-item>
                 <div class="goods">
                     <span class="inforTit" style="vertical-align:top;">关联商品：</span>
@@ -220,5 +228,9 @@
     }
     .grayLine {
         border-bottom: 0!important;
+    }
+    .alignment {
+        padding: 0 0;
+        margin-left: 78px;
     }
 </style>

@@ -12,14 +12,14 @@
 		    		@keyup.enter.native="dataFormSubmit('addForm')"
 		    		label-width="120px">
 				        <el-form-item label="规格名称：" prop="specName">
-				        	  <el-input v-model="dataForm.specName" maxlength="60" placeholder="请输入规格名称"></el-input>
+				        	  <el-input v-model.trim="dataForm.specName" maxlength="60" placeholder="请输入规格名称"></el-input>
 				        </el-form-item>
 
 
 								<!-- <h3 class="attrList">添加属性值:</h3> -->
 						<div  v-for="(item,index) in dataForm.specValueDTOList"  :key="index">
 							<el-form-item label="规格值：" :prop="'specValue'+index">
-								<el-input v-model="dataForm['specValue'+index]" placeholder="规格值" class="sepcInput" @input="changeSpec(index)" @change="changeSpec(index)"></el-input>
+								<el-input v-model.trim="dataForm['specValue'+index]" placeholder="规格值" class="sepcInput" @input="changeSpec(index)" @change="changeSpec(index)"></el-input>
 								<el-button type="danger" plain @click="removeSpec(index)" v-if="index!=0">删除</el-button>
 							</el-form-item>
 							<el-form-item  label="规格图片：" >

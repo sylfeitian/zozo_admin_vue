@@ -3,13 +3,13 @@
         <Bread  :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getData()" >
             <el-form-item label="ID：">
-                <el-input v-model="dataForm.idJp" maxlength="30" placeholder="请输入编号"></el-input>
+                <el-input v-model.trim="dataForm.idJp" maxlength="30" placeholder="请输入编号"></el-input>
             </el-form-item>
             <el-form-item label="标题：">
-                <el-input v-model="dataForm.title" placeholder="请输入标题"></el-input>
+                <el-input v-model.trim="dataForm.title" placeholder="请输入标题"></el-input>
             </el-form-item>
             <el-form-item label="用户：">
-                <el-input v-model="dataForm.userNickname" placeholder="请输入用户昵称"></el-input>
+                <el-input v-model.trim="dataForm.userNickname" placeholder="请输入用户昵称"></el-input>
             </el-form-item>
             <el-form-item label="日本发布时间：">
                 <el-date-picker
@@ -443,7 +443,7 @@
                     }).catch(() => {});}else{
                     if(this.multipleSelection[0]){
                         this.$message({
-                            message:"所勾选数据无法进行该操作",
+                            message:"已选的内容无法进行该操作",
                             type: 'error',
                             duration: 1500,
                         })

@@ -3,13 +3,13 @@
         <Bread  :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getData()" >
             <el-form-item label="ID：">
-                <el-input v-model="dataForm.idJp" maxlength="30" placeholder="请输入编号"></el-input>
+                <el-input v-model.trim="dataForm.idJp" maxlength="30" placeholder="请输入编号"></el-input>
             </el-form-item>
             <el-form-item label="标题：">
-                <el-input v-model="dataForm.title" placeholder="请输入标题关键字"></el-input>
+                <el-input v-model.trim="dataForm.title" placeholder="请输入标题关键字"></el-input>
             </el-form-item>
             <el-form-item label="发布人：">
-                <el-input v-model="dataForm.mediaName" ></el-input>
+                <el-input v-model.trim="dataForm.mediaName" ></el-input>
             </el-form-item>
             <el-form-item label="日本发布时间：">
                 <el-date-picker
@@ -57,7 +57,7 @@
             <el-table-column prop="mainImageUrl " label="封面图片" align="center">
                 <template slot-scope="scope">
                     <img
-                            :src="scope.row.mainImageUrl "
+                            :src="scope.row.mainImageUrl | filterImgUrl"
                             alt=""
                             style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                     >
@@ -99,7 +99,14 @@
                 </template>
             </el-table-column>
             <el-table-column prop="publishTimeJp" label="日本发布时间" align="center"></el-table-column>
-            <el-table-column prop="publishTime" label="发布时间" align="center"></el-table-column>
+            <el-table-column prop="publishTime" label="发布时间" align="center">
+                <template slot-scope="scope" >
+                    <div v-if="scope.row.state == 1">{{scope.row.publishTime}}</div>
+                    <div v-else>
+                        <span>/</span>
+                    </div>
+                </template>
+            </el-table-column>
             <el-table-column label="操作" align="center" width="180">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="showDetail(scope.row)" type="text" size="mini">查看</el-button>
@@ -323,7 +330,7 @@
                 }else{
                     if(this.multipleSelection[0]){
                         this.$message({
-                            message:"所勾选数据无法进行该操作",
+                            message:"已选的内容无法进行该操作",
                             type: 'error',
                             duration: 1500,
                         })

@@ -15,10 +15,10 @@
                 label-width="120px"
         >
             <el-form-item label="词典名称：" prop="dictName" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.dictName" auto-complete="off"></el-input>
+                <el-input v-model.trim="dataForm.dictName" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="词典编码：" prop="dictValue" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.dictValue" auto-complete="off"></el-input>
+                <el-input v-model.trim="dataForm.dictValue" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
                 <el-button  @click="dataFormCancel()">取消</el-button>

@@ -9,7 +9,7 @@
         width="40%">
             <el-form :model="dataForm" :rules="dataRule" ref="addForm"  label-width="120px" v-loading="loading">
                 <el-form-item label="活动标题：" prop="title">
-                    <el-input v-model="dataForm.title" placeholder="请输入50字以内的标题" :maxlength="100"  show-word-limit></el-input>
+                    <el-input v-model.trim="dataForm.title" placeholder="请输入50字以内的标题" :maxlength="100"  show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item label="开始时间：" prop="startTime">
                     <el-date-picker

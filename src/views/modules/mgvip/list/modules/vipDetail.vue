@@ -32,6 +32,7 @@
                 <div class="topItem">
                      <label for="">实名认证</label>
                      <span>
+                         <span>{{allData.memberRealName}}</span>
                         <span> {{allData.certificationStatus==0?"未认证":"已认证"}}  </span>
                         <span v-if="allData.certificationStatus!=0 && allData.idCard"> ({{allData.idCard.slice(0,12)+"******"}}) </span>
                         <span v-if="allData.certificationStatus!=0" @click="lookIncardInfo"  class="look">查看</span>

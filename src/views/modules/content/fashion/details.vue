@@ -1,7 +1,7 @@
 <template>
     <div>
         <Bread :breaddata="breaddata" :index="'1'" @changePage="changePage"></Bread>
-        <el-col :span="12" style="border-right: 1px solid #e6e6e6;">
+        <el-col :span="12" style="border-right: 1px solid #e6e6e6;" v-if="row.fashionFlag == 0">
             <el-form
                     ref="dataForm"
                     class="grayLine topGapPadding"
@@ -41,15 +41,15 @@
                         <br>
                         <div v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
                             <div style="height: 20px;"></div>
-                            <div class="contentChild" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
-                                {{v.text}}
+                            <div class="contentChild" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'" v-html="v.text">
+                                <!-- {{v.text}} -->
                             </div>
                             <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
                                 <div class="goodsPropsWrap">
                                     <div class="goodsImg">
                                         <img :src="v.imageUrl" style="width:200px;" alt=""/>
                                     </div>
-                                    <div v-if="v.typeId=='4'">{{v.text}}</div>
+                                    <div v-if="v.typeId=='4'" v-html="v.text"></div>
                                 </div>
                             </div>
                         </div>
@@ -57,7 +57,7 @@
                 </el-form-item>
             </el-form>
         </el-col>
-        <el-col :span="12" style="border-right: 1px solid #e6e6e6;">
+        <el-col :span="12">
             <el-form
                     ref="dataForm"
                     class="grayLine topGapPadding"
@@ -97,15 +97,15 @@
                         <br>
                         <div v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
                             <div style="height: 20px;"></div>
-                            <div class="contentChild" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
-                               {{v.text}}
+                            <div class="contentChild" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'" v-html="v.text">
+                               <!-- {{v.text}} -->
                             </div>
                             <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
                                 <div class="goodsPropsWrap">
                                     <div class="goodsImg">
                                         <img :src="v.imageUrl" style="width:200px;" alt=""/>
                                     </div>
-                                    <div v-if="v.typeId=='4'">{{v.text}}</div>
+                                    <div v-if="v.typeId=='4'"  v-html="v.text"></div>
                                 </div>
                             </div>
                         </div>
@@ -124,7 +124,8 @@
             return {
                 breaddata: [ "内容管理", "时尚记事","时尚记事详情"],
                 dataListLoading: false,
-                dataForm: {}
+                dataForm: {},
+                row:'',
             }
         },
         components: {
@@ -134,6 +135,7 @@
             init(row){
                 this.$nextTick(()=>{
                     if(row){
+                        this.row = row;
                         var obj  = {
                             id:row.id
                         }

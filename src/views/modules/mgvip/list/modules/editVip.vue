@@ -21,7 +21,7 @@
                     </el-date-picker>
             </el-form-item>
             <el-form-item label="真实姓名：" prop="memberRealName">
-                  <el-input v-model="dataForm.memberRealName"></el-input>
+                  <el-input v-model.trim="dataForm.memberRealName"></el-input>
             </el-form-item>
             <el-form-item label="身份证号：" prop="idCard">
                 <div style="display:flex">
@@ -35,7 +35,7 @@
                    <span>{{dataForm.memberPasswd}}</span>
             </el-form-item> -->
             <el-form-item label="新密码："  prop="newPasswd">
-                   <el-input v-model="dataForm.newPasswd"></el-input>
+                   <el-input v-model.trim="dataForm.newPasswd"></el-input>
             </el-form-item>
             <el-form-item label="确认密码："  prop="confirmPasswd">
                   <el-input  v-model="dataForm.confirmPasswd"></el-input>
@@ -67,7 +67,7 @@ import { isMobile,isIdCard } from '@/utils/validate'
                 callback()
             }
             var validatorConfirmPasswd = (rule, value, callback) => {
-                if (value!=this.dataForm.newPasswd) {
+                if ( value != '' &&  value!=this.dataForm.newPasswd) {
                  return callback(new Error("两次密码不一致"))
                 }
                 callback()
@@ -100,23 +100,23 @@ import { isMobile,isIdCard } from '@/utils/validate'
                       { validator: validatorMemberMobile, trigger: 'blur'}
                     ],
                     memberBirthday : [
-			          { required: true, message: '必填项不能为空', trigger: 'blur' },
+			        //   { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ],
                     idCard: [
-			          { required: true, message: '必填项不能为空', trigger: 'blur' },
+			        //   { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ],
                     memberRealName : [
-			          { required: true, message: '必填项不能为空', trigger: 'blur' },
+			        //   { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ],
                     idCard : [
-                      { required: true, message: '必填项不能为空', trigger: 'blur' },
+                    //   { required: true, message: '必填项不能为空', trigger: 'blur' },
                         { validator: validatorIdCard, trigger: 'blur'}
                     ],
                     newPasswd : [
-			          { required: true, message: '必填项不能为空', trigger: 'blur' },
+			        //   { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ],
                     confirmPasswd : [
-                      { required: true, message: '必填项不能为空', trigger: 'blur' },
+                    //   { required: true, message: '必填项不能为空', trigger: 'blur' },
                       { validator: validatorConfirmPasswd, trigger: 'blur'}
 			        ],
 				},
