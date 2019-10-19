@@ -4,13 +4,13 @@
     <div class="mod-sys__dict">
       <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getDataList()">
         <el-form-item label="名称：">
-          <el-input v-model="dataForm.dictName" :placeholder="$t('dict.dictName')" clearable></el-input>
+          <el-input v-model.trim="dataForm.dictName" :placeholder="$t('dict.dictName')" clearable></el-input>
         </el-form-item>
         <el-form-item v-if="dataForm.pid === '0'" label="类型：">
-          <el-input v-model="dataForm.dictType" :placeholder="$t('dict.dictType')" clearable></el-input>
+          <el-input v-model.trim="dataForm.dictType" :placeholder="$t('dict.dictType')" clearable></el-input>
         </el-form-item>
         <el-form-item v-if="dataForm.pid !== '0'" label="值：">
-          <el-input v-model="dataForm.dictValue" :placeholder="$t('dict.dictValue')" clearable></el-input>
+          <el-input v-model.trim="dataForm.dictValue" :placeholder="$t('dict.dictValue')" clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="getDataList()">{{ $t('query') }}</el-button>

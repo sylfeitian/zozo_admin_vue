@@ -21,7 +21,7 @@
                 <span>{{dataForm.nameJp}}</span>
             </el-form-item>
             <el-form-item label="分类条件信息：" prop="name" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.name" auto-complete="off"></el-input>
+                <el-input v-model.trim="dataForm.name" auto-complete="off"></el-input>
             </el-form-item>
         <span slot="footer" class="dialog-footer">
             <el-button @click="dataFormCancel()">取消</el-button>
@@ -40,7 +40,7 @@
         width="40%">
         <el-form :model="activiDataForm" :rules="dataRule" ref="activiDataForm" @keyup.enter.native="subActivity()"  label-width="120px">
             <el-form-item label="活动标题：" prop="title">
-                <el-input v-model="activiDataForm.title" placeholder="请输入50字以内的标题" :maxlength="50" show-word-limit></el-input>
+                <el-input v-model.trim="activiDataForm.title" placeholder="请输入50字以内的标题" :maxlength="50" show-word-limit></el-input>
             </el-form-item>
             <el-form-item label="满减规则：" :prop="ruleName">
                 单笔订单满

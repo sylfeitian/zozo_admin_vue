@@ -15,7 +15,7 @@
                 label-width="120px"
         >
             <el-form-item label="禁用词名称：" prop="name" :label-width="formLabelWidth">
-                <el-input v-model="dataForm && dataForm.name" auto-complete="off" placeholder="请输入10字以内的内容"></el-input>
+                <el-input v-model.trim="dataForm && dataForm.name" auto-complete="off" placeholder="请输入10字以内的内容"></el-input>
             </el-form-item>
 <!--            <el-form-item style="text-align: center;margin-left: -120px!important;">-->
 <!--                <el-button  @click="dataFormCancel()">取消</el-button>-->

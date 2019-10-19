@@ -90,11 +90,11 @@
                     </template>
                 </el-form-item>
                 <el-form-item label="标题：" prop="title">
-                    <el-input v-model="dataForm.orderSn" class="inforRight" placeholder="请输入内容"></el-input>
+                    <el-input v-model.trim="dataForm.orderSn" class="inforRight" placeholder="请输入内容"></el-input>
                 </el-form-item>
 <!--                <div style="padding: 0;">-->
 <!--                    <span class="inforTit">标题：</span>-->
-<!--                    <el-input v-model="dataForm.orderSn" class="inforRight" placeholder="请输入内容"></el-input>-->
+<!--                    <el-input v-model.trim="dataForm.orderSn" class="inforRight" placeholder="请输入内容"></el-input>-->
 <!--                </div>-->
                 <el-form-item label="内容：" prop="con">
                     <quill-editor-img class="inforRight" style="display: inline-block;width: 670px;"  @artmessageContent='artmessageContent' ref="refmessageContent"></quill-editor-img>

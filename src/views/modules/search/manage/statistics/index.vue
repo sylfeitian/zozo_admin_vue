@@ -8,7 +8,7 @@
                 @keyup.enter.native="getDataList()"
         >
             <el-form-item label="关键字搜索：">
-                <el-input v-model="dataFormShow.keyword" placeholder="请输入关键词搜索" ></el-input>
+                <el-input v-model.trim="dataFormShow.keyword" placeholder="请输入关键词搜索" ></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button class="btn" type="primary" @click="getData()">搜索</el-button>
@@ -116,18 +116,18 @@
                 this.getDataList();
             },
             //排序
-            actsortchange(column, prop, order ){
-            	console.log( order);
+            actsortchange(column){
+            	console.log( column);
 //          	order=="ascending"  "descending"
 //	            prop="totalSearchNum"  总搜索数
 //	            prop="monthSearchNum" "本月搜索次数"
 //	            prop="daySearchNum" "今日搜索次数"
 				//排序字段
-                this.orderField = prop == 'totalSearchNum' ? 'total_search_num' 
-                				: prop == "monthSearchNum" ? 'month_search_num'
+                this.orderField = column.prop == 'totalSearchNum' ? 'total_search_num' 
+                				: column.prop == "monthSearchNum" ? 'month_search_num'
                 				: 'day_search_num';
                 //排序方式
-                this.order = order == 'ascending' ? 'asc' : 'desc'
+                this.order = column.order == 'ascending' ? 'desc' : 'asc'
    		
             	this.getData();
             }

@@ -8,10 +8,10 @@
       @keyup.enter.native="getDataList()"
     >
       <el-form-item label="店铺ID：">
-        <el-input v-model="dataFormShow.idJp" placeholder="请输入" maxlength="30" ></el-input>
+        <el-input v-model.trim="dataFormShow.idJp" placeholder="请输入" maxlength="30" ></el-input>
       </el-form-item>
       <el-form-item label="店铺名称：">
-        <el-input v-model="dataFormShow.stName" placeholder="请输入"></el-input>
+        <el-input v-model.trim="dataFormShow.stName" placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item label="营业状态：">
         <el-select v-model="dataFormShow.operateFlag" placeholder="请选择">

@@ -3,13 +3,13 @@
         <Bread  :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getData()" >
             <el-form-item label="ID：">
-                <el-input v-model="dataForm.idJp" maxlength="30" placeholder="请输入编号"></el-input>
+                <el-input v-model.trim="dataForm.idJp" maxlength="30" placeholder="请输入编号"></el-input>
             </el-form-item>
             <el-form-item label="标题：">
-                <el-input v-model="dataForm.title" placeholder="请输入标题关键字"></el-input>
+                <el-input v-model.trim="dataForm.title" placeholder="请输入标题关键字"></el-input>
             </el-form-item>
             <el-form-item label="发布人：">
-                <el-input v-model="dataForm.mediaName" ></el-input>
+                <el-input v-model.trim="dataForm.mediaName" ></el-input>
             </el-form-item>
             <el-form-item label="日本发布时间：">
                 <el-date-picker
@@ -57,7 +57,7 @@
             <el-table-column prop="mainImageUrl " label="封面图片" align="center">
                 <template slot-scope="scope">
                     <img
-                            :src="scope.row.mainImageUrl "
+                            :src="scope.row.mainImageUrl | filterImgUrl"
                             alt=""
                             style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                     >

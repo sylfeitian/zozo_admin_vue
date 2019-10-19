@@ -8,13 +8,13 @@
             ref="dataForm"
     >
       <el-form-item label="会员账号/ID：">
-        <el-input v-model="dataForm.memeberNameOrId" placeholder="请输入会员账号/ID" clearable maxlength="30" ></el-input>
+        <el-input v-model.trim="dataForm.memeberNameOrId" placeholder="请输入会员账号/ID" clearable maxlength="30" ></el-input>
       </el-form-item>
       <el-form-item label="消费金额：">
         <div style="display:flex">
-          <el-input v-model="dataForm.minConsumeAmount" placeholder="" @blur="compare"></el-input>
+          <el-input v-model.trim="dataForm.minConsumeAmount" placeholder="" @blur="compare"></el-input>
           <span>&nbsp 至 &nbsp</span>
-          <el-input v-model="dataForm.maxConsumeAmount" placeholder="" @blur="compare"></el-input>
+          <el-input v-model.trim="dataForm.maxConsumeAmount" placeholder="" @blur="compare"></el-input>
 
         </div>
       </el-form-item>

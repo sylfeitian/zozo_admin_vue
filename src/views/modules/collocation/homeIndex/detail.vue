@@ -3,13 +3,13 @@
     <Bread :breaddata="breaddata" :index = "'1'" @changePage = "changePage"></Bread>
     <el-form :inline="true" ref="dataForm" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="搭配集合ID：">
-            <el-input v-model="dataForm.idJp" placeholder="请输入编号" clearable></el-input>
+            <el-input v-model.trim="dataForm.idJp" placeholder="请输入编号" clearable></el-input>
         </el-form-item>
         <el-form-item label="搭配集合标题：">
-            <el-input v-model="dataForm.title" placeholder="请输入标题" clearable></el-input>
+            <el-input v-model.trim="dataForm.title" placeholder="请输入标题" clearable></el-input>
         </el-form-item>
         <el-form-item label="用户：">
-            <el-input v-model="dataForm.userNickname" placeholder="请输入用户昵称" clearable></el-input>
+            <el-input v-model.trim="dataForm.userNickname" placeholder="请输入用户昵称" clearable></el-input>
         </el-form-item>
         <el-form-item  label="性别：">
             <el-select v-model="dataForm.gender" clearable  placeholder="请选择">

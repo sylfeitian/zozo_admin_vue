@@ -6,24 +6,24 @@
         <div style="margin-bottom:20px">管理员</div>
         <div class="itemMode">
           <el-form-item prop="account" label="登录账号：">
-              <el-input v-model="dataForm.account" :disabled="true" placeholder="" clearable></el-input>
+              <el-input v-model.trim="dataForm.account" :disabled="true" placeholder="" clearable></el-input>
           </el-form-item>
           <el-form-item prop="password" label="密码：">
-              <el-input v-model="dataForm.password" type="password" :disabled="true" placeholder="" clearable></el-input>
+              <el-input v-model.trim="dataForm.password" type="password" :disabled="true" placeholder="" clearable></el-input>
           </el-form-item>
          <el-form-item label="电话：">
-              <el-input v-model="dataForm.mobilePhone " :disabled="true" placeholder="" clearable></el-input>
+              <el-input v-model.trim="dataForm.mobilePhone " :disabled="true" placeholder="" clearable></el-input>
           </el-form-item>
         </div>
         <!-- <div class="itemMode">
           <el-form-item label="性别：">
-              <el-input v-model="dataForm.sex" placeholder="" clearable></el-input>
+              <el-input v-model.trim="dataForm.sex" placeholder="" clearable></el-input>
           </el-form-item>
           <el-form-item label="电话：">
-              <el-input v-model="dataForm.mobilePhone " placeholder="" clearable></el-input>
+              <el-input v-model.trim="dataForm.mobilePhone " placeholder="" clearable></el-input>
           </el-form-item>
           <el-form-item label="地址：">
-              <el-input v-model="dataForm.paramCode" placeholder="" clearable></el-input>
+              <el-input v-model.trim="dataForm.paramCode" placeholder="" clearable></el-input>
           </el-form-item>
         </div> -->
       </div>
@@ -31,7 +31,7 @@
         <div style="margin-bottom:20px">商家信息:</div>
         <div class="itemMode">
           <el-form-item label="商家ID：" v-if="storeId">
-              <el-input v-model="dataForm.id" placeholder="" :disabled="true" clearable></el-input>
+              <el-input v-model.trim="dataForm.id" placeholder="" :disabled="true" clearable></el-input>
           </el-form-item>
           <el-form-item label="logo：">
               <div style="width: 250px;">
@@ -43,10 +43,10 @@
         </div>
         <div class="itemMode">
           <el-form-item label="商家名称：">
-              <el-input v-model="dataForm.saveStoreDTO.storeName" :disabled="true" placeholder="" clearable></el-input>
+              <el-input v-model.trim="dataForm.saveStoreDTO.storeName" :disabled="true" placeholder="" clearable></el-input>
           </el-form-item>
           <el-form-item label="店铺等级：">
-              <!-- <el-input v-model="dataForm.saveStoreDTO.gradeId" :disabled="true" placeholder="" clearable></el-input> -->
+              <!-- <el-input v-model.trim="dataForm.saveStoreDTO.gradeId" :disabled="true" placeholder="" clearable></el-input> -->
               <el-select v-model="dataForm.saveStoreDTO.gradeId" :disabled="true" clearable  placeholder="请选择">
                 <el-option
                     v-for="item in storeGradeList"
@@ -57,7 +57,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="商户类型：">
-              <!-- <el-input v-model="dataForm.saveStoreDTO.storeType" placeholder="" clearable></el-input> -->
+              <!-- <el-input v-model.trim="dataForm.saveStoreDTO.storeType" placeholder="" clearable></el-input> -->
               <el-select v-model="dataForm.saveStoreDTO.storeType" :disabled="true" clearable  placeholder="请选择">
                 <el-option
                     v-for="item in storeTypes"
@@ -70,7 +70,7 @@
         </div>
         <div class="itemMode">
           <el-form-item label="经营范围：">
-              <!-- <el-input v-model="dataForm.storeClassId" :disabled="true" placeholder="" clearable></el-input> -->
+              <!-- <el-input v-model.trim="dataForm.storeClassId" :disabled="true" placeholder="" clearable></el-input> -->
               <el-select v-model="dataForm.storeClassId" :disabled="true" multiple placeholder="请选择">
                 <el-option
                   v-for="item in storeClassList"
@@ -86,24 +86,24 @@
         <div style="margin-bottom:20px">公司信息</div>
         <div class="itemMode">
           <el-form-item label="公司名称：">
-              <el-input v-model="dataForm.saveStoreAuthDTO.companyName" :disabled="true" placeholder="" clearable></el-input>
+              <el-input v-model.trim="dataForm.saveStoreAuthDTO.companyName" :disabled="true" placeholder="" clearable></el-input>
           </el-form-item>
           <el-form-item label="法人姓名：">
-              <el-input v-model="dataForm.saveStoreAuthDTO.legalPersonName" :disabled="true" placeholder="" clearable></el-input>
+              <el-input v-model.trim="dataForm.saveStoreAuthDTO.legalPersonName" :disabled="true" placeholder="" clearable></el-input>
           </el-form-item>
           <el-form-item label="办公电话：">
-              <el-input v-model="dataForm.saveStoreAuthDTO.companyPhone" :disabled="true" placeholder="" clearable></el-input>
+              <el-input v-model.trim="dataForm.saveStoreAuthDTO.companyPhone" :disabled="true" placeholder="" clearable></el-input>
           </el-form-item>
         </div>
         <div class="itemMode">
           <el-form-item label="注册地址：">
-              <el-input v-model="dataForm.saveStoreAuthDTO.companyAddress" :disabled="true" placeholder="" clearable></el-input>
+              <el-input v-model.trim="dataForm.saveStoreAuthDTO.companyAddress" :disabled="true" placeholder="" clearable></el-input>
           </el-form-item>
           <el-form-item label="办公地址：">
-              <el-input v-model="dataForm.saveStoreAuthDTO.companyAddressDetail" :disabled="true" placeholder="" clearable></el-input>
+              <el-input v-model.trim="dataForm.saveStoreAuthDTO.companyAddressDetail" :disabled="true" placeholder="" clearable></el-input>
           </el-form-item>
           <el-form-item label="注册资金：">
-              <el-input v-model="dataForm.saveStoreAuthDTO.companyRegisteredCapital " :disabled="true" placeholder="" clearable></el-input>
+              <el-input v-model.trim="dataForm.saveStoreAuthDTO.companyRegisteredCapital " :disabled="true" placeholder="" clearable></el-input>
           </el-form-item>
         </div>
         <div class="itemMode">
@@ -118,7 +118,7 @@
               
           </el-form-item>
           <el-form-item label="税号：">
-              <el-input v-model="dataForm.saveStoreAuthDTO.taxpayerId" :disabled="true" placeholder="" clearable></el-input>
+              <el-input v-model.trim="dataForm.saveStoreAuthDTO.taxpayerId" :disabled="true" placeholder="" clearable></el-input>
           </el-form-item>
           <div style="width:392px"></div>
         </div>
@@ -127,30 +127,30 @@
         <div style="margin-bottom:20px">结算信息</div>
         <div class="itemMode">
           <el-form-item label="银行开户名称：">
-              <el-input v-model="dataForm.saveStoreAuthDTO.bankAccountName " :disabled="true" placeholder="" clearable></el-input>
+              <el-input v-model.trim="dataForm.saveStoreAuthDTO.bankAccountName " :disabled="true" placeholder="" clearable></el-input>
           </el-form-item>
           <el-form-item label="开户行名称：">
-              <el-input v-model="dataForm.saveStoreAuthDTO.bankName " :disabled="true" placeholder="" clearable></el-input>
+              <el-input v-model.trim="dataForm.saveStoreAuthDTO.bankName " :disabled="true" placeholder="" clearable></el-input>
           </el-form-item>
           <el-form-item label="开户行账号：">
-              <el-input v-model="dataForm.saveStoreAuthDTO.bankAccountNumber" :disabled="true" placeholder="" clearable></el-input>
+              <el-input v-model.trim="dataForm.saveStoreAuthDTO.bankAccountNumber" :disabled="true" placeholder="" clearable></el-input>
           </el-form-item>
         </div>
         <div class="itemMode">
           <el-form-item label="支付宝姓名：">
-              <el-input v-model="dataForm.saveStoreAuthDTO.alipayName " :disabled="true" placeholder="" clearable></el-input>
+              <el-input v-model.trim="dataForm.saveStoreAuthDTO.alipayName " :disabled="true" placeholder="" clearable></el-input>
           </el-form-item>
           <el-form-item label="支付宝账号：">
-              <el-input v-model="dataForm.saveStoreAuthDTO.alipayAccountNumber" :disabled="true" placeholder="" clearable></el-input>
+              <el-input v-model.trim="dataForm.saveStoreAuthDTO.alipayAccountNumber" :disabled="true" placeholder="" clearable></el-input>
           </el-form-item>
           <div style="width:392px"></div>
         </div>
         <div class="itemMode">
           <el-form-item label="微信姓名：">
-              <el-input v-model="dataForm.saveStoreAuthDTO.wechatName " :disabled="true" placeholder="" clearable></el-input>
+              <el-input v-model.trim="dataForm.saveStoreAuthDTO.wechatName " :disabled="true" placeholder="" clearable></el-input>
           </el-form-item>
           <el-form-item label="微信账号：">
-              <el-input v-model="dataForm.saveStoreAuthDTO.wechatAccountNumber" :disabled="true" placeholder="" clearable></el-input>
+              <el-input v-model.trim="dataForm.saveStoreAuthDTO.wechatAccountNumber" :disabled="true" placeholder="" clearable></el-input>
           </el-form-item>
           <div style="width:392px"></div>
         </div>

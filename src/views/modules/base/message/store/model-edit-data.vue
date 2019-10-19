@@ -25,7 +25,7 @@
                 <span>{{dataForm.storeNameJp}}</span>
             </el-form-item>
             <el-form-item label="店铺中文名称：" prop="storeName">
-                <el-input v-model="dataForm.storeName" placeholder="请输入"></el-input>
+                <el-input v-model.trim="dataForm.storeName" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="店铺日文描述：">
                 <span>{{dataForm.descriptionJp}}</span>
@@ -91,7 +91,7 @@
                             :value="item.id">
                     </el-option>
                 </el-select>
-<!--                <el-input v-model="dataForm.description" placeholder="" style="width: 250px;"></el-input>&nbsp;-->
+<!--                <el-input v-model.trim="dataForm.description" placeholder="" style="width: 250px;"></el-input>&nbsp;-->
 <!--                <el-button class="btn" type="primary" @click="getDataList()">搜索</el-button>-->
             </el-form-item>
 <!--            <el-form-item style="text-align: center;margin-left: -120px!important;">-->

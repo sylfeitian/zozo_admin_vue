@@ -10,7 +10,7 @@
       <el-form label-width="100px" :rules="rules" ref="form" :model="form">
         <h3>您确定重置会员[{{memberInfo.nickName}}]的密码吗？</h3>
         <el-form-item label="请输入" prop="phone">
-          <el-input v-model="form.phone" placeholder="请输入接受短信的手机号"></el-input>
+          <el-input v-model.trim="form.phone" placeholder="请输入接受短信的手机号"></el-input>
         </el-form-item>
         <p>提示：确认后，新密码将通过会员提供的手机号【{{form.phone}}】，以短信的形式通知会员</p>
       </el-form>
@@ -21,14 +21,14 @@
     </el-dialog>
     <el-form label-width="100px" :model="dataForm">
       <el-form-item label="昵称：">
-        <el-input v-model="memberInfo.nickName"></el-input>
+        <el-input v-model.trim="memberInfo.nickName"></el-input>
       </el-form-item>
       <el-form-item label="密码：">
-        <el-input v-model="memberInfo.memberPasswd">******</el-input>
+        <el-input v-model.trim="memberInfo.memberPasswd">******</el-input>
         <span class="rest" @click="innerVisible = true">重置密码</span>
       </el-form-item>
       <el-form-item label="备注：">
-        <el-input v-model="form.name"></el-input>
+        <el-input v-model.trim="form.name"></el-input>
       </el-form-item>
       <el-form-item label="地区：">
         <el-select

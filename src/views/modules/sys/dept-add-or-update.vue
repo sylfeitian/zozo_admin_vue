@@ -2,7 +2,7 @@
   <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmitHandle()" label-width="120px">
       <el-form-item prop="name" :label="$t('dept.name') + '：'">
-        <el-input v-model="dataForm.name" :placeholder="$t('dept.name')"></el-input>
+        <el-input v-model.trim="dataForm.name" :placeholder="$t('dept.name')"></el-input>
       </el-form-item>
       <el-form-item prop="parentName" :label="$t('dept.parentName') + '：'" class="dept-list">
         <el-popover v-model="deptListVisible" ref="deptListPopover" placement="bottom-start" trigger="click">
@@ -17,7 +17,7 @@
             @current-change="deptListTreeCurrentChangeHandle">
           </el-tree>
         </el-popover>
-        <el-input v-model="dataForm.parentName" v-popover:deptListPopover :readonly="true" :placeholder="$t('dept.parentName')">
+        <el-input v-model.trim="dataForm.parentName" v-popover:deptListPopover :readonly="true" :placeholder="$t('dept.parentName')">
           <i
             v-if="$store.state.user.superadmin-api === 1 && dataForm.pid !== '0'"
             slot="suffix"

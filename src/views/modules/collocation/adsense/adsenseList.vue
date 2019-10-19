@@ -3,7 +3,7 @@
     <Bread :breaddata="breaddata"></Bread>
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="轮播图名称：">
-            <el-input v-model="dataForm.name" placeholder="请输入轮播图名称" clearable></el-input>
+            <el-input v-model.trim="dataForm.name" placeholder="请输入轮播图名称" clearable></el-input>
         </el-form-item>
         <el-form-item label="广告位置：">
             <el-select v-model="dataForm.position" clearable  placeholder="请选择">
@@ -139,10 +139,10 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="轮播图名称：" prop="name">
-                <el-input v-model="activiDataForm.name" placeholder="请输入30字以内的名称"></el-input>
+                <el-input v-model.trim="activiDataForm.name" placeholder="请输入30字以内的名称"></el-input>
             </el-form-item>
             <el-form-item label="排序：">
-                <el-input v-model="activiDataForm.sort" placeholder="数字越大排序越靠前" maxlength="6"></el-input>
+                <el-input v-model.trim="activiDataForm.sort" placeholder="数字越大排序越靠前" maxlength="6"></el-input>
             </el-form-item>
             <el-form-item label="上传轮播图：" prop="fileList" class="imgConfig">
                 <el-upload
@@ -181,7 +181,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="链接：" v-if="activiDataForm.linkType == '3'" prop="linkUrl">
-                <!-- <el-input v-model="activiDataForm.linkUrl"></el-input> -->
+                <!-- <el-input v-model.trim="activiDataForm.linkUrl"></el-input> -->
                 <el-input
                     type="textarea"
                     placeholder="请输入链接"
@@ -209,7 +209,7 @@
         width="44%">
         <el-form :inline="true" :model="goodsdataForm">
             <el-form-item label="商品名称：">
-                <el-input v-model="goodsdataForm.goodsName" placeholder="商品名称/商品货号" clearable maxlength="300"></el-input>
+                <el-input v-model.trim="goodsdataForm.goodsName" placeholder="商品名称/商品货号" clearable maxlength="300"></el-input>
             </el-form-item>
             <el-form-item label="选择分类：">
                 <el-cascader
