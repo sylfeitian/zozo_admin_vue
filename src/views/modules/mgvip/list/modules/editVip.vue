@@ -67,7 +67,7 @@ import { isMobile,isIdCard } from '@/utils/validate'
                 callback()
             }
             var validatorConfirmPasswd = (rule, value, callback) => {
-                if (value!=this.dataForm.newPasswd) {
+                if ( value != '' &&  value!=this.dataForm.newPasswd) {
                  return callback(new Error("两次密码不一致"))
                 }
                 callback()
@@ -100,23 +100,23 @@ import { isMobile,isIdCard } from '@/utils/validate'
                       { validator: validatorMemberMobile, trigger: 'blur'}
                     ],
                     memberBirthday : [
-			          { required: true, message: '必填项不能为空', trigger: 'blur' },
+			        //   { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ],
                     idCard: [
-			          { required: true, message: '必填项不能为空', trigger: 'blur' },
+			        //   { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ],
                     memberRealName : [
-			          { required: true, message: '必填项不能为空', trigger: 'blur' },
+			        //   { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ],
                     idCard : [
-                      { required: true, message: '必填项不能为空', trigger: 'blur' },
+                    //   { required: true, message: '必填项不能为空', trigger: 'blur' },
                         { validator: validatorIdCard, trigger: 'blur'}
                     ],
                     newPasswd : [
-			          { required: true, message: '必填项不能为空', trigger: 'blur' },
+			        //   { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ],
                     confirmPasswd : [
-                      { required: true, message: '必填项不能为空', trigger: 'blur' },
+                    //   { required: true, message: '必填项不能为空', trigger: 'blur' },
                       { validator: validatorConfirmPasswd, trigger: 'blur'}
 			        ],
 				},
