@@ -1,8 +1,10 @@
 <template>
     <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false" class="rolePage">
-        <el-form :model="dataForm" ref="dataForm" @keyup.enter.native="dataFormSubmitHandle()" label-width="120px">
+        <el-form :model="dataForm" ref="dataForm"
+         :rules="dataRule"
+         label-width="120px">
             <el-form-item prop="name" label="角色名称：">
-                <el-input v-model="dataForm.name" placeholder="请输入"></el-input>
+                <el-input v-model.trim="dataForm.name" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item prop="remark" label="角色说明：">
                 <el-input v-model="dataForm.remark" placeholder="不超过20个汉字"></el-input>
@@ -43,7 +45,12 @@
                     menuIdList: [],
                     // deptIdList: [],
                     remark: ''
-                }
+                },
+                dataRule : {
+                    name : [
+                        { required: true, message: '必填项不能为空', trigger: 'blur' },
+                    ],
+                },
             }
         },
         watch: {
