@@ -354,7 +354,7 @@ export default {
                         startTime:this.dataForm.startTime,//生效日期
                         endTime:this.dataForm.endTime,// 截止日期
                     }
-                    if(parseInt(this.dataForm.threshold)<=parseInt(this.dataForm.faceValue)) {
+                    if(parseInt(this.dataForm.threshold)>=parseInt(this.dataForm.faceValue)) {
                         this.$message({
                             message: "提交失败，面额必须小于使用门槛",
                             type: "error",
