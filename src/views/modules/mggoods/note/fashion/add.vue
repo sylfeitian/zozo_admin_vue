@@ -12,21 +12,21 @@
                 <p style="margin-left: -100px;">基础信息</p>
             </el-form-item>
             <el-form-item label="标题：" prop="sizeName" :label-width="formLabelWidth">
-                <el-input v-model.trim.trim="dataForm.sizeName" auto-complete="off" placeholder="请填写时尚纪实标题" style="width: 1200px;"></el-input>
+                <el-input v-model.trim="dataForm.sizeName" auto-complete="off" placeholder="请填写时尚纪实标题" style="width: 1200px;"></el-input>
                 <p style="color: #bebebe;line-height: 14px;">请输入120个汉字，包含汉字、数字、英文、常用字符</p>
             </el-form-item>
             <el-form-item label="编号：" prop="" :label-width="formLabelWidth" style="display: inline-block;vertical-align:top;">
-                <el-input v-model.trim.trim="dataForm.sizeName" auto-complete="off" placeholder="" style="width: 540px;"></el-input>
+                <el-input v-model.trim="dataForm.sizeName" auto-complete="off" placeholder="" style="width: 540px;"></el-input>
                 <p style="color: #bebebe;line-height: 14px;">请输入20个字符以内，包含英文、数字的编号</p>
             </el-form-item>
             <el-form-item label="发布人：" prop="" :label-width="formLabelWidth" style="display: inline-block;vertical-align:top;">
-                <el-input v-model.trim.trim="dataForm.sizeName" auto-complete="off" placeholder="" style="width: 540px;"></el-input>
+                <el-input v-model.trim="dataForm.sizeName" auto-complete="off" placeholder="" style="width: 540px;"></el-input>
             </el-form-item>
             <el-form-item label="关注量：" prop="" :label-width="formLabelWidth" style="display: inline-block;">
-                <el-input v-model.trim.trim="dataForm.sizeName" auto-complete="off" placeholder="（仅可填写数字，可选）" style="width: 540px;"></el-input>
+                <el-input v-model.trim="dataForm.sizeName" auto-complete="off" placeholder="（仅可填写数字，可选）" style="width: 540px;"></el-input>
             </el-form-item>
             <el-form-item label="浏览量：" prop="" :label-width="formLabelWidth" style="display: inline-block;">
-                <el-input v-model.trim.trim="dataForm.sizeName" auto-complete="off" placeholder="（仅可填写数字，可选）" style="width: 540px;"></el-input>
+                <el-input v-model.trim="dataForm.sizeName" auto-complete="off" placeholder="（仅可填写数字，可选）" style="width: 540px;"></el-input>
             </el-form-item>
             <el-form-item style="background-color: #f3f3f3;">
                 <p style="margin-left: -100px;">详细信息</p>

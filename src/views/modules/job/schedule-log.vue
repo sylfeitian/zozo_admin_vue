@@ -2,7 +2,7 @@
   <el-dialog :visible.sync="visible" :title="$t('schedule.log')" :close-on-click-modal="false" :close-on-press-escape="false" width="75%">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model.trim.trim="dataForm.jobId" :placeholder="$t('schedule.jobId')" clearable></el-input>
+        <el-input v-model.trim="dataForm.jobId" :placeholder="$t('schedule.jobId')" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="getDataList()">{{ $t('query') }}</el-button>

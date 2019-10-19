@@ -7,19 +7,19 @@
       :model="dataForm"
     >
       <el-form-item label="会员账号：">
-          <el-input v-model.trim.trim="dataForm.memberName" placeholder="请输入会员账号" clearable></el-input>
+          <el-input v-model.trim="dataForm.memberName" placeholder="请输入会员账号" clearable></el-input>
       </el-form-item>
 
       <el-form-item label="订单号：">
-          <el-input v-model.trim.trim="dataForm.orderSn" placeholder="请输入订单号" clearable></el-input>
+          <el-input v-model.trim="dataForm.orderSn" placeholder="请输入订单号" clearable></el-input>
       </el-form-item>
 
       <el-form-item label="skuid：">
-          <el-input v-model.trim.trim="dataForm.goodsCsIdJp" placeholder="请输入skuid" clearable maxlength="30" ></el-input>
+          <el-input v-model.trim="dataForm.goodsCsIdJp" placeholder="请输入skuid" clearable maxlength="30" ></el-input>
       </el-form-item>
 
       <el-form-item label="商品名称：">
-          <el-input v-model.trim.trim="dataForm.goodsName" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
+          <el-input v-model.trim="dataForm.goodsName" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
       </el-form-item>
 
       <el-form-item label="尺码感受：">

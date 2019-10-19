@@ -3,10 +3,10 @@
     <div class="mod-activiti__process">
       <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
         <el-form-item>
-          <el-input v-model.trim.trim="dataForm.processName" :placeholder="$t('process.name')" clearable></el-input>
+          <el-input v-model.trim="dataForm.processName" :placeholder="$t('process.name')" clearable></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input v-model.trim.trim="dataForm.key" :placeholder="$t('process.key')" clearable></el-input>
+          <el-input v-model.trim="dataForm.key" :placeholder="$t('process.key')" clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="getDataList()">{{ $t('query') }}</el-button>

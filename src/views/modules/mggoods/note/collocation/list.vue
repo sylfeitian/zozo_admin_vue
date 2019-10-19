@@ -3,13 +3,13 @@
         <Bread :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
             <el-form-item label="ID：">
-                <el-input v-model.trim.trim="dataForm.id" ></el-input>
+                <el-input v-model.trim="dataForm.id" ></el-input>
             </el-form-item>
             <el-form-item label="标题：">
-                <el-input v-model.trim.trim="dataForm.id" ></el-input>
+                <el-input v-model.trim="dataForm.id" ></el-input>
             </el-form-item>
             <el-form-item label="用户：">
-                <el-input v-model.trim.trim="dataForm.name" ></el-input>
+                <el-input v-model.trim="dataForm.name" ></el-input>
             </el-form-item>
             <el-form-item label="发布状态：" prop="paymentStatus">
                 <el-select v-model="dataForm.paymentStatus" placeholder="请选择">

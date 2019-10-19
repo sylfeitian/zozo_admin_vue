@@ -14,7 +14,7 @@
                     <span  style="color:transparent">0</span>
                 </el-radio>
                 <el-form-item label="账号：" style="width: 100%;" prop="memberName">
-                        <el-input v-model.trim.trim="dataForm.memberName" placeholder="请输入"></el-input>
+                        <el-input v-model.trim="dataForm.memberName" placeholder="请输入"></el-input>
                 </el-form-item>
             </div>
 

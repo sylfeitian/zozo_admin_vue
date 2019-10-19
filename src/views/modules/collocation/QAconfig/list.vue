@@ -80,7 +80,7 @@
         width="40%">
         <el-form :model="editDataForm" :rules="dataRule" ref="editDataForm" @keyup.enter.native="subActivity()" label-width="120px">
             <el-form-item label="帮助类型：" prop="sgName">
-                <el-input v-model.trim.trim="editDataForm.sgName" placeholder="请输入10字以内的名称"></el-input>
+                <el-input v-model.trim="editDataForm.sgName" placeholder="请输入10字以内的名称"></el-input>
             </el-form-item>
             <el-form-item label="排序：" prop="sort">
             	 <el-input-number v-model="editDataForm.sort" min="1" max="10000000"></el-input-number>

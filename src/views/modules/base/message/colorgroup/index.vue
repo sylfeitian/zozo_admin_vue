@@ -3,10 +3,10 @@
         <Bread  :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" @keyup.enter.native="getDataList()" >
             <el-form-item label="颜色组ID：">
-                <el-input v-model.trim.trim="dataFormShow.idJp" maxlength="30" ></el-input>
+                <el-input v-model.trim="dataFormShow.idJp" maxlength="30" ></el-input>
             </el-form-item>
             <el-form-item label="颜色组名称：">
-                <el-input v-model.trim.trim="dataFormShow.name" ></el-input>
+                <el-input v-model.trim="dataFormShow.name" ></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>

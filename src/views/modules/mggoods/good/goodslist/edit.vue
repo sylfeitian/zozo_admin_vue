@@ -24,7 +24,7 @@
                 <span>{{dataForm.nameJp}}</span>
             </el-form-item>
             <el-form-item label="商品名称：" prop="name" class="item">
-                <el-input v-model.trim.trim="dataForm.name" placeholder="请输入" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
+                <el-input v-model.trim="dataForm.name" placeholder="请输入" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
                 <span style="color: #bebebe;">必填且最多可输入60个文字</span>
             </el-form-item>
             <el-form-item label="品牌：" class="item">
@@ -81,11 +81,11 @@
             </el-form-item>
             <el-form-item label="原产地：" class="item">
                 <span>{{dataForm.madeInJp}}</span>
-                <el-input v-model.trim.trim="dataForm.madeIn" placeholder="请输入" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
+                <el-input v-model.trim="dataForm.madeIn" placeholder="请输入" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
             </el-form-item>
             <el-form-item label="材质：" class="item">
                 <span>{{dataForm.materialJp}}</span>
-                <el-input v-model.trim.trim="dataForm.material" placeholder="请输入" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
+                <el-input v-model.trim="dataForm.material" placeholder="请输入" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
             </el-form-item>
             <el-form-item label="上架状态：" class="item">
                 <template>

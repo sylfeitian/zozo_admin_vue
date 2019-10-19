@@ -13,7 +13,7 @@
                 ref="addForm"
                 label-width="100px">
             <el-form-item label="尺码名称：" prop="name">
-                  <el-input v-model.trim.trim="dataForm.name" placeholder="请输入10个字以内的内容"></el-input>
+                  <el-input v-model.trim="dataForm.name" placeholder="请输入10个字以内的内容"></el-input>
             </el-form-item>
             <el-form-item label="排序：" prop="sort">
                  <el-input-number v-model="dataForm.sort" :step="1" :min="0" :max="10000000"></el-input-number><br>

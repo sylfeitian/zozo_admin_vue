@@ -3,7 +3,7 @@
        <Bread :breaddata="breaddata" @changePage="changePage" :index="'2'"></Bread>
         <el-form :model="dataForm" label-width="140px" 	:rules="dataRule" class="demo-ruleForm" ref="addForm">
         <el-form-item label="展示分类名称：" prop="gcName">
-            <el-input v-model.trim.trim="dataForm.gcName"  maxlength="30" show-word-limit style="width:400px;"></el-input>
+            <el-input v-model.trim="dataForm.gcName"  maxlength="30" show-word-limit style="width:400px;"></el-input>
         </el-form-item>
         <el-form-item label="上级分类：">
             <el-cascader v-model="value" :options="dataArray" @change="handleChange" clearable change-on-select :disabled="row.type=='addNext'"></el-cascader>

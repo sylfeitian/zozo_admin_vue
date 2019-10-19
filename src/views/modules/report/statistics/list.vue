@@ -4,16 +4,16 @@
 	
 	<el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" ref="dataForm" @keyup.enter.native="getDataList()" >
 	    <el-form-item label="商品名称：">
-	      <el-input v-model.trim.trim="dataForm.messageTitle" placeholder="请输入商品名称" clearable></el-input>
+	      <el-input v-model.trim="dataForm.messageTitle" placeholder="请输入商品名称" clearable></el-input>
 	    </el-form-item>
 	    <el-form-item label="商品ID：">
-	      <el-input v-model.trim.trim="dataForm.messageTitle" placeholder="请输入spuID" clearable></el-input>
+	      <el-input v-model.trim="dataForm.messageTitle" placeholder="请输入spuID" clearable></el-input>
 	    </el-form-item>
 	    <el-form-item label="店铺名称：">
-	      <el-input v-model.trim.trim="dataForm.messageTitle" placeholder="请输入店铺名称" clearable></el-input>
+	      <el-input v-model.trim="dataForm.messageTitle" placeholder="请输入店铺名称" clearable></el-input>
 	    </el-form-item>
 	    <el-form-item label="品牌名称：">
-	      <el-input v-model.trim.trim="dataForm.messageTitle" placeholder="请输入品牌名称" clearable></el-input>
+	      <el-input v-model.trim="dataForm.messageTitle" placeholder="请输入品牌名称" clearable></el-input>
 	    </el-form-item>
 	    <el-form-item label="下单时间：">
 	      <el-date-picker

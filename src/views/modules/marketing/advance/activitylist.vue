@@ -3,7 +3,7 @@
     <Bread :breaddata="breaddata"></Bread>
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="活动名称：">
-            <el-input v-model.trim.trim="dataForm.title" placeholder="请输入优惠券名称" clearable  maxlength="300" ></el-input>
+            <el-input v-model.trim="dataForm.title" placeholder="请输入优惠券名称" clearable  maxlength="300" ></el-input>
         </el-form-item>
         <el-form-item  label="活动状态：">
             <el-select v-model="dataForm.state" clearable  placeholder="请选择">

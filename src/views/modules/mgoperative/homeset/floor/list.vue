@@ -4,7 +4,7 @@
 
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="楼层名称：">
-            <el-input v-model.trim.trim="dataForm.floorName" placeholder="楼层名称" clearable></el-input>
+            <el-input v-model.trim="dataForm.floorName" placeholder="楼层名称" clearable></el-input>
         </el-form-item>
         <el-form-item  label="是否显示：">
             <el-select v-model="dataForm.isShow" placeholder="请选择">

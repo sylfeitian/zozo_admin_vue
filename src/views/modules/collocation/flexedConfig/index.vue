@@ -63,19 +63,19 @@
             <div class="modleItem">
                 <el-form :model="dataForm4" label-width="70px">
                     <el-form-item label="全部：">
-                        <el-input v-model.trim.trim="dataForm4.all" placeholder="请输入50字以内内容"
+                        <el-input v-model.trim="dataForm4.all" placeholder="请输入50字以内内容"
                                   clearable></el-input>
                     </el-form-item>
                     <el-form-item label="男：">
-                        <el-input v-model.trim.trim="dataForm4.man" placeholder="请输入50字以内内容"
+                        <el-input v-model.trim="dataForm4.man" placeholder="请输入50字以内内容"
                                   clearable></el-input>
                     </el-form-item>
                     <el-form-item label="女：">
-                        <el-input v-model.trim.trim="dataForm4.woman" placeholder="请输入50字以内内容"
+                        <el-input v-model.trim="dataForm4.woman" placeholder="请输入50字以内内容"
                                   clearable></el-input>
                     </el-form-item>
                     <el-form-item label="儿童：">
-                        <el-input v-model.trim.trim="dataForm4.child" placeholder="请输入50字以内内容"
+                        <el-input v-model.trim="dataForm4.child" placeholder="请输入50字以内内容"
                                   clearable></el-input>
                     </el-form-item>
                 </el-form>

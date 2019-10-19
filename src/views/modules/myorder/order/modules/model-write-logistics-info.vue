@@ -27,7 +27,7 @@
 						        </el-select>
                         </el-form-item>
                         <el-form-item  label="物流单号："  prop="logisticsSn">
-                            <el-input v-model.trim.trim="dataForm.logisticsSn"
+                            <el-input v-model.trim="dataForm.logisticsSn"
 								placeholder="请输入物流单号" 
 								clearable maxlength="30" 
 								show-word-limit 

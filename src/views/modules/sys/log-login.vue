@@ -4,7 +4,7 @@
     <div class="mod-sys__log-login">
       <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getDataList()">
         <el-form-item label="用户名：">
-          <el-input v-model.trim.trim="dataForm.creatorName" :placeholder="$t('logLogin.creatorName')" clearable></el-input>
+          <el-input v-model.trim="dataForm.creatorName" :placeholder="$t('logLogin.creatorName')" clearable></el-input>
         </el-form-item>
         <el-form-item label="状态：">
           <el-select v-model="dataForm.status" :placeholder="$t('logLogin.status')" clearable>

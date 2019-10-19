@@ -68,7 +68,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="订单编号：">
-                <el-input v-model.trim.trim="dataForm.orderSn" placeholder="请输入订单编号" clearable></el-input>
+                <el-input v-model.trim="dataForm.orderSn" placeholder="请输入订单编号" clearable></el-input>
             </el-form-item>
 
             <el-form-item>

@@ -32,16 +32,16 @@
         </el-form>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" >
             <el-form-item prop="skuId" label="skuID：">
-                <el-input v-model.trim.trim="dataFormShow.skuId" placeholder="请输入编号" maxlength="30"></el-input>
+                <el-input v-model.trim="dataFormShow.skuId" placeholder="请输入编号" maxlength="30"></el-input>
             </el-form-item>
             <el-form-item prop="goodsName" label="商品名称：">
-                <el-input v-model.trim.trim="dataFormShow.goodsName" placeholder="请输入内容"></el-input>
+                <el-input v-model.trim="dataFormShow.goodsName" placeholder="请输入内容"></el-input>
             </el-form-item>
             <el-form-item prop="storeName" label="所属店铺：" >
-                <el-input v-model.trim.trim="dataFormShow.storeName" placeholder="请输入内容"></el-input>
+                <el-input v-model.trim="dataFormShow.storeName" placeholder="请输入内容"></el-input>
             </el-form-item>
             <el-form-item prop="brandName" label="品牌：">
-                <el-input v-model.trim.trim="dataFormShow.brandName" placeholder="请输入编号" ></el-input>
+                <el-input v-model.trim="dataFormShow.brandName" placeholder="请输入编号" ></el-input>
             </el-form-item>
             <el-form-item label="分类：">
                 <el-cascader

@@ -3,13 +3,13 @@
         <Bread  :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getData()" >
             <el-form-item label="ID：">
-                <el-input v-model.trim.trim="dataForm.idJp" maxlength="30" placeholder="请输入编号"></el-input>
+                <el-input v-model.trim="dataForm.idJp" maxlength="30" placeholder="请输入编号"></el-input>
             </el-form-item>
             <el-form-item label="标题：">
-                <el-input v-model.trim.trim="dataForm.title" placeholder="请输入标题"></el-input>
+                <el-input v-model.trim="dataForm.title" placeholder="请输入标题"></el-input>
             </el-form-item>
             <el-form-item label="店铺：">
-                <el-input v-model.trim.trim="dataForm.storeName" placeholder="请输入店铺名称"></el-input>
+                <el-input v-model.trim="dataForm.storeName" placeholder="请输入店铺名称"></el-input>
             </el-form-item>
             <el-form-item label="日本发布时间：">
                 <el-date-picker

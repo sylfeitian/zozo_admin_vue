@@ -102,10 +102,10 @@
                     </template>
                 </el-form-item>
                 <el-form-item label="标题：" style="height: 100%!important;">
-                    <el-input v-model.trim.trim="dataForm.title" type="text" placeholder="请输入标题名称"></el-input>
+                    <el-input v-model.trim="dataForm.title" type="text" placeholder="请输入标题名称"></el-input>
                 </el-form-item>
                 <el-form-item label="详情：" style="height: 100%!important;">
-                    <el-input v-model.trim.trim="dataForm.content" type="textarea":rows="5" placeholder="请输入内容"></el-input>
+                    <el-input v-model.trim="dataForm.content" type="textarea":rows="5" placeholder="请输入内容"></el-input>
                 </el-form-item>
                 <div class="goods">
                     <span class="inforTit" style="vertical-align:top;">关联商品：</span>

@@ -13,7 +13,7 @@
 			    ></el-autocomplete>
             </el-form-item>
             <el-form-item prop="remarks" label="备注：">
-                <el-input v-model.trim.trim="dataForm.remarks" type="text" placeholder="请输入备注内容" style="width:400px;"></el-input>
+                <el-input v-model.trim="dataForm.remarks" type="text" placeholder="请输入备注内容" style="width:400px;"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="saveGoods">保存</el-button>
@@ -52,7 +52,7 @@
             <el-table-column prop="quantity" label="库存" align="center"></el-table-column>
             <el-table-column prop="changeQty" label="变更数量" align="center">
             	<template slot-scope="scope">
-                    <el-input v-model.trim.trim="scope.row.changeQty" type="number" @blur='artnumberinput(scope)' :max='Number(scope.row.quantity )' min='0'  placeholder="0" style="width:90px; text-align: center;"></el-input>
+                    <el-input v-model.trim="scope.row.changeQty" type="number" @blur='artnumberinput(scope)' :max='Number(scope.row.quantity )' min='0'  placeholder="0" style="width:90px; text-align: center;"></el-input>
                 </template>
             </el-table-column>
             <el-table-column prop="afterQty" label="变更后库存" align="center">

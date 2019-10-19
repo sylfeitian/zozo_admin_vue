@@ -3,10 +3,10 @@
     <div class="mod-activiti__running">
       <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
         <el-form-item>
-          <el-input v-model.trim.trim="dataForm.id" :placeholder="$t('running.id')" clearable></el-input>
+          <el-input v-model.trim="dataForm.id" :placeholder="$t('running.id')" clearable></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input v-model.trim.trim="dataForm.definitionKey" :placeholder="$t('running.definitionKey')" clearable></el-input>
+          <el-input v-model.trim="dataForm.definitionKey" :placeholder="$t('running.definitionKey')" clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="getDataList()">{{ $t('query') }}</el-button>

@@ -4,10 +4,10 @@
       <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" >
         <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
             <el-form-item label="输入搜索：">
-              <el-input v-model.trim.trim="dataForm.goodsName" placeholder="商品名称/商品货号" clearable></el-input>
+              <el-input v-model.trim="dataForm.goodsName" placeholder="商品名称/商品货号" clearable></el-input>
             </el-form-item>
             <el-form-item  label="所属店铺：">
-              <el-input v-model.trim.trim="dataForm.storeName" placeholder="店铺名称" clearable></el-input>
+              <el-input v-model.trim="dataForm.storeName" placeholder="店铺名称" clearable></el-input>
             </el-form-item>
 
              <el-form-item  label="审核状态:">

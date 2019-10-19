@@ -4,7 +4,7 @@
         <div class="mod-sys__user">
             <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getData()">
                 <el-form-item label="账号：">
-                    <el-input v-model.trim.trim="dataForm.username" placeholder="请输入账号" clearable maxlength="30"></el-input>
+                    <el-input v-model.trim="dataForm.username" placeholder="请输入账号" clearable maxlength="30"></el-input>
                 </el-form-item>
                 <el-form-item label="角色：">
                     <el-select v-model="dataForm.roleId" placeholder="请选择">
@@ -88,10 +88,10 @@
                         <span>账号：</span><span>{{numberDataForm.username}}</span>
                     </el-form-item>
                     <el-form-item label="密码：" prop="password">
-                        <el-input v-model.trim.trim="numberDataForm.password" type="password" placeholder="请输入6-12位的密码" minlength="6" maxlength="12"></el-input>
+                        <el-input v-model.trim="numberDataForm.password" type="password" placeholder="请输入6-12位的密码" minlength="6" maxlength="12"></el-input>
                     </el-form-item>
                     <el-form-item label="确认密码：" prop="newPassword">
-                        <el-input v-model.trim.trim="numberDataForm.newPassword" type="password" placeholder="请确认密码" minlength="6" maxlength="12"></el-input>
+                        <el-input v-model.trim="numberDataForm.newPassword" type="password" placeholder="请确认密码" minlength="6" maxlength="12"></el-input>
                     </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">

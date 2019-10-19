@@ -90,10 +90,10 @@
             <el-form :model="editDataForm" :rules="dataRule" ref="editDataForm" @keyup.enter.native="subActivity()"
                      label-width="120px">
                 <el-form-item label="帮助类型：" prop="type">
-                    <el-input v-model.trim.trim="editDataForm.type" :disabled="true"></el-input>
+                    <el-input v-model.trim="editDataForm.type" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="帮助标题：" prop="title">
-                    <el-input v-model.trim.trim="editDataForm.title" placeholder="请输入200字以内的内容"></el-input>
+                    <el-input v-model.trim="editDataForm.title" placeholder="请输入200字以内的内容"></el-input>
                 </el-form-item>
                 <el-form-item label="帮助内容：" prop="content">
                     <quill-editor-img v-if="isShow" :value="editDataForm.content"   @artmessageContent='artmessageContent' ></quill-editor-img>

@@ -12,11 +12,11 @@
 		    		@keyup.enter.native="dataFormSubmit('addForm')"
 		    		label-width="120px">
 				        <el-form-item label="分组名称：" prop="groupName">
-				        	  <el-input v-model.trim.trim="dataForm.groupName" maxlength="30" placeholder="请输入分组名称" ></el-input>
+				        	  <el-input v-model.trim="dataForm.groupName" maxlength="30" placeholder="请输入分组名称" ></el-input>
 				        </el-form-item>
 				        
 				         <!-- <el-form-item label="分组排序：" prop="sort">
-				        	 	 <el-input v-model.trim.trim="dataForm.sort" placeholder="1-255"></el-input>
+				        	 	 <el-input v-model.trim="dataForm.sort" placeholder="1-255"></el-input>
 				        </el-form-item> -->
 
 						<el-form-item label="选择属性：" prop="attrIds">

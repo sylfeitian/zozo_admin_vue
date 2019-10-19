@@ -5,7 +5,7 @@
     <div class="mod-sys__log-operation">
       <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getDataList()">
         <el-form-item label="模块名称：">
-          <el-input v-model.trim.trim="dataForm.module" :placeholder="$t('logOperation.module')" clearable></el-input>
+          <el-input v-model.trim="dataForm.module" :placeholder="$t('logOperation.module')" clearable></el-input>
         </el-form-item>
         <el-form-item label="状态：">
           <el-select v-model="dataForm.status" :placeholder="$t('logOperation.status')" clearable>

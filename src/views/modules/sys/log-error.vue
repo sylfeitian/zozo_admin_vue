@@ -5,7 +5,7 @@
     <div class="mod-sys__log-error">
       <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getDataList()">
         <el-form-item label="模块名称：">
-          <el-input v-model.trim.trim="dataForm.module" :placeholder="$t('logError.module')" clearable></el-input>
+          <el-input v-model.trim="dataForm.module" :placeholder="$t('logError.module')" clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-button @click="getDataList()" type="primary">{{ $t('query') }}</el-button>

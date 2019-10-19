@@ -13,7 +13,7 @@
             </el-select>
         </el-form-item>
         <el-form-item prop="advTitle" label="广告标题：">
-            <el-input v-model.trim.trim="dataForm.advTitle" placeholder="" clearable></el-input>
+            <el-input v-model.trim="dataForm.advTitle" placeholder="" clearable></el-input>
         </el-form-item>
          <el-form-item prop="imageUrl" label="图片：">
             <img-cropper
@@ -25,7 +25,7 @@
             </img-cropper>
         </el-form-item>
         <el-form-item label="广告链接（URL）：">
-            <el-input v-model.trim.trim="dataForm.relationTarget" placeholder="Http://xxxxxx.com" clearable @blur="urlChange"></el-input>
+            <el-input v-model.trim="dataForm.relationTarget" placeholder="Http://xxxxxx.com" clearable @blur="urlChange"></el-input>
         </el-form-item>
         <el-form-item prop="radio" label="启用时间：">
             <el-radio v-model="dataForm.radio" label="1">立即启用</el-radio>

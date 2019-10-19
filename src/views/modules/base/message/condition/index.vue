@@ -3,10 +3,10 @@
         <Bread :breaddata="breaddata"></Bread>
         <!-- <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" @keyup.enter.native="getDataList()" >
             <el-form-item label="分类条件ID：">
-                <el-input v-model.trim.trim="dataFormShow.conditionId" ></el-input>
+                <el-input v-model.trim="dataFormShow.conditionId" ></el-input>
             </el-form-item>
             <el-form-item label="分类条件名称：">
-                <el-input v-model.trim.trim="dataFormShow.conditionName" ></el-input>
+                <el-input v-model.trim="dataFormShow.conditionName" ></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>

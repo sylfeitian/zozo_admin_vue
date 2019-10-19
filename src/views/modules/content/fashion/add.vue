@@ -13,21 +13,21 @@
                 <p style="margin-left: -100px;">基础信息</p>
             </el-form-item>
             <el-form-item label="标题：" prop="title" :label-width="formLabelWidth">
-                <el-input v-model.trim.trim="addDataForm.title" auto-complete="off" placeholder="请填写时尚记事标题" style="width: 1200px;"></el-input>
+                <el-input v-model.trim="addDataForm.title" auto-complete="off" placeholder="请填写时尚记事标题" style="width: 1200px;"></el-input>
                 <p style="color: #bebebe;line-height: 14px;">请输入120个汉字，包含汉字、数字、英文、常用字符</p>
             </el-form-item>
             <el-form-item label="编号：" prop="" :label-width="formLabelWidth" style="display: inline-block;vertical-align:top;">
-                <el-input v-model.trim.trim="addDataForm.idJp" maxlength="20" auto-complete="off" placeholder="" style="width: 540px;"></el-input>
+                <el-input v-model.trim="addDataForm.idJp" maxlength="20" auto-complete="off" placeholder="" style="width: 540px;"></el-input>
                 <p style="color: #bebebe;line-height: 14px;">请输入20个字符以内，包含英文、数字的编号</p>
             </el-form-item>
             <el-form-item label="发布人：" prop="" :label-width="formLabelWidth" style="display: inline-block;vertical-align:top;">
-                <el-input v-model.trim.trim="addDataForm.publisher" auto-complete="off" placeholder="" style="width: 540px;"></el-input>
+                <el-input v-model.trim="addDataForm.publisher" auto-complete="off" placeholder="" style="width: 540px;"></el-input>
             </el-form-item>
             <el-form-item label="关注量：" prop="" :label-width="formLabelWidth" style="display: inline-block;">
-                <el-input v-model.trim.trim="addDataForm.favNumCn" type="text" auto-complete="off" placeholder="（仅可填写数字，可选）" style="width: 540px;"></el-input>
+                <el-input v-model.trim="addDataForm.favNumCn" type="text" auto-complete="off" placeholder="（仅可填写数字，可选）" style="width: 540px;"></el-input>
             </el-form-item>
             <el-form-item label="浏览量：" prop="" :label-width="formLabelWidth" style="display: inline-block;">
-                <el-input v-model.trim.trim="addDataForm.viewsNumCn" type="text" auto-complete="off" placeholder="（仅可填写数字，可选）" style="width: 540px;"></el-input>
+                <el-input v-model.trim="addDataForm.viewsNumCn" type="text" auto-complete="off" placeholder="（仅可填写数字，可选）" style="width: 540px;"></el-input>
             </el-form-item>
             <el-form-item style="background-color: #f3f3f3;">
                 <div style="background-color: #f3f3f3;display: flex;align-items: center;">
@@ -89,7 +89,7 @@
             <el-dialog title="添加商品" :before-close="res" :visible.sync="dialogTableVisible">
                 <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
                     <el-form-item label="ID：">
-                        <el-input v-model.trim.trim="dataForm.params" ></el-input>
+                        <el-input v-model.trim="dataForm.params" ></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>

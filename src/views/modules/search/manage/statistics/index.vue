@@ -8,7 +8,7 @@
                 @keyup.enter.native="getDataList()"
         >
             <el-form-item label="关键字搜索：">
-                <el-input v-model.trim.trim="dataFormShow.keyword" placeholder="请输入关键词搜索" ></el-input>
+                <el-input v-model.trim="dataFormShow.keyword" placeholder="请输入关键词搜索" ></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button class="btn" type="primary" @click="getData()">搜索</el-button>

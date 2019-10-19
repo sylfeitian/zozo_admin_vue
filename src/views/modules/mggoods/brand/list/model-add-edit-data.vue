@@ -12,10 +12,10 @@
 		    		@keyup.enter.native="dataFormSubmit('addForm')"
 		    		label-width="120px">
 				        <el-form-item label="品牌名称：" prop="brandName">
-				        	  <el-input v-model.trim.trim="dataForm.brandName" maxlength="60" placeholder="请输入品牌名称"></el-input>
+				        	  <el-input v-model.trim="dataForm.brandName" maxlength="60" placeholder="请输入品牌名称"></el-input>
 				        </el-form-item>
 								<el-form-item label="品牌英文名称：" >
-				        	  <el-input v-model.trim.trim="dataForm.brandNameEn" maxlength="60" placeholder="请输入品牌英文名称"></el-input>
+				        	  <el-input v-model.trim="dataForm.brandNameEn" maxlength="60" placeholder="请输入品牌英文名称"></el-input>
 				        </el-form-item>
 
 								<!-- <h3 class="attrList">添加属性值:</h3> -->

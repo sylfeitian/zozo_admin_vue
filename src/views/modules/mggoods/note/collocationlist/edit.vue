@@ -90,11 +90,11 @@
                     <span>{{dataForm.id}}</span>
                 </el-form-item>
                 <el-form-item label="用户地区：">
-                    <el-input v-model.trim.trim="dataForm.orderSn" placeholder="请输入内容" style="width: 500px;"></el-input>
+                    <el-input v-model.trim="dataForm.orderSn" placeholder="请输入内容" style="width: 500px;"></el-input>
                 </el-form-item>
                 <!--                    <div style="padding: 0;">-->
                 <!--                        <span class="inforTit">用户地区：</span>-->
-                <!--                        <el-input v-model.trim.trim="dataForm.orderSn" class="inforRight" placeholder="请输入内容" style="width: 500px;"></el-input>-->
+                <!--                        <el-input v-model.trim="dataForm.orderSn" class="inforRight" placeholder="请输入内容" style="width: 500px;"></el-input>-->
                 <!--                    </div>-->
                 <el-form-item label="性别：">
                     <span>{{dataForm.id}}</span>
@@ -116,10 +116,10 @@
                     </template>
                 </el-form-item>
                 <el-form-item label="标题：">
-                    <el-input v-model.trim.trim="dataForm.orderSn" placeholder="请输入内容"></el-input>
+                    <el-input v-model.trim="dataForm.orderSn" placeholder="请输入内容"></el-input>
                 </el-form-item>
                 <el-form-item label="详情：" style="height: 120px!important;">
-                    <el-input v-model.trim.trim="dataForm.orderSn" type="textarea":rows="5" placeholder="请输入内容"></el-input>
+                    <el-input v-model.trim="dataForm.orderSn" type="textarea":rows="5" placeholder="请输入内容"></el-input>
                 </el-form-item>
                 <div class="goods">
                     <span class="inforTit" style="vertical-align:top;">关联搭配：</span>

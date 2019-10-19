@@ -14,10 +14,10 @@
             :inline="true"
         >
             <el-form-item label="商品名称：">
-                <el-input v-model.trim.trim="dataForm.goodsName" placeholder="请输入商品名称" maxlength="300"></el-input>
+                <el-input v-model.trim="dataForm.goodsName" placeholder="请输入商品名称" maxlength="300"></el-input>
             </el-form-item>
             <el-form-item label="商品货号：">
-                <el-input v-model.trim.trim="dataForm.goodCsId" placeholder="请输入spu编号" maxlength="30"></el-input>
+                <el-input v-model.trim="dataForm.goodCsId" placeholder="请输入spu编号" maxlength="30"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="search()">查询</el-button>

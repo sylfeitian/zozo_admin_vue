@@ -29,10 +29,10 @@
                 ></el-date-picker>
             </el-form-item>
             <el-form-item label="商品名称：">
-                <el-input v-model.trim.trim="dataForm.goodsName" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
+                <el-input v-model.trim="dataForm.goodsName" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
             </el-form-item>
             <el-form-item label="商品ID：">
-                <el-input v-model.trim.trim="dataForm.idJp" placeholder="请输入spuID" clearable maxlength="30" ></el-input>
+                <el-input v-model.trim="dataForm.idJp" placeholder="请输入spuID" clearable maxlength="30" ></el-input>
             </el-form-item>
             
             <el-form-item label="店铺名称：">

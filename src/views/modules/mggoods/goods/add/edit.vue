@@ -13,11 +13,11 @@
                 <el-button v-if="!$route.query.gcId" @click="preStep()"  style="margin-left:20px;">编辑</el-button>
             </el-form-item>
             <el-form-item label="商品名称：" prop="goodsName" style="width:45%">
-                <el-input v-model.trim.trim="dataForm.goodsName" maxlength="64" placeholder="请输入商品名称"></el-input>
+                <el-input v-model.trim="dataForm.goodsName" maxlength="64" placeholder="请输入商品名称"></el-input>
             </el-form-item>
 
             <el-form-item label="副标题：" prop="goodsSubTitle" style="width:45%;">
-                <el-input v-model.trim.trim="dataForm.goodsSubTitle" maxlength="64"  show-word-limit placeholder="请输入副标题"></el-input>
+                <el-input v-model.trim="dataForm.goodsSubTitle" maxlength="64"  show-word-limit placeholder="请输入副标题"></el-input>
             </el-form-item>
 
             <el-form-item label="售价：" prop="specSellPrice">
@@ -50,7 +50,7 @@
             </el-form-item>
 
             <el-form-item label="商品属性：" class="arrrtibuteWrap">
-                <!-- <el-input v-model.trim.trim="dataForm.name" maxlength="128" placeholder="请输入内容"></el-input> -->
+                <!-- <el-input v-model.trim="dataForm.name" maxlength="128" placeholder="请输入内容"></el-input> -->
                 <!-- 下拉形式显示属性 -->
                   <div class="arrrtibuteWrap1">
                       <div class="attributeItem"  v-for="(item,index) in dataForm.goodsAttributeSaveDTOList" v-if="item.attributeId">
@@ -70,11 +70,11 @@
                   <div class="arrrtibuteWrap2">
                       <div   v-for="(item,index) in dataForm.goodsAttributeSaveDTOList" v-if="!item.attributeId" :key="index" style="display: flex;margin-bottom:20px;">
                         <el-form-item label="属性名称：">
-                             <el-input v-model.trim.trim="dataForm.goodsAttributeSaveDTOList[index].attrName" maxlength="20" placeholder="请输入属性名称"></el-input>
+                             <el-input v-model.trim="dataForm.goodsAttributeSaveDTOList[index].attrName" maxlength="20" placeholder="请输入属性名称"></el-input>
                         </el-form-item>
 
                         <el-form-item label="属性值：" style="margin-left:20px;">
-                              <el-input v-model.trim.trim="dataForm.goodsAttributeSaveDTOList[index].attrValue" maxlength="20" placeholder="请输入属性名称"></el-input>
+                              <el-input v-model.trim="dataForm.goodsAttributeSaveDTOList[index].attrValue" maxlength="20" placeholder="请输入属性名称"></el-input>
                         </el-form-item>
 
                         <el-button type="primary" plain @click="clearAttribut(index)" style="margin-left:10px;height: 40px;">清空</el-button>

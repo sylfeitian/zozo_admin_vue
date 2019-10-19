@@ -9,7 +9,7 @@
       class="demo-ruleForm artinputcontent"
     >
       <el-form-item label="平台名称：" prop="name">
-        <el-input v-model.trim.trim="ruleForm.name"></el-input>
+        <el-input v-model.trim="ruleForm.name"></el-input>
       </el-form-item>
       <el-form-item label="平台LOGO：">
         <!-- <div class="pcCoverUrl imgUrl"> -->
@@ -24,25 +24,25 @@
         <p>只支持jpg/png格式上传,文件不得超过50kb</p>
       </el-form-item>
       <el-form-item label="关键字：" prop="key">
-        <el-input v-model.trim.trim="ruleForm.key"></el-input>
+        <el-input v-model.trim="ruleForm.key"></el-input>
       </el-form-item>
       <el-form-item label="描述：" prop="discription">
-        <el-input v-model.trim.trim="ruleForm.discription "></el-input>
+        <el-input v-model.trim="ruleForm.discription "></el-input>
       </el-form-item>
       <el-form-item label="备案号：" prop="icp">
-        <el-input v-model.trim.trim="ruleForm.icp "></el-input>
+        <el-input v-model.trim="ruleForm.icp "></el-input>
       </el-form-item>
       <el-form-item label="版权信息：" prop="copy">
-        <el-input v-model.trim.trim="ruleForm.copy"></el-input>
+        <el-input v-model.trim="ruleForm.copy"></el-input>
       </el-form-item>
       <el-form-item label="公司地址：" prop="addresss">
-        <el-input v-model.trim.trim="ruleForm.addresss"></el-input>
+        <el-input v-model.trim="ruleForm.addresss"></el-input>
       </el-form-item>
       <el-form-item label="联系方式：" prop="link">
-        <el-input v-model.trim.trim="ruleForm.link"></el-input>
+        <el-input v-model.trim="ruleForm.link"></el-input>
       </el-form-item>
       <el-form-item label="第三方统计代码：" prop="other">
-        <el-input v-model.trim.trim="ruleForm.other" type="textarea"></el-input>
+        <el-input v-model.trim="ruleForm.other" type="textarea"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getWebMes" style="margin-left: 130px; margin-top: 20px">取消</el-button>

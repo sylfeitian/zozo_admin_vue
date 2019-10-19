@@ -3,7 +3,7 @@
         <Bread :breaddata="breaddata"></Bread>
         <el-form :inline="true" :model="dataForm" class="demo-form-inline grayLine" ref="dataForm">
             <el-form-item label="用户ID/手机号/昵称：" prop="memberId" clearable>
-                <el-input v-model.trim.trim="dataForm.memberId" placeholder="用户ID/手机号/昵称"></el-input>
+                <el-input v-model.trim="dataForm.memberId" placeholder="用户ID/手机号/昵称"></el-input>
             </el-form-item>
             <el-form-item label="发送时间：" clearable>
                 <el-date-picker

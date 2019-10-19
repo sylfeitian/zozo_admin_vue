@@ -3,7 +3,7 @@
     <Bread :breaddata="breaddata" @changePage="changePage" :index="'2'"></Bread>
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm"  @keyup.enter.native="submitStore()" label-width="102px">
         <el-form-item prop="menuName" label="菜单名称：">
-            <el-input v-model.trim.trim="dataForm.menuName" placeholder="请输入" clearable></el-input>
+            <el-input v-model.trim="dataForm.menuName" placeholder="请输入" clearable></el-input>
         </el-form-item>
         <el-form-item prop="linkType" label="跳转类型：">
             <el-select v-model="dataForm.linkType " clearable  placeholder="请选择">
@@ -16,7 +16,7 @@
             </el-select>
         </el-form-item>
         <el-form-item prop="url" label="链接：">
-            <el-input v-model.trim.trim="dataForm.url" placeholder="Http://xxxxxx.com" clearable></el-input>
+            <el-input v-model.trim="dataForm.url" placeholder="Http://xxxxxx.com" clearable></el-input>
         </el-form-item>
         <el-form-item prop="menuIcon" label="菜单图标：">
             <img-cropper

@@ -9,10 +9,10 @@
     >
       <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
       <el-form-item label="商品名称：">
-        <el-input v-model.trim.trim="dataFormShow.goodsName" placeholder="请输入商品名称"></el-input>
+        <el-input v-model.trim="dataFormShow.goodsName" placeholder="请输入商品名称"></el-input>
       </el-form-item>
       <el-form-item label="商品ID：">
-        <el-input v-model.trim.trim="dataFormShow.idJp" placeholder="请输入spu ID" maxlength="30"></el-input>
+        <el-input v-model.trim="dataFormShow.idJp" placeholder="请输入spu ID" maxlength="30"></el-input>
       </el-form-item>
       <el-form-item label="分类：">
         <!--                <el-select-->

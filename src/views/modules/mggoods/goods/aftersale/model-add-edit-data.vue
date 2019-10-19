@@ -11,10 +11,10 @@
 		    		ref="addForm"
 		    		label-width="120px">
 				        <el-form-item label="模板售后名称：" prop="name">
-				        	  <el-input v-model.trim.trim="dataForm.name" maxlength="60" placeholder="请输入属性名称"></el-input>
+				        	  <el-input v-model.trim="dataForm.name" maxlength="60" placeholder="请输入属性名称"></el-input>
 				        </el-form-item>
 						<el-form-item label="模板内容：" prop="value">
-				        	  <!-- <el-input v-model.trim.trim="dataForm.value" maxlength="60" placeholder="请输入属性名称"></el-input> -->
+				        	  <!-- <el-input v-model.trim="dataForm.value" maxlength="60" placeholder="请输入属性名称"></el-input> -->
 							    <!-- <quill-editor ref="myTextEditor" v-model="dataForm.value" :options="editorOption"></quill-editor> -->
 								<quill-editor-img @artmessageContent='artmessageContent' ref="myTextEditor"></quill-editor-img>
 
