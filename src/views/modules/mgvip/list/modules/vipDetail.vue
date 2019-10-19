@@ -157,7 +157,7 @@
                     console.log(res);
                     if(res.code==200){
                         this.allData  = res.data;
-                        this.allData.jifen = this.allData.availablePoint + this.allData.consumeAmount;
+                        this.allData.jifen = this.allData.availablePoint + this.allData.consumePoint ;
                     }
                 })
             },

@@ -228,29 +228,6 @@
 
         },
         methods: {
-            getData(){
-
-            },
-            operational (index=-1,row="") {
-                this.setOperationalVisible(true);
-                this.$nextTick(() => {
-                    this.$refs.operationallogCompon.init(row)
-                })
-                console.log(this.row)
-            },
-            setOperationalVisible () {
-                this.operationallogVisible =  true;
-                this.mainVisible = false;
-                this.idJp = this.dataForm.idJp;
-                console.log(this.dataForm.idJp)
-            },
-            more () {
-                this.operationallogVisible =  false;
-                this.mainVisible = true;
-                // this.$nextTick(() => {
-                //     this.$refs.listCompon.getDataList();
-                // })
-            },
             init(row){
                 this.row = row;
                 this.$nextTick(()=>{
@@ -272,6 +249,28 @@
                         })
                     }
                 })
+            },
+            getData(){
+            },
+            operational () {
+                this.setOperationalVisible(true);
+                this.$nextTick(() => {
+                    this.$refs.operationallogCompon.init(this.row)
+                })
+                console.log(this.row)
+            },
+            setOperationalVisible () {
+                this.operationallogVisible =  true;
+                this.mainVisible = false;
+                this.idJp = this.dataForm.idJp;
+                console.log(this.dataForm.idJp)
+            },
+            more () {
+                this.operationallogVisible =  false;
+                this.mainVisible = true;
+                // this.$nextTick(() => {
+                //     this.$refs.listCompon.getDataList();
+                // })
             },
             artmessageContent(messageContent){
                 this.dataForm.messageContent = messageContent;
