@@ -15,11 +15,11 @@
                 label-width="120px"
         >
             <el-form-item label="搜索词：" prop="hotKeyword">
-                <el-input v-model="dataForm.hotKeyword" placeholder="请输入30字以内的内容"></el-input>
+                <el-input v-model.trim="dataForm.hotKeyword" placeholder="请输入30字以内的内容"></el-input>
 <!--                <span style="color: #999999;">0/30</span>-->
             </el-form-item>
             <el-form-item label="排序：">
-                <el-input v-model="dataForm.sort" placeholder="0"></el-input>
+                <el-input v-model.trim="dataForm.sort" placeholder="0"></el-input>
                 <span style="color: #999999;">数字越大越靠前</span>
             </el-form-item>
 <!--            <el-form-item style="text-align: center;margin-left: -120px!important;">-->

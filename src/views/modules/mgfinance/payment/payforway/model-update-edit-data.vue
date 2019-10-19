@@ -15,19 +15,19 @@
         label-width="120px"
       >
         <el-form-item label="支付方式：" prop="paymentName">
-          <el-input v-model="dataForm.paymentName" placeholder="请输入属性组名" readonly></el-input>
+          <el-input v-model.trim="dataForm.paymentName" placeholder="请输入属性组名" readonly></el-input>
         </el-form-item>
         <el-form-item label="商户公众号APPID：" prop="appId">
-          <el-input v-model="dataForm.appId" placeholder="1-255"></el-input>
+          <el-input v-model.trim="dataForm.appId" placeholder="1-255"></el-input>
         </el-form-item>
         <el-form-item label="Appsecret：" prop="secretKey">
-          <el-input v-model="dataForm.secretKey" placeholder="1-255"></el-input>
+          <el-input v-model.trim="dataForm.secretKey" placeholder="1-255"></el-input>
         </el-form-item>
         <el-form-item label="商户号MCHID：" prop="paymentAccount">
-          <el-input v-model="dataForm.paymentAccount" placeholder="1-255"></el-input>
+          <el-input v-model.trim="dataForm.paymentAccount" placeholder="1-255"></el-input>
         </el-form-item>
         <el-form-item label="商户API密钥：" prop="secretKeyApi">
-          <el-input v-model="dataForm.secretKeyApi" placeholder="1-255"></el-input>
+          <el-input v-model.trim="dataForm.secretKeyApi" placeholder="1-255"></el-input>
         </el-form-item>
         <el-form-item label="状态：" prop="paymentState">
           <el-switch

@@ -15,10 +15,10 @@
                 :rules="dataRule"
         >
             <el-form-item label="中文词汇：" prop="chineseVocabulary" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.chineseVocabulary" placeholder="请输入"></el-input>
+                <el-input v-model.trim="dataForm.chineseVocabulary" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="对照词汇：" prop="japaneseWord" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.japaneseWord" placeholder="请输入"></el-input>
+                <el-input v-model.trim="dataForm.japaneseWord" placeholder="请输入"></el-input>
             </el-form-item>
 <!--            <el-form-item style="text-align: center;margin-left: -120px!important;">-->
 <!--                <el-button  @click="dataFormCancel()">取消</el-button>-->

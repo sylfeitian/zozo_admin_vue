@@ -2,10 +2,10 @@
   <div>
     	<el-form :model="dataForm" label-width="140px" 	:rules="dataRule" class="demo-ruleForm" ref="addForm">
         <el-form-item label="优惠券名称：" prop="name">
-            <el-input v-model="dataForm.name" type="text" placeholder="请输入50字以内的内容" style="width:400px;"></el-input>
+            <el-input v-model.trim="dataForm.name" type="text" placeholder="请输入50字以内的内容" style="width:400px;"></el-input>
         </el-form-item>
         <el-form-item label="总发行量：" prop="totalNums">
-            <el-input v-model="dataForm.totalNums" type="text"  max="1000000" placeholder="1000"  style="width:400px;"></el-input>
+            <el-input v-model.trim="dataForm.totalNums" type="text"  max="1000000" placeholder="1000"  style="width:400px;"></el-input>
         </el-form-item>
         <el-form-item label="面额：" prop="faceValue">
              <el-input placeholder="20" v-model="dataForm.faceValue" style="width:220px;">
@@ -37,11 +37,11 @@
         </el-form-item>
         <el-form-item class="artfromitem" label="使用门槛：" prop="threshold">
         		<div>单笔订单满</div>
-            <el-input v-model="dataForm.threshold"  type="text"  max="1000000" placeholder="0"  style="width:400px;"></el-input>
+            <el-input v-model.trim="dataForm.threshold"  type="text"  max="1000000" placeholder="0"  style="width:400px;"></el-input>
         		<div>元可用（输入“0”为无门槛优惠券）</div>
         </el-form-item>
         <el-form-item label="有效期：" prop="validityDays">
-            <el-input v-model="dataForm.validityDays" placeholder="领取后到期天数" maxlength="3" style="width:220px;">
+            <el-input v-model.trim="dataForm.validityDays" placeholder="领取后到期天数" maxlength="3" style="width:220px;">
                 <template slot="append">天</template>
             </el-input>
         </el-form-item>

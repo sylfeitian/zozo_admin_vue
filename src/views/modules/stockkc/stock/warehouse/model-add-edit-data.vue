@@ -15,7 +15,7 @@
                 label-width="120px"
         >
             <el-form-item label="仓库名称：" prop="warehouseName">
-                <el-input v-model="dataForm.warehouseName" placeholder="请输入"></el-input>
+                <el-input v-model.trim="dataForm.warehouseName" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="仓库种类：" prop="type">
                 <el-select v-model="dataForm.type" placeholder="请选择">
@@ -24,10 +24,10 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="仓库负责人：" prop="name">
-                <el-input v-model="dataForm.name" placeholder="请输入"></el-input>
+                <el-input v-model.trim="dataForm.name" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="负责人联系方式：" prop="phone" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.phone" placeholder="请输入" maxlength="20"></el-input>
+                <el-input v-model.trim="dataForm.phone" placeholder="请输入" maxlength="20"></el-input>
             </el-form-item>
             <el-form-item label="仓库所在地：" prop="addressInfo" :label-width="formLabelWidth">
                 <el-select v-model="dataForm.provinceId" placeholder="省"

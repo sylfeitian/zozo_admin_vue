@@ -9,7 +9,7 @@
         >
             <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
             <el-form-item label="风格标签名称：">
-                <el-input v-model="dataFormShow.styleName" placeholder="标签名称" maxlength="300" ></el-input>
+                <el-input v-model.trim="dataFormShow.styleName" placeholder="标签名称" maxlength="300" ></el-input>
             </el-form-item>
             <el-form-item  label="风格标签分类：">
                 <el-select v-model="dataFormShow.styleType" placeholder="请选择">

@@ -12,13 +12,13 @@
 		    		@keyup.enter.native="dataFormSubmit('addForm')"
 		    		label-width="120px">
 				        <el-form-item label="属性名称：" prop="attrName">
-				        	  <el-input v-model="dataForm.attrName" maxlength="60" placeholder="请输入属性名称"></el-input>
+				        	  <el-input v-model.trim="dataForm.attrName" maxlength="60" placeholder="请输入属性名称"></el-input>
 				        </el-form-item>
 							
 				        
 				        </el-form-item>
 				         <!-- <el-form-item label="排序：" prop="spSort">
-				        	 	 <el-input v-model="dataForm.spSort" placeholder="1-255"></el-input>
+				        	 	 <el-input v-model.trim="dataForm.spSort" placeholder="1-255"></el-input>
 								</el-select>
 				        </el-form-item>
 				        <el-form-item label="展示方式：">
@@ -28,10 +28,10 @@
 
 								<h3 class="attrList">添加属性值：</h3>
 				        <!-- <el-form-item label="排序:" prop="attrValueSort">
-				        		 <el-input v-model="dataForm.attrValueSort" placeholder="请输入0-255,数字越大排序越靠前"></el-input>
+				        		 <el-input v-model.trim="dataForm.attrValueSort" placeholder="请输入0-255,数字越大排序越靠前"></el-input>
 				        </el-form-item> -->
 						 <el-form-item label="属性值："  v-for="(item,index) in dataForm.attributeValueDTOList" :prop="'arrtibute'+index" :key="index">
-				        	  <el-input v-model="dataForm['arrtibute'+index]" placeholder="属性值"  class="sepcInput" @input="changeArrtibute(index)" @change="changeArrtibute(index)"></el-input>
+				        	  <el-input v-model.trim="dataForm['arrtibute'+index]" placeholder="属性值"  class="sepcInput" @input="changeArrtibute(index)" @change="changeArrtibute(index)"></el-input>
 				       		  <el-button type="danger" plain  @click="removeSpec(index)" v-if="index!=0">删除</el-button>
 					    </el-form-item>
 					    <br />

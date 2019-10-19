@@ -5,7 +5,7 @@
     <div class="mod-message__sms">
       <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getDataList()">
         <el-form-item label="手机号：">
-          <el-input v-model="dataForm.mobile" :placeholder="$t('sms.mobile')" clearable></el-input>
+          <el-input v-model.trim="dataForm.mobile" :placeholder="$t('sms.mobile')" clearable></el-input>
         </el-form-item>
         <el-form-item label="状态：">
           <el-select v-model="dataForm.status" :placeholder="$t('sms.status')" clearable>
