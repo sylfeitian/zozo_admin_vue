@@ -12,10 +12,13 @@
                 border=""
                 v-loading="dataListLoading"
                 style="width: 100%">
-            <el-row class="info" style="width: 900px;">
+            <!-- <el-row class="info" style="width: 900px;">
                 <el-col :span="12"><div class="grid-content">{{dataList.name}}</div></el-col>
                 <el-col :span="12"><div class="grid-content">{{dataList.value}}</div></el-col>
-            </el-row>
+            </el-row> -->
+
+             <el-table-column prop="name" label="名字" align="center"></el-table-column>
+            <el-table-column prop="value" label="值" align="center"></el-table-column>
         </el-table>
     </el-dialog>
 </template>

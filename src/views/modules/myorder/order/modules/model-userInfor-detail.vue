@@ -35,7 +35,7 @@
 </template>
 <script>
 	
-	import { orderCancel} from '@/api/api'
+	import { receiverDetail} from '@/api/api'
 
 	export default{
 		name: "model-add-edit-data",
@@ -47,12 +47,26 @@
 		},
 		components:{
         },
+        // created(){
+		//     this.getReceiverDetail()
+        // },
 		computed:{},
 		mounted(){},
 		methods:{
-			init (receiverInfo) {
+			init (orderBase) {
+			    // 此处引起争议 后台说要反过来 加油！！！
+				var obj  ={
+			        id:orderBase.orderAddressId,
+                    orderId: orderBase.orderId,
+                }
                 this.visible = true;
-				this.receiverInfo = receiverInfo;
+                receiverDetail(obj).then((res)=>{
+                    if(res.code==200){
+                         this.receiverInfo = res.data;
+                    }else{
+                        this.$message.error(res.msg);
+                    }
+                })
 			},
 			closeDialog() {
                 this.visible = false;

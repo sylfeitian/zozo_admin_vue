@@ -124,7 +124,7 @@
                 </el-row>
                 <el-row>
                     <el-col :span="8"><div class="grid-content" v-if="receiverInfo">{{receiverInfo.memberRealName}}</div></el-col>
-                    <el-col :span="8"><div class="grid-content" v-if="receiverInfo && receiverInfo.mobPhone">{{receiverInfo.mobPhone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')}}</div></el-col>
+                    <el-col :span="8"><div class="grid-content" v-if="receiverInfo && receiverInfo.mobPhone">{{receiverInfo.mobPhone}}</div></el-col>
                     <!-- <el-col :span="8"><div class="grid-content" v-if="receiverInfo">{{receiverInfo.province}}{{receiverInfo.city}}{{receiverInfo.area}}{{receiverInfo.townArea}}</div></el-col> -->
                     <el-col :span="8"><div class="grid-content" v-if="receiverInfo">{{receiverInfo.areaInfo}}<!-- {{receiverInfo.address}} --></div></el-col>
                 </el-row>
@@ -290,13 +290,13 @@
             </el-form>
         </div>
         <!-- 申报 -->
-        <declareSth v-if="declareSthVisible" ref="declareSthCompon" @searchDataList="getDataList"></declareSth>
+        <declareSth v-if="declareSthVisible" ref="declareSthCompon" @searchDataList="getOrderDetail"></declareSth>
         <!-- 弹窗, 新建 -->
         <!-- <orderData  v-if="orderDataVisible" ref="addEditData" @searchDataList="getDataList"></orderData> -->
         <!-- 清关失败 -->
-        <clearancFailure v-if="clearancFailureVisible" ref="clearancFailureCompon"></clearancFailure>
+        <clearancFailure v-if="clearancFailureVisible" ref="clearancFailureCompon" @searchDataList="getOrderDetail"></clearancFailure>
          <!-- 填写物流 -->
-        <writeLogisticsInfo v-if="writeLogisticsInfoVisible" ref="writeLogisticsInfoCompon"></writeLogisticsInfo>
+        <writeLogisticsInfo v-if="writeLogisticsInfoVisible" ref="writeLogisticsInfoCompon"  @searchDataList="getOrderDetail"></writeLogisticsInfo>
         <!-- 查看物流 -->
         <logistics v-if="logisticsVisible" ref="logisticsCompon"></logistics>
         <!-- 修改收货人信息 -->
@@ -393,7 +393,7 @@
                 }
                 if(num==2){
                     this.$nextTick(()=>{
-                        row.activeName = "vipDetail" 
+                    row.activeName = "vipDetail" 
                     this.$refs.tabFnCompon.init(row);
                 })
             }
@@ -401,7 +401,7 @@
             showUserDetail(){
                 this.modelUserInforDetailVisible = true;
                 this.$nextTick(()=>{
-                    this.$refs.modelUserInforDetailCompon.init(this.receiverInfo);
+                    this.$refs.modelUserInforDetailCompon.init(this.orderBase);
                 })
             },
             lookMemberDeatilInfo(){

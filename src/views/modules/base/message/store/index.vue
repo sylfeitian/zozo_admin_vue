@@ -320,8 +320,10 @@ export default {
         operateFlag: row.operateFlag == 1 ? 2 : 1 //0:待营业 1:营业中 2已停业 ,
       };
       var msg = "";
+      var msg1 = "";
       obj.operateFlag == 1 ? (msg = "营业") : (msg = "停业");
-      this.$confirm("是否" + msg + "该店铺?", "提示", {
+      obj.operateFlag == 1 ? (msg1 = "可以") : (msg1 = "不可以");
+      this.$confirm("您正在进行" + msg + "操作，"+msg+"后前台"+msg1+"看到该店铺，你还要继续吗？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"

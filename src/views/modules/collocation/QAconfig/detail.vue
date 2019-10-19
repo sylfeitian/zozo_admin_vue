@@ -96,7 +96,7 @@
                     <el-input v-model="editDataForm.title" placeholder="请输入200字以内的内容"></el-input>
                 </el-form-item>
                 <el-form-item label="帮助内容：" prop="content">
-                    <el-input v-model="editDataForm.content" type="textarea" :row="10"></el-input>
+                    <quill-editor-img v-if="isShow" :value="editDataForm.content"   @artmessageContent='artmessageContent' ></quill-editor-img>
                 </el-form-item>
                 <el-form-item label="显示设置：">
                     <el-switch v-model="editDataForm.booleanDisplay"></el-switch>
@@ -116,10 +116,10 @@
     import {toQamainList} from '@/api/url'
     import {zozogoodsPage, delQuestionanswer, saveQuestionanswer, putQuestionanswer, getQuestionanswer} from '@/api/api'
     import Bread from "@/components/bread";
-
+    import quillEditorImg from "@/components/quillEditor";
     export default {
         mixins: [mixinViewModule],
-        components: {Bread},
+        components: {quillEditorImg,Bread},
         data() {
             return {
                 mixinViewModuleOptions: {
@@ -134,6 +134,7 @@
                 helpTitle: '新增帮助',
                 dataListLoading: false,
                 dataList: [],
+                isShow:false,
                 dataForm: {},
                 isSave: true,
                 buttonStatus: false,
@@ -192,6 +193,9 @@
                         this.getDataList();
                     }
                 })
+            },
+            artmessageContent(messageContent){
+                this.editDataForm.content = messageContent;
             },
             putState(data) {
                 let obj = {
@@ -261,17 +265,20 @@
                             this.editDataForm.title = res.data.title;
                             this.editDataForm.content = res.data.content;
                             this.editDataForm.booleanDisplay = res.data.booleanDisplay;
+                            this.isShow = true;
                         }
                     })
                 } else {
                     this.isSave = true;
-                    this.helpTitle = '新增帮助'
+                    this.helpTitle = '新增帮助';
+                    this.isShow = true;
                 }
             },
 
             noCheck(formName) {
                 this.$refs[formName].resetFields();
                 this.editVisible = false;
+                this.isShow = false;
                 this.editDataForm.title = "";
                 this.editDataForm.content = "";
                 this.editDataForm.booleanDisplay = true;

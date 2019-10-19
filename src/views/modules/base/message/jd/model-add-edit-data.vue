@@ -20,7 +20,7 @@
             <el-form-item label="京东分类名称：">
                 <span>{{dataForm.categoryName}}</span>
             </el-form-item>
-            <el-form-item label="关联分类：" :label-width="formLabelWidth">
+            <el-form-item label="关联分类：" prop="ids" :label-width="formLabelWidth">
                 <el-tree
                         ref="treeCategory"
                         :data="data"
@@ -57,11 +57,15 @@
                     id:"",//分类ID
                     categoryName: "",//京东分类名称
                     name: "",//分类名称
+                    ids:'',
                 },
                 dataRule : {
-                    name : [
+                    // name : [
+                    //     { required: true, message: '必填项不能为空', trigger: 'blur' },
+                    // ],
+                    ids : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
-                    ]
+                    ],
                 },
                 optionsApplication: [],
                 optionsRight: [],
@@ -150,6 +154,11 @@
             // 提交
             dataFormSubmit(formName){
                 var ids = this.$refs.treeCategory.getCheckedKeys(true);
+                if(ids && ids.length!=0){
+                     this.dataForm.ids = "至少勾选了一个tree,验证通过";
+                }else{
+                    this.dataForm.ids = "";//必选，验证不通过
+                }
                 // alert([this.dataForm.name,this.dataForm.domainAddress]);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
