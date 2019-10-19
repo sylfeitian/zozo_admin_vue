@@ -5,7 +5,7 @@
         <div class="mod-sys__log-operation">
             <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getData()">
                 <el-form-item label="操作账号：">
-                    <el-input v-model.trim="dataForm.creator" placeholder="请输入账号" clearable></el-input>
+                    <el-input v-model.trim.trim="dataForm.creator" placeholder="请输入账号" clearable></el-input>
                 </el-form-item>
                 <el-form-item label="操作模块：">
                     <el-select v-model="dataForm.module" placeholder="请选择操作模块" clearable>

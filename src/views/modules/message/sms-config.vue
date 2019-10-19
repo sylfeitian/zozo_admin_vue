@@ -9,30 +9,30 @@
       </el-form-item>
       <template v-if="dataForm.platform === 1">
         <el-form-item prop="aliyunAccessKeyId" :label="$t('sms.aliyunAccessKeyId') + '：'">
-          <el-input v-model.trim="dataForm.aliyunAccessKeyId" :placeholder="$t('sms.aliyunAccessKeyIdTips')"></el-input>
+          <el-input v-model.trim.trim="dataForm.aliyunAccessKeyId" :placeholder="$t('sms.aliyunAccessKeyIdTips')"></el-input>
         </el-form-item>
         <el-form-item prop="aliyunAccessKeySecret" :label="$t('sms.aliyunAccessKeySecret') + '：'">
-          <el-input v-model.trim="dataForm.aliyunAccessKeySecret" :placeholder="$t('sms.aliyunAccessKeySecretTips')"></el-input>
+          <el-input v-model.trim.trim="dataForm.aliyunAccessKeySecret" :placeholder="$t('sms.aliyunAccessKeySecretTips')"></el-input>
         </el-form-item>
         <el-form-item prop="aliyunSignName" :label="$t('sms.aliyunSignName') + '：'">
-          <el-input v-model.trim="dataForm.aliyunSignName" :placeholder="$t('sms.aliyunSignName')"></el-input>
+          <el-input v-model.trim.trim="dataForm.aliyunSignName" :placeholder="$t('sms.aliyunSignName')"></el-input>
         </el-form-item>
         <el-form-item prop="aliyunTemplateCode" :label="$t('sms.aliyunTemplateCode') + '：'">
-          <el-input v-model.trim="dataForm.aliyunTemplateCode" :placeholder="$t('sms.aliyunTemplateCodeTips')"></el-input>
+          <el-input v-model.trim.trim="dataForm.aliyunTemplateCode" :placeholder="$t('sms.aliyunTemplateCodeTips')"></el-input>
         </el-form-item>
       </template>
       <template v-else-if="dataForm.platform === 2">
         <el-form-item prop="qcloudAppId" :label="$t('sms.qcloudAppId') + '：'">
-          <el-input v-model.trim="dataForm.qcloudAppId" :placeholder="$t('sms.qcloudAppIdTips')"></el-input>
+          <el-input v-model.trim.trim="dataForm.qcloudAppId" :placeholder="$t('sms.qcloudAppIdTips')"></el-input>
         </el-form-item>
         <el-form-item prop="qcloudAppKey" :label="$t('sms.qcloudAppKey') + '：'">
-          <el-input v-model.trim="dataForm.qcloudAppKey" :placeholder="$t('sms.qcloudAppKeyTips')"></el-input>
+          <el-input v-model.trim.trim="dataForm.qcloudAppKey" :placeholder="$t('sms.qcloudAppKeyTips')"></el-input>
         </el-form-item>
         <el-form-item prop="qcloudSignName" :label="$t('sms.qcloudSignName') + '：'">
-          <el-input v-model.trim="dataForm.qcloudSignName" :placeholder="$t('sms.qcloudSignName')"></el-input>
+          <el-input v-model.trim.trim="dataForm.qcloudSignName" :placeholder="$t('sms.qcloudSignName')"></el-input>
         </el-form-item>
         <el-form-item prop="qcloudTemplateId" :label="$t('sms.qcloudTemplateId') + '：'">
-          <el-input v-model.trim="dataForm.qcloudTemplateId" :placeholder="$t('sms.qcloudTemplateIdTips')"></el-input>
+          <el-input v-model.trim.trim="dataForm.qcloudTemplateId" :placeholder="$t('sms.qcloudTemplateIdTips')"></el-input>
         </el-form-item>
       </template>
     </el-form>

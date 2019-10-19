@@ -8,7 +8,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item prop="name" :label="$t('menu.name') + '：'">
-        <el-input v-model.trim="dataForm.name" :placeholder="$t('menu.name')"></el-input>
+        <el-input v-model.trim.trim="dataForm.name" :placeholder="$t('menu.name')"></el-input>
       </el-form-item>
       <el-form-item prop="parentName" :label="$t('menu.parentName') + '：'" class="menu-list">
         <el-popover v-model="menuListVisible" ref="menuListPopover" placement="bottom-start" trigger="click">
@@ -23,12 +23,12 @@
             @current-change="menuListTreeCurrentChangeHandle">
           </el-tree>
         </el-popover>
-        <el-input v-model.trim="dataForm.parentName" v-popover:menuListPopover :placeholder="$t('menu.parentName')">
+        <el-input v-model.trim.trim="dataForm.parentName" v-popover:menuListPopover :placeholder="$t('menu.parentName')">
           <i v-if="dataForm.pid !== '0'" slot="suffix" @click.stop="deptListTreeSetDefaultHandle()" class="el-icon-circle-close el-input__icon"></i>
         </el-input>
       </el-form-item>
       <el-form-item v-if="dataForm.type === 0" prop="url" :label="$t('menu.url') + '：'">
-        <el-input v-model.trim="dataForm.url" :placeholder="$t('menu.url')"></el-input>
+        <el-input v-model.trim.trim="dataForm.url" :placeholder="$t('menu.url')"></el-input>
       </el-form-item>
       <el-form-item prop="sort" :label="$t('menu.sort') + '：'">
         <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :label="$t('menu.sort')"></el-input-number>
@@ -47,10 +47,10 @@
             </div>
           </div>
         </el-popover>
-        <el-input v-model.trim="dataForm.icon" v-popover:iconListPopover :placeholder="$t('menu.icon')"></el-input>
+        <el-input v-model.trim.trim="dataForm.icon" v-popover:iconListPopover :placeholder="$t('menu.icon')"></el-input>
       </el-form-item>
       <el-form-item v-if="dataForm.type === 1" prop="permissions" :label="$t('menu.permissions') + '：'">
-        <el-input v-model.trim="dataForm.permissions" :placeholder="$t('menu.permissionsTips')"></el-input>
+        <el-input v-model.trim.trim="dataForm.permissions" :placeholder="$t('menu.permissionsTips')"></el-input>
       </el-form-item>
       <el-form-item
         v-for="(item, index) in dataForm.resourceList"
@@ -61,7 +61,7 @@
         class="resource-list">
         <el-row>
           <el-col :span="22">
-            <el-input v-model.trim="item.resourceUrl" :placeholder="$t('menu.resourceUrl')">
+            <el-input v-model.trim.trim="item.resourceUrl" :placeholder="$t('menu.resourceUrl')">
               <el-select v-model="item.resourceMethod" slot="prepend" :placeholder="$t('menu.resourceMethod')">
                 <el-option label="GET" value="GET"></el-option>
                 <el-option label="POST" value="POST"></el-option>

@@ -3,10 +3,10 @@
         <Bread :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
             <el-form-item prop="documentNo" label="单据单号：">
-                <el-input v-model.trim="dataForm.documentNo" placeholder="请输入单据单号" maxlength="30"></el-input>
+                <el-input v-model.trim.trim="dataForm.documentNo" placeholder="请输入单据单号" maxlength="30"></el-input>
             </el-form-item>
             <el-form-item prop="creator" label="操作人：">
-                <el-input v-model.trim="dataForm.creator" placeholder="请输入操作人账号"></el-input>
+                <el-input v-model.trim.trim="dataForm.creator" placeholder="请输入操作人账号"></el-input>
             </el-form-item>
             <el-form-item label="出库时间：">
                 <el-date-picker

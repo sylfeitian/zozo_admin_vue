@@ -19,7 +19,7 @@
 				<div class="comp-tr-node" slot-scope="{ node, data }">
 					<!-- 编辑状态 -->
 					<template v-if="node.isEdit">
-						<el-input v-model.trim="data.categoryName"
+						<el-input v-model.trim.trim="data.categoryName"
 							autofocus
 							size="mini"
 							:ref="'slotTreeInput'+data[NODE_KEY]"

@@ -9,7 +9,7 @@
         width="40%">
             <el-form :model="dataForm" :rules="dataRule" ref="addFrom"  label-width="120px" v-loading="loading">
                 <el-form-item label="分类名称：" prop="title">
-                    <el-input v-model.trim="dataForm.title" placeholder="最多可输入4个汉字" :maxlength="4"></el-input>
+                    <el-input v-model.trim.trim="dataForm.title" placeholder="最多可输入4个汉字" :maxlength="4"></el-input>
                 </el-form-item>
                 <el-form-item label="排序：" prop="sort">
                     <el-input-number style="width:140px;margin-right:20px;" :controls="false" v-model="dataForm.sort" placeholder="0~255" :min="0" :max="10000000" ></el-input-number>数字越大越靠前

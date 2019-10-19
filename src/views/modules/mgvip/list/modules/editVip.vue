@@ -21,7 +21,7 @@
                     </el-date-picker>
             </el-form-item>
             <el-form-item label="真实姓名：" prop="memberRealName">
-                  <el-input v-model.trim="dataForm.memberRealName"></el-input>
+                  <el-input v-model.trim.trim="dataForm.memberRealName"></el-input>
             </el-form-item>
             <el-form-item label="身份证号：" prop="idCard">
                 <div style="display:flex">
@@ -35,7 +35,7 @@
                    <span>{{dataForm.memberPasswd}}</span>
             </el-form-item> -->
             <el-form-item label="新密码："  prop="newPasswd">
-                   <el-input v-model.trim="dataForm.newPasswd"></el-input>
+                   <el-input v-model.trim.trim="dataForm.newPasswd"></el-input>
             </el-form-item>
             <el-form-item label="确认密码："  prop="confirmPasswd">
                   <el-input  v-model="dataForm.confirmPasswd"></el-input>

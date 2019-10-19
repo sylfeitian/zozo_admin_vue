@@ -8,10 +8,10 @@
       @keyup.enter.native="getDataList()"
     >
       <el-form-item label="关键字搜索：">
-        <el-input v-model.trim="dataForm.hotKeyword" placeholder="请输入关键词搜索"></el-input>
+        <el-input v-model.trim.trim="dataForm.hotKeyword" placeholder="请输入关键词搜索"></el-input>
       </el-form-item>
       <el-form-item label="搜索会员账号：">
-        <el-input v-model.trim="dataForm.memberName" placeholder="请输入会员账号搜索"></el-input>
+        <el-input v-model.trim.trim="dataForm.memberName" placeholder="请输入会员账号搜索"></el-input>
       </el-form-item>
       <el-form-item label="搜索时间：">
         <el-date-picker

@@ -3,10 +3,10 @@
       <Bread  :breaddata="breaddata"></Bread>
       <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="输入搜索：">
-          <el-input v-model.trim="dataForm.brandInitials" placeholder="请输入品牌首字母" clearable></el-input>
+          <el-input v-model.trim.trim="dataForm.brandInitials" placeholder="请输入品牌首字母" clearable></el-input>
         </el-form-item>
         <el-form-item label="输入搜索：">
-          <el-input v-model.trim="dataForm.brandName" placeholder="请输入品牌名称" clearable></el-input>
+          <el-input v-model.trim.trim="dataForm.brandName" placeholder="请输入品牌名称" clearable></el-input>
         </el-form-item>
            <!-- <el-form-item label="展示方式：">
             <el-option

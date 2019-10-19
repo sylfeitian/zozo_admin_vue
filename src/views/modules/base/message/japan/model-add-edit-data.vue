@@ -21,7 +21,7 @@
                 <span>{{dataForm.nameJp}}</span>
             </el-form-item>
             <el-form-item label="分类名称：" prop="name" :label-width="formLabelWidth">
-                <el-input v-model.trim="dataForm.name" auto-complete="off"></el-input>
+                <el-input v-model.trim.trim="dataForm.name" auto-complete="off"></el-input>
             </el-form-item>
 <!--            <el-form-item style="text-align: center;margin-left: -120px!important;">-->
 <!--                <el-button type="primary" @click="dataFormSubmit('addForm')"-->

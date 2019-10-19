@@ -91,7 +91,7 @@
                     </template>
                 </el-form-item>
                 <el-form-item label="标题：" style="height: 100%!important;">
-                    <el-input v-model.trim="dataForm.title" type="text" placeholder="请输入标题名称"></el-input>
+                    <el-input v-model.trim.trim="dataForm.title" type="text" placeholder="请输入标题名称"></el-input>
                 </el-form-item>
                 <el-form-item label="详情：" style="height: 100%!important;">
                     <template slot-scope="scope">

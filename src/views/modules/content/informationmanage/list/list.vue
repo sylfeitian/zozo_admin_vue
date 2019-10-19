@@ -4,7 +4,7 @@
 	
 	<el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" ref="dataForm" @keyup.enter.native="getDataList()" >
 	    <el-form-item label="输入搜索：">
-	      <el-input v-model.trim="dataForm.messageTitle" placeholder="信息标题名称" clearable></el-input>
+	      <el-input v-model.trim.trim="dataForm.messageTitle" placeholder="信息标题名称" clearable></el-input>
 	    </el-form-item>
 	    <el-form-item label="信息类型：">
         <el-select

@@ -12,7 +12,7 @@
 		    		@keyup.enter.native="dataFormSubmit('addForm')"
 		    		label-width="120px">
 				        <el-form-item label="分组名称：" prop="groupName">
-				        	  <el-input v-model.trim="dataForm.groupName" maxlength="30" placeholder="请输入分组名称" show-word-limit></el-input>
+				        	  <el-input v-model.trim.trim="dataForm.groupName" maxlength="30" placeholder="请输入分组名称" show-word-limit></el-input>
 				        </el-form-item>
 				        
 						<el-form-item label="选择规格：" prop="specIds">

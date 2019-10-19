@@ -13,10 +13,10 @@
 		    		@keyup.enter.native="dataFormSubmit('addForm')"
 		    		label-width="120px">
 				        <el-form-item label="属性名称：" prop="attrName">
-				        	  <el-input v-model.trim="dataForm.attrName" maxlength="60" placeholder="请输入属性名称"></el-input>
+				        	  <el-input v-model.trim.trim="dataForm.attrName" maxlength="60" placeholder="请输入属性名称"></el-input>
 				        </el-form-item>
 						 <el-form-item label="排序：" prop="spSort">
-				        	 	 <el-input v-model.trim="dataForm.spSort" placeholder="1-255"></el-input>
+				        	 	 <el-input v-model.trim.trim="dataForm.spSort" placeholder="1-255"></el-input>
 								</el-select>
 				        </el-form-item>
 				</el-form> -->

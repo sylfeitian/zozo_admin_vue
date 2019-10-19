@@ -3,10 +3,10 @@
 	  <Bread :breaddata="breaddata"></Bread>
 		<el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" ref="dataForm">
 		    <el-form-item label="图片名称：" >
-		    	<el-input v-model.trim="dataForm.pictureName" placeholder="请输入图片名称" clearable></el-input>
+		    	<el-input v-model.trim.trim="dataForm.pictureName" placeholder="请输入图片名称" clearable></el-input>
 		    </el-form-item>
 		    <el-form-item label="文件夹名称：" >
-		    	<el-input v-model.trim="dataForm.categoryName" placeholder="请输入文件夹名称" clearable></el-input>
+		    	<el-input v-model.trim.trim="dataForm.categoryName" placeholder="请输入文件夹名称" clearable></el-input>
 		    </el-form-item>
 		    <el-form-item label="上传日期：">
 		        <el-date-picker

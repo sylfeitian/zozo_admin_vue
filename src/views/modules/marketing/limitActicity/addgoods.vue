@@ -3,10 +3,10 @@
     <Bread :breaddata="breaddata" :index = "'1'" @changePage = "changePage"></Bread>
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="商品名称：">
-            <el-input v-model.trim="dataForm.goodsName" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
+            <el-input v-model.trim.trim="dataForm.goodsName" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
         </el-form-item>
         <el-form-item label="选择分类：">
-            <!-- <el-input v-model.trim="dataForm.categoryId" placeholder="请输入spu编号" clearable></el-input> -->
+            <!-- <el-input v-model.trim.trim="dataForm.categoryId" placeholder="请输入spu编号" clearable></el-input> -->
             <el-cascader
                         :options="selectCategoryOption"
                         v-model="classList"
@@ -17,13 +17,13 @@
             </el-cascader>
         </el-form-item>
         <el-form-item label="商品货号：">
-            <el-input v-model.trim="dataForm.goodsId" placeholder="请输入spu编号" clearable></el-input>
+            <el-input v-model.trim.trim="dataForm.goodsId" placeholder="请输入spu编号" clearable></el-input>
         </el-form-item>
          <el-form-item label="店铺名称：">
-            <el-input v-model.trim="dataForm.storeName" placeholder="请输入店铺名称" clearable></el-input>
+            <el-input v-model.trim.trim="dataForm.storeName" placeholder="请输入店铺名称" clearable></el-input>
         </el-form-item>
          <el-form-item label="品牌名称：">
-            <el-input v-model.trim="dataForm.brandName" placeholder="请输入品牌名称" clearable></el-input>
+            <el-input v-model.trim.trim="dataForm.brandName" placeholder="请输入品牌名称" clearable></el-input>
         </el-form-item>
         <el-form-item>
             <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>

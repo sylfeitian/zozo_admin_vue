@@ -27,10 +27,10 @@
         <el-card shadow="never" style="margin-bottom:20px;">
             <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()" >
                 <el-form-item label="会员账号：" style="margin-bottom:0 !important;">
-                    <el-input v-model.trim="dataForm.memberName"  placeholder="请输入会员账号" clearable></el-input>
+                    <el-input v-model.trim.trim="dataForm.memberName"  placeholder="请输入会员账号" clearable></el-input>
                 </el-form-item>
                 <el-form-item label="订单编号：" style="margin-bottom:0 !important;">
-                    <el-input v-model.trim="dataForm.orderSn" placeholder="请输入订单编号" clearable></el-input>
+                    <el-input v-model.trim.trim="dataForm.orderSn" placeholder="请输入订单编号" clearable></el-input>
                 </el-form-item>
                 <el-form-item style="margin-bottom:0 !important;float:right;">
                     <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>

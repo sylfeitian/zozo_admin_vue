@@ -3,7 +3,7 @@
         <Bread  :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
             <el-form-item label="消息标题：">
-                <el-input v-model.trim="dataForm.messageTitle" ></el-input>
+                <el-input v-model.trim.trim="dataForm.messageTitle" ></el-input>
             </el-form-item>
             <el-form-item label="推送方式：">
                 <el-select v-model="dataForm.sendMode" placeholder="请选择"  style="margin-left: 10px;width: 140px;">

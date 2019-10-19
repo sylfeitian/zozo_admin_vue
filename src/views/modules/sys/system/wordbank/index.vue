@@ -4,7 +4,7 @@
         <div class="mod-sys__user">
             <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getDataList()">
                 <el-form-item label="中文词汇：">
-                    <el-input v-model.trim="dataForm.chineseVocabulary" placeholder="请输入中文搜索" clearable></el-input>
+                    <el-input v-model.trim.trim="dataForm.chineseVocabulary" placeholder="请输入中文搜索" clearable></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button class="btn" type="primary" @click="getDataList">搜索</el-button>

@@ -3,16 +3,16 @@
     <Bread :breaddata="breaddata" :index = "'1'" @changePage = "changePage"></Bread>
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="商品名称：">
-            <el-input v-model.trim="dataForm.storeId" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
+            <el-input v-model.trim.trim="dataForm.storeId" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
         </el-form-item>
         <el-form-item label="商品货号：">
-            <el-input v-model.trim="dataForm.storeId" placeholder="请输入spu编号" clearable></el-input>
+            <el-input v-model.trim.trim="dataForm.storeId" placeholder="请输入spu编号" clearable></el-input>
         </el-form-item>
          <el-form-item label="店铺名称：">
-            <el-input v-model.trim="dataForm.storeId" placeholder="请输入店铺名称" clearable></el-input>
+            <el-input v-model.trim.trim="dataForm.storeId" placeholder="请输入店铺名称" clearable></el-input>
         </el-form-item>
          <el-form-item label="品牌名称：">
-            <el-input v-model.trim="dataForm.storeId" placeholder="请输入品牌名称" clearable></el-input>
+            <el-input v-model.trim.trim="dataForm.storeId" placeholder="请输入品牌名称" clearable></el-input>
         </el-form-item>
         <el-form-item>
             <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
@@ -112,7 +112,7 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item class="number"  label="折扣值：" prop="number">
-                            <el-input v-model.trim="editDataForm.number" :max="editDataForm.type=='1'?moneyNum:10" :min="0" type="number"></el-input>
+                            <el-input v-model.trim.trim="editDataForm.number" :max="editDataForm.type=='1'?moneyNum:10" :min="0" type="number"></el-input>
                             若选择折扣价，输入价格将作为折扣销售价
                         </el-form-item>
                     </div>
@@ -136,7 +136,7 @@
                 <el-table-column
                     label="活动库存">
                     <template slot-scope="scope">
-                            <el-input v-model.trim="kucun" :maxlength="6" type="number"></el-input>
+                            <el-input v-model.trim.trim="kucun" :maxlength="6" type="number"></el-input>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -148,7 +148,7 @@
                     label="每人限购"
                     width="180">
                     <template slot-scope="scope">
-                            <el-input v-model.trim="kucun" :maxlength="6" type="number"></el-input>
+                            <el-input v-model.trim.trim="kucun" :maxlength="6" type="number"></el-input>
                     </template>
                 </el-table-column>
                 <el-table-column

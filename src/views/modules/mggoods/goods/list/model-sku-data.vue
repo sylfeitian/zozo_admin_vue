@@ -19,7 +19,7 @@
 				        </el-form-item>
 
 				        <el-form-item label="sku名称：" prop="specName" style="width:90%">
-							<el-input v-model.trim="dataForm.specName"    placeholder="请输入sku名称,长度限制为128" maxlength="128"></el-input>
+							<el-input v-model.trim.trim="dataForm.specName"    placeholder="请输入sku名称,长度限制为128" maxlength="128"></el-input>
                             <!-- <span>{{dataForm.goodsName}}</span> -->
 				        </el-form-item>
                         

@@ -8,16 +8,16 @@
                 :model="dataForm"
         >
             <el-form-item label="售后单号：" prop="aftersaleSn">
-                <el-input v-model.trim="dataForm.aftersaleSn" placeholder="请输入售后单号" clearable></el-input>
+                <el-input v-model.trim.trim="dataForm.aftersaleSn" placeholder="请输入售后单号" clearable></el-input>
             </el-form-item>
             <el-form-item label="订单号：" prop="orderSn">
-                <el-input v-model.trim="dataForm.orderSn" placeholder="请输入订单号" clearable></el-input>
+                <el-input v-model.trim.trim="dataForm.orderSn" placeholder="请输入订单号" clearable></el-input>
             </el-form-item>
 <!--            <el-form-item label="商户名称：" prop="storeName">-->
-<!--                <el-input v-model.trim="dataForm.storeName" placeholder="商户名称" clearable></el-input>-->
+<!--                <el-input v-model.trim.trim="dataForm.storeName" placeholder="商户名称" clearable></el-input>-->
 <!--            </el-form-item>-->
             <el-form-item label="会员账号：" prop="memberName">
-                <el-input v-model.trim="dataForm.memberName" placeholder="请输入会员账号" clearable></el-input>
+                <el-input v-model.trim.trim="dataForm.memberName" placeholder="请输入会员账号" clearable></el-input>
             </el-form-item>
             <el-form-item label="售后状态：" prop="status">
                 <!-- 110退款中、20退款完成、30退款失败 -->

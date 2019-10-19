@@ -4,10 +4,10 @@
 	
 	<el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" ref="dataForm">
 	    <el-form-item label="商品名称：">
-	      <el-input v-model.trim="dataForm.goodsName" placeholder="请输入商品名称" clearable></el-input>
+	      <el-input v-model.trim.trim="dataForm.goodsName" placeholder="请输入商品名称" clearable></el-input>
 	    </el-form-item>
 	    <el-form-item label="商品ID：">
-	      <el-input v-model.trim="dataForm.spuid" placeholder="请输入spuID" clearable></el-input>
+	      <el-input v-model.trim.trim="dataForm.spuid" placeholder="请输入spuID" clearable></el-input>
 	    </el-form-item>
 	     <el-form-item label="店铺名称：">
                 <el-select

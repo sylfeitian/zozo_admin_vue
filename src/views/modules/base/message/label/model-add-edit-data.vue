@@ -25,7 +25,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="风格标签名称：" prop="styleName">
-                <el-input v-model.trim="dataForm.styleName" placeholder="请输入标签名称"></el-input>
+                <el-input v-model.trim.trim="dataForm.styleName" placeholder="请输入标签名称"></el-input>
             </el-form-item>
             <el-form-item label="性别：">
                 <el-select v-model="dataForm.gender" multiple  placeholder="请选择">
@@ -57,7 +57,7 @@
 <!--                <el-input type="textarea" v-model="dataForm.desc" placeholder="请输入500字以内的内容"></el-input>-->
 <!--            </el-form-item>-->
             <el-form-item label="排序：" prop="sort" :label-width="formLabelWidth">
-                <el-input v-model.trim="dataForm.sort" placeholder="0"></el-input>
+                <el-input v-model.trim.trim="dataForm.sort" placeholder="0"></el-input>
                 <span style="color: #999;">数字越大越靠前</span>
             </el-form-item>
 <!--            <el-form-item style="text-align: center;margin-left: -120px!important;">-->

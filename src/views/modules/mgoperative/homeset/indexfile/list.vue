@@ -7,7 +7,7 @@
     </el-breadcrumb>
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="菜单名称：">
-            <el-input v-model.trim="dataForm.menuName" placeholder="菜单名称" clearable></el-input>
+            <el-input v-model.trim.trim="dataForm.menuName" placeholder="菜单名称" clearable></el-input>
         </el-form-item>
         <el-form-item  label="是否显示：">
             <el-select v-model="dataForm.showFlag" placeholder="请选择">

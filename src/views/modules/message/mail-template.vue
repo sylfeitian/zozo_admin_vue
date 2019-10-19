@@ -4,7 +4,7 @@
     <div class="mod-message__mail-template">
       <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
         <el-form-item label="名称：">
-          <el-input v-model.trim="dataForm.name" :placeholder="$t('mail.name')" clearable></el-input>
+          <el-input v-model.trim.trim="dataForm.name" :placeholder="$t('mail.name')" clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="getDataList()">{{ $t('query') }}</el-button>

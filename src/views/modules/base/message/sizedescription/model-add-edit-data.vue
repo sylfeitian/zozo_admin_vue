@@ -21,7 +21,7 @@
                 <span>{{dataForm.japanSize}}</span>
             </el-form-item>
             <el-form-item label="尺码项目名称：" prop="sizeName" >
-                <el-input v-model.trim="dataForm.sizeName" ></el-input>
+                <el-input v-model.trim.trim="dataForm.sizeName" ></el-input>
             </el-form-item>
 <!--            <el-form-item style="text-align: center;margin-left: -120px!important;">-->
 <!--                <el-button type="primary" @click="dataFormSubmit('addForm')"-->

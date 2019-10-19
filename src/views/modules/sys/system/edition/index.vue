@@ -91,7 +91,7 @@
                  <el-input type="textarea" placeholder="请输入200字以内的内容" v-model="dataForm.versionDescription"></el-input>
             </el-form-item>
             <el-form-item v-if="isShow" label="签名MD5：" prop="md5Sign" >
-                <el-input v-model.trim="dataForm.md5Sign" placeholder="请输入"></el-input>
+                <el-input v-model.trim.trim="dataForm.md5Sign" placeholder="请输入"></el-input>
            </el-form-item>
             <el-form-item v-if="isShow" label="文件包：" prop="filePath" >
                 <uploud-model ref="apkupload" @getDataurl="getDataurl" :importAndExportOptions="importAndExportOptions" :dataForm="dataForm" @getDataList="getDataList"></uploud-model>

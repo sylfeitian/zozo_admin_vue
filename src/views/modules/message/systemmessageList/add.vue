@@ -35,7 +35,7 @@
 					  </span>
             </el-form-item>
             <el-form-item label="消息标题：" prop="messageTitle" :label-width="formLabelWidth">
-                <el-input v-model.trim="addDataForm.messageTitle" auto-complete="off" placeholder="请填写标题" style="width: 1200px;"></el-input>
+                <el-input v-model.trim.trim="addDataForm.messageTitle" auto-complete="off" placeholder="请填写标题" style="width: 1200px;"></el-input>
             </el-form-item>
             <el-form-item label="消息内容：" prop="messageContent" :label-width="formLabelWidth" style="vertical-align:top;">
                 <template slot-scope="scope">
@@ -48,7 +48,7 @@
             <el-dialog title="选择接收用户" :visible.sync="dialogTableVisible" width="80%">
                 <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
                     <el-form-item label="会员账号：">
-                        <el-input v-model.trim="dataForm.memberName" ></el-input>
+                        <el-input v-model.trim.trim="dataForm.memberName" ></el-input>
                     </el-form-item>
                     <el-form-item label="消费金额：">
                         <el-input-number v-model="dataForm.minAmount" controls-position="right"  :min="0" :max="dataForm.maxAmount-1"></el-input-number>

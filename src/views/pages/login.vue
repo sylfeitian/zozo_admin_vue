@@ -15,14 +15,14 @@
               </el-select>
             </el-form-item> -->
             <el-form-item prop="username">
-              <el-input v-model.trim="dataForm.username" :placeholder="$t('login.username')">
+              <el-input v-model.trim.trim="dataForm.username" :placeholder="$t('login.username')">
                 <span slot="prefix" class="el-input__icon">
                   <svg class="icon-svg" aria-hidden="true"><use xlink:href="#icon-user"></use></svg>
                 </span>
               </el-input>
             </el-form-item>
             <el-form-item prop="password">
-              <el-input v-model.trim="dataForm.password" type="password" :placeholder="$t('login.password')">
+              <el-input v-model.trim.trim="dataForm.password" type="password" :placeholder="$t('login.password')">
                 <span slot="prefix" class="el-input__icon">
                   <svg class="icon-svg" aria-hidden="true"><use xlink:href="#icon-lock"></use></svg>
                 </span>
@@ -31,7 +31,7 @@
             <el-form-item prop="captcha">
               <el-row :gutter="20">
                 <el-col :span="14">
-                  <el-input v-model.trim="dataForm.captcha" :placeholder="$t('login.captcha')">
+                  <el-input v-model.trim.trim="dataForm.captcha" :placeholder="$t('login.captcha')">
                     <span slot="prefix" class="el-input__icon">
                       <svg class="icon-svg" aria-hidden="true"><use xlink:href="#icon-safetycertificate"></use></svg>
                     </span>

@@ -4,7 +4,7 @@
         <div class="mod-sys__user">
             <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getData()">
                 <el-form-item label="账号：">
-                    <el-input v-model.trim="dataForm.member_name" placeholder="请输入账号" clearable maxlength="30"></el-input>
+                    <el-input v-model.trim.trim="dataForm.member_name" placeholder="请输入账号" clearable maxlength="30"></el-input>
                 </el-form-item>
                 <el-form-item label="黑名单类型：">
                     <el-select v-model="dataForm.type" placeholder="请选择">

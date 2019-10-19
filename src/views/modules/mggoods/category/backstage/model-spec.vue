@@ -3,10 +3,10 @@
     <el-dialog title="关联规格" :visible.sync="visible" :before-close="closeDialog">
       <el-form :inline="true" :model="dataForm" class="demo-form-inline">
         <el-form-item label="规格名称：">
-          <el-input v-model.trim="dataForm.specName" placeholder="规格名称"></el-input>
+          <el-input v-model.trim.trim="dataForm.specName" placeholder="规格名称"></el-input>
         </el-form-item>
         <el-form-item label="品牌分组：">
-          <el-input v-model.trim="dataForm.groupName" placeholder="品牌分组"></el-input>
+          <el-input v-model.trim.trim="dataForm.groupName" placeholder="品牌分组"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="search()">搜索</el-button>

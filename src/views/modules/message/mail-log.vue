@@ -4,10 +4,10 @@
     <div class="mod-message__mail-log">
       <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getDataList()">
         <el-form-item label="模板：">
-          <el-input v-model.trim="dataForm.templateId" :placeholder="$t('mail.templateId')" clearable></el-input>
+          <el-input v-model.trim.trim="dataForm.templateId" :placeholder="$t('mail.templateId')" clearable></el-input>
         </el-form-item>
         <el-form-item label="收件人：">
-          <el-input v-model.trim="dataForm.mailTo" :placeholder="$t('mail.mailTo')" clearable></el-input>
+          <el-input v-model.trim.trim="dataForm.mailTo" :placeholder="$t('mail.mailTo')" clearable></el-input>
         </el-form-item>
         <el-form-item label="状态：">
           <el-select v-model="dataForm.status" :placeholder="$t('mail.status')" clearable>

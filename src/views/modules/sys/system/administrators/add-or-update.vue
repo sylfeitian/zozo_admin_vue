@@ -4,21 +4,21 @@
         <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmitHandle()"
                  label-width="120px">
             <el-form-item prop="username" label="账号：">
-                <el-input v-model.trim="dataForm.username" placeholder="请输入账号" :disabled="!pageId ? false : true"
+                <el-input v-model.trim.trim="dataForm.username" placeholder="请输入账号" :disabled="!pageId ? false : true"
                           maxlength="20"></el-input>
             </el-form-item>
             <el-form-item prop="realName" label="姓名：">
-                <el-input v-model.trim="dataForm.realName" placeholder="请输入姓名"></el-input>
+                <el-input v-model.trim.trim="dataForm.realName" placeholder="请输入姓名"></el-input>
             </el-form-item>
             <el-form-item prop="mobile" label="手机号：">
-                <el-input v-model.trim="dataForm.mobile" placeholder="请输入手机号" maxlength="11"></el-input>
+                <el-input v-model.trim.trim="dataForm.mobile" placeholder="请输入手机号" maxlength="11"></el-input>
             </el-form-item>
             <el-form-item prop="password" label="密码：" :class="{ 'is-required': !pageId }">
-                <el-input v-model.trim="dataForm.password" type="password" placeholder="请输入6-12位的密码" minlength="6"
+                <el-input v-model.trim.trim="dataForm.password" type="password" placeholder="请输入6-12位的密码" minlength="6"
                           maxlength="12"></el-input>
             </el-form-item>
             <el-form-item prop="confirmPasswd" label="确认密码：" :class="{ 'is-required': !pageId }">
-                <el-input v-model.trim="dataForm.confirmPasswd" type="password" placeholder="请确认密码" minlength="6"
+                <el-input v-model.trim.trim="dataForm.confirmPasswd" type="password" placeholder="请确认密码" minlength="6"
                           maxlength="12"></el-input>
             </el-form-item>
             <el-form-item

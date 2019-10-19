@@ -3,7 +3,7 @@
       <Bread  :breaddata="breaddata"></Bread>
       <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="输入搜索：">
-          <el-input v-model.trim="dataForm.specName" placeholder="请输入规格名称" clearable></el-input>
+          <el-input v-model.trim.trim="dataForm.specName" placeholder="请输入规格名称" clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-button  calss="btn" type="primary" @click="getDataList()">搜索</el-button>

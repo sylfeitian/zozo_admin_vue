@@ -13,7 +13,7 @@
                 label-width="120px"
         >
             <el-form-item>
-                <el-input v-model.trim="dataForm.brandName" placeholder="请输入品牌名称"></el-input>
+                <el-input v-model.trim.trim="dataForm.brandName" placeholder="请输入品牌名称"></el-input>
                 <el-button class="btn" type="primary" @click="handleClick()">搜索</el-button>
             </el-form-item>
             <el-table

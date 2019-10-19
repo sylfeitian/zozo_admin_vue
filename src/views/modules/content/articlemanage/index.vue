@@ -8,10 +8,10 @@
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
          <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
         <el-form-item label="商家ID：">
-            <el-input v-model.trim="dataForm.storeId" placeholder="商品ID" clearable></el-input>
+            <el-input v-model.trim.trim="dataForm.storeId" placeholder="商品ID" clearable></el-input>
         </el-form-item>
         <el-form-item  label="商家名称：">
-            <el-input v-model.trim="dataForm.storeName" placeholder="商家名称" clearable></el-input>
+            <el-input v-model.trim.trim="dataForm.storeName" placeholder="商家名称" clearable></el-input>
         </el-form-item>
         <el-form-item  label="商家等级：">
             <el-select v-model="dataForm.gradeId" clearable  placeholder="请选择">

@@ -4,10 +4,10 @@
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" @keyup.enter.native="getDataList()" style="margin-top: 20px;">
             <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
             <el-form-item label="商品名称：">
-                <el-input v-model.trim="dataFormShow.goodsName" placeholder="商品名称"></el-input>
+                <el-input v-model.trim.trim="dataFormShow.goodsName" placeholder="商品名称"></el-input>
             </el-form-item>
             <el-form-item label="商品sku ID：">
-                <el-input v-model.trim="dataFormShow.skuIdJp" placeholder="商品skuid" maxlength="30"></el-input>
+                <el-input v-model.trim.trim="dataFormShow.skuIdJp" placeholder="商品skuid" maxlength="30"></el-input>
             </el-form-item>
             <el-form-item label="分类：">
                 <el-cascader
@@ -20,10 +20,10 @@
                 </el-cascader>
             </el-form-item>
             <el-form-item  label="所属店铺：">
-                <el-input v-model.trim="dataFormShow.storeName" placeholder="请输入店铺名称" ></el-input>
+                <el-input v-model.trim.trim="dataFormShow.storeName" placeholder="请输入店铺名称" ></el-input>
             </el-form-item>
             <el-form-item  label="品牌：">
-                <el-input v-model.trim="dataFormShow.brandName" placeholder="请输入品牌名称" ></el-input>
+                <el-input v-model.trim.trim="dataFormShow.brandName" placeholder="请输入品牌名称" ></el-input>
             </el-form-item>
             <el-form-item  label="状态：" v-if="dataFormShow.isTofile=='1'">
                 <el-select v-model="dataFormShow.transportFlag" placeholder="请选择">

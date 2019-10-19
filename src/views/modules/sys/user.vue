@@ -5,10 +5,10 @@
     <div class="mod-sys__user">
       <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getDataList()">
         <el-form-item label="用户名：">
-          <el-input v-model.trim="dataForm.username" :placeholder="$t('user.username')" clearable></el-input>
+          <el-input v-model.trim.trim="dataForm.username" :placeholder="$t('user.username')" clearable></el-input>
         </el-form-item>
         <el-form-item label="所属角色：">
-          <el-input v-model.trim="dataForm.roleName" clearable></el-input>
+          <el-input v-model.trim.trim="dataForm.roleName" clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-button @click="getDataList()" type="primary">{{ $t('query') }}</el-button>

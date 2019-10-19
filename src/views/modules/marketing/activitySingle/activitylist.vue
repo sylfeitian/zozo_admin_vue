@@ -3,7 +3,7 @@
     <Bread :breaddata="breaddata"></Bread>
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="活动名称：">
-            <el-input v-model.trim="dataForm.storeId" placeholder="请输入优惠券名称" clearable maxlength="300" ></el-input>
+            <el-input v-model.trim.trim="dataForm.storeId" placeholder="请输入优惠券名称" clearable maxlength="300" ></el-input>
         </el-form-item>
         <el-form-item  label="活动状态：">
             <el-select v-model="dataForm.gradeId" clearable  placeholder="请选择">
@@ -115,7 +115,7 @@
         width="40%">
         <el-form :model="activiDataForm" :rules="dataRule" ref="activiDataForm" @keyup.enter.native="subActivity()" label-width="120px">
             <el-form-item label="活动标题：" prop="sgName">
-                <el-input v-model.trim="activiDataForm.sgName" placeholder="请输入50字以内的标题" :maxlength="50"></el-input>
+                <el-input v-model.trim.trim="activiDataForm.sgName" placeholder="请输入50字以内的标题" :maxlength="50"></el-input>
             </el-form-item>
             <el-form-item label="折扣开始时间：" prop="startTime">
                 <el-date-picker

@@ -9,7 +9,7 @@
             @keyup.enter.native="getDataList()"
         >
             <el-form-item label="商品名称：" prop="name">
-                <el-input v-model.trim="dataForm.name" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
+                <el-input v-model.trim.trim="dataForm.name" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
             </el-form-item>
             <el-form-item label="选择分类：" prop="categoryId">
                 <el-cascader
@@ -19,13 +19,13 @@
                         @change="handleChange"></el-cascader>
             </el-form-item>
             <el-form-item label="商品货号：" prop="id">
-                <el-input v-model.trim="dataForm.id" placeholder="请输入spu编号" clearable></el-input>
+                <el-input v-model.trim.trim="dataForm.id" placeholder="请输入spu编号" clearable></el-input>
             </el-form-item>
             <el-form-item label="店铺名称：" prop="storeName">
-                <el-input v-model.trim="dataForm.storeName" placeholder="请输入店铺名称" clearable></el-input>
+                <el-input v-model.trim.trim="dataForm.storeName" placeholder="请输入店铺名称" clearable></el-input>
             </el-form-item>
             <el-form-item label="品牌名称：" prop="brandName">
-                <el-input v-model.trim="dataForm.brandName" placeholder="请输入品牌名称" clearable></el-input>
+                <el-input v-model.trim.trim="dataForm.brandName" placeholder="请输入品牌名称" clearable></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button class="btn" type="primary" @click="getDataList()">搜索</el-button>
