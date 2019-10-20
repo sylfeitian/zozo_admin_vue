@@ -55,6 +55,7 @@
 <script>
     import debounce from 'lodash/debounce'
     import {isEmail, isMobile} from '@/utils/validate'
+    import cloneDeep from 'lodash/cloneDeep'
 
     export default {
         data() {
@@ -302,9 +303,10 @@
                                           return
                                }
                            }
-                           that.dataForm.roleIds = roleData
+                           var dataForm = cloneDeep(that.dataForm);
+                            dataForm.roleIds = roleData
                            that.$http[!this.pageId ? 'post' : 'put']('/admin-api/user', {
-                               ...that.dataForm
+                               ...dataForm
                            }).then(({data: res}) => {
                                if (res.code !== 200) {
                                    return that.$message.error(res.msg)
@@ -320,9 +322,9 @@
                                })
                            }).catch(() => {
                            })
-                           that.dataForm.roleIds = [{
-                               id: ''
-                           }]
+                        //    that.dataForm.roleIds = [{
+                        //        id: ''
+                        //    }]
                        })
             }, 1000, {'leading': true, 'trailing': false})
         }

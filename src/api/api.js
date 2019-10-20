@@ -713,7 +713,7 @@ export const saveZozogoods = params => { return http.post(`${base}/zozogoods`, p
 // 商品分页
 export const zozogoodsPage = params => { return http.get(`${base}/zozogoods/page`, params).then(res => res.data); };
 // 查看商品操作日志分页查询
-export const backScanZozogoodsLog = params => { return http.get(`${base}/zozogoods/page/log`, params).then(res => res.data); };
+// export const backScanZozogoodsLog = params => { return http.get(`${base}/zozogoods/page/log`, params).then(res => res.data); };
 // 商品上下架状态批量修改
 export const showBatchGoods = params => { return http.put(`${base}/zozogoods/show/?ids=${params.ids}&showWeb=${params.showWeb}`, params).then(res => res.data); };
 // 单个商品上下架状态修改
@@ -1043,6 +1043,10 @@ export const delQuestionanswer = params => { return http.delete(`${base}/questio
 export const saveQuestionanswer = params => { return http.post(`${base}/questionanswer/add`, params).then(res => res.data); };
 //Q&A修改
 export const putQuestionanswer = params => { return http.put(`${base}/questionanswer/update`, params).then(res => res.data); };
+//Q&A批量修改
+export const updateBachQuestionanswer = params => { return http.put(`${base}/questionanswer/updateBach`, params).then(res => res.data); };
+//Q&A修改排序
+export const updateQuestionanswerSort = params => { return http.put(`${base}/questionanswer/sort`, params).then(res => res.data); };
 //Q&A信息
 export const getQuestionanswer = params => { return http.get(`${base}/questionanswer/${params.id}`, params).then(res => res.data); };
 

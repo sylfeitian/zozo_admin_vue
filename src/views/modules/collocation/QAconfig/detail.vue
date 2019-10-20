@@ -21,6 +21,15 @@
                     prop="sort"
                     align="center"
                     label="排序">
+                <template slot-scope="scope">
+                    <el-input
+                        v-model="scope.row.sort"
+                        @change="changeSort(scope.row)"
+                        :min="0"
+                        type="number"
+                        style="width:160px;"
+                    ></el-input>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="title"
@@ -69,15 +78,20 @@
             </el-table-column>
         </el-table>
         <!-- 分页 -->
-        <el-pagination
+        <div class="footerBox">
+            <div class="footerBtn">
+                <el-button @click="changeSortSave()" type="primary">保存排序</el-button>
+            </div>
+            <el-pagination
                 @size-change="pageSizeChangeHandle"
                 @current-change="pageCurrentChangeHandle"
                 :current-page="page"
                 :page-sizes="[10, 20, 50, 100]"
                 :page-size="limit"
                 :total="total"
-                layout="total, sizes, prev, pager, next, jumper">
-        </el-pagination>
+                layout="total, sizes, prev, pager, next, jumper"
+            ></el-pagination>
+        </div>
 
 
         <el-dialog
@@ -114,7 +128,7 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import {toQamainList} from '@/api/url'
-    import {zozogoodsPage, delQuestionanswer, saveQuestionanswer, putQuestionanswer, getQuestionanswer} from '@/api/api'
+    import {zozogoodsPage, delQuestionanswer, saveQuestionanswer, putQuestionanswer, getQuestionanswer,updateQuestionanswerSort} from '@/api/api'
     import Bread from "@/components/bread";
     import quillEditorImg from "@/components/quillEditor";
     export default {
@@ -146,6 +160,7 @@
                     booleanDisplay: true,
                 },
                 value: true,
+                sortList: [],
                 breaddata: ["配置管理", "Q&A配置", "查看Q&A"],
             }
         },
@@ -274,6 +289,48 @@
                     this.isShow = true;
                 }
             },
+            //更改排序
+            changeSort(row) {
+                this.sortList.push(row);
+            },
+            //保存排序
+            changeSortSave() {
+                if (this.sortList.length == 0) {
+                    this.$message({
+                    type: "warning",
+                    message: "请选择修改排序的数据"
+                    });
+                    return false;
+                }
+                console.log(this.sortList)
+                const obj = {
+                            id:  this.sortList.length!=0 && this.sortList[0].id,
+                            sort:  this.sortList.length!=0 && this.sortList[0].sort
+                        }
+                updateQuestionanswerSort(obj).then(res => {
+                    if (res.code == 200) {
+                    this.$message({
+                        message: res.msg,
+                        type: "success",
+                        duration: 1500,
+                        onClose: () => {
+                            this.sortList = [];
+                        this.getDataList();
+                        }
+                    });
+                    } else {
+                    this.$message({
+                        message: res.msg,
+                        type: "error",
+                        duration: 1500,
+                        onClose: () => {
+                            this.sortList = [];
+                        this.getDataList();
+                        }
+                    });
+                    }
+                });
+            },
 
             noCheck(formName) {
                 this.$refs[formName].resetFields();
@@ -361,4 +418,9 @@
         height: 40px;
     }
 
+    .footerBox {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 </style>

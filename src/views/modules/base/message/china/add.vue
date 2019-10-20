@@ -54,6 +54,7 @@
 						:imgWidth='"100px"'
 						:imgHeight='"100px"'
 						:cropImg = "item"
+						@delteteImg="delteteImgMethodUrl"
 						@GiftUrlHandle="GiftUrlHandle"
 					></img-cropper>
 				</div>
@@ -67,6 +68,7 @@
 						:index="'1'"
 						:imgWidth='"100px"'
 						:imgHeight='"100px"'
+						@delteteImg="delteteImgAll"
 						@GiftUrlHandle="GiftUrlHandle"
 					></img-cropper>
 				</div>
@@ -83,6 +85,7 @@
 								:index="'1'"
 								:imgWidth='"100px"'
 								:imgHeight='"100px"'
+								@delteteImg="delteteImgM"
 								@GiftUrlHandle="GiftUrlHandle"
 							></img-cropper>
 						</div>
@@ -96,6 +99,7 @@
 								:index="'1'"
 								:imgWidth='"100px"'
 								:imgHeight='"100px"'
+								@delteteImg="delteteImgW"
 								@GiftUrlHandle="GiftUrlHandle"
 							></img-cropper>
 						</div>
@@ -109,6 +113,7 @@
 								:index="'1'"
 								:imgWidth='"100px"'
 								:imgHeight='"100px"'
+								@delteteImg="delteteImgC"
 								@GiftUrlHandle="GiftUrlHandle"
 							></img-cropper>
 						</div>
@@ -468,7 +473,7 @@
 						// that.currentIndex = -1;//不能这样写，防止网络延迟
 						resolve("true")
 					}else {
-						this.$message.error(res.msg)
+						that.$message.error(res.msg)
 						// that.currentIndex = -1;//不能这样写，防止网络延迟
 						resolve("false")
 					}
@@ -504,7 +509,40 @@
 	    closeadd(){
 	    	this.showListVisible = false;
 	    	this.$emit("addshow")
-	    },
+		},
+		// 删除测量方法图片
+		delteteImgMethodUrl(index){
+			let that = this;
+			console.log(index);
+			that.dataForm.methodUrlshow.splice(index,1);
+			let methodUrlshow = [];
+			that.dataForm.methodUrlshow.forEach((item,index)=>{
+				if(item){
+					methodUrlshow.push(item)	;
+				}
+			})
+			// 追加最后一个展位
+			methodUrlshow.push('');
+			console.log(methodUrlshow);
+			that.dataForm.methodUrlshow = [].concat(methodUrlshow)
+		},
+		// 删除分类性别图片(全部)
+		delteteImgAll(){
+			this.dataForm.genderMain = "";
+		},
+		// 删除分类性别图片(男士)
+		delteteImgM(){
+			this.dataForm.genderMr = "";
+		},
+		// 删除分类性别图片(女士)
+		delteteImgW(){
+			this.dataForm.genderMrs = "";
+		},
+		// 删除分类性别图片(儿童)
+		delteteImgC(){
+			this.dataForm.genderKid = "";
+		},
+
 	  }
 	}
 </script>

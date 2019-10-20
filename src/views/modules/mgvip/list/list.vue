@@ -61,7 +61,7 @@
       <el-table-column prop="point" align="center" label="会员成长值"></el-table-column>
       <el-table-column prop="consumeAmount" align="center" label="消费金额" width="170">
           <template slot-scope="scope">
-            <span>￥{{scope.row.consumeAmount}}</span>
+            <span>￥{{scope.row.consumeAmount?scope.row.consumeAmount:'0.00'}}</span>
           </template>
       </el-table-column>
       <el-table-column prop="orderNums" align="center" label="订单数量" width="170">
@@ -69,9 +69,9 @@
             <span>{{scope.row.orderNums?scope.row.orderNums:0}}</span>
           </template>
       </el-table-column>
-      <el-table-column prop="point" align="center" label="积分" width="170">
+      <el-table-column prop="availablePoint" align="center" label="积分" width="170">
          <template slot-scope="scope">
-            <span>{{scope.row.point?scope.row.point:0}}</span>
+            <span>{{scope.row.availablePoint?scope.row.availablePoint:0}}</span>
           </template>
       </el-table-column>
       <el-table-column

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Bread :breaddata="breaddata"></Bread>
+        <Bread :breaddata="breaddata"  @changePage="changePage" :index="'2'"></Bread>
         <el-button size="mini" @click="more">查看详情</el-button>
         <el-button size="mini">操作日志</el-button>
         <el-table
@@ -36,7 +36,7 @@
             return {
                 mixinViewModuleOptions: {
                     getDataListURL: getGoodsUrl,
-                    activatedIsNeed:true,
+                    activatedIsNeed:false,
                     getDataListIsPage: true,
                     // exportURL: '/admin-api/log/login/export',
                     // deleteURL: deleteGoodsUrl,
@@ -60,16 +60,20 @@
             init (row) {
                 this.visible = true;
                 this.row = row;
+                console.log("我在看row");
+                console.log(this.row);
                 // this.dataForm.spuId = res.data.list.spuId;
                 console.log(this.idJp);
                 this.$nextTick(() => {
+                    this.dataForm.goodsId = this.row.id;
                     this.getDataList();
                     // this.$refs['addForm'].resetFields();
                     // this.getApplyPullList();
                 })
             },
             changePage(){
-                this.$emit("operationallogList");
+                // this.$emit("operationallogList");
+                this.more();
             },
             more () {
                 this.$parent.more()

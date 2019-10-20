@@ -97,7 +97,7 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import { QamainList } from '@/api/url'
-    import { zozogoodsPage,delQuestiontype,saveQuestiontype,putQuestiontype,getQuestiontype,putQuestionanswer,cartConfigSort } from '@/api/api'
+    import { zozogoodsPage,delQuestiontype,saveQuestiontype,putQuestiontype,getQuestiontype,putQuestionanswer,updateBachQuestionanswer } from '@/api/api'
     import Bread from "@/components/bread";
     
     export default {
@@ -224,13 +224,14 @@
                     return false;
                 }
                 const obj = this.sortList;
-                cartConfigSort(obj).then(res => {
+                updateBachQuestionanswer(obj).then(res => {
                     if (res.code == 200) {
                     this.$message({
                         message: res.msg,
                         type: "success",
                         duration: 1500,
                         onClose: () => {
+                            this.sortList = [];
                         this.getDataList();
                         }
                     });
@@ -240,6 +241,7 @@
                         type: "error",
                         duration: 1500,
                         onClose: () => {
+                            this.sortList = [];
                         this.getDataList();
                         }
                     });
