@@ -44,13 +44,12 @@
                 <el-table-column prop="goodsId" label="商品ID" align="center" width="200"></el-table-column>
                 <el-table-column prop="sortNum" label="排序" align="center">
                     <template slot-scope="scope">
-                        <el-input
-                                v-model="scope.row.sortNum"
-                                @change="changeSort(scope.row)"
-                                :min="0"
-                                type="number"
-                                max="99999"
-                        ></el-input>
+                        <el-input-number
+                            v-model="scope.row.sortNum"
+                            @change="changeSort(scope.row)"
+                            :min="0"
+                            :max="10000000"
+                        ></el-input-number>
                     </template>
                 </el-table-column>
                 <el-table-column prop="goodsName" label="商品名称">
@@ -78,7 +77,7 @@
             <div class="footerBtn">
                 <el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
                 <el-button @click="deleteHandle()" style="margin-left: 20px;" type="primary">批量删除</el-button>
-                <el-button @click="changeSortSave()" type="primary">保存排序</el-button>
+                <el-button @click="changeSortSave()" :loading="clicking" type="primary">保存排序</el-button>
             </div>
             <el-pagination
                 @size-change="pageSizeChangeHandle"
@@ -186,6 +185,7 @@ export default {
         deleteIsBatch: true
         // deleteIsBatchKey: 'id'
       },
+      
       dataFormList:{},
       goodsdataList: [],
       isIndeterminate:false,
@@ -217,7 +217,8 @@ export default {
       pages: 1,
       limits: 10,
       totals: 0,
-      breaddata: ["配置管理", "购物车推荐商品配置"]
+      breaddata: ["配置管理", "购物车推荐商品配置"],
+      clicking: false,
     };
   },
   // ID类搜索框仅可输入数字、英文，最多可输入30个字符
@@ -264,8 +265,10 @@ export default {
         return false;
       }
       const obj = this.sortList;
+      this.clicking = true;
       cartConfigSort(obj).then(res => {
         if (res.code == 200) {
+         this.clicking = false;
           this.$message({
             message: res.msg,
             type: "success",
@@ -533,4 +536,9 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
 }*/
+.el-input--default .el-form--inline .el-input .el-input__inner {
+    height: 40px;
+    line-height: 35px;
+    width: 180px;
+}
 </style>
