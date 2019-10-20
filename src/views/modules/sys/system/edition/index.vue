@@ -28,7 +28,7 @@
                 		{{scope.row.forceUpdateFlag ? '是' : '否'}}
                 	</template>
                 </el-table-column>
-                <el-table-column prop="createDate " label="创建时间" width="200"  header-align="center" align="center"></el-table-column>
+                <el-table-column prop="createDate" label="创建时间" width="200"  header-align="center" align="center"></el-table-column>
             	<el-table-column
 			   		prop="address"
 			    	label="操作"

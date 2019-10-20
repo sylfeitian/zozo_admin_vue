@@ -177,21 +177,18 @@
         			if(res && res.code == 200){
         				this.data = res.data;
         			}else{
-        				this.$message(res.msg)
+//      				this.$message(res.msg)
         			}
-        		}).catch(()=>{
-        				this.$message(res.msg)
         		})
+        		
         		gethomepageRate().then((res)=>{
         			if(res && res.code == 200){
-						this.rate =res.data.rate;
-						this.rateJp = res.data.rateJp;
+								this.rate =res.data.rate;
+								this.rateJp = res.data.rateJp;
         				this.actrise = res.data.varyState == 1;
         			}else{
-        				this.$message(res.msg)
+//      				this.$message(res.msg)
         			}
-        		}).catch(()=>{
-        			this.$message(res.msg)
         		})
         	},
         },

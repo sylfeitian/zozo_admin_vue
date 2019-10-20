@@ -57,15 +57,15 @@
                     id:"",//分类ID
                     categoryName: "",//京东分类名称
                     name: "",//分类名称
-                    ids:'',
+                    ids:'',   
                 },
                 dataRule : {
                     // name : [
                     //     { required: true, message: '必填项不能为空', trigger: 'blur' },
                     // ],
-                    ids : [
-                        { required: true, message: '必填项不能为空', trigger: 'blur' },
-                    ],
+//                  ids : [
+//                      { required: true, message: '必填项不能为空', trigger: 'blur' },
+//                  ],
                 },
                 optionsApplication: [],
                 optionsRight: [],
@@ -153,6 +153,14 @@
 
             // 提交
             dataFormSubmit(formName){
+            	if(!this.dataForm.ids){
+            		this.$message({
+                        message: '请选择关联分类',
+                        type: 'warning',
+                        duration: 1500
+                    })
+            		return false;
+            	}
                 var ids = this.$refs.treeCategory.getCheckedKeys(true);
                 if(ids && ids.length!=0){
                      this.dataForm.ids = "至少勾选了一个tree,验证通过";

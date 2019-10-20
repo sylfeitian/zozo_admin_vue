@@ -16,6 +16,7 @@
                         v-model="dataForm.startTime"
                         type="datetime"
                         value-format="yyyy-MM-dd HH:mm:ss"
+                        :picker-options="pickerOptions0"
                         placeholder="选择开始时间">
                     </el-date-picker>
                 </el-form-item>
@@ -24,6 +25,7 @@
                         v-model="dataForm.endTime"
                         type="datetime"
                         value-format="yyyy-MM-dd HH:mm:ss"
+                        :picker-options="pickerOptions1"
                         placeholder="选择结束时间">
                     </el-date-picker>
                 </el-form-item>
@@ -100,8 +102,26 @@
                     checkList:[1,2],
                     couponsLimit:true,//是否与优惠券活动共享：0 不共享 1 共享 ,
                     reduceLimit:true,//是否与满减活动共享：0 不共享 1 共享 ,
+                    startTime:"",
+                    endTime:'',
                 },
                 row:'',
+                pickerOptions0: { 
+			         disabledDate(time) {
+//			         	if (this.dataForm.endTime != "") {
+//                      	return time.getTime() >  new Date(this.dataForm.endTime).getTime();
+//              		}
+			            return time.getTime() < Date.now() - 8.64e7;//如果没有后面的-8.64e7就是不可以选择今天的 
+			            
+			         }
+			  	},
+			  	pickerOptions1: {
+	                disabledDate: (time) => {
+//	                	if(this.dataForm.startTime){
+//	                      return time.getTime() < new Date(this.dataForm.startTime).getTime() - 1*24*60*60*1000;//可以选择同一天
+//	                    }
+	                }
+	            },
             }
         },
         methods: {

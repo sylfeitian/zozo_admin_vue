@@ -19,6 +19,7 @@
                         type="datetime"
                         value-format="yyyy-MM-dd HH:mm:ss"
                         placeholder="选择开始时间"
+                        :picker-options="pickerOptions0"
                         style="width: 200px">
                 </el-date-picker>
         </el-form-item>
@@ -28,6 +29,7 @@
                         v-model="dataForm.getEndTime"
                         type="datetime"
                          value-format="yyyy-MM-dd HH:mm:ss"
+                         :picker-options="pickerOptions1"
                         placeholder="选择结束时间"
                         style="width: 200px">
                 </el-date-picker>
@@ -165,23 +167,23 @@ export default {
         },
         pickerOptions0: {
             disabledDate: (time) => {
-               if (this.dataForm.getEndTime) {   //先选的结束时间
-                  return time.getTime() > new Date(this.dataForm.getEndTime).getTime()  || time.getTime() < Date.now() - 8.64e7;
-               }else{//还没有选择结束时间的时候，让他只能选择今天之后的时间包括今天
-                   return time.getTime() < Date.now() - 8.64e7
-               } 
-     
-             }
+                if (this.dataForm.getEndTime) {   //先选的结束时间
+                    return time.getTime() > new Date(this.dataForm.getEndTime).getTime() || time.getTime() < Date.now() - 8.64e7;
+                } else {//还没有选择结束时间的时候，让他只能选择今天之后的时间包括今天
+                    return time.getTime() < Date.now() - 8.64e7
+                }
+
+            }
         },
-         pickerOptions1: {
-                disabledDate: (time) => {
-                    if(this.dataForm.getStartTime){
-                      return time.getTime() < new Date(this.dataForm.getStartTime).getTime() - 8.64e7;//可以选择同一天
-                    }else if(!this.dataForm.getStartTime){
-											return time.getTime() < Date.now() - 8.64e7
-										}
-                }
-            },
+        pickerOptions1: {
+            disabledDate: (time) => {
+                if (this.dataForm.getStartTime) {
+                    return time.getTime() < new Date(this.dataForm.getStartTime).getTime();//可以选择同一天
+                } else if (!this.dataForm.getStartTime) {
+                    return time.getTime() < Date.now() - 8.64e7
+                }
+            }
+        },
 					value1isshow: false,
 					value2isshow: false,
 					value1Time:{},
@@ -328,6 +330,27 @@ export default {
         },
       // 提交
       dataFormSubmit(formName){
+      	if(parseInt(this.dataForm.threshold)>0&&parseInt(this.dataForm.threshold)<=parseInt(this.dataForm.faceValue)){
+                    this.$message({
+                        message: "提交失败，面额必须小于使用门槛",
+                        type: "error",
+                        duration: 1500
+                    })
+                    return false
+                    if (this.dataForm.threshold || this.dataForm.threshold == "0") {
+                        // 无门槛的时候不验证
+                    }else{
+                        
+                    }
+                   
+                }else if(parseInt(this.dataForm.limitNum)>parseInt(this.dataForm.totalNums)){
+                    this.$message({
+                        message: "提交失败，限领数量不能大于总发行量",
+                        type: "error",
+                        duration: 1500
+                    })
+                    return false
+                }
           // alert([this.dataForm.name,this.dataForm.domainAddress]);
           this.$refs[formName].validate((valid) => {
               if (valid) {
@@ -341,18 +364,6 @@ export default {
                       threshold:  this.dataForm.threshold,//使用门槛 ,
                       totalNums:  this.dataForm.totalNums,//总发行量 ,
                       validityDays:  this.dataForm.validityDays,// 有效天数
-                  }
-                  if(parseInt(this.dataForm.threshold)<=parseInt(this.dataForm.faceValue)) {
-                        if (this.dataForm.threshold || this.dataForm.threshold == "0") {
-                            // 无门槛的时候不验证
-                        }else{
-                            this.$message({
-                                message: "提交失败，面额必须小于使用门槛",
-                                type: "error",
-                                duration: 1500
-                            })
-                            return false
-                        }
                   }
                   if(this.editSatusId) obj.id = this.editSatusId//优惠券活动id 
                   var fn = this.type?addActivityNewMember:editActivityNewMember

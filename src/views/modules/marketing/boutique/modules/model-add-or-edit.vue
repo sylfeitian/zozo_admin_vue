@@ -12,7 +12,7 @@
                     <el-input v-model.trim="dataForm.title" placeholder="最多可输入4个汉字" :maxlength="4"></el-input>
                 </el-form-item>
                 <el-form-item label="排序：" prop="sort">
-                    <el-input-number style="width:140px;margin-right:20px;" :controls="false" v-model="dataForm.sort" placeholder="0~255" :min="0" :max="10000000" ></el-input-number>数字越大越靠前
+                    <el-input-number style="width:140px;margin-right:20px;" :controls="false" v-model="dataForm.sort" placeholder="0~99999" :min="0" :max="99999" ></el-input-number>数字越大越靠前
                 </el-form-item>
                 <el-form-item label="是否启用：" prop="stopFlag">
                 <el-radio-group v-model="dataForm.stopFlag">

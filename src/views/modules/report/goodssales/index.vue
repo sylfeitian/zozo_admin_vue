@@ -98,13 +98,14 @@
         >
             <el-table-column prop="" label="日期" align="center">
                 <template slot-scope="scope">
-                    <span>~{{scope.row.startTime}}</span>
+                    <span>{{scope.row.startTime}}</span>
                     <span v-if="scope.row.startTime && scope.row.endTime">~</span>
                     <span>{{scope.row.endTime }}</span>
                 </template>
             </el-table-column>
             <el-table-column prop="spuid" label="商品ID(SPU)" align="center"></el-table-column>
             <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
+            <el-table-column prop="skuid" label="SKUID" align="center"></el-table-column>
             <el-table-column prop="" label="商品图片" align="center">
                 <template slot-scope="scope">
                     <img

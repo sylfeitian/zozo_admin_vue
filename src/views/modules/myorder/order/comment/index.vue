@@ -193,7 +193,11 @@
           </template>
       </el-table-column>
 
-      <el-table-column prop="evaluateContent" label="评论内容" align="center" :show-overflow-tooltip="true" min-width="200"> </el-table-column>
+      <el-table-column prop="evaluateContent" label="评论内容" align="center" :show-overflow-tooltip="true" min-width="200"> 
+      		<template slot-scope="scope">
+      			{{scope.row.evaluateContent ? 'scope.row.evaluateContent' : '"此用户没有填写评论"'}}
+      		</template>
+      </el-table-column>
 
       <el-table-column prop="createDate" label="评论时间" width="155"  align="center">
           <template slot-scope="scope">

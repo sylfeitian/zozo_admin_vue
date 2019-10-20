@@ -19,6 +19,7 @@
                 type="datetime"
                 format="yyyy-MM-dd HH:mm:ss"
                 value-format="yyyy-MM-dd HH:mm:ss"
+                :picker-options="pickerOptions0"
                 placeholder="选择开始时间"
                 style="width: 200px">
             </el-date-picker>
@@ -30,6 +31,7 @@
                 type="datetime"
                 format="yyyy-MM-dd HH:mm:ss"
                 value-format="yyyy-MM-dd HH:mm:ss"
+                :picker-options="pickerOptions1"
                 placeholder="选择结束时间"
                 style="width: 200px">
             </el-date-picker>
@@ -166,10 +168,22 @@ export default {
             },
             pickerOptions0: {
                 disabledDate: (time) => {
-                    console.log(time.getTime() );
-                    console.log(Date.now());
-                  return time.getTime() < Date.now() - 8.64e7
-                }
+                    if (this.dataForm.getEndTime) {   //先选的结束时间
+                        return time.getTime() > new Date(this.dataForm.getEndTime).getTime() || time.getTime() < Date.now() - 8.64e7;
+                    } else {//还没有选择结束时间的时候，让他只能选择今天之后的时间包括今天
+                        return time.getTime() < Date.now() - 8.64e7
+                    }
+
+                }
+            },
+            pickerOptions1: {
+                disabledDate: (time) => {
+                    if (this.dataForm.getStartTime) {
+                        return time.getTime() < new Date(this.dataForm.getStartTime).getTime();//可以选择同一天
+                    } else if (!this.dataForm.getStartTime) {
+                        return time.getTime() < Date.now() - 8.64e7
+                    }
+                }
             },
             row:"",
             valuetime:"",
@@ -335,6 +349,27 @@ export default {
         },
             // 提交
         dataFormSubmit(formName){
+        	if(parseInt(this.dataForm.threshold)>0&&parseInt(this.dataForm.threshold)<=parseInt(this.dataForm.faceValue)){
+                    this.$message({
+                        message: "提交失败，面额必须小于使用门槛",
+                        type: "error",
+                        duration: 1500
+                    })
+                    return false
+                    if (this.dataForm.threshold || this.dataForm.threshold == "0") {
+                        // 无门槛的时候不验证
+                    }else{
+                        
+                    }
+                   
+                }else if(parseInt(this.dataForm.limitNum)>parseInt(this.dataForm.totalNums)){
+                    this.$message({
+                        message: "提交失败，限领数量不能大于总发行量",
+                        type: "error",
+                        duration: 1500
+                    })
+                    return false
+                }
             // alert([this.dataForm.name,this.dataForm.domainAddress]);
             this.$refs[formName].validate((valid) => {
                 if (valid) {
@@ -353,25 +388,6 @@ export default {
                         validityPeriodType:parseInt(this.validityPeriodType),//有效期类型，0：日期范围，1：固定天数
                         startTime:this.dataForm.startTime,//生效日期
                         endTime:this.dataForm.endTime,// 截止日期
-                    }
-                    if(parseInt(this.dataForm.threshold)<=parseInt(this.dataForm.faceValue)) {
-                        if (this.dataForm.threshold || this.dataForm.threshold == "0") {
-                                // 无门槛的时候不验证
-                        }else{
-                            this.$message({
-                                message: "提交失败，面额必须小于使用门槛",
-                                type: "error",
-                                duration: 1500
-                            })
-                            return false
-                        }
-                    }else if(parseInt(this.dataForm.limitNum)>parseInt(this.dataForm.totalNums)){
-                        this.$message({
-                            message: "提交失败，限领数量不能大于总发行量",
-                            type: "error",
-                            duration: 1500
-                        })
-                        return false
                     }
                     if(this.editSatusId) obj.id = this.editSatusId//优惠券活动id
                     var fn = this.type?addActivityNormal:editActivityNormal

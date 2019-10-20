@@ -398,9 +398,10 @@ export default {
     getbackScanCategorys() {
         this.categories = [];
       backScanCategorys().then(res => {
+      	console.log(res);
         if (res.code == 200) {
           res.data.map((v,i)=>{
-              if(v.list[0]){
+              if(v[0]){
                   this.categories[i] = {
                       value:v.id,
                       label:v.name,

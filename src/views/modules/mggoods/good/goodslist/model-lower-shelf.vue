@@ -1,7 +1,7 @@
 <template>
 <el-dialog
         class="model-add-edit-data"
-        title="下架"
+        :title="row.showWeb == 2 ?'上架': row.showWeb == 0 ?'上架': '下架' "
         :close-on-click-modal="false"
         :visible.sync="visible"
         :before-close="closeDialog"
@@ -174,7 +174,7 @@
                         }
                          this.saveLoading = true;
                          if (this.dataForm.showType == 1){ obj.shelfTime= this.shelfTime}
-                         if (this.row.showWeb == 2) { obj.showWeb= 1 }
+                         if (this.row.showWeb == 0 || this.row.showWeb == 2) { obj.showWeb= 1 }
                          var fn = showGoods;
                         fn(obj).then((res) => {
                             this.saveLoading = false;
@@ -186,8 +186,9 @@
                                 this.visible = false;
                                 this.$emit('searchDataList');
                                 this.closeDialog();
-                                msg = showWeb == 1 ? "商品上架成功" : "商品下架成功";
-                                this.getDataList();
+//                              msg = showWeb == 1 ? "商品上架成功" : "商品下架成功";
+																msg = res.msg;
+//                              this.getDataList();
                             }else{
                                 status = "error";
                                 msg = res.msg;

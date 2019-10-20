@@ -522,19 +522,41 @@
             },
             upLoad(file) {
                 const that = this;
-                getUrlBase64(URL.createObjectURL(file.file),file.file.type,function (base) {
-                    console.log(base);
-                    uploadPicBase64({"imgStr": base}).then(res =>{
-                        console.log(res)
-                        if(res.code == 200){
-                            that.activiDataForm.fileList = [{name: '文件',url:that.$imgDomain + res.data.url}]
-                            // that.activiDataForm.imageSrc = that.$imgDomain + res.data.url;
-                             that.activiDataForm.imageSrc = res.data.url;
-                        }else{
-                            that.$message.error('上传失败');
-                        }
-                    })
-                })
+                
+                //第一种
+                let base64code = '';
+                let reader = new FileReader()
+						    reader.readAsDataURL(file.file)
+						    reader.onload  = function(event){
+						    	console.log(this.result)
+						    	base64code = this.result;
+						    	uploadPicBase64({"imgStr": base64code}).then(res =>{
+	                    console.log(res)
+	                    if(res.code == 200){
+	                        that.activiDataForm.fileList = [{name: '文件',url:that.$imgDomain + res.data.url}]
+	                        // that.activiDataForm.imageSrc = that.$imgDomain + res.data.url;
+	                         that.activiDataForm.imageSrc = res.data.url;
+	                    }else{
+	                        that.$message.error('上传失败');
+	                    }
+	                })
+						    }
+	    				 	
+		    				
+//		    				//第二种
+//              getUrlBase64(URL.createObjectURL(file.file),file.file.type,function (base) {
+//                  console.log(base);
+//                  uploadPicBase64({"imgStr": base}).then(res =>{
+//                      console.log(res)
+//                      if(res.code == 200){
+//                          that.activiDataForm.fileList = [{name: '文件',url:that.$imgDomain + res.data.url}]
+//                          // that.activiDataForm.imageSrc = that.$imgDomain + res.data.url;
+//                           that.activiDataForm.imageSrc = res.data.url;
+//                      }else{
+//                          that.$message.error('上传失败');
+//                      }
+//                  })
+//              })
             },
             beforeAvatarUpload(file) {
                 console.log('3333333333',file.type)

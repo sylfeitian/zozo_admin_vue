@@ -166,10 +166,10 @@
 			}
 	    };
 	    var sortminmax = (rule, value, callback) => {
-	    	if(value >= 0 && value < 255){
+	    	if(value >= 0 && value < 99999){
 	    		callback();
 	    	}else{
-	    		callback('排序值在0-255之间');
+	    		callback('排序值在0-99999之间');
 	    	}
 		};
 		  var validateAppraisal = (rule, value, callback) => {
