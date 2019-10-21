@@ -195,8 +195,42 @@
             importAndExport
         },
         watch:{
-
+            //商品名称搜索框可输入中英文、数字、常用字符，统一最多可输入300字符；2个字符等于1个汉字
+            'dataForm.goodsName':function(newV,oldV) {
+                                var chineseCount = 0,characterCount = 0;
+                                for (let i = 0; i < newV.length; i++) {
+                                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                                        chineseCount = chineseCount + 2;
+                                    } else { //字符
+                                        characterCount = characterCount + 1;
+                                    }
+                                    var count = chineseCount + characterCount;
+                                    if (count > 300) { //输入字符大于300的时候过滤
+                                        this.dataForm.goodsName = newV.substr(0,(chineseCount/2+characterCount)-1)
+                                    }
+                                }
+                            },
             // ID类搜索框仅可输入数字、英文，最多可输入30个字符
+            'dataForm.aftersaleSn':function(newV,oldV) {
+                            for(let i=0;i<newV.length;i++){
+                                if(!/[a-zA-Z0-9\s]/.test(newV[i])){
+                                    this.dataForm.aftersaleSn = newV.replace(newV[i],"")
+                                }
+                            }
+                            if(newV.length>30){
+                                this.dataForm.aftersaleSn = newV.substr(0,30)
+                            }
+                        },
+            'dataForm.orderSn':function(newV,oldV) {
+                            for(let i=0;i<newV.length;i++){
+                                if(!/[a-zA-Z0-9\s]/.test(newV[i])){
+                                    this.dataForm.orderSn= newV.replace(newV[i],"")
+                                }
+                            }
+                            if(newV.length>30){
+                                this.dataForm.orderSn= newV.substr(0,30)
+                            }
+                        },
             'dataForm.spuid':function(newV,oldV) {
                 for(let i=0;i<newV.length;i++){
                     if(!/[a-zA-Z0-9\s]/.test(newV[i])){

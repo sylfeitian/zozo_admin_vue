@@ -148,7 +148,7 @@
                 <span style="font-size: 20px;margin-right: 20px;">状态：{{dataForm.showWeb == 0?"未发布":dataForm.showWeb == 1?"已发布":dataForm.showWeb == 2?"取消发布":''}}</span>
                 <el-button class="btn" @click="reset()">取消</el-button>
                 <el-button class="btn" @click="getData(0)">保存</el-button>
-                <el-button class="btn" :disabled="dataForm.showWebJp == 0" type="primary" @click="getData(1)">保存并发布</el-button>
+                <el-button class="btn" :disabled="dataForm.showWebJp != 1" type="primary" @click="getData(1)">保存并发布</el-button>
             </div>
         </el-col>
     </div>
@@ -277,5 +277,9 @@
     }
     .grayLine {
         border-bottom: 0!important;
+    }
+    /deep/ .el-form-item--default {
+        padding: 0 0!important;
+        margin-bottom: 0!important;
     }
 </style>

@@ -6,14 +6,13 @@
             width="50%"
     >
         <el-form label-width="100px"
-                 :model="dataForm" 
-                 :rules="dataRule"
+                 :model="dataForm"
                  ref="addForm">
         	<div class="formItemWarp" >
                 <el-radio v-model="dataForm.type" :label="0">
                     <span  style="color:transparent">0</span>
                 </el-radio>
-                <el-form-item label="账号：" style="width: 100%;" prop="memberName">
+                <el-form-item label="账号：" style="width: 100%;">
                         <el-input v-model.trim="dataForm.memberName" placeholder="请输入"></el-input>
                 </el-form-item>
             </div>
@@ -22,7 +21,7 @@
                 <el-radio v-model="dataForm.type" :label="1">
                     <span  style="color:transparent">0</span>
                 </el-radio>
-                <el-form-item label="收货地址："  prop="provinceId">
+                <el-form-item label="收货地址：">
 	                <el-select
 	                        v-model="dataForm.provinceId"
 	                        placeholder="省"
@@ -104,12 +103,6 @@
     export default {
         components: {},
         data() {
-                var validateMobile = (rule, value, callback) => {
-                    if (!isMobile(value)) {
-                    return callback(new Error('请输入正确的手机号!'))
-                    }
-                    callback()
-                }
             return {
                 loading:false,
                 value: [],
@@ -132,15 +125,6 @@
                 optionsArea2: [],
                 optionsArea3: [],
                 optionsArea4: [],
-                dataRule : {
-			        memberName : [
-                      { required: true, message: '账号必填项', trigger: 'blur' },
-                       { validator: validateMobile, trigger: 'blur'},
-                    ],
-                    provinceId : [
-			          { required: true, message: '省份必填项', trigger: 'blur' },
-			        ],
-				},
             };
         },
         props: [],
@@ -239,8 +223,15 @@
                 // this.$emit("refreshDataList");
                 //回传主页面。false
             },
-            //重置密码
+            //新增黑名单 提交
            	dataFormSubmit(formName){
+				if(this.dataForm.type === 0 && this.dataForm.memberName === ""){ //选择账号
+					this.$message.error("请输入账号");
+					return
+				}else if(this.dataForm.type === 1 && this.dataForm.provinceId === ""){
+					this.$message.error("请选择省份");
+					return
+				}
                 if(this.loading) return;
                 var  addressIds = this.dataForm.provinceId; //省
                 if(this.dataForm.cityId){

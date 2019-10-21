@@ -129,7 +129,7 @@
           >{{scope.row.idJp}}</div>
         </template>
       </el-table-column>
-      <el-table-column label="主图" prop="imageUrl" align="center" width="160">
+      <el-table-column label="主图" prop="imageUrl" align="center" width="160" min-width="160">
         <template slot-scope="scope">
           <img
             :src="scope.row.mainImageUrl | filterImgUrl"
@@ -175,7 +175,7 @@
           <div>{{scope.row.storeName}}</div>
         </template>
       </el-table-column>
-      <el-table-column label="状态" align="center">
+      <el-table-column label="状态" align="center" min-width="100" width="100">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.showWeb==0" type="info">待上架</el-tag>
           <el-tag v-if="scope.row.showWeb==1" type="success">已上架</el-tag>

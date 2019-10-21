@@ -51,7 +51,7 @@
         >
             <el-table-column type="selection" width="70"></el-table-column>
             <el-table-column prop="idJp" width="100" label="ID" align="center"></el-table-column>
-            <el-table-column prop="imageUrl" label="封面图片" width="150" align="center">
+            <el-table-column prop="imageUrl" label="封面图片" width="150" min-width="150" align="center">
                 <template slot-scope="scope">
                     <img
                         :src="scope.row.imageUrl320"
@@ -62,13 +62,13 @@
             </el-table-column>
             <el-table-column prop="nickname" label="用户" align="center"></el-table-column>
             <el-table-column prop="goodsNums" width="80" label="相关商品" align="center"></el-table-column>
-            <el-table-column prop="state" width="120" label="发布状态" align="center">
+            <el-table-column prop="state" min-width="120" width="120" label="发布状态" align="center">
             	<template slot-scope="scope">
                     <el-tag v-if="scope.row.state == 1" type="success">已发布</el-tag>
 					<el-tag v-else type="info">取消发布</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column width="120" prop="jpPublishState"  label="日本发布状态" align="center">
+            <el-table-column min-width="120" width="120" prop="jpPublishState"  label="日本发布状态" align="center">
             	<template slot-scope="scope">
                     <el-tag v-if="scope.row.jpPublishState == 1" type="success">已发布</el-tag>
 					<el-tag v-else type="info">取消发布</el-tag>
@@ -250,7 +250,7 @@
                     this.dataForm.state = "0"
                 }
                 this.changeVal = val;
-                this.getDataList();
+                this.getData();
             },
             forbitHandle(index,row){
                 this.currentIndex = index;
@@ -271,13 +271,13 @@
                         if(res.code==200){
                             this.getDataList();
                             this.$message({
-                                message:res.data,
+                                message:res.msg,
                                 type: 'success',
                                 duration: 1500,
                             })
                         }else{
                             this.$message({
-                                message:res.data,
+                                message:res.msg,
                                 type: 'error',
                                 duration: 1500,
                             })
@@ -304,13 +304,13 @@
                             if(res.code==200){
                                 this.getDataList();
                                 this.$message({
-                                    message:res.data,
+                                    message:res.msg,
                                     type: 'success',
                                     duration: 1500,
                                 })
                             }else{
                                 this.$message({
-                                    message:res.data,
+                                    message:res.msg,
                                     type: 'error',
                                     duration: 1500,
                                 })

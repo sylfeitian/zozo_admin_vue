@@ -68,7 +68,7 @@
 </template>
 
 <script>
-    import {limitActivitySkuChoice,deleteLimitActivityGoodscs} from "@/api/api.js"
+    import {limitActivitySkuChoice,deletePresellActivityGoodscs} from "@/api/api.js"
     export default {
         name: "model-add-edit-data",
         data () {
@@ -159,10 +159,11 @@
                     var obj = {
                         data:{
                             activityId: that.row.id,//活动id 
+                            activityType:2,
                             goodsCsId: row.id//商品SkuID
                         }
                     }
-                    deleteLimitActivityGoodscs(obj).then((res)=>{
+                    deletePresellActivityGoodscs(obj).then((res)=>{
                         if(res.code==200){
                             that.$message.success(res.msg);
                             that.backScan();

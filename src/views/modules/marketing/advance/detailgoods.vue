@@ -204,6 +204,7 @@
                         var obj = {
                             data:{
                                 "activityId": that.row.id,//  活动id ,
+                                "activityType":2,
                                 "goodsIdList": goodsIdList,//商品spuid
                             }
                         }

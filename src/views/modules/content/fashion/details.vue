@@ -57,7 +57,7 @@
                 </el-form-item>
             </el-form>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="12" :offset="row.fashionFlag == 0?0:6">
             <el-form
                     ref="dataForm"
                     class="grayLine topGapPadding"
@@ -192,5 +192,9 @@
     .contentChild{
         text-align: center;
         padding: 0;
+    }
+    /deep/ .el-form-item--default {
+        padding: 0 0!important;
+        margin-bottom: 0!important;
     }
 </style>

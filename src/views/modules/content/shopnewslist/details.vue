@@ -233,4 +233,8 @@
         padding: 0 0;
         margin-left: 78px;
     }
+    /deep/ .el-form-item--default {
+        padding: 0 0!important;
+        margin-bottom: 0!important;
+    }
 </style>

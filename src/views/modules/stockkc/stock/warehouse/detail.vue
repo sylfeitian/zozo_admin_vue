@@ -25,7 +25,7 @@
             </el-form-item>
             <el-form-item prop="isEnable" label="状态：">
                 <template slot-scope="scope">
-                    <span  v-if="form.isEnable==0">不启用</span>
+                    <span  v-if="form.isEnable==0">停用</span>
                     <span  v-if="form.isEnable==1">启用</span>
                 </template>
             </el-form-item>

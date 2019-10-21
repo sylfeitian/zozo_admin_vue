@@ -27,7 +27,7 @@
                         @change="changeSort(scope.row)"
                         :min="0"
                         type="number"
-                        style="width:160px;"
+                        style="width:120px;"
                     ></el-input>
                 </template>
             </el-table-column>
