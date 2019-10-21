@@ -74,6 +74,7 @@
                                 :cropImg="addDataForm.mainImageUrl"
                                 :imgWidth='"100px"'
                                 :imgHeight='"100px"'
+                                @delteteImg="delteteImg"
                                 @GiftUrlHandle="GiftUrlHandle"
                                 style="display: inline-block;"
                         ></img-cropper>
@@ -449,6 +450,10 @@
 				    }
                 });
 
+            },
+            // 删除封面图
+            delteteImg(){
+                this.addDataForm.mainImageUrl = "";
             },
             GiftUrlHandle(val){
                 this.uploadPic(val);

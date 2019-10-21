@@ -330,6 +330,16 @@ export default {
 	 importAndExport
 	},
 	watch:{
+		 "dataForm.spuid": function(newV, oldV) {
+			for (let i = 0; i < newV.length; i++) {
+				if (!/[a-zA-Z0-9\s]/.test(newV[i])) {
+				this.dataForm.spuid = newV.replace(newV[i], "");
+				}
+			}
+			if(newV.length>30){
+				this.dataForm.spuid = newV.substr(0,30)
+			}
+		},
 	},
 	methods: {
 		getData(){

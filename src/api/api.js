@@ -1003,7 +1003,8 @@ export const savePresellActivityGoods = params => { return http.post(`${base}/pr
 export const editPresellActivityGoods = params => { return http.put(`${base}/presell/activity/goods`, params).then(res => res.data); };
 // 删除限量活动商品
 export const deletePresellActivityGoods = params => { return http.delete(`${base}/presell/activity/goods`, params).then(res => res.data); };
-
+// 删除预售活动商品规格
+export const deletePresellActivityGoodscs = params => { return http.delete(`${base}/presell/activity/goodscs`, params).then(res => res.data); };
 
 // 审核限量活动
 export const presellActivityAudit = params => { return http.put(`${base}/presell/activity/audit`, params).then(res => res.data); };
