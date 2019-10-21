@@ -271,13 +271,13 @@
                         if(res.code==200){
                             this.getDataList();
                             this.$message({
-                                message:res.data,
+                                message:res.msg,
                                 type: 'success',
                                 duration: 1500,
                             })
                         }else{
                             this.$message({
-                                message:res.data,
+                                message:res.msg,
                                 type: 'error',
                                 duration: 1500,
                             })
@@ -304,13 +304,13 @@
                             if(res.code==200){
                                 this.getDataList();
                                 this.$message({
-                                    message:res.data,
+                                    message:res.msg,
                                     type: 'success',
                                     duration: 1500,
                                 })
                             }else{
                                 this.$message({
-                                    message:res.data,
+                                    message:res.msg,
                                     type: 'error',
                                     duration: 1500,
                                 })
