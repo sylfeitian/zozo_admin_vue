@@ -206,6 +206,9 @@
         },
         watch: {
             'addDataForm.title': function (newV, oldV) {
+                if(!newV){
+                    return
+                }
                 var chineseCount = 0, characterCount = 0;
                 for (let i = 0; i < newV.length; i++) {
                     if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
@@ -220,6 +223,9 @@
                 }
             },
             'addDataForm.idJp':function(newV,oldV) {
+                if(!newV){
+                    return
+                }
                 for(let i=0;i<newV.length;i++){
                     // 只能输入英文和数字
                     if(/[^0-9a-zA-Z]/g.test(newV[i])){
@@ -228,6 +234,9 @@
                 }
             },
             'addDataForm.favNumCn':function(newV,oldV) {
+                if(!newV){
+                    return
+                }
                 for(let i=0;i<newV.length;i++){
                     // 只能输入数字,最大999个整数
                     if(!/[0-9]/g.test(newV[i])){
@@ -239,6 +248,9 @@
                 }
             },
             'addDataForm.viewsNumCn':function(newV,oldV) {
+                if(!newV){
+                    return
+                }
                 for(let i=0;i<newV.length;i++){
                     // 只能输入数字,最大999个整数
                     if(!/[0-9]/g.test(newV[i])){

@@ -144,8 +144,6 @@
             <span v-if="scope.row.access==0">超赞</span>
             <span v-else-if="scope.row.access==1">一般</span>
             <span v-else-if="scope.row.access==2">满意</span>
-            
-
           </template>
       </el-table-column>
 

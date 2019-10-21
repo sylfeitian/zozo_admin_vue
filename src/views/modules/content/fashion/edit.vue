@@ -58,7 +58,7 @@
             </el-form>
         </el-col> -->
 
-        <el-col :span="24" style="border-left: 1px solid #e6e6e6;border-right: 1px solid #e6e6e6;">
+        <el-col :span="24" >
             <el-form
                     ref="dataForm"
                     class="grayLine topGapPadding"
@@ -69,7 +69,7 @@
                     <div style="width:50%;">
                         <p class="title" >日文</p>
                     </div>
-                    <div style="width:50%;border-left:1px solid #e6e6e6;">
+                    <div style="width:50%">
                        <p class="title">中文</p>
                     </div>
                 </div>
@@ -80,7 +80,7 @@
                             <span>{{dataForm.idJp}}</span>
                         </el-form-item>
                     </div>
-                    <div style="width:50%;border-left:1px solid #e6e6e6;">
+                    <div style="width:50%">
                         <el-form-item label="纪实编号：">
                             <span>{{dataForm.idJp}}</span>
                         </el-form-item>
@@ -93,7 +93,7 @@
                             <span>{{dataForm.publisher}}</span>
                         </el-form-item>
                     </div>
-                    <div style="width:50%;border-left:1px solid #e6e6e6;">
+                    <div style="width:50%">
                         <el-form-item label="发布者：" >
                             <span>{{dataForm.publisher}}</span>
                         </el-form-item>
@@ -106,7 +106,7 @@
                             <span>{{dataForm.totalFavNum}}</span>
                         </el-form-item>
                     </div>
-                    <div style="width:50%;border-left:1px solid #e6e6e6;">
+                    <div style="width:50%">
                         <el-form-item label="收藏数量：">
                             <span>{{dataForm.totalFavNum}}</span>
                         </el-form-item>
@@ -119,7 +119,7 @@
                             <span>{{dataForm.viewsNum}}</span>
                         </el-form-item>
                     </div>
-                    <div style="width:50%;border-left:1px solid #e6e6e6;">
+                    <div style="width:50%">
                         <el-form-item label="浏览数量：">
                             <span>{{dataForm.viewsNum}}</span>
                         </el-form-item>
@@ -132,7 +132,7 @@
                             <span>{{dataForm.isOpen == 1?"发布":dataForm.isOpen == 2?"未发布":""}}</span>
                         </el-form-item>
                     </div>
-                    <div style="width:50%;border-left:1px solid #e6e6e6;">
+                    <div style="width:50%">
                          <el-form-item label="发布状态：">
                             <span>{{dataForm.state == 0?"未发布":dataForm.state == 1?"已发布":dataForm.state == 2?"取消发布 ":""}}</span>
                         </el-form-item>
@@ -151,7 +151,7 @@
                             </template>
                         </el-form-item>
                     </div>
-                    <div style="width:50%;border-left:1px solid #e6e6e6;">
+                    <div style="width:50%">
                          <el-form-item label="背景图：" style="height: 100%!important;">
                             <template slot-scope="scope">
                                 <div class="goodsPropsWrap">
@@ -170,21 +170,20 @@
                             <span>{{dataForm.titleJp}}</span>
                         </el-form-item>
                     </div>
-                    <div style="width:50%;border-left:1px solid #e6e6e6;">
+                    <div style="width:50%">
                         <el-form-item label="标题：" style="height: 100%!important;">
                             <el-input v-model.trim="dataForm.title" type="text" placeholder="请输入标题名称"></el-input>
                         </el-form-item>
                     </div>
                 </div>
 
-                   
                 <el-form-item label="详情：" style="height: 100%!important;">
                     <template slot-scope="scope">
                         <br>
                         <div style="display:flex;padding:0" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
-                            <div style="width:50%;">
+                            <div style="width:50%;" v-if="v.text || v.imageUrl"  v-show="row.fashionFlag == 0">
                                 <!-- <div style="height: 20px;"></div> -->
-                                <div class="contentChild" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
+                                <div class="contentChild" style="min-height:33px;padding-right: 6px;" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
                                     {{v.text}}
                                 </div>
                                 <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
@@ -196,9 +195,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div style="width:50%;border-left:1px solid #e6e6e6;">
+                            <div style="width:50%"  v-if="v.text || v.imageUrl">
                                 <!-- <div style="height: 20px;"></div> -->
-                                <div class="contentChild" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
+                                <div class="contentChild"  style="min-height:33px;    padding-left: 6px;"  v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
                                     <el-input style="width: 80%;margin: auto;" v-model="v.text" type="textarea" :rows="5" ></el-input>
                                 </div>
                                 <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
@@ -242,7 +241,8 @@
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                     ]
                 },
-                dataForm: {}
+                dataForm: {},
+                row:"",
             }
         },
         components: {
@@ -253,6 +253,7 @@
             init(row){
                 this.$nextTick(()=>{
                     if(row){
+                        this.row = row;
                         var obj  = {
                             id:row.id
                         }
@@ -347,5 +348,8 @@
     /deep/ .el-form-item--default {
         padding: 0 0!important;
         margin-bottom: 0!important;
+    }
+     .borderLeftLine{
+        border-left:1px solid #e6e6e6;
     }
 </style>
