@@ -15,7 +15,7 @@
             <el-form-item label="启用状态：">
                 <el-select v-model="dataForm.isEnable" placeholder="请选择">
                     <el-option label="全部" value=""></el-option>
-                    <el-option label="不启用" value="0"></el-option>
+                    <el-option label="停用" value="0"></el-option>
                     <el-option label="启用" value="1"></el-option>
                 </el-select>
             </el-form-item>
@@ -61,7 +61,7 @@
             <el-table-column prop="phone" label="联系方式" align="center"></el-table-column>
             <el-table-column prop="isEnable" label="状态" align="center">
                 <template slot-scope="scope">
-                    <span  v-if="scope.row.isEnable==0">不启用</span>
+                    <span  v-if="scope.row.isEnable==0">停用</span>
                     <span  v-if="scope.row.isEnable==1">启用</span>
                 </template>
             </el-table-column>
@@ -204,7 +204,7 @@
                     "isEnable":row.isEnable?0:1
                 };
                 var msg = ""
-                row.isEnable==1?msg="不启用":msg="启用"
+                row.isEnable==1?msg="停用":msg="启用"
                 this.$confirm('是否进行'+msg+'操作?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
