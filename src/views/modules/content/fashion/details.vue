@@ -194,7 +194,7 @@
         padding: 0;
     }
     /deep/ .el-form-item--default {
-        padding: 0 0;
-        margin-bottom: 0;
+        padding: 0 0!important;
+        margin-bottom: 0!important;
     }
 </style>
