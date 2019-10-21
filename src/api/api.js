@@ -1045,8 +1045,10 @@ export const saveQuestionanswer = params => { return http.post(`${base}/question
 export const putQuestionanswer = params => { return http.put(`${base}/questionanswer/update`, params).then(res => res.data); };
 //Q&A批量修改
 export const updateBachQuestionanswer = params => { return http.put(`${base}/questionanswer/updateBach`, params).then(res => res.data); };
-//Q&A修改排序
+//Q&A详情页面修改排序
 export const updateQuestionanswerSort = params => { return http.put(`${base}/questionanswer/sort`, params).then(res => res.data); };
+//Q&A列表页面修改排序
+export const updateQuestiontypeSort = params => { return http.put(`${base}/questiontype/sort`, params).then(res => res.data); };
 //Q&A信息
 export const getQuestionanswer = params => { return http.get(`${base}/questionanswer/${params.id}`, params).then(res => res.data); };
 
