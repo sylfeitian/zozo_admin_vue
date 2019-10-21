@@ -9,7 +9,7 @@
         width="40%">
             <el-form :model="dataForm" :rules="dataRule" ref="addForm"  label-width="120px" v-loading="loading">
                 <el-form-item label="活动标题：" prop="title">
-                    <el-input v-model.trim="dataForm.title" placeholder="请输入50字以内的标题" :maxlength="100"  show-word-limit></el-input>
+                    <el-input v-model.trim="dataForm.title" placeholder="最多可输入100个汉字"></el-input>
                 </el-form-item>
                 <el-form-item label="开始时间：" prop="startTime">
                     <el-date-picker
@@ -124,6 +124,21 @@
 	            },
             }
         },
+        watch: {
+                  'dataForm.title':function(newV,oldV) {
+                                  var chineseCount=0;
+                                  for(let i=0;i<newV.length;i++){
+                                      if(/^[\u4e00-\u9fa5]*$/.test(newV[i])){ //只能输入汉字
+                                          chineseCount=chineseCount+1;
+                                      }else {
+                                          this.dataForm.goodsName=newV.replace(newV[i],'')
+                                      }
+                                      if(chineseCount>100){ //最大输入100字
+                                          this.dataForm.title = newV.substr(0,100)
+                                      }
+                                  }
+                              },
+                          },
         methods: {
             init (row) {
                 this.visible = true;
