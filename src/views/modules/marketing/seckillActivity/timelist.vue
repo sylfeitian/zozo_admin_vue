@@ -4,7 +4,7 @@
         <el-button
             style="float:right;margin-bottom:20px"
             type="primary"
-            @click="activiVisible=true"
+            @click="addTime"
         >添加</el-button>
         <el-table :data="dataList" v-loading="dataListLoading" border="" style="width: 100%">
             <el-table-column type="index" prop="$index" align="center" label="序号" width="70">
@@ -220,8 +220,17 @@ export default {
         }
       });
     },
+    addTime(){
+       this.activiVisible = true
+       this.buttonStatus = false;
+       this.activiDataForm.sgName = ""
+       this.activiDataForm.startTime = ""
+       this.activiDataForm.endTime = ""
+       this.activiDataForm.status = 1
+    },
     //编辑时间段
     editTime(id) {
+      this.buttonStatus = false;
       periodDetail({ id: id }).then(res => {
         if (res.code == 200) {
           console.log(res, "data");
@@ -229,7 +238,7 @@ export default {
             (this.activiDataForm.sgName = res.data.title);
           this.activiDataForm.startTime = res.data.dayStartTime;
           this.activiDataForm.endTime = res.data.dayEndTime;
-          this.activiDataForm.status = res.data.delFlag;
+          this.activiDataForm.status = res.data.stopFlag;
           this.editId = res.data.id; //编辑的时间段id
           this.activiDataForm.restrict = [
             "不可同时参加满减活动",

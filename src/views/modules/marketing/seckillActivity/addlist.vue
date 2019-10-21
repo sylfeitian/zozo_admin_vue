@@ -6,7 +6,6 @@
             ref="dataForm"
             class="grayLine topGapPadding"
             :model="dataForm"
-            @keyup.enter.native="getDataList()"
         >
             <el-form-item label="商品名称：" prop="name">
                 <el-input v-model.trim="dataForm.name" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
@@ -194,12 +193,12 @@ import mixinViewModule from "@/mixins/view-module";
 import { businessPageUrl } from "@/api/url";
 import {
   backScanCategorys,
-  addSckillPro,
   seckillProDet,
   seckillProSave,
   seckillProRemove,
   seckillProEdit
 } from "@/api/api";
+import { addSckillPro} from "@/api/url";
 import Bread from "@/components/bread";
 
 export default {
@@ -247,7 +246,8 @@ export default {
     return {
       mixinViewModuleOptions: {
         getDataListURL: addSckillPro,
-        getDataListIsPage: false,
+        activatedIsNeed: false, 
+        getDataListIsPage: true,
         exportURL: "/admin-api/store/export",
         deleteURL: "/admin-api/store",
         deleteIsBatch: true
@@ -256,11 +256,11 @@ export default {
       defaultImg:
         'this.src="' + require("../../../../assets/img/default.png") + '"', //默认图地址
       dataForm: {
-        name: "",
-        id: "",
-        brandName: "",
-        categoryId: "",
-        storeName: ""
+        name: "",//商品名称
+        id: "",//商品货号
+        brandName: "",//品牌名称
+        categoryId: "",//分类id
+        storeName: "" //店铺名称
       },
       isLimit: "", //当前选中行的日本限制数量
       multipleSelection: [],
@@ -310,8 +310,8 @@ export default {
   computed: {},
   created() {
     this.getbackScanCategorys();
-    this.getDataList();
-    this.demo();
+    this.getData();
+    // this.demo();
   },
   methods: {
       watchkc(index,val){
@@ -442,27 +442,33 @@ export default {
         }
       });
     },
-    //获取商品数据集合
-    getDataList() {
-      const params = {
-        limit: this.limit,
-        activityId: this.activityId,
-        page: this.page,
-        name: this.dataForm.name,
-        id: this.dataForm.id,
-        storeName: this.dataForm.storeName,
-        brandName: this.dataForm.brandName,
-        categoryId: this.dataForm.categoryId
-      };
-      addSckillPro(params).then(res => {
-        if (res.code == 200) {
-          this.dataList = res.data.list;
-          this.total = res.data.total;
-        } else {
-          console.log("error");
-        }
-      });
+    // 获取数据
+    getData(){
+      this.page = 1;
+      this.mixinViewModuleOptions.getDataListURL  = addSckillPro+ "" + this.activityId;
+      this.getDataList();
     },
+    //获取商品数据集合
+    // getDataList() {
+    //   const params = {
+    //     limit: this.limit,
+    //     activityId: this.activityId,
+    //     page: this.page,
+    //     name: this.dataForm.name,
+    //     id: this.dataForm.id,
+    //     storeName: this.dataForm.storeName,
+    //     brandName: this.dataForm.brandName,
+    //     categoryId: this.dataForm.categoryId
+    //   };
+    //   addSckillPro(params).then(res => {
+    //     if (res.code == 200) {
+    //       this.dataList = res.data.list;
+    //       this.total = res.data.total;
+    //     } else {
+    //       console.log("error");
+    //     }
+    //   });
+    // },
     //回调跳转查看商品页面
     showDetail(id) {
       this.$emit("detailistFun", id);
@@ -576,16 +582,16 @@ export default {
       });
     },
 
-    demo() {
-      function placeholderPic() {
-        var w = document.documentElement.offsetWidth;
-        document.documentElement.style.fontSize = w / 20 + "px";
-      }
-      placeholderPic();
-      window.onresize = function() {
-        placeholderPic();
-      };
-    },
+    // demo() {
+    //   function placeholderPic() {
+    //     var w = document.documentElement.offsetWidth;
+    //     document.documentElement.style.fontSize = w / 20 + "px";
+    //   }
+    //   placeholderPic();
+    //   window.onresize = function() {
+    //     placeholderPic();
+    //   };
+    // },
       handleChange(value) {
           this.dataForm.categoryId = value[value.length-1]
           console.log(this.dataForm.categoryId);

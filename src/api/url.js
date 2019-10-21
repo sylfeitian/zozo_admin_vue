@@ -478,7 +478,7 @@ export const activityMemberCouponsPage = `${base}/activity/coupon/member/coupons
 export const seckillPage = `${base}/seckill/activity/page`;
 //秒杀关联商品列表
 // export const seckillProPage = `${base}/seckill/goods/choiced/page`;
-
+export const addSckillPro = `${base}/seckill/goods/page/`;
 
 // 报表，统计
 // 业绩统计分页

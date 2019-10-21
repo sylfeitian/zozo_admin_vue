@@ -72,8 +72,10 @@
               // 回显数据
             getData(){
                 var obj  = {
-                    id: this.row.id,
-                    params:this.formData
+                    params:{
+                        ...this.formData,
+                        memberId: this.row.id
+                    }
                 }
                 memberloginlogById(obj).then((res)=>{
                     console.log(res);
