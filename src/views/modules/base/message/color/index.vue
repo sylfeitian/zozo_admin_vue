@@ -136,8 +136,11 @@
                 }
             },
         },
-        created () {
+        activated(){
             this.getDataList();
+        },
+        created () {
+            
         },
         methods: {
             getData(){
