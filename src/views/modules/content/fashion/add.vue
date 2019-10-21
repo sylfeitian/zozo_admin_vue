@@ -40,14 +40,15 @@
             <el-form-item :label-width="formLabelWidth" prop='text' style="vertical-align:top;">
                 <template slot-scope="scope">
                     <div style="float:left;margin-left: -55px;">
-                        <span style="color:#f56c6c;margin-right: 4px;">*</span>内容：</div>
-                        <div id="content" v-for="(v,i) in content" :key="i" v-loading="picloading">
+                        <span style="color:#f56c6c;margin-right: 4px;">*</span>内容：
+                    </div>
+                    <div id="content" v-for="(v,i) in content" :key="i">
                         <div class="contentChild" v-if="content[i]&&v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
                             <quill-editor-img class="inforRight" :value="v.text" :index="i" ref="quillEditorCompon" style="display: inline-block;"  @artmessageContent='artmessageContent' ></quill-editor-img>
                             <span style="margin-left: 10px;color:#2260d2;cursor:pointer;" @click="delContent(i)">删除</span>
                         </div>
-                        <div class="contentChild" v-if="content[i]&&v.typeId=='3'">
-                            <img style="width:600px;" :src="$imgDomain+v.imageUrl" alt="">
+                        <div class="contentChild" v-if="content[i]&&v.typeId=='3'" v-loading="picloading">
+                            <img style="width:600px;" :src="$imgDomain+v.imageUrl" alt="" >
                             <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="delContent(i)">删除</span>
                         </div>
                         <div class="contentChild" v-if="content[i]&&v.typeId=='4'">
