@@ -2,7 +2,7 @@
   <el-dialog :visible.sync="visible" :title="!pageId ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmitHandle()" label-width="120px">
       <el-form-item prop="username" :label="$t('user.username') + '：'">
-        <el-input v-model="dataForm.username" :placeholder="$t('user.username')"></el-input>
+        <el-input v-model.trim="dataForm.username" :placeholder="$t('user.username')"></el-input>
       </el-form-item>
       <!-- <el-form-item prop="deptName" :label="$t('user.deptName') + '：'" class="dept-list">
         <el-popover v-model="deptListVisible" ref="deptListPopover" placement="bottom-start" trigger="click">
@@ -17,16 +17,16 @@
             @current-change="deptListTreeCurrentChangeHandle">
           </el-tree>
         </el-popover>
-        <el-input v-model="dataForm.deptName" v-popover:deptListPopover :readonly="true" :placeholder="$t('user.deptName')"></el-input>
+        <el-input v-model.trim="dataForm.deptName" v-popover:deptListPopover :readonly="true" :placeholder="$t('user.deptName')"></el-input>
       </el-form-item> -->
       <el-form-item prop="password" :label="$t('user.password') + '：'" :class="{ 'is-required': !pageId }">
-        <el-input v-model="dataForm.password" type="password" :placeholder="$t('user.password')"></el-input>
+        <el-input v-model.trim="dataForm.password" type="password" :placeholder="$t('user.password')"></el-input>
       </el-form-item>
       <el-form-item prop="comfirmPassword" :label="$t('user.comfirmPassword') + '：'" :class="{ 'is-required': !pageId }">
-        <el-input v-model="dataForm.comfirmPassword" type="password" :placeholder="$t('user.comfirmPassword')"></el-input>
+        <el-input v-model.trim="dataForm.comfirmPassword" type="password" :placeholder="$t('user.comfirmPassword')"></el-input>
       </el-form-item>
       <el-form-item prop="realName" :label="$t('user.realName') + '：'">
-        <el-input v-model="dataForm.realName" :placeholder="$t('user.realName')"></el-input>
+        <el-input v-model.trim="dataForm.realName" :placeholder="$t('user.realName')"></el-input>
       </el-form-item>
       <el-form-item prop="gender" :label="$t('user.gender') + '：'" size="mini">
         <el-radio-group v-model="dataForm.gender">
@@ -36,10 +36,10 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item prop="email" :label="$t('user.email') + '：'">
-        <el-input v-model="dataForm.email" :placeholder="$t('user.email')"></el-input>
+        <el-input v-model.trim="dataForm.email" :placeholder="$t('user.email')"></el-input>
       </el-form-item>
       <el-form-item prop="mobile" :label="$t('user.mobile') + '：'">
-        <el-input v-model="dataForm.mobile" :placeholder="$t('user.mobile')"></el-input>
+        <el-input v-model.trim="dataForm.mobile" :placeholder="$t('user.mobile')"></el-input>
       </el-form-item>
       <el-form-item prop="roleId" :label="$t('user.roleIdList') + '：'" class="role-list">
         <el-select v-model="dataForm.roleId" :placeholder="$t('user.roleIdList')">

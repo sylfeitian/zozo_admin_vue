@@ -1,13 +1,69 @@
 // import http from '@/utils/http'
 /**
  * 这里是查询的url，用了mixin里面封装的查询
- * 
+ *
  */
 
 let base ="/admin-api";
+//首页历史汇率---------------------------------------------------------------------------------------
+export const gethistoryRate = `${base}/homepage/historyRate`;
+
+//广告-------------------------------------------------------------------------------------------------------
+//广告分页
+export const getadvertisingban = `${base}/advertisingban/page`;
+//广告删除
+export const advertisingban = `${base}/advertisingban`;
+
+
+//系统-------------------------------------------------------------------------------------------------
+//黑名名单
+export const getblacklist = `${base}/blacklist/page`;
+//黑名单删除
+export const delblacklist = `${base}/blacklist`;
+
+
+
+//内容---------------------------------------------------------------------------------------
+//搭配分页
+export const getlookpage = `${base}/look/page`;
+//搭配集合分页
+export const getlookfolderpage = `${base}/look/folder/page`;
+//时尚纪实分页
+export const getlookfashionpage = `${base}/fashion/page`;
+//店铺新闻分页
+export const getStoreNewspage = `${base}/store/news/page`;
+//分页获取上架的商品列表
+export const getGoodscspage = `${base}/fashion/goodscspage`;
+//基础数据--------------------------------------------------------------------------------------------
+//中国尺码分页
+export const getsizeCndata = `${base}/sizeCn/page`;
+//中国尺码删除
+export const delsizeCndata = `${base}/sizeCn`;
+//中国尺码分页
+export const getshoplabel = `${base}/shoplabel/page`;
+//日本尺码分页
+export const getsizeJPdata = `${base}/sizejp/page`;
+
+
+
+//库存管理------------------------------------------------------------------------------------------------------------
+//出库单管理
+export const getstockdata = `${base}/wareHouse/odo/list/page`;
+//当前仓库的商品
+// export const getallstock  = `${base}/wareHouse/odoGoods/stock/page`;
+//保存添加的商品
+export const addstock  = `${base}/wareHouse/odoGoods/add`;
+
+// 出库单分页
+export const warehouserecordsodoListPage  = `${base}/warehouserecordsodo/list/page`;
+// 添加出库单商品列表查询
+export const warehouserecordsodoPageUrl  = `${base}/warehouserecordsodo/page`;
+// 查看出库单弹框详情
+export const warehouserecordsodoStockPageUrl  = `${base}/warehouserecordsodo/stock/page`;
+
 
 // 商品管理--------------------------------------------------------------------------------------------------------------------
- // 商品列表
+// 商品列表
 export const goodsPageUrl = `${base}/goods/page`;
 // 删除商品
 export const deleteGoodsUrl = `${base}/goods`;
@@ -17,7 +73,7 @@ export const goodsVerifyPageUrl = `${base}/goods/verify/page`;
 
 // 商品规格管理----------------------------------------------------------------------------------------------------------------
 //分页查询商品SKU列表
-export const goodsSpecPage = `${base}/goods/spec/page`; 
+export const goodsSpecPage = `${base}/goods/spec/page`;
 
 // 价格管理 价格修改记录管理---------------------------------------------------------------------------------------------------
 // 分页查询
@@ -69,6 +125,14 @@ export const brandPageUrl = `${base}/brand/page`;
 // 编辑品牌
 export const deleteBrandUrl = `${base}/brand`;
 
+//  满减活动-------------------------------------------------------------------------------------------------------------
+// 满减活动分页查询
+export const activityReduceUrl =  `${base}/activity/reduce/page`;
+
+export const deleteActivityReduceUrl =  `${base}/activity/reduce/`;
+// 满减活动订单分页查询
+export const reduceOrderUrl =  `${base}/activity/reduce/order/page/`; // /activity/reduce/order/page/{reductionId}
+
 // 商户管理--------------------------------------------------------------------------------------------------------------------
 // 商家列表
 export const businessPageUrl = `${base}/store/page`;
@@ -106,6 +170,9 @@ export const loginLog = `${base}/memberloginlog/page`;
 //会员等级删除
 export const gradeDel= `${base}/membergrade`;
 
+// zozo会员管理-------------------------------------------------------------------------------------------------------------------
+// zozo会员列表
+export const zozomemberPageUrl= `${base}/zozomember/page`;
 
 
 //财务管理
@@ -142,7 +209,7 @@ export const returngoods = `${base}/aftersale/return/page`;
 //售后审核
 export const aftersales= `${base}/aftersale/apply/page`;
 //商品评价
-export const goodseva= `${base}/evaluate/page`;
+export const goodseva= `${base}/zozogoods/evaluate/page`;
 //商品评价--删除
 export const deleva= `${base}/evaluate`;
 //退货管理--导出
@@ -161,3 +228,277 @@ export const uploadPicBase64 = `${base}/picture`;
 // 店铺管理--------------------------------------------------------------------------------------------------------------------
 // 店铺列表
 export const shopPageUrl = `${base}/shopStore/page`;
+
+
+
+// 中国分类管理--------------------------------------------------------------------------------------------------------------------
+// 中国分类管理列表
+export const categoryCnUrl = `${base}/categoryCn/page`;
+// 删除分类接口
+export const deleteCategoryCnUrl = `${base}/categoryCn/delete`;
+
+
+
+
+
+// 品牌管理--------------------------------------------------------------------------------------------------------------------
+// 品牌列表
+export const shopBrandUrl = `${base}/shopBrand/page`;
+// 编辑品牌
+export const deleteShopBrandUrl = `${base}/shopBrand`;
+// // 根据店铺id分页查询信息
+
+export const pageByStoreUrl = `${base}/shopBrand/pageByStore`;
+
+
+// 风格标签管理--------------------------------------------------------------------------------------------------------------------
+// 风格标签列表
+export const shopStyleUrl = `${base}/shopstyle/style/page`;
+// 编辑风格标签
+export const deleteShopStyle = `${base}/shopstyle`;
+
+
+
+// 仓库管理--------------------------------------------------------------------------------------------------------------------
+// 仓库列表
+export const wareUrl = `${base}/ware/list`;
+// 修改仓库启用状态
+export const deleteWare = `${base}/ware`;
+// 仓库sku商品
+export const skuGoods = `${base}/ware/skugoods`;
+
+
+
+// 备案商品管理--------------------------------------------------------------------------------------------------------------------
+// 备案商品列表
+export const registerUrl = `${base}/goods/register/page`;
+
+
+
+// 日本分类管理--------------------------------------------------------------------------------------------------------------------
+// 日本分类管理列表
+export const categoryJpUrl = `${base}/categoryJp/page`;
+
+
+
+// 颜色管理--------------------------------------------------------------------------------------------------------------------
+// 颜色管理列表
+export const colorUrl = `${base}/color/page`;
+
+
+
+// 颜色组管理--------------------------------------------------------------------------------------------------------------------
+// 颜色组管理列表
+export const colorcategoryUrl = `${base}/color/colorcategory/page`;
+
+
+
+// 尺码描述管理--------------------------------------------------------------------------------------------------------------------
+// 尺码描述管理列表
+export const shoplabelUrl = `${base}/shoplabel/page`;
+
+
+
+// 商品管理--------------------------------------------------------------------------------------------------------------------
+// 商品管理列表
+export const goodsUrl = `${base}/zozogoods/page`;
+// 查看商品操作日志分页查询
+export const getGoodsUrl = `${base}/zozogoods/page/log`;
+
+
+
+// 京东分类管理--------------------------------------------------------------------------------------------------------------------
+// 商品管理列表
+export const jdCateUrl = `${base}/jdCate/page`;
+
+// 分类条件接口--------------------------------------------------------------------------------------------------------------------
+// 商品管理列表
+export const tagPage = `${base}/tag/page`;
+
+
+
+
+
+// 同义词管理--------------------------------------------------------------------------------------------------------------------
+// 列表
+export const shopsynonymUrl = `${base}/shopsynonym/page`;
+// 删除
+export const deleteShopsynonymUrl = `${base}/shopsynonym`;
+
+
+
+// 日志管理--------------------------------------------------------------------------------------------------------------------
+// 列表
+export const shophotkeywordrecordUrl = `${base}/shophotkeyword/keywordRecordpage`;
+ // 删除
+export const deleteShophotkeywordrecordUrl = `${base}/shophotkeywordrecord`;
+
+
+
+// 热门搜索配置管理、搜索统计管理--------------------------------------------------------------------------------------------------------------------
+// 列表
+export const shophotkeywordUrl = `${base}/shophotkeyword/page`;
+// 删除
+export const deleteShopkeywordUrl = `${base}/shophotkeyword`;
+// 删除
+export const deleteShophotkeywordUrl = `${base}/shophotkeyword/keyword`;
+
+// GET
+// GET
+export const keywordcountpageUrl = `${base}/shophotkeyword/keywordcountpage`;
+export const keywordpageUrl = `${base}/shophotkeyword/keywordpage`;
+
+//消息-------------------------------------------------------------------------------------------------------------
+//消息列表分页
+export const getmessagepage = `${base}/shopmessagetemplate/messagepage`;
+//用户信息
+export const getUser = `${base}/shopmessagetemplate/messageuser`;
+
+
+//查看库存----------------------------------------------------------------------------------------------------
+//查看库存分类
+export const getdatagoods = `${base}/stock/goods`;
+
+
+
+
+
+
+
+
+//中日词库-------------------------------------------------------------------------------------------------------------
+// 列表
+export const syslexiconUrl = `${base}/syslexicon/page`;
+// 删除
+export const deleteSyslexicon = `${base}/syslexicon/batchdelete`;
+// 导出
+export const exportSyslexicon = `${base}/syslexicon/export`;
+
+
+
+
+
+//操作日志-------------------------------------------------------------------------------------------------------------
+// 列表
+export const operationUrl = `${base}/log/operation/page`;
+
+
+
+
+
+
+//字典管理-------------------------------------------------------------------------------------------------------------
+// 列表
+export const dictUrl = `${base}/dict/page`;
+// 删除
+export const deleteDict = `${base}/dict/delete`;
+// 词典列表
+export const dictList = `${base}/dict/list`;
+
+//限量活动管理-------------------------------------------------------------------------------------------------------------
+// 限量活动列表
+export const limitActivityPage = `${base}/limit/activity/page`;
+// 限量活动删除
+export const deleteLimitActivity = `${base}/limit/activity`;
+// 查询限量活动添加商品分页列表
+export const limitActivityGoodsList = `${base}/limit/activity/goods/list`;
+// 查询预售活动添加商品分页列表
+export const presellActivityGoodsList = `${base}/presell/activity/goods/list`;
+
+// 查询限量/预售活动关联的商品列表
+export const limitActivityReleGoodsList = `${base}/limit/activity/rele/goods/list`;
+// // 删除限量活动商品
+// export const deleteLimitActivityGoods = `${base}/limit/activity/goods`;
+// 删除限量活动商品规格
+// export const deleteLimitActivityGoodscs = `${base}/limit/activity/goodscs`;
+
+//预售活动接口 -------------------------------------------------------------------------------------------------------------
+// 分页
+export const presellActivityPage = `${base}/presell/activity/page`;
+// 删除预售活动
+export const deletePresellActivity = `${base}/presell/activity`;
+
+//精选分类 ----------------------------------------------------------------------------------------------------------------
+// 精选分类分页
+export const categoryactivityPageUrl = `${base}/categoryactivity/page`;
+// 删除
+export const deleteCategoryactivity = `${base}/categoryactivity`;
+// 商品列表分页
+export const categoryactivityGoodsPagePopUrl = `${base}/categoryactivity/goods/page`;
+
+//精选分类 ----------------------------------------------------------------------------------------------------------------
+// 分类商品分页
+export const categoryactivitygoodsPageUrl = `${base}/categoryactivitygoods/page`;
+// 删除
+// export const deletecategoryactivitygoods = `${base}/categoryactivitygoods`;
+
+//异常日志-------------------------------------------------------------------------------------------------------------
+// 列表
+export const errorUrl = `${base}/log/error/page`;
+// 导出
+export const exportError= `${base}/log/error/export`;
+
+//配置管理-------------------------------------------------------------------------------------------------------------
+// 广告位列表
+export const advList = `${base}/adv/page`;
+// 广告位批量删除
+export const advDelete = `${base}/adv/batch`;
+
+// 底部iCon配置
+export const iconCinfigList = `${base}/icon/list`;
+//首页集合列表
+export const homeIndexPage = `${base}/folderrecommend/page`;
+//首页集合列表批量删除
+export const homeIndexDelete = `${base}/folderrecommend/delete`;
+
+//购物车推荐列表
+export const goodsCarlist = `${base}/cartrecom/page`;
+//购物车推荐列表批量删除
+export const goodsCarlistDelete = `${base}/cartrecom`;
+//Q&A主页面列表
+export const QamainList = `${base}/questiontype/page`;
+//查看Q&A列表
+export const toQamainList = `${base}/questionanswer/lookQuestionAnswer`;
+
+
+
+//优惠券管理-------------------------------------------------------------------------------------------------------------
+//优惠券活动分页查询
+export const activityPage = `${base}/activity/coupon/page`;
+//删除优惠券活动
+export const deleteActivity = `${base}/activity/coupon`;
+// 优惠券活动已领会员优惠券分页查询
+export const activityMemberCouponsPage = `${base}/activity/coupon/member/coupons/`;
+
+
+
+
+//秒杀活动
+//秒杀列表
+export const seckillPage = `${base}/seckill/activity/page`;
+//秒杀关联商品列表
+// export const seckillProPage = `${base}/seckill/goods/choiced/page`;
+
+
+// 报表，统计
+// 业绩统计分页
+export const statisticsPerformancePage = `${base}/statistics/performance/page`;
+// 商品销量统计
+export const statisticsGoodsPage = `${base}/statistics/goods/page`;
+// 店铺销量统计
+export const statisticsStorePage = `${base}/statistics/store/page`;
+// 订单统计
+export const statisticsOrderPage = `${base}/statistics/order/page`;
+//售后统计
+export const afterStorePage = `${base}/statistics/aftersale/page`;
+//优惠券统计
+export const couponStorePage = `${base}/statistics/coupons/page`;
+
+
+
+
+
+//版本管理 
+export const getsysversionmange = `${base}/sysversionmange/page`;
+
+

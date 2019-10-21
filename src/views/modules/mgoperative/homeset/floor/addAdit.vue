@@ -4,13 +4,13 @@
 
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm"  @keyup.enter.native="submitStore()" label-width="140px">
         <el-form-item prop="floorName" label="楼层名称：">
-            <el-input v-model="dataForm.floorName" clearable></el-input>
+            <el-input v-model.trim="dataForm.floorName" clearable></el-input>
         </el-form-item>
         <!-- <el-form-item prop="floorCode" label="楼层标识:">
-            <el-input v-model="dataForm.floorCode" placeholder="" :disabled="floorId?true:false" clearable @blur="tocnki"></el-input>
+            <el-input v-model.trim="dataForm.floorCode" placeholder="" :disabled="floorId?true:false" clearable @blur="tocnki"></el-input>
         </el-form-item> -->
         <el-form-item prop="jiaoyan" label="展示内容：">
-            <el-input v-model="dataForm.jiaoyan" style="display:none" v-if="picList.length == 6" ></el-input>
+            <el-input v-model.trim="dataForm.jiaoyan" style="display:none" v-if="picList.length == 6" ></el-input>
             <div class="picMain">
                 <div>
                     <img src="~@/assets/img/nopic.png" @click="changeClass(0)" v-if="!picList[0]" alt="图标" style="margin-right:30px;" class="img1">
@@ -54,10 +54,10 @@
             </el-radio-group>
         </el-form-item>
         <el-form-item prop="actionParams " label="链接地址：" v-if="dataForm.actionType == 'link'">
-            <el-input v-model="dataForm.actionParams" placeholder="Http://xxxxxx.com" clearable @blur="outChange"></el-input>
+            <el-input v-model.trim="dataForm.actionParams" placeholder="Http://xxxxxx.com" clearable @blur="outChange"></el-input>
         </el-form-item>
         <el-form-item prop="actionParams " label="所属分类：" v-if="dataForm.actionType == 'searchGoodsByClass'">
-            <el-input v-model="dataForm.goodsClassName" placeholder="" clearable v-if="floorId&&!faClassStatus" @focus="toFaClassStatus"></el-input>
+            <el-input v-model.trim="dataForm.goodsClassName" placeholder="" clearable v-if="floorId&&!faClassStatus" @focus="toFaClassStatus"></el-input>
             <el-select v-model="otherObj.actionParams0" filterable placeholder="请选择" v-if="faClassStatus||!floorId" @change="classChangeOne">
                 <el-option
                     v-for="item in fagoodsClassList1"
@@ -84,7 +84,7 @@
             </el-select>
         </el-form-item>
         <el-form-item prop="actionParams " label="关键字：" v-if="dataForm.actionType == 'searchByKeyWord'">
-            <el-input v-model="dataForm.actionParams" placeholder="" clearable></el-input>
+            <el-input v-model.trim="dataForm.actionParams" placeholder="" clearable></el-input>
         </el-form-item>
         <el-form-item prop="actionParams " label="商品名称：" v-if="dataForm.actionType == 'goodsDetail'">
             <el-select v-model="dataForm.actionParams" filterable placeholder="请选择" @change="getChange">
@@ -97,7 +97,7 @@
             </el-select>
         </el-form-item>
         <!-- <el-form-item prop="actionParams " label="楼层名称444:" v-if="dataForm.actionType == 'xianshiqiangList'">
-            <el-input v-model="dataForm.actionParams " placeholder="" clearable></el-input>
+            <el-input v-model.trim="dataForm.actionParams " placeholder="" clearable></el-input>
         </el-form-item> -->
         <el-form-item prop="isShow" label="是否显示：">
             <el-radio-group v-model="dataForm.isShow">
@@ -106,7 +106,7 @@
             </el-radio-group>
         </el-form-item>
         <el-form-item prop="sort" label="优先级排序：">
-            <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :max="255" class="floorInput"></el-input-number>
+            <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :max="10000000" class="floorInput"></el-input-number>
         </el-form-item>
         <div class="btnSub">
             <el-button @click="changePage">{{ $t('cancel') }}</el-button>
@@ -124,16 +124,16 @@
         <el-form :model="dataForm1" :rules="dataRuleOther" ref="dataRuleOther" label-width="120px">
             <el-form-item label="标题：" prop="title">
                 <div>
-                    <el-input v-model="dataForm1.title" style="display:none" v-if="dataForm.webFloorLinkConfigDTOList[dataNum].title"></el-input>
-                    <el-input v-model="dataForm.webFloorLinkConfigDTOList[dataNum].title"></el-input>
+                    <el-input v-model.trim="dataForm1.title" style="display:none" v-if="dataForm.webFloorLinkConfigDTOList[dataNum].title"></el-input>
+                    <el-input v-model.trim="dataForm.webFloorLinkConfigDTOList[dataNum].title"></el-input>
                 </div>
                 <span style="color:#f56c6c" v-if="!dataForm.webFloorLinkConfigDTOList[dataNum].title&&imgStatus">标题不能为空</span>
             </el-form-item>
             <el-form-item label="副标题：">
-                <el-input v-model="dataForm.webFloorLinkConfigDTOList[dataNum].subTitle"></el-input>
+                <el-input v-model.trim="dataForm.webFloorLinkConfigDTOList[dataNum].subTitle"></el-input>
             </el-form-item>
             <el-form-item prop="classImg" label="上传图片：">
-                <el-input v-model="dataForm1.classImg" style="display:none" v-if="dataForm.webFloorLinkConfigDTOList[dataNum].imgUrl"></el-input>
+                <el-input v-model.trim="dataForm1.classImg" style="display:none" v-if="dataForm.webFloorLinkConfigDTOList[dataNum].imgUrl"></el-input>
                 <img-cropper
                     ref="classImg"
                     :index="dataNum"
@@ -145,7 +145,7 @@
             </el-form-item>
             <el-form-item prop="linkType" label="跳转类型：">
                 <div>
-                    <el-input v-model="dataForm1.linkType" style="display:none" v-if="dataForm.webFloorLinkConfigDTOList[dataNum].linkType"></el-input>
+                    <el-input v-model.trim="dataForm1.linkType" style="display:none" v-if="dataForm.webFloorLinkConfigDTOList[dataNum].linkType"></el-input>
                     <el-radio-group v-model="dataForm.webFloorLinkConfigDTOList[dataNum].linkType" @change="toGetTypeChild">
                         <el-radio-button label="link">链接</el-radio-button>
                         <el-radio-button label="searchGoodsByClass">展示分类</el-radio-button>
@@ -157,10 +157,10 @@
                 <span style="color:#f56c6c" v-if="!dataForm.webFloorLinkConfigDTOList[dataNum].linkType&&imgStatus">跳转类型不能为空</span>
             </el-form-item>
             <el-form-item prop="actionParams" label="链接地址：" v-if="dataForm.webFloorLinkConfigDTOList[dataNum].linkType == 'link'">
-                <el-input v-model="dataForm.webFloorLinkConfigDTOList[dataNum].typeKeyWord" placeholder="Http://xxxxxx.com" clearable @blur="innerChange"></el-input>
+                <el-input v-model.trim="dataForm.webFloorLinkConfigDTOList[dataNum].typeKeyWord" placeholder="Http://xxxxxx.com" clearable @blur="innerChange"></el-input>
             </el-form-item>
             <el-form-item prop="actionParams" label="所属分类：" v-if="dataForm.webFloorLinkConfigDTOList[dataNum].linkType == 'searchGoodsByClass'">
-                <el-input v-model="dataForm.webFloorLinkConfigDTOList[dataNum].gcName" clearable v-if="floorId&&!chClassStatus" @focus="toChClassStatus"></el-input>
+                <el-input v-model.trim="dataForm.webFloorLinkConfigDTOList[dataNum].gcName" clearable v-if="floorId&&!chClassStatus" @focus="toChClassStatus"></el-input>
                 <el-select v-model="otherObj.actionParams3" filterable placeholder="请选择" v-if="chClassStatus||!floorId" @change="childClassChangeOne">
                     <el-option
                         v-for="item in fagoodsClassList1"
@@ -187,7 +187,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item prop="actionParams" label="关键字：" v-if="dataForm.webFloorLinkConfigDTOList[dataNum].linkType == 'searchByKeyWord'">
-                <el-input v-model="dataForm.webFloorLinkConfigDTOList[dataNum].typeKeyWord" placeholder="" clearable></el-input>
+                <el-input v-model.trim="dataForm.webFloorLinkConfigDTOList[dataNum].typeKeyWord" placeholder="" clearable></el-input>
             </el-form-item>
             <el-form-item prop="actionParams" label="商品名称：" v-if="dataForm.webFloorLinkConfigDTOList[dataNum].linkType == 'goodsDetail'">
                 <el-select v-model="dataForm.webFloorLinkConfigDTOList[dataNum].typeKeyWord" filterable placeholder="请选择" @change="getChangeChild">

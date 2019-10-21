@@ -3,7 +3,7 @@ const t = {}
 t.loading = 'Loading...'
 
 t.brand = {}
-t.brand.lg = 'leimingshop Cloud'
+t.brand.lg = 'zozoshop Cloud'
 t.brand.mini = 'RC'
 
 t.add = 'Add'

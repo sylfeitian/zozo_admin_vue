@@ -3,16 +3,16 @@
         <Bread :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
             <el-form-item prop="memberId" label="会员账号：">
-                <el-input v-model="dataForm.memberId" ></el-input>
+                <el-input v-model.trim="dataForm.memberId" ></el-input>
             </el-form-item>
             <el-form-item prop="orderId" label="订单号：">
-                <el-input v-model="dataForm.orderId" ></el-input>
+                <el-input v-model.trim="dataForm.orderId" ></el-input>
             </el-form-item>
             <el-form-item prop="skuId" label="skuid：">
-                <el-input v-model="dataForm.skuId" ></el-input>
+                <el-input v-model.trim="dataForm.skuId" ></el-input>
             </el-form-item>
             <el-form-item prop="goodsName" label="商品名称：">
-                <el-input v-model="dataForm.goodsName" ></el-input>
+                <el-input v-model.trim="dataForm.goodsName" maxlength="300"></el-input>
             </el-form-item>
             <el-form-item prop="sizeFeeling" label="尺码感受：">
                 <el-select v-model="dataForm.sizeFeeling" placeholder="尺码感受">
@@ -66,7 +66,7 @@
             </el-form-item>
             <el-form-item>
                 <el-form-item>
-                    <el-button class="btn" type="primary" @click="getData()">查询</el-button>
+                    <el-button class="btn" type="primary" @click="getData()">搜索</el-button>
                     <el-button class="btn" @click="reset('dataForm')" type="primary" plain>重置</el-button>
                 </el-form-item>
             </el-form-item>

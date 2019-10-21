@@ -3,10 +3,10 @@
     <Bread :breaddata="breaddata"></Bread>
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="等级名称：">
-            <el-input v-model="dataForm.sgName" placeholder="等级名称" clearable></el-input>
+            <el-input v-model.trim="dataForm.sgName" placeholder="等级名称" clearable></el-input>
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="getDataList()">查询</el-button>
+            <el-button type="primary" @click="getDataList()">搜索</el-button>
             <el-button @click="reset()" type="primary" plain>重置</el-button>
         </el-form-item>
         <br />
@@ -104,18 +104,18 @@
         width="22%">
         <el-form :model="gradeDataForm" :rules="dataRule" ref="gradeDataForm" @keyup.enter.native="gradeSubmitHandle()" label-width="120px">
             <el-form-item label="等级名称：" prop="sgName">
-                <el-input v-model="gradeDataForm.sgName"></el-input>
+                <el-input v-model.trim="gradeDataForm.sgName"></el-input>
             </el-form-item>
             <el-form-item label="商品数量：" prop="sgGoodsLimit">
-                <el-input v-model="gradeDataForm.sgGoodsLimit" type="number" maxlength="6"></el-input>
+                <el-input v-model.trim="gradeDataForm.sgGoodsLimit" type="number" maxlength="6"></el-input>
             </el-form-item>
             <el-form-item label="收费标准：" prop="sgPrice">
-                <el-input v-model="gradeDataForm.sgPrice" type="number" maxlength="5">
+                <el-input v-model.trim="gradeDataForm.sgPrice" type="number" maxlength="5">
                     <template slot="append">人民币</template>
                 </el-input>
             </el-form-item>
             <el-form-item label="佣金比例：" prop="brokerageScale">
-                <el-input v-model="gradeDataForm.brokerageScale" type="number" maxlength="4">
+                <el-input v-model.trim="gradeDataForm.brokerageScale" type="number" maxlength="4">
                     <template slot="append">%</template>
                 </el-input>
             </el-form-item>

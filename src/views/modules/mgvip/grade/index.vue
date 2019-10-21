@@ -9,10 +9,10 @@
       @keyup.enter.native="getDataList()"
     >
       <el-form-item label="等级名称：" prop="gradeName">
-        <el-input v-model="dataForm.gradeName" placeholder="等级名称" clearable></el-input>
+        <el-input v-model.trim="dataForm.gradeName" placeholder="等级名称" clearable></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="getDataList()">查询</el-button>
+        <el-button type="primary" @click="getDataList()">搜索</el-button>
         <el-button @click="reset()" type="primary"  plain>重置</el-button>
       </el-form-item>
       <br />
@@ -59,14 +59,14 @@
     <el-dialog :title="changeTit" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form">
         <el-form-item label="等级名称：" :label-width="formLabelWidth" v-if="isChange">
-          <el-input v-model="form.gradeName" autocomplete="off" style="width:61%" readonly></el-input>
+          <el-input v-model.trim="form.gradeName" autocomplete="off" style="width:61%" readonly></el-input>
         </el-form-item>
         <el-form-item label="等级名称：" :label-width="formLabelWidth" v-else prop="gradeName">
-          <el-input v-model="form.gradeName" autocomplete="off" style="width:61%"></el-input>
+          <el-input v-model.trim="form.gradeName" autocomplete="off" style="width:61%"></el-input>
         </el-form-item>
         <el-form-item label="等级分值：" :label-width="formLabelWidth" v-if="isChange">
-          <el-input v-model="form.integration" autocomplete="off" style="width:30%" readonly></el-input>--
-          <el-input v-model="form.maxIntegration" autocomplete="off" style="width:30%" readonly></el-input>
+          <el-input v-model.trim="form.integration" autocomplete="off" style="width:30%" readonly></el-input>--
+          <el-input v-model.trim="form.maxIntegration" autocomplete="off" style="width:30%" readonly></el-input>
         </el-form-item>
         <el-form-item label="等级分值：" :label-width="formLabelWidth" v-else prop="integration">
           <el-input-number v-model="form.integration" :min="0"></el-input-number>

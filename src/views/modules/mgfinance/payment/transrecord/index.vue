@@ -10,10 +10,10 @@
     >
       <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
       <el-form-item label="交易流水号：" prop="tradeSn">
-        <el-input v-model="dataForm.tradeSn" placeholder="交易流水号" clearable></el-input>
+        <el-input v-model.trim="dataForm.tradeSn" placeholder="交易流水号" clearable></el-input>
       </el-form-item>
       <el-form-item label="交易单号：" prop="paymentSn">
-        <el-input v-model="dataForm.paymentSn" placeholder="交易单号" clearable></el-input>
+        <el-input v-model.trim="dataForm.paymentSn" placeholder="交易单号" clearable></el-input>
       </el-form-item>
       <el-form-item label="交易渠道：" prop="paymentCode">
         <el-select v-model="dataForm.paymentCode" placeholder="请选择">
@@ -27,7 +27,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="用户名称：" prop="buyerName">
-        <el-input v-model="dataForm.buyerName" placeholder="用户名称" clearable></el-input>
+        <el-input v-model.trim="dataForm.buyerName" placeholder="用户名称" clearable></el-input>
       </el-form-item>
       <el-form-item label="收支状态：" prop="transactionStatus">
         <el-select v-model="dataForm.transactionStatus" placeholder="请选择">
@@ -48,7 +48,7 @@
         ></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button class="btn" type="primary" @click="getData()">查询</el-button>
+        <el-button class="btn" type="primary" @click="getData()">搜索</el-button>
         <el-button class="btn" @click="reset('dataForm')" type="primary" plain>重置</el-button>
       </el-form-item>
       <br />

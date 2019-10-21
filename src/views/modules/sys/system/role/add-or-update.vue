@@ -1,8 +1,10 @@
 <template>
     <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false" class="rolePage">
-        <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmitHandle()" label-width="120px">
+        <el-form :model="dataForm" ref="dataForm"
+         :rules="dataRule"
+         label-width="120px">
             <el-form-item prop="name" label="角色名称：">
-                <el-input v-model="dataForm.name" placeholder="请输入"></el-input>
+                <el-input v-model.trim="dataForm.name" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item prop="remark" label="角色说明：">
                 <el-input v-model="dataForm.remark" placeholder="不超过20个汉字"></el-input>
@@ -43,19 +45,45 @@
                     menuIdList: [],
                     // deptIdList: [],
                     remark: ''
+                },
+                dataRule : {
+                    name : [
+                        { required: true, message: '必填项不能为空', trigger: 'blur' },
+                    ],
+                },
+            }
+        },
+        watch: {
+            'dataForm.name': function (newV, oldV) {
+                var chineseCount = 0,characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 20) { //输入字符大于20的时候过滤
+                        this.dataForm.name = newV.substr(0,(chineseCount/2+characterCount)-1)
+                    }
+                }
+            },
+            'dataForm.remark':function(newV,oldV) {
+                var chineseCount=0,characterCount=0;
+                for(let i=0;i<newV.length;i++){
+                    if(/^[\u4e00-\u9fa5]*$/.test(newV[i])){ //汉字
+                        chineseCount=chineseCount+2;
+                    }else{ //字符
+                        characterCount=characterCount+1;
+                    }
+                    var count=chineseCount+characterCount;
+                    if(count>40){ //输入字符大于40的时候过滤
+                        this.dataForm.remark = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
+                    }
                 }
             }
         },
-        computed: {
-            dataRule () {
-                return {
-                    name: [
-                        { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-                    ]
-                }
-            }
-        },
-        methods: {
+            methods: {
             init (id) {
                 this.visible = true
                 this.$nextTick(() => {

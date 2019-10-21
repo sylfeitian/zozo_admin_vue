@@ -46,7 +46,7 @@
           label="销售价"
           align="center">
             <template slot-scope="scope">
-			        <!-- <el-input v-model="scope.row.specSellPrice" maxlength="30" placeholder="请输入"  ></el-input> -->
+			        <!-- <el-input v-model.trim="scope.row.specSellPrice" maxlength="30" placeholder="请输入" show-word-limit ></el-input> -->
                <el-input-number v-model="scope.row.specSellPrice" :precision="2" :step="1"  controls-position="right" :min="0" @change="changeInput"  @input="changeInput" ></el-input-number>
             </template>
         </el-table-column>
@@ -56,7 +56,7 @@
           label="成本价"
           align="center">
             <template slot-scope="scope">
-			        <!-- <el-input v-model="scope.row.specCostPrice" maxlength="30" placeholder="请输入" ></el-input> -->
+			        <!-- <el-input v-model.trim="scope.row.specCostPrice" maxlength="30" placeholder="请输入" show-word-limit></el-input> -->
               <el-input-number v-model="scope.row.specCostPrice" :precision="2" :step="1"  controls-position="right" :min="0"  @change="changeInput"  @input="changeInput"></el-input-number>
             </template>
         </el-table-column>
@@ -66,7 +66,7 @@
           label="库存"
           align="center">
             <template slot-scope="scope">
-			        <!-- <el-input v-model="scope.row.specStorage" maxlength="30" placeholder="请输入"  @change="changeInput"  @input="changeInput" ></el-input> -->
+			        <!-- <el-input v-model.trim="scope.row.specStorage" maxlength="30" placeholder="请输入"  @change="changeInput"  @input="changeInput" show-word-limit></el-input> -->
                <el-input-number v-model="scope.row.specStorage" :precision="0" :step="1"  controls-position="right" :min="0"  @change="changeInput"  @input="changeInput"></el-input-number>
             </template>
         </el-table-column>
@@ -76,7 +76,7 @@
           label="商品编码"
           align="center">
             <template slot-scope="scope">
-			        <!-- <el-input v-model="scope.row.specSerial" maxlength="30" placeholder="请输入"  @change="changeInput"  @input="changeInput" ></el-input> -->
+			        <!-- <el-input v-model.trim="scope.row.specSerial" maxlength="30" placeholder="请输入"  @change="changeInput"  @input="changeInput" show-word-limit></el-input> -->
                 <el-input-number v-model="scope.row.specSerial" :precision="0" :step="1"  controls-position="right" :min="0"  @change="changeInput"  @input="changeInput"></el-input-number>
             </template>
         </el-table-column>

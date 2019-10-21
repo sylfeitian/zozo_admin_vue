@@ -15,6 +15,8 @@ const http = axios.create({
  * 请求拦截
  */
 http.interceptors.request.use(config => {
+  console.log("console.log(config);")
+  console.log(config);
   config.headers['Accept-Language'] = Cookies.get('language') || 'zh-CN'
   config.headers['token'] = Cookies.get('token') || ''
   // 默认参数
@@ -38,6 +40,7 @@ http.interceptors.request.use(config => {
         ...config.data
       }
       if (/^application\/x-www-form-urlencoded/.test(config.headers['content-type'])) {
+        alert(132);
         config.data = qs.stringify(config.data)
       }
     }

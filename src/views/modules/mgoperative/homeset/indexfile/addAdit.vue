@@ -3,7 +3,7 @@
     <Bread :breaddata="breaddata" @changePage="changePage" :index="'2'"></Bread>
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm"  @keyup.enter.native="submitStore()" label-width="102px">
         <el-form-item prop="menuName" label="菜单名称：">
-            <el-input v-model="dataForm.menuName" placeholder="请输入" clearable></el-input>
+            <el-input v-model.trim="dataForm.menuName" placeholder="请输入" clearable></el-input>
         </el-form-item>
         <el-form-item prop="linkType" label="跳转类型：">
             <el-select v-model="dataForm.linkType " clearable  placeholder="请选择">
@@ -16,7 +16,7 @@
             </el-select>
         </el-form-item>
         <el-form-item prop="url" label="链接：">
-            <el-input v-model="dataForm.url" placeholder="Http://xxxxxx.com" clearable></el-input>
+            <el-input v-model.trim="dataForm.url" placeholder="Http://xxxxxx.com" clearable></el-input>
         </el-form-item>
         <el-form-item prop="menuIcon" label="菜单图标：">
             <img-cropper
@@ -28,7 +28,7 @@
             </img-cropper>
         </el-form-item>
         <el-form-item prop="sort" label="排序：">
-            <el-input-number v-model="dataForm.sort" controls-position="right" :min="1" :max="255" class="floorInput"></el-input-number>
+            <el-input-number v-model="dataForm.sort" controls-position="right" :min="1" :max="10000000" class="floorInput"></el-input-number>
         </el-form-item>
         <el-form-item prop="showFlag" label="是否显示：">
             <el-radio-group v-model="dataForm.showFlag">

@@ -3,16 +3,30 @@
         <el-row>
             <el-col :span="24">
                 <div class="rltv">
-                    <div class="tree-title tree-head-first">{{mate.title || '标题'}}</div>
+                    <div class="tree-title tree-head-first">{{firstColName}}</div>
                     <!-- <div class="tree-title tree-head-first">新增下级</div> -->
                     <el-row class="last">
                         <el-col v-for="col in mate.columns" :key="col.label" :span="col.span" class="tree-title" :class="{'text-center': col.center}">{{col.label}}</el-col>
+                        <!--<el-col :span="actionSpan" class="tree-title text-center" v-if="this.mate.actions && this.mate.actions.length">分类图片</el-col>
+                        <el-col :span="actionSpan" class="tree-title text-center" v-if="this.mate.actions && this.mate.actions.length">是否显示</el-col>-->
                         <el-col :span="actionSpan" class="tree-title text-center" v-if="this.mate.actions && this.mate.actions.length">操作</el-col>
                     </el-row>
                 </div>
                 <div class="myGridTree">
-                    <el-tree :data="mate.rows" node-key="id" :props="defaultProps" v-bind="mate.options" @check-change="handleCheckChange" :render-content='renderContent'
-                             @node-click="handleClick" @current-change="handleCurrentChange" ref="myTreeGrid"></el-tree>
+                    <el-tree 
+                    	:data="mate.rows" 
+                    	node-key="id" 
+                    	:props="defaultProps"
+                    	v-bind="mate.options"
+                        @check-change="handleCheckChange" 
+                        :render-content='renderContent'
+                        @node-click="handleClick" 
+                        @current-change="handleCurrentChange" 
+                        ref="myTreeGrid"
+                        @node-expand='handleIsExpand'
+						@node-collapse='handleIsCollapse'
+						:default-expanded-keys='openrowid'
+                        ></el-tree>
                 </div>
             </el-col>
         </el-row>
@@ -20,6 +34,16 @@
 </template>
 
 <script>
+	//删除数组一个元素
+	function arrRemove(arr, value) {
+	    var i = arr.length;
+	    while (i--) {
+	        if (arr[i] === value) {
+	            return i;
+	        }
+	    }
+	    return false;
+	}	
     import MyButton from './MyButton.vue';
 
     export default {
@@ -31,6 +55,10 @@
         //     required: true
         // },
         props: {
+            firstColName:{
+                type: String,
+                default: '分类名称'
+            },
             mate: {
                 type: Object,
                 required: true
@@ -54,7 +82,8 @@
                 },
                 tree: null,
                 btnDisable: true,
-                actionSpan: 0
+                actionSpan: 0,
+                openrowid:[], //默认打开的节点id
             };
         },
         mounted () {
@@ -64,13 +93,19 @@
             this.execSpan();
         },
         methods: {
+        	handleIsExpand(d,n,s){  //点击>和节点name时       节点展开时触发的事件
+				this.openrowid.push(d.id);   //开启时   加到数组中
+			},
+			handleIsCollapse(d,n,s){   //点击>和节点name时   节点关闭时触发的事件
+				this.openrowid.splice(arrRemove(this.openid,d.id), 1);  //关闭时   从去掉默认打开的目录
+			},
             // 计算按钮宽度
             execSpan () {
                 let sum = 0;
                 this.mate.columns.map(col => {
                     sum += Number.parseInt(col.span);
                 });
-                this.actionSpan = 24 - sum;
+                this.actionSpan = (24 - sum);
                 this.mate.actions = this.mate.actions.filter(item => !item.isHide);
                 if (!this.mate.actions || !this.mate.actions.length) {
                     let last = this.mate.columns.length;
@@ -79,25 +114,43 @@
             },
             renderContent: function (h, node) {
                 // 生成按钮
+                var self = this;
                 let buttons = [];
                 if (this.mate.actions) {
                     for (let btn of this.mate.actions) {
                         btn.text = typeof btn.prop === 'function' ? btn.prop(node.data) : btn.prop || '按钮';
-                        buttons.push(h(MyButton, {
-                            props: {
-                                name: btn.text,
-                                row: node.data,
-                                type: btn.type,
-                                className: btn.className || ''
-                            },
-                            on: {
-                                action: btn.action
-                            }
-                        }));
+                        if(btn.className == "arttuijian"){
+                        	buttons.push(h(MyButton, {
+	                            props: {
+	                                name: node.data.recommendFlag ? "取消推荐" : "设为推荐",
+	                                row: node.data,
+	                                type: btn.type,
+	                                className: btn.className || ''
+	                            },
+	                            on: {
+	                                action: btn.action
+	                            }
+	                        }));
+                        }else{
+                        	buttons.push(h(MyButton, {
+	                            props: {
+	                                name: btn.text,
+	                                row: node.data,
+	                                type: btn.type,
+	                                className: btn.className || ''
+	                            },
+	                            on: {
+	                                action: btn.action
+	                            }
+	                        }));
+                        }
+                        
                     }
                 }
+
                 // 单元格渲染
                 let colSpan = 0;
+//              console.log(this.mate.columns);
                 let cols = this.mate.columns.map((col) => {
                     let value = '--',
                         key =  col.prop;
@@ -109,11 +162,51 @@
                     }
                     colSpan = Number(col.span);
                     if (colSpan <= 0) colSpan = 3;
+                    
+                    //
+                	// 分类图片(插入图片)
+                	if(key == 'genderMain' && value != '--'){
+                		return h(
+                			'el-col',
+                    		{
+	                    		'props': {span: colSpan},
+	                    		'class': {'text-center': col.center, 'textIndex5': true},
+	                    		'domProps': { innerHTML: `<img src=${this.$imgDomain}${value} width=100%>` },// DOM 属性
+                			},   
+						);
+                	};
+                	
+					// 是否显示(插入开关)
+					if(key == 'showFlag'){
+						// 打印出 这俩值看看
+						//console.log( node.data[key], value)
+						/**
+						 * jsx 语法
+						 * {} 解析变量
+						 * on-事件   触发组件内部使用 `vm.$emit` 触发的事件
+						 * nativeOn事件 仅用于组件，用于监听原生事件
+						*/
+						return (
+							<el-col span={col.span} >
+								<el-switch 
+									value={node.data.showFlag == 1 ? true : false} 
+									on-change={ () => node.data.showFlag = node.data.showFlag == 0 ? 1 : 0 } 
+									nativeOnClick={(event) => {
+										this.$emit("act-click", node.data)
+//										event.stopPropagation()
+									}}
+                   				></el-switch>
+							</el-col>
+						)
+					};
+
+
                     return h('el-col', {props: {span: colSpan}, 'class': {'text-center': col.center, 'textIndex5': true}}, value);
                 });
+
                 // 插入行按钮
                 cols.push(h('el-col', {props: {span: this.actionSpan}, 'class': {'text-center': true}}, buttons));
-
+                
                 return h('span', [h('span', node.data.label), h('div', {'class': {'line-row': true}}, cols)]);
             },
             handleCheckChange (...list) {
@@ -202,5 +295,25 @@
         .col-tree, .text-center {
             text-align: center;
         }
+    }
+    
+    .el-tree-node__content .arttuijian{
+    	display: none;
+    }
+    .el-tree-node__children .artadd{
+    	display: none;
+    }
+    .el-tree-node__children .arttuijian{
+    	display: inline-block;
+    }
+    
+    .el-button + .el-button {
+	    margin-right: 0px;
+	    margin-left: 20px;
+	}
+    .myGridTree .el-tree img{
+    width:60px;
+    height: 60px;
+    padding:8px;
     }
 </style>

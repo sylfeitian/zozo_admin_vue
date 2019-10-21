@@ -9,10 +9,10 @@
       @keyup.enter.native="getDataList()"
     >
       <el-form-item label="会员ID/昵称：" prop="nickName">
-        <el-input v-model="dataForm.nickName" placeholder="会员ID/昵称" clearable></el-input>
+        <el-input v-model.trim="dataForm.nickName" placeholder="会员ID/昵称" clearable></el-input>
       </el-form-item>
       <el-form-item label="会员手机号：" prop="memberMobile">
-        <el-input v-model="dataForm.memberMobile" placeholder="会员手机号" clearable></el-input>
+        <el-input v-model.trim="dataForm.memberMobile" placeholder="会员手机号" clearable></el-input>
       </el-form-item>
       <el-form-item label="会员等级：" prop="gradeId">
         <el-select v-model="dataForm.gradeId" placeholder="会员等级" clearable>
@@ -26,7 +26,7 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="getDataList()">查询</el-button>
+        <el-button type="primary" @click="getDataList()">搜索</el-button>
         <el-button @click="reset()" type="primary" plain >重置</el-button>
       </el-form-item>
       <br />

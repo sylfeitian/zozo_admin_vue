@@ -1,14 +1,17 @@
 <template>
     <div>
-        <Bread :breaddata="breaddata"></Bread>
+        <Bread :breaddata="breaddata"  @changePage="changePage" :index="'2'"></Bread>
         <el-button size="mini" @click="more">查看详情</el-button>
         <el-button size="mini">操作日志</el-button>
-        <el-table border style="margin-top: 20px;">
-            <el-table-column label="数据列表" header-align="left" align="left">
-                <el-table-column label="时间" header-align="center" align="center"></el-table-column>
-                <el-table-column label="账户" header-align="center" align="center"></el-table-column>
-                <el-table-column label="操作内容" header-align="center" align="center"></el-table-column>
-            </el-table-column>
+        <el-table
+                width="100%"
+                :data="dataList"
+                border
+                v-loading="dataListLoading"
+                style="margin-top: 20px;">
+            <el-table-column prop="createDate" label="时间" header-align="center" align="center"></el-table-column>
+            <el-table-column prop="creator" label="操作人" header-align="center" align="center"></el-table-column>
+            <el-table-column prop="content" label="操作内容" header-align="center" align="center"></el-table-column>
         </el-table>
         <!-- 分页 -->
         <el-pagination
@@ -26,29 +29,64 @@
 <script>
     import Bread from "@/components/bread";
     import mixinViewModule from '@/mixins/view-module'
+    import { getGoodsUrl } from '@/api/url'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
-                breaddata: [ "商品管理", "商品详情"],
+                mixinViewModuleOptions: {
+                    getDataListURL: getGoodsUrl,
+                    activatedIsNeed:false,
+                    getDataListIsPage: true,
+                    // exportURL: '/admin-api/log/login/export',
+                    // deleteURL: deleteGoodsUrl,
+                    deleteIsBatch: true,
+                    deleteIsBatchKey: 'id'
+                },
+                breaddata: [ "商品管理","商品列表", "商品详情", "操作日志"],
+                dataForm: {
+                    spuId:null,
+                    createDate:null,
+                    creater: null,
+                    operation: null,
+                },
             }
         },
         components: {
             Bread
         },
+        props:["idJp"],
         methods: {
+            init (row) {
+                this.visible = true;
+                this.row = row;
+                console.log("我在看row");
+                console.log(this.row);
+                // this.dataForm.spuId = res.data.list.spuId;
+                console.log(this.idJp);
+                this.$nextTick(() => {
+                    this.dataForm.goodsId = this.row.id;
+                    this.getDataList();
+                    // this.$refs['addForm'].resetFields();
+                    // this.getApplyPullList();
+                })
+            },
             changePage(){
-                this.$emit("operationallogList");
+                // this.$emit("operationallogList");
+                this.more();
             },
             more () {
-                this.$emit("more")
-            }
+                this.$parent.more()
+            },
+
         }
     }
 </script>
 
-<style scoped>
-    /*/deep/.el-table--border th:first-child td:first-child .cell {*/
-    /*    text-align: left!important;*/
-    /*}*/
+<style lang="scss" scoped>
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>

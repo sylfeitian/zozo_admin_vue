@@ -3,20 +3,19 @@
         <Bread :breaddata="breaddata"></Bread>
 
         <div class="mod-sys__log-error">
-            <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getData()">
+            <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getDataList()">
                 <el-form-item label="操作账号：">
-                    <el-input v-model="dataForm.id" placeholder="请输入账号" clearable></el-input>
+                    <el-input v-model.trim="dataForm.creator" placeholder="请输入账号" clearable></el-input>
                 </el-form-item>
                 <el-form-item label="操作模块：">
                     <el-select v-model="dataForm.module" placeholder="请选择操作模块" clearable>
-                        <el-option label="全部" :value="0"></el-option>
-                        <el-option label="登录" :value="1"></el-option>
-                        <el-option label="商品管理" :value="2"></el-option>
-                        <el-option label="订单管理" :value="3"></el-option>
-                        <el-option label="财务管理" :value="4"></el-option>
-                        <el-option label="权限管理" :value="5"></el-option>
-                        <el-option label="内容管理" :value="6"></el-option>
-                        <el-option label="一级菜单" :value="7"></el-option>
+                        <el-option label="全部" value=""> </el-option>
+                        <el-option
+                                v-for="(item,index) in moduleOption"
+                                :key="index"
+                                :label="item.module"
+                                :value="item.module">
+                        </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="操作时间：">
@@ -28,25 +27,21 @@
                             start-placeholder="开始日期"
                             end-placeholder="结束日期"
                             :default-time="['00:00:00', '23:59:59']"
+                            @blur='acttime'
                     ></el-date-picker>
                 </el-form-item>
                 <el-form-item>
-                    <el-button @click="getData()" type="primary">查询</el-button>
-                    <el-button type="primary" plain @click="reset()">重置</el-button>
+                    <el-button  class="btn" type="primary" @click="getDataList">搜索</el-button>
+                    <el-button  class="btn" type="primary" plain @click="reset()" >重置</el-button>
                 </el-form-item>
                 <br />
             </el-form>
-<!--            <el-form>-->
-<!--                <el-form-item>-->
-<!--                    <el-button type="primary" plain @click="exportHandle()">导出</el-button>-->
-<!--                </el-form-item>-->
-<!--            </el-form>-->
             <el-table v-loading="dataListLoading" :data="dataList" border @sort-change="dataListSortChangeHandle" style="width: 100%;">
-                <el-table-column prop="id" label="操作账号" header-align="center" align="center"></el-table-column>
+                <el-table-column prop="creator" label="操作账号" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="module" label="操作模块" header-align="center" align="center"></el-table-column>
-                <el-table-column prop="type" label="异常类型" header-align="center" align="center"></el-table-column>
+                <el-table-column prop="errorType" label="异常类型" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="createDate" label="操作时间" header-align="center" align="center"></el-table-column>
-                <el-table-column prop="info" label="操作内容" fixed="right" header-align="center" align="center" width="500"></el-table-column>
+                <el-table-column prop="operationalContext" label="操作内容" fixed="right" header-align="center" align="center" width="500"></el-table-column>
             </el-table>
             <el-pagination
                     :current-page="page"
@@ -64,44 +59,84 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
+    import { errorUrl,exportError } from '@/api/url'
+    import { errorListModule } from '@/api/api'
 
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
                 mixinViewModuleOptions: {
-                    getDataListURL: '/admin-api/log/error/page',
+                    activatedIsNeed: true,
+                    getDataListURL: errorUrl,
                     getDataListIsPage: true,
-                    exportURL: '/admin-api/log/error/export'
+                    exportURL: exportError
                 },
                 dataForm: {
-                    module: ''
+                    module: "",
+                    createDateStart:"",
+                    createDateEnd:"",
+                    creator:""
                 },
                 breaddata: ["系统管理", "异常日志"],
                 timeArr: "", //操作时间数据
+                dataListLoading: false,
+                moduleOption:[],
             }
         },
         components: {
             Bread
         },
+        watch:{
+            timeArr(val){
+                if(!val){
+                    this.dataForm.createDateStart = '';
+                    this.dataForm.createDateEnd = '';
+                }
+            },
+            'dataForm.creator':function(newV,oldV) {
+                var chineseCount = 0,characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 300) { //输入字符大于300的时候过滤
+                        this.dataForm.creator = newV.substr(0,(chineseCount/2+characterCount)-1)
+                    }
+                }
+            },
+        },
+         created() {
+            // this.getDataList();
+            this.listModule()
+        },
         methods: {
-            // 异常信息
-            infoHandle (info) {
-                this.$alert(info, this.$t('logError.errorInfo'), {
-                    customClass: 'mod-sys__log-error-view-info'
+            listModule(){
+                errorListModule().then((res)=>{
+                    if(res.code == 200 && res.data){
+                        // Object.assign(this.dataForm,res.data);
+                        this.moduleOption =  [].concat(res.data)
+
+                    }else{
+                        // this.$message.error(res.msg)
+                    }
                 })
             },
-            getData(){
-                this.page = 1;
-                this.limit = 10;
+            reset(){
+                this.timeArr = [];
+                this.dataForm.creator = "";
+                this.dataForm.module = "";
+                this.dataForm.createDateStart = "";
+                this.dataForm.createDateEnd = "";
                 this.getDataList();
             },
-            reset(){
-                this.dataForm = {
-                    module: ''
-                };
-                this.getData();
-            }
+            acttime(){
+                this.dataForm.createDateStart = this.timeArr[0];
+                this.dataForm.createDateEnd = this.timeArr[1];
+            },
         }
     }
 </script>
@@ -111,8 +146,5 @@
         &-view-info {
             width: 80%;
         }
-    }
-    .grayLine{
-        border-bottom: 0!important;
     }
 </style>

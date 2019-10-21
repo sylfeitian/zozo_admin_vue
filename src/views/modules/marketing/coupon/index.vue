@@ -1,35 +1,58 @@
 <template>
-  <div>
-       <coupon v-if='couponIsshow' @artcoupon = 'artcoupon'></coupon>
-       <addcoupon v-else @artcouponno='artcouponno'></addcoupon>
-  </div>
+    <div>
+        <!-- 列表 -->
+        <coupon v-if='couponIsshow&&!detailStatus'  @showAddOrEditCoupon='showAddOrEditCoupon' @showDetail='showDetail'></coupon>
+        <!-- 新增编辑 -->
+        <addcoupon v-if='!couponIsshow&&!detailStatus' ref="addCouponCompon" @artcouponno='artcouponno' ></addcoupon>
+        <!-- 查看 -->
+        <detailcoupon v-if="detailStatus" ref="detailCompon" @detailno="detailno"></detailcoupon>
+
+    </div>
 </template>
 
 <script>
-import coupon from './coupon'
-import addcoupon from "./addcoupon";
-  
-export default {
-  data () {
-    return {
-      couponIsshow: true,
-    }
-  },
-  components:{
-  	coupon,addcoupon
-  },
-  created(){
-  	
-  },
-  methods: {
-      artcoupon(){
-      	this.couponIsshow = false;
-      },
-      artcouponno(){
-      	this.couponIsshow = true;
-      }
-  }
-};
+    import coupon from './coupon'
+    import addcoupon from "./addcoupon";
+    import detailcoupon from "./detailcoupon";
+
+    export default {
+        data () {
+            return {
+                detailStatus:false,
+                couponIsshow: true,
+                editSatusId:'',//判断是否编辑
+                editType:'',//优惠券类型
+                detailId:'',//详情id
+            }
+        },
+        components:{
+            coupon,addcoupon,detailcoupon
+        },
+        created(){
+
+        },
+
+        methods: {
+            showAddOrEditCoupon(row){
+                this.couponIsshow = false;
+                this.$nextTick(()=>{
+                    this.$refs.addCouponCompon.init(row);
+                })
+            },
+            detailno(){
+                this.detailStatus = false;
+            },
+            artcouponno(){
+                this.couponIsshow = true;
+            },
+            showDetail(row){
+                this.detailStatus = true;
+                this.$nextTick(()=>{
+                    this.$refs.detailCompon.init(row);
+                })
+            }
+        }
+    };
 </script>
 <style lang="scss" scoped>
 

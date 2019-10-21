@@ -4,12 +4,13 @@
         <div class="mod-sys__role">
             <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getData()">
                 <el-form-item label="角色搜索：">
-                    <el-input v-model="dataForm.name" placeholder="请输入角色名称关键字搜索" clearable style="width: 220px!important;"></el-input>
+                    <el-input v-model.trim="dataForm.name" placeholder="请输入角色名称关键字搜索" clearable style="width: 220px!important;"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button @click="getData()" type="primary">搜索</el-button>
-                    <el-button  @click="reset()">重置</el-button>
-                    <el-button v-if="$hasPermission('sys:role:save')" type="primary" @click="addOrUpdateHandle()">添加角色</el-button>
+                    <el-button  @click="reset()" plain type="primary">重置</el-button>
+                    <!--<el-button v-if="$hasPermission('sys:role:save')" type="primary" @click="addOrUpdateHandle()">添加角色</el-button>-->
+                    <el-button type="primary" @click="addOrUpdateHandle()">添加角色</el-button>
                 </el-form-item>
             </el-form>
 
@@ -39,11 +40,13 @@
                 <el-table-column prop="name" label="角色名称" header-align="center" align="center" width="320"></el-table-column>
                 <el-table-column prop="remark" label="角色说明" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="createDate" label="创建时间" header-align="center" align="center" width="240"></el-table-column>
-                <el-table-column prop="" label="账号数量" header-align="center" align="center" width="240"></el-table-column>
-                <el-table-column label="操作" fixed="right" header-align="center" align="center" width="240">
-                    <template slot-scope="scope" v-if="scope.row.roleFlag!==1">
-                        <el-button v-if="$hasPermission('sys:role:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">编辑</el-button>
-                        <el-button v-if="$hasPermission('sys:role:delete')" type="text" class="artdanger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+                <el-table-column prop="number" label="账号数量" header-align="center" align="center" width="240"></el-table-column>
+                <el-table-column label="操作" prop="roleFlag" fixed="right" header-align="center" align="center" width="240">
+                    <template slot-scope="scope" v-if="scope.row.roleFlag==0">
+                        <!--<el-button v-if="$hasPermission('sys:role:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">编辑</el-button>-->
+                        <!--<el-button v-if="$hasPermission('sys:role:delete')" type="text" class="artdanger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>-->
+                        <el-button  type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">编辑</el-button>
+                        <el-button  type="text" class="artdanger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -85,6 +88,22 @@
             AddOrUpdate,
             Bread
         },
+        watch:{
+            'dataForm.name':function(newV,oldV) {
+                var chineseCount = 0,characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 300) { //输入字符大于300的时候过滤
+                        this.dataForm.name = newV.substr(0,(chineseCount/2+characterCount)-1)
+                    }
+                }
+            },
+        },
         methods:{
             getData(){
                 this.page = 1;
@@ -101,7 +120,9 @@
 </script>
 
 <style lang="scss" scoped>
-    .grayLine{
-        border-bottom: 0!important;
+    /deep/ .cell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>

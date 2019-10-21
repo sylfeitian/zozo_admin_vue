@@ -3,7 +3,7 @@
         <Bread :breaddata="breaddata"></Bread>
         <el-form :inline="true" :model="dataForm" class="demo-form-inline grayLine" ref="dataForm">
             <el-form-item label="用户ID/手机号/名称：" prop="memberId" clearable>
-                <el-input v-model="dataForm.memberId" placeholder="用户ID/手机号/名称"></el-input>
+                <el-input v-model.trim="dataForm.memberId" placeholder="用户ID/手机号/名称"></el-input>
             </el-form-item>
             <el-form-item label="发送时间：" clearable>
                 <el-date-picker
@@ -25,7 +25,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="getDataList">查询</el-button>
+              <el-button type="primary" @click="getDataList">搜索</el-button>
               <el-button type="primary" plain @click="rest">重置</el-button>
             </el-form-item>
         </el-form>

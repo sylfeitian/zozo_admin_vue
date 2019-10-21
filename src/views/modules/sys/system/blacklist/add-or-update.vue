@@ -2,141 +2,210 @@
     <el-dialog
             title="添加黑名单"
             :visible.sync="outerVisible"
-            @click="goBack"
-            :show-close="false"
-            width="40%"
+            :before-close="closecancel"
+            width="50%"
     >
-        <el-form label-width="100px" :model="dataForm">
-            <el-form-item label="账号：">
-                <el-input v-model="memberInfo.memberName" :disabled="true"></el-input>
+        <el-form label-width="100px"
+                 :model="dataForm"
+                 ref="addForm">
+        	<div class="formItemWarp" >
+                <el-radio v-model="dataForm.type" :label="0">
+                    <span  style="color:transparent">0</span>
+                </el-radio>
+                <el-form-item label="账号：" style="width: 100%;">
+                        <el-input v-model.trim="dataForm.memberName" placeholder="请输入"></el-input>
+                </el-form-item>
+            </div>
+
+            <div class="formItemWarp">
+                <el-radio v-model="dataForm.type" :label="1">
+                    <span  style="color:transparent">0</span>
+                </el-radio>
+                <el-form-item label="收货地址：">
+	                <el-select
+	                        v-model="dataForm.provinceId"
+	                        placeholder="省"
+	                        loading-text="加载中···"
+	                        @visible-change="changeArea(dataForm.provinceId, 1)"
+	                >
+	                    <!-- 市级 -->
+	                    <el-option
+	                            v-for="item in optionsArea1"
+	                            :key="item.id"
+	                            :label="item.name"
+	                            :value="item.id"
+	                    ></el-option>
+	                </el-select>
+	                <el-select
+	                        v-model="dataForm.cityId"
+	                        placeholder="市"
+	                        @visible-change="changeArea(dataForm.cityId, 2)"
+	                >
+	                    <el-option
+	                            v-for="item in optionsArea2"
+	                            :key="item.id"
+	                            :label="item.name"
+	                            :value="item.id"
+	                    ></el-option>
+	                </el-select>
+	                <el-select
+	                        v-model="dataForm.areaId"
+	                        placeholder="县"
+	                         @visible-change="changeArea(dataForm.areaId, 3)"
+	                >
+	                    <el-option
+	                            v-for="item in optionsArea3"
+	                            :key="item.id"
+	                            :label="item.name"
+	                            :value="item.id"
+	                    ></el-option>
+	                </el-select>
+	                <el-select 
+                        v-model="dataForm.stressId" placeholder="镇"
+                        @visible-change="changeArea(dataForm.stressId,4)">
+	                    <el-option
+                            v-for="item in optionsArea4"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id"
+	                    ></el-option>
+	                </el-select>
+	            </el-form-item>
+            </div>
+            
+            <el-form-item  style="margin-left:60px;margin-top:10px">
+                <el-input
+                    type="textarea"
+                    :rows="3"
+                    placeholder="请输入详情地址"
+                    v-model="dataForm.address">
+                </el-input>
             </el-form-item>
-            <el-form-item label="收货地址：">
-                <el-select
-                        disabled
-                        v-model="dataForm.memberAreaid"
-                        placeholder="请选择"
-                        loading-text="加载中···"
-                        @visible-change="getGoodsClass(0)"
-                >
-                    <!-- 市级 -->
-                    <el-option
-                            v-for="item in goodscalssOption0"
-                            :key="item.id"
-                            :label="item.areaName"
-                            :value="item.id"
-                    ></el-option>
-                </el-select>
-                <el-select
-                        disabled
-                        v-model="dataForm.memberCityid"
-                        placeholder="请选择"
-                        @visible-change="getGoodsClass(1)"
-                >
-                    <el-option
-                            v-for="item in goodscalssOption1"
-                            :key="item.id"
-                            :label="item.areaName"
-                            :value="item.id"
-                    ></el-option>
-                </el-select>
-                <el-select
-                        disabled
-                        v-model="dataForm.memberProvinceid"
-                        placeholder="请选择"
-                        @visible-change="getGoodsClass(2)"
-                >
-                    <el-option
-                            v-for="item in goodscalssOption2"
-                            :key="item.id"
-                            :label="item.areaName"
-                            :value="item.id"
-                    ></el-option>
-                </el-select>
-                <el-select disabled v-if="dataForm.stressId" v-model="dataForm.stressId" placeholder="请选择">
-                    <el-option
-                            v-for="item in goodscalssOption3"
-                            :key="item.id"
-                            :label="item.areaName"
-                            :value="item.id"
-                    ></el-option>
-                </el-select>
+            <el-form-item label="封禁原因：" style="margin-left:60px" >
+                <el-input
+                type="text"
+                maxlength="20"
+                placeholder="请输入内容"
+                v-model="dataForm.remark">
+                </el-input>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="cancel">取 消</el-button>
-            <el-button type="primary" @click="restPass">保存</el-button>
+            <el-button type="primary" @click="dataFormSubmit('addForm')">{{loading?"保存中...":"保存"}}</el-button>
         </div>
     </el-dialog>
 </template>
 <script>
     import { isMobile } from "@/utils/validate";
-    import { restPassword, setMemberPass, areaList, proList } from "@/api/api";
+    import {  addBlcaklist, areaList, proList } from "@/api/api";
+    import {areaFirst,areaByParentId} from "@/api/api.js"
     export default {
         components: {},
         data() {
-                return {
+            return {
+                loading:false,
                 value: [],
                 outerVisible: true,
                 innerVisible: false,
                 dialogVisible: "",
                 form: {},
                 dataForm: {
-                    memberName: "",
-                    memberAreaid: "",
-                    memberCityid: "",
-                    memberProvinceid: "",
-                    stressId: ""
+                     "memberName": "",//会员账号(11位手机号) ,
+                     "addressIds": "",//逗号隔开 （地址省市县） ,
+                     "address": "",//地址街道等信息 ,
+                     "remark": "",//封禁原因 ,
+                     "type": 0,// 类型:0:账户，1：地址
+                     provinceId:'',
+                     cityId:'',
+                     areaId:'',
+                     stressId:'',
                 },
-                goodscalssOption0: [],
-                goodscalssOption1: [],
-                goodscalssOption2: [],
-                goodscalssOption3: [],
+                optionsArea1: [],
+                optionsArea2: [],
+                optionsArea3: [],
+                optionsArea4: [],
             };
         },
-        props: ["memberInfo", "memberInfoSourse"],
+        props: [],
+		watch:{
+			'dataForm.memberName':function(newV,oldV) {
+				if(newV){
+					// 删除非数字的输入
+					this.dataForm.memberName=newV.replace(/[^\d]/g,'')
+				}
+				if(newV.length>11){
+					this.dataForm.memberName = newV.substr(0,11)
+				}
+			}
+		},
+		created(){
+        },
         methods: {
+        	artfocus(){
+        	},
             init() {
-                this.getCity("");
-                this.dataForm.memberAreaid = this.memberInfo.memberProvinceid;
-                this.dataForm.memberCityid = this.memberInfo.memberCityid;
-                this.dataForm.memberProvinceid = this.memberInfo.memberAreaid;
-                this.dataForm.stressId = this.memberInfo.stressId;
-                this.getAreaList(this.dataForm.memberAreaid);
-                this.getProList(this.dataForm.memberCityid);
-                this.getStrList(this.dataForm.memberProvinceid);
+                this.outerVisible = true;
+                this.$nextTick(() => {
+                    this.$refs['addForm'].resetFields();
+                    this.dataForm.memberName = "";
+                    this.dataForm.addressIds = "";
+                    this.dataForm.address = "";
+                    this.dataForm.remark = "";
+                    this.dataForm.type = 0;
+                     this.getFirstData();
+				})
             },
-            getCity() {
-                //所有一级区域
-                areaList().then(res => {
-                    if (res.code == 200) {
-                        this.goodscalssOption0 = res.data;
+            // 获取第一级地区数据
+            getFirstData(){
+                areaFirst().then((res)=>{
+                    console.log(res);
+                    if(res.code==200){
+                        this.optionsArea1 = res.data;
                     }
-                });
+                })
             },
-            getAreaList(id) {
-                //二级
-                proList({ id }).then(res => {
-                    if (res.code == 200) {
-                        this.goodscalssOption1 = res.data;
+            // 切换地区获取下级联动地区数据
+            changeArea(id,argu2,reset=true){
+                if(!id){
+                    return
+                }
+                var obj ={
+                    id:id
+                }
+                if(argu2==1 && reset){
+                    this.dataForm.cityId = "";
+                    this.dataForm.areaId = "";
+                    this.dataForm.stressId = "";
+                    this.optionsArea2 = []
+                    this.optionsArea3 = []
+                    this.optionsArea4 = []
+                }else if(argu2==2 && reset){
+                    this.dataForm.areaId = "";
+                    this.dataForm.stressId = "";
+                    this.optionsArea3 = []
+                    this.optionsArea4 = []
+                }else if(argu2==3 && reset){
+                    this.dataForm.stressId = "";
+                    this.optionsArea4 = []
+                }else if(argu2==4 && reset){
+                    // 选到最后一级了
+                }
+                areaByParentId(obj).then((res)=>{
+                    console.log(res);
+                    if(res.code==200){
+                        if(argu2==1){
+                            this.optionsArea2 = res.data;
+                        }else if(argu2==2){
+                            this.optionsArea3 = res.data;
+                        }else if(argu2==3){
+                            this.optionsArea4 = res.data;
+                        }else if(argu2==4){
+                             // 选到最后一级了
+
+                        }
                     }
-                });
-            },
-            getProList(id) {
-                //三级
-                proList({ id }).then(res => {
-                    if (res.code == 200) {
-                        this.goodscalssOption2 = res.data;
-                    }
-                });
-            },
-            getStrList(id) {
-                //四级
-                proList({ id }).then(res => {
-                    if (res.code == 200) {
-                        console.log(res.data, "333");
-                        this.goodscalssOption3 = res.data;
-                    }
-                });
+                })
             },
             closeInner() {
                 this.innerVisible = false;
@@ -145,79 +214,84 @@
             handleChange(value) {
                 console.log(value);
             },
+            closecancel(done){
+            	done();
+            },
             //取消
             cancel() {
                 this.outerVisible = false;
-                this.$emit("changeWindow");
+                // this.$emit("refreshDataList");
                 //回传主页面。false
             },
-            //返回列表页
-            goBack() {
-                console.log("关闭");
-                this.$emit("changeWindow");
-            },
-            //重置密码
-            restPass() {
-                console.log(this.memberInfo, "111", this.dataForm);
-                const obj = {
-                    id: this.memberInfo.id,
-                    memberAreaid: this.dataForm.memberAreaid,
-                    memberCityid: this.dataForm.memberCityid,
-                    memberPasswd: "string",
-                    stressId: this.dataForm.stressId,
-                    memberProvinceid: this.dataForm.memberProvinceid
-                };
-                setMemberPass(obj).then(res => {
-                    if (res.code == 200) {
-                        this.$message({
-                            message: res.msg,
-                            type: "success",
-                            duration: 1000
-                        });
-                        this.$emit("changeWindow");
-                    } else {
-                        this.$message({
-                            message: res.msg,
-                            type: "error",
-                            duration: 1000
-                        });
+            //新增黑名单 提交
+           	dataFormSubmit(formName){
+				if(this.dataForm.type === 0 && this.dataForm.memberName === ""){ //选择账号
+					this.$message.error("请输入账号");
+					return
+				}else if(this.dataForm.type === 1 && this.dataForm.provinceId === ""){
+					this.$message.error("请选择省份");
+					return
+				}
+                if(this.loading) return;
+                var  addressIds = this.dataForm.provinceId; //省
+                if(this.dataForm.cityId){
+                    addressIds += ","+this.dataForm.cityId;//市
+                    if(this.dataForm.areaId){
+                        addressIds += ","+this.dataForm.areaId;//区
+                        if(this.dataForm.stressId){
+                            addressIds += ","+this.dataForm.stressId;//街
+                        }
                     }
-                });
-            },
-            //获取密码
-            sendMsg() {
-                this.$refs["form"].validate(valid => {
+                }
+                this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        const obj = {
-                            id: this.memberInfo.id,
-                            mobile: this.form.phone
-                        };
-                        restPassword(obj).then(res => {
-                            if (res.code == 200) {
-                                this.$message({
-                                    message: res.msg,
-                                    type: "success",
-                                    duration: 1000
-                                });
-                                this.innerVisible = !this.innerVisible;
-                            } else {
-                                this.$message({
-                                    message: res.msg,
-                                    type: "error",
-                                    duration: 1000
-                                });
-                            }
-                        });
+                            console.log(this.memberInfo, "111", this.dataForm);
+                            var obj = {
+                                "memberName": this.dataForm.memberName,//会员账号(11位手机号) ,
+                                "addressIds": addressIds,//逗号隔开 （地址省市县） ,
+                                "address": this.dataForm.address,//地址街道等信息 ,
+                                "remark": this.dataForm.remark,//封禁原因 ,
+                                "type": 0,// 类型:0:账户，1：地址
+                                //  "id": 0,//主键 ,
+                                //  "createDateEnd": "string",//封禁时间 ,
+                                // "createDateStart": "string",// 封禁时间 ,
+                                // "page": "1",//当前页码，从1开始 ,
+                                // "limit": "10",//每页显示记录数
+                            };
+                            this.loading = true;
+                            addBlcaklist(obj).then(res => {
+                                this.loading = false;
+                                if (res.code == 200) {
+                                    this.$message({
+                                        message: res.msg,
+                                        type: "success",
+                                        duration: 1000
+                                    });
+                                    this.$emit("refreshDataList");
+                                    this.cancel();
+                                    this.$parent.addOrUpdateVisible = false;
+                                } else {
+                                    this.$message({
+                                        message: res.msg,
+                                        type: "error",
+                                        duration: 1000
+                                    });
+                                }
+                            });
                     } else {
+                        //console.log('error 添加失败!!');
                         return false;
                     }
-                });
-            }
+				})
+            },
         }
     };
 </script>
-<style scoped>
-    .el-select {
+<style lang="scss" scoped>
+	.el-radio{
+		margin-left: 30px;
+	}
+	.el-select {
         width: 15%;
     }
     .header {
@@ -225,7 +299,7 @@
         font-weight: bold;
     }
     .el-input {
-        width: 50%;
+        // width: 50%;
     }
     .el-dialog {
         width: 40% !important;
@@ -243,7 +317,16 @@
       width: 30% !important;
     } */
     .el-form {
-        width: 140%;
+        width: 100%;
     }
     /* .restPass{text-align: center;} */
+
+    .formItemWarp{
+        display:flex;
+        align-items: center;
+        .el-form-item{
+            margin-top: 7px !important;
+            margin-bottom: 7px !important;
+        }
+    }
 </style>

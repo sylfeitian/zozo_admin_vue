@@ -3,14 +3,14 @@ const t = {}
 t.loading = '加载中...'
 
 t.brand = {}
-t.brand.lg = '雷铭商城7.0'
-t.brand.mini = '雷铭'
+t.brand.lg = '上海ZOZO跨境电商平台'
+t.brand.mini = 'ZOZO'
 
 t.add = '新增'
 t.delete = '删除'
 t.deleteBatch = '删除'
 t.update = '修改'
-t.query = '查询'
+t.query = '搜索'
 t.export = '导出'
 t.handle = '操作'
 t.confirm = '确定'

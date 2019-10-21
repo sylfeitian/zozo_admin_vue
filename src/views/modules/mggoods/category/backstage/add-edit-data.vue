@@ -3,7 +3,7 @@
         <Bread :breaddata="breaddata" @changePage="changePage" :index="'2'"></Bread>
         <el-form :model="dataForm" label-width="140px" 	:rules="dataRule" class="demo-ruleForm" ref="addForm">
         <el-form-item label="后台分类名称：" prop="gcName">
-            <el-input v-model="dataForm.gcName"  maxlength="30" show-word-limit style="width:400px;"></el-input>
+            <el-input v-model.trim="dataForm.gcName"  maxlength="30"  style="width:400px;"></el-input>
         </el-form-item>
         <el-form-item label="上级分类：">
             <!-- <el-popover placement="right" width="400" trigger="click"> -->
@@ -28,7 +28,7 @@
         <el-form-item>
             <el-button @click="goList()">返回</el-button>
             <el-button type="primary" @click="dataFormSubmit('addForm')" :loading="saveLoading">{{saveLoading?"提交中...":"确认"}}</el-button>
-            <!-- <el-button @click="resetForm('addForm')">重置</el-button> -->
+            <!-- <el-button @click="resetForm('addForm')" type="primary">重置</el-button> -->
         </el-form-item>
         </el-form>
         

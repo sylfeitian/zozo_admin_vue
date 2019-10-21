@@ -17,13 +17,13 @@
 		        </el-select>
 			    </el-form-item>  
 			    <el-form-item label="" v-if='dataForm.type != 1'>
-			      <el-input v-model="dataForm.memberName" placeholder="请输入" clearable></el-input>
+			      <el-input v-model.trim="dataForm.memberName" placeholder="请输入" clearable></el-input>
 			    </el-form-item>
 			    <el-form-item label="" v-else>
-			      <el-input v-model="dataForm.storeName" placeholder="请输入" clearable></el-input>
+			      <el-input v-model.trim="dataForm.storeName" placeholder="请输入" clearable></el-input>
 			    </el-form-item>
 					<el-form-item>
-					  <el-button  class="btn" type="primary" @click="getDataList()">查询</el-button>
+					  <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
 					</el-form-item>
 			</el-form>
 		  <el-table
@@ -188,8 +188,8 @@ export default {
 	      activeName: "first",
 	      valuetime: '',
 	      params:{
-	      "currentPage": 1, //当前页数
-	      "currentPageSize" : 10, //每页显示的条数
+		      "currentPage": 1, //当前页数
+		      "currentPageSize" : 10, //每页显示的条数
 	      },
 	      vipData:[],
 	      shopData: [],

@@ -3,7 +3,7 @@
       <Bread  :breaddata="breaddata"></Bread>
       <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="输入搜索：">
-          <el-input v-model="dataForm.groupName" placeholder="请输入规格组名" clearable></el-input>
+          <el-input v-model.trim="dataForm.groupName" placeholder="请输入规格组名" clearable></el-input>
         </el-form-item>
         <el-form-item label="启用状态：" prop="applicationId">
             <el-select v-model="dataForm.groupStatus">
@@ -16,7 +16,7 @@
             </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button  calss="btn" type="primary" @click="getDataList()">查询</el-button>
+          <el-button  calss="btn" type="primary" @click="getDataList()">搜索</el-button>
           <el-button   calss="btn"  @click="reset()" type="primary" plain>重置</el-button>
         </el-form-item>
         <br />

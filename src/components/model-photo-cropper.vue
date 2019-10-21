@@ -26,37 +26,55 @@
 			<img class="pre-img crop-pre-img" :style="{width:imgWidth,height:imgHeight}" :src="cropper.cropImg">
 		</div>
 	    <span slot="footer" class="dialog-footer">
-	        <!-- <el-button type="primary" @click="cropper.dialogVisible = false">确 定</el-button> -->
+	        <el-button @click="cancleImg">取消</el-button>
 			 <el-button type="primary" @click="submitImg()">确 定</el-button>
 	    </span>
     </el-dialog>
 
 
 		<div class="upload-box" :style="{width:imgWidth,height:imgHeight}" >
-			<img class="pre-img" :src="cropper.cropImg | filterImgUrl" :style="{width:'100%',height:'100%'}" v-if="cropper.imgShow"/>
+			<!-- 真正的上传图片 -->
+			<div class="uloadingBox">
+				<img class="pre-img" :src="cropper.cropImg | filterImgUrl" :style="{width:'100%',height:'100%'}" v-if="cropper.imgShow"/>
 
-			<input class="crop-input" type="file" name="image" accept="image/*" :value="value" @change="setImage"/>
-		    <el-upload
-		    :style="{width:imgWidth,height:imgHeight}"
-		      class="upload-demo"
-		      drag
-		      :action="action"
-		      :auto-upload="false"
-			   v-if="!cropper.imgShow"
-		    >
-			      <i class="el-icon-upload" :style="{fontSize:fontSize,lineHeight:lineHeight}"></i>
-			      <div class="el-upload__text" :style="{width:imgWidth,height:imgHeight}">
-			      	<p v-if="imgWidth == '282px'">
-			      		<span >点击上传图片</span>
-			      		<br/>
-						<!-- <span>建议图片尺寸282*167</span> -->
-			      	</p>
-					  <span style="display:none">{{index}}</span>
-			      	<!-- <p v-else style="margin-top: -16px;">
-			      		<span>100&nbsp;*&nbsp;100</span>
-			      	</p> -->
-						</div>
-		    </el-upload>
+				<input class="crop-input" ref="cropInput" type="file" name="image" accept="image/*" :value="value" @change="setImage"/>
+				<el-upload
+				:style="{width:imgWidth,height:imgHeight}"
+				class="upload-demo"
+				drag
+				:action="action"
+				v-if="!cropper.imgShow"
+				>
+					<i class="el-icon-upload" :style="{fontSize:fontSize,lineHeight:lineHeight}"></i>
+					<div class="el-upload__text" :style="{width:imgWidth,height:imgHeight}">
+						<p v-if="imgWidth == '282px'">
+							<span >点击上传图片</span>
+							<br/>
+							<!-- <span>建议图片尺寸282*167</span> -->
+						</p>
+						<span style="display:none">{{index}}</span>
+						<!-- <p v-else style="margin-top: -16px;">
+							<span>100&nbsp;*&nbsp;100</span>
+						</p> -->
+							</div>
+				</el-upload>
+			</div>
+			<!-- 实现删除图片和上传图片功能 -->
+			<div  class="hiddenUloadingBox" v-if="cropper.imgShow">
+			      <div class="hiddenMask">
+					  <!-- 遮罩层 -->
+				  </div>
+				  <div class="buttonFn">
+						<!-- <img src="http://bug.leimingtech.com/zentao/file-read-33634.png" alt="上传图片" @click="updataImg">
+						<img src="http://bug.leimingtech.com/zentao/file-read-33634.png" alt="删除图片" @click="handleRemove"> -->
+						<el-button icon="el-icon-upload" 
+								class="artbtns"
+								@click.stop="updataImg"></el-button>
+							<el-button icon="el-icon-delete" 
+								class="artbtns"
+								@click.stop="handleRemove"></el-button>
+				  </div>
+			</div>
 		</div>
 
 	</div>
@@ -77,6 +95,7 @@
 				//imgWidth:'337.7778px',
 				//imgHeight:'190px',
 				value:'',
+				oldimg:'',
 			}
 		},
 		// props:['index','imgWidth','imgHeight', 'aspectRatio','font-size'],
@@ -122,13 +141,16 @@
 			VueCropper
 		},
 		created(){
-			
+		
 		},
 		mounted(){
+			console.log("mounted"+this.cropImg);
+			this.oldimg = this.cropImg
 			this.backScanImage(this.cropImg);	
 		},
 		methods:{
 			init(){
+				console.log("init");
 				this.cropper.imgShow = false;
 			},
 			// 初始回显图片
@@ -142,29 +164,71 @@
 					this.cropper.cropImg = "";
 				}
 			},
-      setImage(e){
-          const file = e.target.files[0];
-          if (!file.type.includes('image/')) {
-              return;
-          }
-          const reader = new FileReader();
-          reader.onload = (event) => {
-              this.cropper.dialogVisible = true;
-              this.cropper.imgShow = true;
-              this.cropper.imgSrc = event.target.result;
-              this.$refs.cropper && this.$refs.cropper.replace(event.target.result);
-							this.value = "";
-          };
-          reader.readAsDataURL(file);
-      },
-      cropImage () {
-        this.cropper.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL();
-        //this.$emit("GiftUrlHandle", this.cropper.cropImg,this.index);
-      },
-	  submitImg(){
-		  this.cropper.dialogVisible = false;
-		  this.$emit("GiftUrlHandle", this.cropper.cropImg,this.index);
-	  }
+			setImage(e){
+				const file = e.target.files[0];
+				console.log(file.type)
+				if (!file.type.includes('image/jpg')&&!file.type.includes('image/jpeg')&&!file.type.includes('image/png')&&!file.type.includes('image/jif')) {
+					this.$message.error('仅支持（jpg,jpeg,png,gif）为后缀的文件!');
+					//   this.value = file
+					var cropImg = this.cropper.cropImg;
+					this.cropper.cropImg = ""
+					this.cropper.cropImg =cropImg;
+					this.value = "";
+					return;
+				}
+				if(file.size/(1024*1024) > 3){
+					this.$message.error('图片大小不能大于3M');
+					//    this.value = file
+					var cropImg = this.cropper.cropImg;
+					this.cropper.cropImg = ""
+					this.cropper.cropImg =cropImg;
+					this.value = "";
+					return
+				}
+				const reader = new FileReader();
+				reader.onload = (event) => {
+					this.cropper.dialogVisible = true;
+					this.cropper.imgShow = true;
+					this.cropper.imgSrc = event.target.result;
+					this.$refs.cropper && this.$refs.cropper.replace(event.target.result);
+					this.value = "";
+				};
+				reader.readAsDataURL(file);
+			},
+			cropImage () {
+				this.cropper.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL();
+				//this.$emit("GiftUrlHandle", this.cropper.cropImg,this.index);
+			},
+			// 取消上传图片，要回显一起拿的图片
+			cancleImg(){
+				this.cropper.dialogVisible = false;
+				this.cropper.cropImg =  this.oldimg;
+			},
+			submitImg(){
+				this.cropper.dialogVisible = false;
+				this.$emit("GiftUrlHandle", this.cropper.cropImg,this.index);
+				// 上传图片成功后，最有一次上传的图片要更新
+				this.oldimg = this.cropper.cropImg
+			},
+			// 预览图片
+			// 上传图片:
+			updataImg(){
+				this.$refs.cropInput.click();
+			},
+			// 删除图片
+			handleRemove() {
+				let that = this;
+			   this.$confirm('是否确定删除该图片?', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				}).then(() => {
+					this.$emit("delteteImg",that.index);
+				}).catch(() => { 
+
+				})
+				
+			},
 		}
 	}
 </script>
@@ -219,4 +283,51 @@
 	 	width: 100% !important;
 	    height: 100% !important;
 	}
+	.uloadingBox{
+		position: relative;
+		width: 100%;
+		height: 100%;
+	}
+	.upload-box:hover > .hiddenUloadingBox{
+			display: inline-block;
+	}
+	.hiddenUloadingBox{
+		display: none;
+		z-index: 1000;
+		position: absolute;
+		top: 0;
+		left:0;
+		width: 100%;
+		height: 100%;
+		.hiddenMask{
+			background: black;
+			opacity: 0.3;
+			position: absolute;
+			top: 0;
+			left:0;
+			width: 100%;
+			height: 100%;
+		}
+		.buttonFn{
+			width: 100%;
+			height: 100%;
+			display: flex;
+			justify-content: center;
+			position: relative;
+			align-items: center;
+			.el-button{
+				color:white;
+				background: transparent;
+    			border: 0;
+				width: 30px;
+				margin: 3px;
+				padding: 0;
+				i{
+				  transform: scale(1.5);
+				}
+			}
+		}
+
+	}
+
 </style>

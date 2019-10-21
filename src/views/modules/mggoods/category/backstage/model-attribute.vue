@@ -3,13 +3,13 @@
     <el-dialog title="关联属性" :visible.sync="visible" :before-close="closeDialog">
       <el-form :inline="true" :model="dataForm" class="demo-form-inline">
         <el-form-item label="属性名称：">
-          <el-input v-model="dataForm.attrName" placeholder="属性名称"></el-input>
+          <el-input v-model.trim="dataForm.attrName" placeholder="属性名称"></el-input>
         </el-form-item>
         <el-form-item label="品牌分组：">
-          <el-input v-model="dataForm.groupName" placeholder="品牌分组"></el-input>
+          <el-input v-model.trim="dataForm.groupName" placeholder="品牌分组"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="search()">查询</el-button>
+          <el-button type="primary" @click="search()">搜索</el-button>
         </el-form-item>
       </el-form>
       <el-table :data="dataList" border style=" width:9%6;margin:auto"   ref="multipleTable" @selection-change="dataListSelectionChangeHandle">

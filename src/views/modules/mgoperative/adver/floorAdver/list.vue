@@ -7,10 +7,10 @@
     </el-breadcrumb>
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="h5楼层名称：">
-            <el-input v-model="dataForm.floorName" placeholder="h5楼层名称" clearable></el-input>
+            <el-input v-model.trim="dataForm.floorName" placeholder="h5楼层名称" clearable></el-input>
         </el-form-item>
         <el-form-item label="广告标题：">
-            <el-input v-model="dataForm.advTitle" placeholder="广告标题" clearable></el-input>
+            <el-input v-model.trim="dataForm.advTitle" placeholder="广告标题" clearable></el-input>
         </el-form-item>
         <el-form-item label="启用时间：">
                 <el-date-picker
@@ -34,7 +34,7 @@
                 </el-date-picker>
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="getDataList()">查询</el-button>
+            <el-button type="primary" @click="getDataList()">搜索</el-button>
             <el-button @click="reset()" type="primary" plain>重置</el-button>
         </el-form-item>
         <br />

@@ -30,8 +30,7 @@ export default {
     }
     /* eslint-enable */
   },
-  activated() {
-  
+  created() {
     if (this.mixinViewModuleOptions.activatedIsNeed) {
       this.getDataList()
     }
@@ -53,6 +52,7 @@ export default {
             }
           }
         ).then(({ data: res }) => {
+
           this.dataListLoading = false
           if (res.code !== 200) {
             this.dataList = []
@@ -96,7 +96,6 @@ export default {
     },
     // 分页, 每页条数
     pageSizeChangeHandle(val) {
-    	alert(val)
       this.page = 1
       this.limit = val
       this.getDataList()

@@ -1,39 +1,41 @@
 <template>
     <div>
-        <list v-if="mainVisible" ref="listCompon" @detShowChange="detShowChange"></list>
-        <operationallog v-if="operationallogVisible" ref="operationallogCompon" @operationallogList="operationallogList" @more="more"></operationallog>
-        <detail v-if="detailVisible" ref="detailCompon" @detailList="detailList" @logMore="logMore" @operational="operational"></detail>
+        <list v-if="mainVisible" ref="listCompon" @detShowChange="detShowChange" @editList="editList"></list>
+<!--        <operationallog v-if="operationallogVisible" ref="operationallogCompon" @operationallogList="operationallogList" @more="more"></operationallog>-->
+        <detail v-if="detailVisible" ref="detailCompon" @logMore="logMore"></detail>
+        <edit v-if="editVisible" ref="editCompon" @showList="showList"></edit>
     </div>
 </template>
 
 <script>
     import list from "./list"
-    import operationallog from "./operationalLog"
+    // import operationallog from "./operationalLog"
     import detail from "./detail";
-    import mixinViewModule from '@/mixins/view-module'
+    import edit from "./edit";
     import Bread from "@/components/bread";
     export default {
-        mixins: [mixinViewModule],
         data () {
             return {
                 mainVisible:true,
                 detailVisible:false,
-                operationallogVisible:false
+                // operationallogVisible:false,
+                editVisible: false
             }
         },
         components: {
             Bread,
             detail,
             list,
-            operationallog
+            // operationallog,
+            edit
         },
         methods: {
-            detShowChange () {
+            detShowChange (row) {
                 this.detailVisible = true;
                 this.mainVisible = false;
-                // this.$nextTick(()=>{
-                //     this.$refs.detailCompon.init(row);
-                // })
+                this.$nextTick(()=>{
+                    this.$refs.detailCompon.init(row);
+                })
             },
             operationallogList () {
                 this.detailVisible = false;
@@ -46,25 +48,37 @@
             //     this.detailVisible = false;
             //     this.recordlistVisible = true;
             // },
-            // logMore () {
-            //     this.detailVisible = false;
-            //     this.recordlistVisible = true;
-            // },
-            operational () {
+            logMore () {
                 this.detailVisible = false;
-                this.operationallogVisible = true;
+                this.mainVisible = true;
             },
-            more () {
-                this.detailVisible = true;
-                this.operationallogVisible = false;
+            // operational () {
+            //     this.detailVisible = false;
+            //     this.operationallogVisible = true;
+            //     this.$nextTick(()=>{
+            //         this.$refs.operationallogCompon.init();
+            //     })
+            //
+            // },
+            // more () {
+            //     this.detailVisible = true;
+            //     this.operationallogVisible = false;
+            // },
+            editList (row) {
+                this.mainVisible = false;
+                this.editVisible = true;
+                this.$nextTick(()=>{
+                    this.$refs.editCompon.init(row);
+                })
+            },
+            showList () {
+                this.mainVisible = true;
+                this.editVisible = false;
             }
         },
     }
 </script>
 
 <style lang="scss" scoped>
-    @import "@/element-ui/theme-variables.scss";
-    .grayLine{
-        border-bottom: 0!important;
-    }
+
 </style>

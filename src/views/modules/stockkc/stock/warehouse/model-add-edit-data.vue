@@ -1,0 +1,400 @@
+<template>
+    <el-dialog
+            class="model-add-edit-data"
+            :title="title"
+            :close-on-click-modal="false"
+            :visible.sync="visible"
+            :before-close="closeDialog"
+            width="50%"
+    >
+        <el-form
+                :model="dataForm"
+                :rules="dataRule"
+                ref="addForm"
+                @keyup.enter.native="dataFormSubmit('addForm')"
+                label-width="120px"
+        >
+            <el-form-item label="仓库名称：" prop="warehouseName">
+                <el-input v-model.trim="dataForm.warehouseName" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item label="仓库种类：" prop="type">
+                <el-select v-model="dataForm.type" placeholder="请选择">
+                    <el-option label="发货仓" :value="0"></el-option>
+                    <el-option label="退货仓" :value="1"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="仓库负责人：" prop="name">
+                <el-input v-model.trim="dataForm.name" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item label="负责人联系方式：" prop="phone" :label-width="formLabelWidth">
+                <el-input v-model.trim="dataForm.phone" placeholder="请输入" maxlength="20"></el-input>
+            </el-form-item>
+            <el-form-item label="仓库所在地：" prop="addressInfo" :label-width="formLabelWidth">
+                <el-select v-model="dataForm.provinceId" placeholder="省"
+                           style="margin-right:10px;"
+                           @visible-change="changeArea(dataForm.provinceId, 1)">
+                    <el-option
+                            v-for="item in optionsArea1"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id">
+                    </el-option>
+                </el-select>
+                <el-select v-model="dataForm.cityId" placeholder="市"
+                           style="margin-right:10px;"
+                           @visible-change="changeArea(dataForm.cityId, 2)">
+                    <el-option
+                            v-for="item in optionsArea2"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id">
+                    </el-option>
+                </el-select>
+                <el-select v-model="dataForm.areaId" placeholder="区"
+                           style="margin-right:10px;"
+                           @visible-change="changeArea(dataForm.areaId, 3)">
+                    <el-option
+                            v-for="item in optionsArea3"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id">
+                    </el-option>
+                </el-select>
+                <el-select v-model="dataForm.streetId" placeholder="街"
+                           @visible-change="changeArea(dataForm.streetId,4)">
+                    <el-option
+                            v-for="item in optionsArea4"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id">
+                    </el-option>
+                </el-select>
+                <el-input type="textarea" v-model="dataForm.addressInfo" placeholder="请输入详细地址" :rows="4"
+                          style="margin-top: 20px;"></el-input>
+            </el-form-item>
+            <!--            <el-form-item style="text-align: center;margin-left: -120px!important;">-->
+            <!--                <el-button  @click="dataFormCancel()">取消</el-button>-->
+            <!--                <el-button type="primary" @click="dataFormSubmit('addForm')"-->
+            <!--                           :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>-->
+            <!--            </el-form-item>-->
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="dataFormCancel()">取消</el-button>
+            <el-button type="primary" @click="dataFormSubmit('addForm')"
+                       :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
+        </span>
+    </el-dialog>
+</template>
+
+<script>
+    import Cookies from 'js-cookie'
+    import {backScanWare, addWare, updataWare} from '@/api/api'
+    import {areaFirst, areaByParentId, verifyWare} from "@/api/api"
+
+    export default {
+        name: "model-add-edit-data",
+        data() {
+            return {
+                visible: false,
+                loading: false,
+                dataForm: {
+                    provinceId: "",
+                    provinceName: "",
+                    cityId: "",
+                    cityName: "",
+                    areaId: "",
+                    areaName: "",
+                    streetId: "",
+                    streetName: "",
+                    warehouseName: "",
+                    name: "",
+                    phone: "",
+                    type: "",
+                    addressInfo: ""
+
+                },
+                optionsArea1: [],
+                optionsArea2: [],
+                optionsArea3: [],
+                optionsArea4: [],
+                optionsApplication: [],
+                optionsRight: [],
+                title: '',
+                orderBase: {},
+                row: "",
+                receiverInfo: {},
+                formLabelWidth: '120px'
+            }
+        },
+        watch: {
+            'dataForm.warehouseName': function (newV, oldV) {
+                var chineseCount = 0, characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 100) { //输入字符大于100的时候过滤
+                        this.dataForm.warehouseName = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
+                    }
+                }
+            },
+            'dataForm.name': function (newV, oldV) {
+                var chineseCount = 0, characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 20) { //输入字符大于20的时候过滤
+                        this.dataForm.name = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
+                    }
+                }
+            },
+            'dataForm.phone': function (newV, oldV) {
+                for (let i = 0; i < newV.length; i++) {
+                    if (!/[0-9|\-]/g.test(newV[i])) { //数字、字母
+                        this.dataForm.phone = newV.replace(newV[i], "")
+                    }
+                }
+            }
+        },
+        computed: {
+            dataRule () {
+                var validatorWarehouseName = (rule, value, callback) => {
+                    if (value != '') {
+                        var obj = {
+                            params: {
+                                id: this.row ? this.row.id : "",
+                                name: value
+                            }
+                        }
+                        verifyWare(obj).then((res) => {
+                            if (res.code==200) {
+                                if(res.data){
+                                    callback()
+                                }else{
+                                    callback(new Error('仓库名称已经存在'))
+                                }
+                            } else {
+                                callback()
+                            }
+                        })
+
+                    } else {
+                        callback()
+                    }
+                };
+                var validateAddressInfo = (rule, value, callback) =>{
+                      var flag =  Cookies.get("flag");
+                    if(flag==='0'){
+                        callback(new Error('必填项不能为空'))
+                    }else{
+                        callback()
+                    }
+                };
+                return{
+                    warehouseName: [
+                        {required: true, message: '必填项不能为空', trigger: 'blur'},
+                        {validator: validatorWarehouseName, trigger: 'blur'}
+                    ],
+                    type: [
+                        {required: true, message: '必填项不能为空', trigger: 'blur'},
+                    ],
+                    name: [
+                        {required: true, message: '必填项不能为空', trigger: 'blur'},
+                    ],
+                    phone: [
+                        {required: true, message: '必填项不能为空', trigger: 'blur'},
+                    ],
+                    addressInfo: [
+                        {required: true, message: '必填项不能为空', trigger: 'blur'},
+                        { validator: validateAddressInfo, trigger: 'blur' }
+                    ]
+                }
+            }
+        },
+        methods: {
+            init(row) {
+                var orderBase = row.orderBase
+                var receiverInfo = row.receiverInfo
+                console.log(row)
+                this.visible = true;
+                this.row = row;
+                console.log(row)
+                if (row) {
+                    this.title = "编辑仓库";
+                    this.backScan();
+                } else {
+                    this.title = "添加仓库"
+                }
+                //获取地址一级下拉
+                this.getFirstData();
+
+                this.$nextTick(() => {
+                    this.$refs['addForm'].resetFields();
+                    // this.getApplyPullList();
+                })
+            },
+            // 第一级数据
+            getFirstData() {
+                areaFirst().then((res) => {
+                    console.log(res);
+                    if (res.code == 200) {
+                        this.optionsArea1 = res.data;
+                    }
+                })
+            },
+            changeArea(id, argu2, reset = true) {
+                if (!id) {
+                    return
+                }
+                var obj = {
+                    id: id
+                }
+                if (argu2 == 1 && reset) {
+                    this.dataForm.cityId = "";
+                    this.dataForm.areaId = "";
+                    this.dataForm.streetId = "";
+                    this.optionsArea2 = []
+                    this.optionsArea3 = []
+                    this.optionsArea4 = []
+                } else if (argu2 == 2 && reset) {
+                    this.dataForm.areaId = "";
+                    this.dataForm.streetId = "";
+                    this.optionsArea3 = []
+                    this.optionsArea4 = []
+                } else if (argu2 == 3 && reset) {
+                    this.dataForm.streetId = "";
+                    this.optionsArea4 = []
+                } else if (argu2 == 4 && reset) {
+                    // 选到最后一级了
+                }
+                areaByParentId(obj).then((res) => {
+                    console.log(res);
+                    if (res.code == 200) {
+                        if (argu2 == 1) {
+                            this.optionsArea2 = res.data;
+                        } else if (argu2 == 2) {
+                            this.optionsArea3 = res.data;
+                        } else if (argu2 == 3) {
+                            this.optionsArea4 = res.data;
+                        } else if (argu2 == 4) {
+                            // 选到最后一级了
+
+                        }
+                    }
+                })
+            },
+            dataFormCancel() {
+                this.visible = false;
+                this.closeDialog();
+            },
+            closeDialog() {
+                this.$parent.addEditDataVisible = false;
+            },
+            // 编辑回显
+            backScan() {
+                var obj = {
+                    id: this.row.id,
+                }
+                backScanWare(obj).then((res) => {
+                    if (res.code == 200) {
+                        Object.assign(this.dataForm, res.data);
+                        this.preOptionsArea1 = [];
+                        // this.orderBase = orderBase;
+                        // Object.assign(this.dataForm,receiverInfo);
+                        var receiverInfo = res.data
+                        // this.preOptionsArea1 = [];
+                        this.optionsArea2[0] = {id: receiverInfo.cityId, name: receiverInfo.cityName};
+                        this.optionsArea3[0] = {id: receiverInfo.areaId, name: receiverInfo.areaName};
+                        this.optionsArea4[0] = {id: receiverInfo.streetId, name: receiverInfo.streetName};
+                        // receiverInfo.provinceId && this.changeArea(receiverInfo.provinceId,1,false);
+                        // receiverInfo.cityId && this.changeArea(receiverInfo.cityId,2,false);
+                        // receiverInfo.areaId && this.changeArea(receiverInfo.areaId,3,false);
+
+                    } else {
+
+                    }
+                })
+            },
+            // 提交
+            dataFormSubmit(formName) {
+                if(this.dataForm.provinceId === "" ||this.dataForm.cityId === "" || this.dataForm.areaId === ""  ||  this.dataForm.addressInfo === ""){
+                    Cookies.set('flag', 0)
+                }else {
+                    Cookies.set('flag', 1)
+                }
+                // 如果有四级地址下拉，必填
+                if( this.optionsArea4.length!=0 && this.dataForm.streetId === ""){
+                     Cookies.set('flag', 0)
+                }
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                    	// if(this.optionsArea4.length != 0 && this.dataForm.streetId==""){
+                    	// 	this.$message.error('街道不能为空');
+                    	// 	return;
+                    	// }
+                        this.loading = true;
+                        var obj = {
+                            warehouseName: this.dataForm.warehouseName,
+                            type: this.dataForm.type,
+                            name: this.dataForm.name,
+                            phone: this.dataForm.phone,
+                            areaId: this.dataForm.areaId,
+                            cityId: this.dataForm.cityId,
+                            provinceId: this.dataForm.provinceId,
+                            streetId: this.dataForm.streetId,
+                            addressInfo: this.dataForm.addressInfo,
+                            isEnable: 1
+                        }
+                        console.log(obj)
+                        if (this.row) obj.id = this.row.id;
+                        var fn = this.row ? updataWare : addWare;
+                        fn(obj).then((res) => {
+                            this.loading = false;
+                            // alert(JSON.stringify(res));
+                            let status = null;
+                            if (res.code == "200") {
+                                status = "success";
+                                this.visible = false;
+                                this.$emit('searchDataList');
+                                this.closeDialog();
+                            } else {
+                                status = "error";
+                            }
+
+                            this.$message({
+                                message: res.msg,
+                                type: status,
+                                duration: 1500
+                            })
+                        })
+                    } else {
+                        //console.log('error 添加失败!!');
+                        return false;
+                    }
+                })
+            },
+        }
+    }
+</script>
+
+<style lang="scss" scoped>
+    /deep/ .el-form-item__label {
+        width: 130px !important;
+    }
+
+    /deep/ .el-form-item__content {
+        margin-left: 130px !important;
+    }
+
+    /deep/ .el-select--default {
+        width: 146px !important;
+    }
+
+</style>

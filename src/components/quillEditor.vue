@@ -30,10 +30,13 @@ export default {
 	      },
 	    };
 	},
+	props:["index","value"],
 	components: {
     quillEditor
   },
   created () {
+	    console.log(this.value)
+	    if(this.value) this.dataForm.messageContent = this.value;
   	var that = this;
   	/*富文本编辑图片上传配置*/
 		const uploadConfig = {
@@ -127,8 +130,8 @@ export default {
     onEditorFocus(){}, // 获得焦点事件
     onEditorChange(){
     	let imgurl = window.SITE_CONFIG['imgURL'];
-			var re =new RegExp(imgurl ,"g"); 
-			this.$emit('artmessageContent',this.dataForm.messageContent.replace(re,''));
+			var re =new RegExp(imgurl ,"g");
+			this.$emit('artmessageContent',this.dataForm.messageContent.replace(re,''),this.index);
     }, // 内容改变事件
 
   }

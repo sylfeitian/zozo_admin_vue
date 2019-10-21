@@ -11,87 +11,98 @@
                 :model="dataForm"
                 :rules="dataRule"
                 ref="addForm"
-                @keyup.enter.native="dataFormSubmit('addForm')"
+                @keyup.enter.native="dataFormSubmit('dataForm')"
                 label-width="120px"
         >
-            <el-form-item label="禁用词名称：" prop="" :label-width="formLabelWidth">
-                <el-input v-model="dataForm.colorsName" auto-complete="off"></el-input>
+            <el-form-item label="禁用词名称：" prop="name" :label-width="formLabelWidth">
+                <el-input v-model.trim="dataForm && dataForm.name" auto-complete="off" placeholder="请输入10字以内的内容"></el-input>
             </el-form-item>
-            <el-form-item style="text-align: center;margin-left: -120px!important;">
-                <el-button  @click="dataFormCancel()">取消</el-button>
-                <el-button type="primary" @click="dataFormSubmit('addForm')"
-                           :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
-            </el-form-item>
+<!--            <el-form-item style="text-align: center;margin-left: -120px!important;">-->
+<!--                <el-button  @click="dataFormCancel()">取消</el-button>-->
+<!--                <el-button type="primary" @click="dataFormSubmit('dataForm')"-->
+<!--                           :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>-->
+<!--            </el-form-item>-->
         </el-form>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="dataFormCancel()">取消</el-button>
+            <el-button type="primary" @click="dataFormSubmit('addForm')"
+                       :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
+        </span>
     </el-dialog>
 </template>
 
 <script>
+	import { addadvertisingban, updateadvertisingban } from '@/api/api'
     export default {
         data () {
             return {
                 visible : false,
                 loading : false,
-                dataForm: {},
+                dataForm: {
+                	name:'',
+                },
                 optionsApplication: [],
                 optionsRight: [],
                 title:'',
-                row:"",
-                formLabelWidth: '120px'
+                adddata: true,
+                formLabelWidth: '120px',
+                dataRule:{
+		          name: [
+		            { required: true, message: '必填项不能为空', trigger: 'blur' }
+		          ],
+                },
             }
         },
         components:{
         },
-        computed:{},
-        mounted(){},
+        watch: {
+            'dataForm.name': function (newV, oldV) {
+                var chineseCount = 0, characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 20) { //输入字符大于20的时候过滤
+                        this.dataForm.name = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
+                    }
+                }
+            }
+        },
+
+        computed:{
+        	
+        },
+        mounted(){
+        },
         methods: {
             init (row) {
+            	console.log(row);
                 this.visible = true;
-                this.row = row;
+                this.loading = false;
                 if(row){
                     this.title="编辑禁用词语";
-                    this.backScan();
+                    this.dataForm = row;
+                    this.adddata = false;
                 }else{
                     this.title="添加禁用词语"
-
+                    this.dataForm.name = "";
+                    this.adddata = true;
                 }
-                this.$nextTick(() => {
-                    this.$refs['addForm'].resetFields();
-                    // this.getApplyPullList();
-                })
             },
-            //编辑回显
-            // backScan(){
-            //     var obj  = {
-            //         id:this.row.id,
-            //         colorsId:this.row.colorsId,
-            //         colorGroup:this.row.colorGroup,
-            //         colorsName:this.row.colorsName,
-            //     }
-            //     backScanAftertemplate(obj).then((res)=>{
-            //         if(res.code == 200){
-            //             Object.assign(this.dataForm,res.data);
-            //
-            //         }else{
-            //
-            //         }
-            //     })
-            // },
             // 提交
             dataFormSubmit(formName){
                 // alert([this.dataForm.name,this.dataForm.domainAddress]);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.loading = true;
-                        var obj = {
-                            "japanGroup":  this.dataForm.japanGroup,
-                            "colorGroup":  this.dataForm.colorGroup,
-                            "japanName":  this.dataForm.japanName,
-                            "colorsName":  this.dataForm.colorsName,
+                        var fn = addadvertisingban;
+                        if(!this.adddata){
+                        	fn = updateadvertisingban;
                         }
-                        if(this.row) obj.id = this.row.id
-                        //var fn = this.row?updateBrand:addBrand;
-                        fn(obj).then((res) => {
+                        fn(this.dataForm).then((res) => {
                             this.loading = false;
                             // alert(JSON.stringify(res));
                             let status = null;
@@ -110,7 +121,8 @@
                                 type: status,
                                 duration: 1500
                             })
-                        })
+                        })  
+                        
                     } else {
                         //console.log('error 添加失败!!');
                         return false;
@@ -122,7 +134,8 @@
                 this.closeDialog();
             },
             closeDialog() {
-                this.$parent.addEditDataVisible = false;
+            	this.visible = false;
+                this.$parent.addOrUpdateVisible = false;
             },
         }
     }

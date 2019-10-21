@@ -3,13 +3,13 @@
         <Bread  :breaddata="breaddata"></Bread>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
             <el-form-item label="ID：">
-                <el-input v-model="dataForm.id" ></el-input>
+                <el-input v-model.trim="dataForm.id" ></el-input>
             </el-form-item>
             <el-form-item label="标题：">
-                <el-input v-model="dataForm.id" ></el-input>
+                <el-input v-model.trim="dataForm.id" ></el-input>
             </el-form-item>
             <el-form-item label="店铺：">
-                <el-input v-model="dataForm.name" ></el-input>
+                <el-input v-model.trim="dataForm.name" ></el-input>
             </el-form-item>
             <el-form-item label="发布状态：" prop="paymentStatus">
                 <el-select v-model="dataForm.paymentStatus" placeholder="请选择">
@@ -42,7 +42,7 @@
             </el-form-item>
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="addOrAdit()">搜索</el-button>
-                <el-button  class="btn"type="primary" plain @click="reset()" >重置条件</el-button>
+                <el-button  class="btn"type="primary" plain @click="reset()" >搜索</el-button>
             </el-form-item>
         </el-form>
         <el-radio-group v-model="activeName" @change="handleClick">

@@ -3,15 +3,18 @@
         <Bread :breaddata="breaddata"></Bread>
         <div>
             <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getData()">
-                <el-form-item label="关键词搜索：">
-                    <el-input v-model="dataForm.name" placeholder="请输入关键字搜索" clearable style="width: 220px!important;"></el-input>
+                <el-form-item label="关键字搜索：">
+                    <el-input v-model.trim="dataForm.name" placeholder="请输入关键字搜索" clearable style="width: 220px!important;"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button @click="getData()" type="primary">搜索</el-button>
-                    <el-button  @click="reset()">重置</el-button>
-                    <el-button v-if="$hasPermission('sys:role:save')" type="primary" @click="addOrUpdateHandle()" style="margin-left: 890px!important;">添加禁用词</el-button>
-                    <el-button type="primary" @click="">导入</el-button>
+                    <el-button  @click="reset()" plain type="primary">重置</el-button>
                 </el-form-item>
+            </el-form>
+            <el-form>
+                <el-button type="primary" @click="addOrUpdateHandle()" >添加禁用词</el-button>
+                <!-- <el-button type="primary" @click="">导入</el-button> -->
+                 <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
             </el-form>
 
             <!--            <el-form>-->
@@ -26,7 +29,7 @@
                     border
                     @selection-change="dataListSelectionChangeHandle"
                     @sort-change="dataListSortChangeHandle"
-                    style="width: 100%;">
+                    style="width: 100%;margin-top: 10px;">
                 <el-table-column
                         type="index"
                         prop="$index"
@@ -39,10 +42,10 @@
                 </el-table-column>
                 <el-table-column prop="name" label="禁用词名称" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="createDate" label="添加时间" header-align="center" align="center"></el-table-column>
-                <el-table-column label="操作" fixed="right" header-align="center" align="center">
-                    <template slot-scope="scope" v-if="scope.row.roleFlag!==1">
-                        <el-button v-if="$hasPermission('sys:role:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">编辑</el-button>
-                        <el-button v-if="$hasPermission('sys:role:delete')" type="text" class="artdanger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+                <el-table-column label="操作" fixed="right" header-align="center" align="center" width="200">
+                    <template slot-scope="scope" >
+                        <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row)">编辑</el-button>
+                        <el-button  type="text" class="artdanger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -56,7 +59,7 @@
                     @current-change="pageCurrentChangeHandle">
             </el-pagination>
             <!-- 弹窗, 新增 / 修改 -->
-            <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
+            <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @searchDataList="getDataList"></add-or-update>
         </div>
     </div>
 </template>
@@ -65,24 +68,52 @@
     import mixinViewModule from '@/mixins/view-module'
     import AddOrUpdate from './add-or-update'
     import Bread from "@/components/bread";
-
+     import importAndExport from "@/components/import-and-export"
+    import { getadvertisingban, advertisingban} from '@/api/url'
+    import { importAdvertisingbanUrl} from '@/api/io'
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
+                importAndExportOptions:{
+                    importUrl:importAdvertisingbanUrl,//导入接口
+                    importWord:"导入",
+                    // exportUrl:exportRegisterUrl,//导出接口
+                    // exportWord:"导出数据",
+                },
                 mixinViewModuleOptions: {
-                    getDataListURL: '/admin-api/role/page',
+                    getDataListURL: getadvertisingban,
                     getDataListIsPage: true,
-                    deleteURL: '/admin-api/role',
-                    deleteIsBatch: true
+                    deleteURL: advertisingban,
+                    deleteIsBatch: false
                 },
                 breaddata: ["系统管理", "禁用词管理"],
-                dataForm: {}
+                dataForm: {
+                	name:'',
+                },
+                addOrUpdateVisible: true,
             }
         },
         components: {
             AddOrUpdate,
-            Bread
+            Bread,
+            importAndExport
+        },
+        watch:{
+            'dataForm.name':function(newV,oldV) {
+                var chineseCount = 0,characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 600) { //输入字符大于600的时候过滤
+                        this.dataForm.name = newV.substr(0,(chineseCount/2+characterCount)-1)
+                    }
+                }
+            },
         },
         methods:{
             getData(){
@@ -93,6 +124,13 @@
             reset(){
                 this.dataForm = {};
                 this.getData();
+            },
+            addOrUpdateHandle(row){
+            	this.addOrUpdateVisible = true;
+            	this.$nextTick(()=>{
+            		this.$refs.addOrUpdate.init(row);
+            	})
+            	
             }
         }
     }
@@ -100,7 +138,4 @@
 </script>
 
 <style lang="scss" scoped>
-    .grayLine{
-        border-bottom: 0!important;
-    }
 </style>
