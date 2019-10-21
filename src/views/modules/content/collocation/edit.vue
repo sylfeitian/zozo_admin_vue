@@ -6,7 +6,6 @@
                     ref="dataForm"
                     class="grayLine topGapPadding"
                     :model="dataForm"
-                    @keyup.enter.native="getDataList()"
             >
                 <p class="title">日文</p>
                 <el-form-item label="搭配编号：">
@@ -94,7 +93,6 @@
                  ref="dataForm"
                  class="grayLine topGapPadding"
                  :model="dataForm"
-                 @keyup.enter.native="getDataList()"
             >
                 <p class="title">中文</p>
                 <el-form-item label="搭配编号：">
@@ -180,8 +178,8 @@
             <div style="position: fixed;bottom: 0;margin: 0 auto;width: 85%;text-align: center;z-index: 999;">
                 <span style="font-size: 20px;margin-right: 20px;">状态：{{dataForm.state == 0?"未发布":dataForm.state == 1?"已发布":""}}</span>
                 <el-button class="btn" @click="reset()">取消</el-button>
-                <el-button class="btn" @click="getData(0)">保存</el-button>
-                <el-button class="btn" :disabled="dataForm.jpPublishState == 2" type="primary" @click="getData(1)">保存并发布</el-button>
+                <el-button class="btn" @click="saveData(0)">保存</el-button>
+                <el-button class="btn" :disabled="dataForm.jpPublishState == 2" type="primary" @click="saveData(1)">保存并发布</el-button>
             </div>
         </el-col>
     </div>
@@ -229,7 +227,7 @@
                     that.changePage();
                 }).catch();
             },
-            getData(saveType){
+            saveData(saveType){
                 let that = this;
                 this.dataForm.saveFlag = saveType;
                 savelookdetail(this.dataForm).then((res)=>{

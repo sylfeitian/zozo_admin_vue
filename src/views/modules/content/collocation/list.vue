@@ -124,7 +124,8 @@
         data () {
             return {
             	mixinViewModuleOptions: {
-			        getDataListURL: getlookpage,
+                    getDataListURL: getlookpage,
+                    activatedIsNeed: false,
 			        getDataListIsPage: true,
 			        // exportURL: '/admin-api/log/login/export',
 			        deleteURL: '',
