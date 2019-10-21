@@ -42,7 +42,14 @@
                 <el-table-column prop="roleName" label="角色" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="module" label="操作模块" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="operatorInterface" label="操作页面" header-align="center" align="center"></el-table-column>
-                <el-table-column prop="id" label="对应ID" header-align="center" align="center"></el-table-column>
+                <el-table-column prop="parameterid" label="对应ID" header-align="center" align="center">
+                    <template slot-scope="scope" >
+                        <div v-if="scope.row.parameterid">{{scope.row.parameterid}}</div>
+                        <div v-else>
+                            <span>/</span>
+                        </div>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="createDate" label="操作时间" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="operation" label="操作内容" header-align="center" align="center"></el-table-column>
             </el-table>
