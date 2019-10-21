@@ -56,12 +56,14 @@
                             border
                             v-loading="dataListLoading"
                             class="inforRight"
-                            style="display:inline-block;width: 80%;"
+                            style="display:inline-block;width: 90%;"
                     >
                         <el-table-column prop="idJp" label="商品ID" align="center"></el-table-column>
-                        <el-table-column prop="name" label="商品名称" align="center" width="200">
+                        <el-table-column prop="name" label="商品名称" align="center" width="100">
                             <template slot-scope="scope">
+                                <div :title=" scope.row.name ? scope.row.name:scope.row.nameJp ">
                                 {{scope.row.name?scope.row.name:scope.row.nameJp}}
+                                </div>
                             </template>
                         </el-table-column>
                         <el-table-column prop="itemsImageUrl" label="图片" align="center">
@@ -142,12 +144,14 @@
                             border
                             v-loading="dataListLoading"
                             class="inforRight"
-                            style="display:inline-block;width: 80%;"
+                            style="display:inline-block;width: 90%;"
                     >
                         <el-table-column prop="idJp" label="商品ID" align="center"></el-table-column>
-                        <el-table-column prop="name" label="商品名称" align="center" width="200">
+                        <el-table-column prop="name" label="商品名称" align="center" width="100">
                             <template slot-scope="scope">
-                                {{scope.row.name?scope.row.name:scope.row.nameJp}}
+                                <div :title=" scope.row.name ? scope.row.name:scope.row.nameJp ">
+                                    {{scope.row.name?scope.row.name:scope.row.nameJp}}
+                                </div>
                             </template>
                         </el-table-column>
                         <el-table-column prop="itemsImageUrl" label="图片" align="center">
@@ -232,9 +236,6 @@
         margin-left: 20px;
         display: inline-block;
     }
-    div {
-        padding: 8px 0;
-    }
     .orderState {
         margin-left: 2%;
     }
@@ -246,5 +247,11 @@
     }
     .grayLine {
         border-bottom: 0!important;
+    }
+    /deep/ .cell{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
     }
 </style>
