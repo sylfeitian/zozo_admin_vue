@@ -241,13 +241,16 @@
                             type: "warning"
                         })
                             .then(() => {
-                                var list = [];
+                                var receiver = [];
+                                var umengToken = [];
                                 that.userLsit.map((v)=>{
-                                    list.push(v.id)
+                                    receiver.push(v.id)
                                     // list.push(v.memberName)
+                                    umengToken.push(v.umengToken);
 
                                 })
-                                that.addDataForm.receiver = list.join(",");
+                                that.addDataForm.receiver = receiver.join(",");
+                                that.addDataForm.umengToken = umengToken.join(",");
                                 saveMessage(that.addDataForm).then((res)=>{
                                     if(res.code == 200){
                                         this.$message({

@@ -18,7 +18,7 @@
                 <el-input v-model.trim="dataForm.dictName" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="词典编码：" prop="dictValue" :label-width="formLabelWidth">
-                <el-input v-model.trim="dataForm.dictValue" auto-complete="off"></el-input>
+                <el-input v-model.trim="dataForm.dictValue"   maxlength="100"  auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
                 <el-button  @click="dataFormCancel()">取消</el-button>
@@ -71,6 +71,14 @@
                     }
                 }
             },
+            'dataForm.dictValue':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    // 只能输入英文和数字
+                    if(/[^0-9a-zA-Z]/g.test(newV[i])){
+                        this.dataForm.dictValue = newV.replace(newV[i],"")
+                    }
+                }
+            }
         },
         components:{
         },
