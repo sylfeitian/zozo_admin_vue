@@ -84,7 +84,7 @@
             <el-table-column width="120" prop="jpPublishState"  label="日本发布状态" align="center">
                 <template slot-scope="scope">
                     <el-tag v-if="scope.row.jpPublishState == 1" type="success">已发布</el-tag>
-                    <el-tag v-else type="info">取消发布</el-tag>
+                    <el-tag v-if="scope.row.jpPublishState == 0" type="info">取消发布</el-tag>
                 </template>
             </el-table-column>
             <el-table-column prop="publishTimeJp" label="日本发布时间" align="center"></el-table-column>

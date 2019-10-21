@@ -138,7 +138,7 @@
               </div>
           </template>
       </el-table-column>
-      <el-table-column prop="" label="规格" align="center" ></el-table-column>
+      <el-table-column prop="goodsSpec" label="规格" align="center" ></el-table-column>
       <el-table-column prop="access"    label="订单评价" align="center" >
           <template slot-scope="scope">
             <span v-if="scope.row.access==0">超赞</span>

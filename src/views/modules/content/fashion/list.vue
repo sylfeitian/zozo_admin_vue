@@ -91,7 +91,7 @@
                 <template slot-scope="scope" >
                     <div v-if="scope.row.fashionFlag == 0">
                         <el-tag v-if="scope.row.isOpen == 1" type="success">已发布</el-tag>
-                        <el-tag v-else type="info">取消发布</el-tag>
+                        <el-tag v-if="scope.row.isOpen == 0" type="info">取消发布</el-tag>
                     </div>
                     <div v-else>
                         <span>/</span>
