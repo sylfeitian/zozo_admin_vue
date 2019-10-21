@@ -17,7 +17,7 @@
                         <span>{{dataForm.nickname}}</span>
                         <div style="display:inline-block;padding:0 0;margin-left: 10px;color: #2260D2">
                             <span  v-if="dataForm.identity==1">WEAR达人</span>
-                            <span  v-else-if="dataForm.identity==2">Shop Sttaff</span>
+                            <span  v-else-if="dataForm.identity==2">Shop Staff</span>
                         </div>
                     </template>
                 </el-form-item>
@@ -103,7 +103,7 @@
                         <span>{{dataForm.nickname}}</span>
                         <div style="display:inline-block;padding:0 0;margin-left: 10px;color: #2260D2">
                             <span  v-if="dataForm.identity==1">WEAR达人</span>
-                            <span  v-else-if="dataForm.identity==2">Shop Sttaff</span>
+                            <span  v-else-if="dataForm.identity==2">Shop Staff</span>
                         </div>
                     </template>
                 </el-form-item>
