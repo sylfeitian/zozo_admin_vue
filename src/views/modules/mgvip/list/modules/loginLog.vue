@@ -17,8 +17,8 @@
         <el-table-column prop="source" align="center" label="机型">
            <template slot-scope="scope">
                 <span  v-if="scope.row.source==0">pc</span>
-                <span  v-else-if="scope.row.source==1">手机</span>
-                <span  v-else>其他 </span>
+                <span  v-else-if="scope.row.source==1">android</span>
+                <span  v-else>ios </span>
             </template>
         </el-table-column>
         </el-table>
