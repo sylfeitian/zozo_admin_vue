@@ -298,9 +298,6 @@
                            for (var i = 0; i < that.dataForm.roleIds.length; i++) {
                                if(that.dataForm.roleIds[i].id !==""){
                                    roleData.push(that.dataForm.roleIds[i].id)
-                               }else{// 没有填写角色时
-                                   that.$message("请先填上角色")
-                                          return
                                }
                            }
                            var dataForm = cloneDeep(that.dataForm);
