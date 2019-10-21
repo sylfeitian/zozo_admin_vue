@@ -62,7 +62,7 @@
                         size="small"
                         @click="toAddList(scope.row.id)"
                     >添加商品</el-button>
-                    <el-button type="text" size="small" @click="showDetail(scope.row.id)">查看商品</el-button>
+                    <el-button type="text" size="small" @click="showDetail(scope.row.id,scope.row.state)">查看商品</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -196,8 +196,8 @@ export default {
       this.getDataList();
     },
     //回调跳到查看页面
-    showDetail(id) {
-      this.$emit("detailistFun", id);
+    showDetail(id,state) {
+      this.$emit("detailistFun", id,state);
     },
     //回调跳到时间段列表页面
     totimeList() {
