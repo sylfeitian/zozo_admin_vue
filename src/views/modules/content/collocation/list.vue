@@ -250,7 +250,7 @@
                     this.dataForm.state = "0"
                 }
                 this.changeVal = val;
-                this.getDataList();
+                this.getData();
             },
             forbitHandle(index,row){
                 this.currentIndex = index;
