@@ -5,7 +5,7 @@
             <el-form-item style="float: right;">
                 <el-button @click="removeDatas('',activityId)">批量删除</el-button>
                 <el-button type="primary" @click="saveSortList(sortList)">保存排序</el-button>
-                <el-button type="primary" @click="addGoods(activityId)">添加商品</el-button>
+              <el-button type="primary" @click="addGoods(activityId)" v-if="activityState===0">添加商品</el-button>
             </el-form-item>
         </el-form>
         <el-form :inline="true" :model="sortDataList">
@@ -100,7 +100,7 @@ import Bread from "@/components/bread";
 
 export default {
   mixins: [mixinViewModule],
-  props: ["activityId"],
+  props: ["activityId","activityState"],
   components: { Bread },
   data() {
     return {

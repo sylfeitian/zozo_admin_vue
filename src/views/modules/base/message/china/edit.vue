@@ -280,9 +280,9 @@
 	  			this.erjishow = true;
 	  			this.yijishow = false;
 	  		}else{
-				if(this.dataForm.methodUrlshow && this.dataForm.methodUrlshow.length<10){
-					this.dataForm.methodUrlshow.push('');
-				}
+				// if(this.dataForm.methodUrlshow && this.dataForm.methodUrlshow.length<10){
+				// 	this.dataForm.methodUrlshow.push('');
+				// }
 	  			this.erjishow = false;
 				this.yijishow = true;
 				  

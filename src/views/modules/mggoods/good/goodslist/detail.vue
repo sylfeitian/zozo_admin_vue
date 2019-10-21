@@ -149,8 +149,8 @@
                         </el-table-column>
                     </el-table>
                 </el-form-item>
-                <el-form-item label="分类条件：">
-                    <el-row v-for="(item,index) in dataForm.tags" :key="index" class="info" style="width: 500px;">
+                <el-form-item label="分类条件：" style="overflow: hidden;">
+                    <el-row v-for="(item,index) in dataForm.tags" :key="index" class="info" style="width: 80%;">
                         <el-col :span="12"><div class="grid-content">{{item.parentTagName}}</div></el-col>
                         <el-col :span="12"><div class="grid-content">{{item.nameJp}}</div></el-col>
                     </el-row>
@@ -168,7 +168,7 @@
                         </template>
                 </el-form-item>
                 <el-form-item label="日本商品详情：" class="item" style="height: auto!important;">
-                    <span v-html="dataForm.descriptionJp"></span>
+                    <div  v-html="dataForm.descriptionJp"></div>
                 </el-form-item>
                 <el-form-item label="商品详情：">
                     <el-input type="textarea" class="inforRight" v-model="dataForm.description" placeholder="" :rows="4"  style="display: inline-block;width: 600px;"></el-input>
@@ -347,9 +347,9 @@
         -webkit-line-clamp: 2;
         overflow: hidden;
     }
-    /*/deep/ .cell {*/
-    /*  white-space: nowrap;*/
-    /*  overflow: hidden;*/
-    /*  text-overflow: ellipsis;*/
-    /*}*/
+    /deep/ .grid-content {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 </style>

@@ -155,7 +155,7 @@
 					}
 	    };
 	    var sortminmax = (rule, value, callback) => {
-	    	if(value >= 0 && value < 99999){
+	    	if(value >= 0 && value <= 99999){
 	    		callback();
 	    	}else{
 	    		callback('排序值在0-99999之间');

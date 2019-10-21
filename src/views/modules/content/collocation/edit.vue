@@ -6,14 +6,19 @@
                     ref="dataForm"
                     class="grayLine topGapPadding"
                     :model="dataForm"
-                    @keyup.enter.native="getDataList()"
             >
                 <p class="title">日文</p>
                 <el-form-item label="搭配编号：">
                     <span>{{dataForm.idJp}}</span>
                 </el-form-item>
                 <el-form-item label="用户昵称：">
-                    <span>{{dataForm.nickname}}</span>
+                    <template>
+                        <span>{{dataForm.nickname}}</span>
+                        <div style="display:inline-block;padding:0 0;margin-left: 10px;color: #2260D2">
+                            <span  v-if="dataForm.identity==1">WEAR达人</span>
+                            <span  v-else-if="dataForm.identity==2">Shop Staff</span>
+                        </div>
+                    </template>
                 </el-form-item>
                 <el-form-item label="用户身高：">
                     <span>{{dataForm.height}}</span><span v-if="dataForm.height">cm</span>
@@ -50,10 +55,16 @@
                             border
                             v-loading="dataListLoading"
                             class="inforRight"
-                            style="display:inline-block;width: 80%;"
+                            style="display:inline-block;width: 90%;"
                     >
                         <el-table-column prop="idJp" label="商品ID" align="center"></el-table-column>
-                        <el-table-column prop="name" label="商品名称" align="center" width="200"></el-table-column>
+                        <el-table-column prop="name" label="商品名称" align="center" width="100">
+                            <template slot-scope="scope">
+                                <div :title="scope.row.name">
+                                    {{scope.row.name}}
+                                </div>
+                            </template>
+                        </el-table-column>
                         <el-table-column prop="itemsImageUrl" label="图片" align="center">
                             <template slot-scope="scope">
                                 <img
@@ -82,14 +93,19 @@
                  ref="dataForm"
                  class="grayLine topGapPadding"
                  :model="dataForm"
-                 @keyup.enter.native="getDataList()"
             >
                 <p class="title">中文</p>
                 <el-form-item label="搭配编号：">
                     <span>{{dataForm.idJp}}</span>
                 </el-form-item>
                 <el-form-item label="用户昵称：">
-                    <span>{{dataForm.nickname}}</span>
+                    <template>
+                        <span>{{dataForm.nickname}}</span>
+                        <div style="display:inline-block;padding:0 0;margin-left: 10px;color: #2260D2">
+                            <span  v-if="dataForm.identity==1">WEAR达人</span>
+                            <span  v-else-if="dataForm.identity==2">Shop Staff</span>
+                        </div>
+                    </template>
                 </el-form-item>
                 <el-form-item label="用户身高：">
                     <span>{{dataForm.height}}</span><span v-if="dataForm.height">cm</span>
@@ -126,10 +142,16 @@
                             border
                             v-loading="dataListLoading"
                             class="inforRight"
-                            style="display:inline-block;width: 80%;"
+                            style="display:inline-block;width: 90%;"
                     >
                         <el-table-column prop="idJp" label="商品ID" align="center"></el-table-column>
-                        <el-table-column prop="name" label="商品名称" align="center" width="200"></el-table-column>
+                        <el-table-column prop="name" label="商品名称" align="center" width="100">
+                            <template slot-scope="scope">
+                                <div :title="scope.row.name">
+                                    {{scope.row.name}}
+                                </div>
+                            </template>
+                        </el-table-column>
                         <el-table-column prop="itemsImageUrl" label="图片" align="center">
                             <template slot-scope="scope">
                                 <img
@@ -156,8 +178,8 @@
             <div style="position: fixed;bottom: 0;margin: 0 auto;width: 85%;text-align: center;z-index: 999;">
                 <span style="font-size: 20px;margin-right: 20px;">状态：{{dataForm.state == 0?"未发布":dataForm.state == 1?"已发布":""}}</span>
                 <el-button class="btn" @click="reset()">取消</el-button>
-                <el-button class="btn" @click="getData(0)">保存</el-button>
-                <el-button class="btn" :disabled="dataForm.jpPublishState == 0" type="primary" @click="getData(1)">保存并发布</el-button>
+                <el-button class="btn" @click="saveData(0)">保存</el-button>
+                <el-button class="btn" :disabled="dataForm.jpPublishState == 2" type="primary" @click="saveData(1)">保存并发布</el-button>
             </div>
         </el-col>
     </div>
@@ -205,7 +227,7 @@
                     that.changePage();
                 }).catch();
             },
-            getData(saveType){
+            saveData(saveType){
                 let that = this;
                 this.dataForm.saveFlag = saveType;
                 savelookdetail(this.dataForm).then((res)=>{
@@ -244,9 +266,7 @@
     }
     .inforRight {
         display: inline-block;
-    }
-    div {
-        padding: 8px 0;
+        margin-left: 20px;
     }
     .orderState {
         margin-left: 2%;
@@ -268,5 +288,15 @@
     }
     .grayLine {
         border-bottom: 0!important;
+    }
+    /deep/ .el-form-item--default {
+        padding: 0 0!important;
+        margin-bottom: 0!important;
+    }
+    /deep/ .cell{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
     }
 </style>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <list v-if="mainVisible" ref="listCompon" @showDetail="showDetail" @addOrAdit="addOrAdit"></list>
+        <list v-show="mainVisible" ref="listCompon" @showDetail="showDetail" @addOrAdit="addOrAdit"></list>
         <detail v-if="dtailVisible" ref="detailCompon" @showList="showList"></detail>
         <addoradit v-if="addoraditVisible" ref="addoraditCompon" @addoraditList="addoraditList"></addoradit>
     </div>

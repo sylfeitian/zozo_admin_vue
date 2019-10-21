@@ -47,6 +47,7 @@
                                 :cropImg="dataForm.imgUrl"
                                 :imgWidth='"100px"'
                                 :imgHeight='"100px"'
+                                @delteteImg="delteteImg"
                                 @GiftUrlHandle="GiftUrlHandle"
                                 style="display: inline-block;"
                         ></img-cropper>
@@ -240,6 +241,10 @@
                         }
                     })
                 });
+            },
+            // 删除主图
+            delteteImg(){
+                this.dataForm.imgUrl = "";
             },
             GiftUrlHandle(val){
                 console.log("base64上传图片接口");

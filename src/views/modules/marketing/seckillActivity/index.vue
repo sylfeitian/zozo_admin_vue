@@ -5,7 +5,7 @@
       <!-- 秒杀时间段页面 -->
       <timelist v-if='!showStatus&&timelistStatus' @timeshowList='timeshowList'></timelist>
       <!-- 查看商品列表页面 -->
-      <detailist v-if='!showStatus&&detailistStatus' @detailshowList='detailshowList'  @addlistFun='addlistFun' :activityId="activityId"></detailist>
+      <detailist v-if='!showStatus&&detailistStatus' @detailshowList='detailshowList'  @addlistFun='addlistFun' :activityId="activityId" :activityState="activityState"></detailist>
       <!-- 添加秒杀商品页面 -->
       <addlist v-if='!showStatus&&addlistStatus' @addshowList='addshowList' @detailistFun='detailistFun' @addlistFun='addlistFun' :activityId="activityId"></addlist>
        <!--  -->
@@ -28,7 +28,8 @@
                 showStatus: true,
                 timelistStatus:false,
                 detailistStatus:false,
-                addlistStatus:false
+                addlistStatus:false,
+                activityState:'',
             }
         },
         methods: {
@@ -42,11 +43,12 @@
                 this.timelistStatus = false;
             },
             //显示查看商品列表页面
-            detailistFun(id){
+            detailistFun(id,state){
                 this.showStatus = false;
                 this.detailistStatus = true;
                 this.addlistStatus = false;
                 this.activityId = id;
+                this.activityState = state;
             },
             detailshowList(){
                 this.showStatus = true;

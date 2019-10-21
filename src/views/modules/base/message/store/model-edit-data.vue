@@ -45,6 +45,7 @@
                                         :cropImg="dataForm.imageUrl"
                                         :imgWidth='"100px"'
                                         :imgHeight='"100px"'
+                                        @delteteImg="delteteImg"
                                         @GiftUrlHandle="GiftUrlHandle"
                                         style="display: inline-block;"
                                 ></img-cropper>
@@ -63,6 +64,7 @@
                                         :cropImg="dataForm.storeLogo"
                                         :imgWidth='"100px"'
                                         :imgHeight='"100px"'
+                                        @delteteImg="delteteLogo"
                                         @GiftUrlHandle="GiftUrlHandle"
                                         style="display: inline-block;"
                                 ></img-cropper>
@@ -260,6 +262,14 @@
                         }
                     })
                 });
+            },
+            // 删除店铺主图
+            delteteImg(){
+                this.dataForm.imageUrl = "";
+            },
+            // 删除店铺logo
+            delteteLogo () {
+                this.dataForm.storeLogo = "";
             },
             GiftUrlHandle(val,index){
                 console.log("base64上传图片接口");
