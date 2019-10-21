@@ -606,7 +606,10 @@
                             this.saveLoading = false;
                             console.log(res);
                             this.getData();
-                            this.$message(res.msg);
+                            this.$message({
+                                message: res.msg,
+                                type: 'success',
+                            });
 			            }).catch(()=>{
                             this.saveLoading = false;
 			            	this.$message(res.msg);

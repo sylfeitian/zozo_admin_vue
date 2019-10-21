@@ -57,7 +57,7 @@
                 </el-form-item>
             </el-form>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="12" :offset="row.fashionFlag == 0?0:6">
             <el-form
                     ref="dataForm"
                     class="grayLine topGapPadding"
