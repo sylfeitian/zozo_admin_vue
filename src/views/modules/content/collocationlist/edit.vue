@@ -347,4 +347,8 @@
     .grayLine {
         border-bottom: 0!important;
     }
+    /deep/ .el-form-item--default {
+        padding: 0 0;
+        margin-bottom: 0;
+    }
 </style>

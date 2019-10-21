@@ -243,4 +243,8 @@
     .contentChild{
         text-align: center;
     }
+    /deep/ .el-form-item--default {
+        padding: 0 0;
+        margin-bottom: 0;
+    }
 </style>

@@ -13,7 +13,13 @@
                     <span>{{dataForm.idJp}}</span>
                 </el-form-item>
                 <el-form-item label="用户昵称：">
-                    <span>{{dataForm.nickname}}</span>
+                    <template>
+                        <span>{{dataForm.nickname}}</span>
+                        <div style="display:inline-block;padding:0 0;margin-left: 10px;color: #2260D2">
+                            <span  v-if="dataForm.identity==1">WEAR达人</span>
+                            <span  v-else-if="dataForm.identity==2">Shop Staff</span>
+                        </div>
+                    </template>
                 </el-form-item>
                 <el-form-item label="用户身高：">
                     <span>{{dataForm.height}}</span><span v-if="dataForm.height">cm</span>
@@ -89,7 +95,13 @@
                     <span>{{dataForm.idJp}}</span>
                 </el-form-item>
                 <el-form-item label="用户昵称：">
-                    <span>{{dataForm.nickname}}</span>
+                    <template>
+                        <span>{{dataForm.nickname}}</span>
+                        <div style="display:inline-block;padding:0 0;margin-left: 10px;color: #2260D2">
+                            <span  v-if="dataForm.identity==1">WEAR达人</span>
+                            <span  v-else-if="dataForm.identity==2">Shop Staff</span>
+                        </div>
+                    </template>
                 </el-form-item>
                 <el-form-item label="用户身高：">
                     <span>{{dataForm.height}}</span><span v-if="dataForm.height">cm</span>
@@ -268,5 +280,9 @@
     }
     .grayLine {
         border-bottom: 0!important;
+    }
+    /deep/ .el-form-item--default {
+        padding: 0 0;
+        margin-bottom: 0;
     }
 </style>
