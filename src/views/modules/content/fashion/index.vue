@@ -35,11 +35,11 @@
                     this.$refs.detailCompon.init(row);
                 })
             },
-            addOrAdit(id){
+            addOrAdit(row){
                 this.addoraditVisible = true;
                 this.mainVisible = false;
                 this.$nextTick(()=>{
-                    this.$refs.addoraditCompon.init(id);
+                    this.$refs.addoraditCompon.init(row);
                 })
             },
             add(id){

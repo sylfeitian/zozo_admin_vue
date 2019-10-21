@@ -198,8 +198,8 @@
             this.getDataList();
         },
         methods: {
-            showDetail(id){
-                this.$emit("showDetail",id);
+            showDetail(row){
+                this.$emit("showDetail",row);
             },
             addOrAdit(row){
                 if(row.fashionFlag == 0) this.$emit("addOrAdit",row);
