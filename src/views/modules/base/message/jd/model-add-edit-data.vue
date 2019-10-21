@@ -153,7 +153,9 @@
 
             // 提交
             dataFormSubmit(formName){
-            	if(!this.dataForm.ids){
+                var ids = this.$refs.treeCategory.getCheckedKeys(true);
+                console.log(ids);
+            	if(ids.length==0){
             		this.$message({
                         message: '请选择关联分类',
                         type: 'warning',
@@ -161,12 +163,12 @@
                     })
             		return false;
             	}
-                var ids = this.$refs.treeCategory.getCheckedKeys(true);
-                if(ids && ids.length!=0){
-                     this.dataForm.ids = "至少勾选了一个tree,验证通过";
-                }else{
-                    this.dataForm.ids = "";//必选，验证不通过
-                }
+               
+                // if(ids && ids.length!=0){
+                //      this.dataForm.ids = "至少勾选了一个tree,验证通过";
+                // }else{
+                //     this.dataForm.ids = "";//必选，验证不通过
+                // }
                 // alert([this.dataForm.name,this.dataForm.domainAddress]);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
