@@ -119,7 +119,7 @@
                 <span style="font-size: 20px;margin-right: 20px;">状态：{{dataForm.state == 0?"未发布":dataForm.state == 1?"已发布":dataForm.state == 2?"取消发布 ":""}}</span>
                 <el-button class="btn" @click="reset()">取消</el-button>
                 <el-button class="btn" @click="getData(0)">保存</el-button>
-                <el-button class="btn" :disabled="dataForm.isOpen != 1" type="primary" @click="getData(1)">保存并发布</el-button>
+                <el-button class="btn" :disabled="dataForm.isOpen == 0" type="primary" @click="getData(1)">保存并发布</el-button>
             </div>
         </el-col>
     </div>
