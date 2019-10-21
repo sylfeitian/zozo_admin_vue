@@ -17,7 +17,7 @@
                 <el-input v-model.trim="dataForm.dictName" auto-complete="off" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="字典编码：" prop="dictValue" :label-width="formLabelWidth">
-                <el-input v-model.trim="dataForm.dictValue" auto-complete="off" show-word-limit placeholder="请输入"></el-input>
+                <el-input v-model.trim="dataForm.dictValue" auto-complete="off" maxlength="100" placeholder="请输入"></el-input>
             </el-form-item>
 <!--            <el-form-item style="text-align: center;margin-left: -120px!important;">-->
 <!--                <el-button  @click="dataFormCancel()">取消</el-button>-->
