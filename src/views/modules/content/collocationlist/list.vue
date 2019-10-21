@@ -372,7 +372,7 @@
                     this.dataForm.sate = "2"
                 }
                 this.changeVal = val;
-                this.getDataList();
+                this.getData();
             },
 
             forbitHandle(index,row){
