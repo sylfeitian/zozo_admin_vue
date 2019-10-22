@@ -7,10 +7,10 @@
             class="grayLine topGapPadding"
             :model="dataForm"
         >
-            <el-form-item label="商品名称：" prop="name">
+            <el-form-item label="商品名称：">
                 <el-input v-model.trim="dataForm.name" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
             </el-form-item>
-            <el-form-item label="选择分类：" prop="categoryId">
+            <el-form-item label="选择分类：">
                 <!-- <el-cascader
                         :show-all-levels="false"
                         :options="selectCategoryOption"
@@ -25,13 +25,13 @@
                   @change="handleChange">
             </el-cascader>
             </el-form-item>
-            <el-form-item label="商品货号：" prop="id">
+            <el-form-item label="商品货号：">
                 <el-input v-model.trim="dataForm.id" placeholder="请输入spu编号" clearable></el-input>
             </el-form-item>
-            <el-form-item label="店铺名称：" prop="storeName">
+            <el-form-item label="店铺名称：">
                 <el-input v-model.trim="dataForm.storeName" placeholder="请输入店铺名称" clearable></el-input>
             </el-form-item>
-            <el-form-item label="品牌名称：" prop="brandName">
+            <el-form-item label="品牌名称：">
                 <el-input v-model.trim="dataForm.brandName" placeholder="请输入品牌名称" clearable></el-input>
             </el-form-item>
             <el-form-item>
@@ -466,7 +466,7 @@ export default {
     reset() {
       this.$refs["dataForm"].resetFields();
       this.dataForm.categoryId = ""
-      this.classList = ""
+      this.classList = []
       this.page = 1;
       this.getDataList();
     },
@@ -592,7 +592,6 @@ export default {
               this.dataForm.categoryId = "";//分类id
 
               }
-              console.log(this.dataFormShow.categoryId)
       }
   }
 };

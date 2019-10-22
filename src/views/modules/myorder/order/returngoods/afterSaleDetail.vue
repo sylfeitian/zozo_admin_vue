@@ -303,6 +303,7 @@
                         this.goodsInfo = [res.data.goodsInfo]
                         if(this.returnInfo){
                             this.row.auditStatus = this.returnInfo.auditStatus;
+                             this.row.status = this.returnInfo.status;
                         }
                     }else{
                         this.$message({
