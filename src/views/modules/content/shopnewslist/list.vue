@@ -106,9 +106,10 @@
             </el-table-column>
             <el-table-column prop="publishTime" label="发布时间" align="center">
                 <template slot-scope="scope">
-                    <div :title="scope.row.publishTime">
+                    <div :title="scope.row.publishTime" v-if="scope.row.showWeb == 1">
                         {{scope.row.publishTime}}
                     </div>
+                    <span v-else>/</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center" width="180">
