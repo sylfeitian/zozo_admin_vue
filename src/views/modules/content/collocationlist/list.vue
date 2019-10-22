@@ -6,7 +6,7 @@
                 <el-input v-model.trim="dataForm.idJp" maxlength="30" placeholder="请输入编号"></el-input>
             </el-form-item>
             <el-form-item label="标题：">
-                <el-input v-model.trim="dataForm.title" placeholder="请输入标题"></el-input>
+                <el-input v-model.trim="dataForm.titleOrJp" placeholder="请输入标题"></el-input>
             </el-form-item>
             <el-form-item label="用户：">
                 <el-input v-model.trim="dataForm.userNickname" placeholder="请输入用户昵称"></el-input>
@@ -188,7 +188,7 @@
                 breaddata: [ "内容管理","搭配集合管理"],
                 dataForm: {
                 	idJp:null,
-                	title:null,
+                	titleOrJp:null,
                 	userNickname:null,
                 	sate:null,
                 	publishStartTime:null,

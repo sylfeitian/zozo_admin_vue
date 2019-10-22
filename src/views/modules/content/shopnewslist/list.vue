@@ -6,7 +6,7 @@
                 <el-input v-model.trim="dataForm.idJp" maxlength="30" placeholder="请输入编号"></el-input>
             </el-form-item>
             <el-form-item label="标题：">
-                <el-input v-model.trim="dataForm.title" placeholder="请输入标题"></el-input>
+                <el-input v-model.trim="dataForm.titleOrJp" placeholder="请输入标题"></el-input>
             </el-form-item>
             <el-form-item label="店铺：">
                 <el-input v-model.trim="dataForm.storeName" placeholder="请输入店铺名称"></el-input>
@@ -168,7 +168,7 @@
                 breaddata: [ "内容管理", "店铺新闻管理"],
                 dataForm: {
                     idJp:'',//编号
-                    title:'',//标题
+                    titleOrJp:'',//标题
                     storeName:'',//店铺名称
                 },
                 selectVal:"",
