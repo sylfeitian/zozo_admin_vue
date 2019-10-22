@@ -90,8 +90,8 @@
             </el-form-item>
             <el-dialog title="添加商品" :before-close="res" :visible.sync="dialogTableVisible">
                 <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
-                    <el-form-item label="ID：">
-                        <el-input v-model.trim="dataForm.params" ></el-input>
+                    <el-form-item label="商品名称/货号：">
+                        <el-input v-model.trim="dataForm.params"  placeholder="请输入" ></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
@@ -109,7 +109,7 @@
                 >
                     <el-table-column type="selection" width="70"></el-table-column>
                     <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
-                    <el-table-column prop="goodsId" label="商品ID" align="center"></el-table-column>
+                    <el-table-column prop="goodsIdJp" label="商品ID" align="center"></el-table-column>
                     <el-table-column prop="sellPrice" label="价格" align="center"></el-table-column>
                     <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
 
