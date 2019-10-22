@@ -88,7 +88,12 @@
                 </template>
             </el-table-column>
             <el-table-column prop="publishTimeJp" label="日本发布时间" align="center"></el-table-column>
-            <el-table-column prop="publishTime" label="发布时间" align="center"></el-table-column>
+            <el-table-column prop="publishTime" label="发布时间" align="center">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.sate == 1">{{scope.row.publishTime}}</span>
+                    <span v-else>/</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="styles" label="风格标签" align="center">
                 <template slot-scope="scope">
                     <span v-if="scope.row.styles.length != 0" v-for="(v,index) in scope.row.styles" :key="index">{{index==0?v.name:"、"+v.name}}</span>
@@ -96,7 +101,7 @@
                 </template>
             </el-table-column>
             <el-table-column prop="totalViewsNum" label="浏览量" align="center"></el-table-column>
-            <el-table-column label="操作" width="150" align="center">
+            <el-table-column label="操作" width="170" align="center">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="showDetail(scope.row)" type="text" size="mini">查看</el-button>
                     <el-button @click.native.prevent="addOrAdit(scope.row)" type="text" size="mini">编辑</el-button>
