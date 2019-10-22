@@ -385,7 +385,7 @@
                 this.currentIndex = index;
                 var obj = {
                     "id": row.id,
-                    "operating":row.sate==1?2:1  //
+                    "operating":row.sate==1?2:1  //1发布   2取消发布
                 }
                 var msg = ""
                 row.sate==1?msg="取消":msg=""
@@ -420,7 +420,7 @@
                 var ids = this.getIds(type);
                 if(ids[0]){var obj = {
                     ids:ids,
-                    operating:type==1?2:1,
+                    operating:type==1?2:1,//1发布   2取消发布
                 }
                     var msg = ""
                     type==1?msg="取消发布":msg="发布"
