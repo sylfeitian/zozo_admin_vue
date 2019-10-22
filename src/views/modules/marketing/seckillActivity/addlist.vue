@@ -79,7 +79,6 @@
                     <el-button
                         type="text"
                         size="small"
-                        v-if="scope.row.selfActivityState==1 && scope.row.activityState ==1"
                         @click="editGoods(scope.row.id,'update')"
                     >修改</el-button>
                     <span
@@ -138,7 +137,8 @@
                     style="width: 100%"
                 >
                     <el-table-column prop="id" label="skuID" width="180" align="center"></el-table-column>
-                    <el-table-column prop="specInfo" label="规格" width="180" align="center"></el-table-column>
+                    <el-table-column prop="specInfo" label="规格" width="180" align="center">
+                    </el-table-column>
                     <el-table-column label="活动库存" width="220" align="center">
                         <template slot-scope="scope">
                             <el-form-item
@@ -157,7 +157,18 @@
                             </el-form-item>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="cartLimit" label="日本限购数量" width="120" align="center"></el-table-column>
+                    <el-table-column prop="cartLimit" label="日本限购数量" width="120" align="center">
+                        <template slot-scope="scope">
+                            <el-form-item
+                                    class="specError japane"
+                            >
+                                <el-input
+                                        v-model="scope.row.cartLimit"
+                                        type="text"
+                                ></el-input>
+                            </el-form-item>
+                        </template>
+                    </el-table-column>
                     <el-table-column label="每人限购" width="220" align="center">
                         <template slot-scope="scope">
                             <el-form-item
@@ -597,9 +608,15 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+    .japane{
+        /deep/.el-input {
+            width: 100px !important;
+            height: 40px;
+        }
+    }
 .addListGoodsPages {
   /deep/.el-input {
-    width: 170px;
+    width: 150px;
     height: 40px;
   }
   .editDialog {
