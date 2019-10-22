@@ -91,7 +91,8 @@
             <el-table-column prop="publishTime" label="发布时间" align="center"></el-table-column>
             <el-table-column prop="styles" label="风格标签" align="center">
                 <template slot-scope="scope">
-                    <span v-for="(v,index) in scope.row.styles" :key="index">{{index==0?v.name:"、"+v.name}}</span>
+                    <span v-if="scope.row.styles.length != 0" v-for="(v,index) in scope.row.styles" :key="index">{{index==0?v.name:"、"+v.name}}</span>
+                    <span v-if="scope.row.styles.length == 0">/</span>
                 </template>
             </el-table-column>
             <el-table-column prop="totalViewsNum" label="浏览量" align="center"></el-table-column>
