@@ -47,7 +47,7 @@
                 {{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}
             </template>
             </el-table-column>-->
-            <el-table-column prop="id" label="商品id" width="180" align="center"></el-table-column>
+            <el-table-column prop="goodsIdJp" label="商品id" width="180" align="center"></el-table-column>
             <el-table-column prop="name" label="商品名称" align="center"></el-table-column>
             <el-table-column prop="sellPrice" label="销售价格" align="center"></el-table-column>
             <el-table-column prop="goodsTypeName" label="所属分类" align="center"></el-table-column>
