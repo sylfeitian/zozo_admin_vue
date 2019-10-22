@@ -54,6 +54,7 @@
                     v-model="activiDataForm.startTime"
                     type="datetime"
                     value-format="yyyy-MM-dd HH:mm:ss"
+                    :picker-options="pickerOptions"
                     placeholder="选择开始时间">
                 </el-date-picker>
             </el-form-item>
@@ -62,6 +63,7 @@
                     v-model="activiDataForm.endTime"
                     type="datetime"
                     value-format="yyyy-MM-dd HH:mm:ss"
+                    :picker-options="pickerOptions"
                     placeholder="选择结束时间">
                 </el-date-picker>
             </el-form-item>
@@ -145,7 +147,12 @@
                     rule2: '',
                 },
                 checkList:false,
-                ruleName:'rule1'
+                ruleName:'rule1',
+                pickerOptions: {
+                    disabledDate(time) {
+                     return time.getTime() < Date.now() - 8.64e7;
+                    }
+                },// 日期组件 设置项
             }
         },
         components:{
