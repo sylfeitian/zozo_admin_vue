@@ -178,43 +178,57 @@
                         </el-form-item>
                     </div>
                 </div>
-
-                <el-form-item label="详情：" style="height: 100%!important;">
-                    <template slot-scope="scope">
-                        <br>
-                        <div style="display:flex;padding:0" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i" >
-                            <div style="width:50%;" v-if="v.text || v.imageUrl"  v-show="row.fashionFlag == 0">
-                                <!-- <div style="height: 20px;"></div> -->
-                                 <div class="contentChild" style="min-height:33px;padding-right: 6px;" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'" v-html="v.text">
-                                  <!-- {{v.text}} -->
-                                </div>
-                                <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
-                                    <div class="goodsPropsWrap">
-                                        <div class="goodsImg">
-                                            <img :src="v.imageUrl" style="width:200px;" alt=""/>
+                <div style="display:flex;padding:0">
+                    <div style="width:50%;"  v-if="row.fashionFlag == 0">
+                        <el-form-item label="详情：" style="height: 100%!important;"  v-if="row.fashionFlag == 0">
+                            <template slot-scope="scope">
+                                <div style="display:flex;padding:0;" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
+                                    <div v-if="v.text || v.imageUrl"  v-show="row.fashionFlag == 0" style="padding: 0;">
+                                        <!-- <div style="height: 20px;"></div> -->
+                                        <div class="contentChild" style="min-height:33px;padding-right: 6px;" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'" v-html="v.text">
+                                        <!-- {{v.text}} -->
                                         </div>
-                                        <div v-if="v.typeId=='4'"  v-html="v.text"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="width:50%;"  :class="row.fashionFlag==0?'borderLeftLine':''" v-if="v.text || v.imageUrl">
-                                <!-- <div style="height: 20px;"></div> -->
-                                <div class="contentChild"  style="min-height:33px;padding-left: 6px;"v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'" v-html="v.text">
-                                     <!-- {{v.text}} -->
-                                </div>
-                                <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
-                                    <div class="goodsPropsWrap">
-                                        <div class="goodsImg">
-                                            <img :src="v.imageUrl" style="width:200px;" alt=""/>
+                                        <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
+                                            <div class="goodsPropsWrap">
+                                                <div class="goodsImg" style="margin-left:60%;">
+                                                    <img :src="v.imageUrl | filterImgUrl" style="width:200px;" alt=""/>
+                                                </div>
+                                                <div v-if="v.typeId=='4'"  v-html="v.text"></div>
+                                            </div>
                                         </div>
-                                        <div v-if="v.typeId=='4'"  v-html="v.text"></div>
                                     </div>
+                                    
                                 </div>
-                            </div>
-                        </div>
-                    </template>
-                </el-form-item>
+                            </template>
+                        </el-form-item>
+                    </div>
+                    <div style="width:50%;"  :class="row.fashionFlag==0?'borderLeftLine':''">
+                        <el-form-item label="详情：" style="height: 100%!important;">
+                            <template slot-scope="scope">
+                                <div style="display:flex;padding:0" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i" >
+                                    <div v-if="v.text || v.imageUrl" style="padding: 0;">
+                                        <!-- <div style="height: 20px;"></div> -->
+                                        <div class="contentChild"  style="min-height:33px;padding-left: 6px;margin-top:0;"v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'" v-html="v.text">
+                                            <!-- {{v.text}} -->
+                                        </div>
+                                        <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
+                                            <div class="goodsPropsWrap">
+                                                <div class="goodsImg" style="margin-left:60%;">
+                                                    <img :src="v.imageUrl | filterImgUrl" style="width:200px;" alt=""/>
+                                                </div>
+                                                <div v-if="v.typeId=='4'"  v-html="v.text"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </template>
+                        </el-form-item>
+                    </div>
+                </div>
             </el-form>
+            
+                            
 
         </el-col>
     </div>
@@ -307,5 +321,9 @@
     .positionLeft {
         margin-left: -252px!important;
         width: 127%!important;
+    }
+    /deep/ .contentChild p {
+        margin-top: 0;
+        text-align: left;
     }
 </style>
