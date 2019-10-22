@@ -109,7 +109,7 @@
                     warehouseName: "",
                     name: "",
                     phone: "",
-                    type: "",
+                    type: 1,
                     addressInfo: ""
 
                 },

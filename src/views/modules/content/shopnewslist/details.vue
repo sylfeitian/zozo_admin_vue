@@ -55,7 +55,7 @@
                         <el-table-column prop="imageUrl" label="图片" align="center">
                             <template slot-scope="scope">
                                 <img
-                                        :src="scope.row.imageUrl"
+                                        :src="scope.row.imageUrl | filterImgUrl"
                                         alt=""
                                         style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                                 >
@@ -130,7 +130,7 @@
                         <el-table-column prop="imageUrl" label="图片" align="center">
                             <template slot-scope="scope">
                                 <img
-                                        :src="scope.row.imageUrl"
+                                        :src="scope.row.imageUrl | filterImgUrl"
                                         alt=""
                                         style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                                 >
