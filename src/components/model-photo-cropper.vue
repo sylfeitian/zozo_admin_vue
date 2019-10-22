@@ -35,7 +35,7 @@
 		<div class="upload-box" :style="{width:imgWidth,height:imgHeight}" >
 			<!-- 真正的上传图片 -->
 			<div class="uloadingBox">
-				<img class="pre-img" :src="cropper.cropImg | filterImgUrl" :style="{width:'100%',height:'100%'}" v-if="cropper.imgShow"/>
+				<img class="pre-img" :src="cropper.cropImg | filterImgUrl" :style="{width:'100%',height:'100%'}" v-if="cropper.imgShow && cropper.cropImg"/>
 
 				<input class="crop-input" ref="cropInput" type="file" name="image" accept="image/*" :value="value" @change="setImage"/>
 				<el-upload
@@ -60,7 +60,7 @@
 				</el-upload>
 			</div>
 			<!-- 实现删除图片和上传图片功能 -->
-			<div  class="hiddenUloadingBox" v-if="cropper.imgShow">
+			<div  class="hiddenUloadingBox" v-if="cropper.imgShow && cropper.cropImg">
 			      <div class="hiddenMask">
 					  <!-- 遮罩层 -->
 				  </div>
@@ -203,6 +203,7 @@
 			cancleImg(){
 				this.cropper.dialogVisible = false;
 				this.cropper.cropImg =  this.oldimg;
+				console.log(this.oldimg);
 			},
 			submitImg(){
 				this.cropper.dialogVisible = false;

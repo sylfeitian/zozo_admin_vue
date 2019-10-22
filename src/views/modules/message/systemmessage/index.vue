@@ -83,9 +83,9 @@
 				  <el-form-item label="消息标题：" style="height: 100%!important;" prop="messageTitle">
 					  <el-input type="text" v-model="ShopmessagetemplateList.messageTitle" placeholder="请输入标题名称"></el-input>
 				  </el-form-item>
-				  <el-form-item label="消息内容：" style="height: 100%!important;" prop="messageContent">
+				  <!-- <el-form-item label="消息内容：" style="height: 100%!important;" prop="messageContent">
 					  <el-input  type="textarea" v-model="ShopmessagetemplateList.messageContent" :rows="5" placeholder="请输入内容"></el-input>
-				  </el-form-item>
+				  </el-form-item> -->
 			  </el-form>
 			  <div slot="footer" class="dialog-footer">
 				  <el-button @click="rest(0)">取 消</el-button>

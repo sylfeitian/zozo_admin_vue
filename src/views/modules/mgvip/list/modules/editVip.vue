@@ -76,7 +76,7 @@ import { isMobile,isIdCard } from '@/utils/validate'
                  if (value != '' && !isIdCard(value)) {
                     callback(new Error('身份证号输入有误'))
                 } else {
-                callback()
+                     callback()
                 }
             }
             return {
