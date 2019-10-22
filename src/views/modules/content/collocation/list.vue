@@ -75,7 +75,14 @@
                 </template>
             </el-table-column>
             <el-table-column prop="publishTimeJp" label="日本发布时间" align="center"></el-table-column>
-            <el-table-column prop="publishTime" label="发布时间" align="center"></el-table-column>
+            <el-table-column prop="publishTime" label="发布时间" align="center">
+                <template slot-scope="scope">
+                    <div v-if="scope.row.state == 1">
+                        {{scope.row.publishTime}}
+                    </div>
+                    <span v-else>/</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="totalFavNum" label="收藏量" width="80" align="center"></el-table-column>
             <el-table-column label="操作" align="center" width="240">
                 <template slot-scope="scope">
