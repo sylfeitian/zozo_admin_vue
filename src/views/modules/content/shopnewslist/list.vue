@@ -15,7 +15,8 @@
                 <el-date-picker
                         v-model="timeArr"
                         type="daterange"
-                        value-format="yyyy-MM-dd"
+                        value-format="yyyy-MM-dd HH:mm"
+                        :default-time="['00:00:00', '23:59:59']"
                         align="left"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
