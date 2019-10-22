@@ -25,13 +25,15 @@
                     <el-radio :label="1">定时上架</el-radio>
                 </el-radio-group>
             </el-form-item>
-            <el-form-item label="选择时间：" prop="shelfTime">
+            <el-form-item label="选择时间：" prop="shelfTime" v-if="dataForm.showType==1">
                 <el-date-picker
-                    v-model="shelfTime"
+                    v-model="dataForm.shelfTime"
                     type="datetime"
                     value-format="yyyy-MM-dd HH:mm:ss"
                     :disabled="dataForm.showType == 0"
-                    placeholder="选择日期时间">
+                    :picker-options="pickerOptions"
+                    placeholder="选择日期时间"
+                    @change="afterTime">
                 </el-date-picker>
             </el-form-item>
         </el-form>
@@ -72,6 +74,11 @@
                 optionsRight: [],
                 row:"",
                 formLabelWidth: '120px',
+                pickerOptions: {
+                    disabledDate(time) {
+                      return time.getTime() < Date.now() - 8.64e7;
+                    }
+                },// 日期组件 设置项
                 shelfTime: '',
             }
         },
@@ -79,7 +86,7 @@
         methods: {
             init (row) {
                 this.visible = true;
-                this.dataForm.shelfTime = ""
+                this.dataForm.shelfTime = new Date();
                 this.dataForm.showType = 0
                 this.dataForm.showWeb = ""
                 this.$nextTick(() => {
@@ -91,25 +98,38 @@
                     }
                 })
             },
-            // 编辑回显
-            backScan(){
-                
+            filterTime(value){
+                function add0(m){return m<10?'0'+m:m }
+                var time = new Date(value);
+                var y = time.getFullYear();
+                var m = time.getMonth()+1;
+                var d = time.getDate();
+                var h = time.getHours();
+                var mm = time.getMinutes();
+                var s = time.getSeconds();
+                        return y+'-'+add0(m)+'-'+add0(d)+' '+add0(h)+':'+add0(mm)+':'+add0(s)
+                    // return y+'-'+add0(m)+'-'+add0(d)
+            },
+            afterTime(){
+                console.log(this.dataForm.shelfTime);
+                if(new Date(this.dataForm.shelfTime).getTime() < new Date().getTime()){
+                    this.dataForm.shelfTime = this.filterTime(new Date());
+                }
             },
             // 提交
             dataFormSubmit(formName){
                 // alert([this.dataForm.name,this.dataForm.domainAddress]);
                 // console.log(this.dataForm);
+                 this.afterTime();
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         var obj={
                             id: this.row.id,
-                            showWeb: 2,//1上级，2下架
+                            showWeb:  this.row.showWeb == 1?2:1,//1上级，2下架
                             showType:this.dataForm.showType,//0:立即，1：定时 ,
-                            shelfTime:"",//选择时间
+                            shelfTime:this.dataForm.showType == 1?this.filterTime(this.dataForm.shelfTime):'',//选择时间
                         }
                          this.saveLoading = true;
-                         if (this.dataForm.showType == 1){ obj.shelfTime= this.shelfTime}
-                         if (this.row.showWeb == 0 || this.row.showWeb == 2) { obj.showWeb= 1 }
                         showGoods(obj).then((res) => {
                             this.saveLoading = false;
                             let msg = "";
