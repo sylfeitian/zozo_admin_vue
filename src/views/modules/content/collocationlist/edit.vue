@@ -59,7 +59,7 @@
                         <el-table-column prop="imageUrl320" label="主图" align="center">
                             <template slot-scope="scope">
                                 <img
-                                        :src="scope.row.imageUrl320"
+                                        :src="scope.row.imageUrl320 | filterImgUrl"
                                         style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                                 >
                             </template>
@@ -132,7 +132,7 @@
                         <el-table-column prop="imageUrl320" label="主图" align="center">
                             <template slot-scope="scope">
                                 <img
-                                        :src="scope.row.imageUrl320"
+                                        :src="scope.row.imageUrl320 | filterImgUrl"
                                         style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                                 >
                             </template>
