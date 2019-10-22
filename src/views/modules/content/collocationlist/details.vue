@@ -53,7 +53,7 @@
                             border
                             v-loading="dataListLoading"
                             class="inforRight"
-                            style="display:inline-block;width: 80%;"
+                            style="display:inline-block;width: 80%;padding: 0 0!important;"
                     >
                         <el-table-column prop="idJp" label="搭配ID" align="center"></el-table-column>
                         <el-table-column prop="imageUrl320" label="主图" align="center">
@@ -125,7 +125,7 @@
                             border
                             v-loading="dataListLoading"
                             class="inforRight"
-                            style="display:inline-block;width: 80%;"
+                            style="display:inline-block;width: 80%;padding: 0 0!important;"
                     >
                         <el-table-column prop="idJp" label="搭配ID" align="center"></el-table-column>
                         <el-table-column prop="imageUrl320" label="主图" align="center">
