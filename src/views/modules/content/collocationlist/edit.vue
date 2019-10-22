@@ -45,14 +45,14 @@
                 <el-form-item label="详情：" style="height: 100%!important;">
                     <span>{{dataForm.descriptionJp}}</span>
                 </el-form-item>
-                <div class="goods" style="margin-top:10px;">
+                <div class="goods">
                     <span class="inforTit" style="vertical-align:top;">关联搭配：</span>
                     <el-table
                             width="100%"
                             :data="dataForm.lookItems"
                             border
                             v-loading="dataListLoading"
-                            style="display:inline-block;width: 80%;"
+                            style="display:inline-block;width: 80%;padding:0;"
                     >
                         <el-table-column prop="idJp" label="搭配ID" align="center"></el-table-column>
                         <el-table-column prop="imageUrl320" label="主图" align="center">
@@ -115,9 +115,9 @@
                     <el-input v-model.trim="dataForm.title" type="text" placeholder="请输入标题名称"></el-input>
                 </el-form-item>
                 <el-form-item label="详情：" style="height: 100%!important;">
-                    <el-input v-model.trim="dataForm.description" type="textarea":rows="5" placeholder="请输入内容" style="margin-top:10px;"></el-input>
+                    <el-input v-model.trim="dataForm.description" type="textarea":rows="5" placeholder="请输入内容"></el-input>
                 </el-form-item>
-                <div class="goods" style="margin-top:10px;">
+                <div class="goods">
                     <span class="inforTit" style="vertical-align:top;">关联搭配：</span>
                     <el-table
                             width="100%"

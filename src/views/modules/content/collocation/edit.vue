@@ -131,9 +131,9 @@
                     </template>
                 </el-form-item>
                 <el-form-item label="要点：" style="height: 120px!important;">
-                    <el-input v-model.trim="dataForm.content" type="textarea":rows="5" placeholder="请输入内容"></el-input>
+                    <el-input v-model.trim="dataForm.content" type="textarea":rows="5" placeholder="请输入内容" style="margin-top: 10px;"></el-input>
                 </el-form-item>
-                <div class="goods" style="margin-bottom:50px;">
+                <div class="goods" style="margin: 15px 0 50px 0;">
                     <span class="inforTit" style="vertical-align:top;">关联商品：</span>
                     <el-table
                             width="100%"
