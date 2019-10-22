@@ -146,7 +146,7 @@
                 </div>
             </el-form>
         </el-col>
-        <div style="margin-left:20px;">
+        <div style="margin-left:20px;margin-bottom:50px;">
             <div>
                 <span style="margin-right: 10px;"><span style="color: #F56C6C;margin-right: 5px;">*</span>关联标签：</span>
                 <el-select :filter-method="getStyle" v-model="value" @change="saveList" filterable placeholder="请选择">
