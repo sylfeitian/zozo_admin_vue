@@ -205,7 +205,7 @@
                                 <div style="padding:0" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
                                     <div  v-if="v.text || v.imageUrl" style="padding: 0;width:80%;margin-left:20%;">
                                         <!-- <div style="height: 20px;"></div> -->
-                                        <div class="contentChild"  style="min-height:33px;padding-left: 6px;"  v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
+                                        <div class="contentChild"  style="min-height:33px;"  v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
                                             <el-input style="margin: auto;" v-model="v.text" type="textarea" :rows="5" ></el-input>
                                         </div>
                                         <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
