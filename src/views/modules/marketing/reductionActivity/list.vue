@@ -69,6 +69,11 @@
 		    label="活动标题"
             align="center"
 		    width="180">
+            <template slot-scope="scope">
+                <div :title="scope.row.title">
+                    {{scope.row.title}}
+                </div>
+            </template>
 		</el-table-column>
         <el-table-column
 		    prop=""
@@ -289,6 +294,12 @@
     .el-input {
         width: 300px;
     }
+}
+/deep/ .cell{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
 }
 
 </style>
