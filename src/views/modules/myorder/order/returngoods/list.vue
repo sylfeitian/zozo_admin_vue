@@ -278,6 +278,8 @@
             // },
             // 确认收货
             confirmGoodsFn(row){
+                row.isComfirm = 1;////收货类型 0未收货 1确认收货
+                console.log(row);
                 this.confirmGoodsVisible = true;
                 this.$nextTick(() => {
                    this.$refs.confirmGoodsCompon.init(row)
