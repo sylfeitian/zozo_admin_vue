@@ -6,7 +6,7 @@
                 <el-input v-model.trim="dataForm.idJp" maxlength="30" placeholder="请输入编号"></el-input>
             </el-form-item>
             <el-form-item label="标题：">
-                <el-input v-model.trim="dataForm.title" placeholder="请输入标题"></el-input>
+                <el-input v-model.trim="dataForm.titleOrJp" placeholder="请输入标题"></el-input>
             </el-form-item>
             <el-form-item label="用户：">
                 <el-input v-model.trim="dataForm.userNickname" placeholder="请输入用户昵称"></el-input>
@@ -88,14 +88,20 @@
                 </template>
             </el-table-column>
             <el-table-column prop="publishTimeJp" label="日本发布时间" align="center"></el-table-column>
-            <el-table-column prop="publishTime" label="发布时间" align="center"></el-table-column>
+            <el-table-column prop="publishTime" label="发布时间" align="center">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.sate == 1">{{scope.row.publishTime}}</span>
+                    <span v-else>/</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="styles" label="风格标签" align="center">
                 <template slot-scope="scope">
-                    <span v-for="(v,index) in scope.row.styles" :key="index">{{index==0?v.name:"、"+v.name}}</span>
+                    <span v-if="scope.row.styles.length != 0" v-for="(v,index) in scope.row.styles" :key="index">{{index==0?v.name:"、"+v.name}}</span>
+                    <span v-if="scope.row.styles.length == 0">/</span>
                 </template>
             </el-table-column>
             <el-table-column prop="totalViewsNum" label="浏览量" align="center"></el-table-column>
-            <el-table-column label="操作" width="150" align="center">
+            <el-table-column label="操作" width="170" align="center">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="showDetail(scope.row)" type="text" size="mini">查看</el-button>
                     <el-button @click.native.prevent="addOrAdit(scope.row)" type="text" size="mini">编辑</el-button>
@@ -188,7 +194,7 @@
                 breaddata: [ "内容管理","搭配集合管理"],
                 dataForm: {
                 	idJp:null,
-                	title:null,
+                	titleOrJp:null,
                 	userNickname:null,
                 	sate:null,
                 	publishStartTime:null,
@@ -491,5 +497,11 @@
             display: flex;
             align-items: center;
         }
+    }
+    /deep/ .el-table .cell{
+        display: -webkit-box!important;
+        -webkit-box-orient: vertical!important;
+        -webkit-line-clamp: 2!important;
+        overflow: hidden!important;
     }
 </style>
