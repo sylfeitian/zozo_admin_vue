@@ -356,7 +356,7 @@
                 this.timeArr = [];
                 this.timeArr2 = [];
                 this.dataForm.idJp = "";
-                this.dataForm.title = "";
+                this.dataForm.titleOrJp = "";
                 this.dataForm.userNickname = "";
                 this.dataForm.sate = "";
                 this.dataForm.publishStartTimeJp = "";
