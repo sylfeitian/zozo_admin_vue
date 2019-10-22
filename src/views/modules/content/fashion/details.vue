@@ -74,12 +74,12 @@
                 </div>
 
                 <div style="display:flex;padding:0">
-                    <div style="width:50%;"  v-if="row.fashionFlag == 0">
+                    <div style="width:50%;padding:0"  v-if="row.fashionFlag == 0">
                          <el-form-item label="纪实编号：" style="width:50%;">
                             <span>{{dataForm.idJp}}</span>
                         </el-form-item>
                     </div>
-                    <div style="width:50%;"  :class="row.fashionFlag==0?'borderLeftLine':''">
+                    <div style="width:50%;padding:0"  :class="row.fashionFlag==0?'borderLeftLine':''">
                         <el-form-item label="纪实编号：">
                             <span>{{dataForm.idJp}}</span>
                         </el-form-item>
@@ -87,12 +87,12 @@
                 </div>
 
                 <div style="display:flex;padding:0">
-                    <div style="width:50%;"  v-if="row.fashionFlag == 0">
+                    <div style="width:50%;padding:0"  v-if="row.fashionFlag == 0">
                         <el-form-item label="发布者：" style="width:50%;">
                             <span>{{dataForm.publisher}}</span>
                         </el-form-item>
                     </div>
-                    <div style="width:50%;"  :class="row.fashionFlag==0?'borderLeftLine':''">
+                    <div style="width:50%;padding:0"  :class="row.fashionFlag==0?'borderLeftLine':''">
                         <el-form-item label="发布者：" >
                             <span>{{dataForm.publisher}}</span>
                         </el-form-item>
@@ -100,12 +100,12 @@
                 </div>
 
                 <div style="display:flex;padding:0">
-                    <div style="width:50%;"  v-if="row.fashionFlag == 0">
+                    <div style="width:50%;padding:0"  v-if="row.fashionFlag == 0">
                         <el-form-item label="收藏数量：">
                             <span>{{dataForm.totalFavNum}}</span>
                         </el-form-item>
                     </div>
-                    <div style="width:50%;"  :class="row.fashionFlag==0?'borderLeftLine':''">
+                    <div style="width:50%;padding:0"  :class="row.fashionFlag==0?'borderLeftLine':''">
                         <el-form-item label="收藏数量：">
                             <span>{{dataForm.totalFavNum}}</span>
                         </el-form-item>
@@ -114,12 +114,12 @@
 
               
                 <div style="display:flex;padding:0">
-                    <div style="width:50%;"  v-if="row.fashionFlag == 0">
+                    <div style="width:50%;padding:0"  v-if="row.fashionFlag == 0">
                         <el-form-item label="浏览数量：">
                             <span>{{dataForm.totalViewsNums}}</span>
                         </el-form-item>
                     </div>
-                    <div style="width:50%;"  :class="row.fashionFlag==0?'borderLeftLine':''">
+                    <div style="width:50%;padding:0"  :class="row.fashionFlag==0?'borderLeftLine':''">
                         <el-form-item label="浏览数量：">
                             <span>{{dataForm.totalViewsNums}}</span>
                         </el-form-item>
@@ -128,12 +128,12 @@
 
                
                  <div style="display:flex;padding:0">
-                    <div style="width:50%;"  v-if="row.fashionFlag == 0">
+                    <div style="width:50%;padding:0"  v-if="row.fashionFlag == 0">
                         <el-form-item label="发布状态：">
                               <span>{{dataForm.isOpen == 1?"已发布":dataForm.isOpen == 2?"待发布":""}}</span>
                         </el-form-item>
                     </div>
-                    <div style="width:50%;"  :class="row.fashionFlag==0?'borderLeftLine':''">
+                    <div style="width:50%;padding:0"  :class="row.fashionFlag==0?'borderLeftLine':''">
                         <el-form-item label="发布状态：">
                             <span>{{dataForm.state == 0?"未发布":dataForm.state == 1?"已发布":dataForm.state == 2?"取消发布 ":""}}</span>
                         </el-form-item>
@@ -141,7 +141,7 @@
                 </div>
 
                 <div style="display:flex;padding:0">
-                    <div style="width:50%;"  v-if="row.fashionFlag == 0">
+                    <div style="width:50%;padding:0"  v-if="row.fashionFlag == 0">
                         <el-form-item label="背景图：" style="height: 100%!important;">
                             <template slot-scope="scope">
                                 <div class="goodsPropsWrap">
@@ -153,7 +153,7 @@
                         </el-form-item>
                         </el-form-item>
                     </div>
-                    <div style="width:50%;"  :class="row.fashionFlag==0?'borderLeftLine':''">
+                    <div style="width:50%;padding:0"  :class="row.fashionFlag==0?'borderLeftLine':''">
                          <el-form-item label="背景图：" style="height: 100%!important;">
                             <template slot-scope="scope">
                                 <div class="goodsPropsWrap">
@@ -167,19 +167,19 @@
                 </div>
                
                 <div style="display:flex;padding:0">
-                    <div style="width:50%;"  v-if="row.fashionFlag == 0">
+                    <div style="width:50%;padding:0"  v-if="row.fashionFlag == 0">
                          <el-form-item label="标题：" style="height: 100%!important;">
                             <span>{{dataForm.titleJp}}</span>
                         </el-form-item>
                     </div>
-                    <div style="width:50%;"  :class="row.fashionFlag==0?'borderLeftLine':''">
+                    <div style="width:50%;padding:0"  :class="row.fashionFlag==0?'borderLeftLine':''">
                         <el-form-item label="标题：" style="height: 100%!important;">
                             <span>{{dataForm.title}}</span>
                         </el-form-item>
                     </div>
                 </div>
                 <div style="display:flex;padding:0">
-                    <div style="width:50%;"  v-if="row.fashionFlag == 0">
+                    <div style="width:50%;padding:0"  v-if="row.fashionFlag == 0">
                         <el-form-item label="详情：" style="height: 100%!important;"  v-if="row.fashionFlag == 0">
                             <template slot-scope="scope">
                                 <div style="display:flex;padding:0;" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
@@ -202,7 +202,7 @@
                             </template>
                         </el-form-item>
                     </div>
-                    <div style="width:50%;"  :class="row.fashionFlag==0?'borderLeftLine':''">
+                    <div style="width:50%;padding:0"  :class="row.fashionFlag==0?'borderLeftLine':''">
                         <el-form-item label="详情：" style="height: 100%!important;">
                             <template slot-scope="scope">
                                 <div style="display:flex;padding:0" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i" >
@@ -227,9 +227,6 @@
                     </div>
                 </div>
             </el-form>
-            
-                            
-
         </el-col>
     </div>
 </template>
