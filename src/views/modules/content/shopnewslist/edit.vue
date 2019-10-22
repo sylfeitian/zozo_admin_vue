@@ -44,7 +44,7 @@
                             border
                             v-loading="dataListLoading"
                             class="inforRight"
-                            style="display:inline-block;width: 80%;"
+                            style="display:inline-block;width: 80%;padding:0;"
                     >
                         <el-table-column prop="id" label="商品ID" align="center"></el-table-column>
                         <el-table-column prop="name" label="商品名称" align="center"></el-table-column>
@@ -115,7 +115,7 @@
                             border
                             v-loading="dataListLoading"
                             class="inforRight"
-                            style="display:inline-block;width: 80%;"
+                            style="display:inline-block;width: 80%;padding:0;"
                     >
                         <el-table-column prop="id" label="商品ID" align="center"></el-table-column>
                         <el-table-column prop="name" label="商品名称" align="center"></el-table-column>

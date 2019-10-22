@@ -45,17 +45,16 @@
                         </div>
                     </template>
                 </el-form-item>
-                <el-form-item label="要点：" style="height: 100%!important;">
+                <el-form-item label="要点：" style="height: 100%!important;margin-top:10px;">
                     <span>{{dataForm.contentJp}}</span>
                 </el-form-item>
-                <div class="goods">
+                <div class="goods" style="margin-top:10px;">
                     <span class="inforTit" style="vertical-align:top;">关联商品：</span>
                     <el-table
                             width="100%"
                             :data="dataForm.itemList"
                             border
                             v-loading="dataListLoading"
-                            class="inforRight"
                             style="display:inline-block;width: 80%;"
                     >
                         <el-table-column prop="idJp" label="商品ID" align="center"></el-table-column>
@@ -133,17 +132,16 @@
                         </div>
                     </template>
                 </el-form-item>
-                <el-form-item label="要点：" style="height: 100%!important;">
+                <el-form-item label="要点：" style="height: 100%!important;margin-top:10px;">
                     <span>{{dataForm.content}}</span>
                 </el-form-item>
-                <div class="goods">
+                <div class="goods" style="margin-top:10px;">
                     <span class="inforTit" style="vertical-align:top;">关联商品：</span>
                     <el-table
                             width="100%"
                             :data="dataForm.itemList"
                             border
                             v-loading="dataListLoading"
-                            class="inforRight"
                             style="display:inline-block;width: 80%;"
                     >
                         <el-table-column prop="idJp" label="商品ID" align="center"></el-table-column>

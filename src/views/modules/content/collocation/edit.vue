@@ -54,7 +54,6 @@
                             :data="dataForm.itemList"
                             border
                             v-loading="dataListLoading"
-                            class="inforRight"
                             style="display:inline-block;width: 80%;"
                     >
                         <el-table-column prop="idJp" label="商品ID" align="center"></el-table-column>
@@ -134,14 +133,13 @@
                 <el-form-item label="要点：" style="height: 120px!important;">
                     <el-input v-model.trim="dataForm.content" type="textarea":rows="5" placeholder="请输入内容"></el-input>
                 </el-form-item>
-                <div class="goods">
+                <div class="goods" style="margin-bottom:50px;">
                     <span class="inforTit" style="vertical-align:top;">关联商品：</span>
                     <el-table
                             width="100%"
                             :data="dataForm.itemList"
                             border
                             v-loading="dataListLoading"
-                            class="inforRight"
                             style="display:inline-block;width: 80%;"
                     >
                         <el-table-column prop="idJp" label="商品ID" align="center"></el-table-column>
