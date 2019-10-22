@@ -51,7 +51,7 @@
             </template>
 		</el-table-column> -->
 		<el-table-column
-		    prop="id"
+		    prop="goodsIdJp"
 		    label="商品id"
             align="center"
 		    width="180">

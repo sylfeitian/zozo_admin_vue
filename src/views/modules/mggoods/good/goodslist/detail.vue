@@ -336,7 +336,10 @@
         border: 1px solid #ebeef5;
         height: 54px;
         line-height: 54px;
-        text-align: center
+        text-align: center;
+        white-space: nowrap;
+	    overflow: hidden;
+	    text-overflow: ellipsis;
     }
     .info {
         margin-left: 135px;

@@ -32,7 +32,7 @@
             </template>
 		</el-table-column>
         <el-table-column
-		    prop="goodsId"
+		    prop="goodsIdJp"
             align="center"
 		    label="商品id"
 		    width="180">
