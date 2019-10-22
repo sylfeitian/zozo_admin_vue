@@ -38,7 +38,7 @@
                 <el-form-item label="主图：" style="height: 100%!important;">
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
-                            <div class="goodsImg">
+                            <div class="goodsImg" style="margin-top:10px;">
                                 <img :src="dataForm.imageUrl320" alt=""/>
                             </div>
                         </div>
@@ -55,7 +55,7 @@
                             border
                             v-loading="dataListLoading"
                             class="inforRight"
-                            style="display:inline-block;width: 90%;"
+                            style="display:inline-block;width: 80%;"
                     >
                         <el-table-column prop="idJp" label="商品ID" align="center"></el-table-column>
                         <el-table-column prop="name" label="商品名称" align="center" width="100">
@@ -125,7 +125,7 @@
                 <el-form-item label="主图：" style="height: 100%!important;">
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
-                            <div class="goodsImg">
+                            <div class="goodsImg" style="margin-top:10px;">
                                 <img :src="dataForm.imageUrl320" alt=""/>
                             </div>
                         </div>
@@ -142,7 +142,7 @@
                             border
                             v-loading="dataListLoading"
                             class="inforRight"
-                            style="display:inline-block;width: 90%;"
+                            style="display:inline-block;width: 80%;"
                     >
                         <el-table-column prop="idJp" label="商品ID" align="center"></el-table-column>
                         <el-table-column prop="name" label="商品名称" align="center" width="100">
