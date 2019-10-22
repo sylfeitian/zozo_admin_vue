@@ -68,7 +68,7 @@
                     <div style="width:50%;"  v-if="row.fashionFlag == 0">
                         <p class="title" >日文</p>
                     </div>
-                    <div style="width:50%;"  :class="row.fashionFlag==0?'borderLeftLine':''">
+                    <div style="width:50%;"  :class="row.fashionFlag==0?'borderLeftLine':'positionLeft'"  :style="{'width':row.fashionFlag == 0?'50%':'100%'}">
                        <p class="title">中文</p>
                     </div>
                 </div>
@@ -146,7 +146,7 @@
                             <template slot-scope="scope">
                                 <div class="goodsPropsWrap">
                                     <div class="goodsImg">
-                                        <img :src="dataForm.mainImageUrl" alt=""/>
+                                        <img :src="dataForm.mainImageUrl | filterImgUrl" alt="" style="width:200px;"/>
                                     </div>
                                 </div>
                             </template>
@@ -158,7 +158,7 @@
                             <template slot-scope="scope">
                                 <div class="goodsPropsWrap">
                                     <div class="goodsImg">
-                                        <img :src="dataForm.mainImageUrl" alt=""/>
+                                        <img :src="dataForm.mainImageUrl | filterImgUrl" alt="" style="width:200px;"/>
                                     </div>
                                 </div>
                             </template>
@@ -303,5 +303,9 @@
     }
     .borderLeftLine{
         border-left:1px solid #e6e6e6;
+    }
+    .positionLeft {
+        margin-left: -252px!important;
+        width: 127%!important;
     }
 </style>
