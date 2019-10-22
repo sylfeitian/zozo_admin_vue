@@ -48,12 +48,12 @@
                             <span style="margin-left: 10px;color:#2260d2;cursor:pointer;" @click="delContent(i)">删除</span>
                         </div>
                         <div class="contentChild" v-if="content[i]&&v.typeId=='3'" v-loading="picloading">
-                            <img style="width:600px;" :src="$imgDomain+v.imageUrl" alt="" >
+                            <img style="width:600px;" :src="v.imageUrl | filterImgUrl" alt="" >
                             <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="delContent(i)">删除</span>
                         </div>
                         <div class="contentChild" v-if="content[i]&&v.typeId=='4'">
                             <div style="display: inline-block;">
-                                <img style="width:600px;margin-bottom: 10px;" :src="$imgDomain+v.imageUrl" alt="">
+                                <img style="width:600px;margin-bottom: 10px;" :src="v.imageUrl | filterImgUrl" alt="">
                                 <div>{{v.text}}</div>
                             </div>
                             <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="delContent(i)">删除</span>
