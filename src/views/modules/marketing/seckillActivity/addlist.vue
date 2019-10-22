@@ -11,11 +11,19 @@
                 <el-input v-model.trim="dataForm.name" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
             </el-form-item>
             <el-form-item label="选择分类：" prop="categoryId">
-                <el-cascader
+                <!-- <el-cascader
                         :show-all-levels="false"
-                        :options="categories"
+                        :options="selectCategoryOption"
                         clearable
-                        @change="handleChange"></el-cascader>
+                        @change="handleChange"></el-cascader> -->
+                <el-cascader
+                  :options="selectCategoryOption"
+                  v-model="classList"
+                  change-on-select
+                  :clearable="true"
+                  :props="props"
+                  @change="handleChange">
+            </el-cascader>
             </el-form-item>
             <el-form-item label="商品货号：" prop="id">
                 <el-input v-model.trim="dataForm.id" placeholder="请输入spu编号" clearable></el-input>
@@ -192,7 +200,7 @@
 import mixinViewModule from "@/mixins/view-module";
 import { businessPageUrl } from "@/api/url";
 import {
-  backScanCategorys,
+  getdatacategory,
   seckillProDet,
   seckillProSave,
   seckillProRemove,
@@ -252,7 +260,8 @@ export default {
         deleteURL: "/admin-api/store",
         deleteIsBatch: true
       },
-      categories: [], //选择分类集合
+      classList:[],
+      selectCategoryOption: [], //选择分类集合
       defaultImg:
         'this.src="' + require("../../../../assets/img/default.png") + '"', //默认图地址
       dataForm: {
@@ -279,6 +288,11 @@ export default {
       },
       limit: 10,
       page: 1,
+      props: {
+            label:'name',
+            value: 'id',
+            children:'list'
+      },
       dataRule: {
         number: [
           {
@@ -309,7 +323,7 @@ export default {
   },
   computed: {},
   created() {
-    this.getbackScanCategorys();
+    this.getDatacategoryFn();
     this.getData();
     // this.demo();
   },
@@ -395,52 +409,27 @@ export default {
       this.isLimit = row.cartLimit;
     },
     //获取商品分类集合
-    getbackScanCategorys() {
-        this.categories = [];
-      backScanCategorys().then(res => {
-      	console.log(res);
-        if (res.code == 200) {
-          res.data.map((v,i)=>{
-              if(v[0]){
-                  this.categories[i] = {
-                      value:v.id,
-                      label:v.name,
-                      children:[]
-                  };
-                  let list = this.categories[i].children;
-                  v.list.map((va,is)=>{
-                      if(va.list[0]){
-                          list[is] = {
-                              value:va.id,
-                              label:va.name,
-                              children:[]
-                          };
-                          let list1 = list[is].children;
-                          va.list.map((vs,ia)=>{
-                              list1[ia] = {
-                                  value:vs.id,
-                                  label:vs.name,
-                              };
-                          })
-                      }else{
-                          list[is] = {
-                              value:va.id,
-                              label:va.name,
-                          };
-                      }
-
-                  })
-              }else{
-                  this.categories[i] = {
-                      value:v.id,
-                      label:v.name,
-                  };
-              }
-          })
-        } else {
-          console.log("error");
-        }
-      });
+    getDatacategoryFn(){
+        //获取中国分类
+        getdatacategory().then((res)=>{
+            if(res.code == 200){
+                console.log(res);
+                this.selectCategoryOption = res.data;
+                this.selectCategoryOption.forEach((item,index)=>{
+                    // item.label = item.name
+                    // item.value = item.id
+                    item.list && item.list.forEach((item2,index2)=>{
+                        // item2.label = item2.name
+                        // item2.value = item2.id
+                        item2.list="";
+                    })
+                })
+            }else{
+                this.$message(res.msg);
+            }
+        }).catch(()=>{
+            this.$message("服务器错误");
+        })
     },
     // 获取数据
     getData(){
@@ -476,7 +465,8 @@ export default {
     //重置
     reset() {
       this.$refs["dataForm"].resetFields();
-      this.getbackScanCategorys();
+      this.dataForm.categoryId = ""
+      this.classList = ""
       this.page = 1;
       this.getDataList();
     },
@@ -593,8 +583,16 @@ export default {
     //   };
     // },
       handleChange(value) {
-          this.dataForm.categoryId = value[value.length-1]
-          console.log(this.dataForm.categoryId);
+          // this.dataForm.categoryId = value[value.length-1]
+          // console.log(this.dataForm.categoryId);
+
+            if(this.classList.length!=0){
+                  this.dataForm.categoryId = this.classList[this.classList.length-1]
+              }else{
+              this.dataForm.categoryId = "";//分类id
+
+              }
+              console.log(this.dataFormShow.categoryId)
       }
   }
 };
