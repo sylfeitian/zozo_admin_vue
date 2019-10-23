@@ -52,14 +52,13 @@
                             :data="dataForm.lookItems"
                             border
                             v-loading="dataListLoading"
-                            class="inforRight"
-                            style="display:inline-block;width: 80%;"
+                            style="display:inline-block;width: 80%;padding:0;"
                     >
                         <el-table-column prop="idJp" label="搭配ID" align="center"></el-table-column>
                         <el-table-column prop="imageUrl320" label="主图" align="center">
                             <template slot-scope="scope">
                                 <img
-                                        :src="scope.row.imageUrl320"
+                                        :src="scope.row.imageUrl320 | filterImgUrl"
                                         style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                                 >
                             </template>
@@ -125,14 +124,13 @@
                             :data="dataForm.lookItems"
                             border
                             v-loading="dataListLoading"
-                            class="inforRight"
-                            style="display:inline-block;width: 80%;"
+                            style="display:inline-block;width: 80%;padding:0;"
                     >
                         <el-table-column prop="idJp" label="搭配ID" align="center"></el-table-column>
                         <el-table-column prop="imageUrl320" label="主图" align="center">
                             <template slot-scope="scope">
                                 <img
-                                        :src="scope.row.imageUrl320"
+                                        :src="scope.row.imageUrl320 | filterImgUrl"
                                         style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                                 >
                             </template>
@@ -146,7 +144,7 @@
                 </div>
             </el-form>
         </el-col>
-        <div style="margin-left:20px;">
+        <div style="margin-left:20px;margin-bottom:50px;">
             <div>
                 <span style="margin-right: 10px;"><span style="color: #F56C6C;margin-right: 5px;">*</span>关联标签：</span>
                 <el-select :filter-method="getStyle" v-model="value" @change="saveList" filterable placeholder="请选择">

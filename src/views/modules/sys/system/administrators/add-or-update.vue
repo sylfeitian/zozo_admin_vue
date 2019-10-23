@@ -13,11 +13,11 @@
             <el-form-item prop="mobile" label="手机号：">
                 <el-input v-model.trim="dataForm.mobile" placeholder="请输入手机号" maxlength="11"></el-input>
             </el-form-item>
-            <el-form-item prop="password" label="密码：" :class="{ 'is-required': !pageId }">
+            <el-form-item v-if="!pageId" prop="password" label="密码：" :class="{ 'is-required': !pageId }">
                 <el-input v-model.trim="dataForm.password" type="password" placeholder="请输入6-12位的密码" minlength="6"
                           maxlength="12"></el-input>
             </el-form-item>
-            <el-form-item prop="confirmPasswd" label="确认密码：" :class="{ 'is-required': !pageId }">
+            <el-form-item  v-if="!pageId" prop="confirmPasswd" label="确认密码：" :class="{ 'is-required': !pageId }">
                 <el-input v-model.trim="dataForm.confirmPasswd" type="password" placeholder="请确认密码" minlength="6"
                           maxlength="12"></el-input>
             </el-form-item>
@@ -232,6 +232,8 @@
                         this.getInfo(id);
                     } else {
                         this.pageId = '';
+                        this.password = ""
+                        this.confirmPasswd = ""
                     }
                     this.getRoleList()
                     this.dataForm.roleIds = [{

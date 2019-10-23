@@ -1,7 +1,7 @@
 <template>
 <el-dialog
         class="model-add-edit-data"
-        :title="row.showWeb == 2 ?'上架': row.showWeb == 0 ?'上架': '下架' "
+        :title="type == 1 ?'上架': '下架' "
         :close-on-click-modal="false"
         :visible.sync="visible"
         :before-close="closeDialog"
@@ -13,13 +13,13 @@
             @keyup.enter.native="dataFormSubmit('addForm')"
             label-width="120px"
         >
-            <el-form-item label="下架：" prop="" v-if="row.showWeb == 1">
+            <el-form-item label="下架：" prop="" v-if="type == 0">
                 <el-radio-group v-model="dataForm.showType">
                     <el-radio :label="0">立即下架</el-radio>
                     <el-radio :label="1">定时下架</el-radio>
                 </el-radio-group>
             </el-form-item>
-            <el-form-item label="上架：" prop="" v-if="row.showWeb == 2 || row.showWeb == 0">
+            <el-form-item label="上架：" prop="" v-if="type == 1">
                 <el-radio-group v-model="dataForm.showType">
                     <el-radio :label="0">立即上架</el-radio>
                     <el-radio :label="1">定时上架</el-radio>
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-    import { showGoods } from '@/api/api'
+    import { showBatchGoods } from '@/api/api'
     // import {  } from '@/api/url'
     export default {
         name: "list",
@@ -67,35 +67,32 @@
                 dataForm: {
                     shelfTime: "",//选择时间
                     showType: 0,//0:立即，1：定时 ,
-                    showWeb: "",//1上级，2下架
+                    showWeb: ""
                 },
                 // showType: 0,//0:立即，1：定时 ,
                 optionsApplication: [],
                 optionsRight: [],
-                row:"",
                 formLabelWidth: '120px',
                 pickerOptions: {
                     disabledDate(time) {
                       return time.getTime() < Date.now() - 8.64e7;
                     }
                 },// 日期组件 设置项
-                shelfTime: '',
+                type:'',
+                dataListSelections:[],
             }
         },
         // props:["idJp"],
         methods: {
-            init (row) {
+            init (dataListSelections,type) {
                 this.visible = true;
+                this.type  = type;
+                this.dataListSelections  = dataListSelections;
                 this.dataForm.shelfTime = new Date();
-                this.dataForm.showType = 0
-                this.dataForm.showWeb = ""
+                this.dataForm.showType =0
+                this.dataForm.showWeb =""
                 this.$nextTick(() => {
-                    if(row){
-                        this.row = row;
-                        // console.log(this.dataForm)
-                        // this.backScan();
-                    }else{
-                    }
+                    
                 })
             },
             filterTime(value){
@@ -120,17 +117,20 @@
             dataFormSubmit(formName){
                 // alert([this.dataForm.name,this.dataForm.domainAddress]);
                 // console.log(this.dataForm);
-                 this.afterTime();
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        var ids = [];
+                        this.dataListSelections.forEach((item,index)=>{
+                            ids.push(item.id);
+                        })
                         var obj={
-                            id: this.row.id,
-                            showWeb:  this.row.showWeb == 1?2:1,//1上级，2下架
+                            ids: ids.join(","),
+                            showWeb: this.type == 1?1:2,//1上级，2下架
                             showType:this.dataForm.showType,//0:立即，1：定时 ,
                             shelfTime:this.dataForm.showType == 1?this.filterTime(this.dataForm.shelfTime):'',//选择时间
                         }
-                         this.saveLoading = true;
-                        showGoods(obj).then((res) => {
+                        this.saveLoading = true;
+                        showBatchGoods(obj).then((res) => {
                             this.saveLoading = false;
                             let msg = "";
                             // alert(JSON.stringify(res));

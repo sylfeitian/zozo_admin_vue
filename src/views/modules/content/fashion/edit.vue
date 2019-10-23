@@ -69,18 +69,18 @@
                     <div style="width:50%;">
                         <p class="title" >日文</p>
                     </div>
-                    <div style="width:50%">
+                    <div style="width:50%" :class="row.fashionFlag==0?'borderLeftLine':''" >
                        <p class="title">中文</p>
                     </div>
                 </div>
 
                 <div style="display:flex;padding:0">
-                    <div style="width:50%;">
+                    <div style="width:50%;padding:0">
                          <el-form-item label="纪实编号：" style="width:50%;">
                             <span>{{dataForm.idJp}}</span>
                         </el-form-item>
                     </div>
-                    <div style="width:50%">
+                    <div style="width:50%;padding:0" :class="row.fashionFlag==0?'borderLeftLine':''">
                         <el-form-item label="纪实编号：">
                             <span>{{dataForm.idJp}}</span>
                         </el-form-item>
@@ -88,12 +88,12 @@
                 </div>
 
                 <div style="display:flex;padding:0">
-                    <div style="width:50%;">
+                    <div style="width:50%;padding:0">
                         <el-form-item label="发布者：" style="width:50%;">
                             <span>{{dataForm.publisher}}</span>
                         </el-form-item>
                     </div>
-                    <div style="width:50%">
+                    <div style="width:50%;padding:0" :class="row.fashionFlag==0?'borderLeftLine':''">
                         <el-form-item label="发布者：" >
                             <span>{{dataForm.publisher}}</span>
                         </el-form-item>
@@ -101,12 +101,12 @@
                 </div>
 
                 <div style="display:flex;padding:0">
-                    <div style="width:50%;">
+                    <div style="width:50%;padding:0">
                         <el-form-item label="收藏数量：">
                             <span>{{dataForm.totalFavNum}}</span>
                         </el-form-item>
                     </div>
-                    <div style="width:50%">
+                    <div style="width:50%;padding:0" :class="row.fashionFlag==0?'borderLeftLine':''">
                         <el-form-item label="收藏数量：">
                             <span>{{dataForm.totalFavNum}}</span>
                         </el-form-item>
@@ -114,12 +114,12 @@
                 </div>
 
                 <div style="display:flex;padding:0">
-                    <div style="width:50%;">
+                    <div style="width:50%;padding:0">
                         <el-form-item label="浏览数量：">
                             <span>{{dataForm.viewsNum}}</span>
                         </el-form-item>
                     </div>
-                    <div style="width:50%">
+                    <div style="width:50%;padding:0" :class="row.fashionFlag==0?'borderLeftLine':''">
                         <el-form-item label="浏览数量：">
                             <span>{{dataForm.viewsNum}}</span>
                         </el-form-item>
@@ -127,12 +127,12 @@
                 </div>
 
                 <div style="display:flex;padding:0">
-                    <div style="width:50%;">
+                    <div style="width:50%;padding:0">
                         <el-form-item label="发布状态：">
                             <span>{{dataForm.isOpen == 1?"发布":dataForm.isOpen == 2?"未发布":""}}</span>
                         </el-form-item>
                     </div>
-                    <div style="width:50%">
+                    <div style="width:50%;padding:0" :class="row.fashionFlag==0?'borderLeftLine':''">
                          <el-form-item label="发布状态：">
                             <span>{{dataForm.state == 0?"未发布":dataForm.state == 1?"已发布":dataForm.state == 2?"取消发布 ":""}}</span>
                         </el-form-item>
@@ -140,7 +140,7 @@
                 </div>
 
                 <div style="display:flex;padding:0">
-                    <div style="width:50%;">
+                    <div style="width:50%;padding:0">
                         <el-form-item label="背景图：" style="height: 100%!important;">
                             <template slot-scope="scope">
                                 <div class="goodsPropsWrap">
@@ -151,7 +151,7 @@
                             </template>
                         </el-form-item>
                     </div>
-                    <div style="width:50%">
+                    <div style="width:50%;padding:0" :class="row.fashionFlag==0?'borderLeftLine':''">
                          <el-form-item label="背景图：" style="height: 100%!important;">
                             <template slot-scope="scope">
                                 <div class="goodsPropsWrap">
@@ -165,53 +165,63 @@
                 </div>
                
                 <div style="display:flex;padding:0">
-                    <div style="width:50%;">
+                    <div style="width:50%;padding:0">
                          <el-form-item label="标题：" style="height: 100%!important;">
                             <span>{{dataForm.titleJp}}</span>
                         </el-form-item>
                     </div>
-                    <div style="width:50%">
+                    <div style="width:50%;padding:0" :class="row.fashionFlag==0?'borderLeftLine':''">
                         <el-form-item label="标题：" style="height: 100%!important;">
                             <el-input v-model.trim="dataForm.title" type="text" placeholder="请输入标题名称"></el-input>
                         </el-form-item>
                     </div>
                 </div>
-
-                <el-form-item label="详情：" style="height: 100%!important;">
-                    <template slot-scope="scope">
-                        <br>
-                        <div style="display:flex;padding:0" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
-                            <div style="width:50%;" v-if="v.text || v.imageUrl"  v-show="row.fashionFlag == 0">
-                                <!-- <div style="height: 20px;"></div> -->
-                                <div class="contentChild" style="min-height:33px;padding-right: 6px;" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
-                                    {{v.text}}
-                                </div>
-                                <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
-                                    <div class="goodsPropsWrap" style="text-align: center;">
-                                        <div class="goodsImg">
-                                            <img :src="v.imageUrl" style="width:200px;" alt=""/>
+                <div style="display:flex;padding:0">
+                    <div style="width:50%;padding:0">
+                        <el-form-item label="详情：" style="height: 100%!important;">
+                            <template slot-scope="scope">
+                                <div style="display:flex;padding:0" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
+                                    <div v-if="v.text || v.imageUrl"  v-show="row.fashionFlag == 0" style="padding: 0;">
+                                        <!-- <div style="height: 20px;"></div> -->
+                                        <div class="contentChild" style="min-height:33px;padding-right: 6px;padding: 0;" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
+                                            {{v.text}}
                                         </div>
-                                        <div v-if="v.typeId=='4'">{{v.text}}</div>
+                                        <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
+                                            <div class="goodsPropsWrap" style="text-align: center;">
+                                                <div class="goodsImg" style="margin-left:60%;">
+                                                    <img :src="v.imageUrl" style="width:200px;" alt=""/>
+                                                </div>
+                                                <div v-if="v.typeId=='4'">{{v.text}}</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div style="width:50%"  v-if="v.text || v.imageUrl">
-                                <!-- <div style="height: 20px;"></div> -->
-                                <div class="contentChild"  style="min-height:33px;    padding-left: 6px;"  v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
-                                    <el-input style="width: 80%;margin: auto;" v-model="v.text" type="textarea" :rows="5" ></el-input>
-                                </div>
-                                <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
-                                    <div class="goodsPropsWrap" style="text-align: center;">
-                                        <div class="goodsImg">
-                                            <img :src="v.imageUrl" style="width:200px;" alt=""/>
+                            </template>
+                        </el-form-item>
+                    </div>
+                    <div style="width:50%;padding:0" :class="row.fashionFlag==0?'borderLeftLine':''">
+                        <el-form-item label="详情：" style="height: 100%!important;">
+                            <template slot-scope="scope">
+                                <div style="padding:0" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
+                                    <div  v-if="v.text || v.imageUrl" style="padding: 0;width:80%;margin-left:20%;">
+                                        <!-- <div style="height: 20px;"></div> -->
+                                        <div class="contentChild"  style="min-height:33px;"  v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
+                                            <el-input style="margin: auto;" v-model="v.text" type="textarea" :rows="5" ></el-input>
                                         </div>
-                                        <div v-if="v.typeId=='4'">{{v.text}}</div>
+                                        <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
+                                            <div class="goodsPropsWrap" style="text-align: center;">
+                                                <div class="goodsImg" style="margin-left:-60%;">
+                                                    <img :src="v.imageUrl" style="width:200px;" alt=""/>
+                                                </div>
+                                                <div v-if="v.typeId=='4'">{{v.text}}</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </template>
-                </el-form-item>
+                            </template>
+                        </el-form-item>
+                    </div>
+                </div>          
             </el-form>
         </el-col>
         <el-col :span="24">
@@ -351,5 +361,9 @@
     }
      .borderLeftLine{
         border-left:1px solid #e6e6e6;
+    }
+    /deep/ .contentChild p {
+        margin-top: 0;
+        text-align: left;
     }
 </style>

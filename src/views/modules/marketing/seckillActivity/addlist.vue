@@ -6,25 +6,32 @@
             ref="dataForm"
             class="grayLine topGapPadding"
             :model="dataForm"
-            @keyup.enter.native="getDataList()"
         >
-            <el-form-item label="商品名称：" prop="name">
+            <el-form-item label="商品名称：">
                 <el-input v-model.trim="dataForm.name" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
             </el-form-item>
-            <el-form-item label="选择分类：" prop="categoryId">
-                <el-cascader
+            <el-form-item label="选择分类：">
+                <!-- <el-cascader
                         :show-all-levels="false"
-                        :options="categories"
+                        :options="selectCategoryOption"
                         clearable
-                        @change="handleChange"></el-cascader>
+                        @change="handleChange"></el-cascader> -->
+                <el-cascader
+                  :options="selectCategoryOption"
+                  v-model="classList"
+                  change-on-select
+                  :clearable="true"
+                  :props="props"
+                  @change="handleChange">
+            </el-cascader>
             </el-form-item>
-            <el-form-item label="商品货号：" prop="id">
+            <el-form-item label="商品货号：">
                 <el-input v-model.trim="dataForm.id" placeholder="请输入spu编号" clearable></el-input>
             </el-form-item>
-            <el-form-item label="店铺名称：" prop="storeName">
+            <el-form-item label="店铺名称：">
                 <el-input v-model.trim="dataForm.storeName" placeholder="请输入店铺名称" clearable></el-input>
             </el-form-item>
-            <el-form-item label="品牌名称：" prop="brandName">
+            <el-form-item label="品牌名称：">
                 <el-input v-model.trim="dataForm.brandName" placeholder="请输入品牌名称" clearable></el-input>
             </el-form-item>
             <el-form-item>
@@ -48,7 +55,7 @@
                 {{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}
             </template>
             </el-table-column>-->
-            <el-table-column prop="id" label="商品id" width="180" align="center"></el-table-column>
+            <el-table-column prop="goodsIdJp" label="商品id" width="180" align="center"></el-table-column>
             <el-table-column prop="name" label="商品名称" align="center"></el-table-column>
             <el-table-column prop="sellPrice" label="销售价格" align="center"></el-table-column>
             <el-table-column prop="goodsTypeName" label="所属分类" align="center"></el-table-column>
@@ -72,7 +79,7 @@
                     <el-button
                         type="text"
                         size="small"
-                        v-if="scope.row.selfActivityState==1 && scope.row.activityState ==1"
+                        v-if="scope.row.activityState==0"
                         @click="editGoods(scope.row.id,'update')"
                     >修改</el-button>
                     <span
@@ -130,9 +137,10 @@
                     border=""
                     style="width: 100%"
                 >
-                    <el-table-column prop="id" label="skuID" width="180" align="center"></el-table-column>
-                    <el-table-column prop="specInfo" label="规格" width="180" align="center"></el-table-column>
-                    <el-table-column label="活动库存" width="220" align="center">
+                    <el-table-column prop="id" label="skuID" width="120" align="center"></el-table-column>
+                    <el-table-column prop="specInfo" label="规格" width="180" align="center">
+                    </el-table-column>
+                    <el-table-column label="活动库存" width="180" align="center">
                         <template slot-scope="scope">
                             <el-form-item
                                 class="specError"
@@ -150,7 +158,18 @@
                             </el-form-item>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="cartLimit" label="日本限购数量" width="120" align="center"></el-table-column>
+                    <el-table-column prop="cartLimit" label="日本限购数量" width="120" align="center">
+                        <template slot-scope="scope">
+                            <el-form-item
+                                    class="specError japane"
+                            >
+                                <el-input
+                                        v-model="scope.row.cartLimit"
+                                        type="text"
+                                ></el-input>
+                            </el-form-item>
+                        </template>
+                    </el-table-column>
                     <el-table-column label="每人限购" width="220" align="center">
                         <template slot-scope="scope">
                             <el-form-item
@@ -170,7 +189,7 @@
                             </el-form-item>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="address" label="操作" min-width="80" align="center">
+                    <el-table-column prop="address" label="操作" min-width="120" align="center">
                         <template slot-scope="scope">
                             <el-button
                                 type="text"
@@ -193,13 +212,13 @@
 import mixinViewModule from "@/mixins/view-module";
 import { businessPageUrl } from "@/api/url";
 import {
-  backScanCategorys,
-  addSckillPro,
+  getdatacategory,
   seckillProDet,
   seckillProSave,
   seckillProRemove,
   seckillProEdit
 } from "@/api/api";
+import { addSckillPro} from "@/api/url";
 import Bread from "@/components/bread";
 
 export default {
@@ -247,20 +266,22 @@ export default {
     return {
       mixinViewModuleOptions: {
         getDataListURL: addSckillPro,
-        getDataListIsPage: false,
+        activatedIsNeed: false, 
+        getDataListIsPage: true,
         exportURL: "/admin-api/store/export",
         deleteURL: "/admin-api/store",
         deleteIsBatch: true
       },
-      categories: [], //选择分类集合
+      classList:[],
+      selectCategoryOption: [], //选择分类集合
       defaultImg:
         'this.src="' + require("../../../../assets/img/default.png") + '"', //默认图地址
       dataForm: {
-        name: "",
-        id: "",
-        brandName: "",
-        categoryId: "",
-        storeName: ""
+        name: "",//商品名称
+        id: "",//商品货号
+        brandName: "",//品牌名称
+        categoryId: "",//分类id
+        storeName: "" //店铺名称
       },
       isLimit: "", //当前选中行的日本限制数量
       multipleSelection: [],
@@ -279,6 +300,11 @@ export default {
       },
       limit: 10,
       page: 1,
+      props: {
+            label:'name',
+            value: 'id',
+            children:'list'
+      },
       dataRule: {
         number: [
           {
@@ -309,9 +335,9 @@ export default {
   },
   computed: {},
   created() {
-    this.getbackScanCategorys();
-    this.getDataList();
-    this.demo();
+    this.getDatacategoryFn();
+    this.getData();
+    // this.demo();
   },
   methods: {
       watchkc(index,val){
@@ -395,74 +421,55 @@ export default {
       this.isLimit = row.cartLimit;
     },
     //获取商品分类集合
-    getbackScanCategorys() {
-        this.categories = [];
-      backScanCategorys().then(res => {
-      	console.log(res);
-        if (res.code == 200) {
-          res.data.map((v,i)=>{
-              if(v[0]){
-                  this.categories[i] = {
-                      value:v.id,
-                      label:v.name,
-                      children:[]
-                  };
-                  let list = this.categories[i].children;
-                  v.list.map((va,is)=>{
-                      if(va.list[0]){
-                          list[is] = {
-                              value:va.id,
-                              label:va.name,
-                              children:[]
-                          };
-                          let list1 = list[is].children;
-                          va.list.map((vs,ia)=>{
-                              list1[ia] = {
-                                  value:vs.id,
-                                  label:vs.name,
-                              };
-                          })
-                      }else{
-                          list[is] = {
-                              value:va.id,
-                              label:va.name,
-                          };
-                      }
-
-                  })
-              }else{
-                  this.categories[i] = {
-                      value:v.id,
-                      label:v.name,
-                  };
-              }
-          })
-        } else {
-          console.log("error");
-        }
-      });
+    getDatacategoryFn(){
+        //获取中国分类
+        getdatacategory().then((res)=>{
+            if(res.code == 200){
+                console.log(res);
+                this.selectCategoryOption = res.data;
+                this.selectCategoryOption.forEach((item,index)=>{
+                    // item.label = item.name
+                    // item.value = item.id
+                    item.list && item.list.forEach((item2,index2)=>{
+                        // item2.label = item2.name
+                        // item2.value = item2.id
+                        item2.list="";
+                    })
+                })
+            }else{
+                this.$message(res.msg);
+            }
+        }).catch(()=>{
+            this.$message("服务器错误");
+        })
+    },
+    // 获取数据
+    getData(){
+      this.page = 1;
+      this.mixinViewModuleOptions.getDataListURL  = addSckillPro+ "" + this.activityId;
+      this.getDataList();
     },
     //获取商品数据集合
-    getDataList() {
-      const params = {
-        limit: this.limit,
-        activityId: this.activityId,
-        page: this.page,
-        name: this.dataForm.name,
-        id: this.dataForm.id,
-        storeName: this.dataForm.storeName,
-        brandName: this.dataForm.brandName,
-        categoryId: this.dataForm.categoryId
-      };
-      addSckillPro(params).then(res => {
-        if (res.code == 200) {
-          this.dataList = res.data.list;
-          this.total = res.data.total;
-        } else {
-          console.log("error");
-        }
-      });
-    },
+    // getDataList() {
+    //   const params = {
+    //     limit: this.limit,
+    //     activityId: this.activityId,
+    //     page: this.page,
+    //     name: this.dataForm.name,
+    //     id: this.dataForm.id,
+    //     storeName: this.dataForm.storeName,
+    //     brandName: this.dataForm.brandName,
+    //     categoryId: this.dataForm.categoryId
+    //   };
+    //   addSckillPro(params).then(res => {
+    //     if (res.code == 200) {
+    //       this.dataList = res.data.list;
+    //       this.total = res.data.total;
+    //     } else {
+    //       console.log("error");
+    //     }
+    //   });
+    // },
     //回调跳转查看商品页面
     showDetail(id) {
       this.$emit("detailistFun", id);
@@ -470,7 +477,8 @@ export default {
     //重置
     reset() {
       this.$refs["dataForm"].resetFields();
-      this.getbackScanCategorys();
+      this.dataForm.categoryId = ""
+      this.classList = []
       this.page = 1;
       this.getDataList();
     },
@@ -576,27 +584,40 @@ export default {
       });
     },
 
-    demo() {
-      function placeholderPic() {
-        var w = document.documentElement.offsetWidth;
-        document.documentElement.style.fontSize = w / 20 + "px";
-      }
-      placeholderPic();
-      window.onresize = function() {
-        placeholderPic();
-      };
-    },
+    // demo() {
+    //   function placeholderPic() {
+    //     var w = document.documentElement.offsetWidth;
+    //     document.documentElement.style.fontSize = w / 20 + "px";
+    //   }
+    //   placeholderPic();
+    //   window.onresize = function() {
+    //     placeholderPic();
+    //   };
+    // },
       handleChange(value) {
-          this.dataForm.categoryId = value[value.length-1]
-          console.log(this.dataForm.categoryId);
+          // this.dataForm.categoryId = value[value.length-1]
+          // console.log(this.dataForm.categoryId);
+
+            if(this.classList.length!=0){
+                  this.dataForm.categoryId = this.classList[this.classList.length-1]
+              }else{
+              this.dataForm.categoryId = "";//分类id
+
+              }
       }
   }
 };
 </script>
 <style lang="scss" scoped>
+    .japane{
+        /deep/.el-input {
+            width: 100px !important;
+            height: 40px;
+        }
+    }
 .addListGoodsPages {
   /deep/.el-input {
-    width: 170px;
+    width: 150px;
     height: 40px;
   }
   .editDialog {

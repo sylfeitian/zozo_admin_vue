@@ -44,14 +44,14 @@
                             border
                             v-loading="dataListLoading"
                             class="inforRight"
-                            style="display:inline-block;width: 80%;"
+                            style="display:inline-block;width: 80%;padding:0;"
                     >
                         <el-table-column prop="id" label="商品ID" align="center"></el-table-column>
                         <el-table-column prop="name" label="商品名称" align="center"></el-table-column>
                         <el-table-column prop="imageUrl" label="图片" align="center">
                             <template slot-scope="scope">
                                 <img
-                                        :src="scope.row.imageUrl"
+                                        :src="scope.row.imageUrl | filterImgUrl"
                                         alt=""
                                         style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                                 >
@@ -115,14 +115,14 @@
                             border
                             v-loading="dataListLoading"
                             class="inforRight"
-                            style="display:inline-block;width: 80%;"
+                            style="display:inline-block;width: 80%;padding:0;"
                     >
                         <el-table-column prop="id" label="商品ID" align="center"></el-table-column>
                         <el-table-column prop="name" label="商品名称" align="center"></el-table-column>
                         <el-table-column prop="imageUrl" label="图片" align="center">
                             <template slot-scope="scope">
                                 <img
-                                        :src="scope.row.imageUrl"
+                                        :src="scope.row.imageUrl | filterImgUrl"
                                         alt=""
                                         style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                                 >

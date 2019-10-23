@@ -39,24 +39,23 @@
                 <el-form-item label="主图：" style="height: 100%!important;">
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
-                            <div class="goodsImg">
+                            <div class="goodsImg" style="margin-top:10px;">
                                 <img :src="dataForm.imageUrl320" alt=""/>
                             </div>
                         </div>
                     </template>
                 </el-form-item>
-                <el-form-item label="要点：" style="height: 100%!important;">
+                <el-form-item label="要点：" style="height: 100%!important;margin-top:10px;">
                     <span>{{dataForm.contentJp}}</span>
                 </el-form-item>
-                <div class="goods">
+                <div class="goods" style="margin-top:10px;">
                     <span class="inforTit" style="vertical-align:top;">关联商品：</span>
                     <el-table
                             width="100%"
                             :data="dataForm.itemList"
                             border
                             v-loading="dataListLoading"
-                            class="inforRight"
-                            style="display:inline-block;width: 90%;"
+                            style="display:inline-block;width: 80%;"
                     >
                         <el-table-column prop="idJp" label="商品ID" align="center"></el-table-column>
                         <el-table-column prop="name" label="商品名称" align="center" width="100">
@@ -69,7 +68,7 @@
                         <el-table-column prop="itemsImageUrl" label="图片" align="center">
                             <template slot-scope="scope">
                                 <img
-                                        :src="scope.row.itemsImageUrl"
+                                        :src="scope.row.itemsImageUrl | filterImgUrl"
                                         style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                                 >
                             </template>
@@ -127,24 +126,23 @@
                 <el-form-item label="主图：" style="height: 100%!important;">
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
-                            <div class="goodsImg">
+                            <div class="goodsImg" style="margin-top:10px;">
                                 <img :src="dataForm.imageUrl320" alt=""/>
                             </div>
                         </div>
                     </template>
                 </el-form-item>
-                <el-form-item label="要点：" style="height: 100%!important;">
+                <el-form-item label="要点：" style="height: 100%!important;margin-top:10px;">
                     <span>{{dataForm.content}}</span>
                 </el-form-item>
-                <div class="goods">
+                <div class="goods" style="margin-top:10px;">
                     <span class="inforTit" style="vertical-align:top;">关联商品：</span>
                     <el-table
                             width="100%"
                             :data="dataForm.itemList"
                             border
                             v-loading="dataListLoading"
-                            class="inforRight"
-                            style="display:inline-block;width: 90%;"
+                            style="display:inline-block;width: 80%;"
                     >
                         <el-table-column prop="idJp" label="商品ID" align="center"></el-table-column>
                         <el-table-column prop="name" label="商品名称" align="center" width="100">
@@ -157,7 +155,7 @@
                         <el-table-column prop="itemsImageUrl" label="图片" align="center">
                             <template slot-scope="scope">
                                 <img
-                                        :src="scope.row.itemsImageUrl"
+                                        :src="scope.row.itemsImageUrl | filterImgUrl"
                                         style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                                 >
                             </template>

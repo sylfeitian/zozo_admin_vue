@@ -1,9 +1,9 @@
 <template>
   <div>
     <Bread :breaddata="breaddata"></Bread>
-    <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
+    <el-form :inline="true" class="grayLine topGapPadding" ref="dataForm" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="活动标题：">
-            <el-input v-model.trim="dataForm.title" placeholder="请输入优惠券名称" clearable></el-input>
+            <el-input v-model.trim="dataForm.title" placeholder="请输入活动标题" clearable></el-input>
         </el-form-item>
         <el-form-item  label="活动状态：">
             <el-select v-model="dataForm.state" clearable  placeholder="请选择">
@@ -41,7 +41,7 @@
         
         <el-form-item>
             <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>
-            <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
+            <el-button class="btn"  type="primary" plain @click="reset('dataForm')" plain>重置</el-button>
         </el-form-item>
         <br />
         <el-form-item>
@@ -69,6 +69,11 @@
 		    label="活动标题"
             align="center"
 		    width="180">
+            <template slot-scope="scope">
+                <div :title="scope.row.title">
+                    {{scope.row.title}}
+                </div>
+            </template>
 		</el-table-column>
         <el-table-column
 		    prop=""
@@ -82,6 +87,11 @@
 		    prop="startTime"
             align="center"
 		    label="活动时间">
+            <template slot-scope="scope">
+                <div :title="scope.row.startTime+'至'+scope.row.endTime">
+                    {{scope.row.startTime+'至'+scope.row.endTime}}
+                </div>
+            </template>
 		</el-table-column>
 		<el-table-column
             align="center"
@@ -112,7 +122,7 @@
                 <el-button v-if="scope.row.state ==0" type="text" size="small" @click="addActivity(scope.row)">编辑</el-button>
 		    	<el-button v-if="scope.row.state ==1"   class="artdanger" type="text" size="small" @click="showStopModel(scope.row)">停止</el-button>
 		    	<el-button  type="text" size="small" @click="showDetail(scope.row)">查看</el-button>
-		    	<el-button   v-if="scope.row.state ==0" class="artdanger" type="text" size="small"   @click="deleteHandleLocal(scope.row)">删除</el-button>
+		    	<el-button   v-if="scope.row.state ==0&& scope.row.auditState !==0 " class="artdanger" type="text" size="small"   @click="deleteHandleLocal(scope.row)">删除</el-button>
 		    </template>
 	  	</el-table-column>
 	</el-table>
@@ -237,8 +247,14 @@
                 this.deleteHandle(row.id);
             },
             //重置
-            reset() {
-                this.dataForm = {};
+            reset(formName) {
+                this.dataForm.title = ""
+                this.dataForm.auditState = ''
+                this.dataForm.state = ''
+                this.valuetime = [];
+                this.dataForm.startTime = "";
+                this.dataForm.endtime = "";
+                this.$refs[formName].resetFields();
                 this.getDataList();
             },
             //打开新增编辑活动弹框
@@ -289,6 +305,12 @@
     .el-input {
         width: 300px;
     }
+}
+/deep/ .cell{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
 }
 
 </style>

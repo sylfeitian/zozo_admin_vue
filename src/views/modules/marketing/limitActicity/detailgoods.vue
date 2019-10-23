@@ -5,7 +5,7 @@
         <el-form-item style="float: right;">
             <el-button @click="deleteRow()">批量删除</el-button>
             <el-button type="primary" @click="saveSort">保存排序</el-button>
-            <el-button type="primary" @click="addGoods()">添加商品</el-button>
+            <el-button type="primary" @click="addGoods()" v-if="row.auditState!=1 && row.state ==0">添加商品</el-button>
             <!-- <el-button type="primary"   @click="lookShow('asassasasasasa')">修改</el-button> -->
         </el-form-item>
     </el-form>
@@ -32,7 +32,7 @@
             </template>
 		</el-table-column>
         <el-table-column
-		    prop="goodsId"
+		    prop="goodsIdJp"
             align="center"
 		    label="商品id"
 		    width="180">
@@ -131,6 +131,7 @@
                 breaddata: ["营销管理", "限量活动","查看商品"],
                 buttonStatus:false,
                 moneyNum:99.9,
+                row:'',
             }
         },
         created(){

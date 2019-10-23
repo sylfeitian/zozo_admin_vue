@@ -6,7 +6,7 @@
                 <el-input v-model.trim="dataForm.idJp" maxlength="30" placeholder="请输入编号"></el-input>
             </el-form-item>
             <el-form-item label="标题：">
-                <el-input v-model.trim="dataForm.title" placeholder="请输入标题"></el-input>
+                <el-input v-model.trim="dataForm.titleOrJp" placeholder="请输入标题"></el-input>
             </el-form-item>
             <el-form-item label="用户：">
                 <el-input v-model.trim="dataForm.userNickname" placeholder="请输入用户昵称"></el-input>
@@ -53,7 +53,7 @@
         >
             <el-table-column type="selection" width="70"></el-table-column>
             <el-table-column prop="idJp" label="ID" align="center"></el-table-column>
-            <el-table-column prop="imageUrl" label="封面图片" width="100" align="center">
+            <el-table-column prop="imageUrl" label="封面图片" width="100" min-width="100" align="center" :resizable="false">
                 <template slot-scope="scope">
                     <img
                         :src="scope.row.imageUrl"
@@ -74,28 +74,34 @@
             </el-table-column>
             <el-table-column prop="userNickname" label="用户" align="center"></el-table-column>
             <el-table-column prop="lookCount" width="80" label="搭配数量" align="center"></el-table-column>
-            <el-table-column prop="sate" width="120" label="发布状态" align="center">
+            <el-table-column prop="sate" width="120" min-width="120" label="发布状态" align="center" :resizable="false">
                 <template slot-scope="scope">
                     <el-tag v-if="scope.row.sate == 1" type="success">已发布</el-tag>
                     <el-tag v-if="scope.row.sate == 2" type="info">取消发布</el-tag>
                     <el-tag v-if="scope.row.sate == 0" type="info">待发布</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column width="120" prop="jpPublishState"  label="日本发布状态" align="center">
+            <el-table-column width="120" min-width="120" prop="jpPublishState"  label="日本发布状态" align="center" :resizable="false">
                 <template slot-scope="scope">
                     <el-tag v-if="scope.row.jpPublishState == 1" type="success">已发布</el-tag>
                     <el-tag v-if="scope.row.jpPublishState == 0" type="info">取消发布</el-tag>
                 </template>
             </el-table-column>
             <el-table-column prop="publishTimeJp" label="日本发布时间" align="center"></el-table-column>
-            <el-table-column prop="publishTime" label="发布时间" align="center"></el-table-column>
+            <el-table-column prop="publishTime" label="发布时间" align="center">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.sate == 1">{{scope.row.publishTime}}</span>
+                    <span v-else>/</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="styles" label="风格标签" align="center">
                 <template slot-scope="scope">
-                    <span v-for="(v,index) in scope.row.styles" :key="index">{{index==0?v.name:"、"+v.name}}</span>
+                    <span v-if="scope.row.styles.length != 0" v-for="(v,index) in scope.row.styles" :key="index">{{index==0?v.name:"、"+v.name}}</span>
+                    <span v-if="scope.row.styles.length == 0">/</span>
                 </template>
             </el-table-column>
             <el-table-column prop="totalViewsNum" label="浏览量" align="center"></el-table-column>
-            <el-table-column label="操作" width="150" align="center">
+            <el-table-column label="操作" width="170" align="center">
                 <template slot-scope="scope">
                     <el-button @click.native.prevent="showDetail(scope.row)" type="text" size="mini">查看</el-button>
                     <el-button @click.native.prevent="addOrAdit(scope.row)" type="text" size="mini">编辑</el-button>
@@ -188,7 +194,7 @@
                 breaddata: [ "内容管理","搭配集合管理"],
                 dataForm: {
                 	idJp:null,
-                	title:null,
+                	titleOrJp:null,
                 	userNickname:null,
                 	sate:null,
                 	publishStartTime:null,
@@ -350,7 +356,7 @@
                 this.timeArr = [];
                 this.timeArr2 = [];
                 this.dataForm.idJp = "";
-                this.dataForm.title = "";
+                this.dataForm.titleOrJp = "";
                 this.dataForm.userNickname = "";
                 this.dataForm.sate = "";
                 this.dataForm.publishStartTimeJp = "";
@@ -379,7 +385,7 @@
                 this.currentIndex = index;
                 var obj = {
                     "id": row.id,
-                    "operating":row.sate==1?2:1  //
+                    "operating":row.sate==1?2:1  //1发布   2取消发布
                 }
                 var msg = ""
                 row.sate==1?msg="取消":msg=""
@@ -414,7 +420,7 @@
                 var ids = this.getIds(type);
                 if(ids[0]){var obj = {
                     ids:ids,
-                    operating:type==1?2:1,
+                    operating:type==1?2:1,//1发布   2取消发布
                 }
                     var msg = ""
                     type==1?msg="取消发布":msg="发布"
@@ -491,5 +497,11 @@
             display: flex;
             align-items: center;
         }
+    }
+    /deep/ .el-table .cell{
+        display: -webkit-box!important;
+        -webkit-box-orient: vertical!important;
+        -webkit-line-clamp: 2!important;
+        overflow: hidden!important;
     }
 </style>

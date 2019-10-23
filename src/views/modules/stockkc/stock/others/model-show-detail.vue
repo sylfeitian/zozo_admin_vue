@@ -124,7 +124,9 @@
 			init(row){
 				console.log(row);
 		      	this.visible = true;
-				this.title="查看详情";
+                this.title="查看详情";
+                this.dataForm.goodsName =""
+                this.dataForm.goodCsId =""
 				this.$nextTick(()=>{
 					this.getData(row);
 				})

@@ -50,6 +50,7 @@
 		methods:{
 			init (row) {
 				this.visible = true;
+				console.log(row)
 				this.row = row;
 			},
 			// 提交

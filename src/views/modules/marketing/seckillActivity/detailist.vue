@@ -17,7 +17,7 @@
                 style="width: 100%"
             >
                 <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
-                <el-table-column prop="activityId" label="商品id" width="180" align="center"></el-table-column>
+                <el-table-column prop="goodsIdJp" label="商品id" width="180" align="center"></el-table-column>
                 <el-table-column prop="sort" label="排序" align="center">
                     <template slot-scope="scope">
                         <el-form-item prop="sort">
