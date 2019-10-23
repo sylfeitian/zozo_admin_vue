@@ -88,7 +88,7 @@
                 <el-button  @click="dataFormSubmit(0)">保存</el-button>
                 <el-button type="primary" @click="dataFormSubmit(1)">保存并发布</el-button>
             </el-form-item>
-            <el-dialog title="添加商品" :before-close="res" :visible.sync="dialogTableVisible">
+            <el-dialog title="添加商品" :before-close="res" :visible.sync="dialogTableVisible" width="60%">
                 <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
                     <el-form-item label="商品名称/货号：">
                         <el-input v-model.trim="dataForm.params"  placeholder="请输入" ></el-input>
