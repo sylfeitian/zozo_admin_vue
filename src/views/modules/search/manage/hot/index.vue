@@ -70,7 +70,7 @@
                     deleteIsBatch: true,
                     // deleteIsBatchKey: 'id'
                 },
-                breaddata: [ "搜索管理", "同义词管理"],
+                breaddata: [ "搜索管理", "热门搜索"],
                 dataFormShow: {
                     hotKeyword: "",//关键字搜索
                 },
