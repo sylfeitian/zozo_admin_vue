@@ -54,7 +54,7 @@
         >
             <el-table-column type="selection" width="70"></el-table-column>
             <el-table-column prop="idJp" label="ID" align="center"></el-table-column>
-            <el-table-column prop="mainImageUrl " label="封面图片" align="center">
+            <el-table-column prop="mainImageUrl " label="封面图片" align="center" :resizable="false">
                 <template slot-scope="scope">
                     <img
                             :src="scope.row.mainImageUrl | filterImgUrl"
@@ -80,14 +80,14 @@
                     <!--<span v-else-if="scope.row.publisher">{{scope.row.publisher}}</span>-->
                 </template>
             </el-table-column>
-            <el-table-column prop="state" label="发布状态" align="center">
+            <el-table-column prop="state" label="发布状态" align="center" :resizable="false">
                 <template slot-scope="scope">
                     <el-tag v-if="scope.row.state == 1" type="success">已发布</el-tag>
                     <el-tag v-else-if="scope.row.state == 0" type="info">待发布</el-tag>
                     <el-tag v-else type="info">取消发布</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column prop="isOpen" label="日本发布状态" align="center">
+            <el-table-column prop="isOpen" label="日本发布状态" align="center" :resizable="false">
                 <template slot-scope="scope" >
                     <div v-if="scope.row.fashionFlag == 0">
                         <el-tag v-if="scope.row.isOpen == 1" type="success">已发布</el-tag>
