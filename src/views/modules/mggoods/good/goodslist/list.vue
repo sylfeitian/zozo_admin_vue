@@ -129,7 +129,7 @@
           >{{scope.row.idJp}}</div>
         </template>
       </el-table-column>
-      <el-table-column label="主图" prop="imageUrl" align="center" width="160" min-width="160">
+      <el-table-column label="主图" prop="imageUrl" align="center" width="160" min-width="160" :resizable="false">
         <template slot-scope="scope">
           <img
             :src="scope.row.mainImageUrl | filterImgUrl"
@@ -175,7 +175,7 @@
           <div>{{scope.row.storeName}}</div>
         </template>
       </el-table-column>
-      <el-table-column label="状态" align="center" min-width="100" width="100">
+      <el-table-column label="状态" align="center" min-width="100" width="100" :resizable="false">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.showWeb==0" type="info">待上架</el-tag>
           <el-tag v-if="scope.row.showWeb==1" type="success">已上架</el-tag>
@@ -246,10 +246,10 @@
         <el-button
           class="btn"
           type="success"
-          @click="cotrolGoodsShow('batch',1)"
+          @click="lowerBatchShelf(1)"
           style="margin-left: 20px;"
         >批量上架</el-button>
-        <el-button class="btn" type="success" @click="cotrolGoodsShow('batch',0)">批量下架</el-button>
+        <el-button class="btn" type="success" @click="lowerBatchShelf(0)">批量下架</el-button>
       </div>
       <!-- 分页 -->
       <el-pagination
@@ -263,6 +263,8 @@
       ></el-pagination>
     </div>
     <modelLowerShelf v-if="modelLowerShelfVisible" ref="modelLowerShelfCompon" @searchDataList="getDataList"></modelLowerShelf>
+    <modelLowerBatchShelf v-if="modelLowerBatchShelfVisible" ref="modelLowerBatchShelfCompon" @searchDataList="getDataList"></modelLowerBatchShelf>
+    
   </div>
 </template>
 
@@ -272,6 +274,7 @@ import Bread from "@/components/bread";
 import detail from "./detail";
 import { goodsUrl } from "@/api/url";
 import modelLowerShelf from "./model-lower-shelf.vue";
+import modelLowerBatchShelf from "./model-lower-batch-shelf.vue";
 import {
   showBatchGoods,
   showGoods,
@@ -342,13 +345,15 @@ export default {
       selectStoreOption: [],
       selectCategoryOption: [],
       selectBrandOption: [],
-      modelLowerShelfVisible : false
+      modelLowerShelfVisible : false,
+      modelLowerBatchShelfVisible:false,
     };
   },
   components: {
     Bread,
     detail,
-    modelLowerShelf
+    modelLowerShelf,
+    modelLowerBatchShelf
   },
   watch: {
     // ID类搜索框仅可输入数字、英文，最多可输入30个字符
@@ -526,6 +531,17 @@ export default {
       this.modelLowerShelfVisible =  true;
         this.$nextTick(() => {
             this.$refs.modelLowerShelfCompon.init(row)
+        })
+    },
+    // 批量上下架
+    lowerBatchShelf (type) {
+      if(this.multipleSelection.length==0){
+        this.$message.warning("请选择商品!")
+        return;
+      }
+      this.modelLowerBatchShelfVisible =  true;
+        this.$nextTick(() => {
+            this.$refs.modelLowerBatchShelfCompon.init(this.multipleSelection,type)
         })
     },
     // 控制上下架

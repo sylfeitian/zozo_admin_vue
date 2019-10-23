@@ -32,7 +32,7 @@
         </el-form>
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" >
             <el-form-item prop="skuId" label="skuID：">
-                <el-input v-model.trim="dataFormShow.skuId" placeholder="请输入编号" maxlength="30"></el-input>
+                <el-input v-model.trim="dataFormShow.skuID" placeholder="请输入编号" maxlength="30"></el-input>
             </el-form-item>
             <el-form-item prop="goodsName" label="商品名称：">
                 <el-input v-model.trim="dataFormShow.goodsName" placeholder="请输入内容"></el-input>

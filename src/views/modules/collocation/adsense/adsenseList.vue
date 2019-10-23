@@ -142,10 +142,11 @@
                 <el-input v-model.trim="activiDataForm.name" placeholder="请输入30字以内的名称"></el-input>
             </el-form-item>
             <el-form-item label="排序：">
-                <el-input v-model.trim="activiDataForm.sort" placeholder="数字越大排序越靠前" maxlength="6"></el-input>
+            	 <el-input-number v-model.trim="activiDataForm.sort" placeholder="数字越大排序越靠前"  :min="1" :max="99999" label="数字越大排序越靠前"></el-input-number>
             </el-form-item>
             <el-form-item label="上传轮播图：" prop="fileList" class="imgConfig">
                 <el-upload
+                    v-loading="updateloading"
                     class="avatar-uploader"
                     action="3232"
                     :http-request="upLoad"
@@ -382,6 +383,7 @@
                     {id:'11',name:'搭配集合'},
                 ],
                 breaddata: ["配置管理", "广告位配置"],
+                updateloading: false
             }
         },
         computed:{
@@ -526,11 +528,13 @@
                 //第一种
                 let base64code = '';
                 let reader = new FileReader()
+                this.updateloading = true;
 						    reader.readAsDataURL(file.file)
 						    reader.onload  = function(event){
 						    	console.log(this.result)
 						    	base64code = this.result;
 						    	uploadPicBase64({"imgStr": base64code}).then(res =>{
+                                    that.updateloading = false;
 	                    console.log(res)
 	                    if(res.code == 200){
 	                        that.activiDataForm.fileList = [{name: '文件',url:that.$imgDomain + res.data.url}]

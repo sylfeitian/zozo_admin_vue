@@ -251,7 +251,7 @@
                                 "addressIds": addressIds,//逗号隔开 （地址省市县） ,
                                 "address": this.dataForm.address,//地址街道等信息 ,
                                 "remark": this.dataForm.remark,//封禁原因 ,
-                                "type": 0,// 类型:0:账户，1：地址
+                                "type": this.dataForm.type ,// 类型:0:账户，1：地址
                                 //  "id": 0,//主键 ,
                                 //  "createDateEnd": "string",//封禁时间 ,
                                 // "createDateStart": "string",// 封禁时间 ,

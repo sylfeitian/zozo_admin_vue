@@ -6,7 +6,7 @@
                 <el-input v-model.trim="dataForm.idJp" maxlength="30" placeholder="请输入编号"></el-input>
             </el-form-item>
             <el-form-item label="标题：">
-                <el-input v-model.trim="dataForm.title" placeholder="请输入标题"></el-input>
+                <el-input v-model.trim="dataForm.titleOrJp" placeholder="请输入标题"></el-input>
             </el-form-item>
             <el-form-item label="店铺：">
                 <el-input v-model.trim="dataForm.storeName" placeholder="请输入店铺名称"></el-input>
@@ -15,7 +15,8 @@
                 <el-date-picker
                         v-model="timeArr"
                         type="daterange"
-                        value-format="yyyy-MM-dd"
+                        value-format="yyyy-MM-dd HH:mm"
+                        :default-time="['00:00:00', '23:59:59']"
                         align="left"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
@@ -105,9 +106,10 @@
             </el-table-column>
             <el-table-column prop="publishTime" label="发布时间" align="center">
                 <template slot-scope="scope">
-                    <div :title="scope.row.publishTime">
+                    <div :title="scope.row.publishTime" v-if="scope.row.showWeb == 1">
                         {{scope.row.publishTime}}
                     </div>
+                    <span v-else>/</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center" width="180">
@@ -168,7 +170,7 @@
                 breaddata: [ "内容管理", "店铺新闻管理"],
                 dataForm: {
                     idJp:'',//编号
-                    title:'',//标题
+                    titleOrJp:'',//标题
                     storeName:'',//店铺名称
                 },
                 selectVal:"",

@@ -40,13 +40,13 @@
         width="40%">
         <el-form :model="activiDataForm" :rules="dataRule" ref="activiDataForm" @keyup.enter.native="subActivity()"  label-width="120px">
             <el-form-item label="活动标题：" prop="title">
-                <el-input v-model.trim="activiDataForm.title" placeholder="请输入50字以内的标题" :maxlength="50" show-word-limit></el-input>
+                <el-input v-model.trim="activiDataForm.title" placeholder="请输入活动标题"></el-input>
             </el-form-item>
             <el-form-item label="满减规则：" :prop="ruleName">
                 单笔订单满
-                 <el-input-number style="width:120px" @blur="bluerule1" v-model="activiDataForm.rule1"  :precision="2" :step="1" :min="0" :max="999999" controls-position="right"></el-input-number>
+                 <el-input style="width:120px" @blur="bluerule1" v-model="activiDataForm.rule1" controls-position="right"></el-input>
                 元立减
-                <el-input-number style="width:120px" v-model="activiDataForm.rule2" @blur="bluerule2"  :precision="0" :step="1" :max="999999" :min="0" controls-position="right"></el-input-number>
+                <el-input style="width:120px" v-model="activiDataForm.rule2" @blur="bluerule2" controls-position="right"></el-input>
                 元
             </el-form-item>
             <el-form-item label="开始时间：" prop="startTime">
@@ -54,6 +54,7 @@
                     v-model="activiDataForm.startTime"
                     type="datetime"
                     value-format="yyyy-MM-dd HH:mm:ss"
+                    :picker-options="pickerOptions"
                     placeholder="选择开始时间">
                 </el-date-picker>
             </el-form-item>
@@ -62,6 +63,7 @@
                     v-model="activiDataForm.endTime"
                     type="datetime"
                     value-format="yyyy-MM-dd HH:mm:ss"
+                    :picker-options="pickerOptions"
                     placeholder="选择结束时间">
                 </el-date-picker>
             </el-form-item>
@@ -145,10 +147,54 @@
                     rule2: '',
                 },
                 checkList:false,
-                ruleName:'rule1'
+                ruleName:'rule1',
+                pickerOptions: {
+                    disabledDate(time) {
+                     return time.getTime() < Date.now() - 8.64e7;
+                    }
+                },// 日期组件 设置项
             }
         },
         components:{
+        },
+        watch:{
+            'activiDataForm.title':function(newV,oldV) {
+                var chineseCount = 0,characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 100) { //输入字符大于100的时候过滤
+                        this.activiDataForm.title = newV.substr(0,(chineseCount/2+characterCount)-1)
+                    }
+                }
+            },
+            'activiDataForm.rule1':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    // 删除非数字和小数点之外的输入
+                    if(/[^\d|\.]/g.test(newV[i])){
+                        this.activiDataForm.rule1 = newV.replace(newV[i],"")
+                    }
+                }
+                // 小数点之前的长度>5位 不让输入整数位
+                if(newV.split(".")[0].length>6){
+                    this.activiDataForm.rule1 = oldV
+                }
+            },
+            'activiDataForm.rule2':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    // 删除非数字的输入
+                    if(/[^\d]/g.test(newV[i])){
+                        this.activiDataForm.rule2 = newV.replace(newV[i],"")
+                    }
+                }
+                if(newV.length>6){
+                    this.activiDataForm.rule2 = newV.substr(0,6)
+                }
+            },
         },
         computed:{},
         mounted(){},

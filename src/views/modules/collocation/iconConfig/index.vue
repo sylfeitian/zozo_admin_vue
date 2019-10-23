@@ -75,6 +75,7 @@
                 <el-form-item label="上传图片：" :prop="editDataForm.selectedIcon?'unselectedIcon':'selectedIcon'">
                     <div class="imgItem">
                         <el-upload
+                            v-loading="selectionloading"
                             style="margin-right:30px;"
                             class="avatar-uploader"
                             action="123"
@@ -90,6 +91,7 @@
                     
                     <div class="imgItem">
                         <el-upload
+                            v-loading="uncheckedloading"
                             class="avatar-uploader"
                             action="123"
                             :http-request="upLoad2"
@@ -141,6 +143,8 @@
                     unselectedIcon: ""
                 },
                 breaddata: ["配置管理", "底部icon配置"],
+                selectionloading: false,
+                uncheckedloading: false
             }
         },
         computed:{
@@ -197,6 +201,11 @@
                 const that = this;
                 var  img;
                 img = new Image();
+                if(who==1){
+                    this.selectionloading = true;
+                }else if(who==2){
+                    this.uncheckedloading = true;
+                }
                 img.onload = function () {
             //       alert(this.width + " " + this.height);
                     let  WH =  false;
@@ -206,8 +215,13 @@
                     if (!WH) {
                         that.$message.error('请上传80*80px的图片');
                     }else{
-                            getUrlBase64(obj,type,function (base) {
+                        getUrlBase64(obj,type,function (base) {
                             uploadPicBase64({"imgStr": base}).then(res =>{
+                                if(who==1){
+                                    that.selectionloading = false;
+                                }else if(who==2){
+                                    that.uncheckedloading = false;
+                                }
                                 console.log(res)
                                 if(res.code == 200){
                                     if(who == '1'){
