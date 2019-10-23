@@ -35,7 +35,7 @@
 		<div class="upload-box" :style="{width:imgWidth,height:imgHeight}" >
 			<!-- 真正的上传图片 -->
 			<div class="uloadingBox">
-				<img class="pre-img" :src="cropper.cropImg | filterImgUrl" :style="{width:'100%',height:'100%'}" v-if="cropper.imgShow && cropper.cropImg"/>
+				<img class="pre-img" :src="cropper.cropImg | filterImgUrl" :style="{width:'100%',height:'100%'}" v-if="cropper.imgShow"/>
 
 				<input class="crop-input" ref="cropInput" type="file" name="image" accept="image/*" :value="value" @change="setImage"/>
 				<el-upload
@@ -203,7 +203,10 @@
 			cancleImg(){
 				this.cropper.dialogVisible = false;
 				this.cropper.cropImg =  this.oldimg;
-				console.log(this.oldimg);
+				// 如果取消后是不base64,不回显
+				if(/data:image/.test(this.cropper.cropImg)){
+					this.cropper.cropImg = ""
+				}
 			},
 			submitImg(){
 				this.cropper.dialogVisible = false;
