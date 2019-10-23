@@ -22,6 +22,9 @@
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="search()">查询</el-button>
             </el-form-item>
+            <el-form-item>
+                <el-button  class="btn" type="primary">全部选择</el-button>
+            </el-form-item>
         </el-form>
         <el-table
             width="100%"
