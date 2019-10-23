@@ -288,7 +288,7 @@
                 this.$emit("showList");
             },
             reset() {
-                this.dataFormShow.skuId = "";//商品sku ID
+                this.dataFormShow.skuID = "";//商品sku ID
                 this.dataFormShow.goodsName = "";//商品名称/商品货号
                 this.dataFormShow.brandName = "";//品牌名称
                 this.dataFormShow.storeName = "";//店铺名称

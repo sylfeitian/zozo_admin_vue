@@ -49,8 +49,9 @@
 	        <el-button v-if="index+1 == dataForm.categoryJpId.length" @click="actadd" type="primary" style="margin-left: 20px;">添加</el-button>
 		</el-form-item>
        <el-form-item label="测量方法：" prop="methodUrl" v-if="yijishow">
-				<div class="pcCoverUrl imgUrl" v-for="(item,index) in dataForm.methodUrlshow" @click="imgtype = 'rule'">
+				<div class="pcCoverUrl imgUrl" style="width: 100px;" v-for="(item,index) in dataForm.methodUrlshow" @click="imgtype = 'rule'">
 					<img-cropper
+					    v-loading="methodUrlLoading[index]"
 						ref="cropperImg1"
 						:index="index"
 						:imgWidth='"100px"'
@@ -59,21 +60,28 @@
 						@delteteImg="delteteImgMethodUrl"
 						@GiftUrlHandle="GiftUrlHandle"
 					></img-cropper>
+					<div v-if="isUploadingImg()" @click.stop="uploadImgTip" class="hiddenLoading"></div>
 				</div>
 		</el-form-item>
 		
     	<el-form-item label="分类性别：" prop=""  v-if="yijishow">
-    		<div class="pcCoverUrl imgUrl"  @click="imgtype = 'all'" style="display: flex;">
+    		<div class="pcCoverUrl imgUrl"   @click="imgtype = 'all'" style="display:flex;">
     			<div class="artmwc artall">全部</div>
-				<img-cropper
-					ref="cropperImg1"
-					:index="'1'"
-					:cropImg = "dataForm.genderMain"
-					:imgWidth='"100px"'
-					:imgHeight='"100px"'
-					@delteteImg="delteteImgAll"
-					@GiftUrlHandle="GiftUrlHandle"
-				></img-cropper>
+				<div style="position: relative;">
+					<img-cropper
+						style="width: 100px;"
+						v-loading="genderMainLoading"
+						ref="cropperImg1"
+						:index="'1'"
+						:cropImg = "dataForm.genderMain"
+						:imgWidth='"100px"'
+						:imgHeight='"100px"'
+						@delteteImg="delteteImgAll"
+						@GiftUrlHandle="GiftUrlHandle"
+					></img-cropper>
+					<div v-if="isUploadingImg()"  @click.stop="uploadImgTip"  class="hiddenLoading"></div>
+				</div>
+				
 			</div>
     	</el-form-item>
     	
@@ -82,8 +90,9 @@
     		<el-checkbox-group v-model="checkList">
     			<div class="artmwc">
     				<el-checkbox label="男士" ></el-checkbox>
-    				<div v-if="checkList.indexOf('男士') != -1" class="pcCoverUrl imgUrl"  @click="imgtype = 'm'">
+    				<div v-if="checkList.indexOf('男士') != -1" class="pcCoverUrl imgUrl" style="width: 100px;"  @click="imgtype = 'm'">
 						<img-cropper
+							v-loading="genderMrLoading"
 							ref="cropperImg1"
 							:index="'1'"
 							:cropImg = "dataForm.genderMr"
@@ -92,13 +101,15 @@
 							@delteteImg="delteteImgM"
 							@GiftUrlHandle="GiftUrlHandle"
 						></img-cropper>
+						<div v-if="isUploadingImg()"   @click.stop="uploadImgTip"  class="hiddenLoading"></div>
 					</div>
     				<div v-else class="artuploadimg">上传图片</div>
     			</div>
     			<div class="artmwc">
     				<el-checkbox label="女士"></el-checkbox>
-				    <div v-if="checkList.indexOf('女士') != -1" class="pcCoverUrl imgUrl"  @click="imgtype = 'w'">
+				    <div v-if="checkList.indexOf('女士') != -1" class="pcCoverUrl imgUrl" style="width: 100px;"  @click="imgtype = 'w'">
 						<img-cropper
+							v-loading="genderMrsLoading"
 							ref="cropperImg1"
 							:index="'1'"
 							:imgWidth='"100px"'
@@ -107,13 +118,15 @@
 							@delteteImg="delteteImgW"
 							@GiftUrlHandle="GiftUrlHandle"
 						></img-cropper>
+						<div v-if="isUploadingImg()"  @click.stop="uploadImgTip"  class="hiddenLoading"></div>
 					</div>
 					<div  v-else  class="artuploadimg">上传图片</div>
     			</div>
 			    <div class="artmwc">
     				<el-checkbox label="儿童"></el-checkbox>
-				    <div v-if="checkList.indexOf('儿童') != -1"  class="pcCoverUrl imgUrl"  @click="imgtype = 'c'">
+				    <div v-if="checkList.indexOf('儿童') != -1"  class="pcCoverUrl imgUrl" style="width: 100px;"  @click="imgtype = 'c'">
 						<img-cropper
+							v-loading="genderKidLoading"
 							ref="cropperImg1"
 							:index="'1'"
 							:imgWidth='"100px"'
@@ -122,6 +135,7 @@
 							@delteteImg="delteteImgC"
 							@GiftUrlHandle="GiftUrlHandle"
 						></img-cropper>
+						<div v-if="isUploadingImg()"   @click.stop="uploadImgTip" class="hiddenLoading"></div>
 					</div>
 					<div  v-else class="artuploadimg">上传图片</div>
     			</div>
@@ -212,7 +226,12 @@
 		      	genderMr:'', //分类男士图片 
 		      	genderMrs:'', //分类女士图片 
 		      	genderKid:'', //分类儿童图片 
-		      },
+			},
+			methodUrlLoading:[false,false,false,false,false,false,false,false,false,false],
+			genderMainLoading:false,
+			genderMrLoading:false,
+			genderMrsLoading:false,
+			genderKidLoading:false,
 	      	dataRule : {
 	        	name : [
 	            	{ required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -221,9 +240,6 @@
 	        	sort: [
          			{ required: true, message: '必填项不能为空', trigger: 'blur' },
          			{ validator: sortminmax,trigger: 'blur'},
-				],
-				methodUrl:[
-					{ required: true, message: '必填项不能为空', trigger: 'blur' }
 				],
 				categoryJpId:[
 					{ required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -242,6 +258,7 @@
 	  },
 		watch:{
 			'dataForm.name':function(newV,oldV) {
+				if(!newV){ return}
 				var chineseCount = 0,characterCount = 0;
 				for (let i = 0; i < newV.length; i++) {
 					if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
@@ -257,6 +274,7 @@
 			},
 			// 评价类型
 			'dataForm.appraisal':function(newV,oldV) {
+				if(!newV){ return}
 				var chineseCount = 0,characterCount = 0;
 				for (let i = 0; i < newV.length; i++) {
 					if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
@@ -280,9 +298,16 @@
 	  			this.erjishow = true;
 	  			this.yijishow = false;
 	  		}else{
-				// if(this.dataForm.methodUrlshow && this.dataForm.methodUrlshow.length<10){
-				// 	this.dataForm.methodUrlshow.push('');
-				// }
+				if(this.dataForm.methodUrlshow && this.dataForm.methodUrlshow.length<10){
+						var methodUrlshow = [];
+						// 去除空图片
+						this.dataForm.methodUrlshow.forEach((item,index)=>{
+								if(item){ methodUrlshow.push(item);}
+						})
+						// 追加最后一个展位
+						methodUrlshow.push('');
+						this.dataForm.methodUrlshow = [].concat(methodUrlshow)
+				}
 	  			this.erjishow = false;
 				this.yijishow = true;
 				  
@@ -297,10 +322,11 @@
 			if(this.row){
 				this.tempName = this.row.label; // 暂存当前名字，校验用
 			}
-	  		this.showListVisible = true;
+			this.showListVisible = true;
+			var id = row&&row.id?row.id:""
 			this.$nextTick(()=> {
 				this.backScan();	// 编辑时回显数据
-				this.getCategoryJp();// 获取关联日本分类
+				this.getCategoryJp(id);// 获取关联日本分类
 				this.getCategoryCn();//获取一级分类
 				
 			})
@@ -322,8 +348,13 @@
 			})
 		},
 		// 获取关联日本分类
-		getCategoryJp(){
-			searchCategoryJp().then((res) => {
+		getCategoryJp(id){
+			var obj = {
+				params:{
+					id:id
+				}
+			}
+			searchCategoryJp(obj).then((res) => {
 				if (res.code == 200) {
 					console.log(res.data);
 					res.data.forEach((item) => {
@@ -421,17 +452,54 @@
 			// 	this.dataForm.methodUrlshow.push('');
 			// }
 		},
+		// 判断是否有图片正在上传
+		isUploadingImg(){
+			if(this.genderMainLoading){
+				return true;
+			}else if(this.genderMrLoading){
+				return true;
+			}else if(this.genderMrsLoading){
+				return true;
+			}else if(this.genderKidLoading){
+				return true;
+			}else if(this.methodUrlLoading.indexOf(true)!=-1){
+				return true;
+			}else{
+				return false
+			}
+		},
+		uploadImgTip(){
+			if(this.isUploadingImg()){
+				this.$message.warning("当前有图片正在上传，请稍后再试");
+				return
+			}
+		},
 		//上传图片
 		uploadPic(base64,_index){
+			
 			const params = { "imgStr": base64 };
 			const that = this;
 			this.uploading = true;
+			if(that.imgtype == 'rule'){
+				that.methodUrlLoading[_index] = true
+				that.$set(that.methodUrlLoading,_index,that.methodUrlLoading[_index]);
+			}else if(that.imgtype == 'all'){
+				that.genderMainLoading = true;
+			}else if(that.imgtype == 'm'){
+				that.genderMrLoading = true;
+			}else if(that.imgtype == 'w'){
+				that.genderMrsLoading = true;
+			}else if(that.imgtype == 'c'){
+				that.genderKidLoading = true;
+			}
 			return new Promise(function(resolve){
 				uploadPicBase64(params).then(res =>{
 					that.uploading = false
 					if(res && res.code == "200"){
 						var url = res.data.url
 						if(that.imgtype == 'rule'){
+							that.methodUrlLoading[_index] = false;
+							that.$set(that.methodUrlLoading,_index,that.methodUrlLoading[_index]);
 							if(that.dataForm.methodUrlshow.length >= 10){
 								this.$message("最多可上传10张图片");
 								return;
@@ -461,12 +529,16 @@
 							console.log(methodUrlshow);
 							that.dataForm.methodUrlshow = [].concat(methodUrlshow)
 						}else if(that.imgtype == 'all'){
+							that.genderMainLoading = false;
 							that.dataForm.genderMain = url;
 						}else if(that.imgtype == 'm'){
+							that.genderMrLoading = false;
 							that.dataForm.genderMr = url;
 						}else if(that.imgtype == 'w'){
+							that.genderMrsLoading = false;
 							that.dataForm.genderMrs = url;
 						}else if(that.imgtype == 'c'){
+							that.genderKidLoading = false;
 							that.dataForm.genderKid = url;
 						}
 						// that.currentIndex = -1;//不能这样写，防止网络延迟
@@ -559,6 +631,7 @@
 	margin: 10px;
 	position: relative;
 	/deep/ .pcCoverUrl{
+		position: relative;
 		margin-left: 20px;
 	/deep/	.artuploadimg{
 			/*position: absolute;*/
@@ -580,5 +653,13 @@
 	font-size: 16px;
 }
 
-
+.hiddenLoading{
+    position: absolute;
+    height: 102px;;
+    width: 100px;
+    // background: rebeccapurple;
+    top: -1px;
+    left: -1px;
+    z-index: 1000;
+}
 </style>

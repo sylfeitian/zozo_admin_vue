@@ -46,7 +46,13 @@
                 </template>
             </el-table-column>
             <el-table-column prop="goodsCsId" label="skuID" align="center"></el-table-column>
-            <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
+            <el-table-column prop="goodsName" label="商品名称" align="center">
+                <template slot-scope="scope">
+                    <div :title="scope.row.goodsName">
+                        {{scope.row.goodsName}}
+                    </div>
+                </template>
+            </el-table-column>
             <el-table-column prop="spe" label="规格" align="center"></el-table-column>
             <el-table-column prop="warehouseName" label="所属仓库" align="center"></el-table-column>
             <el-table-column prop="quantity" label="库存" align="center"></el-table-column>
@@ -304,10 +310,11 @@
 </script>
 
 <style lang="scss" scoped>
-    /deep/ .cell {
-        white-space: nowrap;
+    /deep/ .cell{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
         overflow: hidden;
-        text-overflow: ellipsis;
     }
     .parentImport{
         position: relative;
