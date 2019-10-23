@@ -244,9 +244,6 @@
 					{ required: true, message: '必填项不能为空', trigger: 'blur' },
 					{ validator: validateCategoryJpId,trigger: 'blur'},
 				],
-				methodUrl:[
-					{ required: true, message: '必填项不能为空', trigger: 'blur' }
-				],
 	        	appraisal: [
 	       			{ required: true, message: '必填项不能为空', trigger: 'blur' },
                     { validator: validateAppraisal,trigger: 'blur'},

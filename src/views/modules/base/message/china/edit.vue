@@ -241,9 +241,6 @@
          			{ required: true, message: '必填项不能为空', trigger: 'blur' },
          			{ validator: sortminmax,trigger: 'blur'},
 				],
-				methodUrl:[
-					{ required: true, message: '必填项不能为空', trigger: 'blur' }
-				],
 				categoryJpId:[
 					{ required: true, message: '必填项不能为空', trigger: 'blur' },
 				],
