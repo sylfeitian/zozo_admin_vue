@@ -82,8 +82,8 @@
             <!-- :formatter="statusRules" -->
                      <template slot-scope="scope">
                         <el-tag v-if="scope.row.auditStatus==0" type="danger">待审核</el-tag>
-                        <el-tag v-else-if="scope.row.auditStatus==2" type="danger">审核不通过</el-tag>
-                        <el-tag v-else-if="scope.row.auditStatus==3" type="danger">已取消</el-tag>
+                        <el-tag v-else-if="scope.row.auditStatus==2" type="danger">售后取消</el-tag>  <!-- 审核不通过 -->
+                        <el-tag v-else-if="scope.row.auditStatus==3" type="danger">售后取消</el-tag><!-- 已取消 -->
                         <!-- 审核通过 -->
                         <div  v-else-if="scope.row.auditStatus==1">
                             <el-tag v-if="scope.row.status==10" type="danger">退款中</el-tag>
