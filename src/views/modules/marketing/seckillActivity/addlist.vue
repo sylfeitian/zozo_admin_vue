@@ -338,6 +338,7 @@ export default {
     this.getData();
     // this.demo();
   },
+
   methods: {
       watchkc(index,val){
           for(let j=0;j<3;j++){
@@ -366,6 +367,7 @@ export default {
     closeDialog() {
       this.$refs.editDataForm.resetFields();
     },
+
     //同步列表所填数据
     changeAll(row) {
       console.log(row, "同步更改数据");
@@ -475,6 +477,11 @@ export default {
     },
     //重置
     reset() {
+      this.dataForm.name= "";//商品名称
+      this.classList= "";//分类
+      this.dataForm.id= "";//商品货号
+      this.dataForm.storeName= "";//店铺名称
+      this.dataForm.brandName= "";//品牌名称
       this.$refs["dataForm"].resetFields();
       this.dataForm.categoryId = ""
       this.classList = []
