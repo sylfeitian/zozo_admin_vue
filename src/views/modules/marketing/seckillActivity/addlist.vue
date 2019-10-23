@@ -136,10 +136,10 @@
                     border=""
                     style="width: 100%"
                 >
-                    <el-table-column prop="id" label="skuID" width="180" align="center"></el-table-column>
+                    <el-table-column prop="id" label="skuID" width="120" align="center"></el-table-column>
                     <el-table-column prop="specInfo" label="规格" width="180" align="center">
                     </el-table-column>
-                    <el-table-column label="活动库存" width="220" align="center">
+                    <el-table-column label="活动库存" width="180" align="center">
                         <template slot-scope="scope">
                             <el-form-item
                                 class="specError"
@@ -188,7 +188,7 @@
                             </el-form-item>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="address" label="操作" min-width="80" align="center">
+                    <el-table-column prop="address" label="操作" min-width="120" align="center">
                         <template slot-scope="scope">
                             <el-button
                                 type="text"

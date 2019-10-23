@@ -22,6 +22,9 @@
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="search()">查询</el-button>
             </el-form-item>
+            <el-form-item>
+                <el-button  class="btn" type="primary" @click="handleCheckAllChange">全部选择</el-button>
+            </el-form-item>
         </el-form>
         <el-table
             width="100%"
@@ -240,6 +243,10 @@
             closeDialog() {
                 this.$parent.addEditDataVisible = false;
             },
+            handleCheckAllChange(val){
+                if(val) this.$refs.dataList.toggleAllSelection();
+                else this.$refs.dataList.clearSelection();
+            }
         }
     }
 </script>
