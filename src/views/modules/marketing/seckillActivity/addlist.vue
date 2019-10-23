@@ -79,6 +79,7 @@
                     <el-button
                         type="text"
                         size="small"
+                        v-if="scope.row.activityState==0"
                         @click="editGoods(scope.row.id,'update')"
                     >修改</el-button>
                     <span

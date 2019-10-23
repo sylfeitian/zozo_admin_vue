@@ -16,7 +16,6 @@
         >
             <el-form-item label="搜索词：" prop="hotKeyword">
                 <el-input v-model.trim="dataForm.hotKeyword" placeholder="请输入30字以内的内容"></el-input>
-<!--                <span style="color: #999999;">0/30</span>-->
             </el-form-item>
             <el-form-item label="排序：">
                 <el-input v-model.trim="dataForm.sort" placeholder="0"></el-input>
@@ -70,8 +69,16 @@
                     }
                     var count = chineseCount + characterCount;
                     if (count > 60) { //输入字符大于60的时候过滤
-                        this.dataForm.warehouseName = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
+                        this.dataForm.hotKeyword = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
                     }
+                }
+            },
+            'dataForm.sort': function (newV,oldV) {
+                newV=~~newV;
+                if(newV.toString().length>6){
+                    this.dataForm.sort = newV.toString().substr(0,6)
+                }else{
+                    this.dataForm.sort = newV
                 }
             }
         },
