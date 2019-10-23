@@ -46,7 +46,7 @@
                 width="180">
             </el-table-column>
             <el-table-column
-                prop="id"
+                prop="goodsIdJp"
                 align="center"
                 label="商品id">
             </el-table-column>

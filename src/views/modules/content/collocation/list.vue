@@ -51,7 +51,7 @@
         >
             <el-table-column type="selection" width="70"></el-table-column>
             <el-table-column prop="idJp" width="100" label="ID" align="center"></el-table-column>
-            <el-table-column prop="imageUrl" label="封面图片" width="150" min-width="150" align="center">
+            <el-table-column prop="imageUrl" label="封面图片" width="150" min-width="150" align="center" :resizable="false">
                 <template slot-scope="scope">
                     <img
                         :src="scope.row.imageUrl320"
@@ -62,20 +62,27 @@
             </el-table-column>
             <el-table-column prop="nickname" label="用户" align="center"></el-table-column>
             <el-table-column prop="goodsNums" width="80" label="相关商品" align="center"></el-table-column>
-            <el-table-column prop="state" min-width="120" width="120" label="发布状态" align="center">
+            <el-table-column prop="state" min-width="120" width="120" label="发布状态" align="center" :resizable="false">
             	<template slot-scope="scope">
                     <el-tag v-if="scope.row.state == 1" type="success">已发布</el-tag>
 					<el-tag v-else type="info">取消发布</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column min-width="120" width="120" prop="jpPublishState"  label="日本发布状态" align="center">
+            <el-table-column min-width="120" width="120" prop="jpPublishState"  label="日本发布状态" align="center" :resizable="false">
             	<template slot-scope="scope">
                     <el-tag v-if="scope.row.jpPublishState == 1" type="success">已发布</el-tag>
 					<el-tag v-else-if="scope.row.jpPublishState == 2" type="info">取消发布</el-tag>
                 </template>
             </el-table-column>
             <el-table-column prop="publishTimeJp" label="日本发布时间" align="center"></el-table-column>
-            <el-table-column prop="publishTime" label="发布时间" align="center"></el-table-column>
+            <el-table-column prop="publishTime" label="发布时间" align="center">
+                <template slot-scope="scope">
+                    <div v-if="scope.row.state == 1">
+                        {{scope.row.publishTime}}
+                    </div>
+                    <span v-else>/</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="totalFavNum" label="收藏量" width="80" align="center"></el-table-column>
             <el-table-column label="操作" align="center" width="240">
                 <template slot-scope="scope">
@@ -257,7 +264,7 @@
                 this.currentIndex = index;
                 var obj = {
                     "id": row.id,
-                    "operating":row.state==1?0:1  //1发布   0取消发布
+                    "operating":row.state==1?2:1  //1发布   2取消发布
                 }
                 var msg = ""
                 row.state==1?msg="取消发布":msg="发布"
@@ -292,7 +299,7 @@
                 if(ids[0]){
                     var obj = {
                         ids:ids,
-                        operating:type==1?0:1,
+                        operating:type==1?2:1,//1发布   2取消发布
                     }
                     var msg = ""
                     type==1?msg="取消发布":msg="发布"

@@ -84,7 +84,7 @@
                 prop="orderAmount"
                 label="订单满减后价格">
                  <template slot-scope="scope">
-                    ￥{{scope.row.goodsAmount}}
+                    ￥{{scope.row.orderAmount}}
                 </template>
             </el-table-column>
         </el-table>
@@ -165,7 +165,7 @@
             },
             reset(){
                 this.dataForm.memberName = ""
-                this.dataForm.memberName =""
+                this.dataForm.orderSn =""
                 this.getDataList();
             }
         }

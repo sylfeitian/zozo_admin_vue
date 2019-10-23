@@ -48,12 +48,12 @@
                             <span style="margin-left: 10px;color:#2260d2;cursor:pointer;" @click="delContent(i)">删除</span>
                         </div>
                         <div class="contentChild" v-if="content[i]&&v.typeId=='3'" v-loading="picloading">
-                            <img style="width:600px;" :src="$imgDomain+v.imageUrl" alt="" >
+                            <img style="width:600px;" :src="v.imageUrl | filterImgUrl" alt="" >
                             <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="delContent(i)">删除</span>
                         </div>
                         <div class="contentChild" v-if="content[i]&&v.typeId=='4'">
                             <div style="display: inline-block;">
-                                <img style="width:600px;margin-bottom: 10px;" :src="$imgDomain+v.imageUrl" alt="">
+                                <img style="width:600px;margin-bottom: 10px;" :src="v.imageUrl | filterImgUrl" alt="">
                                 <div>{{v.text}}</div>
                             </div>
                             <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="delContent(i)">删除</span>
@@ -88,10 +88,10 @@
                 <el-button  @click="dataFormSubmit(0)">保存</el-button>
                 <el-button type="primary" @click="dataFormSubmit(1)">保存并发布</el-button>
             </el-form-item>
-            <el-dialog title="添加商品" :before-close="res" :visible.sync="dialogTableVisible">
+            <el-dialog title="添加商品" :before-close="res" :visible.sync="dialogTableVisible" width="60%">
                 <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
-                    <el-form-item label="ID：">
-                        <el-input v-model.trim="dataForm.params" ></el-input>
+                    <el-form-item label="商品名称/货号：">
+                        <el-input v-model.trim="dataForm.goodsNameOrIdJp"  placeholder="请输入" ></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
@@ -109,7 +109,7 @@
                 >
                     <el-table-column type="selection" width="70"></el-table-column>
                     <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
-                    <el-table-column prop="goodsId" label="商品ID" align="center"></el-table-column>
+                    <el-table-column prop="goodsCsIdJp" label="商品skuID" align="center"></el-table-column>
                     <el-table-column prop="sellPrice" label="价格" align="center"></el-table-column>
                     <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
 
@@ -320,7 +320,7 @@
                 this.getDataList();
             },
             reset() {
-                this.dataForm.params = "";
+                this.dataForm.goodsNameOrIdJp = "";
                 this.getDataList();
             },
             delContent(i){

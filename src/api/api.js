@@ -712,7 +712,7 @@ export const zozogoodsPage = params => { return http.get(`${base}/zozogoods/page
 // 查看商品操作日志分页查询
 // export const backScanZozogoodsLog = params => { return http.get(`${base}/zozogoods/page/log`, params).then(res => res.data); };
 // 商品上下架状态批量修改
-export const showBatchGoods = params => { return http.put(`${base}/zozogoods/show/?ids=${params.ids}&showWeb=${params.showWeb}`, params).then(res => res.data); };
+export const showBatchGoods = params => { return http.put(`${base}/zozogoods/show?ids=${params.ids}&showWeb=${params.showWeb}&shelfTime=${params.shelfTime}&showType=${params.showType}`, params).then(res => res.data); };
 // 单个商品上下架状态修改
 export const showGoods = params => { return http.put(`${base}/zozogoods/show/${params.id}?showWeb=${params.showWeb}&shelfTime=${params.shelfTime}&showType=${params.showType}`, params).then(res => res.data); };
 // 获取商品尺码信息

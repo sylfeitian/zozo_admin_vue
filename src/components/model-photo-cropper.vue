@@ -60,7 +60,7 @@
 				</el-upload>
 			</div>
 			<!-- 实现删除图片和上传图片功能 -->
-			<div  class="hiddenUloadingBox" v-if="cropper.imgShow">
+			<div  class="hiddenUloadingBox" v-if="cropper.imgShow && cropper.cropImg">
 			      <div class="hiddenMask">
 					  <!-- 遮罩层 -->
 				  </div>
@@ -203,6 +203,10 @@
 			cancleImg(){
 				this.cropper.dialogVisible = false;
 				this.cropper.cropImg =  this.oldimg;
+				// 如果取消后是不base64,不回显
+				if(/data:image/.test(this.cropper.cropImg)){
+					this.cropper.cropImg = ""
+				}
 			},
 			submitImg(){
 				this.cropper.dialogVisible = false;

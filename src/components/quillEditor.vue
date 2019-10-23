@@ -129,9 +129,10 @@ export default {
     onEditorBlur(){}, // 失去焦点事件
     onEditorFocus(){}, // 获得焦点事件
     onEditorChange(){
-    	let imgurl = window.SITE_CONFIG['imgURL'];
-			var re =new RegExp(imgurl ,"g");
-			this.$emit('artmessageContent',this.dataForm.messageContent.replace(re,''),this.index);
+    		// let imgurl = window.SITE_CONFIG['imgURL'];
+			// var re =new RegExp(imgurl ,"g");
+			//  this.dataForm.messageContent = this.dataForm.messageContent.replace(re,'')
+			this.$emit('artmessageContent',this.dataForm.messageContent,this.index);
     }, // 内容改变事件
 
   }

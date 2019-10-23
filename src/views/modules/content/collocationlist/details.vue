@@ -52,7 +52,6 @@
                             :data="dataForm.lookItems"
                             border
                             v-loading="dataListLoading"
-                            class="inforRight"
                             style="display:inline-block;width: 80%;padding: 0 0!important;"
                     >
                         <el-table-column prop="idJp" label="搭配ID" align="center"></el-table-column>
@@ -124,7 +123,6 @@
                             :data="dataForm.lookItems"
                             border
                             v-loading="dataListLoading"
-                            class="inforRight"
                             style="display:inline-block;width: 80%;padding: 0 0!important;"
                     >
                         <el-table-column prop="idJp" label="搭配ID" align="center"></el-table-column>

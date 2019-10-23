@@ -53,7 +53,7 @@
         >
             <el-table-column type="selection" width="70"></el-table-column>
             <el-table-column prop="idJp" label="ID" align="center"></el-table-column>
-            <el-table-column prop="imageUrl" label="封面图片" width="100" align="center">
+            <el-table-column prop="imageUrl" label="封面图片" width="100" min-width="100" align="center" :resizable="false">
                 <template slot-scope="scope">
                     <img
                         :src="scope.row.imageUrl"
@@ -74,14 +74,14 @@
             </el-table-column>
             <el-table-column prop="userNickname" label="用户" align="center"></el-table-column>
             <el-table-column prop="lookCount" width="80" label="搭配数量" align="center"></el-table-column>
-            <el-table-column prop="sate" width="120" label="发布状态" align="center">
+            <el-table-column prop="sate" width="120" min-width="120" label="发布状态" align="center" :resizable="false">
                 <template slot-scope="scope">
                     <el-tag v-if="scope.row.sate == 1" type="success">已发布</el-tag>
                     <el-tag v-if="scope.row.sate == 2" type="info">取消发布</el-tag>
                     <el-tag v-if="scope.row.sate == 0" type="info">待发布</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column width="120" prop="jpPublishState"  label="日本发布状态" align="center">
+            <el-table-column width="120" min-width="120" prop="jpPublishState"  label="日本发布状态" align="center" :resizable="false">
                 <template slot-scope="scope">
                     <el-tag v-if="scope.row.jpPublishState == 1" type="success">已发布</el-tag>
                     <el-tag v-if="scope.row.jpPublishState == 0" type="info">取消发布</el-tag>
@@ -356,7 +356,7 @@
                 this.timeArr = [];
                 this.timeArr2 = [];
                 this.dataForm.idJp = "";
-                this.dataForm.title = "";
+                this.dataForm.titleOrJp = "";
                 this.dataForm.userNickname = "";
                 this.dataForm.sate = "";
                 this.dataForm.publishStartTimeJp = "";
@@ -385,7 +385,7 @@
                 this.currentIndex = index;
                 var obj = {
                     "id": row.id,
-                    "operating":row.sate==1?2:1  //
+                    "operating":row.sate==1?2:1  //1发布   2取消发布
                 }
                 var msg = ""
                 row.sate==1?msg="取消":msg=""
@@ -420,7 +420,7 @@
                 var ids = this.getIds(type);
                 if(ids[0]){var obj = {
                     ids:ids,
-                    operating:type==1?2:1,
+                    operating:type==1?2:1,//1发布   2取消发布
                 }
                     var msg = ""
                     type==1?msg="取消发布":msg="发布"

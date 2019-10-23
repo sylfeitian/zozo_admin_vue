@@ -186,7 +186,7 @@
                     <el-table-column prop="createDate" label="操作时间：" align="center"></el-table-column>
                     <el-table-column prop="status" label="操作时售后单状态：" align="center">
                         <template slot-scope="scope">
-                             <el-tag v-if="scope.row.status==0" type="danger">待退货</el-tag>
+                             <el-tag v-if="scope.row.status==0" type="danger">待审核</el-tag>
                             <el-tag v-else-if="scope.row.status==10" type="danger">待退货</el-tag>
                             <el-tag v-else-if="scope.row.status==20" type="danger">待入库</el-tag>
                             <el-tag v-else-if="scope.row.status==30" type="danger">待退款</el-tag>
@@ -303,6 +303,7 @@
                         this.goodsInfo = [res.data.goodsInfo]
                         if(this.returnInfo){
                             this.row.auditStatus = this.returnInfo.auditStatus;
+                             this.row.status = this.returnInfo.status;
                         }
                     }else{
                         this.$message({
