@@ -1,5 +1,5 @@
 <template>
-	<!--新增的弹窗-->
+	<!--新增的弹窗。。。-->
 	<div>
 	<el-dialog title="新增分类" :visible="showListVisible" width="50%" :before-close="handleClose">
 			<el-form :model="dataForm" label-width="140px" 	:rules="dataRule" class="demo-ruleForm" ref="addForm">
