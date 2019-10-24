@@ -8,6 +8,7 @@
             class="upload-demo"
             ref="upload"
             :action='importAndExportOptions.importUrl'
+            :data='data'
             :on-success="uploadSuccess"
             :on-error="uploadError"
             :show-file-list="false"
@@ -33,6 +34,9 @@ export default {
             myHeaders: {},//Cookies.get(teacher_token)
             uploadLoading:false,
             importWord:'上传文件',
+            data:{
+            	targetSize:''
+            },
         }
     },
     created() {
@@ -70,7 +74,16 @@ export default {
             // 导入之前
             beforeAvatarUpload(file) {
                 var allImageType = 'apk';
-				console.log(file.name);
+				 
+				if(file.size/1024 < 1){  
+					this.data.targetSize = (file.size + '').substring(0,(file.size + '').indexOf(".") + 3) + 'B';
+				}else if(file.size/1024/1024 < 1){
+					this.data.targetSize = (file.size/1024 + '').substring(0,(file.size/1024 + '').indexOf(".") + 3) + 'KB';
+				}else if(file.size/1024/1024/1024 < 1){
+					this.data.targetSize = (file.size/1024/1024 + '').substring(0,(file.size/1024/1024 + '').indexOf(".") + 3) + 'MB';
+				}else{
+					this.data.targetSize = (file.size/1024/1024/ + '').substring(0,(file.size/1024/1024/ + '').indexOf(".") + 3) + 'GB';
+				}
 				var dessnamenum = file.name.indexOf('.') + 1;
 				console.log(file.name.substring(dessnamenum))
 		 	 	const isJPG = allImageType.indexOf(file.name.substring(dessnamenum)) != -1;
