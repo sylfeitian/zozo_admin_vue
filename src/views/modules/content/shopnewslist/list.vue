@@ -243,6 +243,7 @@
                 this.dataForm.publishJpEndTime = "";
                 this.dataForm.publishStartTime = "";
                 this.dataForm.publishEndTime = "";
+                this.dataForm.titleOrJp = "",
                 this.page = 1;
                 this.getDataList();
             },
@@ -257,7 +258,7 @@
                     this.dataForm.showWeb = "2"
                 }
                 this.changeVal = val;
-                this.getDataList();
+                this.getData();
             },
             // 新建和编辑
             addOrEditHandle(index=-1,row=""){
@@ -359,8 +360,11 @@
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
-                if(this.multipleSelection.length == this.dataList.length) this.checkAll = true;
-                else this.checkAll = false;
+                if(this.multipleSelection.length == this.dataList.length && this.dataList.length != 0) {
+                    this.checkAll = true;
+                }else {
+                    this.checkAll = false;
+                }
             },
             handleCheckAllChange(val) {
                 if(val) this.$refs.multipleTable.toggleAllSelection();
