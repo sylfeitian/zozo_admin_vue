@@ -9,7 +9,7 @@
                 @keyup.enter.native="getDataList()"
         >
             <el-form-item label="订单号搜索：" prop="orderSn">
-                <el-input v-model.trim="dataForm.orderSn" placeholder="请输入" clearable></el-input>
+                <el-input v-model.trim="dataForm.orderSn" placeholder="请输入" clearable style="width:180px!important;"></el-input>
             </el-form-item>
             <el-form-item label="会员账号：" prop="memberName">
                 <el-input v-model.trim="dataForm.memberName" placeholder="请输入" clearable></el-input>
