@@ -360,8 +360,11 @@
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
-                if(this.multipleSelection.length == this.dataList.length) this.checkAll = true;
-                else this.checkAll = false;
+                if(this.multipleSelection.length == this.dataList.length && this.dataList.length != 0) {
+                    this.checkAll = true;
+                }else {
+                    this.checkAll = false;
+                }
             },
             handleCheckAllChange(val) {
                 if(val) this.$refs.multipleTable.toggleAllSelection();
