@@ -633,4 +633,8 @@
     .grayLine{
         border-bottom: 0!important;
     }
+    /deep/ .el-step__head.is-process .el-step__icon.is-text {
+        color: #c0c4cc!important;
+        border-color: #c0c4cc!important;
+    }
 </style>
