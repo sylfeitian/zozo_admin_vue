@@ -69,6 +69,11 @@
 		    label="活动标题"
             align="center"
 		    width="180">
+            <template slot-scope="scope">
+                <div :title="scope.row.title">
+                    {{scope.row.title}}
+                </div>
+            </template>
 		</el-table-column>
 		<el-table-column
 		    prop="startTime"
@@ -276,6 +281,12 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+    /deep/ .cell{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+    }
 .el-input {
   width: 170px;
   height: 40px;

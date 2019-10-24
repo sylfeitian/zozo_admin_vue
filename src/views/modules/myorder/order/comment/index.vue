@@ -539,11 +539,6 @@ export default {
         -webkit-line-clamp: 2;
         overflow: hidden;
     }
-    /*/deep/ .cell {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }*/
      .bottomFun {
          display: flex;
          justify-content: space-between;
