@@ -416,7 +416,15 @@
 					this.saveLoading = true;
 					var obj = {};
 					Object.assign(obj,this.dataForm);
-					if(obj.parentId=="0") obj.categoryJpId = [];
+					if(obj.parentId=="0") {
+						obj.categoryJpId = [];
+					}else{
+						var categoryJpId = [] ;
+						this.dataForm.categoryJpId.forEach((item,index)=>{
+							if(item) categoryJpId.push(item)
+						})
+						obj.categoryJpId = categoryJpId
+					}
 					updataCategoryCn(obj).then((res)=>{
 						this.saveLoading = false;
 						if(res.code == 200){
