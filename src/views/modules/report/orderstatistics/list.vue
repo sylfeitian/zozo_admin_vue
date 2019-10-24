@@ -42,22 +42,22 @@
 	    <el-form-item label="下单时间：">
 	      <el-date-picker
 		      v-model="valuetime1"
-		      type="daterange"
+		      type="datetimerange"
 		      range-separator="-"
 		      start-placeholder="开始日期"
 		      end-placeholder="结束日期"
-		      value-format="yyyy-MM-dd"
+		      value-format="yyyy-MM-dd  HH:mm:ss"
 		      @blur='acttime1'>
 		    </el-date-picker>
 	    </el-form-item>   
 	    <el-form-item label="完成时间：">
 	      <el-date-picker
 		      v-model="valuetime2"
-		      type="daterange"
+		      type="datetimerange"
 		      range-separator="-"
 		      start-placeholder="开始日期"
 		      end-placeholder="结束日期"
-		      value-format="yyyy-MM-dd"
+		      value-format="yyyy-MM-dd  HH:mm:ss"
 		      @blur='acttime2'>
 		    </el-date-picker>
 	    </el-form-item>   

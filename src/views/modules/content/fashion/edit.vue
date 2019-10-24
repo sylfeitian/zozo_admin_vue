@@ -145,7 +145,7 @@
                             <template slot-scope="scope">
                                 <div class="goodsPropsWrap">
                                     <div class="goodsImg">
-                                        <img :src="dataForm.mainImageUrl" alt=""/>
+                                        <img :src="dataForm.mainImageUrl" alt="" style="width:200px;"/>
                                     </div>
                                 </div>
                             </template>
@@ -156,7 +156,7 @@
                             <template slot-scope="scope">
                                 <div class="goodsPropsWrap">
                                     <div class="goodsImg">
-                                        <img :src="dataForm.mainImageUrl" alt=""/>
+                                        <img :src="dataForm.mainImageUrl" alt="" style="width:200px;"/>
                                     </div>
                                 </div>
                             </template>
