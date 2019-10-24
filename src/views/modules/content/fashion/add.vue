@@ -90,8 +90,11 @@
             </el-form-item>
             <el-dialog title="添加商品" :before-close="res" :visible.sync="dialogTableVisible" width="60%">
                 <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
-                    <el-form-item label="商品名称/货号：">
-                        <el-input v-model.trim="dataForm.goodsNameOrIdJp"  placeholder="请输入" ></el-input>
+                    <el-form-item label="商品名称：">
+                        <el-input v-model.trim="dataForm.goodsName"  placeholder="请输入" ></el-input>
+                    </el-form-item>
+                    <el-form-item label="商品货号：">
+                        <el-input v-model.trim="dataForm.goodsCsIdJp"  placeholder="请输入" ></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
@@ -156,7 +159,10 @@
                 },
                 dataListLoading: false,
                 dialogTableVisible: false,
-                dataForm:{},
+                dataForm:{
+                    goodsName:'',
+                    goodsCsIdJp:'',
+                },
                 addDataForm: {
                     fashionContents: [],
                     favNumCn: "",
@@ -320,7 +326,9 @@
                 this.getDataList();
             },
             reset() {
-                this.dataForm.goodsNameOrIdJp = "";
+                this.dataForm.goodsName = "",
+                this.dataForm.goodsCsIdJp = "";
+                this.page =1 ;
                 this.getDataList();
             },
             delContent(i){
