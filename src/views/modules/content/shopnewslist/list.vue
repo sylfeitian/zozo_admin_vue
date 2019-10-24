@@ -258,7 +258,7 @@
                     this.dataForm.showWeb = "2"
                 }
                 this.changeVal = val;
-                this.getDataList();
+                this.getData();
             },
             // 新建和编辑
             addOrEditHandle(index=-1,row=""){
