@@ -35,7 +35,7 @@
 		<div class="upload-box" :style="{width:imgWidth,height:imgHeight}" >
 			<!-- 真正的上传图片 -->
 			<div class="uloadingBox">
-				<img class="pre-img" :src="cropper.cropImg | filterImgUrl" :style="{width:'100%',height:'100%'}" v-if="cropper.imgShow"/>
+				<img class="pre-img" style="border: 1px dashed #d9d9d9;" :src="cropper.cropImg | filterImgUrl" :style="{width:'100%',height:'100%'}" v-if="cropper.imgShow"/>
 
 				<input class="crop-input" ref="cropInput" type="file" name="image" accept="image/*" :value="value" @change="setImage"/>
 				<el-upload
@@ -95,7 +95,6 @@
 				//imgWidth:'337.7778px',
 				//imgHeight:'190px',
 				value:'',
-				oldimg:'',
 			}
 		},
 		// props:['index','imgWidth','imgHeight', 'aspectRatio','font-size'],
@@ -144,8 +143,7 @@
 		
 		},
 		mounted(){
-			console.log("mounted"+this.cropImg);
-			this.oldimg = this.cropImg
+			console.log("进入上传图片组件内容mounted:"+this.cropImg);
 			this.backScanImage(this.cropImg);	
 		},
 		methods:{
@@ -165,8 +163,8 @@
 				}
 			},
 			setImage(e){
+				console.log("裁剪图片");
 				const file = e.target.files[0];
-				console.log(file.type)
 				if (!file.type.includes('image/jpg')&&!file.type.includes('image/jpeg')&&!file.type.includes('image/png')&&!file.type.includes('image/jif')) {
 					this.$message.error('仅支持（jpg,jpeg,png,gif）为后缀的文件!');
 					//   this.value = file
@@ -202,17 +200,19 @@
 			// 取消上传图片，要回显一起拿的图片
 			cancleImg(){
 				this.cropper.dialogVisible = false;
-				this.cropper.cropImg =  this.oldimg;
+				// 回显最后一次上传的图片
+				this.cropper.cropImg =  this.cropImg;
 				// 如果取消后是不base64,不回显
-				if(/data:image/.test(this.cropper.cropImg)){
-					this.cropper.cropImg = ""
-				}
+				console.log("取消了上传图片");
+				console.log(this.cropImg);
+				console.log(this.cropper.cropImg);
+				// if(/data:image/.test(this.cropper.cropImg)){
+				// 	this.cropper.cropImg = ""
+				// }
 			},
 			submitImg(){
 				this.cropper.dialogVisible = false;
 				this.$emit("GiftUrlHandle", this.cropper.cropImg,this.index);
-				// 上传图片成功后，最有一次上传的图片要更新
-				this.oldimg = this.cropper.cropImg
 			},
 			// 预览图片
 			// 上传图片:
@@ -291,6 +291,7 @@
 		position: relative;
 		width: 100%;
 		height: 100%;
+		padding: 1px;
 	}
 	.upload-box:hover > .hiddenUloadingBox{
 			display: inline-block;

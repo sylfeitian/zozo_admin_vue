@@ -38,7 +38,7 @@
         <el-radio-group v-model="activeName" @change="handleClick">
             <el-radio-button label="">全部</el-radio-button>
             <el-radio-button label="1">已发布</el-radio-button>
-            <el-radio-button label="0">已取消发布</el-radio-button>
+            <el-radio-button label="2">已取消发布</el-radio-button>
         </el-radio-group>
         <el-table
                 width="100%"
@@ -254,8 +254,8 @@
                     this.dataForm.state = null
                 }else if(tab== "1"){
                     this.dataForm.state = "1"
-                }else if(tab== "0"){
-                    this.dataForm.state = "0"
+                }else if(tab== "2"){
+                    this.dataForm.state = "2"
                 }
                 this.changeVal = val;
                 this.getData();

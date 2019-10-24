@@ -62,8 +62,8 @@
                             <el-form-item label="售后状态：">
                                 <!-- 售后状态 退货退款（10待退货、20待入库、30待退款、40退款中、50退款完成、60退款失败、70售后取消） 仅退款（10退款中、20退款完成、30退款失败） , -->
                                 <span v-if="returnInfo.auditStatus==0">待审核</span>
-                                <span v-else-if="returnInfo.auditStatus==2">审核不通过</span>
-                                 <span v-else-if="returnInfo.auditStatus==3">取消</span>
+                                <span v-else-if="returnInfo.auditStatus==2">售后取消</span><!-- 审核不通过 -->  
+                                 <span v-else-if="returnInfo.auditStatus==3">售后取消</span><!-- 已取消 -->
                                 <!-- 审核通过 -->
                                 <div v-else-if="returnInfo.auditStatus==1">
                                     <span v-if="returnInfo.status==10">待退货</span>
@@ -109,7 +109,7 @@
                             
                             <el-form-item label="图片：" >
                                 <div v-for="(item,index) in aftersalePics ">
-                                    <img :src="item | filterImgUrl" alt="" style="height:80px;width:auto">
+                                    <img id="oImg" :src="item | filterImgUrl" alt="" style="height:80px;width:auto" @click="handlePictureCardPreview(item)">
                                 </div>
                             </el-form-item>
                     </div>
@@ -173,6 +173,9 @@
                         </el-form-item>
                     </div>
                 </el-form>
+           <el-dialog :visible.sync="dialogVisible">
+               <img :style="{width:oImgWidth,height:oImgHeight}" :src="dialogImageUrl" alt="">
+           </el-dialog>
                 <!-- 分割线------------------------------------------------ -->
                 <h3>操作日志</h3>
                 <el-table
@@ -251,7 +254,11 @@
                 logs:[],
                 returnInfo:{},
                  aftersalePics:[],
-                warehouseList:[]
+                warehouseList:[],
+                dialogImageUrl: '',
+                dialogVisible: false,
+                oImgWidth:'',
+                oImgHeight:''
             }
         },
         props: ['breaddata'],
@@ -278,6 +285,19 @@
             },
         },
         methods:{
+            handlePictureCardPreview(url) {
+                // 拿到原图的宽高
+                this.oImgWidth = document.getElementById("oImg").naturalWidth;
+                this.oImgHeight = document.getElementById("oImg").naturalHeight;
+                this.dialogVisible = true;
+                if(url){
+                    this.dialogImageUrl = window.SITE_CONFIG['imgURL'] + "" +url;
+                }else{
+                    this.dialogImageUrl = "http://morefun.image.alimmdn.com/xiaoBai/default.png"
+                }
+
+
+            },
             init(row){
                 // row.aftersaleSn = 111;
                 this.row = row;
@@ -419,5 +439,8 @@
     /deep/  .el-form-item__content{
         padding-left:20px;
     }
+}
+/deep/ .el-dialog{
+    width: fit-content !important;
 }
 </style>

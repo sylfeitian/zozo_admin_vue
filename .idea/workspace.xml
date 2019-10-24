@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a0093aa4-0412-4213-a149-24415acfb6d0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -13,16 +12,88 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DefaultGradleProjectSettings">
-    <option name="testRunner" value="GRADLE" />
-    <option name="delegatedBuild" value="true" />
+    <option name="isMigrated" value="true" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/views/modules/activiti/running.vue">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/views/modules/marketing/seckillActivity/index.vue">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="390">
-              <caret line="13" column="16" selection-start-line="13" selection-start-column="16" selection-end-line="13" selection-end-column="16" />
+              <caret line="13" selection-start-line="13" selection-end-line="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/views/modules/marketing/seckillActivity/addlist.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="14790">
+              <caret line="493" column="32" selection-start-line="493" selection-start-column="32" selection-end-line="493" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/views/modules/search/manage/hot/index.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2160">
+              <caret line="72" column="42" selection-start-line="72" selection-start-column="42" selection-end-line="72" selection-end-column="42" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/views/modules/search/manage/statistics/index.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2400">
+              <caret line="80" column="9" selection-start-line="80" selection-start-column="9" selection-end-line="80" selection-end-column="9" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="38" selection-start-column="38" selection-end-column="38" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/views/modules/marketing/reductionActivity/detail.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4950">
+              <caret line="165" column="17" selection-start-line="165" selection-start-column="12" selection-end-line="165" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/views/modules/mggoods/good/recordinformation/index.vue">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/views/modules/mggoods/good/recordinformation/list.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="263">
+              <caret line="389" column="33" selection-start-line="389" selection-start-column="33" selection-end-line="389" selection-end-column="33" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/views/modules/marketing/reductionActivity/index.vue">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/views/modules/marketing/reductionActivity/list.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="7470">
+              <caret line="249" column="16" selection-start-line="249" selection-start-column="16" selection-end-line="249" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -31,11 +102,7 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>delContent</find>
-      <find>biaoti</find>
-      <find>contentChild</find>
       <find>图片</find>
-      <find>reset</find>
       <find>favNumCn</find>
       <find>threshold</find>
       <find>启用</find>
@@ -61,6 +128,10 @@
       <find>editHandle</find>
       <find>controlShowPage</find>
       <find>el-input v-model</find>
+      <find>重置</find>
+      <find>reset</find>
+      <find>input</find>
+      <find>同义词管理</find>
     </findStrings>
     <replaceStrings>
       <replace>styleList</replace>
@@ -76,6 +147,11 @@
   <component name="Git.Settings">
     <option name="UPDATE_TYPE" value="MERGE" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -100,7 +176,6 @@
         <option value="$PROJECT_DIR$/src/views/modules/marketing/coupon/addcouponvip.vue" />
         <option value="$PROJECT_DIR$/src/views/modules/marketing/coupon/addcouponpt.vue" />
         <option value="$PROJECT_DIR$/src/views/modules/myorder/order/comment/index.vue" />
-        <option value="$PROJECT_DIR$/src/views/modules/marketing/seckillActivity/addlist.vue" />
         <option value="$PROJECT_DIR$/src/api/api.js" />
         <option value="$PROJECT_DIR$/src/views/modules/message/systemmessageList/add.vue" />
         <option value="$PROJECT_DIR$/src/views/modules/content/collocation/details.vue" />
@@ -122,20 +197,25 @@
         <option value="$PROJECT_DIR$/src/views/modules/collocation/QAconfig/detail.vue" />
         <option value="$PROJECT_DIR$/src/views/modules/mgvip/list/modules/editVip.vue" />
         <option value="$PROJECT_DIR$/src/views/modules/activiti/running.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/marketing/reductionActivity/list.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/marketing/seckillActivity/addlist.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/search/manage/hot/index.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/search/manage/statistics/index.vue" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="676" />
-    <option name="y" value="27" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="339" />
+    <option name="y" value="89" />
     <option name="width" value="1364" />
-    <option name="height" value="1071" />
+    <option name="height" value="1085" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -167,13 +247,31 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
               <item name="modules" type="462c0819:PsiDirectoryNode" />
-              <item name="activiti" type="462c0819:PsiDirectoryNode" />
+              <item name="mggoods" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="admin_zozo_vue" type="b2602c69:ProjectViewProjectNode" />
+              <item name="admin_zozo_vue" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="modules" type="462c0819:PsiDirectoryNode" />
+              <item name="mggoods" type="462c0819:PsiDirectoryNode" />
+              <item name="good" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="admin_zozo_vue" type="b2602c69:ProjectViewProjectNode" />
+              <item name="admin_zozo_vue" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="modules" type="462c0819:PsiDirectoryNode" />
+              <item name="mggoods" type="462c0819:PsiDirectoryNode" />
+              <item name="good" type="462c0819:PsiDirectoryNode" />
+              <item name="recordinformation" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -182,7 +280,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1571391803808" />
-    <property name="last_opened_file_path" value="D:/zhongzhilu_h5" />
+    <property name="last_opened_file_path" value="E:/work/h5_zozo" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -240,6 +338,9 @@
       <workItem from="1571189290517" duration="25742000" />
       <workItem from="1571277840772" duration="17517000" />
       <workItem from="1571361834382" duration="17530000" />
+      <workItem from="1571793064608" duration="8147000" />
+      <workItem from="1571828856808" duration="678000" />
+      <workItem from="1571834878617" duration="254000" />
     </task>
     <task id="LOCAL-00001" summary="代码合并">
       <created>1570762553075</created>
@@ -332,11 +433,25 @@
       <option name="project" value="LOCAL" />
       <updated>1571456920305</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="bug编号：21834&#10;详细：营销模块--秒杀模块点击查看商品 id查询数据---id查询数据和点击重置按钮无效 &#10;解决方案：跟搜索框设空">
+      <created>1571810517185</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1571810517185</updated>
+    </task>
+    <task id="LOCAL-00015" summary="bug编号：21849&#10;详细：系统--搜索-- 热门搜索配置 面包屑标题错误  &#10;解决方案：修改标题">
+      <created>1571811641645</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1571811641645</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="140434000" />
+    <option name="totallyTimeSpent" value="149429000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -348,9 +463,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="676" y="27" width="1364" height="1071" extended-state="0" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17963752" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Gulp" order="2" side_tool="true" />
       <window_info id="npm" order="3" side_tool="true" />
@@ -361,15 +476,17 @@
       <window_info id="Favorites" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3244397" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.324295" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.329718" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.3286334" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.46312365" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.46312365" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="CheckStyle" order="11" />
+      <window_info anchor="bottom" id="Docker" order="12" show_stripe_button="false" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -379,6 +496,7 @@
       <window_info anchor="right" id="Palette&#9;" order="6" />
       <window_info anchor="right" id="Database" order="7" />
       <window_info anchor="right" id="Maven Projects" order="8" />
+      <window_info anchor="right" id="Maven" order="9" />
     </layout>
     <layout-to-restore>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2855228" />
@@ -415,68 +533,33 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="禅道内容模块bug" />
     <MESSAGE value="禅道内容模块bug&#10;报表模块  售后统计与优惠券统计" />
     <MESSAGE value="代码合并" />
     <MESSAGE value="禅道bug" />
     <MESSAGE value="给所有的el-input v-model改成el-input v-model.trim" />
-    <option name="LAST_COMMIT_MESSAGE" value="给所有的el-input v-model改成el-input v-model.trim" />
+    <MESSAGE value="bug编号：21834&#10;详细：营销模块--秒杀模块点击查看商品 id查询数据---id查询数据和点击重置按钮无效 &#10;解决方案：跟搜索框设空" />
+    <MESSAGE value="bug编号：21849&#10;详细：系统--搜索-- 热门搜索配置 面包屑标题错误  &#10;解决方案：修改标题" />
+    <option name="LAST_COMMIT_MESSAGE" value="bug编号：21849&#10;详细：系统--搜索-- 热门搜索配置 面包屑标题错误  &#10;解决方案：修改标题" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/views/modules/mgvip/list/modules/loginLog.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-336" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/modules/mgvip/list/memberDetail/memberAddress.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2016" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/modules/mgvip/list/modules/vipDetail.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2971" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/modules/content/collocation/index.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="588">
-          <caret line="53" column="13" lean-forward="true" selection-start-line="47" selection-start-column="11" selection-end-line="53" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/modules/marketing/limitActicity/addgoods.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="124" column="11" lean-forward="true" selection-start-line="124" selection-start-column="11" selection-end-line="124" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/modules/marketing/limitActicity/modules/model-eidt-sku.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="230" column="5" lean-forward="true" selection-start-line="230" selection-start-column="5" selection-end-line="230" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/modules/sys/system/wordbank/model-add-edit-data.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="687">
-          <caret line="49" column="17" lean-forward="true" selection-start-line="49" selection-start-column="17" selection-end-line="49" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/modules/sys/system/wordbank/index.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-884">
-          <caret line="18" column="35" lean-forward="true" selection-start-line="18" selection-start-column="35" selection-end-line="18" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/modules/marketing/seckillActivity/index.vue">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/views/modules/marketing/seckillActivity/timelist.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="208">
@@ -529,13 +612,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/clipboard/src/clipboard-action.js" />
     <entry file="file://$PROJECT_DIR$/node_modules/element-ui/lib/element-ui.common.js" />
-    <entry file="file://$PROJECT_DIR$/src/views/modules/marketing/seckillActivity/addlist.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="17" column="33" selection-start-line="17" selection-start-column="33" selection-end-line="17" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/views/modules/marketing/seckillActivity/list.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2154">
@@ -804,6 +880,68 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="390">
           <caret line="13" column="16" selection-start-line="13" selection-start-column="16" selection-end-line="13" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/marketing/seckillActivity/index.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="13" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/marketing/seckillActivity/addlist.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="14790">
+          <caret line="493" column="32" selection-start-line="493" selection-start-column="32" selection-end-line="493" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/search/manage/hot/index.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2160">
+          <caret line="72" column="42" selection-start-line="72" selection-start-column="42" selection-end-line="72" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/search/manage/statistics/index.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2400">
+          <caret line="80" column="9" selection-start-line="80" selection-start-column="9" selection-end-line="80" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="38" selection-start-column="38" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/marketing/reductionActivity/detail.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4950">
+          <caret line="165" column="17" selection-start-line="165" selection-start-column="12" selection-end-line="165" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/mggoods/good/recordinformation/index.vue">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/marketing/reductionActivity/index.vue">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/marketing/reductionActivity/list.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7470">
+          <caret line="249" column="16" selection-start-line="249" selection-start-column="16" selection-end-line="249" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/mggoods/good/recordinformation/list.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="263">
+          <caret line="389" column="33" selection-start-line="389" selection-start-column="33" selection-end-line="389" selection-end-column="33" />
         </state>
       </provider>
     </entry>
