@@ -213,7 +213,7 @@
                                         </div>
                                         <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
                                             <div class="goodsPropsWrap">
-                                                <div class="goodsImg">
+                                                <div class="goodsImg" style="text-align:center;">
                                                     <img :src="v.imageUrl | filterImgUrl" style="width:200px;" alt=""/>
                                                 </div>
                                                 <div v-if="v.typeId=='4'"  v-html="v.text"></div>
@@ -282,7 +282,7 @@
         display: inline-block;
     }
     .contentChild{
-        text-align: center;
+        // text-align: center;
     }
     .inforRight {
         margin-left: 20px;
@@ -304,7 +304,7 @@
         border-bottom: 0!important;
     }
     .contentChild{
-        text-align: center;
+        // text-align: center;
         padding: 0;
     }
     /deep/ .el-form-item--default {
