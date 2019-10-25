@@ -393,6 +393,8 @@ export const auditOperating  = params => { return http.post(`${base}/order/audit
 // 修改订单运营备注
 // export const managerRemark  = params => { return http.get(`${base}/order/${params.id}/manager/remark?remark=${params.remarks}`, params).then(res => res.data); }
 export const managerRemark  = params => { return http.post(`${base}/order/manager/remark`, params).then(res => res.data); }
+// 重试订单
+export const orderRetry = params => { return http.post(`${base}/order/exception/retry?orderId=${params.orderId}`, params).then(res => res.data); }
 // 取消订单
 export const orderCancel = params => { return http.post(`${base}/order/cancel/${params.id}`, params).then(res => res.data); }
 // jd订单申报
