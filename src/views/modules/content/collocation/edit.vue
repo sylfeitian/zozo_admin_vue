@@ -297,4 +297,7 @@
         -webkit-line-clamp: 2;
         overflow: hidden;
     }
+    /deep/ .el-form-item__content {
+        padding: 0 20px!important;
+    }
 </style>
