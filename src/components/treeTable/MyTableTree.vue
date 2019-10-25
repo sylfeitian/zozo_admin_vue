@@ -94,11 +94,13 @@
         },
         methods: {
         	handleIsExpand(d,n,s){  //点击>和节点name时       节点展开时触发的事件
-				this.openrowid.push(d.id);   //开启时   加到数组中
+                this.openrowid.push(d.id);   //开启时   加到数组中
+                console.log(this.openrowid)
 			},
 			handleIsCollapse(d,n,s){   //点击>和节点name时   节点关闭时触发的事件
-				this.openrowid.splice(arrRemove(this.openid,d.id), 1);  //关闭时   从去掉默认打开的目录
-			},
+				this.openrowid.splice(arrRemove(this.openrowid,d.id), 1);  //关闭时   从去掉默认打开的目录
+                // console.log(this.openrowid)
+            },
             // 计算按钮宽度
             execSpan () {
                 let sum = 0;
