@@ -183,8 +183,8 @@
                                 <div style="display:flex;padding:0" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
                                     <div v-if="v.text || v.imageUrl"  v-show="row.fashionFlag == 0" style="padding: 0;">
                                         <!-- <div style="height: 20px;"></div> -->
-                                        <div class="contentChild" style="min-height:33px;padding-right: 6px;padding: 0;" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
-                                            {{v.text}}
+                                        <div class="contentChild" style="min-height:33px;padding-right: 6px;padding: 0;text-align:left;" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
+                                            {{shopFashionContentsVOList[i].text}}
                                         </div>
                                         <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
                                             <div class="goodsPropsWrap" style="text-align: center;">
@@ -239,6 +239,8 @@
     import quillEditorImg from "@/components/quillEditor"
     import Bread from "@/components/bread";
     import { getfashiondetail,savefashiondetail } from '@/api/api'
+    import cloneDeep from 'lodash/cloneDeep'
+
     export default {
         data () {
             return {
@@ -252,6 +254,7 @@
                     ]
                 },
                 dataForm: {},
+                shopFashionContentsVOList:[],
                 row:"",
             }
         },
@@ -269,7 +272,10 @@
                         }
                         getfashiondetail(obj).then((res)=>{
                             if(res.code == 200){
-                                this.dataForm = res.data;
+                                // Object.assign(this.dataForm,res.data)
+                                this.dataForm=res.data
+                                // console.log(this.shopFashionContentsVOList)
+                                this.shopFashionContentsVOList =  cloneDeep(this.dataForm.shopFashionContentsVOList)
                             }
                         })
                     }
