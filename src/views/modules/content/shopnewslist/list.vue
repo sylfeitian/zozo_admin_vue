@@ -290,6 +290,9 @@
                                 type: 'success',
                                 duration: 1500,
                             })
+                            if (this.dataList.length == 1) {
+                                this.getData();
+                            }
                         }else{
                             this.$message({
                                 message:res.data,
@@ -322,6 +325,9 @@
                                     type: 'success',
                                     duration: 1500,
                                 })
+                                if (this.dataList.length == 1) {
+                                    this.getData();
+                                }
                             }else{
                                 this.$message({
                                     message:res.data,
