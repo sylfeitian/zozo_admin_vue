@@ -181,14 +181,14 @@
                         <el-form-item label="详情：" style="height: 100%!important;">
                             <template slot-scope="scope">
                                 <div style="display:flex;padding:0" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
-                                    <div v-if="v.text || v.imageUrl"  v-show="row.fashionFlag == 0" style="padding: 0;">
+                                    <div v-if="v.text=='' || shopFashionContentsVOList[i].text || v.imageUrl"  v-show="row.fashionFlag == 0" style="padding: 0;">
                                         <!-- <div style="height: 20px;"></div> -->
                                         <div class="contentChild" style="min-height:33px;padding-right: 6px;padding: 0;text-align:left;" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
                                             {{shopFashionContentsVOList[i].text}}
                                         </div>
                                         <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
                                             <div class="goodsPropsWrap" style="text-align: center;">
-                                                <div class="goodsImg" style="margin-left:60%;">
+                                                <div class="goodsImg" style="margin-left:100%;">
                                                     <img :src="v.imageUrl" style="width:200px;" alt=""/>
                                                 </div>
                                                 <div v-if="v.typeId=='4'">{{v.text}}</div>
@@ -203,14 +203,14 @@
                         <el-form-item label="详情：" style="height: 100%!important;">
                             <template slot-scope="scope">
                                 <div style="padding:0" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
-                                    <div  v-if="v.text || v.imageUrl" style="padding: 0;width:80%;margin-left:100px;">
+                                    <div  v-if="v.text=='' || v.text || v.imageUrl" style="padding: 0;width:80%;margin-left:100px;">
                                         <!-- <div style="height: 20px;"></div> -->
                                         <div class="contentChild"  style="min-height:33px;"  v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
                                             <el-input style="margin: auto;" v-model="v.text" type="textarea" :rows="5" ></el-input>
                                         </div>
                                         <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
                                             <div class="goodsPropsWrap" style="text-align: center;">
-                                                <div class="goodsImg" style="margin-left:-60%;">
+                                                <div class="goodsImg">
                                                     <img :src="v.imageUrl" style="width:200px;" alt=""/>
                                                 </div>
                                                 <div v-if="v.typeId=='4'">{{v.text}}</div>
