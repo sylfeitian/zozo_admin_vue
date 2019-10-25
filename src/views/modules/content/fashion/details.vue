@@ -325,5 +325,6 @@
     /deep/ .el-form-item__content {
         display: flex!important;
         flex-direction: column!important;
+        padding: 0 20px 0 0!important;
     }
 </style>

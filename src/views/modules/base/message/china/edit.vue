@@ -425,8 +425,16 @@
 			this.$refs[formName].validate((valid) => {
 				if (valid) {
 					//确定提交
-					this.saveLoading = true,
-					updataCategoryCn(this.dataForm).then((res)=>{
+					var categoryJpId = [] ;
+					this.dataForm.categoryJpId.forEach((item,index)=>{
+							if(item) categoryJpId.push(item)
+					})
+					this.saveLoading = true
+					var obj = {
+						...this.dataForm,
+						categoryJpId:categoryJpId
+					}
+					updataCategoryCn(obj).then((res)=>{
 						this.saveLoading = false;
 						if(res.code == 200){
 							console.log(res.data);

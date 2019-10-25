@@ -3,7 +3,7 @@
     <Bread :breaddata="breaddata"></Bread>
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="活动名称：">
-            <el-input v-model.trim="dataForm.title" placeholder="请输入优惠券名称" clearable  maxlength="300" ></el-input>
+            <el-input v-model.trim="dataForm.title" placeholder="请输入活动名称" clearable  maxlength="300" ></el-input>
         </el-form-item>
         <el-form-item  label="活动状态：">
             <el-select v-model="dataForm.state" clearable  placeholder="请选择">
@@ -38,7 +38,7 @@
                 @blur='acttime'>
 			</el-date-picker>
 		    </el-form-item>
-        
+
         <el-form-item>
             <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>
             <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
@@ -76,7 +76,7 @@
 		    label="活动时间">
             <template slot-scope="scope">
                     <span>{{scope.row.startTime}} 至 {{scope.row.endTime}}</span>
-             </template> 
+             </template>
 		</el-table-column>
         <el-table-column
 		    prop="presellTime"
@@ -90,7 +90,7 @@
                 <span v-if="scope.row.auditState==0">待审核</span>
                 <span v-else-if="scope.row.auditState==1">审核通过</span>
                 <span v-else-if="scope.row.auditState==2">审核未通过</span>
-            </template> 
+            </template>
 		</el-table-column>
 		<el-table-column
 		    prop="createDate"
@@ -102,7 +102,7 @@
                     <span v-else-if="scope.row.state ==1">进行中</span>
                     <span v-else-if="scope.row.state ==2">已结束</span>
                     <span v-else-if="scope.row.state ==3">未开售</span>
-                </template>   
+                </template>
 		</el-table-column>
 	    <el-table-column
             align="center"
@@ -134,7 +134,7 @@
     <modelExammine v-if="modelExammineVisible" ref="modelExammineCompon" @searchDataList="getDataList" ></modelExammine>
     <!-- 停止 -->
     <modelStop v-if="modelStopVisible" ref="modelStopCompon" @searchDataList="getDataList" ></modelStop>
-    
+
   </div>
 </template>
 
@@ -146,7 +146,7 @@ import Bread from "@/components/bread";
 import modelAddOrEdit from "./modules/model-add-or-edit"
 import modelExammine from "./modules/model-exammine"
 import modelStop from "./modules/model-stop"
-  
+
 export default {
   mixins: [mixinViewModule],
   data () {
@@ -164,12 +164,12 @@ export default {
       modelStopVisible:false,
       buttonStatus:false,
       activiTitle:'添加活动',
-      
+
       dataForm: {
         //   title:'',// 活动标题 ,
         //   state:'',//0:未开始，1：进行中，2：已结束 ,
         //   auditState :'',//审核状态：0未审核，1：审核通过，2审核未通过 ,
-        //   startTime:'',//活动开始时间   
+        //   startTime:'',//活动开始时间
         //   endTime:'', // 活动结束时间
       },
       auditStateOption:[
@@ -230,7 +230,7 @@ export default {
         },
         // 审核活动
         exammineActivity(row){
-            this.modelExammineVisible = true;  
+            this.modelExammineVisible = true;
             this.$nextTick(()=>{
                 this.$refs.modelExammineCompon.init(row);
             })
@@ -246,7 +246,7 @@ export default {
         subActivity(formName){
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    
+
                 }
             });
         },
@@ -255,7 +255,7 @@ export default {
             this.dataForm.startTime = this.valuetime[0];
             this.dataForm.endTime = this.valuetime[1];
         },
-        
+
   }
 };
 </script>

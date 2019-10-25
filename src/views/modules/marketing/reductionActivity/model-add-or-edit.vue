@@ -215,7 +215,7 @@
                 })
             },
             backScan(){
-              this.activiDataForm = this.row;
+              Object.assign(this.activiDataForm, this.row);
               if(this.row.shareFlag==1){
                   this.checkList = true;
               }else{
