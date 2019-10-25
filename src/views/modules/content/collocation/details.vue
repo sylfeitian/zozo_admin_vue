@@ -256,4 +256,7 @@
         padding: 0 0!important;
         margin-bottom: 0!important;
     }
+    /deep/ .el-form-item__content {
+        padding: 0 20px!important;
+    }
 </style>
