@@ -132,17 +132,25 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="200">
                 <template slot-scope="scope">
-                    <!-- <el-button type="primary" @click="submitStore()">{{ $t('confirm') }}</el-button> -->
-                    <el-button size="mini" type="text" @click="orderDetFn(scope.row)">查看</el-button>
-                    <el-button size="mini" type="text" @click="cancleOrderFn(scope.row)"  v-if="scope.row.orderStatus==10  ||   scope.row.orderStatus==50 || scope.row.orderStatus==70 || scope.row.orderStatus==90 || scope.row.orderStatus==100">取消订单</el-button>
-                    <el-button size="mini" type="text" @click="exammineFn(scope.row)" v-if="scope.row.orderStatus==30">审核</el-button>
-                    <!-- JD申报失败 -->
-                    <el-button size="mini" type="text" @click="declareSthFn(scope.row,'jd')" v-if="scope.row.orderStatus==100">重新申报</el-button>
-                    <!-- <el-button size="mini" type="text"  @click="clearancFailureFn(scope.row)"  v-if="scope.row.orderStatus==80">清关失败</el-button> -->
-                    <!-- <el-button size="mini" type="text"  @click="writeLogisticsInfo(scope.row)"  v-if="scope.row.orderStatus==80">填写物流</el-button> -->
+                    <!-- 异常订单 -->
+                    <div v-if="scope.row.exceptionStatus!=0">
+                        <el-button size="mini" type="text" @click="orderDetFn(scope.row)">查看</el-button>
+                        <el-button size="mini" type="text" @click="reptyOrderFn(scope.row)">重试</el-button>
+                   </div>
+                    <!-- 正常订单 -->
+                   <div v-else>
+                        <!-- <el-button type="primary" @click="submitStore()">{{ $t('confirm') }}</el-button> -->
+                        <el-button size="mini" type="text" @click="orderDetFn(scope.row)">查看</el-button>
+                        <el-button size="mini" type="text" @click="cancleOrderFn(scope.row)"  v-if="scope.row.orderStatus==10  ||   scope.row.orderStatus==50 || scope.row.orderStatus==70 || scope.row.orderStatus==90 || scope.row.orderStatus==100">取消订单</el-button>
+                        <el-button size="mini" type="text" @click="exammineFn(scope.row)" v-if="scope.row.orderStatus==30">审核</el-button>
+                        <!-- JD申报失败 -->
+                        <el-button size="mini" type="text" @click="declareSthFn(scope.row,'jd')" v-if="scope.row.orderStatus==100">重新申报</el-button>
+                        <!-- <el-button size="mini" type="text"  @click="clearancFailureFn(scope.row)"  v-if="scope.row.orderStatus==80">清关失败</el-button> -->
+                        <!-- <el-button size="mini" type="text"  @click="writeLogisticsInfo(scope.row)"  v-if="scope.row.orderStatus==80">填写物流</el-button> -->
 
-                    <!-- tudo lakala申报失败,申报失败需要重新申报，和JD申报失败重新申报调不一样的接口  -->
-                    <el-button size="mini" type="text" @click="declareSthFn(scope.row,'lakala')" v-if="scope.row.orderStatus==50">重新申报</el-button>
+                        <!-- tudo lakala申报失败,申报失败需要重新申报，和JD申报失败重新申报调不一样的接口  -->
+                        <el-button size="mini" type="text" @click="declareSthFn(scope.row,'lakala')" v-if="scope.row.orderStatus==50">重新申报</el-button>
+                   </div>
                 </template>
             </el-table-column>
         </el-table>
@@ -156,6 +164,9 @@
                 layout="total, sizes, prev, pager, next, jumper"
         ></el-pagination>
 
+
+        <!-- 订单重试 -->
+        <reptyOrder v-if="reptyOrderVisible" ref="reptyOrderCompon" @searchDataList="searchDataList"></reptyOrder>
         <!-- 申报 -->
         <declareSth v-if="declareSthVisible" ref="declareSthCompon" @searchDataList="searchDataList"></declareSth>
          <!-- 审核 -->
@@ -185,7 +196,9 @@
     import { orderlists } from "@/api/url";
     import { orderDetail, paymentList,orderListTop } from "@/api/api";
     import declareSth from '../modules/model-declare-sth.vue'
-     import clearancFailure from '../modules/model-clearanc-failure.vue'
+    import reptyOrder from './modules/model-repty.vue'
+    
+    import clearancFailure from '../modules/model-clearanc-failure.vue'
     import writeLogisticsInfo from '../modules/model-write-logistics-info.vue'
     import exammine from '../modules/model-exammine.vue'
     import cancleOrder from '../modules/model-cancle-order.vue'
@@ -214,6 +227,7 @@
                 declareSthVisible:false,
                 exammineVisible:false,
                 cancleOrderVisible:false,
+                reptyOrderVisible:false,
                 detailOrList: 1,
                 radio1: "all",
                 tableData: [],
@@ -281,6 +295,7 @@
             writeLogisticsInfo,
             cancleOrder,
             exammine,
+            reptyOrder,
             // orderDet,
             // discountDet
         },
@@ -423,6 +438,15 @@
                 this.cancleOrderVisible = true;
                 this.$nextTick(() => {
                    this.$refs.cancleOrderCompon.init(row)
+                })
+                this.searchDataList();
+            },
+
+             //订单重试
+            reptyOrderFn(row){
+                this.reptyOrderVisible = true;
+                this.$nextTick(() => {
+                   this.$refs.reptyOrderCompon.init(row)
                 })
                 this.searchDataList();
             },

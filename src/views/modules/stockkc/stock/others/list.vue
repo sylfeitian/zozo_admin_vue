@@ -161,7 +161,7 @@
             addOrAdit(){
                 this.$emit("addOrAdit");
             },
-            showDetail(index=-1,row=""){
+            showDetail(index=-1,row){
                 this.setShowDetailVisible(true);
                 this.$nextTick(() => {
                     this.$refs.showDetail.init(row)
