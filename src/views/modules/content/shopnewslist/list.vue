@@ -291,7 +291,8 @@
                                 duration: 1500,
                             })
                             if (this.dataList.length == 1) {
-                                this.getData();
+                                this.page = 1;
+                                this.getDataList();
                             }
                         }else{
                             this.$message({
@@ -326,7 +327,8 @@
                                     duration: 1500,
                                 })
                                 if (this.dataList.length == 1) {
-                                    this.getData();
+                                    this.page = 1;
+                                    this.getDataList();
                                 }
                             }else{
                                 this.$message({
