@@ -3,7 +3,7 @@
     <Bread :breaddata="breaddata"></Bread>
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
         <el-form-item label="分类名称：">
-            <el-input v-model.trim="dataForm.title" placeholder="请输入优惠券名称" clearable></el-input>
+            <el-input v-model.trim="dataForm.title" placeholder="请输入分类名称" clearable></el-input>
         </el-form-item>
         <el-form-item  label="状态：">
             <el-select v-model="dataForm.stopFlag" clearable  placeholder="请选择">
@@ -56,7 +56,7 @@
                 <span v-if="scope.row.stopFlag==1">已停用</span>
                 <span v-else-if="scope.row.stopFlag==0">已启用</span>
             </template>
-		</el-table-column>		
+		</el-table-column>
 	    <el-table-column
             align="center"
 	    	label="操作">
@@ -86,12 +86,12 @@
         :show-close = "false"
         class="activiDialog"
         width="40%">
-       
+
     </el-dialog> -->
 
     <!-- 添加或者编辑 -->
     <modelAddOrEdit v-if="modelAddOrEditVisible" ref="modelAddOrEditCompon" @searchDataList="getDataList" ></modelAddOrEdit>
-    
+
   </div>
 </template>
 
@@ -194,7 +194,7 @@
             subActivity(formName){
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        
+
                     }
                 });
             },
