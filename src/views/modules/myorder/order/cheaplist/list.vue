@@ -29,7 +29,7 @@
                      <el-option label="日本取消订单" value="70" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
                     <el-option label="JD申报中" value="80" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
                     <el-option label="JD申报失败" value="100" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
-                   
+
                     <el-option label="清关中" value="110" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
                     <!-- <el-option label="清关失败" value="120" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option> -->
                      <el-option label="待收货" value="130" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
@@ -69,11 +69,11 @@
         </el-form>
         <el-radio-group v-model="radio1" @change="agreeChange">
             <el-radio-button label="all">全部订单<span v-if="topNum.all && topNum.all!=0"> ({{topNum.all}}) </span></el-radio-button>
-            <el-radio-button label="waitpay">待支付<span v-if="topNum.waitpay && topNum.waitpay !=0">({{topNum.waitpay}})</span></el-radio-button> 
+            <el-radio-button label="waitpay">待支付<span v-if="topNum.waitpay && topNum.waitpay !=0">({{topNum.waitpay}})</span></el-radio-button>
             <el-radio-button label="waitshipped">待发货<span v-if="topNum.waitshipped && topNum.waitshipped !=0">({{topNum.waitshipped}})</span></el-radio-button>
             <el-radio-button label="waitreceived">待收货<span v-if="topNum.waitreceived && topNum.waitreceived !=0">({{topNum.waitreceived}})</span></el-radio-button>
             <el-radio-button label="complete">交易成功<span v-if="topNum.complete && topNum.complete !=0">({{topNum.complete}})</span></el-radio-button>
-            <el-radio-button label="cancel">订单取消<span v-if="topNum.cancel && topNum.cancel !=0">({{topNum.cancel}})</span></el-radio-button> 
+            <el-radio-button label="cancel">订单取消<span v-if="topNum.cancel && topNum.cancel !=0">({{topNum.cancel}})</span></el-radio-button>
         </el-radio-group>
         <el-table
                 width="100%"
@@ -82,34 +82,52 @@
                 v-loading="dataListLoading"
                 style="width: 100%; maigin-top:10px;"
         >
-            <el-table-column prop="orderSn" label="订单编号" align="center" width="180"></el-table-column>
-            <el-table-column prop="createDate" label="下单时间" align="center"></el-table-column>
-            <el-table-column prop="memberName" label="会员账号" align="center"></el-table-column>
-            <el-table-column prop="orderAmount" label="订单金额" align="center">
-                <template slot-scope="scope">￥{{scope.row.orderAmount}}</template>
+            <el-table-column prop="orderSn" label="订单编号" align="center" width="180">
+                <template slot-scope="scope">
+                    <span :class="scope.row.exceptionStatus!=0?'redClass':''">{{scope.row.orderSn}}</span>
+                </template>
             </el-table-column>
-            <el-table-column prop="paymentName" label="支付方式" align="center"></el-table-column>
+            <el-table-column prop="createDate" label="下单时间" align="center">
+                <template slot-scope="scope">
+                    <span :class="scope.row.exceptionStatus!=0?'redClass':''">{{scope.row.createDate}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="memberName" label="会员账号" align="center">
+                <template slot-scope="scope">
+                    <span :class="scope.row.exceptionStatus!=0?'redClass':''">{{scope.row.memberName}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="orderAmount" label="订单金额" align="center">
+                <template slot-scope="scope" >
+                    <span :class="scope.row.exceptionStatus!=0?'redClass':''">￥{{scope.row.orderAmount}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="paymentName" label="支付方式" align="center">
+                <template slot-scope="scope">
+                    <span :class="scope.row.exceptionStatus!=0?'redClass':''">{{scope.row.paymentName}}</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="orderStatus" label="订单状态" align="center">
                  <template slot-scope="scope">
                         <!-- 待付款 -->
                         <span v-if="scope.row.orderStatus==10">待付款</span>
                          <!-- 待发货 -->
-                        <span v-else-if="scope.row.orderStatus==20">付款中</span>
-                        <span v-else-if="scope.row.orderStatus==30">待审核</span>
-                        <span v-else-if="scope.row.orderStatus==35">审核未通过</span>
-                        <span v-else-if="scope.row.orderStatus==40">lakala申报中</span>
-                        <span v-else-if="scope.row.orderStatus==50">lakala申报失败</span>
-                        <span v-else-if="scope.row.orderStatus==60">待日方发货</span>
+                        <span v-else-if="scope.row.orderStatus==20" :class="scope.row.exceptionStatus!=0?'redClass':''">付款中</span>
+                        <span v-else-if="scope.row.orderStatus==30" :class="scope.row.exceptionStatus!=0?'redClass':''">待审核</span>
+                        <span v-else-if="scope.row.orderStatus==35" :class="scope.row.exceptionStatus!=0?'redClass':''">审核未通过</span>
+                        <span v-else-if="scope.row.orderStatus==40" :class="scope.row.exceptionStatus!=0?'redClass':''">lakala申报中</span>
+                        <span v-else-if="scope.row.orderStatus==50" :class="scope.row.exceptionStatus!=0?'redClass':''">lakala申报失败</span>
+                        <span v-else-if="scope.row.orderStatus==60" :class="scope.row.exceptionStatus!=0?'redClass':''">待日方发货</span>
                         <!-- 待收货 -->
-                        <span v-else-if="scope.row.orderStatus==70">日方取消订单</span>
-                        <span v-else-if="scope.row.orderStatus==80">JD申报中</span>
-                        <span v-else-if="scope.row.orderStatus==90 || scope.row.orderStatus==100">JD申报失败</span>
-                        <span v-else-if="scope.row.orderStatus==110">清关中</span>
-                        <span v-else-if="scope.row.orderStatus==120">清关失败</span>
-                        <span v-else-if="scope.row.orderStatus==130">待收货</span>
+                        <span v-else-if="scope.row.orderStatus==70" :class="scope.row.exceptionStatus!=0?'redClass':''">日方取消订单</span>
+                        <span v-else-if="scope.row.orderStatus==80" :class="scope.row.exceptionStatus!=0?'redClass':''">JD申报中</span>
+                        <span v-else-if="scope.row.orderStatus==90 || scope.row.orderStatus==100" :class="scope.row.exceptionStatus!=0?'redClass':''">JD申报失败</span>
+                        <span v-else-if="scope.row.orderStatus==110" :class="scope.row.exceptionStatus!=0?'redClass':''">清关中</span>
+                        <span v-else-if="scope.row.orderStatus==120" :class="scope.row.exceptionStatus!=0?'redClass':''">清关失败</span>
+                        <span v-else-if="scope.row.orderStatus==130" :class="scope.row.exceptionStatus!=0?'redClass':''">待收货</span>
                         <!-- 已完成 -->
-                        <span v-else-if="scope.row.orderStatus==140">交易完成</span>
-                        <span v-else-if="scope.row.orderStatus==0">已取消</span>
+                        <span v-else-if="scope.row.orderStatus==140" :class="scope.row.exceptionStatus!=0?'redClass':''">交易完成</span>
+                        <span v-else-if="scope.row.orderStatus==0" :class="scope.row.exceptionStatus!=0?'redClass':''">已取消</span>
                  </template>
             </el-table-column>
             <el-table-column label="操作" align="center" width="200">
@@ -122,7 +140,7 @@
                     <el-button size="mini" type="text" @click="declareSthFn(scope.row,'jd')" v-if="scope.row.orderStatus==100">重新申报</el-button>
                     <!-- <el-button size="mini" type="text"  @click="clearancFailureFn(scope.row)"  v-if="scope.row.orderStatus==80">清关失败</el-button> -->
                     <!-- <el-button size="mini" type="text"  @click="writeLogisticsInfo(scope.row)"  v-if="scope.row.orderStatus==80">填写物流</el-button> -->
-                    
+
                     <!-- tudo lakala申报失败,申报失败需要重新申报，和JD申报失败重新申报调不一样的接口  -->
                     <el-button size="mini" type="text" @click="declareSthFn(scope.row,'lakala')" v-if="scope.row.orderStatus==50">重新申报</el-button>
                 </template>
@@ -159,7 +177,7 @@
             :orderData="orderData"
     ></orderDet> -->
     <!-- <discountDet v-else @changeState="changeState"></discountDet> -->
-    
+
 </template>
 
 <script>
@@ -393,6 +411,13 @@
                    this.$refs.declareSthCompon.init(row,type)
                 })
             },
+            // 重试
+            declareSthFn(row,type){
+                this.declareSthVisible = true;
+                this.$nextTick(() => {
+                    this.$refs.declareSthCompon.init(row,type)
+                })
+            },
             // 取消订单
            cancleOrderFn(row){
                 this.cancleOrderVisible = true;
@@ -539,5 +564,8 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+    .redClass{
+        color: red;
     }
 </style>
