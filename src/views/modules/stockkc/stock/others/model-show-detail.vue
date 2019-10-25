@@ -24,7 +24,7 @@
             </el-form-item>
             <p>
             <el-form-item label="备注：">
-                <span></span>
+                <span>{{remarks}}</span>
             </el-form-item>
             </p>
         </el-form>
@@ -92,6 +92,7 @@
                 formLabelWidth: '120px',
                 clickdata: [],  //选中的商品
                 showdatacurrent:[],      //页面回显
+                remarks:'',
             }
         },
         watch:{
@@ -123,6 +124,7 @@
         methods: {
 			init(row){
 				console.log(row);
+				this.remarks = row.remarks;
 		      	this.visible = true;
                 this.title="查看详情";
                 this.dataForm.goodsName =""
