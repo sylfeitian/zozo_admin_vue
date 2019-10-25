@@ -89,9 +89,10 @@
 
         <el-col :span="12">
             <el-form
-                 ref="dataForm"
+                 ref="addForm"
                  class="grayLine topGapPadding"
                  :model="dataForm"
+                 :rules="dataRule"
             >
                 <p class="title">中文</p>
                 <el-form-item label="搭配编号：">
@@ -130,7 +131,7 @@
                         </div>
                     </template>
                 </el-form-item>
-                <el-form-item label="要点：" style="height: 120px!important;">
+                <el-form-item label="要点：" style="height: 120px!important;" prop="content">
                     <el-input v-model.trim="dataForm.content" type="textarea":rows="5" placeholder="请输入内容" style="margin-top: 10px;"></el-input>
                 </el-form-item>
                 <div class="goods" style="margin: 15px 0 50px 0;">
@@ -176,8 +177,8 @@
             <div style="position: fixed;bottom: 0;margin: 0 auto;width: 85%;text-align: center;z-index: 999;">
                 <span style="font-size: 20px;margin-right: 20px;">状态：{{dataForm.state == 0?"未发布":dataForm.state == 1?"已发布":""}}</span>
                 <el-button class="btn" @click="reset()">取消</el-button>
-                <el-button class="btn" @click="saveData(0)">保存</el-button>
-                <el-button class="btn" :disabled="dataForm.jpPublishState == 2" type="primary" @click="saveData(1)">保存并发布</el-button>
+                <el-button class="btn" @click="saveData('addForm',0)">保存</el-button>
+                <el-button class="btn" :disabled="dataForm.jpPublishState == 2" type="primary" @click="saveData('addForm',1)">保存并发布</el-button>
             </div>
         </el-col>
     </div>
@@ -190,8 +191,15 @@
         data () {
             return {
                 breaddata: [ "内容管理", "搭配管理","编辑搭配"],
-                dataForm: {},
+                dataForm: {
+                    content:""
+                },
                 dataListLoading: false,
+                dataRule : {
+                    content : [
+                        { required: true, message: '必填项不能为空', trigger: 'blur' },
+                    ]
+                },
             }
         },
         components: {
@@ -225,23 +233,30 @@
                     that.changePage();
                 }).catch();
             },
-            saveData(saveType){
-                let that = this;
-                this.dataForm.saveFlag = saveType;
-                savelookdetail(this.dataForm).then((res)=>{
-                    if(res.code == 200){
-                        this.$message({
-                            message: res.msg,
-                            type: 'success',
-                            onClose:function () {
-                                that.changePage();
+            saveData(formName,saveType ){
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        let that = this;
+                        this.dataForm.saveFlag = saveType;
+                        savelookdetail(this.dataForm).then((res)=>{
+                            if(res.code == 200){
+                                this.$message({
+                                    message: res.msg,
+                                    type: 'success',
+                                    onClose:function () {
+                                        that.changePage();
+                                    }
+                                });
+                            }else{
+                                this.$message({
+                                    message: res.msg,
+                                    type: 'error',
+                                });
                             }
-                        });
-                    }else{
-                        this.$message({
-                            message: res.msg,
-                            type: 'error',
-                        });
+                        })
+                    } else {
+                        //console.log('error 添加失败!!');
+                        return false;
                     }
                 })
             }
@@ -299,5 +314,9 @@
     }
     /deep/ .el-form-item__content {
         padding: 0 20px!important;
+    }
+    /deep/ .el-form-item__error {
+        top: 90%!important;
+        left: 405px!important;
     }
 </style>
