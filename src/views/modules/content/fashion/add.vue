@@ -5,7 +5,6 @@
                 :model="addDataForm"
                 :rules="dataRule"
                 ref="addForm"
-                @keyup.enter.native="dataFormSubmit('addForm')"
                 label-width="120px"
 
         >
