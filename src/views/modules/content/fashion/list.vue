@@ -238,6 +238,7 @@
                 this.dataForm.publishJpEndTime = "";
                 this.dataForm.publishStartTime = "";
                 this.dataForm.publishEndTime = "";
+                this.dataForm.titleOrJp = "";
                 this.page = 1;
                 this.getDataList();
             },
