@@ -16,7 +16,7 @@
             </el-form-item>  
                 <p style="margin-left: 120px;color: #bebebe;line-height: 14px;">请输入120个汉字，包含汉字、数字、英文、常用字符</p>
             <el-form-item label="编号：" prop="idJp" :label-width="formLabelWidth" style="display: inline-block;vertical-align:top;">
-                <el-input v-model.trim="addDataForm.idJp"  auto-complete="off" placeholder="" style="width: 540px;"></el-input>
+                <el-input v-model.trim="addDataForm.idJp" auto-complete="off" placeholder="" style="width: 540px;"></el-input>
             </el-form-item>
                 <p style="margin-left: 120px;color: #bebebe;line-height: 14px;">请输入20个字符以内，包含英文、数字的编号</p>
             <el-form-item label="发布人：" prop="" :label-width="formLabelWidth" style="display: inline-block;vertical-align:top;">
@@ -232,10 +232,13 @@
                     return
                 }
                 for(let i=0;i<newV.length;i++){
-                    // 只能输入英文和数字
-                    if(/[^0-9a-zA-Z]/g.test(newV[i])){
+                    // 只能输入数字
+                    if(!/[0-9]/g.test(newV[i])){
                         this.addDataForm.idJp = newV.replace(newV[i],"")
                     }
+                }
+                if(newV.length>20){
+                    this.dataFormShow.idJp = newV.substr(0,20)
                 }
             },
             'addDataForm.favNumCn':function(newV,oldV) {
