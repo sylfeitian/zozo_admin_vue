@@ -127,6 +127,7 @@
   import {zozomemberPageUrl,} from "@/api/url.js"
  import importAndExport from "@/components/import-and-export"
  import { vipExport} from '@/api/io'
+    import { updateZozomemberState } from '@/api/api';
   export default {
     mixins: [mixinViewModule],
     data() {
@@ -274,14 +275,13 @@
            "memberStatus":row.memberState==1?0:1
         }
         var msg = ""
-        obj.memberStatus==0?msg="禁用":msg="启用"
+        obj.memberStatus==0?msg="启用":msg="禁用"
         this.$confirm('是否'+msg+'该用户?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
         }).then(() => {
               updateZozomemberState(obj).then((res)=>{
-                  this.forbitLoading = false;
                   // console.log(res);
                   if(res.code==200){
                       this.getDataList();
