@@ -28,7 +28,8 @@
                     <!-- 待收货 -->
                      <el-option label="日本取消订单" value="70" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
                     <el-option label="JD申报中" value="80" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
-                    <el-option label="JD申报失败" value="100" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
+                    <el-option label="JD申报失败(不可重试)" value="90" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
+                    <el-option label="JD申报失败(可以重试)" value="100" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
 
                     <el-option label="清关中" value="110" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
                     <!-- <el-option label="清关失败" value="120" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option> -->
@@ -121,7 +122,8 @@
                         <!-- 待收货 -->
                         <span v-else-if="scope.row.orderStatus==70" :class="scope.row.exceptionStatus!=0?'redClass':''">日方取消订单</span>
                         <span v-else-if="scope.row.orderStatus==80" :class="scope.row.exceptionStatus!=0?'redClass':''">JD申报中</span>
-                        <span v-else-if="scope.row.orderStatus==90 || scope.row.orderStatus==100" :class="scope.row.exceptionStatus!=0?'redClass':''">JD申报失败</span>
+                        <span v-else-if="scope.row.orderStatus==90" :class="scope.row.exceptionStatus!=0?'redClass':''">JD申报失败(无法重试)</span>
+                        <span v-else-if="scope.row.orderStatus==100" :class="scope.row.exceptionStatus!=0?'redClass':''">JD申报失败(可以重试)</span>
                         <span v-else-if="scope.row.orderStatus==110" :class="scope.row.exceptionStatus!=0?'redClass':''">清关中</span>
                         <span v-else-if="scope.row.orderStatus==120" :class="scope.row.exceptionStatus!=0?'redClass':''">清关失败</span>
                         <span v-else-if="scope.row.orderStatus==130" :class="scope.row.exceptionStatus!=0?'redClass':''">待收货</span>
