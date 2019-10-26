@@ -43,7 +43,8 @@
                     </div>
                     <div id="content" v-for="(v,i) in content" :key="i">
                         <div class="contentChild" v-if="content[i]&&v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
-                            <quill-editor-img class="inforRight" :value="v.text" :index="i" ref="quillEditorCompon" style="display: inline-block;"  @artmessageContent='artmessageContent' ></quill-editor-img>
+                            <!-- <quill-editor-img class="inforRight" :value="v.text" :index="i" ref="quillEditorCompon" style="display: inline-block;"  @artmessageContent='artmessageContent' ></quill-editor-img> -->
+                            <el-input type="textarea" :rows="5" class="inforRight" :value="v.text" :index="i" style="display: inline-block;width:90%;"  @artmessageContent='artmessageContent' ></el-input>
                             <span style="margin-left: 10px;color:#2260d2;cursor:pointer;" @click="delContent(i)">删除</span>
                         </div>
                         <div class="contentChild" v-if="content[i]&&v.typeId=='3'" v-loading="picloading">
