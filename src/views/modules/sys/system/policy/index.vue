@@ -195,7 +195,20 @@
                         callback()
                     }
 			    }
-			};
+            };
+            // 订单有效金额最小值  必须大于 单笔订单最小金额 
+            var validMinAmountBigAuditOrderMinAmount =(rule, value,callback)=>{
+                if(this.dataForm.minAmount=="" || this.dataForm.auditOrderMinAmount ==""){
+                    return callback()
+                }else{
+                    if(this.dataForm.minAmount>this.dataForm.auditOrderMinAmount){
+                       return callback()
+                    }else{
+			    	   return callback(new Error('订单有效金额最小值必须大于单笔订单最小金额 '))
+
+                    }
+                }
+            };
 			var validnumdian =(rule, value,callback)=>{
 //				console.log(rule,value)
 				var valuestr = value +'';
@@ -255,6 +268,7 @@
                         { validator: validmoney, trigger: 'blur' },
                         { validator: validnumdian, trigger: 'change' },
 //                      { validator: validnumreg, trigger: 'change' },
+                        { validator: validMinAmountBigAuditOrderMinAmount, trigger: 'blur' },
                     ],
                     maxAmount : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -284,7 +298,7 @@
                        	{ validator: valid, trigger: 'blur' },
                        	{ validator: validnum0, trigger: 'blur' },
                        	{ validator: validnummax, trigger: 'blur' },
-
+                        { validator: validMinAmountBigAuditOrderMinAmount, trigger: 'blur' },
                     ],
                     riseIn: [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
