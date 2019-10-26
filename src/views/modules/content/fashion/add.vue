@@ -112,7 +112,7 @@
                 >
                     <el-table-column type="selection" width="70"></el-table-column>
                     <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
-                    <el-table-column prop="goodsCsIdJp" label="商品skuID" align="center"></el-table-column>
+                    <el-table-column prop="goodsCsIdJp" label="商品ID(SPU ID)" align="center"></el-table-column>
                     <el-table-column prop="sellPrice" label="价格" align="center"></el-table-column>
                     <el-table-column prop="stockQuantity" label="库存" align="center"></el-table-column>
 
