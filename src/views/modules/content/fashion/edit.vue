@@ -203,17 +203,17 @@
                         <el-form-item label="详情：" style="height: 100%!important;">
                             <template slot-scope="scope">
                                 <div style="padding:0" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
-                                    <div  v-if="v.text=='' || v.text || v.imageUrl" style="padding: 0;width:80%;margin-left:100px;">
+                                    <div  v-if="v.textCn=='' || v.textCn || v.imageUrl" style="padding: 0;width:80%;margin-left:100px;">
                                         <!-- <div style="height: 20px;"></div> -->
                                         <div class="contentChild"  style="min-height:33px;"  v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
-                                            <el-input style="margin: auto;" v-model="v.text" type="textarea" :rows="5" ></el-input>
+                                            <el-input style="margin: auto;" v-model="v.textCn" type="textarea" :rows="5" ></el-input>
                                         </div>
                                         <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
                                             <div class="goodsPropsWrap" style="text-align: center;">
                                                 <div class="goodsImg">
                                                     <img :src="v.imageUrl" style="width:200px;" alt=""/>
                                                 </div>
-                                                <div v-if="v.typeId=='4'">{{v.text}}</div>
+                                                <div v-if="v.typeId=='4'">{{v.textCn}}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -228,8 +228,8 @@
             <div style="position: fixed;bottom: 0;margin: 0 auto;width: 85%;text-align: center;margin-top: 200px;">
                 <span style="font-size: 20px;margin-right: 20px;">状态：{{dataForm.state == 0?"未发布":dataForm.state == 1?"已发布":dataForm.state == 2?"取消发布 ":""}}</span>
                 <el-button class="btn" @click="reset()">取消</el-button>
-                <el-button class="btn" @click="getData(0)">保存</el-button>
-                <el-button class="btn" :disabled="dataForm.isOpen == 0" type="primary" @click="getData(1)">保存并发布</el-button>
+                <el-button class="btn" @click="dataFormSubmit(0)">保存</el-button>
+                <el-button class="btn" :disabled="dataForm.isOpen == 0" type="primary" @click="dataFormSubmit(1)">保存并发布</el-button>
             </div>
         </el-col>
     </div>
@@ -294,9 +294,23 @@
                     that.changePage();
                 }).catch();
             },
-            getData(saveType){
+            // 提交
+            dataFormSubmit(saveType){
                 let that = this;
                 this.dataForm.saveType = saveType;
+                console.log(this.shopFashionContentsVOList)
+                var obj = {
+                    "fashionContents": this.dataForm.shopFashionContentsVOList,//添加的内容列表 ,
+                    "favNumCn": this.dataForm.favNumCn,  // 中国关注量
+                    "id": this.dataForm.id,  // 主键
+                    "idJp": this.dataForm.idJp,  // 编号
+                    "mainImageUrl": this.dataForm.mainImageUrl,  // 封面图
+                    "publisher": this.dataForm.publisher,  // 发布人
+                    "saveType": saveType,  // 保存类型 0保存 1保存并发布
+                    "title":  this.dataForm.title,  // 标题
+                    "viewsNumCn": this.dataForm.viewsNumCn  // 中国浏览量中国浏览量
+                }
+                console.log(obj)
                 savefashiondetail(this.dataForm).then((res)=>{
                     if(res.code == 200){
                         this.$message({
