@@ -821,11 +821,8 @@ export const returnReimburse = params => { return http.put(`${base}/aftersale/re
 export const aftersaleComfirm = params => { return http.put(`${base}/aftersale/return/${params.isComfirm}/receipt/${params.sn}`, params).then(res => res.data); };
 // 售后审核操作
 export const aftersaleReturnVerify = params => { return http.put(`${base}/aftersale/return/verify`, params).then(res => res.data); };
-
-
-
-
-
+// 退货退款|仅退款分页数据
+export const aftersaleReturnrReason = params => { return http.get(`${base}/aftersale/return/return/reason`, params).then(res => res.data); };
 
 //操作日志-------------------------------------------------------------------------------------------------------------
 // 导出

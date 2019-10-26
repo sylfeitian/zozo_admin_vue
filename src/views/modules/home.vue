@@ -1,5 +1,5 @@
 <template>
-  <el-card shadow="never" class="aui-card--fill">
+  <el-card shadow="never" class="aui-card--fill" v-loading="loading">
     <div class="artborder artfirst">
     	 <span class='arttitle'>今日汇率：</span>
     	 <span class="artnumber">{{rate}}</span>
@@ -124,7 +124,8 @@
             	dialogTableVisible: false,
 				rate:'',
 				rateJp:'',
-            	actrise: false,  //今日汇率是否上升   红    下降  绿
+				actrise: false,  //今日汇率是否上升   红    下降  绿
+				loading:false,
             }
         },
        	components: {
@@ -173,24 +174,35 @@
         		this.getdata();
         	},
         	getdata(){
-        		gethomepage().then((res)=>{
+				this.loading = true;
+				Promise.all([
+					this.gethomepageFn(),
+					this.gethomepageRateFn()
+				]).then(() => {
+					this.loading = false
+				})
+			},
+			gethomepageFn(){
+				return gethomepage().then((res)=>{
         			if(res && res.code == 200){
         				this.data = res.data;
         			}else{
 //      				this.$message(res.msg)
         			}
         		})
-        		
-        		gethomepageRate().then((res)=>{
+
+			},
+			gethomepageRateFn(){
+				return gethomepageRate().then((res)=>{
         			if(res && res.code == 200){
-								this.rate =res.data.rate;
-								this.rateJp = res.data.rateJp;
+						this.rate =res.data.rate;
+						this.rateJp = res.data.rateJp;
         				this.actrise = res.data.varyState == 1;
         			}else{
 //      				this.$message(res.msg)
         			}
         		})
-        	},
+			}
         },
     }
 </script>

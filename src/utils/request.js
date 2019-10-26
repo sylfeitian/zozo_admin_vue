@@ -23,6 +23,14 @@ http.interceptors.request.use(config => {
   var defaults = {}
   // 防止缓存，GET请求默认带_t参数
   if (config.method === 'get') {
+    // 去掉对象中值为空的key:value
+    if(config.params){
+      for ( var key in config.params ){
+        if ( config.params[key] === '' ){
+          delete config.params[key]
+        }
+      }
+    }
     config.params = {
       ...config.params,
       ...{ '_t': new Date().getTime() }

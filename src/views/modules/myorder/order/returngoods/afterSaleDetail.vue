@@ -99,9 +99,7 @@
                                 <span>{{returnInfo.contactsPhone }}</span>
                             </el-form-item>
 
-                            <el-form-item label="退货原因：" >
-                                <span>{{returnInfo.aftersaleReason}}</span>
-                            </el-form-item>
+                           
 
                             <el-form-item label="问题描述：" >
                                 <span>{{returnInfo.aftersaleExplain }}</span>
@@ -116,20 +114,37 @@
 
                     <div class="formWarp formWarp2">
                             <el-form-item label="退款金额：" >
-                                <span>¥{{returnInfo.shouldRefundAmount}}</span>
+                                <span v-if='returnInfo.shouldRefundAmount'>¥{{returnInfo.shouldRefundAmount}}</span>
                             </el-form-item>
                             
                             <el-form-item label="确认退款金额：" >
                                 <div v-if="row.auditStatus!=0">
-                                     ¥<span >{{returnInfo.refundAmount}}</span>
+                                     <span v-if='returnInfo.refundAmount'>¥{{returnInfo.refundAmount}}</span>
                                 </div>
                                <!-- 审核时才能编辑 -->
                                <div v-else>
                                      <el-input-number  v-model="returnInfo.refundAmount"  :precision="2" :step="1" :min="0" :max="parseFloat(returnInfo.shouldRefundAmount)" controls-position="right"></el-input-number>
                                </div>
-                                    
-                                
                             </el-form-item>
+
+                            <el-form-item label="退货原因：" >
+                                <span  v-if="row.auditStatus!=0">{{returnInfo.aftersaleReason}}</span>
+                                  <!-- 审核时才能编辑 -->
+                                <el-select
+                                    v-else
+                                    v-model="returnInfo.aftersaleReasonId"
+                                    placeholder="请选择"
+                                    loading-text="加载中···"
+                                    @change ='changeWarehouse'>
+                                    <el-option
+                                        v-for="item in returnrReasonlist"
+                                        :key="item.id"
+                                        :label="item.content"
+                                        :value="item.id">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+
                             <el-form-item label="退货仓：" >
                                 <span v-if="row.auditStatus!=0">{{returnInfo.warehouse}}</span>
                                  <!-- 审核时才能编辑 -->
@@ -234,7 +249,7 @@
 </template>
 
 <script>
-    import {aftersaleReturnDetail,wareListByType,backScanWare  } from "@/api/api";
+    import {aftersaleReturnDetail,wareListByType,aftersaleReturnrReason,backScanWare  } from "@/api/api";
     import Bread from "@/components/bread";
     import exammine from '../modules-return/model-exammine.vue'
     import confirmGoodsModel from '../modules-return/model-confirm-goods.vue'
@@ -255,6 +270,7 @@
                 returnInfo:{},
                  aftersalePics:[],
                 warehouseList:[],
+                returnrReasonlist:[],
                 dialogImageUrl: '',
                 dialogVisible: false,
                 oImgWidth:'',
@@ -303,8 +319,11 @@
                 this.row = row;
                 this.getAfterSaleDetail();
                 // 售后状态 退货退款（10待审核、20待退货、30待入库、40待退款、50退款中、60退款完成、70退款失败、80售后取消）；仅退款（10退款中、20退款完成、30退款失败）
-               if(this.row.auditStatus==0){//只有待审核才能选择退货仓下拉
+               if(this.row.auditStatus==0){
+                   //只有待审核才能选择退货仓下拉
                     this.getWareListByType(); 
+                    //只有待审核才能获取退换货原因下拉
+                    this.getReason();
                 }
             },
             // 详情回显
@@ -346,6 +365,14 @@
                     }
                 })
             },
+            // 获取退换货原因
+            getReason(){
+                aftersaleReturnrReason().then((res)=>{
+                    if(res.code==200){
+                        this.returnrReasonlist = res.data;
+                    }
+                })
+            },
             // 切换仓库时候，下面的信息也要跟着变
             changeWarehouse(val){
                 console.log(val);
@@ -370,12 +397,17 @@
              // 审核
             exammineFn(operating){
                 console.log(this.returnInfo);
+                if(!this.returnInfo.aftersaleReasonId){
+                    this.$message.warning("请选择退换原因!");
+                    return;
+                }
                 var row = {
                     operating:operating,// 操作 0不通过 1通过 ,
                     aftersaleSn:this.row.aftersaleSn,//售后单号 ,
                     realRefundAmount: this.returnInfo.refundAmount,//实际退款金额 ,
                     remark: this.returnInfo.remark,//处理备注 
-                    warehouseId: this.returnInfo.warehouseId//退货仓id
+                    warehouseId: this.returnInfo.warehouseId, //退货仓id
+                    aftersaleReasonId:this.returnInfo.aftersaleReasonId //退货原因id
                 }
                 this.exammineVisible = true;
                 this.$nextTick(() => {

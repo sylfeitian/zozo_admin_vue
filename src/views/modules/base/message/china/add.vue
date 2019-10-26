@@ -37,13 +37,14 @@
 				loading-text="加载中···"
 				@change ='actdatacategory'>
 				<el-option
-					v-for="item in goodKindList2"
-					:key="item.id"
-					:label="item.name || item.nameJp"
-					:value="item.id">
+					v-for="item2 in goodKindList2"
+					:key="item2.id"
+					:label="item2.name || item2.nameJp"
+					:value="item2.id">
 				</el-option>
 				</el-select>
 				<el-button v-if="index+1 == dataForm.categoryJpId.length" @click="actadd" type="primary" style="margin-left: 20px;">添加</el-button>
+				<el-button v-if="index!=0" @click="removecategoryJpItemFn(index)" type="primary" style="margin-left: 20px;">删除</el-button>
 			</el-form-item>
 			
 			<el-form-item label="测量方法：" prop="methodUrl" v-if="yijishow">
@@ -569,6 +570,11 @@
 			}else{
 				this.$message("请选择分类")
 			}
+		},
+		// 删除某一条日本分类
+		removecategoryJpItemFn(index){
+			console.log(index);
+			this.dataForm.categoryJpId.splice(index,1)
 		},
 		//新增关闭
 	    handleClose(done) {
