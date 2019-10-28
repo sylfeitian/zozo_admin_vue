@@ -553,6 +553,24 @@ export default {
         this.$message.warning("请选择商品!")
         return;
       }
+      var arr = [];
+      if(type==1){//上架
+        arr  = this.multipleSelection.filter((item,index)=>{
+          if(item.showWeb==1){
+            return item
+          }
+        })
+        this.$message.warning("已上架的商品不能在上架");
+        return
+      }else{// 下架 或者待上架
+        arr  = this.multipleSelection.filter((item,index)=>{
+          if(item.showWeb!=1){
+            return item
+          }
+        })
+        this.$message.warning("已下架的商品不能在下架");
+        return
+      }
       this.modelLowerBatchShelfVisible =  true;
         this.$nextTick(() => {
             this.$refs.modelLowerBatchShelfCompon.init(this.multipleSelection,type)
