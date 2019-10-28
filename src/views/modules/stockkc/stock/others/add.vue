@@ -23,7 +23,7 @@
             <el-form-item>
                 <!--<el-button type="primary"  @click="addOrEditHandle()" >导入商品</el-button>-->
                 <el-button type="primary" plain @click="addGoods()" >添加商品</el-button>
-                <div  class="parentImport" >
+                <div  class="parentImport" style="margin-left:10px;">
                    <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"></importAndExport>
                    <div class="hiddenImportCompon" v-show="!dataForm.wareHouseName" @click="messageChouseWareHouseFn()">
                        <!-- 我是遮罩层 -->
