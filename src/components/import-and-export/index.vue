@@ -3,8 +3,9 @@
        <el-button v-if="importAndExportOptions && importAndExportOptions.exportUrl" class="btn" type="primary" @click="exportExcel">{{importAndExportOptions.exportWord}}</el-button>
         <el-upload
             v-if="importAndExportOptions && importAndExportOptions.importUrl"
-            style="display:inline-block;margin-left:20px;"
+            style="display:inline-block"
             class="upload-demo"
+            :class="importAndExportOptions && importAndExportOptions.exportUrl?'marringLeft20':''"
             ref="upload"
             :action='importAndExportOptions.importUrl'
             :on-success="uploadSuccess"
@@ -138,6 +139,8 @@ export default {
 }
 </script>
 <style>
-
+.marringLeft20{
+    margin-left: 20px;
+}
 </style>
 

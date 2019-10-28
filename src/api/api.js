@@ -393,6 +393,8 @@ export const auditOperating  = params => { return http.post(`${base}/order/audit
 // 修改订单运营备注
 // export const managerRemark  = params => { return http.get(`${base}/order/${params.id}/manager/remark?remark=${params.remarks}`, params).then(res => res.data); }
 export const managerRemark  = params => { return http.post(`${base}/order/manager/remark`, params).then(res => res.data); }
+// 重试订单
+export const orderRetry = params => { return http.post(`${base}/order/exception/retry?orderId=${params.orderId}`, params).then(res => res.data); }
 // 取消订单
 export const orderCancel = params => { return http.post(`${base}/order/cancel/${params.id}`, params).then(res => res.data); }
 // jd订单申报
@@ -819,11 +821,8 @@ export const returnReimburse = params => { return http.put(`${base}/aftersale/re
 export const aftersaleComfirm = params => { return http.put(`${base}/aftersale/return/${params.isComfirm}/receipt/${params.sn}`, params).then(res => res.data); };
 // 售后审核操作
 export const aftersaleReturnVerify = params => { return http.put(`${base}/aftersale/return/verify`, params).then(res => res.data); };
-
-
-
-
-
+// 退货退款|仅退款分页数据
+export const aftersaleReturnrReason = params => { return http.get(`${base}/aftersale/return/return/reason`, params).then(res => res.data); };
 
 //操作日志-------------------------------------------------------------------------------------------------------------
 // 导出

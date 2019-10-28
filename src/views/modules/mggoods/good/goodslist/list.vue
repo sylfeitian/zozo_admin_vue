@@ -381,6 +381,20 @@ export default {
         }
       }
     },
+    'dataFormShow.brandId':function(newV,oldV) {
+        var chineseCount = 0,characterCount = 0;
+        for (let i = 0; i < newV.length; i++) {
+            if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                chineseCount = chineseCount + 2;
+            } else { //字符
+                characterCount = characterCount + 1;
+            }
+            var count = chineseCount + characterCount;
+            if (count > 300) { //输入字符大于300的时候过滤
+                this.dataFormShow.brandId = newV.substr(0,(chineseCount/2+characterCount)-1)
+            }
+        }
+    },
   },
   created() {
     // 第一次请求数据
@@ -538,6 +552,24 @@ export default {
       if(this.multipleSelection.length==0){
         this.$message.warning("请选择商品!")
         return;
+      }
+      var arr = [];
+      if(type==1){//上架
+        arr  = this.multipleSelection.filter((item,index)=>{
+          if(item.showWeb==1){
+            return item
+          }
+        })
+        this.$message.warning("已上架的商品不能在上架");
+        return
+      }else{// 下架 或者待上架
+        arr  = this.multipleSelection.filter((item,index)=>{
+          if(item.showWeb!=1){
+            return item
+          }
+        })
+        this.$message.warning("已下架的商品不能在下架");
+        return
       }
       this.modelLowerBatchShelfVisible =  true;
         this.$nextTick(() => {

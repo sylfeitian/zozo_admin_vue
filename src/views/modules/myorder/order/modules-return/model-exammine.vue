@@ -57,20 +57,22 @@
 			dataFormSubmit(formName){
 				// this.$refs[formName].validate((valid) => {
 				// 		if (valid) {
-								this.loading = true;
+								
 								var obj=  {
 									"aftersaleSn": this.row.aftersaleSn,//售后单号 ,
 									"operating": this.row.operating,//操作 0不通过 1通过 ,
 									"realRefundAmount": this.row.realRefundAmount,//实际退款金额 ,
 									"remark": this.row.remark,//处理备注 
 									// "warehouseId": this.row.warehouseId//退货仓id
+									"reasonId": this.row.aftersaleReasonId,//退货原因id
+
 								}
 								if(this.row.operating==1 && !this.row.warehouseId){
 									this.$message.warning("缺少退货仓，不能审核通过!");
 									return;
 								}
 								obj.warehouseId = this.row.warehouseId//退货仓id
-							
+								this.loading = true;
 								aftersaleReturnVerify(obj).then((res) => {
 									this.loading = false;
 									// alert(JSON.stringify(res));

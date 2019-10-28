@@ -21,7 +21,7 @@
 				</el-select>
 				</el-form-item>
 			<el-form-item label="分类名称：" prop="name">
-				<el-input v-model.trim="dataForm.name " type="text" placeholder="请输入10个汉字/20个字符以内的内容" style="width:400px;"></el-input>
+				<el-input v-model.trim="dataForm.name " type="text" placeholder="请输入4个汉字/8个字符以内的内容" style="width:400px;"></el-input>
 			</el-form-item>
 			<el-form-item label="排序：" prop="sort">
 				<el-input v-model.trim="dataForm.sort" type="text" placeholder="数字越大越靠前" show-word-limit style="width:200px;"></el-input>
@@ -37,13 +37,14 @@
 				loading-text="加载中···"
 				@change ='actdatacategory'>
 				<el-option
-					v-for="item in goodKindList2"
-					:key="item.id"
-					:label="item.name || item.nameJp"
-					:value="item.id">
+					v-for="item2 in goodKindList2"
+					:key="item2.id"
+					:label="item2.name || item2.nameJp"
+					:value="item2.id">
 				</el-option>
 				</el-select>
 				<el-button v-if="index+1 == dataForm.categoryJpId.length" @click="actadd" type="primary" style="margin-left: 20px;">添加</el-button>
+				<el-button v-if="index!=0" @click="removecategoryJpItemFn(index)" type="primary" style="margin-left: 20px;">删除</el-button>
 			</el-form-item>
 			
 			<el-form-item label="测量方法：" prop="methodUrl" v-if="yijishow">
@@ -267,7 +268,7 @@
 						characterCount = characterCount + 1;
 					}
 					var count = chineseCount + characterCount;
-					if (count > 20) { //输入字符大于20的时候过滤
+					if (count > 8) { //输入字符大于20的时候过滤
 						this.dataForm.name = newV.substr(0,(chineseCount/2+characterCount)-1)
 					}
 				}
@@ -416,7 +417,15 @@
 					this.saveLoading = true;
 					var obj = {};
 					Object.assign(obj,this.dataForm);
-					if(obj.parentId=="0") obj.categoryJpId = [];
+					if(obj.parentId=="0") {
+						obj.categoryJpId = [];
+					}else{
+						var categoryJpId = [] ;
+						this.dataForm.categoryJpId.forEach((item,index)=>{
+							if(item) categoryJpId.push(item)
+						})
+						obj.categoryJpId = categoryJpId
+					}
 					updataCategoryCn(obj).then((res)=>{
 						this.saveLoading = false;
 						if(res.code == 200){
@@ -561,6 +570,11 @@
 			}else{
 				this.$message("请选择分类")
 			}
+		},
+		// 删除某一条日本分类
+		removecategoryJpItemFn(index){
+			console.log(index);
+			this.dataForm.categoryJpId.splice(index,1)
 		},
 		//新增关闭
 	    handleClose(done) {

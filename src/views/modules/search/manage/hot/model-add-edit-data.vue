@@ -53,7 +53,6 @@
                 rules: {
 		          hotKeyword: [
 		            { required: true, message: '请输入搜索词', trigger: 'blur' },
-		            { min:1,max:30 , message: '1-30个汉字', trigger: 'blur' }
 		          ],
 		        },
             }

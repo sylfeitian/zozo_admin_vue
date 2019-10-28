@@ -110,7 +110,11 @@
                         <span v-else class="artstart" :class="{'artclose':scope.row.jpPublishState == 0}">{{scope.$index==currentIndex && forbitLoading?"发布中..":"发布"}}</span>
                     </el-button>
                     <el-button @click.native.prevent="openStyle(scope.row,scope.$index)" type="text" size="mini">管理风格标签</el-button>
-                    <el-dialog title="管理风格标签" :visible.sync="dialogTableVisible">
+                    <el-dialog
+                        title="管理风格标签"
+                        :visible.sync="dialogTableVisible"
+                        :before-close="res"
+                    >
                         <el-form :inline="true" style="text-align:left;" class="grayLine topGapPadding"  >
                             <el-form-item label="关联风格标签：">
                                 <el-select :filter-method="getStyle" v-model="value" @change="saveList" filterable placeholder="请选择">

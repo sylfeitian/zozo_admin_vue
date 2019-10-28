@@ -34,7 +34,7 @@
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg">
-                                <img :src="dataForm.imageUrl" alt=""/>
+                                <img :src="dataForm.imageUrl" alt="" style="width:200px;"/>
                             </div>
                         </div>
                     </template>
@@ -105,7 +105,7 @@
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg">
-                                <img :src="dataForm.imageUrl" alt=""/>
+                                <img :src="dataForm.imageUrl" alt="" style="width:200px;"/>
                             </div>
                         </div>
                     </template>
@@ -238,5 +238,8 @@
     /deep/ .el-form-item--default {
         padding: 0 0!important;
         margin-bottom: 0!important;
+    }
+    /deep/ .el-form-item__content {
+        padding: 0 20px!important;
     }
 </style>

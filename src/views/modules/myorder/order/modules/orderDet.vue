@@ -162,21 +162,21 @@
                         </template>
                     </el-table-column>
 
-                    <el-table-column prop="reduceAmount" label="折扣" align="center">
+                    <el-table-column prop="discountActivityAmount" label="折扣" align="center">
                         <template slot-scope="scope">
-                            ￥{{scope.row.dicountAmount?scope.row.dicountAmount:'0.00'}}
+                            ￥{{scope.row.discountActivityAmount?scope.row.discountActivityAmount:'0.00'}}
                         </template>
                     </el-table-column>
 
-                    <el-table-column prop="couponAmount" label="优惠券" align="center">
+                    <el-table-column prop="couponPrice" label="优惠券" align="center">
                         <template slot-scope="scope">
-                            ￥{{scope.row.couponAmount?scope.row.couponAmount:'0.00'}}
+                            ￥{{scope.row.couponPrice?scope.row.couponPrice:'0.00'}}
                         </template>
                     </el-table-column>
 
-                    <el-table-column prop="reduceAmount" label="满减金额" align="center">
+                    <el-table-column prop="" label="满减金额" align="center">
                         <template slot-scope="scope">
-                            ￥{{scope.row.reduceAmount?scope.row.reduceAmount:'0.00'}}
+                            ￥{{scope.row.reducedPrice?scope.row.reducedPrice:'0.00'}}
                         </template>
                     </el-table-column>
 
@@ -236,7 +236,7 @@
                         </template>
                     </el-table-column>
 
-                    <el-table-column prop="" label="满减优惠" align="center">
+                    <el-table-column prop="reduceAmount" label="满减优惠" align="center">
                         <template slot-scope="scope">
                             ￥{{scope.row.reduceAmount?scope.row.reduceAmount:'0.00'}}
                         </template>
@@ -632,5 +632,9 @@
     }
     .grayLine{
         border-bottom: 0!important;
+    }
+    /deep/ .el-step__head.is-process .el-step__icon.is-text {
+        color: #c0c4cc!important;
+        border-color: #c0c4cc!important;
     }
 </style>

@@ -17,7 +17,7 @@
             <el-form-item label="消息接收人：" prop="receiverPeople" :label-width="formLabelWidth">
                 <el-radio-group style="margin-top: 13px;" @change="receiver" v-model="addDataForm.receiverPeople">
                     <el-radio :label="0">全部用户</el-radio>
-                    <el-radio :label="1">指定用户</el-radio>
+                    <div style="display: inline-block;margin-left:20px;"  @click="showDialogTableFn"> <el-radio :label="1">指定用户</el-radio></div style="display: inline-block;margin-left:20px;">
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="指定用户：" v-if="addDataForm.receiverPeople == 1" :label-width="formLabelWidth">
@@ -207,10 +207,12 @@
                 this.userLsit = this.multipleSelection;
             },
             receiver(val){
-                if(val == 1) {
-                    this.dialogTableVisible = true;
-                    this.getDataList();
-                };
+              
+                //  if(val == 1) {  // };
+            },
+            showDialogTableFn(){
+                this.dialogTableVisible = true;
+                this.getDataList();
             },
             artmessageContent(messageContent,i){
                 this.addDataForm.messageContent = messageContent;

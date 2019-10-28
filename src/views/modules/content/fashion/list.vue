@@ -9,7 +9,7 @@
                 <el-input v-model.trim="dataForm.titleOrJp" placeholder="请输入标题关键字"></el-input>
             </el-form-item>
             <el-form-item label="发布人：">
-                <el-input v-model.trim="dataForm.mediaName" ></el-input>
+                <el-input v-model.trim="dataForm.mediaName" placeholder="请输入发布人"></el-input>
             </el-form-item>
             <el-form-item label="日本发布时间：">
                 <el-date-picker
@@ -238,6 +238,7 @@
                 this.dataForm.publishJpEndTime = "";
                 this.dataForm.publishStartTime = "";
                 this.dataForm.publishEndTime = "";
+                this.dataForm.titleOrJp = "";
                 this.page = 1;
                 this.getDataList();
             },

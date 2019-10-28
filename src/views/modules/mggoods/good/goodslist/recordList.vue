@@ -13,7 +13,7 @@
                 v-loading="dataListLoading"
                 style="width: 100%">
             <el-table-column prop="goodsNo" label="ECLP编码"></el-table-column>
-            <!-- <el-table-column prop="goodsCsIdJp" label="SKU编码"></el-table-column>
+            <el-table-column prop="goodsCsIdJp" label="SKU编码"></el-table-column>
             <el-table-column prop="barcodes" label="商品条形码(UPC)"></el-table-column>
             <el-table-column prop="goodsName" label="商品名称(中文)">
                 <template slot-scope="scope">
@@ -43,8 +43,8 @@
             </el-table-column>
             <el-table-column prop="shopStoreName" label="店铺名称"></el-table-column>
             <el-table-column prop="storeName" label="商家ID"></el-table-column>
-            <el-table-column prop="storeContactInformation" label="商家联系方式"></el-table-column> -->
-            <el-table-column prop="goodsCsIdJp" label="SKU"></el-table-column>
+            <el-table-column prop="storeContactInformation" label="商家联系方式"></el-table-column>
+            <!-- <el-table-column prop="goodsCsIdJp" label="SKU"></el-table-column>
             <el-table-column prop="goodsName" label="*商品名称(中文)"></el-table-column>
             <el-table-column prop="sellerRecord" label="商品货号"></el-table-column>
             <el-table-column prop="hsCode" label="*HS"></el-table-column>
@@ -83,7 +83,7 @@
                    <span>{{scope.row.safeDays?scope.row.safeDays:"0"}}天</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="manufacturer" label="生产企业"></el-table-column>
+            <el-table-column prop="manufacturer" label="生产企业"></el-table-column> -->
             <!-- <el-table-column prop="goodsCsIdJp" label="提交时间"></el-table-column>
             <el-table-column prop="goodsCsIdJp" label="完成时间"></el-table-column>
             <el-table-column prop="goodsCsIdJp" label="备注"></el-table-column> -->

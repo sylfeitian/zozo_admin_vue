@@ -46,6 +46,8 @@
       //      window.SITE_CONFIG['imgURL'] = 'http://62.234.0.169:8888';
       //      window.SITE_CONFIG['imgURL'] = 'http://192.168.1.9:9093';  //孙
       // window.SITE_CONFIG['imgURL'] = 'http://oss-cn-beijing.speedycloud.org';
+      
+      // window.SITE_CONFIG['apiURL'] = 'http:/192.168.1.111:9093';  //测试
       window.SITE_CONFIG['imgURL'] = 'http://47.103.97.147';
   </script>
   <% } %>
@@ -53,7 +55,8 @@
   <% if (process.env.VUE_APP_NODE_ENV === 'prod:sit') { %>
   <script>window.SITE_CONFIG['apiURL'] = 'http://47.103.97.147:19093';</script>
   <!-- <script>window.SITE_CONFIG['imgURL'] = 'http://62.234.0.169:8888';</script> -->
-  <script>window.SITE_CONFIG['imgURL'] = 'http://47.103.97.147';</script>
+  <!-- <script>window.SITE_CONFIG['imgURL'] = 'http://47.103.97.147';</script> -->
+  <script>window.SITE_CONFIG['imgURL'] = 'http://cdn.zozo.cn/image';</script>
   <% } %>
   <!-- 验收测试环境 -->
   <% if (process.env.VUE_APP_NODE_ENV === 'prod:uat') { %>

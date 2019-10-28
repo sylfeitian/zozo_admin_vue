@@ -9,7 +9,7 @@
                 @keyup.enter.native="getDataList()"
         >
             <el-form-item label="订单号搜索：" prop="orderSn">
-                <el-input v-model.trim="dataForm.orderSn" placeholder="请输入" clearable></el-input>
+                <el-input v-model.trim="dataForm.orderSn" placeholder="请输入" clearable style="width:180px!important;"></el-input>
             </el-form-item>
             <el-form-item label="会员账号：" prop="memberName">
                 <el-input v-model.trim="dataForm.memberName" placeholder="请输入" clearable></el-input>
@@ -28,8 +28,9 @@
                     <!-- 待收货 -->
                      <el-option label="日本取消订单" value="70" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
                     <el-option label="JD申报中" value="80" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
-                    <el-option label="JD申报失败" value="100" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
-                   
+                    <el-option label="JD申报失败(不可重试)" value="90" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
+                    <el-option label="JD申报失败(可以重试)" value="100" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
+
                     <el-option label="清关中" value="110" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
                     <!-- <el-option label="清关失败" value="120" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option> -->
                      <el-option label="待收货" value="130" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
@@ -69,11 +70,11 @@
         </el-form>
         <el-radio-group v-model="radio1" @change="agreeChange">
             <el-radio-button label="all">全部订单<span v-if="topNum.all && topNum.all!=0"> ({{topNum.all}}) </span></el-radio-button>
-            <el-radio-button label="waitpay">待支付<span v-if="topNum.waitpay && topNum.waitpay !=0">({{topNum.waitpay}})</span></el-radio-button> 
+            <el-radio-button label="waitpay">待支付<span v-if="topNum.waitpay && topNum.waitpay !=0">({{topNum.waitpay}})</span></el-radio-button>
             <el-radio-button label="waitshipped">待发货<span v-if="topNum.waitshipped && topNum.waitshipped !=0">({{topNum.waitshipped}})</span></el-radio-button>
             <el-radio-button label="waitreceived">待收货<span v-if="topNum.waitreceived && topNum.waitreceived !=0">({{topNum.waitreceived}})</span></el-radio-button>
             <el-radio-button label="complete">交易成功<span v-if="topNum.complete && topNum.complete !=0">({{topNum.complete}})</span></el-radio-button>
-            <el-radio-button label="cancel">订单取消<span v-if="topNum.cancel && topNum.cancel !=0">({{topNum.cancel}})</span></el-radio-button> 
+            <el-radio-button label="cancel">订单取消<span v-if="topNum.cancel && topNum.cancel !=0">({{topNum.cancel}})</span></el-radio-button>
         </el-radio-group>
         <el-table
                 width="100%"
@@ -82,55 +83,83 @@
                 v-loading="dataListLoading"
                 style="width: 100%; maigin-top:10px;"
         >
-            <el-table-column prop="orderSn" label="订单编号" align="center" width="180"></el-table-column>
-            <el-table-column prop="createDate" label="下单时间" align="center"></el-table-column>
-            <el-table-column prop="memberName" label="会员账号" align="center"></el-table-column>
-            <el-table-column prop="orderAmount" label="订单金额" align="center">
-                <template slot-scope="scope">￥{{scope.row.orderAmount}}</template>
+            <el-table-column prop="orderSn" label="订单编号" align="center" width="180">
+                <template slot-scope="scope">
+                    <span :class="scope.row.exceptionStatus!=0?'redClass':''">{{scope.row.orderSn}}</span>
+                </template>
             </el-table-column>
-            <el-table-column prop="paymentName" label="支付方式" align="center"></el-table-column>
+            <el-table-column prop="createDate" label="下单时间" align="center">
+                <template slot-scope="scope">
+                    <span :class="scope.row.exceptionStatus!=0?'redClass':''">{{scope.row.createDate}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="memberName" label="会员账号" align="center">
+                <template slot-scope="scope">
+                    <span :class="scope.row.exceptionStatus!=0?'redClass':''">{{scope.row.memberName}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="orderAmount" label="订单金额" align="center">
+                <template slot-scope="scope" >
+                    <span :class="scope.row.exceptionStatus!=0?'redClass':''">￥{{scope.row.orderAmount}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="paymentName" label="支付方式" align="center">
+                <template slot-scope="scope">
+                    <span :class="scope.row.exceptionStatus!=0?'redClass':''">{{scope.row.paymentName}}</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="orderStatus" label="订单状态" align="center">
                  <template slot-scope="scope">
                         <!-- 待付款 -->
                         <span v-if="scope.row.orderStatus==10">待付款</span>
                          <!-- 待发货 -->
-                        <span v-else-if="scope.row.orderStatus==20">付款中</span>
-                        <span v-else-if="scope.row.orderStatus==30">待审核</span>
-                        <span v-else-if="scope.row.orderStatus==35">审核未通过</span>
-                        <span v-else-if="scope.row.orderStatus==40">lakala申报中</span>
-                        <span v-else-if="scope.row.orderStatus==50">lakala申报失败</span>
-                        <span v-else-if="scope.row.orderStatus==60">待日方发货</span>
+                        <span v-else-if="scope.row.orderStatus==20" :class="scope.row.exceptionStatus!=0?'redClass':''">付款中</span>
+                        <span v-else-if="scope.row.orderStatus==30" :class="scope.row.exceptionStatus!=0?'redClass':''">待审核</span>
+                        <span v-else-if="scope.row.orderStatus==35" :class="scope.row.exceptionStatus!=0?'redClass':''">审核未通过</span>
+                        <span v-else-if="scope.row.orderStatus==40" :class="scope.row.exceptionStatus!=0?'redClass':''">lakala申报中</span>
+                        <span v-else-if="scope.row.orderStatus==50" :class="scope.row.exceptionStatus!=0?'redClass':''">lakala申报失败</span>
+                        <span v-else-if="scope.row.orderStatus==60" :class="scope.row.exceptionStatus!=0?'redClass':''">待日方发货</span>
                         <!-- 待收货 -->
-                        <span v-else-if="scope.row.orderStatus==70">日方取消订单</span>
-                        <span v-else-if="scope.row.orderStatus==80">JD申报中</span>
-                        <span v-else-if="scope.row.orderStatus==90 || scope.row.orderStatus==100">JD申报失败</span>
-                        <span v-else-if="scope.row.orderStatus==110">清关中</span>
-                        <span v-else-if="scope.row.orderStatus==120">清关失败</span>
-                        <span v-else-if="scope.row.orderStatus==130">待收货</span>
+                        <span v-else-if="scope.row.orderStatus==70" :class="scope.row.exceptionStatus!=0?'redClass':''">日方取消订单</span>
+                        <span v-else-if="scope.row.orderStatus==80" :class="scope.row.exceptionStatus!=0?'redClass':''">JD申报中</span>
+                        <span v-else-if="scope.row.orderStatus==90" :class="scope.row.exceptionStatus!=0?'redClass':''">JD申报失败(无法重试)</span>
+                        <span v-else-if="scope.row.orderStatus==100" :class="scope.row.exceptionStatus!=0?'redClass':''">JD申报失败(可以重试)</span>
+                        <span v-else-if="scope.row.orderStatus==110" :class="scope.row.exceptionStatus!=0?'redClass':''">清关中</span>
+                        <span v-else-if="scope.row.orderStatus==120" :class="scope.row.exceptionStatus!=0?'redClass':''">清关失败</span>
+                        <span v-else-if="scope.row.orderStatus==130" :class="scope.row.exceptionStatus!=0?'redClass':''">待收货</span>
                         <!-- 已完成 -->
-                        <span v-else-if="scope.row.orderStatus==140">交易完成</span>
-                        <span v-else-if="scope.row.orderStatus==0">已取消</span>
+                        <span v-else-if="scope.row.orderStatus==140" :class="scope.row.exceptionStatus!=0?'redClass':''">交易完成</span>
+                        <span v-else-if="scope.row.orderStatus==0" :class="scope.row.exceptionStatus!=0?'redClass':''">已取消</span>
                  </template>
             </el-table-column>
             <el-table-column label="操作" align="center" width="200">
                 <template slot-scope="scope">
-                    <!-- <el-button type="primary" @click="submitStore()">{{ $t('confirm') }}</el-button> -->
-                    <el-button size="mini" type="text" @click="orderDetFn(scope.row)">查看</el-button>
-                    <el-button size="mini" type="text" @click="cancleOrderFn(scope.row)"  v-if="scope.row.orderStatus==10  ||   scope.row.orderStatus==50 || scope.row.orderStatus==70 || scope.row.orderStatus==90 || scope.row.orderStatus==100">取消订单</el-button>
-                    <el-button size="mini" type="text" @click="exammineFn(scope.row)" v-if="scope.row.orderStatus==30">审核</el-button>
-                    <!-- JD申报失败 -->
-                    <el-button size="mini" type="text" @click="declareSthFn(scope.row,'jd')" v-if="scope.row.orderStatus==100">重新申报</el-button>
-                    <!-- <el-button size="mini" type="text"  @click="clearancFailureFn(scope.row)"  v-if="scope.row.orderStatus==80">清关失败</el-button> -->
-                    <!-- <el-button size="mini" type="text"  @click="writeLogisticsInfo(scope.row)"  v-if="scope.row.orderStatus==80">填写物流</el-button> -->
-                    
-                    <!-- tudo lakala申报失败,申报失败需要重新申报，和JD申报失败重新申报调不一样的接口  -->
-                    <el-button size="mini" type="text" @click="declareSthFn(scope.row,'lakala')" v-if="scope.row.orderStatus==50">重新申报</el-button>
+                    <!-- 异常订单 -->
+                    <div v-if="scope.row.exceptionStatus!=0">
+                        <el-button size="mini" type="text" @click="orderDetFn(scope.row)">查看</el-button>
+                        <el-button size="mini" type="text" @click="reptyOrderFn(scope.row)">重试</el-button>
+                        <el-button size="mini" type="text" @click="cancleOrderFn(scope.row)">取消订单</el-button>
+                   </div>
+                    <!-- 正常订单 -->
+                   <div v-else>
+                        <!-- <el-button type="primary" @click="submitStore()">{{ $t('confirm') }}</el-button> -->
+                        <el-button size="mini" type="text" @click="orderDetFn(scope.row)">查看</el-button>
+                        <el-button size="mini" type="text" @click="cancleOrderFn(scope.row)"  v-if="scope.row.orderStatus==10  ||   scope.row.orderStatus==50 || scope.row.orderStatus==70 || scope.row.orderStatus==90 || scope.row.orderStatus==100">取消订单</el-button>
+                        <el-button size="mini" type="text" @click="exammineFn(scope.row)" v-if="scope.row.orderStatus==30">审核</el-button>
+                        <!-- JD申报失败 -->
+                        <el-button size="mini" type="text" @click="declareSthFn(scope.row,'jd')" v-if="scope.row.orderStatus==100">重新申报</el-button>
+                        <!-- <el-button size="mini" type="text"  @click="clearancFailureFn(scope.row)"  v-if="scope.row.orderStatus==80">清关失败</el-button> -->
+                        <!-- <el-button size="mini" type="text"  @click="writeLogisticsInfo(scope.row)"  v-if="scope.row.orderStatus==80">填写物流</el-button> -->
+
+                        <!-- tudo lakala申报失败,申报失败需要重新申报，和JD申报失败重新申报调不一样的接口  -->
+                        <el-button size="mini" type="text" @click="declareSthFn(scope.row,'lakala')" v-if="scope.row.orderStatus==50">重新申报</el-button>
+                   </div>
                 </template>
             </el-table-column>
         </el-table>
         <el-pagination
-                @size-change="pageSizeChangeHandle"
-                @current-change="pageCurrentChangeHandle"
+                @size-change="pageSizeChangeHandleLocal"
+                @current-change="pageCurrentChangeHandleLocal"
                 :current-page="page"
                 :page-sizes="[10, 20, 50, 100]"
                 :page-size="limit"
@@ -138,6 +167,9 @@
                 layout="total, sizes, prev, pager, next, jumper"
         ></el-pagination>
 
+
+        <!-- 订单重试 -->
+        <reptyOrder v-if="reptyOrderVisible" ref="reptyOrderCompon" @searchDataList="searchDataList"></reptyOrder>
         <!-- 申报 -->
         <declareSth v-if="declareSthVisible" ref="declareSthCompon" @searchDataList="searchDataList"></declareSth>
          <!-- 审核 -->
@@ -159,7 +191,7 @@
             :orderData="orderData"
     ></orderDet> -->
     <!-- <discountDet v-else @changeState="changeState"></discountDet> -->
-    
+
 </template>
 
 <script>
@@ -167,7 +199,9 @@
     import { orderlists } from "@/api/url";
     import { orderDetail, paymentList,orderListTop } from "@/api/api";
     import declareSth from '../modules/model-declare-sth.vue'
-     import clearancFailure from '../modules/model-clearanc-failure.vue'
+    import reptyOrder from './modules/model-repty.vue'
+    
+    import clearancFailure from '../modules/model-clearanc-failure.vue'
     import writeLogisticsInfo from '../modules/model-write-logistics-info.vue'
     import exammine from '../modules/model-exammine.vue'
     import cancleOrder from '../modules/model-cancle-order.vue'
@@ -196,6 +230,7 @@
                 declareSthVisible:false,
                 exammineVisible:false,
                 cancleOrderVisible:false,
+                reptyOrderVisible:false,
                 detailOrList: 1,
                 radio1: "all",
                 tableData: [],
@@ -263,6 +298,7 @@
             writeLogisticsInfo,
             cancleOrder,
             exammine,
+            reptyOrder,
             // orderDet,
             // discountDet
         },
@@ -393,6 +429,13 @@
                    this.$refs.declareSthCompon.init(row,type)
                 })
             },
+            // 重试
+            declareSthFn(row,type){
+                this.declareSthVisible = true;
+                this.$nextTick(() => {
+                    this.$refs.declareSthCompon.init(row,type)
+                })
+            },
             // 取消订单
            cancleOrderFn(row){
                 this.cancleOrderVisible = true;
@@ -400,6 +443,23 @@
                    this.$refs.cancleOrderCompon.init(row)
                 })
                 this.searchDataList();
+            },
+
+             //订单重试
+            reptyOrderFn(row){
+                this.reptyOrderVisible = true;
+                this.$nextTick(() => {
+                   this.$refs.reptyOrderCompon.init(row)
+                })
+                this.searchDataList();
+            },
+            pageCurrentChangeHandleLocal(){
+                this.pageCurrentChangeHandle();
+                this.getOrderListTop();
+            },
+            pageSizeChangeHandleLocal(){
+                this.pageSizeChangeHandle();
+                this.getOrderListTop();
             },
         }
     };
@@ -539,5 +599,8 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+    .redClass{
+        color: red;
     }
 </style>

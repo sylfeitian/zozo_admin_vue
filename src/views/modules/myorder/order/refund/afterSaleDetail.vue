@@ -78,7 +78,7 @@
                     </el-form-item>
 
                 <el-form-item label="退款金额：" >
-                        <span>¥{{returnInfo.shouldRefundAmount}}</span>
+                        <span v-if="returnInfo.shouldRefundAmount">¥{{returnInfo.shouldRefundAmount}}</span>
                     </el-form-item>
                 </div>
             </el-form>
