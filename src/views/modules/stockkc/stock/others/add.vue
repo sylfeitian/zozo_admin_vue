@@ -20,15 +20,15 @@
             </el-form-item>
         </el-form>
         <el-form>
-            <el-form-item>
+            <el-form-item style="float:right;">
                 <!--<el-button type="primary"  @click="addOrEditHandle()" >导入商品</el-button>-->
-                <el-button type="primary" plain @click="addGoods()" >添加商品</el-button>
-                <div  class="parentImport" style="margin-left:10px;">
+                <div  class="parentImport">
                    <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"></importAndExport>
                    <div class="hiddenImportCompon" v-show="!dataForm.wareHouseName" @click="messageChouseWareHouseFn()">
                        <!-- 我是遮罩层 -->
                    </div>
                 </div>
+                <el-button type="primary" plain @click="addGoods()" style="margin-left:10px;">添加商品</el-button>
             </el-form-item>
         </el-form>
       
@@ -318,7 +318,7 @@
     }
     .parentImport{
         position: relative;
-        width:300px;
+        // width:300px;
         display: inline-block;
     }
     .hiddenImportCompon{
