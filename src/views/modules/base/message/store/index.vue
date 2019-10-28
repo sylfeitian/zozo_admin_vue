@@ -156,9 +156,7 @@ export default {
     return {
       importAndExportOptions:{
             importUrl:importShopStore,//导入接口
-            importWord:"导入",
-            // exportUrl:exportRegisterUrl,//导出接口
-            // exportWord:"导出数据",
+            importWord:"导入店铺信息",
         },
       mixinViewModuleOptions: {
         getDataListURL: shopPageUrl,
