@@ -18,7 +18,7 @@
                         </el-form-item>
                         <el-form-item label="手机号码：" prop="mobPhone">
                                 <el-input v-model.trim="dataForm.mobPhone" maxlength="60" placeholder="请输入手机号码"></el-input>
-                        </el-form-item>  
+                        </el-form-item>
                         <el-form-item label="所在区域：" prop="areaId">
                              <el-select v-model="dataForm.provinceId" placeholder="省"
                                   style="margin-right:10px;"
@@ -50,7 +50,7 @@
                                     :value="item.id">
                                 </el-option>
                             </el-select>
-                            <el-select v-model="dataForm.stressId" placeholder="街"
+                            <el-select v-model="dataForm.stressId" placeholder="街" :class="optionsArea4.length==0 ? 'glay' : '' "
                                 @visible-change="changeArea(dataForm.stressId,4)">
                                 <el-option
                                     v-for="item in optionsArea4"
@@ -59,15 +59,15 @@
                                     :value="item.id">
                                 </el-option>
                             </el-select>
-                        </el-form-item> 
+                        </el-form-item>
                          <el-form-item label=" 详细地址：" prop="address">
-                                <el-input   
+                                <el-input
                                     type="textarea"
                                     :autosize="{ minRows: 3, maxRows: 6}"
-                                    v-model="dataForm.address"  
+                                    v-model="dataForm.address"
                                     placeholder="请输入详细地址">
                                 </el-input>
-                        </el-form-item> 
+                        </el-form-item>
                 </el-form>
 			    <span slot="footer" class="dialog-footer">
 		     		    <el-button @click="closeDialog()">取消</el-button>
@@ -129,14 +129,15 @@ import { isMobile,isPhone } from '@/utils/validate'
         },
         methods: {
             init(orderBase,receiverInfo,row) {
+                debugger
                 this.visible = true;
                 this.orderBase = orderBase;
                 Object.assign(this.dataForm,receiverInfo);
                 this.row = row;
                 this.preOptionsArea1 = [];
                 this.optionsArea2[0] = {id:receiverInfo.cityId,name:receiverInfo.city}
-                this.optionsArea3[0] = {id:receiverInfo.areaId,name:receiverInfo.areaId} 
-                this.optionsArea4[0] =  {id:receiverInfo.stressId,name:receiverInfo.townArea}
+                this.optionsArea3[0] = {id:receiverInfo.areaId,name:receiverInfo.areaId}
+                this.optionsArea4[0] =  {id:receiverInfo.stressId,name:receiverInfo.townArea==null ? '街道':receiverInfo.townArea}
                 this.getFirstData();
                 receiverInfo.provinceId && this.changeArea(receiverInfo.provinceId,1,false);
                 receiverInfo.cityId && this.changeArea(receiverInfo.cityId,2,false);
@@ -153,6 +154,7 @@ import { isMobile,isPhone } from '@/utils/validate'
             },
             // 切换地区获取下级联动地区数据
             changeArea(id,argu2,reset=true){
+                debugger
                 if(!id){
                     return
                 }
@@ -175,6 +177,7 @@ import { isMobile,isPhone } from '@/utils/validate'
                     this.dataForm.stressId = "";
                     this.optionsArea4 = []
                 }else if(argu2==4 && reset){
+                    debugger
                     // 选到最后一级了
                 }
                 areaByParentId(obj).then((res)=>{
@@ -193,11 +196,13 @@ import { isMobile,isPhone } from '@/utils/validate'
                     }
                 })
             },
-            
+
            // 提交
 			dataFormSubmit(formName){
+                debugger
 				this.$refs[formName].validate((valid) => {
 						if (valid) {
+                            debugger
 								this.loading = true;
 								var obj={
                                     "address": this.dataForm.address,
@@ -249,4 +254,7 @@ import { isMobile,isPhone } from '@/utils/validate'
     width: 90%;
     margin: auto;
 }
+    /deep/ .glay .el-input__inner{
+        color: #c0c4cc !important;
+    }
 </style>

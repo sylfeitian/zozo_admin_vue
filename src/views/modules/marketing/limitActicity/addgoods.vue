@@ -225,7 +225,7 @@
                     this.dataForm.categoryId = ""
                     this.dataForm.storeName = ""
                     this.dataForm.brandName = ""
-                    this.classList = ""
+                    this.classList = [ ]
                     this.getData();
                 },
                 //回调返回列表
