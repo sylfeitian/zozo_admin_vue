@@ -130,4 +130,7 @@
         line-height: 54px;
         text-align: center
     }
+    /deep/ .has-gutter{
+        display: none!important;
+    }
 </style>
