@@ -232,7 +232,7 @@
                 row:'',
                 rules: {
 				          name: [
-				            { required: true, message: '长度在 0到 60 个汉字', trigger: 'blur' }
+				            { required: true, message: '必填项不可为空', trigger: 'blur' }
 				          ],
                 },
                 tempImage:'',//上传图片展位图
