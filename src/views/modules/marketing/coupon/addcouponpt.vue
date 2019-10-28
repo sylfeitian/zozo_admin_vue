@@ -402,7 +402,7 @@ export default {
             // alert([this.dataForm.name,this.dataForm.domainAddress]);
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    this.loading = true;
+                    this.saveLoading = true;
                     var obj = {
                         bei:  this.dataForm.bei,//备注 ,
                         faceValue:  this.dataForm.faceValue,//面额 ,
@@ -421,7 +421,7 @@ export default {
                     if(this.editSatusId) obj.id = this.editSatusId//优惠券活动id
                     var fn = this.type?addActivityNormal:editActivityNormal
                     fn(obj).then((res) => {
-                        this.loading = false;
+                        this.saveLoading = false;
                         // alert(JSON.stringify(res));
                         let status = null;
                         if(res.code == "200"){
