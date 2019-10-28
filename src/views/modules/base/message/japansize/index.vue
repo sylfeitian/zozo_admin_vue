@@ -27,8 +27,10 @@
             <el-table-column prop="cnSizeName" label="关联中国尺码" align="center"></el-table-column>
             <el-table-column label="操作" align="center" width="200">
                 <template slot-scope="scope">
-                    <el-button @click.native.prevent="relationHandle(scope.$index, scope.row)"type="text"size="mini">{{scope.row.cnSizeName?'修改关联尺码':'关联尺码'}}</el-button>
-                    <el-button @click.native.prevent="addOrEditHandle(scope.$index, scope.row)"type="text"size="mini">编辑</el-button>
+                    <!-- <el-button @click.native.prevent="relationHandle(scope.$index, scope.row)"type="text"size="mini">{{scope.row.cnSizeName?'修改关联尺码':'关联尺码'}}</el-button> -->
+                    <el-button @click.native.prevent="relationHandle(scope.$index, scope.row, 0)" type="text" size="mini" v-if="scope.row.cnSizeName">修改关联尺码</el-button>
+                    <el-button @click.native.prevent="relationHandle(scope.$index, scope.row, 1)" type="text" size="mini" v-else>关联尺码</el-button>
+                    <el-button @click.native.prevent="addOrEditHandle(scope.$index, scope.row)" type="text" size="mini">编辑</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -136,10 +138,10 @@
                 })
             },
             //关联/修改
-            relationHandle(index,row) {
+            relationHandle(index,row, type) {
               this.addEditisshow = true;
               this.$nextTick(() => {
-                    this.$refs.addEditref.init(row)
+                    this.$refs.addEditref.init(row, type)
                 })
             },
             setAddEditDataVisible(boolargu){

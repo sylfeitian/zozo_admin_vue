@@ -98,6 +98,10 @@
 		    prop="threshold"
 		    label="使用门槛"
 			align="center">
+			<template slot-scope="scope">
+				<span v-if="scope.row.threshold == 0">无门槛</span>
+				<span v-else>{{scope.row.threshold}}</span>
+			</template>
 		</el-table-column>
 		<el-table-column
 		    prop="faceValue"
@@ -163,8 +167,8 @@
 <!--		    </template>-->
 			<template slot-scope="scope">
 				<el-button type="text" size="small" @click="showDetail(scope.row)">查看</el-button>
-				<el-button type="text" size="small" v-if="scope.row.state ==0" @click="addCoupon(scope.row)">编辑</el-button>
-				<el-button class="artdanger" type="text" size="small"  v-if="scope.row.state ==2 || scope.row.state ==0"  @click="deleteHandleLocal(scope.row)">删除</el-button>
+				<el-button type="text" size="small" v-if="scope.row.auditState==0 || scope.row.auditState==1&&scope.row.state==0 || scope.row.auditState==2" @click="addCoupon(scope.row)">编辑</el-button>
+				<el-button class="artdanger" type="text" size="small"  v-if="scope.row.auditState ==2"  @click="deleteHandleLocal(scope.row)">删除</el-button>
 				<el-button type="text" size="small" v-if="scope.row.state ==1" @click="showStopModel(scope.row)">停止</el-button>
 				<el-button type="text" size="small" v-if="scope.row.auditState==0" @click="showExammine(scope.row)">审核</el-button>
 			</template>

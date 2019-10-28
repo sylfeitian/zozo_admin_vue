@@ -14,7 +14,7 @@
             @keyup.enter.native="dataFormSubmit('addForm')"
             label-width="120px"
         >
-            <el-form-item  label="风格标签分类：" prop="styleType">
+            <el-form-item  label="风格标签类别：" prop="styleType">
                 <el-select v-model="dataForm.styleType" placeholder="请选择" :disabled="row?true:false">
                     <el-option
                             v-for="item in options"

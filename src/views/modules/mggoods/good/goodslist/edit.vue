@@ -25,7 +25,7 @@
             </el-form-item>
             <el-form-item label="商品名称：" prop="name" class="item">
                 <el-input v-model.trim="dataForm.name" placeholder="请输入" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
-                <span style="color: #bebebe;">必填且最多可输入60个文字</span>
+                <span style="color: #bebebe;">最多可输入60个文字</span>
             </el-form-item>
             <el-form-item label="品牌：" class="item">
                 <span>{{dataForm.brandName}}</span>
@@ -82,10 +82,12 @@
             <el-form-item label="原产地：" class="item">
                 <span>{{dataForm.madeInJp}}</span>
                 <el-input v-model.trim="dataForm.madeIn" placeholder="请输入" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
+                <span style="color: #bebebe;">最多可输入10个文字</span>
             </el-form-item>
             <el-form-item label="材质：" class="item">
                 <span>{{dataForm.materialJp}}</span>
                 <el-input v-model.trim="dataForm.material" placeholder="请输入" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
+                <span style="color: #bebebe;">最多可输入10个文字</span>
             </el-form-item>
             <el-form-item label="上架状态：" class="item">
                 <template>
@@ -230,7 +232,7 @@
                 row:'',
                 rules: {
 				          name: [
-				            { required: true, message: '长度在 0到 60 个汉字', trigger: 'blur' }
+				            { required: true, message: '必填项不可为空', trigger: 'blur' }
 				          ],
                 },
                 tempImage:'',//上传图片展位图
@@ -263,6 +265,36 @@
                     var count=chineseCount+characterCount;
                     if(count>120){ //最多输入120个字符
                         this.dataForm.name = newV.substr(0,(chineseCount/2+characterCount)-1)
+                    }
+                }
+            },
+            'dataForm.madeIn':function(newV,oldV) {
+                if(!newV) return
+                var chineseCount = 0,characterCount = 0;
+                for(let i=0;i<newV.length;i++){
+                    if(/^[\u4e00-\u9fa5]*$/.test(newV[i])){ //汉字
+                        chineseCount=chineseCount+2;
+                    }else{ //字符
+                        characterCount=characterCount+1;
+                    }
+                    var count=chineseCount+characterCount;
+                    if(count>20){ //最多输入20个字符
+                        this.dataForm.madeIn = newV.substr(0,(chineseCount/2+characterCount)-1)
+                    }
+                }
+            },
+            'dataForm.material':function(newV,oldV) {
+                if(!newV) return
+                var chineseCount = 0,characterCount = 0;
+                for(let i=0;i<newV.length;i++){
+                    if(/^[\u4e00-\u9fa5]*$/.test(newV[i])){ //汉字
+                        chineseCount=chineseCount+2;
+                    }else{ //字符
+                        characterCount=characterCount+1;
+                    }
+                    var count=chineseCount+characterCount;
+                    if(count>20){ //最多输入20个字符
+                        this.dataForm.material = newV.substr(0,(chineseCount/2+characterCount)-1)
                     }
                 }
             },

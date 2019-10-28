@@ -1,7 +1,7 @@
 <template>
     <el-dialog
         class="model-add-edit-data"
-        :title="title"
+        :title="type == 0 ?'修改尺码': '关联尺码' "
         :close-on-click-modal="false"
         :visible.sync="visible"
         :before-close="closeDialog"
@@ -79,6 +79,7 @@
                 optionsRight: [],
                 title:'',
                 row:"",
+                type: "",
                 formLabelWidth: '120px'
             }
         },
@@ -101,10 +102,12 @@
 		          	}
 	                })
         	},
-            init (row) {
+            init (row,type) {
                 this.visible = true;
                 this.dataForm = cloneDeep(row);
-                this.title="修改/关联尺码";
+                this.type  = type;
+            
+                
 //              this.$nextTick(() => {
 //                  this.$refs['addForm'].resetFields();
 //                  // this.getApplyPullList();

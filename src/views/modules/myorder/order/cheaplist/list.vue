@@ -138,6 +138,7 @@
                     <div v-if="scope.row.exceptionStatus!=0">
                         <el-button size="mini" type="text" @click="orderDetFn(scope.row)">查看</el-button>
                         <el-button size="mini" type="text" @click="reptyOrderFn(scope.row)">重试</el-button>
+                        <el-button size="mini" type="text" @click="cancleOrderFn(scope.row)">取消订单</el-button>
                    </div>
                     <!-- 正常订单 -->
                    <div v-else>
@@ -157,8 +158,8 @@
             </el-table-column>
         </el-table>
         <el-pagination
-                @size-change="pageSizeChangeHandle"
-                @current-change="pageCurrentChangeHandle"
+                @size-change="pageSizeChangeHandleLocal"
+                @current-change="pageCurrentChangeHandleLocal"
                 :current-page="page"
                 :page-sizes="[10, 20, 50, 100]"
                 :page-size="limit"
@@ -451,6 +452,14 @@
                    this.$refs.reptyOrderCompon.init(row)
                 })
                 this.searchDataList();
+            },
+            pageCurrentChangeHandleLocal(){
+                this.pageCurrentChangeHandle();
+                this.getOrderListTop();
+            },
+            pageSizeChangeHandleLocal(){
+                this.pageSizeChangeHandle();
+                this.getOrderListTop();
             },
         }
     };

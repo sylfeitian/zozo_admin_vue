@@ -156,9 +156,7 @@ export default {
     return {
       importAndExportOptions:{
             importUrl:importShopStore,//导入接口
-            importWord:"导入",
-            // exportUrl:exportRegisterUrl,//导出接口
-            // exportWord:"导出数据",
+            importWord:"导入店铺信息",
         },
       mixinViewModuleOptions: {
         getDataListURL: shopPageUrl,
@@ -194,6 +192,22 @@ export default {
       forbitLoading: false,
       recommendFlag: ""
     };
+  },
+  watch: {
+    'dataFormShow.stName':function(newV,oldV) {
+        var chineseCount = 0,characterCount = 0;
+        for (let i = 0; i < newV.length; i++) {
+            if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                chineseCount = chineseCount + 2;
+            } else { //字符
+                characterCount = characterCount + 1;
+            }
+            var count = chineseCount + characterCount;
+            if (count > 300) { //输入字符大于300的时候过滤
+                this.dataFormShow.stName = newV.substr(0,(chineseCount/2+characterCount)-1)
+            }
+        }
+    },
   },
   created() {
     // let obj = {
