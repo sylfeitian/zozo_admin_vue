@@ -21,16 +21,16 @@
              ref="multipleTable"
              @selection-change="handleSelectionChange"
             style="width: 100%">
-            
+
              <el-table-column
                 type="selection"
-                width="70">
+                width="40">
             </el-table-column>
             <el-table-column
                 prop="id"
                 label="skuID"
                 align="center"
-                width="180">
+                width="160">
             </el-table-column>
             <el-table-column
                 prop="specInfo"
@@ -39,24 +39,33 @@
             </el-table-column>
             <el-table-column
                 align="center"
-                min-width="180"
+                min-width="140"
                 label="活动库存">
                 <template slot-scope="scope">
-                        <el-input-number v-model="scope.row.activityQuantity" :step="1" :min="0" :max="999999" ></el-input-number>
+                        <el-input class="inputWidth"
+                                  v-model="scope.row.activityQuantity"
+                                  @input="watchkc(scope.$index,$event)"
+                                  :min="0" type="text" :maxlength="6"></el-input>
                 </template>
             </el-table-column>
             <el-table-column
                 align="center"
                 prop="cartLimit"
+                min-width="80"
                 label="日本限购数量">
             </el-table-column>
             <el-table-column
                 align="center"
                 prop="personLimit"
                 label="每人限购"
-                 min-width="180">
+                 min-width="140">
                 <template slot-scope="scope">
-                        <el-input-number  v-model="scope.row.personLimit" :step="1" :min="0" :max="999999"></el-input-number >
+                        <el-input class="inputWidth" v-model="scope.row.personLimit"
+                                          :maxlength="6"
+                                          :max="scope.row.cartLimit==0?'999999':scope.row.cartLimit"
+                                          :min="0"
+                                  @input="watchxg(scope.$index,$event)"
+                                          type="text"></el-input >
                 </template>
             </el-table-column>
             <el-table-column
@@ -99,9 +108,33 @@
                 row2:'',
                 type:'',//choose修改；edit编辑
             }
-            
+
         },
         methods: {
+            watchxg(index,val){
+                for(let j=0;j<3;j++){
+                    // 最大输入6位数 循环3遍达到删除非数字输入效果
+                    for(let i=0;i<val.length;i++){
+                        // 删除非数字的输入
+                        if(!/[0-9]/g.test(val[i])){
+                            val= val.replace(val[i],"")
+                        }
+                    }
+                }
+                this.dataList[index].personLimit= val
+            },
+            watchkc(index,val){
+                for(let j=0;j<3;j++){
+                    // 最大输入6位数 循环3遍达到删除非数字输入效果
+                    for(let i=0;i<val.length;i++){
+                        // 删除非数字的输入
+                        if(!/[0-9]/g.test(val[i])){
+                            val= val.replace(val[i],"")
+                        }
+                    }
+                }
+                this.dataList[index].activityQuantity= val
+            },
             init (row,row2,type) {
                 this.visible = true;
                 this.saveLoading = false;
@@ -134,7 +167,7 @@
                                 this.multipleSelection = this.dataList.filter((item,index)=>{
                                     //   return item;
                                     return item.checkFlag==1;
-                                
+
                                 })
                                 this.$nextTick(()=>{
                                     this.multipleSelection.forEach(row => {
@@ -142,11 +175,11 @@
                                     });
                                 })
                            }
-                            
+
                         }else{
                             this.dataList = []
                         }
-                      
+
                     }
                 })
             },
@@ -168,7 +201,7 @@
                         item.personLimit = row.personLimit
                     })
 
-                }).catch(() => { 
+                }).catch(() => {
                 })
             },
             // 提交
@@ -237,5 +270,8 @@
     /*}*/
     .title {
         margin-left: -70px;
+    }
+    /deep/ .inputWidth{
+         width: 90% !important;
     }
 </style>
