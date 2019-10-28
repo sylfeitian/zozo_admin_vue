@@ -158,8 +158,8 @@
             </el-table-column>
         </el-table>
         <el-pagination
-                @size-change="pageSizeChangeHandle"
-                @current-change="pageCurrentChangeHandle"
+                @size-change="pageSizeChangeHandleLocal"
+                @current-change="pageCurrentChangeHandleLocal"
                 :current-page="page"
                 :page-sizes="[10, 20, 50, 100]"
                 :page-size="limit"
@@ -452,6 +452,14 @@
                    this.$refs.reptyOrderCompon.init(row)
                 })
                 this.searchDataList();
+            },
+            pageCurrentChangeHandleLocal(){
+                this.pageCurrentChangeHandle();
+                this.getOrderListTop();
+            },
+            pageSizeChangeHandleLocal(){
+                this.pageSizeChangeHandle();
+                this.getOrderListTop();
             },
         }
     };
