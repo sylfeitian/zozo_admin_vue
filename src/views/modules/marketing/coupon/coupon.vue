@@ -98,6 +98,10 @@
 		    prop="threshold"
 		    label="使用门槛"
 			align="center">
+			<template slot-scope="scope">
+				<span v-if="scope.row.threshold == 0">无门槛</span>
+				<span v-else>{{scope.row.threshold}}</span>
+			</template>
 		</el-table-column>
 		<el-table-column
 		    prop="faceValue"
