@@ -266,7 +266,7 @@ export default {
     return {
       mixinViewModuleOptions: {
         getDataListURL: addSckillPro,
-        activatedIsNeed: false, 
+        activatedIsNeed: false,
         getDataListIsPage: true,
         exportURL: "/admin-api/store/export",
         deleteURL: "/admin-api/store",
