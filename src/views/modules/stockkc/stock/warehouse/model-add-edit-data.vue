@@ -60,7 +60,7 @@
                             :value="item.id">
                     </el-option>
                 </el-select>
-                <el-select v-model="dataForm.streetId" placeholder="街"
+                <el-select v-model="dataForm.streetId" placeholder="街道/乡镇"
                            @visible-change="changeArea(dataForm.streetId,4)">
                     <el-option
                             v-for="item in optionsArea4"
