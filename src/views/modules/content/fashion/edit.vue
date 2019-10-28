@@ -203,7 +203,7 @@
                         <el-form-item label="详情：" style="height: 100%!important;">
                             <template slot-scope="scope">
                                 <div style="padding:0" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
-                                    <div  v-if="v.textCn=='' || v.textCn || v.imageUrl" style="padding: 0;width:80%;margin-left:100px;">
+                                    <div  v-if="v.text=='' || v.text || v.imageUrl" style="padding: 0;width:80%;margin-left:100px;">
                                         <!-- <div style="height: 20px;"></div> -->
                                         <div class="contentChild"  style="min-height:33px;"  v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
                                             <el-input style="margin: auto;" v-model="v.textCn" type="textarea" :rows="5" ></el-input>
@@ -311,7 +311,7 @@
                     "viewsNumCn": this.dataForm.viewsNumCn  // 中国浏览量中国浏览量
                 }
                 console.log(obj)
-                savefashiondetail(this.dataForm).then((res)=>{
+                savefashiondetail(obj).then((res)=>{
                     if(res.code == 200){
                         this.$message({
                             message: res.msg,
