@@ -227,9 +227,11 @@
                 this.saveLoading = true;
                 if(this.type===2){//取消选择
                     var cancelChoose = {
-                        "activityId": this.row.id,//活动id
-                        "activityType":1, //活动类型 1 限量 2预售 ,
-                        "goodsIdList":this.row2.id, //商品spuid
+                       data:{
+                            "activityId": this.row.id,//活动id
+                            "activityType":1, //活动类型 1 限量 2预售 ,
+                            "goodsIdList":[this.row2.id], //商品spuid
+                       }
                     }
                     deleteLimitActivityGoods(cancelChoose).then(res=>{
                         this.saveLoading = false;
