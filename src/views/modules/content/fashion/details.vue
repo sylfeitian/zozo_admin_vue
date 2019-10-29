@@ -208,7 +208,7 @@
                                 <div style="display:flex;padding:0;flex-direction: column;" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i" >
                                     <div v-if="v.text || v.imageUrl" style="padding: 0;">
                                         <!-- <div style="height: 20px;"></div> -->
-                                        <div class="contentChild"  style="min-height:33px;margin-top:0;"v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'" v-html="v.text">
+                                        <div class="contentChild"  style="min-height:33px;margin-top:0;"v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'" v-html="v.textCn">
                                             <!-- {{v.text}} -->
                                         </div>
                                         <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
@@ -216,7 +216,7 @@
                                                 <div class="goodsImg" style="text-align:center;">
                                                     <img :src="v.imageUrl | filterImgUrl" style="width:200px;" alt=""/>
                                                 </div>
-                                                <div v-if="v.typeId=='4'"  v-html="v.text"></div>
+                                                <div v-if="v.typeId=='4'"  v-html="v.textCn"></div>
                                             </div>
                                         </div>
                                     </div>
