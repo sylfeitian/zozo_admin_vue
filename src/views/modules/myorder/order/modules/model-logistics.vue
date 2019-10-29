@@ -11,7 +11,7 @@
         <div class="logisticsWarp" v-loading="loading">
             <el-steps direction="vertical" :active="active">
                 <!-- v-for="" -->
-                <el-step :title="item.opeRemark" :description="item.opeTime"  v-for="(item,index) in logisticsData" :key="index"></el-step>
+                <el-step :title="item.content" :description="item.operationTime"  v-for="(item,index) in logisticsData" :key="index"></el-step>
             </el-steps>
         </div>
     </el-dialog>
