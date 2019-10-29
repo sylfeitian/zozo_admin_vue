@@ -107,8 +107,8 @@
                                     ref="cropperImg"
                                     :index="'1'"
                                     :cropImg="dataForm.imageUrl"
-                                    :imgWidth='"100px"'
-                                    :imgHeight='"100px"'
+                                    :imgWidth='"200px"'
+                                    :imgHeight='"200px"'
                                     @delteteImg="delteteImg"
                                     @GiftUrlHandle="GiftUrlHandle"
                                     style="display: inline-block;"
@@ -337,4 +337,7 @@
     /deep/ .upload-box {
         border:none;
     }
+	/deep/ .crop-img .el-upload-dragger .el-icon-upload {
+		line-height: 150px!important;
+	}
 </style>
