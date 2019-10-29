@@ -204,7 +204,13 @@
                         }
                         getlookdetail(obj).then((res)=>{
                             if(res.code == 200){
-                            	this.dataForm = res.data;
+                                this.dataForm = res.data;
+                                try {
+                                   var dataForm  =  JSON.parse(this.dataForm.content); // 字符串转对象
+                                   if(dataForm.code){this.dataForm.content = ""}
+                                } catch (err) {
+                                    
+                                }
                             }
                         })
                     }

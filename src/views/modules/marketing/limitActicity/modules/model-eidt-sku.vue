@@ -39,7 +39,7 @@
             </el-table-column>
             <el-table-column
                 align="center"
-                min-width="140"
+                min-width="130"
                 label="活动库存">
                 <template slot-scope="scope">
                         <el-input class="inputWidth"
@@ -58,7 +58,7 @@
                 align="center"
                 prop="personLimit"
                 label="每人限购"
-                 min-width="140">
+                 min-width="130">
                 <template slot-scope="scope">
                         <el-input class="inputWidth" v-model="scope.row.personLimit"
                                           :maxlength="6"
@@ -70,6 +70,7 @@
             </el-table-column>
             <el-table-column
                 align="center"
+                min-width="100"
                 label="操作">
                 <template slot-scope="scope">
                     <el-button type="text" size="small" @click="changeAll(scope.row)">适用于全部规格</el-button>

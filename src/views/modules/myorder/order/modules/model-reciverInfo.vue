@@ -50,7 +50,7 @@
                                     :value="item.id">
                                 </el-option>
                             </el-select>
-                            <el-select v-model="dataForm.stressId" placeholder="街" :class="optionsArea4.length==0 ? 'glay' : '' "
+                            <el-select v-model="dataForm.stressId" placeholder="街" :class="townArea==null ? 'glay' : '' "
                                 @visible-change="changeArea(dataForm.stressId,4)">
                                 <el-option
                                     v-for="item in optionsArea4"
@@ -111,6 +111,7 @@ import { isMobile,isPhone } from '@/utils/validate'
                  },
                  orderBase:{},
                  row:{},
+                townArea:'',
                 dataRule : {
 			        memberRealName : [
 			          { required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -129,7 +130,7 @@ import { isMobile,isPhone } from '@/utils/validate'
         },
         methods: {
             init(orderBase,receiverInfo,row) {
-                debugger
+                this.townArea =receiverInfo.townArea;
                 this.visible = true;
                 this.orderBase = orderBase;
                 Object.assign(this.dataForm,receiverInfo);
@@ -154,7 +155,6 @@ import { isMobile,isPhone } from '@/utils/validate'
             },
             // 切换地区获取下级联动地区数据
             changeArea(id,argu2,reset=true){
-                debugger
                 if(!id){
                     return
                 }
@@ -177,7 +177,6 @@ import { isMobile,isPhone } from '@/utils/validate'
                     this.dataForm.stressId = "";
                     this.optionsArea4 = []
                 }else if(argu2==4 && reset){
-                    debugger
                     // 选到最后一级了
                 }
                 areaByParentId(obj).then((res)=>{
@@ -199,10 +198,8 @@ import { isMobile,isPhone } from '@/utils/validate'
 
            // 提交
 			dataFormSubmit(formName){
-                debugger
 				this.$refs[formName].validate((valid) => {
 						if (valid) {
-                            debugger
 								this.loading = true;
 								var obj={
                                     "address": this.dataForm.address,

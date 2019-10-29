@@ -37,6 +37,7 @@
     </el-form>
     <el-table
 	  :data="dataList"
+      class="tb"
       v-loading="dataListLoading"
       border
 	  style="width: 100%">
@@ -60,6 +61,11 @@
 		    prop="name"
             align="center"
 		    label="商品名称">
+            <template slot-scope="scope">
+                <div :title="scope.row.name">
+                    {{scope.row.name}}
+                </div>
+            </template>
 		</el-table-column>
 		<el-table-column
 		    prop="sellPrice"
@@ -79,6 +85,11 @@
             align="center"
 		    label="所属店铺"
              width="180">
+            <template slot-scope="scope">
+                <div :title="scope.row.storeName">
+                    {{scope.row.storeName}}
+                </div>
+            </template>
 		</el-table-column>
         <el-table-column
 		    prop="brandName"
@@ -256,6 +267,12 @@
     };
 </script>
 <style lang="scss">
+   .tb .cell{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+    }
     .addGoodsPages{
         /deep/.el-input {
             width: 170px;
