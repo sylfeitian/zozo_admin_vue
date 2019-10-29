@@ -245,7 +245,6 @@
                 },
                 // 选择或取消选择
                 chooseFn(row){
-                    debugger
                    this.modelEditSkuVisible = true;
                     this.$nextTick(()=>{
                         this.$refs.editGoodsSkuCompon.init(this.row,row,"choose");
