@@ -453,12 +453,12 @@
                 })
                 this.searchDataList();
             },
-            pageCurrentChangeHandleLocal(){
-                this.pageCurrentChangeHandle();
+            pageCurrentChangeHandleLocal(val){
+                this.pageCurrentChangeHandle(val);
                 this.getOrderListTop();
             },
-            pageSizeChangeHandleLocal(){
-                this.pageSizeChangeHandle();
+            pageSizeChangeHandleLocal(val){
+                this.pageSizeChangeHandle(val);
                 this.getOrderListTop();
             },
         }
