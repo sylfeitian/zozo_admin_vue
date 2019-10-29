@@ -56,7 +56,7 @@
                             <span v-else-if="orderBase.orderStatus==50">lakala申报失败</span>
                             <span v-else-if="orderBase.orderStatus==60">待日方发货</span>
                             <!-- 待收货 -->
-                            <span v-else-if="orderBase.orderStatus==70">日方取消订单</span> 
+                            <span v-else-if="orderBase.orderStatus==70">日方取消订单</span>
                             <span v-else-if="orderBase.orderStatus==80">JD申报中</span>
                             <span v-else-if="orderBase.orderStatus==90 || orderBase.orderStatus==100">JD申报失败</span>
                             <span v-else-if="orderBase.orderStatus==110">清关中</span>
@@ -106,7 +106,7 @@
                     <p>{{memberDeatilInfo.idCard}}</p>
 
                     <h3>身份证正反面：</h3>
-                    <div class="idCardWarp"> 
+                    <div class="idCardWarp">
                         <img :src="memberDeatilInfo.idcartPositiveUrl  | filterImgUrl" alt="">
                         <img :src="memberDeatilInfo.idcartReverseUrl | filterImgUrl" alt="">
                     </div>
@@ -272,7 +272,7 @@
                             <span v-else-if="scope.row.orderStatus==50">lakala申报失败</span>
                             <span v-else-if="scope.row.orderStatus==60">待日方发货</span>
                             <!-- 待收货 -->
-                            <span v-else-if="scope.row.orderStatus==70">日方取消订单</span> 
+                            <span v-else-if="scope.row.orderStatus==70">日方取消订单</span>
                             <span v-else-if="scope.row.orderStatus==80">JD申报中</span>
                             <span v-else-if="scope.row.orderStatus==90 || scope.row.orderStatus==100">JD申报失败</span>
                             <span v-else-if="scope.row.orderStatus==110">清关中</span>
@@ -305,7 +305,7 @@
         <exammine v-if="exammineVisible" ref="exammineCompon" @searchDataList="getOrderDetail"></exammine>
         <!-- 备注信息 -->
         <remarkInfo v-if="remarkInfoVisible" ref="remarkInfoCompon" @searchDataList="getOrderDetail"></remarkInfo>
-         <!-- 取消订单弹框 -->  
+         <!-- 取消订单弹框 -->
         <cancleOrder v-if="cancleOrderVisible" ref="cancleOrderCompon" @searchDataList="getOrderDetail"></cancleOrder>
 
         <tabFn  v-if="showPage==2" @controlShowPage="controlShowPage" ref="tabFnCompon" :breaddata="nextBreaddata" :index="index" :showTab='false'></tabFn>
@@ -319,7 +319,7 @@
     import modelUserInforDetail from "./model-userInfor-detail"
     import Clipboard from "clipboard";
     // import orderData from './model-order-data'
-    
+
     import clearancFailure from '../modules/model-clearanc-failure.vue'
     import writeLogisticsInfo from '../modules/model-write-logistics-info.vue'
     import logistics from '../modules/model-logistics.vue'
@@ -327,7 +327,7 @@
     import exammine from '../modules/model-exammine.vue'
     import remarkInfo from '../modules/model-remark-info.vue'
     import cancleOrder from '../modules/model-cancle-order.vue'
-     
+
     import {orderDetail,memberDeatilInfo } from "@/api/api";
     export default {
         // mixins: [mixinViewModule],
@@ -384,7 +384,7 @@
                 console.log(row);
                 // row.id = 123666;
                 this.row = row;
-                this.getOrderDetail();    
+                this.getOrderDetail();
             },
             controlShowPage(num){
                 this.showPage =num;
@@ -393,7 +393,7 @@
                 }
                 if(num==2){
                     this.$nextTick(()=>{
-                    row.activeName = "vipDetail" 
+                    row.activeName = "vipDetail"
                     this.$refs.tabFnCompon.init(row);
                 })
             }
@@ -430,10 +430,10 @@
                         this.authenticationInfo = res.data.authenticationInfo;
                         this.orderBase = res.data.orderBase;
                         this.orderGoods = res.data.orderGoods;
-                        // 商品总价  goodsAmount           
-                        //  折扣金额  dicountAmount       
-                        //  优惠券  couponAmount    
-                        //  满减  reduceAmount   
+                        // 商品总价  goodsAmount
+                        //  折扣金额  dicountAmount
+                        //  优惠券  couponAmount
+                        //  满减  reduceAmount
                         //  应付金额 orderAmount
                          this.moneyInfo = [{
                                 goodsAmount:this.orderBase.goodsAmount,

@@ -85,7 +85,7 @@
 </template>
 
 <script>
-    import {limitActivitySkuChoice,editLimitActivityGoods} from "@/api/api.js"
+    import {limitActivitySkuChoice,editLimitActivityGoods,deleteLimitActivityGoods} from "@/api/api.js"
     export default {
         name: "model-add-edit-data",
         data () {
@@ -107,7 +107,7 @@
                 kucun:'',
                 row:'',
                 row2:'',
-                type:'',//choose修改；edit编辑
+                type:'',//choose选择；edit编辑
             }
 
         },
@@ -224,30 +224,56 @@
                                 "personLimit": item.personLimit?item.personLimit:0 // 每人限购数量
                             })
                         })
-                        var obj={
-                            "activityGoodsList":activityGoodsList ,//活动商品新增集合 ,
-                            "activityId": this.row.id,//活动id ,
-                            "isAllCheck": this.multipleSelection.length==this.dataList.length?1:0,// 商品下的规格是否全部选中（ 默认0未全部选中，1全部选中）
+                this.saveLoading = true;
+                if(this.type===2){//取消选择
+                    var cancelChoose = {
+                        "activityId": this.row.id,//活动id
+                        "activityType":1, //活动类型 1 限量 2预售 ,
+                        "goodsIdList":this.row2.id, //商品spuid
+                    }
+                    deleteLimitActivityGoods(cancelChoose).then(res=>{
+                        this.saveLoading = false;
+                        let status = null;
+                        if(res.code == "200"){
+                            status = "success";
+                            this.visible = false;
+                            this.$emit('searchDataList');
+                            this.closeDialog();
+                        }else{
+                            status = "error";
                         }
-                         this.saveLoading = true;
-                        editLimitActivityGoods(obj).then((res) => {
-                            this.saveLoading = false;
-                            // alert(JSON.stringify(res));
-                            let status = null;
-                            if(res.code == "200"){
-                                status = "success";
-                                this.visible = false;
-                                this.$emit('searchDataList');
-                                this.closeDialog();
-                            }else{
-                                status = "error";
-                            }
-                            this.$message({
-                                message: res.msg,
-                                type: status,
-                                duration: 1500
-                            })
+                        this.$message({
+                            message: res.msg,
+                            type: status,
+                            duration: 1500
                         })
+                    })
+                }else{// 选择或者修改
+                    var obj={
+                        "activityGoodsList":activityGoodsList ,//活动商品新增集合 ,
+                        "activityId": this.row.id,//活动id ,
+                        "isAllCheck": this.multipleSelection.length==this.dataList.length?1:0,// 商品下的规格是否全部选中（ 默认0未全部选中，1全部选中）
+                    }
+
+                    editLimitActivityGoods(obj).then((res) => {
+                        this.saveLoading = false;
+                        // alert(JSON.stringify(res));
+                        let status = null;
+                        if(res.code == "200"){
+                            status = "success";
+                            this.visible = false;
+                            this.$emit('searchDataList');
+                            this.closeDialog();
+                        }else{
+                            status = "error";
+                        }
+                        this.$message({
+                            message: res.msg,
+                            type: status,
+                            duration: 1500
+                        })
+                    })
+                }
                 //     } else {
                 //         //console.log('error 添加失败!!');
                 //         return false;

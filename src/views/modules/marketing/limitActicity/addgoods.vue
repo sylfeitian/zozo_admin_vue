@@ -107,11 +107,11 @@
                 </div>
                 <span v-else>与其他活动冲突</span> -->
                  <div v-if="scope.row.activityState ==0">
-                    <el-button type="text" size="small" @click="chooseFn(scope.row)">选择</el-button>
+                    <el-button type="text" size="small" @click="chooseFn(scope.row,1)">选择</el-button>
                 </div>
                 <div  v-else-if="scope.row.activityState ==1">
                     <span v-if="scope.row.selfActivityState ==0">与其他活动冲突</span>
-                    <el-button  v-if="scope.row.selfActivityState==1" type="text" size="small" @click="chooseFn(scope.row)" >取消选择</el-button>
+                    <el-button  v-if="scope.row.selfActivityState==1" type="text" size="small" @click="chooseFn(scope.row,2)" >取消选择</el-button>
                     <el-button v-if="scope.row.selfActivityState ==1" type="text" size="small" @click="editGoodsSku(scope.row)">修改</el-button>
                 </div>
 
@@ -244,10 +244,11 @@
                     this.$emit('addGoodsActivity')
                 },
                 // 选择或取消选择
-                chooseFn(row){
+                chooseFn(row,type){
+                    var type = type;
                    this.modelEditSkuVisible = true;
                     this.$nextTick(()=>{
-                        this.$refs.editGoodsSkuCompon.init(this.row,row,"choose");
+                        this.$refs.editGoodsSkuCompon.init(this.row,row,type);
                     })
                 },
                 //弹出修改弹框

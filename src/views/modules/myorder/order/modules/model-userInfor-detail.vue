@@ -34,7 +34,7 @@
 	</el-dialog>
 </template>
 <script>
-	
+
 	import { receiverDetail} from '@/api/api'
 
 	export default{
@@ -56,8 +56,9 @@
 			init (orderBase) {
 			    // 此处引起争议 后台说要反过来 加油！！！
 				var obj  ={
-			        id:orderBase.orderAddressId,
-                    orderId: orderBase.orderId,
+			        // id:orderBase.orderAddressId,
+                    id:'1189073387371151360'
+                    // orderId: orderBase.orderId,
                 }
                 this.visible = true;
                 receiverDetail(obj).then((res)=>{

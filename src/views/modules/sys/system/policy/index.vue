@@ -26,7 +26,7 @@
                         active-color="#1890ff"
                         inactive-color="#ff4949"
                 ></el-switch>
-            </el-form-item> 
+            </el-form-item>
             <!--@keydown.native="artonkeydown('minAmount')"  @keyup.native="artonkeyup" -->
             <el-form-item class="artAmount" label="订单有效金额范围：" prop="minAmount" :label-width="formLabelWidth">
                 <el-input  @keydown.native="artonkeydown('minAmount')"  @keyup.native="artonkeyup"   v-model="dataForm.minAmount"  placeholder="请输入" style="width: 160px;"></el-input>
@@ -37,21 +37,21 @@
                 <el-input  @keydown.native="artonkeydown('maxAmount')"  @keyup.native="artonkeyup"  v-model="dataForm.maxAmount"  placeholder="请输入" style="width: 160px;"></el-input>
 
             </el-form-item>
-            
-            
+
+
             <el-form-item style="background-color: #f3f3f3;">
                 <p style="margin-left: -100px;">订单设置</p>
             </el-form-item>
             <el-form-item class="artAmount" label="未支付订单失效时间：" prop="expirationTimeMinute" :label-width="formLabelWidth">
                 <el-input type="text" v-model="dataForm.expirationTimeMinute" placeholder="请输入" style="width: 111px;"></el-input>
                 <span> 分（min）</span>
-            </el-form-item>  
+            </el-form-item>
             <el-form-item  class="artAmount artmaxAmount" prop="expirationTimeSecond" :label-width="formLabelWidth">
 				<el-input type="text" v-model="dataForm.expirationTimeSecond"  placeholder="请输入" style="width: 111px;"></el-input>
                 <span> 秒（s）</span>
             </el-form-item>
-            
-            
+
+
             <el-form-item label="自动确认收货时间：" prop="autoConfirmReceiptTime" :label-width="formLabelWidth">
                 <el-input type="text" v-model="dataForm.autoConfirmReceiptTime"  placeholder="请输入" style="width: 250px;"></el-input>
                 <span> 天（day）</span>
@@ -85,9 +85,9 @@
                     <el-input v-else :disabled="true"   placeholder="..." style="width: 150px;"></el-input>
 	                <span> 元（日元） </span>
 	                <el-input type="number"  @blur="actratenum(item.rate)" v-model="item.rate" placeholder="请输入加价率" style="width: 100px;"></el-input>
-	                <span> % </span>  
+	                <span> % </span>
 
-	                <span v-if="rate.length-1 == index" > 
+	                <span v-if="rate.length-1 == index" >
 	                	&nbsp; &nbsp;
 	                	<i @click="artaddclick" class="el-icon-circle-plus"></i>
 	                	&nbsp; &nbsp;
@@ -102,7 +102,7 @@
             		第一区间最小值默认为0且不可修改
             	</div>
             </el-form-item>
-          
+
 
              <el-form-item style="background-color: #f3f3f3;">
                 <p style="margin-left: -100px;">倒挂阈值</p>
@@ -125,8 +125,8 @@
     import { uploadPicBase64 } from '@/api/api'
     import quillEditorImg from "@/components/quillEditor"
     import { addsetting ,gethomepageRate,getStrategySetting } from "@/api/api"
-    
-	
+
+
     export default {
         data () {
 	        var validmoney =(rule, value,callback)=>{
@@ -216,7 +216,7 @@
 					this.dataForm[rule.field] =  valuestr.substring(0,valuestr.indexOf('.') + 3);
         		}
 			     callback()
-			};  
+			};
 			var validnumreg =(rule, value,callback)=>{ //输入小数点后    前移一位再输入小鼠酒店  没用
 				var reg = /(^[\-0-9][0-9]*(.[0-9]+)?)$/;
         		var pattern = new RegExp(reg);
@@ -226,7 +226,7 @@
         		if(!(valuestr.indexOf('.') == -1) && e.key == '.'){    //存在小数点了
         			this.dataForm[this.lastname] = this.lastval;
         		}
-        		
+
         		if(pattern.test(e.key) || e.key == '.' ){
         		}else{  //非数字
         			this.dataForm[this.lastname] =  parseFloat(this.lastval) || '';
@@ -277,7 +277,7 @@
                         { validator: maxvalidmoney, trigger: 'blur' },
                         { validator: validnumdian, trigger: 'change' },
                     ],
-                    expirationTimeMinute : [   
+                    expirationTimeMinute : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
                         { validator: validnum0, trigger: 'blur' },
                     ],
@@ -399,7 +399,7 @@
             // 单笔订单最小金额
             'dataForm.auditOrderMinAmount':function(newV,oldV) {
                 for (let i = 0; i < newV.length; i++) {
-                    // 只能输入数字
+                    // 只能输入数字和小数点
                     if (!/[0-9|\.]/g.test(newV[i])) {
                         this.dataForm.auditOrderMinAmount = newV.replace(newV[i], "")
                     }
@@ -425,7 +425,7 @@
         created(){
             this.getData();
         },
-        methods: {   
+        methods: {
             getData(){
                // 获取汇率
                 this.getrate();
@@ -441,7 +441,7 @@
 	            if(!(this.lastval.indexOf('.') == -1) && e.key == '.'){    //存在小数点了
 	              this.dataForm[this.lastname] = this.lastval;
 	            }
-	            
+
 	            if(pattern.test(e.key) || e.key == '.' ){
 	            }else{  //非数字
 	              this.dataForm[this.lastname] =  parseFloat(this.lastval) || '';
@@ -530,7 +530,7 @@
 	        		return;
                 }
                 if(this.rate.length!=1) this.rate[this.rate.length-1].end = ""
-        		var num = this.rate.length!=1 ?this.rate.length-2:0;        		
+        		var num = this.rate.length!=1 ?this.rate.length-2:0;
         		if(this.rate[num] && this.rate[num].end && this.rate[num].rate){
         			let obj = {
         				start : this.rate[num].end,
@@ -541,7 +541,7 @@
         		}else{
         			this.$message("请先填写本行")
         		}
-        		
+
         	},
         	deladdclick(){ //删除一个加价率
         		this.rate.pop();
@@ -601,6 +601,20 @@
                 }else{
                     this.dataForm.isEnableBlacklist = 0;
                 }
+                // debugger
+                // var range,min=0;
+                // if(this.dataForm.minAmount.indexOf('.') !==-1 || this.dataForm.auditOrderMinAmount.indexOf('.') !==-1 ){
+                //     range = this.dataForm.minAmount.substr(this.dataForm.minAmount.indexOf('.'))
+                //     min = this.dataForm.auditOrderMinAmount.substr(this.dataForm.auditOrderMinAmount.indexOf('.'))
+                // }
+     /*           if(parseInt(this.dataForm.minAmount)<parseInt(this.dataForm.auditOrderMinAmount)){
+                    this.$message("订单有效金额范围最小值必须大于单笔订单最小金额");
+                    return;
+                }else if(parseInt(this.dataForm.minAmount)==parseInt(this.dataForm.auditOrderMinAmount)){
+if(range>min){
+    this.$message("订单有效金额范围最小值必须大于单笔订单最小金额");
+}
+                }*/
             	this.$refs[formName].validate((valid) => {
 			        if (valid) {
                         // this.dataForm.addPriceRate = JSON.stringify(this.rate);
@@ -636,7 +650,7 @@
 			          return false;
 			        }
 			    });
-            	
+
             }
         }
     }
@@ -662,16 +676,16 @@
     .artAmount{
     	display: inline-block;
     	width: 350px;
-    	
+
     }
     /deep/.artmaxAmount>div{
     	margin-left: 0px !important;
     }
-    
+
     .artaddrate:nth-of-type(n+1){
     	margin-top: 10px;
     }
-    
+
     .artinfo{
     	/*margin-top: 30px;*/
     	color: #ccc;
