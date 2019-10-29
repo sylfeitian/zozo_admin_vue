@@ -145,7 +145,7 @@
                             <template slot-scope="scope">
                                 <div class="goodsPropsWrap">
                                     <div class="goodsImg">
-                                        <img :src="dataForm.mainImageUrl" alt="" style="width:200px;"/>
+                                        <img :src="dataForm.mainImageUrl | filterImgUrl" alt="" style="width:200px;"/>
                                     </div>
                                 </div>
                             </template>
@@ -156,7 +156,7 @@
                             <template slot-scope="scope">
                                 <div class="goodsPropsWrap">
                                     <div class="goodsImg">
-                                        <img :src="dataForm.mainImageUrl" alt="" style="width:200px;"/>
+                                        <img :src="dataForm.mainImageUrl | filterImgUrl" alt="" style="width:200px;"/>
                                     </div>
                                 </div>
                             </template>
@@ -189,7 +189,7 @@
                                         <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
                                             <div class="goodsPropsWrap" style="text-align: center;">
                                                 <div class="goodsImg" style="margin-left:100%;">
-                                                    <img :src="v.imageUrl" style="width:200px;" alt=""/>
+                                                    <img :src="v.imageUrl | filterImgUrl" style="width:200px;" alt=""/>
                                                 </div>
                                                 <div v-if="v.typeId=='4'">{{v.text}}</div>
                                             </div>
@@ -211,7 +211,7 @@
                                         <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
                                             <div class="goodsPropsWrap" style="text-align: center;">
                                                 <div class="goodsImg">
-                                                    <img :src="v.imageUrl" style="width:200px;" alt=""/>
+                                                    <img :src="v.imageUrl | filterImgUrl" style="width:200px;" alt=""/>
                                                 </div>
                                                 <div v-if="v.typeId=='4'">{{v.textCn}}</div>
                                             </div>
