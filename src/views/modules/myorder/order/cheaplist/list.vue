@@ -200,7 +200,7 @@
     import { orderDetail, paymentList,orderListTop } from "@/api/api";
     import declareSth from '../modules/model-declare-sth.vue'
     import reptyOrder from './modules/model-repty.vue'
-    
+
     import clearancFailure from '../modules/model-clearanc-failure.vue'
     import writeLogisticsInfo from '../modules/model-write-logistics-info.vue'
     import exammine from '../modules/model-exammine.vue'
@@ -313,7 +313,7 @@
                 // this.dataForm.endPaymentTime = this.timeArr2[1];
                 this.page = 1;
                 this.limit = 10;
-                //  this.dataForm.orderStatus  = this.dataForm.paymentStatus 
+                //  this.dataForm.orderStatus  = this.dataForm.paymentStatus
                 this.getDataList();
             },
              searchDataList() {
@@ -344,7 +344,7 @@
                         this.topNum.cancel = 0;//订单取消数量 ,
                         this.topNum.complete = 0; //交易成功完成 ,
                         this.topNum.waitpay = 0;//待付款数量 ,
-                        this.topNum.waitreceived = 0;//待收货数量 
+                        this.topNum.waitreceived = 0;//待收货数量
                         this.topNum.waitshipped = 0; ///待发货数量
                     }
                 })
@@ -363,7 +363,7 @@
                 this.timeArr = [];
                 this.timeArr2 = [];
                 this.dataForm.startTime = "";
-                this.dataForm.endtime = "";
+                this.dataForm.endTime = "";
                 // this.dataForm.startPaymentTime = "";
                 // this.dataForm.endPaymentTime = "";
                 this.$refs[formName].resetFields();
