@@ -161,7 +161,21 @@
                         this.dataForm.phone = newV.replace(newV[i], "")
                     }
                 }
-            }
+            },
+            'dataForm.addressInfo': function (newV, oldV) {
+                var chineseCount = 0, characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 600) { //输入字符大于600的时候过滤
+                        this.dataForm.addressInfo = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
+                    }
+                }
+            },
         },
         computed: {
             dataRule () {
