@@ -489,12 +489,22 @@
     /deep/ .el-form-item__label{
         border-right:1px solid #ebeef5;
         background-color: #f5f7fa;
+        width: 120px!important;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
     }
-    /deep/  .el-form-item__content{
+    /deep/ .el-form-item__content{
+        width: 1302px;
+        margin-left: 0!important;
         padding-left:20px;
     }
 }
 /deep/ .el-dialog{
     width: fit-content !important;
+}
+/deep/ .el-form-item.el-form-item--default {
+    display: flex;
+    justify-content: start;
 }
 </style>
