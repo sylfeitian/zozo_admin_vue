@@ -3,9 +3,11 @@
     <el-dialog
         :visible.sync="visible"
         :close-on-click-modal = "false"
+        :validate-on-rule-change="false"
         :show-close = "false"
         class="editDialog"
         width="70%">
+        <el-form :model="dataList" :rules="dataRule" ref="dataList" label-width="82px">
         <div class="goodsPresent" >
             <img :src="this.dataForm.mainImageUrl | filterImgUrl" alt="" />
             <div class="goodsPresentModle">
@@ -15,21 +17,22 @@
         </div>
         <!-- scope.$index+1+(parseInt(page)-1)* parseInt(limit) -->
         <el-table
-            :data="dataList"
+            :data="dataList.goodsSpecList"
             v-loading="loading"
+            @row-click="onRowClick"
             border
              ref="multipleTable"
              @selection-change="handleSelectionChange"
             style="width: 100%">
              <el-table-column
                 type="selection"
-                width="70">
+                width="40">
             </el-table-column>
             <el-table-column
                 prop="id"
                 label="skuID"
                 align="center"
-                width="180">
+                width="160">
             </el-table-column>
             <el-table-column
                 prop="specInfo"
@@ -38,37 +41,70 @@
             </el-table-column>
             <el-table-column
                 align="center"
-                min-width="180"
+                min-width="130"
                 label="活动库存">
                 <template slot-scope="scope">
-                        <el-input-number v-model="scope.row.activityQuantity" :step="1" :min="0" :max="999999" ></el-input-number>
+                    <el-form-item
+                            class="specError"
+                            :prop="'goodsSpecList.'+ scope.$index + '.activityQuantity' "
+                            :rules="dataRule.activityQuantity"
+                    >
+                    <el-input
+                              v-model="scope.row.activityQuantity"
+                              @input="watchkc(scope.$index,$event)"
+                              :min="0" type="text" :maxlength="6"></el-input>
+                    </el-form-item>
                 </template>
             </el-table-column>
             <el-table-column
                 align="center"
                 prop="cartLimit"
+                min-width="80"
                 label="日本限购数量">
+                <template slot-scope="scope">
+                    <el-form-item
+                            class="specError japane"
+                    >
+                        <el-input
+                                v-model="scope.row.cartLimit"
+                                type="text"
+                        ></el-input>
+                    </el-form-item>
+                </template>
             </el-table-column>
             <el-table-column
                 align="center"
                 prop="personLimit"
                 label="每人限购"
-                 min-width="180">
+                 min-width="130">
                 <template slot-scope="scope">
-                        <el-input-number  v-model="scope.row.personLimit" :step="1" :min="0" :max="999999"></el-input-number >
+                    <el-form-item
+                            class="specError"
+                            :prop=" 'goodsSpecList.' + scope.$index + '.personLimit' "
+                            :rules="dataRule.personLimit"
+                    >
+                    <el-input v-model="scope.row.personLimit"
+                              :maxlength="6"
+                              :max="scope.row.cartLimit==0?'999999':scope.row.cartLimit"
+                              :min="0"
+                              @input="watchxg(scope.$index,$event)"
+                              type="text"></el-input >
+                    </el-form-item>
                 </template>
             </el-table-column>
             <el-table-column
                 align="center"
+                min-width="120"
                 label="操作">
                 <template slot-scope="scope">
                     <el-button type="text" size="small" @click="changeAll(scope.row)">适用于全部规格</el-button>
                 </template>
             </el-table-column>
         </el-table>
+        </el-form>
         <span slot="footer" class="dialog-footer" v-if="!loading">
             <el-button @click="dataFormCancel()">取 消</el-button>
-            <el-button type="primary" @click="dataFormSubmit('editDataForm')" :loading="saveLoading">{{saveLoading?'提交中..':'确 定'}}</el-button>
+            <el-button type="primary" @click="dataFormSubmit('dataList')" :loading="saveLoading">{{saveLoading?'提交中..':'确 定'}}</el-button>
         </span>
     </el-dialog>
 </template>
@@ -78,11 +114,45 @@
     export default {
         name: "model-add-edit-data",
         data () {
+            var quantityNumber = (rule, value, callback) => {
+                if (!value) {
+                    callback(new Error("活动库存不能为空"));
+                } else if (Number(value) == 0) {
+                    callback(new Error("活动库存不得为0"));
+                } else if (Number(value) >= 1000000) {
+                    callback(new Error("活动库存不得大于999999"));
+                } else {
+                    callback();
+                }
+            };
+            var limitNumber = (rule, value, callback) => {
+                if (!value) {
+                    callback(new Error("每人限购不能为空"));
+                } else if (Number(value) == 0) {
+                    callback(new Error("每人限购不得为0"));
+                } else if (this.isLimit == 0) {
+                    if (Number(value) >= 1000000) {
+                        callback(new Error("每人限购不得大于999999"));
+                    } else {
+                        callback();
+                    }
+                } else if (this.isLimit != 0 && Number(value) > this.isLimit) {
+                    callback(new Error("每人限购不得大于日本限购数量"));
+                } else {
+                    callback();
+                }
+            };
             return {
                 visible : false,
                 loading : false,
                 saveLoading:false,
-                dataList:[],
+                // dataList:[],
+                goodsSpecList: [], //商品sku集合
+                dataList: {
+                    activityQuantity: "",
+                    personLimit: "",
+                    goodsSpecList: ""
+                },
                 title:'',
                 multipleSelection:[],
                 dataForm:{
@@ -97,10 +167,53 @@
                 row:'',
                 row2:'',
                 type:'',//choose修改；edit编辑
+                isLimit: "", //当前选中行的日本限制数量
+                dataRule: {
+                    activityQuantity: [
+                        {
+                            required: true,
+                            message: "活动库存不能为空",
+                            trigger: ["blur", "change"]
+                        },
+                        { validator: quantityNumber, trigger: ["blur", "change"] }
+                    ],
+                    personLimit: [
+                        {
+                            required: true,
+                            message: "每人限购不能为空",
+                            trigger: ["blur", "change"]
+                        },
+                        { validator: limitNumber, trigger: ["blur", "change"] }
+                    ]
+                }
             }
 
         },
         methods: {
+            watchxg(index,val){
+                for(let j=0;j<3;j++){
+                    // 最大输入6位数 循环3遍达到删除非数字输入效果
+                    for(let i=0;i<val.length;i++){
+                        // 删除非数字的输入
+                        if(!/[0-9]/g.test(val[i])){
+                            val= val.replace(val[i],"")
+                        }
+                    }
+                }
+                this.dataList.goodsSpecList[index].personLimit= val
+            },
+            watchkc(index,val){
+                for(let j=0;j<3;j++){
+                    // 最大输入6位数 循环3遍达到删除非数字输入效果
+                    for(let i=0;i<val.length;i++){
+                        // 删除非数字的输入
+                        if(!/[0-9]/g.test(val[i])){
+                            val= val.replace(val[i],"")
+                        }
+                    }
+                }
+                this.dataList.goodsSpecList[index].activityQuantity= val
+            },
             init (row,row2,type) {
                 this.visible = true;
                 this.saveLoading = false;
@@ -111,6 +224,11 @@
                     this.title = "修改";
                     this.backScan();
                 })
+            },
+            //获取当前操作行
+            onRowClick(row) {
+                //   console.log(row.cartLimit, "日本限购");
+                this.isLimit = row.cartLimit;
             },
             //编辑回显
             backScan(){
@@ -129,9 +247,10 @@
                     if(res.code == 200){
                         Object.assign(this.dataForm,res.data);
                         if(res.data && res.data.activityGoodsChoiceSkuVOList){
-                            this.dataList =  res.data.activityGoodsChoiceSkuVOList
+                            this.goodsSpecList =  res.data.activityGoodsChoiceSkuVOList
+                            this.dataList.goodsSpecList =  this.goodsSpecList
                              if(this.type=="edit"){
-                                this.multipleSelection = this.dataList.filter((item,index)=>{
+                                this.multipleSelection = this.dataList.goodsSpecList.filter((item,index)=>{
                                     //   return item;
                                     return item.checkFlag==1;
 
@@ -143,7 +262,7 @@
                                 })
                            }
                         }else{
-                            this.dataList = []
+                            this.dataList.goodsSpecList = []
                         }
 
                     }
@@ -162,7 +281,7 @@
                     cancelButtonText:"取消",
                     type: 'warning'
                 }).then(() => {
-                    that.dataList.forEach((item,index)=>{
+                    that.dataList.goodsSpecList.forEach((item,index)=>{
                         item.activityQuantity = row.activityQuantity
                         item.personLimit = row.personLimit
                     })
@@ -171,42 +290,42 @@
                 })
             },
             // 提交
-            dataFormSubmit(formName){
+            dataFormSubmit(formName) {
                 // alert([this.dataForm.name,this.dataForm.domainAddress]);
                 // console.log(this.dataForm);
-                // this.$refs[formName].validate((valid) => {
-                    // if (valid) {
-                        if(this.multipleSelection.length==0){
+                this.$refs.dataList.validate((valid) => {
+                    if (valid) {
+                        if (this.multipleSelection.length == 0) {
                             this.$message.warning("至少勾选一个sku");
                             return
                         }
                         var activityGoodsSkuVOList = [];
-                        this.multipleSelection.forEach((item,index)=>{
-                          activityGoodsSkuVOList.push({
-                                "activityQuantity": item.activityQuantity?item.activityQuantity:0, //活动库存 ,
+                        this.multipleSelection.forEach((item, index) => {
+                            activityGoodsSkuVOList.push({
+                                "activityQuantity": item.activityQuantity ? item.activityQuantity : 0, //活动库存 ,
                                 "id": item.id, // 商品skuid ,
                                 // "goodsId": this.row2.id,  // 商品spuid ,
-                                "personLimit": item.personLimit?item.personLimit:0 // 每人限购数量
+                                "personLimit": item.personLimit ? item.personLimit : 0 // 每人限购数量
                             })
                         })
-                        var obj={
-                            "activityGoodsSkuVOList":activityGoodsSkuVOList ,//活动商品新增集合 ,
+                        var obj = {
+                            "activityGoodsSkuVOList": activityGoodsSkuVOList,//活动商品新增集合 ,
                             "activityId": this.row.id,//活动id ,
                             "id": this.row2.id,//商品spuid ,
                             // "isAllCheck": this.multipleSelection.length==this.dataList.length?1:0,// 商品下的规格是否全部选中（ 默认0未全部选中，1全部选中）
                         }
-                         this.saveLoading = true;
-                         var fn = this.type=="edit"?editPresellActivityGoods:savePresellActivityGoods
+                        this.saveLoading = true;
+                        var fn = this.type == "edit" ? editPresellActivityGoods : savePresellActivityGoods
                         fn(obj).then((res) => {
                             this.saveLoading = false;
                             // alert(JSON.stringify(res));
                             let status = null;
-                            if(res.code == "200"){
+                            if (res.code == "200") {
                                 status = "success";
                                 this.visible = false;
                                 this.$emit('searchDataList');
                                 this.closeDialog();
-                            }else{
+                            } else {
                                 status = "error";
                             }
                             this.$message({
@@ -215,11 +334,11 @@
                                 duration: 1500
                             })
                         })
-                //     } else {
-                //         //console.log('error 添加失败!!');
-                //         return false;
-                //     }
-                // })
+                    } else {
+                        console.log("error submit!!");
+                        return false;
+                    }
+                })
             },
             dataFormCancel(){
                 this.visible = false;
@@ -232,11 +351,28 @@
     }
 </script>
 
-<style scoped>
-    /*/deep/.el-form-item__content:nth-child(1) {*/
-    /*    margin-left: 50px!important;*/
-    /*}*/
+<style lang="scss" scoped>
+    .japane{
+        /deep/.el-input {
+            width: 90%;
+            height: 40px;
+        }
+    }
     .title {
         margin-left: -70px;
+    }
+    /deep/ .el-form-item__content{
+        margin-left: 0 !important;
+    }
+    .el-table .specError {
+
+        /deep/ .el-form-item__content {
+            margin-left: 0px !important;
+        }
+
+        /deep/ .el-form-item__error {
+            position: relative !important;
+        }
+
     }
 </style>
