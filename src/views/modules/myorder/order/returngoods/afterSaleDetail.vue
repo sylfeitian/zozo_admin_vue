@@ -286,8 +286,11 @@
         },
         watch: {
             'returnInfo.remark': function (newV, oldV) {
+                if(!newV){
+                    return;
+                }
                 var chineseCount = 0, characterCount = 0;
-                for (let i = 0; i < newV?newV.length:0; i++) {
+                for (let i = 0; i < newV.length; i++) {
                     if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
                         chineseCount = chineseCount + 2;
                     } else { //字符
