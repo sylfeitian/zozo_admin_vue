@@ -73,11 +73,13 @@
                 }
             };
             var validatePresellTime = (rule, value, callback) => {
-                if(new Date(value).getTime() < new Date(this.dataForm.startTime).getTime() || new Date(this.value).getTime()>new Date(this.dataForm.endTime).getTime() ){
+                if(new Date(value).getTime() < new Date(this.dataForm.startTime).getTime()){
+                    callback(new Error("开售时间必须在活动时间区间内"))
+                }else if(new Date(this.value).getTime()>new Date(this.dataForm.endTime).getTime()) {
                     callback(new Error("开售时间必须在活动时间区间内"))
                 }else{
-                    callback();
-                }
+                        callback();
+                    }
             };
             return {
                 visible : false,
