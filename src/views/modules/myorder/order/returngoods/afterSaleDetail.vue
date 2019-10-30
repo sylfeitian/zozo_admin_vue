@@ -501,7 +501,7 @@
     }
 }
 /deep/ .el-dialog{
-    width: fit-content !important;
+    // width: fit-content !important;
 }
 /deep/ .el-form-item.el-form-item--default {
     display: flex;
