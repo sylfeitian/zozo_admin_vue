@@ -301,6 +301,7 @@
         },
         methods: {
             orderDetFn(row){
+                console.log(row)
                 this.$emit("orderDetFn",row);
             },
             getData() {
