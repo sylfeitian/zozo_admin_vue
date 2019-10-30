@@ -227,13 +227,14 @@
                 this.visible = true;
                 this.$nextTick(() => {
                     this.$refs['dataForm'].resetFields()
+                    console.log(this.dataForm)
                     if (id) {
                         this.pageId = id;
                         this.getInfo(id);
                     } else {
-                        this.pageId = '';
-                        this.password = ""
-                        this.confirmPasswd = ""
+                        this.pageId = "";
+                        this.dataForm.password = "";
+                        this.dataForm.confirmPasswd = "";
                     }
                     this.getRoleList()
                     this.dataForm.roleIds = [{
