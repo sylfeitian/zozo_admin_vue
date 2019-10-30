@@ -505,6 +505,7 @@
                     console.log('轮播详情',res)
                     if(res.code == 200){
                         Object.assign(this.activiDataForm,res.data);
+                        this.activiDataForm.position =this.activiDataForm.position+"";
                         this.activiDataForm.fileList = [{name: '文件',url: res.data.imageSrc}];
                         if(res.data.linkType == 2&&res.data.linkValueName){
                             this.checkItem = res.data.linkValueName;
