@@ -60,6 +60,11 @@
 		    prop="name"
             align="center"
 		    label="商品名称">
+            <template slot-scope="scope">
+                <div :title="scope.row.name">
+                    {{scope.row.name}}
+                </div>
+            </template>
 		</el-table-column>
 		<el-table-column
 		    prop="sellPrice"
@@ -176,7 +181,7 @@ activityState ： 1 ， selfActivityState 1 修改 -->
                 },
                 getData(){
                     this.page =1;
-                    this.getDataList();
+                    var list = this.getDataList();
                 },
                 getDatacategoryFn(){
                     //获取中国分类
@@ -254,9 +259,16 @@ activityState ： 1 ， selfActivityState 1 修改 -->
     };
 </script>
 <style lang="scss">
+    .el-table .cell{
+        display: -webkit-box !important;
+        -webkit-box-orient: vertical !important;
+        -webkit-line-clamp: 2 !important;
+        overflow: hidden !important;
+    }
     .addGoodsPages{
         /deep/.el-input {
-            width: 170px;
+            /*width: 170px;*/
+            width: 90%;
             height: 40px;
         }
         .editDialog{

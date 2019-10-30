@@ -284,7 +284,7 @@
 <style lang="scss">
     .addGoodsPages{
         /deep/.el-input {
-            width: 170px;
+            width: 90%;
             height: 40px;
         }
         .editDialog{
@@ -322,5 +322,5 @@
             }
         }
     }
-        
+
 </style>
