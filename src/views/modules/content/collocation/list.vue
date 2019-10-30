@@ -54,7 +54,7 @@
             <el-table-column prop="imageUrl" label="封面图片" width="150" min-width="150" align="center" :resizable="false">
                 <template slot-scope="scope">
                     <img
-                        :src="scope.row.imageUrl320"
+                        :src="scope.row.imageUrl320 | filterImgUrl"
                         alt=""
                         style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                     >

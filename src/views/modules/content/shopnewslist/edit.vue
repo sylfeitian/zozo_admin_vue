@@ -25,7 +25,7 @@
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg">
-                                <img :src="dataForm.imageUrl" alt=""/>
+                                <img :src="dataForm.imageUrl | filterImgUrl" alt=""/>
                             </div>
                         </div>
                     </template>
