@@ -61,16 +61,16 @@
                 prop="cartLimit"
                 width="100"
                 label="日本限购数量">
-                <template slot-scope="scope">
-                    <el-form-item
-                            class="japane"
-                    >
-                        <el-input
-                                v-model="scope.row.cartLimit"
-                                type="text"
-                        ></el-input>
-                    </el-form-item>
-                </template>
+<!--                <template slot-scope="scope">-->
+<!--                    <el-form-item-->
+<!--                            class="japane"-->
+<!--                    >-->
+<!--                        <el-input-->
+<!--                                v-model="scope.row.cartLimit"-->
+<!--                                type="text"-->
+<!--                        ></el-input>-->
+<!--                    </el-form-item>-->
+<!--                </template>-->
             </el-table-column>
             <el-table-column
                 align="center"
@@ -373,12 +373,6 @@
 </script>
 
 <style lang="scss" scoped>
-    .japane{
-    /deep/.el-input {
-        width: 90%;
-        height: 40px;
-    }
-    }
     /deep/ .el-form-item__content{
         margin-left: 0 !important;
     }

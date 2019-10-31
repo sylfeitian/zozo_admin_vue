@@ -62,7 +62,7 @@
                             <el-form-item label="售后状态：">
                                 <!-- 售后状态 退货退款（10待退货、20待入库、30待退款、40退款中、50退款完成、60退款失败、70售后取消） 仅退款（10退款中、20退款完成、30退款失败） , -->
                                 <span v-if="returnInfo.auditStatus==0">待审核</span>
-                                <span v-else-if="returnInfo.auditStatus==2">售后取消</span><!-- 审核不通过 -->  
+                                <span v-else-if="returnInfo.auditStatus==2">售后取消</span><!-- 审核不通过 -->
                                  <span v-else-if="returnInfo.auditStatus==3">售后取消</span><!-- 已取消 -->
                                 <!-- 审核通过 -->
                                 <div v-else-if="returnInfo.auditStatus==1">
@@ -83,7 +83,7 @@
                                 <span>{{returnInfo.orderSn}}</span>
                                 <span @click="changeOrderDetFn(row)" style="margin-left: 20px;color: #2260D2;cursor:pointer;">查看</span>
                             </el-form-item>
-                            
+
                             <el-form-item label="申请时间：">
                             <span>{{returnInfo.createDate}}</span>
                             </el-form-item>
@@ -95,17 +95,17 @@
                             <el-form-item label="联系人：" >
                                 <span>{{returnInfo.contacts }}</span>
                             </el-form-item>
-                            
+
                             <el-form-item label="联系方式：" >
                                 <span>{{returnInfo.contactsPhone }}</span>
                             </el-form-item>
 
-                           
+
 
                             <el-form-item label="问题描述：" >
                                 <span>{{returnInfo.aftersaleExplain }}</span>
                             </el-form-item>
-                            
+
                             <el-form-item label="图片：" >
                                 <div v-for="(item,index) in aftersalePics ">
                                     <img id="oImg" :src="item | filterImgUrl" alt="" style="height:80px;width:auto" @click="handlePictureCardPreview(item)">
@@ -117,7 +117,7 @@
                             <el-form-item label="退款金额：" >
                                 <span v-if='returnInfo.shouldRefundAmount'>¥{{returnInfo.shouldRefundAmount}}</span>
                             </el-form-item>
-                            
+
                             <el-form-item label="确认退款金额：" >
                                 <div v-if="row.auditStatus!=0">
                                      <span v-if='returnInfo.refundAmount'>¥{{returnInfo.refundAmount}}</span>
@@ -317,7 +317,7 @@
                 // 售后状态 退货退款（10待审核、20待退货、30待入库、40待退款、50退款中、60退款完成、70退款失败、80售后取消）；仅退款（10退款中、20退款完成、30退款失败）
                if(this.row.auditStatus==0){
                    //只有待审核才能选择退货仓下拉
-                    this.getWareListByType(); 
+                    this.getWareListByType();
                     //只有待审核才能获取退换货原因下拉
                     this.getReason();
                 }
@@ -325,13 +325,19 @@
             orderDetListFn(){
 
             },
+            // 点击放大图片
             handlePictureCardPreview(url) {
                 // 拿到原图的宽高
                 this.oImgWidth = document.getElementById("oImg").naturalWidth;
                 this.oImgHeight = document.getElementById("oImg").naturalHeight;
                 this.dialogVisible = true;
+                debugger
                 if(url){
-                    this.dialogImageUrl = window.SITE_CONFIG['imgURL'] + "" +url;
+                    if(/http/.test(url)){
+                        this.dialogImageUrl = url;
+                    }else{
+                        this.dialogImageUrl = window.SITE_CONFIG['imgURL'] + "" +url;
+                    }
                 }else{
                     this.dialogImageUrl = "http://morefun.image.alimmdn.com/xiaoBai/default.png"
                 }
@@ -366,7 +372,7 @@
                         }else{
                             this.goodsInfo = [res.data.goodsInfo]
                         }
-                        
+
                         if(this.returnInfo){
                             this.row.auditStatus = this.returnInfo.auditStatus;
                              this.row.status = this.returnInfo.status;
@@ -376,7 +382,7 @@
                             message:res.msg,
                             type: 'error',
                             duration: 800,
-                        }) 
+                        })
                     }
                 })
             },
@@ -432,7 +438,7 @@
                     operating:operating,// 操作 0不通过 1通过 ,
                     aftersaleSn:this.row.aftersaleSn,//售后单号 ,
                     realRefundAmount: this.returnInfo.refundAmount,//实际退款金额 ,
-                    remark: this.returnInfo.remark,//处理备注 
+                    remark: this.returnInfo.remark,//处理备注
                     warehouseId: this.returnInfo.warehouseId, //退货仓id
                     aftersaleReasonId:this.returnInfo.aftersaleReasonId //退货原因id
                 }
@@ -506,7 +512,7 @@
     }
 }
 /deep/ .el-dialog{
-    // width: fit-content !important;
+     width: fit-content !important;
 }
 /deep/ .el-form-item.el-form-item--default {
     display: flex;

@@ -159,16 +159,16 @@
                         </template>
                     </el-table-column>
                     <el-table-column prop="cartLimit" label="日本限购数量" width="100" align="center">
-                        <template slot-scope="scope">
-                            <el-form-item
-                                    class="specError japane"
-                            >
-                                <el-input
-                                        v-model="scope.row.cartLimit"
-                                        type="text"
-                                ></el-input>
-                            </el-form-item>
-                        </template>
+<!--                        <template slot-scope="scope">-->
+<!--                            <el-form-item-->
+<!--                                    class="specError japane"-->
+<!--                            >-->
+<!--                                <el-input-->
+<!--                                        v-model="scope.row.cartLimit"-->
+<!--                                        type="text"-->
+<!--                                ></el-input>-->
+<!--                            </el-form-item>-->
+<!--                        </template>-->
                     </el-table-column>
                     <el-table-column label="每人限购" width="130" align="center">
                         <template slot-scope="scope">
@@ -616,12 +616,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-    .japane{
-        /deep/.el-input {
-            width: 90%;
-            height: 40px;
-        }
-    }
 .addListGoodsPages {
   .editDialog {
     /deep/.el-dialog__body {
