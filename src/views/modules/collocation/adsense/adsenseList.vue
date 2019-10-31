@@ -456,14 +456,14 @@
                     }
                 }
             },
-            'activiDataForm.sort':function(newV,oldV) {
-                newV=~~newV;
-                for (let i = 0; i < newV.toString().length; i++) {
-                    if(!/[0-9]/.test(newV[i])){
-                        this.activiDataForm.sort = newV.toString().replace(newV[i],"")
-                    }
-                }
-            },
+            // 'activiDataForm.sort':function(newV,oldV) {
+            //     newV=~~newV;
+            //     for (let i = 0; i < newV.toString().length; i++) {
+            //         if(!/[0-9]/.test(newV[i])){
+            //             this.activiDataForm.sort = newV.toString().replace(newV[i],"")
+            //         }
+            //     }
+            // },
 
             },
             created(){
