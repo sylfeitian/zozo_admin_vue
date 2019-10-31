@@ -510,6 +510,6 @@
 }
 /deep/ .el-form-item.el-form-item--default {
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
 }
 </style>
