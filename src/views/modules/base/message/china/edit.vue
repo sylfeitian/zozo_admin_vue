@@ -50,13 +50,13 @@
 			<el-button v-if="index!=0" @click="removecategoryJpItemFn(index)" type="primary" style="margin-left: 20px;">删除</el-button>
 		</el-form-item>
        <el-form-item label="测量方法：" prop="methodUrl" v-if="yijishow">
-				<div class="pcCoverUrl imgUrl" style="width: 100px;" v-for="(item,index) in dataForm.methodUrlshow" @click="imgtype = 'rule'">
+				<div class="pcCoverUrl imgUrl" style="width: 84px;" v-for="(item,index) in dataForm.methodUrlshow" @click="imgtype = 'rule'">
 					<img-cropper
 					    v-loading="methodUrlLoading[index]"
 						ref="cropperImg1"
 						:index="index"
-						:imgWidth='"100px"'
-						:imgHeight='"100px"'
+						:imgWidth='"84px"'
+						:imgHeight='"84px"'
 						:cropImg = "item"
 						@delteteImg="delteteImgMethodUrl"
 						@GiftUrlHandle="GiftUrlHandle"
@@ -70,13 +70,13 @@
     			<div class="artmwc artall">全部</div>
 				<div style="position: relative;">
 					<img-cropper
-						style="width: 100px;"
+						style="width: 84px;"
 						v-loading="genderMainLoading"
 						ref="cropperImg1"
 						:index="'1'"
 						:cropImg = "dataForm.genderMain"
-						:imgWidth='"100px"'
-						:imgHeight='"100px"'
+						:imgWidth='"84px"'
+						:imgHeight='"84px"'
 						@delteteImg="delteteImgAll"
 						@GiftUrlHandle="GiftUrlHandle"
 					></img-cropper>
@@ -91,14 +91,14 @@
     		<el-checkbox-group v-model="checkList">
     			<div class="artmwc">
     				<el-checkbox label="男士" ></el-checkbox>
-    				<div v-if="checkList.indexOf('男士') != -1" class="pcCoverUrl imgUrl" style="width: 100px;"  @click="imgtype = 'm'">
+    				<div v-if="checkList.indexOf('男士') != -1" class="pcCoverUrl imgUrl" style="width: 84px;"  @click="imgtype = 'm'">
 						<img-cropper
 							v-loading="genderMrLoading"
 							ref="cropperImg1"
 							:index="'1'"
 							:cropImg = "dataForm.genderMr"
-							:imgWidth='"100px"'
-							:imgHeight='"100px"'
+							:imgWidth='"84px"'
+							:imgHeight='"84px"'
 							@delteteImg="delteteImgM"
 							@GiftUrlHandle="GiftUrlHandle"
 						></img-cropper>
@@ -108,14 +108,14 @@
     			</div>
     			<div class="artmwc">
     				<el-checkbox label="女士"></el-checkbox>
-				    <div v-if="checkList.indexOf('女士') != -1" class="pcCoverUrl imgUrl" style="width: 100px;"  @click="imgtype = 'w'">
+				    <div v-if="checkList.indexOf('女士') != -1" class="pcCoverUrl imgUrl" style="width: 84px;"  @click="imgtype = 'w'">
 						<img-cropper
 							v-loading="genderMrsLoading"
 							ref="cropperImg1"
 							:index="'1'"
-							:imgWidth='"100px"'
+							:imgWidth='"84px"'
 							:cropImg = "dataForm.genderMrs"
-							:imgHeight='"100px"'
+							:imgHeight='"84px"'
 							@delteteImg="delteteImgW"
 							@GiftUrlHandle="GiftUrlHandle"
 						></img-cropper>
@@ -125,14 +125,14 @@
     			</div>
 			    <div class="artmwc">
     				<el-checkbox label="儿童"></el-checkbox>
-				    <div v-if="checkList.indexOf('儿童') != -1"  class="pcCoverUrl imgUrl" style="width: 100px;"  @click="imgtype = 'c'">
+				    <div v-if="checkList.indexOf('儿童') != -1"  class="pcCoverUrl imgUrl" style="width: 84px;"  @click="imgtype = 'c'">
 						<img-cropper
 							v-loading="genderKidLoading"
 							ref="cropperImg1"
 							:index="'1'"
-							:imgWidth='"100px"'
+							:imgWidth='"84px"'
 							:cropImg = "dataForm.genderKid"
-							:imgHeight='"100px"'
+							:imgHeight='"84px"'
 							@delteteImg="delteteImgC"
 							@GiftUrlHandle="GiftUrlHandle"
 						></img-cropper>
@@ -675,5 +675,8 @@
     top: -1px;
     left: -1px;
     z-index: 1000;
+}
+.uloadingBox {
+	padding: 0!important;
 }
 </style>
