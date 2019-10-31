@@ -373,12 +373,6 @@
 </script>
 
 <style lang="scss" scoped>
-    .japane{
-    /deep/.el-input {
-        width: 90%;
-        height: 40px;
-    }
-    }
     /deep/ .el-form-item__content{
         margin-left: 0 !important;
     }
