@@ -124,11 +124,11 @@
         <!-- 审核 -->
         <!-- <exammine v-if="exammineVisible" ref="exammineCompon" @searchDataList="getDataList"></exammine> -->
          <!-- 确认收货 -->
-        <confirmGoodsModel v-if="confirmGoodsVisible" ref="confirmGoodsCompon"></confirmGoodsModel>
+        <confirmGoodsModel v-if="confirmGoodsVisible" ref="confirmGoodsCompon" @searchDataList="getDataList"></confirmGoodsModel>
         <!-- 退货 -->
         <!-- <returnGoodsModel v-if="returnGoodsVisible" ref="returnGoodsCompon"></returnGoodsModel> -->
         <!-- 退款 -->
-        <returnMoneyModel v-if="returnMoneyVisible" ref="returnMoneyCompon"></returnMoneyModel>
+        <returnMoneyModel v-if="returnMoneyVisible" ref="returnMoneyCompon" @searchDataList="getDataList"></returnMoneyModel>
     </div>
 </template>
 <script>

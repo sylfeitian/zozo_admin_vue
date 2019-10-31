@@ -342,7 +342,12 @@
                         this.returnInfo = res.data.returnInfo
                          this.aftersalePics = this.returnInfo.aftersalePics.split(",");
                         this.logs = res.data.logs
-                        this.goodsInfo = [res.data.goodsInfo]
+                        if(Object.prototype.toString.call(res.data.goodsInfo) === "[object Array]"){
+                            this.goodsInfo = res.data.goodsInfo
+                        }else{
+                            this.goodsInfo = [res.data.goodsInfo]
+                        }
+                        
                         if(this.returnInfo){
                             this.row.auditStatus = this.returnInfo.auditStatus;
                              this.row.status = this.returnInfo.status;

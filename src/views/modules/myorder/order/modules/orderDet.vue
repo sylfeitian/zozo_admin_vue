@@ -101,6 +101,7 @@
                     <el-col :span="5"><div class="grid-content bg-purple-light">描述</div></el-col>
                     <el-col :span="19"><div class="grid-content">{{orderBase.orderMessage}}</div></el-col>
                 </el-row>
+                
                 <el-dialog title="身份证信息" :visible.sync="dialogVisible" width="30%" v-if="memberDeatilInfo">
                     <h3>身份证号码： </h3>
                     <p>{{memberDeatilInfo.idCard}}</p>
@@ -111,6 +112,9 @@
                         <img :src="memberDeatilInfo.idcartReverseUrl | filterImgUrl" alt="">
                     </div>
                 </el-dialog>
+
+                <!-- 用户身份证信息 -->
+                <modelUserinfo v-if="modelUserinfoVisible" ref="modelUserinfoCompon"></modelUserinfo>
 
                 <!-- 收货人信息 -->
                 <p>
@@ -327,7 +331,8 @@
     import exammine from '../modules/model-exammine.vue'
     import remarkInfo from '../modules/model-remark-info.vue'
     import cancleOrder from '../modules/model-cancle-order.vue'
-
+    import modelUserinfo from '../modules/model-userinfo.vue'
+  
     import {orderDetail,memberDeatilInfo } from "@/api/api";
     export default {
         // mixins: [mixinViewModule],
@@ -335,6 +340,7 @@
             return {
                 showPage:1,
                 modelUserInforDetailVisible:false,
+                modelUserinfoVisible:false,
                 dialogVisible:false,
                 active:0,
                 textarea: "",
@@ -376,7 +382,8 @@
             remarkInfo,
             cancleOrder,
             declareSth,
-            tabFn
+            tabFn,
+            modelUserinfo
         },
         props: ["data", "addressInfo", "orderLog","packageInfo",'breaddata'],
         methods: {
@@ -398,13 +405,26 @@
                 })
             }
            },
+          
+            // 用户详细信息
             showUserDetail(){
                 this.modelUserInforDetailVisible = true;
                 this.$nextTick(()=>{
                     this.$refs.modelUserInforDetailCompon.init(this.orderBase);
                 })
             },
+            // 用户详细信息
+            // showUser(){
+            //     this.modelUserinfoVisible = true;
+            //     this.$nextTick(()=>{
+            //         this.$refs.modelUserinfoCompon.init(this.orderBase);
+            //     })
+            // },
             lookMemberDeatilInfo(){
+                // this.modelUserinfoVisible = true;
+                // this.$nextTick(()=>{
+                //     this.$refs.modelUserinfoCompon.init(this.orderBase);
+                // })
                 this.dialogVisible = true;
                 var obj  = {
                     params:{
