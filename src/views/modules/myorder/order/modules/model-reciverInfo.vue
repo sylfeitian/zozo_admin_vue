@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import {orderReceiver,areaFirst,areaByParentId} from "@/api/api.js"
+import {orderReceiver,areaFirst,areaByParentId,receiverDetail} from "@/api/api.js"
 import { isMobile,isPhone } from '@/utils/validate'
     export default {
         name: "model-order-data",
@@ -130,19 +130,41 @@ import { isMobile,isPhone } from '@/utils/validate'
         },
         methods: {
             init(orderBase,receiverInfo,row) {
-                this.townArea =receiverInfo.townArea;
                 this.visible = true;
-                this.orderBase = orderBase;
-                Object.assign(this.dataForm,receiverInfo);
                 this.row = row;
-                this.preOptionsArea1 = [];
-                this.optionsArea2[0] = {id:receiverInfo.cityId,name:receiverInfo.city}
-                this.optionsArea3[0] = {id:receiverInfo.areaId,name:receiverInfo.areaId}
-                this.optionsArea4[0] =  {id:receiverInfo.stressId,name:receiverInfo.townArea==null ? '街道':receiverInfo.townArea}
-                this.getFirstData();
-                receiverInfo.provinceId && this.changeArea(receiverInfo.provinceId,1,false);
-                receiverInfo.cityId && this.changeArea(receiverInfo.cityId,2,false);
-                receiverInfo.areaId && this.changeArea(receiverInfo.areaId,3,false);
+                 this.orderBase = orderBase;
+                this.$nextTick(()=>{
+                    // 回显数据
+                    this.getReceiverDetail();
+                })
+               
+                
+            },
+            // 根据id查用户回显数据
+            getReceiverDetail(){
+                 var obj  ={
+			        // id:orderBase.orderAddressId,
+                    id:this.orderBase.orderAddressId//'1189073387371151360'
+                    // orderId: orderBase.orderId,
+                }
+                 receiverDetail(obj).then((res)=>{
+                    if(res.code==200){
+                        var receiverInfo = res.data;
+                        this.townArea =receiverInfo.townArea;
+                        Object.assign(this.dataForm,receiverInfo);
+                        this.preOptionsArea1 = [];
+                        this.optionsArea2[0] = {id:receiverInfo.cityId,name:receiverInfo.city}
+                        this.optionsArea3[0] = {id:receiverInfo.areaId,name:receiverInfo.areaId}
+                        this.optionsArea4[0] =  {id:receiverInfo.stressId,name:receiverInfo.townArea==null ? '街道':receiverInfo.townArea}
+                        receiverInfo.provinceId && this.changeArea(receiverInfo.provinceId,1,false);
+                        receiverInfo.cityId && this.changeArea(receiverInfo.cityId,2,false);
+                        receiverInfo.areaId && this.changeArea(receiverInfo.areaId,3,false);
+                        // 获取第一级地区数据
+                        this.getFirstData();
+                    }else{
+                        this.$message.error(res.msg);
+                    }
+                })
             },
             // 获取第一级地区数据
             getFirstData(){

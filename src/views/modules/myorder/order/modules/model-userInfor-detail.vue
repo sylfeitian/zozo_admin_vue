@@ -54,10 +54,9 @@
 		mounted(){},
 		methods:{
 			init (orderBase) {
-			    // 此处引起争议 后台说要反过来 加油！！！
 				var obj  ={
 			        // id:orderBase.orderAddressId,
-                    id:'1189073387371151360'
+                    id:orderBase.orderAddressId//'1189073387371151360'
                     // orderId: orderBase.orderId,
                 }
                 this.visible = true;

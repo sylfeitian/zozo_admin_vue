@@ -101,18 +101,7 @@
                     <el-col :span="5"><div class="grid-content bg-purple-light">描述</div></el-col>
                     <el-col :span="19"><div class="grid-content">{{orderBase.orderMessage}}</div></el-col>
                 </el-row>
-                
-                <el-dialog title="身份证信息" :visible.sync="dialogVisible" width="30%" v-if="memberDeatilInfo">
-                    <h3>身份证号码： </h3>
-                    <p>{{memberDeatilInfo.idCard}}</p>
-
-                    <h3>身份证正反面：</h3>
-                    <div class="idCardWarp">
-                        <img :src="memberDeatilInfo.idcartPositiveUrl  | filterImgUrl" alt="">
-                        <img :src="memberDeatilInfo.idcartReverseUrl | filterImgUrl" alt="">
-                    </div>
-                </el-dialog>
-
+            
                 <!-- 用户身份证信息 -->
                 <modelUserinfo v-if="modelUserinfoVisible" ref="modelUserinfoCompon"></modelUserinfo>
 
@@ -333,7 +322,7 @@
     import cancleOrder from '../modules/model-cancle-order.vue'
     import modelUserinfo from '../modules/model-userinfo.vue'
   
-    import {orderDetail,memberDeatilInfo } from "@/api/api";
+    import {orderDetail } from "@/api/api";
     export default {
         // mixins: [mixinViewModule],
         data() {
@@ -341,7 +330,6 @@
                 showPage:1,
                 modelUserInforDetailVisible:false,
                 modelUserinfoVisible:false,
-                dialogVisible:false,
                 active:0,
                 textarea: "",
                 dataListLoading:false,
@@ -365,7 +353,6 @@
                 receiverInfo:{},
                 scheduleList:[],
                 row:"",
-                memberDeatilInfo:'',
                 nextBreaddata: ["订单管理", "BC订单管理", "订单详情","会员信息"],
                 index:"2",
                 };
@@ -413,29 +400,10 @@
                     this.$refs.modelUserInforDetailCompon.init(this.orderBase);
                 })
             },
-            // 用户详细信息
-            // showUser(){
-            //     this.modelUserinfoVisible = true;
-            //     this.$nextTick(()=>{
-            //         this.$refs.modelUserinfoCompon.init(this.orderBase);
-            //     })
-            // },
             lookMemberDeatilInfo(){
-                // this.modelUserinfoVisible = true;
-                // this.$nextTick(()=>{
-                //     this.$refs.modelUserinfoCompon.init(this.orderBase);
-                // })
-                this.dialogVisible = true;
-                var obj  = {
-                    params:{
-                        memberId:this.orderBase.memberId,
-                        orderId:this.orderBase.orderId,
-                    }
-                }
-                memberDeatilInfo(obj).then((res)=>{
-                    if(res.code==200){
-                        this.memberDeatilInfo = res.data;
-                    }
+                this.modelUserinfoVisible = true;
+                this.$nextTick(()=>{
+                    this.$refs.modelUserinfoCompon.init(this.orderBase,this.row);
                 })
             },
             getOrderDetail(){
@@ -588,14 +556,6 @@
     };
 </script>
 <style lang="scss" scoped>
-    .idCardWarp{
-        text-align: center;
-        img{
-            width:316px;
-            height: 200px;
-            margin-bottom: 10px;
-        }
-    }
     .creater {
         display: inline-block;
         width: 80px;
