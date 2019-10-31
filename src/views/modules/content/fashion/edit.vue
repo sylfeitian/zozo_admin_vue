@@ -163,7 +163,7 @@
                         </el-form-item>
                     </div>
                 </div>
-               
+
                 <div style="display:flex;padding:0">
                     <div style="width:50%;padding:0">
                          <el-form-item label="标题：" style="height: 100%!important;">
@@ -183,7 +183,7 @@
                                 <div style="display:flex;padding:0" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
                                     <div v-if="v.text=='' || shopFashionContentsVOList[i].text || v.imageUrl"  v-show="row.fashionFlag == 0" style="padding: 0;">
                                         <!-- <div style="height: 20px;"></div> -->
-                                        <div class="contentChild" style="min-height:33px;padding-right: 6px;padding: 0;text-align:left;" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
+                                        <div :class="['contentChild','detail'+i]" style="min-height:33px;padding-right: 6px;padding: 0;text-align:left;" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
                                             {{shopFashionContentsVOList[i].text}}
                                         </div>
                                         <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
@@ -205,7 +205,7 @@
                                 <div style="padding:0" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
                                     <div  v-if="v.text=='' || v.text || v.imageUrl" style="padding: 0;width:80%;margin-left:100px;">
                                         <!-- <div style="height: 20px;"></div> -->
-                                        <div class="contentChild"  style="min-height:33px;"  v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
+                                        <div :class="['contentChild','inputHeight'+i]" style="min-height:33px;"  v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
                                             <el-input style="margin: auto;" v-model="v.textCn" type="textarea" :rows="5" ></el-input>
                                         </div>
                                         <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
@@ -221,7 +221,7 @@
                             </template>
                         </el-form-item>
                     </div>
-                </div>          
+                </div>
             </el-form>
         </el-col>
         <el-col :span="24">
@@ -256,11 +256,22 @@
                 dataForm: {},
                 shopFashionContentsVOList:[],
                 row:"",
+                timer: null, // 定时器
             }
         },
         components: {
             quillEditorImg,
             Bread
+        },
+        created(){
+            // 判断页面加载完毕
+            const that = this
+            that.timer = setInterval(function () {
+                if (document.readyState === 'complete') {
+                that.getHeight()
+                    window.clearInterval(that.timer)
+                }
+            }, 1500)
         },
         methods: {
             init(row){
@@ -327,11 +338,22 @@
                         });
                     }
                 })
+            },
+            getHeight() {
+                for (let i = 0; i < this.dataForm.shopFashionContentsVOList.length; i++) {
+                    debugger
+                    // 详情文字的高度
+                    var fontHetght = $("."+'detail'+i).height()
+                    if (fontHetght < 147) {
+                        $("." + 'detail' + i).height(147)
+                    } else {
+                        $("." + 'inputHeight' + i).height(fontHetght)
+                    }
+                }
             }
         }
     }
 </script>
-
 <style lang="scss" scoped>
     .title{
         margin-top: 0;
