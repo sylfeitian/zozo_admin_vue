@@ -676,7 +676,4 @@
     left: -1px;
     z-index: 1000;
 }
-.uloadingBox {
-	padding: 0!important;
-}
 </style>
