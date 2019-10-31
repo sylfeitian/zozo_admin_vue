@@ -9,8 +9,8 @@
             </el-form-item>
             <el-form-item label="性别：">
                     <el-radio v-model="dataForm.memberSex" :label="0">保密</el-radio>
-                    <el-radio v-model="dataForm.memberSex" :label="1">男</el-radio>
-                    <el-radio v-model="dataForm.memberSex" :label="2">女</el-radio>
+                    <el-radio v-model="dataForm.memberSex" :label="1">女</el-radio>
+                    <el-radio v-model="dataForm.memberSex" :label="2">男</el-radio>
             </el-form-item>
             <el-form-item label="生日："  prop="memberBirthday">
                   <el-date-picker
