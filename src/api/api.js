@@ -409,6 +409,10 @@ export const orderLogistics = params => { return http.post(`${base}/order/logist
 export const orderListTop = params => { return http.get(`${base}/order/list/top`).then(res => res.data); }
 // 查询收货人详细信息
 export const receiverDetail = params => { return http.get(`${base}/order/receiver/info?id=${params.id}`,params).then(res => res.data); }
+// 修改订单绑定的实名认证信息
+export const saveOrderAuthentication = params => { return http.post(`${base}/order/authentication`,params).then(res => res.data); }
+
+
 
 
 // 物流公司--------------------------------------------------------------------------------------------------------------------

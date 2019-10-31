@@ -87,7 +87,6 @@
             <el-form-item label="材质：" class="item">
                 <span>{{dataForm.materialJp}}</span>
                 <el-input v-model.trim="dataForm.material" placeholder="请输入" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
-                <span style="color: #bebebe;">最多可输入10个文字</span>
             </el-form-item>
             <el-form-item label="上架状态：" class="item">
                 <template>
@@ -293,7 +292,7 @@
                         characterCount=characterCount+1;
                     }
                     var count=chineseCount+characterCount;
-                    if(count>20){ //最多输入20个字符
+                    if(count>300){ //最多输入300个字符
                         this.dataForm.material = newV.substr(0,(chineseCount/2+characterCount)-1)
                     }
                 }
@@ -321,7 +320,7 @@
                     if(res.code == 200){
                         this.dataForm = res.data;
                         this.$nextTick(()=>{
-                            this.$refs.refmessageContent.dataForm.messageContent =  this.dataForm.description 
+                            this.$refs.refmessageContent.dataForm.messageContent =  this.dataForm.description
                         })
                     }
                 })
@@ -374,11 +373,11 @@
 		          if (valid) {
 			        let that = this;
 	                // this.dataForm.saveFlag = saveType;
-	                // this.dataForm.goodsTypeId  = this.dataForm.secondCategoryIsd 
+	                // this.dataForm.goodsTypeId  = this.dataForm.secondCategoryIsd
 	                // console.log(this.dataForm);
 	                var imgs =[]
 	                 this.dataForm.imgs.forEach((item,index)=>{
-	                        imgs.push(item.sizeOriginal); 
+	                        imgs.push(item.sizeOriginal);
 	                })
 	                var obj = {
 	                    "description": this.dataForm.description,//中方商品描述 ,
@@ -421,7 +420,7 @@
 		            return false;
 		          }
 		        });
-            },    
+            },
 
             deletaImgFn(index){
                 this.dataForm.imgs.splice(index,1);
