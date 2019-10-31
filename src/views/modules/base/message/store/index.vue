@@ -8,10 +8,10 @@
       @keyup.enter.native="getDataList()"
     >
       <el-form-item label="店铺ID：">
-        <el-input v-model.trim="dataFormShow.idJp" placeholder="请输入" maxlength="30" ></el-input>
+        <el-input v-model.trim="dataFormShow.idJp" placeholder="请输入" maxlength="30" clearable></el-input>
       </el-form-item>
       <el-form-item label="店铺名称：">
-        <el-input v-model.trim="dataFormShow.stName" placeholder="请输入"></el-input>
+        <el-input v-model.trim="dataFormShow.stName" placeholder="请输入" clearable></el-input>
       </el-form-item>
       <el-form-item label="营业状态：">
         <el-select v-model="dataFormShow.operateFlag" placeholder="请选择">
@@ -193,22 +193,6 @@ export default {
       recommendFlag: ""
     };
   },
-  watch: {
-    'dataFormShow.stName':function(newV,oldV) {
-        var chineseCount = 0,characterCount = 0;
-        for (let i = 0; i < newV.length; i++) {
-            if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
-                chineseCount = chineseCount + 2;
-            } else { //字符
-                characterCount = characterCount + 1;
-            }
-            var count = chineseCount + characterCount;
-            if (count > 300) { //输入字符大于300的时候过滤
-                this.dataFormShow.stName = newV.substr(0,(chineseCount/2+characterCount)-1)
-            }
-        }
-    },
-  },
   created() {
     // let obj = {
     //     params:{
@@ -233,6 +217,20 @@ export default {
   },
   // ID类搜索框仅可输入数字、英文，最多可输入30个字符
   watch:{
+    'dataFormShow.stName':function(newV,oldV) {
+        var chineseCount = 0,characterCount = 0;
+        for (let i = 0; i < newV.length; i++) {
+            if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                chineseCount = chineseCount + 2;
+            } else { //字符
+                characterCount = characterCount + 1;
+            }
+            var count = chineseCount + characterCount;
+            if (count > 300) { //输入字符大于300的时候过滤
+                this.dataFormShow.stName = newV.substr(0,(chineseCount/2+characterCount)-1)
+            }
+        }
+    },
     'dataFormShow.idJp':function(newV,oldV) {
       for(let i=0;i<newV.length;i++){
         if(!/[a-zA-Z0-9\s]/.test(newV[i])){

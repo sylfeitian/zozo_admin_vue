@@ -81,6 +81,7 @@
 
                             <el-form-item label="订单编号：" >
                                 <span>{{returnInfo.orderSn}}</span>
+                                <span @click="changeOrderDetFn(row)" style="margin-left: 20px;color: #2260D2;cursor:pointer;">查看</span>
                             </el-form-item>
                             
                             <el-form-item label="申请时间：">
@@ -238,7 +239,8 @@
                     <el-button type="danger" @click="returnMoneyFn(0)">拒绝退款</el-button>
                 </div>
        </div>
-
+        <!-- 详情 -->
+        <orderDet v-if="orderDetVisible" ref="orderDetCompon" @orderDetListFn="orderDetListFn"  :breaddata="subBreaddata"></orderDet>
         <!-- 审核 -->
         <exammine v-if="exammineVisible" ref="exammineCompon" @searchDataList="getAfterSaleDetail"></exammine>
         <!-- 确认收货 -->
@@ -254,10 +256,12 @@
     import exammine from '../modules-return/model-exammine.vue'
     import confirmGoodsModel from '../modules-return/model-confirm-goods.vue'
     import returnMoneyModel from "../modules-return/model-return-money";
+    import orderDet from "../modules/orderDet"
     export default {
         data () {
             return {
                 row:'',
+                orderDetVisible:false,
                 dataListLoading:false,
                 dataListLoading1:false,
                 dataListLoading2:false,
@@ -274,7 +278,8 @@
                 dialogImageUrl: '',
                 dialogVisible: false,
                 oImgWidth:'',
-                oImgHeight:''
+                oImgHeight:'',
+                subBreaddata:[],
             }
         },
         props: ['breaddata'],
@@ -283,6 +288,7 @@
             exammine,
             confirmGoodsModel,
             returnMoneyModel,
+            orderDet
         },
         watch: {
             'returnInfo.remark': function (newV, oldV) {
@@ -304,6 +310,21 @@
             },
         },
         methods:{
+             init(row){
+                // row.aftersaleSn = 111;
+                this.row = row;
+                this.getAfterSaleDetail();
+                // 售后状态 退货退款（10待审核、20待退货、30待入库、40待退款、50退款中、60退款完成、70退款失败、80售后取消）；仅退款（10退款中、20退款完成、30退款失败）
+               if(this.row.auditStatus==0){
+                   //只有待审核才能选择退货仓下拉
+                    this.getWareListByType(); 
+                    //只有待审核才能获取退换货原因下拉
+                    this.getReason();
+                }
+            },
+            orderDetListFn(){
+
+            },
             handlePictureCardPreview(url) {
                 // 拿到原图的宽高
                 this.oImgWidth = document.getElementById("oImg").naturalWidth;
@@ -317,17 +338,15 @@
 
 
             },
-            init(row){
-                // row.aftersaleSn = 111;
-                this.row = row;
-                this.getAfterSaleDetail();
-                // 售后状态 退货退款（10待审核、20待退货、30待入库、40待退款、50退款中、60退款完成、70退款失败、80售后取消）；仅退款（10退款中、20退款完成、30退款失败）
-               if(this.row.auditStatus==0){
-                   //只有待审核才能选择退货仓下拉
-                    this.getWareListByType(); 
-                    //只有待审核才能获取退换货原因下拉
-                    this.getReason();
-                }
+            //详情页展示判断
+            changeOrderDetFn(row) {
+                console.log(row)
+                // this.orderDetVisible = true;
+                row.id = row.orderId;
+                this.$emit("changeOrderDetFn", row);
+                // this.$nextTick(()=>{
+                //     this.$refs.orderDetCompon.init(row);
+                // })
             },
             // 详情回显
             getAfterSaleDetail(){
@@ -475,12 +494,22 @@
     /deep/ .el-form-item__label{
         border-right:1px solid #ebeef5;
         background-color: #f5f7fa;
+        width: 120px!important;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
     }
-    /deep/  .el-form-item__content{
+    /deep/ .el-form-item__content{
+        width: 1302px;
+        margin-left: 0!important;
         padding-left:20px;
     }
 }
 /deep/ .el-dialog{
-    width: fit-content !important;
+    // width: fit-content !important;
+}
+/deep/ .el-form-item.el-form-item--default {
+    display: flex;
+    justify-content: start;
 }
 </style>

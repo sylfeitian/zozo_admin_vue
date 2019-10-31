@@ -57,7 +57,7 @@
             >
                 <div  class="formWarp formWarp1">
                     <el-form-item label="售后单号：" >
-                        <span>{{returnInfo.aftersaleSn}}</span>
+                        <span v-if="returnInfo && returnInfo.aftersaleSn">{{returnInfo.aftersaleSn}}</span>
                     </el-form-item>
                     <el-form-item label="售后状态：">
                         <span v-if="returnInfo.status==10">退款中</span>
@@ -137,6 +137,7 @@
         methods:{
             init(row){
                 // row.aftersaleSn = 111;
+                console.log(row)
                 this.row = row;
                 this.getAfterSaleDetail();
                

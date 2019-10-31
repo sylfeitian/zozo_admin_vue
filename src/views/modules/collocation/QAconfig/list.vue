@@ -262,12 +262,12 @@
                 let that = this;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.$confirm(`确定提交表单信息?`, "提示", {
-                            confirmButtonText: "确定",
-                            cancelButtonText: "取消",
-                            type: "warning"
-                        })
-                            .then(() => {
+                        // this.$confirm(`确定提交表单信息?`, "提示", {
+                        //     confirmButtonText: "确定",
+                        //     cancelButtonText: "取消",
+                        //     type: "warning"
+                        // })
+                            // .then(() => {
                                 if(that.isSave){
                                     let obj = {
                                         type:that.editDataForm.sgName,
@@ -311,8 +311,8 @@
                                         }
                                     })
 								}
-                            })
-                            .catch(() => {});
+                            // })
+                            // .catch(() => {});
                     }
                 });
             },

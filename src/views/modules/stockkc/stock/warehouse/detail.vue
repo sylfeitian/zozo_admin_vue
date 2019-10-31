@@ -83,7 +83,7 @@
             <el-table-column prop="category" label="分类" align="center "></el-table-column>
             <el-table-column prop="sellPrice" label="商品售价" align="center">
                   <template slot-scope="scope">
-                    <span>￥{{scope.rowsellPrice?scope.rowsellPrice:'0.00'}}</span>
+                    <span>￥{{scope.row.sellPrice?scope.row.sellPrice:'0.00'}}</span>
                 </template>
             </el-table-column>
             <el-table-column prop="stockQuantity" label="库存数量" align="center"></el-table-column>
