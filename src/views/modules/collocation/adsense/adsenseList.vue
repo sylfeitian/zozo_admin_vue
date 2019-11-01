@@ -129,7 +129,7 @@
         width="40%">
         <el-form :model="activiDataForm" :rules="dataRule" ref="activiDataForm" @keyup.enter.native="subActivity()" label-width="120px">
             <el-form-item  label="广告位置："  prop="position">
-                <el-select v-model="activiDataForm.position " clearable  placeholder="请选择广告位置">
+                <el-select v-model="activiDataForm.position" clearable  placeholder="请选择广告位置">
                     <el-option
                         v-for="item in adsenses"
                         :key="item.id"
@@ -156,7 +156,24 @@
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
             </el-form-item>
-            <div style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：300*200px</div>
+            <!-- adsenses:[
+                    {id:'1',name:'首页'},
+                    {id:'2',name:'限量'},
+                    {id:'3',name:'预售'},
+                    {id:'4',name:'秒杀'},
+                    {id:'5',name:'精选分类'},
+                    {id:'6',name:'单品折扣'},
+                    {id:'7',name:'首页弹窗'},
+                    {id:'8',name:'首页弹框背景'},
+                ], -->
+            <div v-if="activiDataForm.position == 1" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：375*420px</div>
+            <div v-if="activiDataForm.position == 2" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：375*400px</div>
+            <div v-if="activiDataForm.position == 3" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：375*400px</div>
+            <div v-if="activiDataForm.position == 4" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：375*400px</div>
+            <div v-if="activiDataForm.position == 5" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：375*250px</div>
+            <div v-if="activiDataForm.position == 6" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：375*250px</div>
+            <div v-if="activiDataForm.position == 7" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：320*523px</div>
+            <div v-if="activiDataForm.position == 8" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：375*812px</div>
             <el-form-item label="状态：" prop="state">
                <el-radio-group v-model="activiDataForm.state">
                     <el-radio :label="1">启用</el-radio>
