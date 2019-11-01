@@ -62,6 +62,7 @@
                     ref="dataForm"
                     class="grayLine topGapPadding"
                     :model="dataForm"
+                    v-loading="fullscreenLoading"
                     @keyup.enter.native="getDataList()"
             >
                 <div style="display:flex;padding:0">
@@ -240,6 +241,8 @@
                 dataForm: {},
                 row:'',
                 timer: null, // 定时器
+                fullscreenLoading: true
+
             }
         },
         components: {
@@ -287,6 +290,7 @@
                         $("."+'inputHeight'+i).height(fontH)
                     }
                 }
+                this.fullscreenLoading = false
             }
         }
     }
