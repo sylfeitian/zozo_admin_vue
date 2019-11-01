@@ -40,7 +40,7 @@ export const tagImport = `${allBase}/tag/import`;
 export const stockExport= `${allBase}/stock/export`;
 
 // 会员
-export const vipExport= `${allBase}/?????/会员导出不写`;
+export const vipExport= `${allBase}/member/export`;
 
 
 // 日本尺码导入
