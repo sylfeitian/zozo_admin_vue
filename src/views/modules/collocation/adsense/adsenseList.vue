@@ -142,7 +142,7 @@
                 <el-input v-model.trim="activiDataForm.name" placeholder="请输入30字以内的名称"></el-input>
             </el-form-item>
             <el-form-item label="排序：">
-            	 <el-input-number v-model.trim="activiDataForm.sort" placeholder="数字越大排序越靠前"  :min="1" :max="99999" label="数字越大排序越靠前"></el-input-number>
+            	 <el-input-number v-model="activiDataForm.sort" placeholder="数字越大排序越靠前"  :min="1" :max="99999" :step="1" label="数字越大排序越靠前"></el-input-number>
             </el-form-item>
             <el-form-item label="上传轮播图：" prop="fileList" class="imgConfig">
                 <el-upload
