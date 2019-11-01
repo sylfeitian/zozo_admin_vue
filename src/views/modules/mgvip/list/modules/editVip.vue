@@ -5,7 +5,8 @@
                  <span>{{dataForm.id}}</span>
             </el-form-item>
             <el-form-item label="手机号码：" prop="memberMobile">
-                <el-input  v-model="dataForm.memberMobile"></el-input>
+                <!-- <el-input  v-model="dataForm.memberMobile"></el-input> -->
+                <span>{{dataForm.memberMobile}}</span>
             </el-form-item>
             <el-form-item label="性别：">
                     <el-radio v-model="dataForm.memberSex" :label="0">保密</el-radio>

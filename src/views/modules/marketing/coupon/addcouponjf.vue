@@ -129,8 +129,8 @@
     var validfaceValue = (rule, value, callback) => {
         if (value / 1 > 1000000) {
             callback(new Error('请输入1000000以内的数字'))
-        } else if (value <= 0) {
-            callback(new Error('只能输入大于0的数'))
+        } else if (value < 1) {
+            callback(new Error('只能输入大于等于1的数'))
         } else if (value.indexOf('.') != -1 && value.substr(value.indexOf('.') + 1).length > 2) {
             callback(new Error('小数点后只能有两位'))
         } else {
@@ -324,25 +324,25 @@
             'dataForm.faceValue':function (newV,oldV) {
             // newV=~~newV;
             for(let i=0;i<newV.toString().length;i++){
-                // 只能输入数字和小数点
-                if(!/[0-9|\.]/g.test(newV[i])){
+                // 只能输入数字
+                if (!/[0-9]/g.test(newV[i])) {
                     this.dataForm.faceValue = newV.toString().replace(newV[i],"")
                 }
             }
-            // 解决数字键盘可以输入输入多个小数点问题
-            if(newV==='' && oldV.toString().indexOf('.')>0){
-                this.dataForm.faceValue = oldV;
-                return ;
-            }
-            // 保留两位小数
-            if(newV){
-                newV = newV.toString();
-                var pointIndex =  newV.indexOf('.');
-                if(pointIndex>0 && (newV.length - pointIndex)>3){
-                    this.dataForm.faceValue = oldV;
-                    return ;
-                }
-            }
+            // // 解决数字键盘可以输入输入多个小数点问题
+            // if(newV==='' && oldV.toString().indexOf('.')>0){
+            //     this.dataForm.faceValue = oldV;
+            //     return ;
+            // }
+            // // 保留两位小数
+            // if(newV){
+            //     newV = newV.toString();
+            //     var pointIndex =  newV.indexOf('.');
+            //     if(pointIndex>0 && (newV.length - pointIndex)>3){
+            //         this.dataForm.faceValue = oldV;
+            //         return ;
+            //     }
+            // }
             // 最大值
             if(newV>1000000){
                 this.dataForm.faceValue = oldV;
