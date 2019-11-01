@@ -25,7 +25,7 @@
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg">
-                                <img :src="dataForm.imageUrl" alt=""/>
+                                <img :src="dataForm.imageUrl | filterImgUrl" alt=""/>
                             </div>
                         </div>
                     </template>
@@ -93,11 +93,26 @@
                     <span>{{dataForm.showWeb == 1?"已发布":dataForm.showWeb == 0?"待发布":"取消发布"}}</span>
                 </el-form-item>
                 <el-form-item label="背景图：">
-                    <template slot-scope="scope">
+                    <!-- <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg">
                                 <img :src="dataForm.imageUrl" alt=""/>
                             </div>
+                        </div>
+                    </template> -->
+                    <template slot-scope="scope">
+                        <div class="pcCoverUrl imgUrl">
+                            <img-cropper
+                                    v-loading="uploading"
+                                    ref="cropperImg"
+                                    :index="'1'"
+                                    :cropImg="dataForm.imageUrl"
+                                    :imgWidth='"200px"'
+                                    :imgHeight='"200px"'
+                                    @delteteImg="delteteImg"
+                                    @GiftUrlHandle="GiftUrlHandle"
+                                    style="display: inline-block;"
+                            ></img-cropper>
                         </div>
                     </template>
                 </el-form-item>
@@ -157,16 +172,20 @@
 <script>
     import Bread from "@/components/bread";
     import { getStoreNewsdetail,saveStoreNewsdetail ,saveStoreNewsdetailOne} from '@/api/api'
+    import imgCropper from "@/components/model-photo-cropper";
+    import { uploadPicBase64 } from '@/api/api'
     export default {
         data () {
             return {
                 breaddata: [ "内容管理","店铺新闻管理", "编辑店铺新闻"],
                 dataForm: {},
                 dataListLoading: false,
+                uploading:false,
             }
         },
         components: {
-            Bread
+            Bread,
+            imgCropper
         },
         methods: {
             init(row){
@@ -176,6 +195,7 @@
                             id:row.id
                         }
                         getStoreNewsdetail(obj).then((res)=>{
+                            console.log(this.dataForm)
                             if(res.code == 200){
                                 this.dataForm = res.data;
                             }
@@ -195,6 +215,34 @@
                 }).then(() => {
                     that.changePage();
                 }).catch();
+            },//上传图片
+            uploadPic(base64,index){
+                const params = { "imgStr": base64 };
+                const that = this;
+                this.uploading = true;
+                return new Promise(function(resolve){
+                    uploadPicBase64(params).then(res =>{
+                        that.uploading = false;
+                        if(res && res.code == "200"){
+                            var url = res.data.url
+                            that.dataForm.imageUrl = url;
+                            // that.currentIndex = -1;//不能这样写，防止网络延迟
+                            resolve("true")
+                        }else {
+                            // that.currentIndex = -1;//不能这样写，防止网络延迟
+                            resolve("false")
+                        }
+                    })
+                });
+            },
+            // 删除背景图
+            delteteImg(){
+                this.dataForm.imageUrl = "";
+            },
+            GiftUrlHandle(val,index){
+                console.log("base64上传图片接口");
+                console.log(val);
+                this.uploadPic(val,index);
             },
             getData(saveType){
                 let that = this;
@@ -285,4 +333,11 @@
     /deep/ .el-form-item__content {
         padding: 0 20px!important;
     }
+    // 上传框去边框
+    /deep/ .upload-box {
+        border:none;
+    }
+	/deep/ .crop-img .el-upload-dragger .el-icon-upload {
+		line-height: 150px!important;
+	}
 </style>

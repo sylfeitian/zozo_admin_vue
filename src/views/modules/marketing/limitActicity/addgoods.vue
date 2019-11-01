@@ -37,6 +37,7 @@
     </el-form>
     <el-table
 	  :data="dataList"
+      class="tb"
       v-loading="dataListLoading"
       border
 	  style="width: 100%">
@@ -60,6 +61,11 @@
 		    prop="name"
             align="center"
 		    label="商品名称">
+            <template slot-scope="scope">
+                <div :title="scope.row.name">
+                    {{scope.row.name}}
+                </div>
+            </template>
 		</el-table-column>
 		<el-table-column
 		    prop="sellPrice"
@@ -79,6 +85,11 @@
             align="center"
 		    label="所属店铺"
              width="180">
+            <template slot-scope="scope">
+                <div :title="scope.row.storeName">
+                    {{scope.row.storeName}}
+                </div>
+            </template>
 		</el-table-column>
         <el-table-column
 		    prop="brandName"
@@ -96,11 +107,11 @@
                 </div>
                 <span v-else>与其他活动冲突</span> -->
                  <div v-if="scope.row.activityState ==0">
-                    <el-button type="text" size="small" @click="chooseFn(scope.row)">选择</el-button>
+                    <el-button type="text" size="small" @click="chooseFn(scope.row,1)">选择</el-button>
                 </div>
                 <div  v-else-if="scope.row.activityState ==1">
                     <span v-if="scope.row.selfActivityState ==0">与其他活动冲突</span>
-                    <el-button  v-if="scope.row.selfActivityState==1" type="text" size="small" @click="chooseFn(scope.row)" >取消选择</el-button>
+                    <el-button  v-if="scope.row.selfActivityState==1" type="text" size="small" @click="chooseFn(scope.row,2)" >取消选择</el-button>
                     <el-button v-if="scope.row.selfActivityState ==1" type="text" size="small" @click="editGoodsSku(scope.row)">修改</el-button>
                 </div>
 
@@ -233,10 +244,11 @@
                     this.$emit('addGoodsActivity')
                 },
                 // 选择或取消选择
-                chooseFn(row){
+                chooseFn(row,type){
+                    var type = type;
                    this.modelEditSkuVisible = true;
                     this.$nextTick(()=>{
-                        this.$refs.editGoodsSkuCompon.init(this.row,row,"choose");
+                        this.$refs.editGoodsSkuCompon.init(this.row,row,type);
                     })
                 },
                 //弹出修改弹框
@@ -256,9 +268,16 @@
     };
 </script>
 <style lang="scss">
+   .tb .cell{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+    }
     .addGoodsPages{
         /deep/.el-input {
-            width: 170px;
+            /*width: 170px;*/
+            width: 90%;
             height: 40px;
         }
         .editDialog{

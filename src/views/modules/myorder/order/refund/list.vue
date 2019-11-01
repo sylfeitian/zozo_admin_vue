@@ -110,7 +110,7 @@
         ></el-pagination>
 
         <!-- 退款 -->
-        <returnMoneyModel v-if="returnMoneyVisible" ref="returnMoneyCompon"></returnMoneyModel>
+        <returnMoneyModel v-if="returnMoneyVisible" ref="returnMoneyCompon"  @searchDataList="getDataList"></returnMoneyModel>
     </div>
 </template>
 <script>

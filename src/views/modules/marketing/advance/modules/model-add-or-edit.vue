@@ -65,12 +65,21 @@
                     callback();
                 }
             };
-            var validatePresellTime = (rule, value, callback) => {
-                if(new Date(value).getTime() < new Date(this.dataForm.startTime).getTime() || new Date(this.value).getTime()>new Date(this.dataForm.endTime).getTime() ){
-                    callback(new Error("开售时间必须在活动时间区间内"))
-                }else{
+            var validateTimestart = (rule, value, callback) => {
+                if(new Date().getTime() > new Date(this.dataForm.startTime).getTime()){
+                    callback(new Error("开始时间必须大于今日当前时间"))
+                } else{
                     callback();
                 }
+            };
+            var validatePresellTime = (rule, value, callback) => {
+                if(new Date(value).getTime() < new Date(this.dataForm.startTime).getTime()){
+                    callback(new Error("开售时间必须在活动时间区间内"))
+                }else if(new Date(this.value).getTime()>new Date(this.dataForm.endTime).getTime()) {
+                    callback(new Error("开售时间必须在活动时间区间内"))
+                }else{
+                        callback();
+                    }
             };
             return {
                 visible : false,
@@ -83,7 +92,8 @@
                     ],
                     startTime : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
-                         { validator: validateTime, trigger: 'blur' }
+                         { validator: validateTime, trigger: 'blur' },
+                        { validator: validateTimestart, trigger: 'blur' }
                     ],
                     endTime : [
                         { required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -106,13 +116,13 @@
                     endTime:'',
                 },
                 row:'',
-                pickerOptions0: { 
+                pickerOptions0: {
 			         disabledDate(time) {
 //			         	if (this.dataForm.endTime != "") {
 //                      	return time.getTime() >  new Date(this.dataForm.endTime).getTime();
 //              		}
-			            return time.getTime() < Date.now() - 8.64e7;//如果没有后面的-8.64e7就是不可以选择今天的 
-			            
+			            return time.getTime() < Date.now() - 8.64e7;//如果没有后面的-8.64e7就是不可以选择今天的
+
 			         }
 			  	},
 			  	pickerOptions1: {

@@ -122,7 +122,7 @@
 		},
 	}
 </script>
-<style scoped>
+<style lang="scss" scoped>
  .attrList{
 	 height: 60px;
 	 line-height: 90px;
@@ -132,4 +132,8 @@
  .el-textarea{
 	 width: 100%;
  }
+ /deep/ .el-dialog {
+	width:35%!important;
+}
+
 </style>

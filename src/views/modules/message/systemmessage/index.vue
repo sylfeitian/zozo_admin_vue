@@ -23,7 +23,7 @@
 						  @change="putState(scope.row.id,scope.row.isSendInner,1)"
 						  >
 						</el-switch>
-						<span class="artblue" @click="show(0,scope.row.messageTypeId,scope.row.innerCanOpen)">模板设置</span>
+						<span class="artblue" @click="show(0,scope.row.messageTypeId,scope.row.innerCanOpen,scope.row)">模板设置</span>
 						<div v-if="changeSwitchVisible"  class="hiddenSwitch"></div>
 					</div>
 			    </template>
@@ -39,7 +39,7 @@
 								@change="putState(scope.row.id,scope.row.isSendUmeng,2)"
 								>
 						</el-switch>
-						<span class="artblue" @click="show(1,scope.row.messageTypeId,scope.row.umengCanOpen)">模板设置</span>
+						<span class="artblue" @click="show(1,scope.row.messageTypeId,scope.row.umengCanOpen,scope.row)">模板设置</span>
 						<div v-if="changeSwitchVisible"  class="hiddenSwitch"></div>
 					</div>
 				</template>
@@ -54,7 +54,7 @@
 								   @change="putState(scope.row.id,scope.row.isSendSms,3)"
 								>
 						</el-switch>
-						<span class="artblue" @click="show(2,scope.row.messageTypeId,scope.row.smsCanOpen)">模板设置</span>
+						<span class="artblue" @click="show(2,scope.row.messageTypeId,scope.row.smsCanOpen,scope.row)">模板设置</span>
 						<div v-if="changeSwitchVisible"  class="hiddenSwitch"></div>
 					</div>
 				</template>
@@ -68,7 +68,7 @@
 				  <el-form-item label="推送方式：">
 					  <span>{{ShopmessagetemplateList.templateType == 0?"站内信":"APP推送"}}</span>
 				  </el-form-item>
-				  <el-form-item label="标签说明：">
+				  <el-form-item label="标签说明：" v-if="['1','2','5','8','9','10','11'].indexOf(ShopmessagetemplateList.id)==-1">
 					  <span>
 						   <el-tag
 								   :key="index"
@@ -76,14 +76,14 @@
 								   :disable-transitions="false"
 								   style="margin-right:5px;"
 								   @click="handleClose(tag)">
-                    {{tag}}
-                </el-tag>
+								{{tag}}
+							</el-tag>
 					  </span>
 				  </el-form-item>
 				  <el-form-item label="消息标题：" style="height: 100%!important;" prop="messageTitle">
 					  <el-input type="text" v-model="ShopmessagetemplateList.messageTitle" placeholder="请输入标题名称"></el-input>
 				  </el-form-item>
-				  <el-form-item label="消息内容：" style="height: 100%!important;" prop="messageContent">
+				  <el-form-item label="消息内容：" v-if="['1','2','5','8','9','10','11'].indexOf(ShopmessagetemplateList.id)==-1" style="height: 100%!important;" prop="messageContent">
 					  <el-input  type="textarea" v-model="ShopmessagetemplateList.messageContent" :rows="5" placeholder="请输入内容"></el-input>
 				  </el-form-item>
 			  </el-form>
@@ -117,6 +117,7 @@
 <script>
 import Bread from "@/components/bread";
 import { getmessagepage, putMessageState,getShopmessagetemplate,saveShopmessagetemplate } from '@/api/api'
+import { type } from 'os';
   
 export default {
 	data () {
@@ -132,9 +133,10 @@ export default {
                 messageTitle:"",
                 messageContent:"",
                 messageId:"",
-                messageCode:""
+				messageCode:"",
+				id:'',
 			},
-            dataForm: {},
+            dataForm: [],
 			changeSwitchVisible: false,
             selectVal:"",
 			dataRule:{
@@ -149,6 +151,9 @@ export default {
 	},
 	watch: {
 		'ShopmessagetemplateList.messageTitle': function (newV, oldV) {
+			if(!newV){
+				return;
+			}
 			var chineseCount = 0, characterCount = 0;
 			for (let i = 0; i < newV.length; i++) {
 				if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
@@ -182,6 +187,16 @@ export default {
 		Bread
 	},
 	methods: {
+		//隐藏消息内容和标签说明
+		// hiddenMsgContent(){
+		// 	var arr  = ['1','2','5','8','9','10','11']
+		// 	alert([this.ShopmessagetemplateList.id,type]);
+		// 	if([arr].indexOf(this.ShopmessagetemplateList.id)==-1){
+		// 		return false;
+		// 	}else{
+		// 		return  true
+		// 	}
+		// },
   	    rest(type){
             if(type == 0) this.dialogTableVisible = false;
             else this.dialogTableVisibleOne = false;
@@ -192,7 +207,7 @@ export default {
                     messageTitle:"",
                     messageContent:"",
                     messageId:"",
-                    messageCode:""
+                    messageCode:"",
             }
 		},
         saveTemplate(type){
@@ -263,9 +278,10 @@ export default {
         handleClose(val){
             this.ShopmessagetemplateList.messageContent = this.ShopmessagetemplateList.messageContent+val;
 		},
-  	    show(name,id,open){
+  	    show(name,id,open,row){
 			this.ShopmessagetemplateList.messageTitle = ""
 			this.ShopmessagetemplateList.messageCode = ""
+			this.ShopmessagetemplateList.id =  row.id
   	        // if(open == 1){
   	        	// 短信
                 if(name == 2) {

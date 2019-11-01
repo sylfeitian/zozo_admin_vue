@@ -28,9 +28,7 @@
                     <!-- 待收货 -->
                      <el-option label="日本取消订单" value="70" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
                     <el-option label="JD申报中" value="80" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
-                    <el-option label="JD申报失败(不可重试)" value="90" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
-                    <el-option label="JD申报失败(可以重试)" value="100" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
-
+                    <el-option label="JD申报失败" value="100" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
                     <el-option label="清关中" value="110" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
                     <!-- <el-option label="清关失败" value="120" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option> -->
                      <el-option label="待收货" value="130" v-if="dataForm.topStatus=='all' || dataForm.topStatus=='waitreceived'" ></el-option>
@@ -122,8 +120,7 @@
                         <!-- 待收货 -->
                         <span v-else-if="scope.row.orderStatus==70" :class="scope.row.exceptionStatus!=0?'redClass':''">日方取消订单</span>
                         <span v-else-if="scope.row.orderStatus==80" :class="scope.row.exceptionStatus!=0?'redClass':''">JD申报中</span>
-                        <span v-else-if="scope.row.orderStatus==90" :class="scope.row.exceptionStatus!=0?'redClass':''">JD申报失败(无法重试)</span>
-                        <span v-else-if="scope.row.orderStatus==100" :class="scope.row.exceptionStatus!=0?'redClass':''">JD申报失败(可以重试)</span>
+                        <span v-else-if="scope.row.orderStatus==90 || scope.row.orderStatus==100" :class="scope.row.exceptionStatus!=0?'redClass':''">JD申报失败</span>
                         <span v-else-if="scope.row.orderStatus==110" :class="scope.row.exceptionStatus!=0?'redClass':''">清关中</span>
                         <span v-else-if="scope.row.orderStatus==120" :class="scope.row.exceptionStatus!=0?'redClass':''">清关失败</span>
                         <span v-else-if="scope.row.orderStatus==130" :class="scope.row.exceptionStatus!=0?'redClass':''">待收货</span>
@@ -138,7 +135,7 @@
                     <div v-if="scope.row.exceptionStatus!=0">
                         <el-button size="mini" type="text" @click="orderDetFn(scope.row)">查看</el-button>
                         <el-button size="mini" type="text" @click="reptyOrderFn(scope.row)">重试</el-button>
-                        <el-button size="mini" type="text" @click="cancleOrderFn(scope.row)">取消订单</el-button>
+                        <el-button size="mini" type="text" @click="cancleOrderFn(scope.row)" v-if="scope.row.orderStatus!=0">取消订单</el-button>
                    </div>
                     <!-- 正常订单 -->
                    <div v-else>
@@ -200,7 +197,7 @@
     import { orderDetail, paymentList,orderListTop } from "@/api/api";
     import declareSth from '../modules/model-declare-sth.vue'
     import reptyOrder from './modules/model-repty.vue'
-    
+
     import clearancFailure from '../modules/model-clearanc-failure.vue'
     import writeLogisticsInfo from '../modules/model-write-logistics-info.vue'
     import exammine from '../modules/model-exammine.vue'
@@ -304,6 +301,7 @@
         },
         methods: {
             orderDetFn(row){
+                console.log(row)
                 this.$emit("orderDetFn",row);
             },
             getData() {
@@ -313,7 +311,7 @@
                 // this.dataForm.endPaymentTime = this.timeArr2[1];
                 this.page = 1;
                 this.limit = 10;
-                //  this.dataForm.orderStatus  = this.dataForm.paymentStatus 
+                //  this.dataForm.orderStatus  = this.dataForm.paymentStatus
                 this.getDataList();
             },
              searchDataList() {
@@ -344,7 +342,7 @@
                         this.topNum.cancel = 0;//订单取消数量 ,
                         this.topNum.complete = 0; //交易成功完成 ,
                         this.topNum.waitpay = 0;//待付款数量 ,
-                        this.topNum.waitreceived = 0;//待收货数量 
+                        this.topNum.waitreceived = 0;//待收货数量
                         this.topNum.waitshipped = 0; ///待发货数量
                     }
                 })
@@ -363,7 +361,7 @@
                 this.timeArr = [];
                 this.timeArr2 = [];
                 this.dataForm.startTime = "";
-                this.dataForm.endtime = "";
+                this.dataForm.endTime = "";
                 // this.dataForm.startPaymentTime = "";
                 // this.dataForm.endPaymentTime = "";
                 this.$refs[formName].resetFields();
@@ -453,12 +451,12 @@
                 })
                 this.searchDataList();
             },
-            pageCurrentChangeHandleLocal(){
-                this.pageCurrentChangeHandle();
+            pageCurrentChangeHandleLocal(val){
+                this.pageCurrentChangeHandle(val);
                 this.getOrderListTop();
             },
-            pageSizeChangeHandleLocal(){
-                this.pageSizeChangeHandle();
+            pageSizeChangeHandleLocal(val){
+                this.pageSizeChangeHandle(val);
                 this.getOrderListTop();
             },
         }

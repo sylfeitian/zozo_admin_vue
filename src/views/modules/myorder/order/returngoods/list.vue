@@ -31,6 +31,7 @@
                     <el-option label="退款完成" value="50"></el-option>
                     <!-- <el-option label="退款失败" value="60"></el-option> -->
                     <el-option label="售后取消" value="70"></el-option>
+                    <el-option label="推送日本异常" value="80"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="申请时间：">
@@ -98,6 +99,7 @@
                             <el-tag v-else-if="scope.row.status==50" type="danger">退款完成</el-tag>
                             <el-tag v-else-if="scope.row.status==60" type="danger">退款失败</el-tag>
                             <el-tag v-else-if="scope.row.status==70" type="danger">售后取消</el-tag>
+                            <el-tag v-else-if="scope.row.status==80" type="danger">推送日本异常</el-tag>
                         </div>
                     </template>
                     
@@ -124,11 +126,11 @@
         <!-- 审核 -->
         <!-- <exammine v-if="exammineVisible" ref="exammineCompon" @searchDataList="getDataList"></exammine> -->
          <!-- 确认收货 -->
-        <confirmGoodsModel v-if="confirmGoodsVisible" ref="confirmGoodsCompon"></confirmGoodsModel>
+        <confirmGoodsModel v-if="confirmGoodsVisible" ref="confirmGoodsCompon" @searchDataList="getDataList"></confirmGoodsModel>
         <!-- 退货 -->
         <!-- <returnGoodsModel v-if="returnGoodsVisible" ref="returnGoodsCompon"></returnGoodsModel> -->
         <!-- 退款 -->
-        <returnMoneyModel v-if="returnMoneyVisible" ref="returnMoneyCompon"></returnMoneyModel>
+        <returnMoneyModel v-if="returnMoneyVisible" ref="returnMoneyCompon" @searchDataList="getDataList"></returnMoneyModel>
     </div>
 </template>
 <script>

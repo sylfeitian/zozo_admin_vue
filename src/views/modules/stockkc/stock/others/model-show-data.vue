@@ -144,10 +144,11 @@
 				})
 			},
 	      	search(){
-	          	 this.getDataList().then((res)=>{
+				this.page = 1;
+				this.getDataList().then((res)=>{
 				 	this.backScanHook();
-				 });
-				 this.dataForm.wareHouseId =  this.dataForm.wareHouseId
+				});
+				this.dataForm.wareHouseId =  this.dataForm.wareHouseId
 	      	},
 			//   处理回显数据
 	       	 backScanHook(){

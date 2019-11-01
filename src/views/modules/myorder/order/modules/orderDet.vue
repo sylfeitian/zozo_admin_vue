@@ -56,7 +56,7 @@
                             <span v-else-if="orderBase.orderStatus==50">lakala申报失败</span>
                             <span v-else-if="orderBase.orderStatus==60">待日方发货</span>
                             <!-- 待收货 -->
-                            <span v-else-if="orderBase.orderStatus==70">日方取消订单</span> 
+                            <span v-else-if="orderBase.orderStatus==70">日方取消订单</span>
                             <span v-else-if="orderBase.orderStatus==80">JD申报中</span>
                             <span v-else-if="orderBase.orderStatus==90 || orderBase.orderStatus==100">JD申报失败</span>
                             <span v-else-if="orderBase.orderStatus==110">清关中</span>
@@ -101,16 +101,9 @@
                     <el-col :span="5"><div class="grid-content bg-purple-light">描述</div></el-col>
                     <el-col :span="19"><div class="grid-content">{{orderBase.orderMessage}}</div></el-col>
                 </el-row>
-                <el-dialog title="身份证信息" :visible.sync="dialogVisible" width="30%" v-if="memberDeatilInfo">
-                    <h3>身份证号码： </h3>
-                    <p>{{memberDeatilInfo.idCard}}</p>
-
-                    <h3>身份证正反面：</h3>
-                    <div class="idCardWarp"> 
-                        <img :src="memberDeatilInfo.idcartPositiveUrl  | filterImgUrl" alt="">
-                        <img :src="memberDeatilInfo.idcartReverseUrl | filterImgUrl" alt="">
-                    </div>
-                </el-dialog>
+            
+                <!-- 用户身份证信息 -->
+                <modelUserinfo v-if="modelUserinfoVisible" ref="modelUserinfoCompon"></modelUserinfo>
 
                 <!-- 收货人信息 -->
                 <p>
@@ -272,7 +265,7 @@
                             <span v-else-if="scope.row.orderStatus==50">lakala申报失败</span>
                             <span v-else-if="scope.row.orderStatus==60">待日方发货</span>
                             <!-- 待收货 -->
-                            <span v-else-if="scope.row.orderStatus==70">日方取消订单</span> 
+                            <span v-else-if="scope.row.orderStatus==70">日方取消订单</span>
                             <span v-else-if="scope.row.orderStatus==80">JD申报中</span>
                             <span v-else-if="scope.row.orderStatus==90 || scope.row.orderStatus==100">JD申报失败</span>
                             <span v-else-if="scope.row.orderStatus==110">清关中</span>
@@ -305,7 +298,7 @@
         <exammine v-if="exammineVisible" ref="exammineCompon" @searchDataList="getOrderDetail"></exammine>
         <!-- 备注信息 -->
         <remarkInfo v-if="remarkInfoVisible" ref="remarkInfoCompon" @searchDataList="getOrderDetail"></remarkInfo>
-         <!-- 取消订单弹框 -->  
+         <!-- 取消订单弹框 -->
         <cancleOrder v-if="cancleOrderVisible" ref="cancleOrderCompon" @searchDataList="getOrderDetail"></cancleOrder>
 
         <tabFn  v-if="showPage==2" @controlShowPage="controlShowPage" ref="tabFnCompon" :breaddata="nextBreaddata" :index="index" :showTab='false'></tabFn>
@@ -319,7 +312,7 @@
     import modelUserInforDetail from "./model-userInfor-detail"
     import Clipboard from "clipboard";
     // import orderData from './model-order-data'
-    
+
     import clearancFailure from '../modules/model-clearanc-failure.vue'
     import writeLogisticsInfo from '../modules/model-write-logistics-info.vue'
     import logistics from '../modules/model-logistics.vue'
@@ -327,15 +320,16 @@
     import exammine from '../modules/model-exammine.vue'
     import remarkInfo from '../modules/model-remark-info.vue'
     import cancleOrder from '../modules/model-cancle-order.vue'
-     
-    import {orderDetail,memberDeatilInfo } from "@/api/api";
+    import modelUserinfo from '../modules/model-userinfo.vue'
+  
+    import {orderDetail } from "@/api/api";
     export default {
         // mixins: [mixinViewModule],
         data() {
             return {
                 showPage:1,
                 modelUserInforDetailVisible:false,
-                dialogVisible:false,
+                modelUserinfoVisible:false,
                 active:0,
                 textarea: "",
                 dataListLoading:false,
@@ -359,7 +353,6 @@
                 receiverInfo:{},
                 scheduleList:[],
                 row:"",
-                memberDeatilInfo:'',
                 nextBreaddata: ["订单管理", "BC订单管理", "订单详情","会员信息"],
                 index:"2",
                 };
@@ -376,7 +369,8 @@
             remarkInfo,
             cancleOrder,
             declareSth,
-            tabFn
+            tabFn,
+            modelUserinfo
         },
         props: ["data", "addressInfo", "orderLog","packageInfo",'breaddata'],
         methods: {
@@ -384,7 +378,7 @@
                 console.log(row);
                 // row.id = 123666;
                 this.row = row;
-                this.getOrderDetail();    
+                this.getOrderDetail();
             },
             controlShowPage(num){
                 this.showPage =num;
@@ -393,11 +387,13 @@
                 }
                 if(num==2){
                     this.$nextTick(()=>{
-                    row.activeName = "vipDetail" 
+                    row.activeName = "vipDetail"
                     this.$refs.tabFnCompon.init(row);
                 })
             }
            },
+          
+            // 用户详细信息
             showUserDetail(){
                 this.modelUserInforDetailVisible = true;
                 this.$nextTick(()=>{
@@ -405,17 +401,9 @@
                 })
             },
             lookMemberDeatilInfo(){
-                this.dialogVisible = true;
-                var obj  = {
-                    params:{
-                        memberId:this.orderBase.memberId,
-                        orderId:this.orderBase.orderId,
-                    }
-                }
-                memberDeatilInfo(obj).then((res)=>{
-                    if(res.code==200){
-                        this.memberDeatilInfo = res.data;
-                    }
+                this.modelUserinfoVisible = true;
+                this.$nextTick(()=>{
+                    this.$refs.modelUserinfoCompon.init(this.orderBase,this.row);
                 })
             },
             getOrderDetail(){
@@ -430,10 +418,10 @@
                         this.authenticationInfo = res.data.authenticationInfo;
                         this.orderBase = res.data.orderBase;
                         this.orderGoods = res.data.orderGoods;
-                        // 商品总价  goodsAmount           
-                        //  折扣金额  dicountAmount       
-                        //  优惠券  couponAmount    
-                        //  满减  reduceAmount   
+                        // 商品总价  goodsAmount
+                        //  折扣金额  dicountAmount
+                        //  优惠券  couponAmount
+                        //  满减  reduceAmount
                         //  应付金额 orderAmount
                          this.moneyInfo = [{
                                 goodsAmount:this.orderBase.goodsAmount,
@@ -568,14 +556,6 @@
     };
 </script>
 <style lang="scss" scoped>
-    .idCardWarp{
-        text-align: center;
-        img{
-            width:316px;
-            height: 200px;
-            margin-bottom: 10px;
-        }
-    }
     .creater {
         display: inline-block;
         width: 80px;

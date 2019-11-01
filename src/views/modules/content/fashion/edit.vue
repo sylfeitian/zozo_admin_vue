@@ -58,11 +58,13 @@
             </el-form>
         </el-col> -->
 
-        <el-col :span="24" >
+        <el-col :span="24">
             <el-form
                     ref="dataForm"
                     class="grayLine topGapPadding"
                     :model="dataForm"
+                    v-loading="fullscreenLoading"
+                    element-loading-text="拼命加载中"
                     @keyup.enter.native="getDataList()"
             >
                 <div style="display:flex;padding:0">
@@ -145,7 +147,7 @@
                             <template slot-scope="scope">
                                 <div class="goodsPropsWrap">
                                     <div class="goodsImg">
-                                        <img :src="dataForm.mainImageUrl" alt="" style="width:200px;"/>
+                                        <img :src="dataForm.mainImageUrl | filterImgUrl" alt="" style="width:200px;"/>
                                     </div>
                                 </div>
                             </template>
@@ -156,14 +158,14 @@
                             <template slot-scope="scope">
                                 <div class="goodsPropsWrap">
                                     <div class="goodsImg">
-                                        <img :src="dataForm.mainImageUrl" alt="" style="width:200px;"/>
+                                        <img :src="dataForm.mainImageUrl | filterImgUrl" alt="" style="width:200px;"/>
                                     </div>
                                 </div>
                             </template>
                         </el-form-item>
                     </div>
                 </div>
-               
+
                 <div style="display:flex;padding:0">
                     <div style="width:50%;padding:0">
                          <el-form-item label="标题：" style="height: 100%!important;">
@@ -183,13 +185,13 @@
                                 <div style="display:flex;padding:0" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
                                     <div v-if="v.text=='' || shopFashionContentsVOList[i].text || v.imageUrl"  v-show="row.fashionFlag == 0" style="padding: 0;">
                                         <!-- <div style="height: 20px;"></div> -->
-                                        <div class="contentChild" style="min-height:33px;padding-right: 6px;padding: 0;text-align:left;" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
+                                        <div :class="['contentChild','detail'+i]" style="min-height:33px;padding-right: 6px;padding: 0;text-align:left;" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
                                             {{shopFashionContentsVOList[i].text}}
                                         </div>
                                         <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
                                             <div class="goodsPropsWrap" style="text-align: center;">
                                                 <div class="goodsImg" style="margin-left:100%;">
-                                                    <img :src="v.imageUrl" style="width:200px;" alt=""/>
+                                                    <img :src="v.imageUrl | filterImgUrl" style="width:200px;" alt=""/>
                                                 </div>
                                                 <div v-if="v.typeId=='4'">{{v.text}}</div>
                                             </div>
@@ -205,13 +207,13 @@
                                 <div style="padding:0" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
                                     <div  v-if="v.text=='' || v.text || v.imageUrl" style="padding: 0;width:80%;margin-left:100px;">
                                         <!-- <div style="height: 20px;"></div> -->
-                                        <div class="contentChild"  style="min-height:33px;"  v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
+                                        <div :class="['contentChild','inputHeight'+i]" style="min-height:33px;"  v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
                                             <el-input style="margin: auto;" v-model="v.textCn" type="textarea" :rows="5" ></el-input>
                                         </div>
                                         <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
                                             <div class="goodsPropsWrap" style="text-align: center;">
                                                 <div class="goodsImg">
-                                                    <img :src="v.imageUrl" style="width:200px;" alt=""/>
+                                                    <img :src="v.imageUrl | filterImgUrl" style="width:200px;" alt=""/>
                                                 </div>
                                                 <div v-if="v.typeId=='4'">{{v.textCn}}</div>
                                             </div>
@@ -221,7 +223,7 @@
                             </template>
                         </el-form-item>
                     </div>
-                </div>          
+                </div>
             </el-form>
         </el-col>
         <el-col :span="24">
@@ -256,11 +258,23 @@
                 dataForm: {},
                 shopFashionContentsVOList:[],
                 row:"",
+                timer: null, // 定时器
+                fullscreenLoading: true
             }
         },
         components: {
             quillEditorImg,
             Bread
+        },
+        created(){
+            // 判断页面加载完毕
+            const that = this
+            that.timer = setInterval(function () {
+                if (document.readyState === 'complete') {
+                that.getHeight()
+                    window.clearInterval(that.timer)
+                }
+            }, 1500)
         },
         methods: {
             init(row){
@@ -327,11 +341,23 @@
                         });
                     }
                 })
+            },
+            getHeight() {
+                for (let i = 0; i < this.shopFashionContentsVOList.length; i++) {
+                    debugger
+                    // 详情文字的高度
+                    var fontHetght = $("."+'detail'+i).height()
+                    if (fontHetght < 147) {
+                        $("." + 'detail' + i).height(147)
+                    } else {
+                        $("." + 'inputHeight' + i).height(fontHetght)
+                    }
+                }
+                this.fullscreenLoading = false
             }
         }
     }
 </script>
-
 <style lang="scss" scoped>
     .title{
         margin-top: 0;

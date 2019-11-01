@@ -62,6 +62,7 @@
                     ref="dataForm"
                     class="grayLine topGapPadding"
                     :model="dataForm"
+                    v-loading="fullscreenLoading"
                     @keyup.enter.native="getDataList()"
             >
                 <div style="display:flex;padding:0">
@@ -112,7 +113,7 @@
                     </div>
                 </div>
 
-              
+
                 <div style="display:flex;padding:0">
                     <div style="width:50%;padding:0"  v-if="row.fashionFlag == 0">
                         <el-form-item label="浏览数量：">
@@ -126,7 +127,7 @@
                     </div>
                 </div>
 
-               
+
                  <div style="display:flex;padding:0">
                     <div style="width:50%;padding:0"  v-if="row.fashionFlag == 0">
                         <el-form-item label="发布状态：">
@@ -151,7 +152,6 @@
                                 </div>
                             </template>
                         </el-form-item>
-                        </el-form-item>
                     </div>
                     <div style="width:50%;padding:0"  :class="row.fashionFlag==0?'borderLeftLine':''">
                          <el-form-item label="背景图：" style="height: 100%!important;">
@@ -165,7 +165,7 @@
                         </el-form-item>
                     </div>
                 </div>
-               
+
                 <div style="display:flex;padding:0">
                     <div style="width:50%;padding:0"  v-if="row.fashionFlag == 0">
                          <el-form-item label="标题：" style="height: 100%!important;">
@@ -185,7 +185,7 @@
                                 <div style="display:flex;padding:0;" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
                                     <div v-if="v.text || v.imageUrl"  v-show="row.fashionFlag == 0" style="padding: 0;">
                                         <!-- <div style="height: 20px;"></div> -->
-                                        <div class="contentChild" style="min-height:33px;padding-right: 6px;" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'" v-html="v.text">
+                                        <div :class="['contentChild','detail'+i]" style="min-height:33px;padding-right: 6px;" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'" v-html="v.text">
                                         <!-- {{v.text}} -->
                                         </div>
                                         <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
@@ -197,7 +197,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </template>
                         </el-form-item>
@@ -208,7 +208,7 @@
                                 <div style="display:flex;padding:0;flex-direction: column;" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i" >
                                     <div v-if="v.text || v.imageUrl" style="padding: 0;">
                                         <!-- <div style="height: 20px;"></div> -->
-                                        <div class="contentChild"  style="min-height:33px;margin-top:0;"v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'" v-html="v.text">
+                                        <div :class="['contentChild','inputHeight'+i]"   style="min-height:33px;margin-top:0;"v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'" v-html="v.textCn">
                                             <!-- {{v.text}} -->
                                         </div>
                                         <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
@@ -216,7 +216,7 @@
                                                 <div class="goodsImg" style="text-align:center;">
                                                     <img :src="v.imageUrl | filterImgUrl" style="width:200px;" alt=""/>
                                                 </div>
-                                                <div v-if="v.typeId=='4'"  v-html="v.text"></div>
+                                                <div v-if="v.typeId=='4'"  v-html="v.textCn"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -240,10 +240,23 @@
                 dataListLoading: false,
                 dataForm: {},
                 row:'',
+                timer: null, // 定时器
+                fullscreenLoading: true
+
             }
         },
         components: {
             Bread
+        },
+        created(){
+            // 判断页面加载完毕
+            const that = this
+            that.timer = setInterval(function () {
+                if (document.readyState === 'complete') {
+                    that.getHeight()
+                    window.clearInterval(that.timer)
+                }
+            }, 1500)
         },
         methods: {
             init(row){
@@ -263,6 +276,21 @@
             },
             changePage(){
                 this.$emit("showList");
+            },
+            getHeight(){
+                // 详情文字的高度
+                for(let i=0;i<this.dataForm.shopFashionContentsVOList.length;i++){
+                    // 文字高度
+                    var fontH = $("."+'detail'+i).height()
+                    // 输入框高度
+                    var inputH = $("."+'inputHeight'+i).height()
+                    if(fontH<inputH){
+                        $("."+'detail'+i).height(inputH)
+                    }else{
+                        $("."+'inputHeight'+i).height(fontH)
+                    }
+                }
+                this.fullscreenLoading = false
             }
         }
     }

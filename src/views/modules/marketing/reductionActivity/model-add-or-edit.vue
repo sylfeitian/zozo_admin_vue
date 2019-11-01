@@ -250,7 +250,7 @@
                             "endTime": this.activiDataForm.endTime,//活动结束时间 ,
                             "limitPrice": this.activiDataForm.limitPrice,// 满减限制金额 ,
                             "reducePrice": this.activiDataForm.reducePrice,//满减金额 ,
-                            "shareFlag": this.checkList?1:0,//能否共享优惠券活动标识,0:不共享，1:共享 ,
+                            "shareFlag": this.checkList?0:1,//能否共享优惠券活动标识,0:不共享，1:共享 ,
                             "startTime": this.activiDataForm.startTime,//活动开始时间 ,
                             "title": this.activiDataForm.title//活动标题
                         }

@@ -83,7 +83,7 @@
                 <el-input v-model.trim="editDataForm.sgName" placeholder="请输入10字以内的名称"></el-input>
             </el-form-item>
             <el-form-item label="排序：" prop="sort">
-            	 <el-input-number v-model="editDataForm.sort" min="1" max="10000000"></el-input-number>
+            	 <el-input-number v-model="editDataForm.sort" :min="1" :max="10000000"></el-input-number>
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -262,12 +262,12 @@
                 let that = this;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.$confirm(`确定提交表单信息?`, "提示", {
-                            confirmButtonText: "确定",
-                            cancelButtonText: "取消",
-                            type: "warning"
-                        })
-                            .then(() => {
+                        // this.$confirm(`确定提交表单信息?`, "提示", {
+                        //     confirmButtonText: "确定",
+                        //     cancelButtonText: "取消",
+                        //     type: "warning"
+                        // })
+                            // .then(() => {
                                 if(that.isSave){
                                     let obj = {
                                         type:that.editDataForm.sgName,
@@ -311,8 +311,8 @@
                                         }
                                     })
 								}
-                            })
-                            .catch(() => {});
+                            // })
+                            // .catch(() => {});
                     }
                 });
             },

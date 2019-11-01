@@ -2,7 +2,7 @@
     <div>
         <list v-if="mainVisible" ref="listCompon" @orderDetFn="orderDetFn" @afterSaleDetailFn="afterSaleDetailFn"></list>
         <orderDet v-if="orderDetVisible" ref="orderDetCompon" @orderDetListFn="orderDetListFn"  :breaddata="subBreaddata"></orderDet>
-        <afterSaleDetail v-if="afterSaleDetailVisible" ref="afterSaleDetailCompon" @orderDetListFn="orderDetListFn"  :breaddata="subBreaddata2"></afterSaleDetail>
+        <afterSaleDetail v-if="afterSaleDetailVisible" ref="afterSaleDetailCompon" @orderDetListFn="orderDetListFn" @changeOrderDetFn="changeOrderDetFn" :breaddata="subBreaddata2"></afterSaleDetail>
     </div>
 </template>
 
@@ -49,6 +49,14 @@
                     this.$refs.afterSaleDetailCompon.init(row);
                 })
 
+            },
+            changeOrderDetFn(row) {
+                this.orderDetVisible = true;
+                this.mainVisible = false;
+                this.afterSaleDetailVisible = false;
+                this.$nextTick(()=>{
+                    this.$refs.orderDetCompon.init(row);
+                })
             }
 
         }

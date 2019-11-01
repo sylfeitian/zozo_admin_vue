@@ -91,7 +91,7 @@
                 row:'',
                 row2:'',
             }
-            
+
         },
         methods: {
             init (row,row2) {
@@ -146,7 +146,7 @@
                         item.personLimit = row.personLimit
                     })
 
-                }).catch(() => { 
+                }).catch(() => {
                 })
             },
             deleteRow(row){
@@ -158,7 +158,7 @@
                 }).then(() => {
                     var obj = {
                         data:{
-                            activityId: that.row.id,//活动id 
+                            activityId: that.row.id,//活动id
                             goodsCsId: row.id//商品SkuID
                         }
                     }
@@ -170,7 +170,7 @@
                             that.$message.error(res.msg);
                         }
                     })
-                }).catch(() => { 
+                }).catch(() => {
                     })
             },
             dataFormCancel(){

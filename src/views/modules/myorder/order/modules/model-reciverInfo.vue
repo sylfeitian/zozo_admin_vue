@@ -50,7 +50,7 @@
                                     :value="item.id">
                                 </el-option>
                             </el-select>
-                            <el-select v-model="dataForm.stressId" placeholder="街" :class="optionsArea4.length==0 ? 'glay' : '' "
+                            <el-select v-model="dataForm.stressId" placeholder="街" :class="townArea==null ? 'glay' : '' "
                                 @visible-change="changeArea(dataForm.stressId,4)">
                                 <el-option
                                     v-for="item in optionsArea4"
@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import {orderReceiver,areaFirst,areaByParentId} from "@/api/api.js"
+import {orderReceiver,areaFirst,areaByParentId,receiverDetail} from "@/api/api.js"
 import { isMobile,isPhone } from '@/utils/validate'
     export default {
         name: "model-order-data",
@@ -111,6 +111,7 @@ import { isMobile,isPhone } from '@/utils/validate'
                  },
                  orderBase:{},
                  row:{},
+                townArea:'',
                 dataRule : {
 			        memberRealName : [
 			          { required: true, message: '必填项不能为空', trigger: 'blur' },
@@ -129,19 +130,41 @@ import { isMobile,isPhone } from '@/utils/validate'
         },
         methods: {
             init(orderBase,receiverInfo,row) {
-                debugger
                 this.visible = true;
-                this.orderBase = orderBase;
-                Object.assign(this.dataForm,receiverInfo);
                 this.row = row;
-                this.preOptionsArea1 = [];
-                this.optionsArea2[0] = {id:receiverInfo.cityId,name:receiverInfo.city}
-                this.optionsArea3[0] = {id:receiverInfo.areaId,name:receiverInfo.areaId}
-                this.optionsArea4[0] =  {id:receiverInfo.stressId,name:receiverInfo.townArea==null ? '街道':receiverInfo.townArea}
-                this.getFirstData();
-                receiverInfo.provinceId && this.changeArea(receiverInfo.provinceId,1,false);
-                receiverInfo.cityId && this.changeArea(receiverInfo.cityId,2,false);
-                receiverInfo.areaId && this.changeArea(receiverInfo.areaId,3,false);
+                 this.orderBase = orderBase;
+                this.$nextTick(()=>{
+                    // 回显数据
+                    this.getReceiverDetail();
+                })
+               
+                
+            },
+            // 根据id查用户回显数据
+            getReceiverDetail(){
+                 var obj  ={
+			        // id:orderBase.orderAddressId,
+                    id:this.orderBase.orderAddressId//'1189073387371151360'
+                    // orderId: orderBase.orderId,
+                }
+                 receiverDetail(obj).then((res)=>{
+                    if(res.code==200){
+                        var receiverInfo = res.data;
+                        this.townArea =receiverInfo.townArea;
+                        Object.assign(this.dataForm,receiverInfo);
+                        this.preOptionsArea1 = [];
+                        this.optionsArea2[0] = {id:receiverInfo.cityId,name:receiverInfo.city}
+                        this.optionsArea3[0] = {id:receiverInfo.areaId,name:receiverInfo.areaId}
+                        this.optionsArea4[0] =  {id:receiverInfo.stressId,name:receiverInfo.townArea==null ? '街道':receiverInfo.townArea}
+                        receiverInfo.provinceId && this.changeArea(receiverInfo.provinceId,1,false);
+                        receiverInfo.cityId && this.changeArea(receiverInfo.cityId,2,false);
+                        receiverInfo.areaId && this.changeArea(receiverInfo.areaId,3,false);
+                        // 获取第一级地区数据
+                        this.getFirstData();
+                    }else{
+                        this.$message.error(res.msg);
+                    }
+                })
             },
             // 获取第一级地区数据
             getFirstData(){
@@ -154,7 +177,6 @@ import { isMobile,isPhone } from '@/utils/validate'
             },
             // 切换地区获取下级联动地区数据
             changeArea(id,argu2,reset=true){
-                debugger
                 if(!id){
                     return
                 }
@@ -177,7 +199,6 @@ import { isMobile,isPhone } from '@/utils/validate'
                     this.dataForm.stressId = "";
                     this.optionsArea4 = []
                 }else if(argu2==4 && reset){
-                    debugger
                     // 选到最后一级了
                 }
                 areaByParentId(obj).then((res)=>{
@@ -199,10 +220,8 @@ import { isMobile,isPhone } from '@/utils/validate'
 
            // 提交
 			dataFormSubmit(formName){
-                debugger
 				this.$refs[formName].validate((valid) => {
 						if (valid) {
-                            debugger
 								this.loading = true;
 								var obj={
                                     "address": this.dataForm.address,

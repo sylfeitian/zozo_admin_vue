@@ -253,7 +253,7 @@
   	}
 	}
 	.upload-box{
-	  border:1px solid rgb(204, 198, 198);
+	  	// border:1px solid rgb(204, 198, 198);
 		position: relative;
 		height: 190px;
 		.crop-input{
@@ -291,7 +291,7 @@
 		position: relative;
 		width: 100%;
 		height: 100%;
-		padding: 1px;
+		// padding: 1px;
 	}
 	.upload-box:hover > .hiddenUloadingBox{
 			display: inline-block;

@@ -83,7 +83,7 @@
             <el-table-column prop="category" label="分类" align="center "></el-table-column>
             <el-table-column prop="sellPrice" label="商品售价" align="center">
                   <template slot-scope="scope">
-                    <span>￥{{scope.rowsellPrice?scope.rowsellPrice:'0.00'}}</span>
+                    <span>￥{{scope.row.sellPrice?scope.row.sellPrice:'0.00'}}</span>
                 </template>
             </el-table-column>
             <el-table-column prop="stockQuantity" label="库存数量" align="center"></el-table-column>
@@ -154,15 +154,15 @@
         },
         watch: {
             // ID类搜索框仅可输入数字、英文，最多可输入30个字符
-            "dataFormShow.skuId": function(newV, oldV) {
+            "dataFormShow.skuID": function(newV, oldV) {
 
                 for (let i = 0; i < newV.length; i++) {
                     if (!/[a-zA-Z0-9\s]/.test(newV[i])) {
-                        this.dataFormShow.skuId = newV.replace(newV[i], "");
+                        this.dataFormShow.skuID = newV.replace(newV[i], "");
                     }
                 }
                 if(newV.length>30){
-                    this.dataFormShow.skuId = newV.substr(0,30)
+                    this.dataFormShow.skuID = newV.substr(0,30)
                 }
             },
             'dataFormShow.goodsName':function(newV,oldV) {
@@ -228,7 +228,7 @@
             },
             getData(){
                 this.page = 1;
-               
+
 
                 this.dataForm = cloneDeep(this.dataFormShow);
                 this.getDataList();
@@ -259,7 +259,7 @@
                     }
                 })
             },
-            
+
             // 编辑回显
             backScan(row){
                 console.log(row);

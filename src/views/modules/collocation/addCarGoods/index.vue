@@ -129,7 +129,7 @@
                 :data="dataFormList.list"
                 v-loading="goodsdataListLoading"
                 border=""
-                
+
                 style="width: 100%"
             >
                 <el-table-column prop="name" align="center" label="商品名称" width="240">
@@ -185,7 +185,7 @@ export default {
         deleteIsBatch: true
         // deleteIsBatchKey: 'id'
       },
-      
+
       dataFormList:{},
       goodsdataList: [],
       isIndeterminate:false,
@@ -422,7 +422,7 @@ export default {
             category: item.firstCategory + item.goodsTypeName
           });
         });
-        
+
         if (arry1.length == 0) {
           done();
           return

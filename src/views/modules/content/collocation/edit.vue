@@ -39,7 +39,7 @@
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg" style="margin-top:10px;">
-                                <img :src="dataForm.imageUrl320" alt="" style="width:200px;"/>
+                                <img :src="dataForm.imageUrl320 | filterImgUrl" alt="" style="width:200px;"/>
                             </div>
                         </div>
                     </template>
@@ -126,7 +126,7 @@
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg" style="margin-top:10px;">
-                                <img :src="dataForm.imageUrl320" alt="" style="width:200px;"/>
+                                <img :src="dataForm.imageUrl320 | filterImgUrl" alt="" style="width:200px;"/>
                             </div>
                         </div>
                     </template>
@@ -215,6 +215,12 @@
                         getlookdetail(obj).then((res)=>{
                             if(res.code == 200){
                                 this.dataForm = res.data;
+                                 try {
+                                   var dataForm  =  JSON.parse(this.dataForm.content); // 字符串转对象
+                                   if(dataForm.code){this.dataForm.content = ""}
+                                } catch (err) {
+                                    
+                                }
                             }
                         })
                     }
