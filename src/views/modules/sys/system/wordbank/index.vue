@@ -37,8 +37,8 @@
                         {{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="chineseVocabulary" label="中文词汇" header-align="center" align="center"></el-table-column>
-                <el-table-column prop="japaneseWord" label="对照日文词汇" header-align="center" align="center"></el-table-column>
+                <el-table-column prop="chineseVocabulary" label="API接口翻译中文" header-align="center" align="center"></el-table-column>
+                <el-table-column prop="japaneseWord" label="对照翻译中文" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="createDate" label="添加时间" header-align="center" align="center">
                 </el-table-column>
                 <el-table-column label="操作" header-align="center" align="center" width="200">

@@ -11,7 +11,7 @@
              <el-input placeholder="20" v-model="dataForm.faceValue" style="width:220px;">
 					    <template slot="append">元</template>
 					  </el-input>
-					  <div>面值只能是数值，0.01-1000000，限2位小数</div>
+					  <div>面值只能是数值，1-1000000的整数</div>
         </el-form-item>
         <el-form-item label="领取开始时间："  prop="getStartTime">
                 <el-date-picker

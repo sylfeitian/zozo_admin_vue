@@ -73,6 +73,7 @@
                                     <span v-else-if="returnInfo.status==50">退款完成</span>
                                     <span v-else-if="returnInfo.status==60">退款失败</span>
                                     <span v-else-if="returnInfo.status==70">售后取消</span>
+                                    <span v-else-if="returnInfo.status==80">推送日本异常</span>
                                 </div>
                                 <!-- <span v-if="returnInfo.status==10">退款中</span>
                                 <span v-else-if="returnInfo.status==20">退款完成</span>
