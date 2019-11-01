@@ -58,11 +58,13 @@
             </el-form>
         </el-col> -->
 
-        <el-col :span="24" >
+        <el-col :span="24">
             <el-form
                     ref="dataForm"
                     class="grayLine topGapPadding"
                     :model="dataForm"
+                    v-loading="fullscreenLoading"
+                    element-loading-text="拼命加载中"
                     @keyup.enter.native="getDataList()"
             >
                 <div style="display:flex;padding:0">
@@ -257,6 +259,7 @@
                 shopFashionContentsVOList:[],
                 row:"",
                 timer: null, // 定时器
+                fullscreenLoading: true
             }
         },
         components: {
@@ -340,7 +343,7 @@
                 })
             },
             getHeight() {
-                for (let i = 0; i < this.dataForm.shopFashionContentsVOList.length; i++) {
+                for (let i = 0; i < this.shopFashionContentsVOList.length; i++) {
                     debugger
                     // 详情文字的高度
                     var fontHetght = $("."+'detail'+i).height()
@@ -350,6 +353,7 @@
                         $("." + 'inputHeight' + i).height(fontHetght)
                     }
                 }
+                this.fullscreenLoading = false
             }
         }
     }
