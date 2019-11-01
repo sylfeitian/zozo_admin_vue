@@ -5,8 +5,8 @@
 		    :close-on-click-modal="false"
 		    :visible.sync="visible"
 			width="35%"
-				:before-close="closeDialog">
-		    	<h3>是都确定订单重试?</h3>
+			:before-close="closeDialog">
+		    	<h3 style="text-align:center;">是否确定订单重试?</h3>
                 <!-- <p style="color:red">请确认已与用户沟通达成一致</p> -->
 			    <span slot="footer" class="dialog-footer"  >
 		     		    <el-button @click="dataFormCancel()">取消</el-button>
