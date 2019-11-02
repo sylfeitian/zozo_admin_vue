@@ -344,7 +344,6 @@
             },
             getHeight() {
                 for (let i = 0; i < this.shopFashionContentsVOList.length; i++) {
-                    debugger
                     // 详情文字的高度
                     var fontHetght = $("."+'detail'+i).height()
                     if (fontHetght < 147) {

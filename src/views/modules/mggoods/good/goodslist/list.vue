@@ -564,7 +564,7 @@ export default {
           }
         })
         if(arr.length!=0){
-          this.$message.warning("已上架的商品不能在上架");
+          this.$message.warning("已上架的商品不能再上架");
           return
         }
       
@@ -575,7 +575,7 @@ export default {
           }
         })
         if(arr.length!=0){
-          this.$message.warning("已下架的商品不能在下架");
+          this.$message.warning("已下架的商品不能再下架");
           return
         }
       }

@@ -190,7 +190,7 @@
                         </el-form-item>
                     </div>
                 </el-form>
-           <el-dialog :visible.sync="dialogVisible">
+           <el-dialog :visible.sync="dialogVisible" class="imgPreview">
                <img :style="{width:oImgWidth,height:oImgHeight}" :src="dialogImageUrl" alt="">
            </el-dialog>
                 <!-- 分割线------------------------------------------------ -->
@@ -332,7 +332,6 @@
                 this.oImgWidth = document.getElementById("oImg").naturalWidth;
                 this.oImgHeight = document.getElementById("oImg").naturalHeight;
                 this.dialogVisible = true;
-                debugger
                 if(url){
                     if(/http/.test(url)){
                         this.dialogImageUrl = url;
@@ -512,8 +511,11 @@
         padding-left:20px;
     }
 }
-/deep/ .el-dialog{
-     width: fit-content !important;
+// /deep/ .el-dialog{
+//      width: fit-content !important;
+// }
+.imgPreview{
+    width: fit-content !important;
 }
 /deep/ .el-form-item.el-form-item--default {
     display: flex;
