@@ -13,7 +13,7 @@
                     <el-radio v-model="dataForm.memberSex" :label="1">女</el-radio>
                     <el-radio v-model="dataForm.memberSex" :label="2">男</el-radio>
             </el-form-item>
-            <el-form-item label="生日："  prop="memberBirthday">
+            <el-form-item label="生日12："  prop="memberBirthday">
                   <el-date-picker
                         v-model="dataForm.memberBirthday"
                         type="date"
@@ -74,10 +74,13 @@ import { isMobile,isIdCard } from '@/utils/validate'
                 callback()
             }
             var validatorIdCard = (rule, value, callback) => {
+                if(!value){
+                    return  callback();
+                }
                  if (value != '' && !isIdCard(value)) {
                     callback(new Error('身份证号输入有误'))
                 } else {
-                     callback()
+                     return callback()
                 }
             }
             return {
@@ -129,13 +132,29 @@ import { isMobile,isIdCard } from '@/utils/validate'
         },
         watch:{
             'dataForm.idCard':function(newV,oldV) {
-               this.dataForm.idCardTemp =   this.dataForm.idCard.slice(0,12)+"******"
+                if(this.dataForm.idCard){
+                     this.dataForm.idCardTemp =   this.dataForm.idCard.slice(0,12)+"******"
+                }
             },
         },
         methods:{
             init(row){
                 this.row= row,
                 this.getData();
+            },
+            formatTimeLocal(datatime){   //获取当前时间
+                    var dateTime = datatime || new Date();
+                    var year = dateTime.getFullYear();
+                    var month = dateTime.getMonth()+1;//js从0开始取
+                    var date = dateTime.getDate();
+                   
+                    if(month<10){
+                        month = "0" + month;
+                    }
+                    if(date<10){
+                        date = "0" + date;
+                    }
+                    return year+"-"+month+"-"+date
             },
             // 回显数据
             getData(){
@@ -146,6 +165,9 @@ import { isMobile,isIdCard } from '@/utils/validate'
                     console.log(res);
                     if(res.code==200){
                         this.dataForm = res.data;
+                        if( res.data.memberBirthday){
+                          this.dataForm.memberBirthday = this.formatTimeLocal(new Date(res.data.memberBirthday));
+                        }
                         if(this.dataForm.idCard){
                             this.dataForm.idCardTemp =   this.dataForm.idCard.slice(0,12)+"******"
                         }
