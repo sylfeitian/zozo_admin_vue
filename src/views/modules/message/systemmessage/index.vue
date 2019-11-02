@@ -68,7 +68,8 @@
 				  <el-form-item label="推送方式：">
 					  <span>{{ShopmessagetemplateList.templateType == 0?"站内信":"APP推送"}}</span>
 				  </el-form-item>
-				  <el-form-item label="标签说明：" v-if="['1','2','5','8','9','10','11'].indexOf(ShopmessagetemplateList.id)==-1">
+				  <!-- v-if="['1','2','5','8','9','10','11'].indexOf(ShopmessagetemplateList.id)==-1" -->
+				  <!-- <el-form-item label="标签说明：" >
 					  <span>
 						   <el-tag
 								   :key="index"
@@ -79,11 +80,38 @@
 								{{tag}}
 							</el-tag>
 					  </span>
+				  </el-form-item> -->
+				<!-- 1—7项， -->
+				  <el-form-item label="标签说明：" v-if="['1','2','5','8','9','10','11'].indexOf(ShopmessagetemplateList.id)!=-1">
+					  <span>
+						   <el-tag
+								   :key="index"
+								   v-for="(tag,index) in labelList1"
+								   :disable-transitions="false"
+								   style="margin-right:5px;"
+								   @click="handleClose(tag)">
+								{{tag}}
+							</el-tag>
+					  </span>
 				  </el-form-item>
-				  <el-form-item label="消息标题：" style="height: 100%!important;" prop="messageTitle">
+				<!-- 8—12项， -->
+				  <el-form-item label="标签说明：" v-else >
+					  <span>
+						   <el-tag
+								   :key="index"
+								   v-for="(tag,index) in labelList2"
+								   :disable-transitions="false"
+								   style="margin-right:5px;"
+								   @click="handleClose(tag)">
+								{{tag}}
+							</el-tag>
+					  </span>
+				  </el-form-item>
+				  <el-form-item label="消息标题："  v-if="ShopmessagetemplateList.templateType==1 || (ShopmessagetemplateList.templateType==0 && ['1','2','5','8','9','10','11'].indexOf(ShopmessagetemplateList.id)==-1)" style="height: 100%!important;" prop="messageTitle">
 					  <el-input type="text" v-model="ShopmessagetemplateList.messageTitle" placeholder="请输入标题名称"></el-input>
 				  </el-form-item>
-				  <el-form-item label="消息内容：" v-if="['1','2','5','8','9','10','11'].indexOf(ShopmessagetemplateList.id)==-1" style="height: 100%!important;" prop="messageContent">
+				  <!--  v-if="['1','2','5','8','9','10','11'].indexOf(ShopmessagetemplateList.id)==-1" -->
+				  <el-form-item label="消息内容：" style="height: 100%!important;" prop="messageContent">
 					  <el-input  type="textarea" v-model="ShopmessagetemplateList.messageContent" :rows="5" placeholder="请输入内容"></el-input>
 				  </el-form-item>
 			  </el-form>
@@ -136,6 +164,29 @@ export default {
 				messageCode:"",
 				id:'',
 			},
+			// 0: "用户名：$Username$"
+			// 1: "订单号：$OrderId$"
+			// 2: "订单金额：$Total$"
+			// 3: "售后单号：$Aftersell-Number$"
+			// 4: "优惠券截止日期：$Coupon_due_date$"
+			// 5: "退货地址：$Address$"
+			// 6: "商品名称：$Goods_name$"
+			// 7: "品牌名称：$Brand_name$"
+			// 8: "店铺名称：$Store_name$"
+			labelList1:[
+				"用户名：$Username$",
+				"商品名称：$Shop_Name$",
+				"品牌名称：$Brand_name$",
+				"店铺名称：$Store_name$"
+			],
+			labelList2:[
+				"用户名：$Username$",
+				"订单号：$OrderId$",
+				"订单金额：$Total$",
+				"售后单号：$Aftersell$",
+				"优惠券截止日期：$Coupon_due_date$",
+				"退货地址：$Address$",
+			],
             dataForm: [],
 			changeSwitchVisible: false,
             selectVal:"",
