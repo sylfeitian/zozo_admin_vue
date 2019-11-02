@@ -403,9 +403,9 @@
     /deep/ .el-form-item__label {
         /*width: 135px!important;*/
     }
-    .item {
-        height: 26px!important;
-    }
+    // .item {
+    //     height: 26px!important;
+    // }
     .grayLine {
         border-bottom: 0!important;
     }
@@ -431,5 +431,8 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+    .el-form-item {
+        margin-bottom: 0!important;
     }
 </style>

@@ -69,9 +69,31 @@ import {logisticsInfo} from "@/api/api.js"
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .logisticsWarp{
     width: 90%;
     margin: auto;
+}
+/deep/ .el-step__title.is-finish {
+    color: #303133;
+    font-weight: normal;
+}
+/deep/ .el-step__head.is-finish {
+    color: #303133;
+    border-color: #303133;
+}
+/deep/ .el-step__description.is-finish {
+    color: #303133;
+}
+/deep/ .el-step__title.is-process {
+    color: #2260D2;
+    font-weight: normal;
+}
+/deep/ .el-step__head.is-process .el-step__icon.is-text {
+    color: #2260D2!important;
+    border-color: #2260D2!important;
+}
+/deep/ .el-step__description.is-process {
+    color: #2260D2;
 }
 </style>

@@ -214,6 +214,11 @@
                     }
                     if (!WH) {
                         that.$message.error('请上传80*80px的图片');
+                        if(who==1){
+                            that.selectionloading = false;
+                        }else if(who==2){
+                            that.uncheckedloading = false;
+                        }
                     }else{
                         getUrlBase64(obj,type,function (base) {
                             uploadPicBase64({"imgStr": base}).then(res =>{

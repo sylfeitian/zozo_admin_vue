@@ -190,7 +190,7 @@
             decl(){
                 this.dataForm = {};
                 this.dialogTableVisible = false;
-                this.addDataForm.receiverPeople = 0;
+                // this.addDataForm.receiverPeople = 0;
             },
             all(){
                 this.$refs.multipleTable.toggleAllSelection()
@@ -210,9 +210,39 @@
               
                 //  if(val == 1) {  // };
             },
-            showDialogTableFn(){
+            //  弹框
+            showDialogTableFn(val){
                 this.dialogTableVisible = true;
-                this.getDataList();
+                this.multipleSelection = [];
+                this.getDataList().then(res=>{
+                    this.$nextTick(()=>{
+                            // setTimeout(()=>{
+                                this.backScahCheckout();
+                            //     window.that = this;
+                            //     this.$refs.backScanref.click();
+                            // },3001)
+                    })
+                }) ;
+            
+
+            },
+            // 回显表格复选框
+            backScahCheckout(){
+                // var userLsit = this.userLsit;
+                // userLsit = [this.dataList[1],this.dataList[2]]
+                var userLsit = [];
+                 this.dataList.forEach((item)=>{
+                    this.userLsit.forEach((item2)=>{
+                        if(item.id==item2.id){
+                            userLsit.push(item)
+                        }
+                    })
+                })
+                userLsit.forEach(row => {
+                    this.$refs.multipleTable.toggleRowSelection(row,true);
+                });
+                console.log("2342432424324234");
+                console.log(this.multipleSelection);
             },
             artmessageContent(messageContent,i){
                 this.addDataForm.messageContent = messageContent;
