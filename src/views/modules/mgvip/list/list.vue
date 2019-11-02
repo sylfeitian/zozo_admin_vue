@@ -201,62 +201,61 @@
       //   }
       // },
       'dataForm.minConsumeAmount':function (newV,oldV) {
-            // newV=~~newV;
-            for(let i=0;i<newV.toString().length;i++){
-                // 只能输入数字和小数点
-                if(!/[0-9|\.]/g.test(newV[i])){
-                    this.dataForm.minConsumeAmount = newV.toString().replace(newV[i],"")
-                }
+        // newV=~~newV;
+        for(let i=0;i<newV.toString().length;i++){
+            // 只能输入数字和小数点
+            if(!/[0-9|\.]/g.test(newV[i])){
+                this.dataForm.minConsumeAmount = newV.toString().replace(newV[i],"")
             }
-            // 解决数字键盘可以输入输入多个小数点问题
-            if(newV==='' && oldV.toString().indexOf('.')>0){
+        }
+        // 解决数字键盘可以输入输入多个小数点问题
+        if(newV==='' && oldV.toString().indexOf('.')>0){
+            this.dataForm.minConsumeAmount = oldV;
+            return ;
+        }
+        // 保留两位小数
+        if(newV){
+            newV = newV.toString();
+            var pointIndex =  newV.indexOf('.');
+            if(pointIndex>0 && (newV.length - pointIndex)>3){
                 this.dataForm.minConsumeAmount = oldV;
                 return ;
             }
-            // 保留两位小数
-            if(newV){
-                newV = newV.toString();
-                var pointIndex =  newV.indexOf('.');
-                if(pointIndex>0 && (newV.length - pointIndex)>3){
-                    this.dataForm.minConsumeAmount = oldV;
-                    return ;
-                }
+        }
+        // 最大值99999
+        if(newV>99999){
+            this.dataForm.minConsumeAmount = oldV;
+            return ;
+        }
+      },
+      'dataForm.maxConsumeAmount':function (newV,oldV) {
+        // newV=~~newV;
+        for(let i=0;i<newV.toString().length;i++){
+            // 只能输入数字和小数点
+            if(!/[0-9|\.]/g.test(newV[i])){
+                this.dataForm.maxConsumeAmount = newV.toString().replace(newV[i],"")
             }
-            // 最大值
-            if(newV>99999){
-                this.dataForm.minConsumeAmount = oldV;
-                return ;
-            }
-        },
-      // 消费金额 可输入2小数点 最大99999
-        'dataForm.maxConsumeAmount':function (newV,oldV) {
-            // newV=~~newV;
-            for(let i=0;i<newV.toString().length;i++){
-                // 只能输入数字和小数点
-                if(!/[0-9|\.]/g.test(newV[i])){
-                    this.dataForm.maxConsumeAmount = newV.toString().replace(newV[i],"")
-                }
-            }
-            // 解决数字键盘可以输入输入多个小数点问题
-            if(newV==='' && oldV.toString().indexOf('.')>0){
+        }
+        // 解决数字键盘可以输入输入多个小数点问题
+        if(newV==='' && oldV.toString().indexOf('.')>0){
+            this.dataForm.maxConsumeAmount = oldV;
+            return ;
+        }
+        // 保留两位小数
+        if(newV){
+            newV = newV.toString();
+            var pointIndex =  newV.indexOf('.');
+            if(pointIndex>0 && (newV.length - pointIndex)>3){
                 this.dataForm.maxConsumeAmount = oldV;
                 return ;
             }
-            // 保留两位小数
-            if(newV){
-                newV = newV.toString();
-                var pointIndex =  newV.indexOf('.');
-                if(pointIndex>0 && (newV.length - pointIndex)>3){
-                    this.dataForm.maxConsumeAmount = oldV;
-                    return ;
-                }
-            }
-            // 最大值
-            if(newV>99999){
-                this.dataForm.maxConsumeAmount = oldV;
-                return ;
-            }
-        },
+        }
+        // 最大值99999
+        if(newV>99999){
+            this.dataForm.maxConsumeAmount = oldV;
+            return ;
+        }
+      },
       // 消费金额 可输入2小数点 最大99999
       // 'dataForm.maxConsumeAmount':function (newV,oldV) {
       //   if(newV.toString().indexOf('.') !==-1){
@@ -323,7 +322,7 @@
           this.$emit("controlShowPage",2,row)
       },
       editHandle(row){
-         row.activeName = "editVip"; 
+         row.activeName = "editVip";
          this.$emit("controlShowPage",2,row)
       },
       forbitHandle(row){
@@ -355,10 +354,10 @@
                     })
                   }
               })
-          
+
         }).catch(() => {});
       },
-     
+
   }
 };
 </script>

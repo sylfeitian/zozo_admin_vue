@@ -190,7 +190,7 @@
                                         </div>
                                         <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
                                             <div class="goodsPropsWrap">
-                                                <div class="goodsImg" style="margin-left:60%;">
+                                                <div class="goodsImg" style="margin-left:60%;display: table-caption;">
                                                     <img :src="v.imageUrl | filterImgUrl" style="width:200px;" alt=""/>
                                                 </div>
                                                 <div v-if="v.typeId=='4'"  v-html="v.text"></div>
