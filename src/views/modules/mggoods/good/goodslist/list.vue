@@ -163,10 +163,13 @@
       </el-table-column>
       <el-table-column prop="categoryId" label="分类" align="center">
         <template slot-scope="scope">
-          <div :title="scope.row.goodsTypeName ?scope.row.firstCategory+'--'+scope.row.goodsTypeName:scope.row.firstCategory">
+          <!-- <div :title="scope.row.goodsTypeName ?scope.row.firstCategory+'--'+scope.row.goodsTypeName:scope.row.firstCategory">
             {{scope.row.firstCategory}}
             <span v-if="scope.row.goodsTypeName">--</span>
             {{scope.row.goodsTypeName}}
+          </div> -->
+          <div>
+            {{scope.row.pathName}}
           </div>
         </template>
       </el-table-column>
@@ -560,16 +563,21 @@ export default {
             return item
           }
         })
-        this.$message.warning("已上架的商品不能在上架");
-        return
+        if(arr.length!=0){
+          this.$message.warning("已上架的商品不能再上架");
+          return
+        }
+      
       }else{// 下架 或者待上架
         arr  = this.multipleSelection.filter((item,index)=>{
           if(item.showWeb!=1){
             return item
           }
         })
-        this.$message.warning("已下架的商品不能在下架");
-        return
+        if(arr.length!=0){
+          this.$message.warning("已下架的商品不能再下架");
+          return
+        }
       }
       this.modelLowerBatchShelfVisible =  true;
         this.$nextTick(() => {

@@ -52,6 +52,12 @@
   </script>
   <% } %>
   <!-- 集成测试环境 -->
+  <% if (process.env.VUE_APP_NODE_ENV === 'prod:dev') { %>
+  <script>window.SITE_CONFIG['apiURL'] = 'http://219.147.99.166:5101/api';</script>
+  <!-- <script>window.SITE_CONFIG['imgURL'] = 'http://62.234.0.169:8888';</script> -->
+  <!-- <script>window.SITE_CONFIG['imgURL'] = 'http://47.103.97.147';</script> -->
+  <script>window.SITE_CONFIG['imgURL'] = 'http://cdn.zozo.cn/image';</script>
+  <% } %>
   <% if (process.env.VUE_APP_NODE_ENV === 'prod:sit') { %>
   <script>window.SITE_CONFIG['apiURL'] = 'http://47.103.97.147:19093';</script>
   <!-- <script>window.SITE_CONFIG['imgURL'] = 'http://62.234.0.169:8888';</script> -->

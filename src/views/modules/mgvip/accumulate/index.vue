@@ -7,7 +7,7 @@
             <label class="topItemLeft" for="">设置头像</label>
             <div class="topItemRight">
                 <span>积分奖励：</span>
-                <el-input-number v-model="dataForm.headerSettingPoints" :step="1" :min="0" :max="1000000"></el-input-number><span>&nbsp;分</span>
+                <el-input-number v-model="dataForm.headerSettingPoints" :step="1" :min="0" :max="1000000"  step-strictly></el-input-number><span>&nbsp;分</span>
             </div>
         </div>
 
@@ -15,7 +15,7 @@
             <label class="topItemLeft" for="">设置昵称</label>
             <div class="topItemRight">
                 <span>积分奖励：</span>
-                <el-input-number v-model="dataForm.nicknameSettingPoints" :step="1" :min="0" :max="1000000"></el-input-number><span>&nbsp;分</span>
+                <el-input-number v-model="dataForm.nicknameSettingPoints" :step="1" :min="0" :max="1000000"  step-strictly></el-input-number><span>&nbsp;分</span>
             </div>
         </div>
 
@@ -23,7 +23,7 @@
             <label class="topItemLeft" for="">实名认证</label>
             <div class="topItemRight">
                 <span>积分奖励：</span>
-                <el-input-number v-model="dataForm.realNameAuthPoints" :step="1" :min="0" :max="1000000"></el-input-number><span>&nbsp;分</span>
+                <el-input-number v-model="dataForm.realNameAuthPoints" :step="1" :min="0" :max="1000000"  step-strictly></el-input-number><span>&nbsp;分</span>
             </div>
         </div>
 
@@ -31,7 +31,7 @@
             <label class="topItemLeft" for="">设置性别</label>
             <div class="topItemRight">
                 <span>积分奖励：</span>
-                <el-input-number v-model="dataForm.genderSettingPoints" :step="1" :min="0" :max="1000000"></el-input-number><span>&nbsp;分</span>
+                <el-input-number v-model="dataForm.genderSettingPoints" :step="1" :min="0" :max="1000000"  step-strictly></el-input-number><span>&nbsp;分</span>
             </div>
         </div>
         
@@ -39,7 +39,7 @@
             <label class="topItemLeft" for="">设置生日</label>
             <div class="topItemRight">
                 <span>积分奖励：</span>
-                <el-input-number v-model="dataForm.birthdaySettingPoints" :step="1" :min="0" :max="1000000"></el-input-number><span>&nbsp;分</span>
+                <el-input-number v-model="dataForm.birthdaySettingPoints" :step="1"  :min="0" :max="1000000"  step-strictly></el-input-number><span>&nbsp;分</span>
             </div>
         </div>
 
@@ -47,7 +47,7 @@
             <label class="topItemLeft" for="">设置身高</label>
             <div class="topItemRight">
                 <span>积分奖励：</span>
-                <el-input-number v-model="dataForm.heightSettingPoints" :step="1" :min="0" :max="1000000"></el-input-number><span>&nbsp;分</span>
+                <el-input-number v-model="dataForm.heightSettingPoints" :step="1" :min="0" :max="1000000"  step-strictly></el-input-number><span>&nbsp;分</span>
             </div>
         </div>
 
@@ -55,7 +55,7 @@
             <label class="topItemLeft" for="">设置体重</label>
             <div class="topItemRight">
                 <span>积分奖励：</span>
-                <el-input-number v-model="dataForm.weightSettingPoints" :step="1" :min="0" :max="1000000"></el-input-number><span>&nbsp;分</span>
+                <el-input-number v-model="dataForm.weightSettingPoints" :step="1" :min="0" :max="1000000"  step-strictly></el-input-number><span>&nbsp;分</span>
             </div>
         </div>
 
@@ -64,11 +64,11 @@
             <div class="topItemRight" style="flex-direction: column;align-items: flex-start;height:100px;">
                 <div>
                   <span>积分奖励：</span>
-                  <el-input-number v-model="dataForm.shareSettingPoints" :step="1" :min="0" :max="1000000"></el-input-number><span>&nbsp;分</span>
+                  <el-input-number v-model="dataForm.shareSettingPoints" :step="1" :min="0" :max="1000000"  step-strictly></el-input-number><span>&nbsp;分</span>
                 </div>
                 <div>
                   <span>最高次数：</span>
-                  <el-input-number v-model="dataForm.limitShareTimes" :step="1" :min="0" :max="1000000"></el-input-number><span>&nbsp;次</span>
+                  <el-input-number v-model="dataForm.limitShareTimes" :step="1" :min="0" :max="1000000" step-strictly></el-input-number><span>&nbsp;次</span>
                 </div>
             </div>
         </div>
@@ -79,7 +79,7 @@
         <div class="midItem">
             <label class="midItemLeft" for="">购物消费：</label>
             <div class="midItemRight">
-                <el-input-number v-model="dataForm.consumptionSettingPoints" :step="1" :min="0">
+                <el-input-number v-model="dataForm.consumptionSettingPoints" :step="1" :min="0"  step-strictly>
                    <template slot="append">元</template>
                 </el-input-number>
                 <span>元&nbsp;&nbsp;奖励1分（以实际订单金额为准）</span>
@@ -88,7 +88,7 @@
           <div class="midItem">
             <label class="midItemLeft" for="">订单实际支付金额低于：</label>
             <div class="midItemRight">
-                <el-input-number v-model="dataForm.minOrderMount" :step="1" :min="0">
+                <el-input-number v-model="dataForm.minOrderMount" :step="1" :min="0"  step-strictly>
                    <template slot="append">元</template>
                 </el-input-number>
                 <span>元&nbsp;&nbsp;不送积分</span>
@@ -97,7 +97,7 @@
           <div class="midItem">
             <label class="midItemLeft" for="">单笔订单最高可获得：</label>
             <div class="midItemRight">
-                <el-input-number v-model="dataForm.maxOrderPoints" :step="1" :min="0">
+                <el-input-number v-model="dataForm.maxOrderPoints" :step="1" :min="0"  step-strictly>
                    <template slot="append">分</template>
                 </el-input-number>
                 <span>分&nbsp;&nbsp;积分</span>

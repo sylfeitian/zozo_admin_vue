@@ -53,7 +53,6 @@
                 :model="activiDataForm"
                 :rules="dataRule"
                 ref="activiDataForm"
-                @keyup.enter.native="subActivity()"
                 label-width="120px"
             >
                 <el-form-item label="秒杀时段名称：" prop="sgName">
@@ -267,7 +266,6 @@ export default {
     },
     //提交新增编辑活动
     subActivity(formName) {
-      this.buttonStatus = true;
       this.$refs[formName].validate(valid => {
         if (valid) {
           console.log(this.activiDataForm.restrict, "----");
@@ -287,6 +285,7 @@ export default {
             title: this.activiDataForm.sgName
           };
           if (this.isAdd) {
+            this.buttonStatus = true;
             newSeckillTime(obj).then(res => {
               this.buttonStatus = false;
               this.$refs["activiDataForm"].resetFields();
@@ -307,7 +306,9 @@ export default {
             });
           } else {
             obj.id = this.editId;
+            this.buttonStatus = true;
             periodEdit(obj).then(res => {
+              this.buttonStatus = false;
               if (res.code == 200) {
                 this.$message({
                   type: "success",
