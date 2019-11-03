@@ -13,7 +13,7 @@
                     <el-radio v-model="dataForm.memberSex" :label="1">女</el-radio>
                     <el-radio v-model="dataForm.memberSex" :label="2">男</el-radio>
             </el-form-item>
-            <el-form-item label="生日12："  prop="memberBirthday">
+            <el-form-item label="生日："  prop="memberBirthday">
                   <el-date-picker
                         v-model="dataForm.memberBirthday"
                         type="date"
@@ -170,6 +170,9 @@ import { isMobile,isIdCard } from '@/utils/validate'
                         }
                         if(this.dataForm.idCard){
                             this.dataForm.idCardTemp =   this.dataForm.idCard.slice(0,12)+"******"
+                        }
+                        if(!this.dataForm.memberSex){
+                            this.dataForm.memberSex = 0 //性别保密
                         }
                         if(this.dataForm.memberState == 0) this.dataForm.memberState = true;
                         else if(this.dataForm.memberState == 1) this.dataForm.memberState = false;

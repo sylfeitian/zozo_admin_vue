@@ -153,7 +153,7 @@
                 dataList: {
                     activityQuantity: "",
                     personLimit: "",
-                    goodsSpecList: ""
+                    goodsSpecList: []
                 },
                 isLimit: "", //当前选中行的日本限制数量
                 dataForm:{
@@ -336,7 +336,7 @@
                             var obj = {
                                 "activityGoodsList": activityGoodsList,//活动商品新增集合 ,
                                 "activityId": this.row.id,//活动id ,
-                                "isAllCheck": this.multipleSelection.length == this.dataList.length ? 1 : 0,// 商品下的规格是否全部选中（ 默认0未全部选中，1全部选中）
+                                "isAllCheck": this.multipleSelection.length == this.dataList.goodsSpecList.length ? 1 : 0,// 商品下的规格是否全部选中（ 默认0未全部选中，1全部选中）
                             }
 
                             editLimitActivityGoods(obj).then((res) => {
