@@ -193,7 +193,7 @@
                                                 <div class="goodsImg">
                                                     <img :src="v.imageUrl | filterImgUrl" style="width:200px;" alt=""/>
                                                 </div>
-                                                <div v-if="v.typeId=='4'" style="height:200px;">{{v.text}}</div>
+                                                <div v-if="v.typeId=='4'" :class="['imgbottomWrodJp'+i]">{{v.text}}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -215,7 +215,7 @@
                                                 <div class="goodsImg">
                                                     <img :src="v.imageUrl | filterImgUrl" style="width:200px;" alt=""/>
                                                 </div>
-                                                <div v-if="v.typeId=='4'"  style="height:200px;">{{v.textCn}}</div>
+                                                <div v-if="v.typeId=='4'"   :class="['imgbottomWrodCn'+i]">{{v.textCn}}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -346,10 +346,14 @@
                 for (let i = 0; i < this.shopFashionContentsVOList.length; i++) {
                     // 详情文字的高度
                     var fontHetght = $("."+'detail'+i).height()
+                    var fontHetght2 = $("."+'imgbottomWrodJp'+i).height()
                     if (fontHetght < 147) {
                         $("." + 'detail' + i).height(147)
+                          $("." + 'imgbottomWrodJp' + i).height(147)
+                        
                     } else {
                         $("." + 'inputHeight' + i).height(fontHetght)
+                        $("." + 'imgbottomWrodCn' + i).height(fontHetght2)
                     }
                 }
                 this.fullscreenLoading = false
