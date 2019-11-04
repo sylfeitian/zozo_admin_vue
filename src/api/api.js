@@ -729,7 +729,8 @@ export const backScanCategorys = params => { return http.get(`${base}/zozogoods/
 export const searchBrandName = params => { return http.get(`${base}/zozogoods/brandname`, params).then(res => res.data); };
 // 查询店铺列表
 export const searchStoreName = params => { return http.get(`${base}/zozogoods/storename`, params).then(res => res.data); };
-
+// 商品上下架前判断图片是否下载
+export const showIsDown = params => { return http.get(`${base}/zozogoods/show/isDown`, params).then(res => res.data); };
 
 
 

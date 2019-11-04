@@ -98,12 +98,16 @@
                 callback()
             }
             var validatorRule2 = (rule, value, callback) => {
-                if (parseFloat(this.activiDataForm.reducePrice) > parseFloat(this.activiDataForm.limitPrice)) {
-                 return callback(new Error("立减价格不能大于满减金额"))
-                }
-                if (!value) {
-                    callback(new Error("立减价格不能为空"));
-                } else if (Number(value) == 0) {
+                // if (parseFloat(this.activiDataForm.reducePrice) > parseFloat(this.activiDataForm.limitPrice)) {
+                //     return callback(new Error("立减价格不能大于满减金额"))
+                // } else if (!value) {
+                //     return  callback(new Error("立减价格不能为空"))
+                // } else if (Number(value) == 0) {
+                //     return callback(new Error("立减价格不能为0"))
+                // } else {
+                //     callback();
+                // }
+                if (Number(value) == 0) {
                     callback(new Error("立减价格不能为0"));
                 } else {
                     callback();
@@ -138,7 +142,7 @@
                     // ],
                     // reducePrice: [
                     //     { required: true, message: '立减多少元不能为空', trigger: 'blur' },
-                        
+                    //     { validator: validatorRule2, trigger: ["blur", "change"] }
                     // ],
                     rule1: [
                         { required: true, message: '订单满多少元不能为空', trigger: 'blur' },
@@ -146,7 +150,8 @@
                     ],
                      rule2: [
                         { required: true, message: '立减多少元不能为空', trigger: 'blur' },
-                        { validator: validatorRule2, trigger: ["blur", "change"] }
+                        { validator: validatorPrice, trigger: 'blur'},
+                        // { validator: validatorRule2, trigger: 'blur' }
                     ],
                 },
                 activiDataForm:{
@@ -251,12 +256,14 @@
                 }
                 this.activiDataForm.reducePrice =this.activiDataForm.rule2
                 console.log('====',this.ruleName)
+                console.log('12312313',this.activiDataForm.rule2)
             },
             // 提交
             dataFormSubmit(formName){
                 // alert([this.dataForm.name,this.dataForm.domainAddress]);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        alert(1)
                         // this.loading = true;
                         var obj = {
                             "endTime": this.activiDataForm.endTime,//活动结束时间 ,
