@@ -151,7 +151,7 @@
                      rule2: [
                         { required: true, message: '立减多少元不能为空', trigger: 'blur' },
                         { validator: validatorPrice, trigger: 'blur'},
-                        // { validator: validatorRule2, trigger: 'blur' }
+                        { validator: validatorRule2, trigger: 'blur' }
                     ],
                 },
                 activiDataForm:{
@@ -263,7 +263,6 @@
                 // alert([this.dataForm.name,this.dataForm.domainAddress]);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        alert(1)
                         // this.loading = true;
                         var obj = {
                             "endTime": this.activiDataForm.endTime,//活动结束时间 ,
