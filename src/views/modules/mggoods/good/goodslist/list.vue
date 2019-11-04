@@ -572,7 +572,7 @@ export default {
           this.$message.warning("已上架的商品不能再上架");
           return
         }
-        this.isDown();
+        this.isDown(type);
         // else {
         //   this.modelIsDownVisible =  true;
         //     this.$nextTick(() => {

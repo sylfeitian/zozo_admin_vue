@@ -183,10 +183,11 @@
                 this.closeDialog();
             },
             closeDialog() {
-                this.$parent.modelLowerShelfVisible = false;
+                this.innerVisible = false;
             },
             // 触发里面弹框
             change() {
+                this.visible = false;
                 this.innerVisible = true;
             }
         }
