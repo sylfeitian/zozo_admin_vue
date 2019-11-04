@@ -267,6 +267,7 @@
     </div>
     <modelLowerShelf v-if="modelLowerShelfVisible" ref="modelLowerShelfCompon" @searchDataList="getDataList"></modelLowerShelf>
     <modelLowerBatchShelf v-if="modelLowerBatchShelfVisible" ref="modelLowerBatchShelfCompon" @searchDataList="getDataList"></modelLowerBatchShelf>
+    <modelIsDown v-if="modelIsDownVisible" ref="modelIsDownCompon" @searchDataList="getDataList"></modelIsDown>
     
   </div>
 </template>
@@ -278,6 +279,7 @@ import detail from "./detail";
 import { goodsUrl } from "@/api/url";
 import modelLowerShelf from "./model-lower-shelf.vue";
 import modelLowerBatchShelf from "./model-lower-batch-shelf.vue";
+import modelIsDown from "./model-isdown.vue";
 import {
   showBatchGoods,
   showGoods,
@@ -350,13 +352,15 @@ export default {
       selectBrandOption: [],
       modelLowerShelfVisible : false,
       modelLowerBatchShelfVisible:false,
+      modelIsDownVisible: false
     };
   },
   components: {
     Bread,
     detail,
     modelLowerShelf,
-    modelLowerBatchShelf
+    modelLowerBatchShelf,
+    modelIsDown
   },
   watch: {
     // ID类搜索框仅可输入数字、英文，最多可输入30个字符
@@ -566,6 +570,11 @@ export default {
         if(arr.length!=0){
           this.$message.warning("已上架的商品不能再上架");
           return
+        } else {
+          this.modelIsDownVisible =  true;
+            this.$nextTick(() => {
+                this.$refs.modelIsDownCompon.init(this.multipleSelection,type)
+            })
         }
       
       }else{// 下架 或者待上架
@@ -577,12 +586,11 @@ export default {
         if(arr.length!=0){
           this.$message.warning("已下架的商品不能再下架");
           return
+        } else {
+
         }
       }
-      this.modelLowerBatchShelfVisible =  true;
-        this.$nextTick(() => {
-            this.$refs.modelLowerBatchShelfCompon.init(this.multipleSelection,type)
-        })
+      
     },
     // 控制上下架
     cotrolGoodsShow(type, rowOrstatus) {

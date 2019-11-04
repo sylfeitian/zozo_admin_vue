@@ -170,7 +170,7 @@
 <!--                            </el-form-item>-->
 <!--                        </template>-->
                     </el-table-column>
-                    <el-table-column label="每人限购" width="130" align="center">
+                    <el-table-column label="每人限购" width="200" align="center">
                         <template slot-scope="scope">
                             <el-form-item
                                 class="specError"

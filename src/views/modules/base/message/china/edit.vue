@@ -155,6 +155,7 @@
 					<div  v-else class="artuploadimg">上传图片</div>
     			</div>
 			</el-checkbox-group>
+			<div style="color:#999;">建议尺寸：84*84px</div>
     		
     	</el-form-item>
 	</el-form>
