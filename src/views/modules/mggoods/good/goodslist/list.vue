@@ -285,7 +285,8 @@ import {
   showGoods,
   searchStoreName,
   searchBrandName,
-  backScanCategorys
+  backScanCategorys,
+  showIsDown
 } from "@/api/api";
 import cloneDeep from "lodash/cloneDeep";
 export default {
@@ -570,12 +571,15 @@ export default {
         if(arr.length!=0){
           this.$message.warning("已上架的商品不能再上架");
           return
-        } else {
-          this.modelIsDownVisible =  true;
-            this.$nextTick(() => {
-                this.$refs.modelIsDownCompon.init(this.multipleSelection,type)
-            })
         }
+        this.isDown();
+        // else {
+        //   this.modelIsDownVisible =  true;
+        //     this.$nextTick(() => {
+        //         this.$refs.modelIsDownCompon.init(this.multipleSelection,type)
+        //     })
+        // }
+
       
       }else{// 下架 或者待上架
         arr  = this.multipleSelection.filter((item,index)=>{
@@ -587,10 +591,35 @@ export default {
           this.$message.warning("已下架的商品不能再下架");
           return
         } else {
-
+            this.  modelLowerBatchShelfVisible=  true;
+            this.$nextTick(() => {
+                this.$refs.modelLowerBatchShelfCompon.init(this.multipleSelection,type)
+            })
         }
       }
       
+    },
+    // 判断是否需要出现确认图片弹框
+    isDown (type) {
+      var ids = [];
+      ids = this.getIds();
+      var obj  = {
+        ids: ids,
+      }
+      showIsDown(obj).then((res)=>{
+          if(res.code == 200){
+            this.  modelLowerBatchShelfVisible=  true;
+            this.$nextTick(() => {
+                this.$refs.modelLowerBatchShelfCompon.init(this.multipleSelection,type)
+            })
+
+          }else if (res.code == 201){
+            this.modelIsDownVisible =  true;
+            this.$nextTick(() => {
+                this.$refs.modelIsDownCompon.init(this.multipleSelection,type)
+            })
+          }
+      })
     },
     // 控制上下架
     cotrolGoodsShow(type, rowOrstatus) {
