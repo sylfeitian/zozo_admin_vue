@@ -268,5 +268,8 @@
             }
         }
     }
+    .detailGoodsPages /deep/.el-input {
+        width: 180px;
+    }
 
 </style>
