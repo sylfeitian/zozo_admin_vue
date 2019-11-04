@@ -183,17 +183,17 @@
                         <el-form-item label="详情：" style="height: 100%!important;">
                             <template slot-scope="scope">
                                 <div style="display:flex;padding:0" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
-                                    <div v-if="v.text=='' || shopFashionContentsVOList[i].text || v.imageUrl"  v-show="row.fashionFlag == 0" style="padding: 0;">
+                                    <div v-if="v.text=='' || shopFashionContentsVOList[i].text || v.imageUrl"  v-show="row.fashionFlag == 0" style="padding: 0;;width: 100%;">
                                         <!-- <div style="height: 20px;"></div> -->
                                         <div :class="['contentChild','detail'+i]" style="min-height:33px;padding-right: 6px;padding: 0;text-align:left;" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
                                             {{shopFashionContentsVOList[i].text}}
                                         </div>
                                         <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
                                             <div class="goodsPropsWrap" style="text-align: center;">
-                                                <div class="goodsImg" style="margin-left:100%;">
+                                                <div class="goodsImg">
                                                     <img :src="v.imageUrl | filterImgUrl" style="width:200px;" alt=""/>
                                                 </div>
-                                                <div v-if="v.typeId=='4'">{{v.text}}</div>
+                                                <div v-if="v.typeId=='4'" :class="['imgbottomWrodJp'+i]">{{v.text}}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -204,7 +204,7 @@
                     <div style="width:50%;padding:0" :class="row.fashionFlag==0?'borderLeftLine':''">
                         <el-form-item label="详情：" style="height: 100%!important;">
                             <template slot-scope="scope">
-                                <div style="padding:0" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
+                                <div style="padding:0;" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
                                     <div  v-if="v.text=='' || v.text || v.imageUrl" style="padding: 0;width:80%;margin-left:100px;">
                                         <!-- <div style="height: 20px;"></div> -->
                                         <div :class="['contentChild','inputHeight'+i]" style="min-height:33px;"  v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
@@ -215,7 +215,7 @@
                                                 <div class="goodsImg">
                                                     <img :src="v.imageUrl | filterImgUrl" style="width:200px;" alt=""/>
                                                 </div>
-                                                <div v-if="v.typeId=='4'">{{v.textCn}}</div>
+                                                <div v-if="v.typeId=='4'"   :class="['imgbottomWrodCn'+i]">{{v.textCn}}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -344,13 +344,16 @@
             },
             getHeight() {
                 for (let i = 0; i < this.shopFashionContentsVOList.length; i++) {
-                    debugger
                     // 详情文字的高度
                     var fontHetght = $("."+'detail'+i).height()
+                    var fontHetght2 = $("."+'imgbottomWrodJp'+i).height()
                     if (fontHetght < 147) {
                         $("." + 'detail' + i).height(147)
+                          $("." + 'imgbottomWrodJp' + i).height(147)
+                        
                     } else {
                         $("." + 'inputHeight' + i).height(fontHetght)
+                        $("." + 'imgbottomWrodCn' + i).height(fontHetght2)
                     }
                 }
                 this.fullscreenLoading = false

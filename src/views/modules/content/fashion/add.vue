@@ -46,10 +46,14 @@
                             <!-- <quill-editor-img class="inforRight" :value="v.text" :index="i" ref="quillEditorCompon" style="display: inline-block;"  @artmessageContent='artmessageContent' ></quill-editor-img> -->
                             <el-input type="textarea" :rows="5" class="inforRight" v-model="v.text" :index="i" style="display: inline-block;width:90%;"  @artmessageContent='artmessageContent' ></el-input>
                             <span style="margin-left: 10px;color:#2260d2;cursor:pointer;" @click="delContent(i)">删除</span>
+                            <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="upContent(i)">上移</span>
+                            <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="downContent(i)">下移</span>
                         </div>
                         <div class="contentChild" v-if="content[i]&&v.typeId=='3'" v-loading="picloading">
                             <img style="width:600px;" :src="v.imageUrl | filterImgUrl" alt="" >
                             <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="delContent(i)">删除</span>
+                            <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="upContent(i)">上移</span>
+                             <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="downContent(i)">下移</span>
                         </div>
                         <div class="contentChild" v-if="content[i]&&v.typeId=='4'">
                             <div style="display: inline-block;">
@@ -57,7 +61,11 @@
                                 <div>{{v.text}}</div>
                             </div>
                             <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="delContent(i)">删除</span>
+                            <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="upContent(i)">上移</span>
+                            <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="downContent(i)">下移</span>
                         </div>
+                     
+                        
                     </div>
                 </template>
             </el-form-item>
@@ -145,6 +153,8 @@
     import quillEditorImg from "@/components/quillEditor";
     import { getGoodscspage } from '@/api/url';
     import mixinViewModule from '@/mixins/view-module'
+    import cloneDeep from 'lodash/cloneDeep'
+
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -351,14 +361,37 @@
                 }).catch(() => {});
 
             },
+            // 上移
+            upContent(i){
+                if(i==0){
+                    return
+                }
+                var content =  cloneDeep(this.content)
+                 var temp = this.content[i];
+                this.content[i] = content[i-1];
+                 this.content[i-1] = content[i];
+                 this.content = [].concat(this.content);
+            },
+             //下移
+            downContent(i){
+                if(i==this.content.length-1){
+                    return
+                }
+               var content =  cloneDeep(this.content)
+                var temp = this.content[i];
+                this.content[i] = content[i+1];
+                 this.content[i+1] = content[i];
+                 this.content = [].concat(this.content);
+            },
             imgUpload(e){
                 let that = this;
-                this.picloading = true;
+                
                 for (let i = 0; i < e.target.files.length; i++) {
                     var reader = new FileReader();
                     reader.readAsDataURL(e.target.files[i])
                     reader.onload = function(){
                         const params = { "imgStr": reader.result };
+                        this.picloading = true;
                         uploadPicBase64(params).then(res =>{
                             that.picloading = false;
                             if(res && res.code == "200"){

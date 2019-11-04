@@ -30,7 +30,7 @@
 			<el-form-item label="评价类型：" prop="appraisal" v-if="erjishow">
 				<el-input v-model.trim="dataForm.appraisal" type="text" placeholder="请输入6字以内的内容" style="width:400px;"></el-input>
 			</el-form-item>
-			<el-form-item v-if="yijishow" prop="categoryJpId" v-for="(item, index) in dataForm.categoryJpId" :key="index" :label="index == 0 ? '关联日本分类：' : '' ">
+			<!-- <el-form-item v-if="yijishow" prop="categoryJpId" v-for="(item, index) in dataForm.categoryJpId" :key="index" :label="index == 0 ? '关联日本分类：' : '' ">
 				<el-select
 				v-model="dataForm.categoryJpId[index]"
 				placeholder="请选择"
@@ -45,7 +45,20 @@
 				</el-select>
 				<el-button v-if="index+1 == dataForm.categoryJpId.length" @click="actadd" type="primary" style="margin-left: 20px;">添加</el-button>
 				<el-button v-if="index!=0" @click="removecategoryJpItemFn(index)" type="primary" style="margin-left: 20px;">删除</el-button>
+			</el-form-item> -->
+
+			<el-form-item  v-if="yijishow" label="关联日本分类：">
+				<el-tree
+						ref="treeCategory"
+						:data="goodKindList2"
+						show-checkbox
+						node-key="id"
+						:default-expanded-keys="expandedKeys"
+						:default-checked-keys="checkedKeys"
+						:props="defaultProps">
+					</el-tree>
 			</el-form-item>
+
 			
 			<el-form-item label="测量方法：" prop="methodUrl" v-if="yijishow">
 				<div class="pcCoverUrl imgUrl"   style="width: 100px;" v-for="(item,index) in dataForm.methodUrlshow" @click="imgtype = 'rule'">
@@ -227,6 +240,14 @@
 		      	genderMrs:'', //分类女士图片 
 		      	genderKid:'', //分类儿童图片 
 			},
+			defaultProps: {
+				// children: 'list',
+				// label: 'name',
+				children: 'children',
+				label: 'label'
+			},
+			expandedKeys:[],
+			checkedKeys:[],
 			methodUrlLoading:[false,false,false,false,false,false,false,false,false,false],
 			genderMainLoading:false,
 			genderMrLoading:false,
@@ -336,18 +357,39 @@
 					id:id
 				}
 			}
-			return searchCategoryJp(obj).then((res)=>{
-	  			if(res.code == 200){
-	  				console.log(res.data);
-	  				res.data.forEach((item)=>{
-	  					this.goodKindList2.push(item);
-	  				})
-	  			}else{
-	  				this.$message(res.msg);
-	  			}
-	  		}).catch(()=>{
-	  			this.$message("服务器错误");
-	  		})
+			return new Promise((resolve)=>{
+				searchCategoryJp(obj).then((res)=>{
+					if(res.code == 200){
+						console.log(res.data);
+						res.data.forEach((item)=>{
+							if(!item.name){
+									item.name = item.nameJp;
+								}
+								item.children = item.list;
+								item.label = item.name;
+
+								if(item && item.list){
+									item.list.forEach((item2)=>{
+										if(!item2.name){
+											item2.name = item2.nameJp;
+										}
+										item2.children = "";
+										item2.label = item2.name;
+									})
+								}
+								this.goodKindList2.push(item);
+						})
+						resolve("ok")
+					}else{
+						this.$message(res.msg);
+						resolve("error")
+					}
+	  			}).catch(()=>{
+					this.$message("服务器错误");
+					resolve("error")
+				})
+			})
+			  
 		},
 		//  判断是否是一级，啦显示不同的选项
 		actselectchange(){
@@ -414,17 +456,31 @@
 			console.log(this.dataForm);
 			this.$refs[formName].validate((valid) => {
 				if (valid) {
+					var ids = []
+					if(this.yijishow){
+						ids = this.$refs.treeCategory.getCheckedKeys(true);
+						console.log(ids);
+						if(ids.length==0){
+							this.$message({
+								message: '请选择关联分类',
+								type: 'warning',
+								duration: 1500
+							})
+							return false;
+						}
+					}
+
 					this.saveLoading = true;
 					var obj = {};
 					Object.assign(obj,this.dataForm);
 					if(obj.parentId=="0") {
 						obj.categoryJpId = [];
 					}else{
-						var categoryJpId = [] ;
-						this.dataForm.categoryJpId.forEach((item,index)=>{
-							if(item) categoryJpId.push(item)
-						})
-						obj.categoryJpId = categoryJpId
+						// var categoryJpId = [] ;
+						// this.dataForm.categoryJpId.forEach((item,index)=>{
+						// 	if(item) categoryJpId.push(item)
+						// })
+						obj.categoryJpId = ids
 					}
 					updataCategoryCn(obj).then((res)=>{
 						this.saveLoading = false;
