@@ -19,7 +19,7 @@
                 <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
                 <el-table-column prop="goodsIdJp" label="商品id" width="180" align="center"></el-table-column>
                 <el-table-column prop="sort" label="排序" align="center">
-                    <template slot-scope="scope">
+                    <!-- <template slot-scope="scope">
                         <el-form-item prop="sort">
                             <el-input
                                 v-model="scope.row.sort"
@@ -28,6 +28,9 @@
                                 type="number"
                             ></el-input>
                         </el-form-item>
+                    </template> -->
+                    <template slot-scope="scope">
+                      <el-input-number v-model="scope.row.sort" :step="1" :min="0" :max="10000000" ></el-input-number>
                     </template>
                 </el-table-column>
                 <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
@@ -133,32 +136,52 @@ export default {
   },
   methods: {
     //保存排序
-    saveSortList(sortList) {
-      console.log(sortList, "00", sortList.length);
-      if (sortList.length == 0) {
-        this.$message({
-          type: "warning",
-          message: "请先修改要保存的排序"
-        });
-        return false;
-      }
-      const activityGoodsUpdateSortDTOList = sortList;
-      seckillSortSave(activityGoodsUpdateSortDTOList).then(res => {
-        if (res.code == 200) {
-          this.$message({
-            type: "success",
-            message: res.msg
-          });
-          this.getDataList();
-        } else {
-          this.$message({
-            type: "error",
-            message: res.msg
-          });
-          this.getDataList();
+    saveSortList(){
+      let dataArr = [];
+      let that = this;
+      this.sortDataList.list.forEach((item,index)=>{
+        dataArr.push({
+          id:item.goodsId,//活动商品id ,
+          sort:item.sort,// 排序
+        })
+      })
+      var obj = dataArr
+      seckillSortSave(obj).then((res)=>{
+        if(res.code==200){
+          this.$message.success(res.msg);
+          that.getDataList();
+        }else{
+          this.$message.error(res.msg);
         }
-      });
+      })
     },
+    //保存排序
+    // saveSortList(sortList) {
+    //   console.log(sortList, "00", sortList.length);
+    //   if (sortList.length == 0) {
+    //     this.$message({
+    //       type: "warning",
+    //       message: "请先修改要保存的排序"
+    //     });
+    //     return false;
+    //   }
+    //   const activityGoodsUpdateSortDTOList = sortList;
+    //   seckillSortSave(activityGoodsUpdateSortDTOList).then(res => {
+    //     if (res.code == 200) {
+    //       this.$message({
+    //         type: "success",
+    //         message: res.msg
+    //       });
+    //       this.getDataList();
+    //     } else {
+    //       this.$message({
+    //         type: "error",
+    //         message: res.msg
+    //       });
+    //       this.getDataList();
+    //     }
+    //   });
+    // },
     //批量选中数据
     dataListSelectionChangeHandle(val) {
       this.selDataList = val;

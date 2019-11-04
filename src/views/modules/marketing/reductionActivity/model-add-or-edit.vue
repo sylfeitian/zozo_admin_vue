@@ -97,6 +97,18 @@
                 }
                 callback()
             }
+            var validatorRule2 = (rule, value, callback) => {
+                if (parseFloat(this.activiDataForm.reducePrice) > parseFloat(this.activiDataForm.limitPrice)) {
+                 return callback(new Error("立减价格不能大于满减金额"))
+                }
+                if (!value) {
+                    callback(new Error("立减价格不能为空"));
+                } else if (Number(value) == 0) {
+                    callback(new Error("立减价格不能为0"));
+                } else {
+                    callback();
+                }
+            };
             return {
                 visible : false,
                 loading : false,
@@ -134,7 +146,7 @@
                     ],
                      rule2: [
                         { required: true, message: '立减多少元不能为空', trigger: 'blur' },
-                        { validator: validatorPrice, trigger: 'blur'}
+                        { validator: validatorRule2, trigger: ["blur", "change"] }
                     ],
                 },
                 activiDataForm:{
