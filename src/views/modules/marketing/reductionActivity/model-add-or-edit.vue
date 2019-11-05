@@ -234,9 +234,9 @@
             backScan(){
               Object.assign(this.activiDataForm, this.row);
               if(this.row.shareFlag==1){
-                  this.checkList = true;
+                  this.checkList = false;
               }else{
-                 this.checkList = false;
+                 this.checkList = true;
               }
                this.activiDataForm.rule1 =this.activiDataForm.limitPrice 
                 this.activiDataForm.rule2 =this.activiDataForm.reducePrice 
