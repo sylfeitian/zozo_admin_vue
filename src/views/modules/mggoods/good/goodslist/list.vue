@@ -223,7 +223,7 @@
           <!--                    <el-button size="mini" type="text" @click="detShowChange(scope.row)">查看详情</el-button>-->
           <el-button @click="editList(scope.row)" type="text" size="mini">编辑</el-button>
           <el-button 
-            @click.native.prevent="lowerShelf(scope.$index, scope.row)" 
+            @click.native.prevent="lowerShelf(scope.$index, scope.row,1)" 
             :disabled="scope.row.sellState== 0"
             v-if="scope.row.showWeb==0 || scope.row.showWeb==2" 
             type="text" size="mini">
@@ -231,7 +231,7 @@
           </el-button>
 
           <el-button  
-            @click.native.prevent="lowerShelf(scope.$index, scope.row)" 
+            @click.native.prevent="lowerShelf(scope.$index, scope.row,0)" 
             v-else-if="scope.row.showWeb==1" class="artclose" 
             type="text" size="mini">
             <span >下架</span>
@@ -285,7 +285,8 @@ import {
   showGoods,
   searchStoreName,
   searchBrandName,
-  backScanCategorys
+  backScanCategorys,
+  showIsDown
 } from "@/api/api";
 import cloneDeep from "lodash/cloneDeep";
 export default {
@@ -548,11 +549,43 @@ export default {
       this.$emit("detShowChange", row);
     },
     // 定时下架
-    lowerShelf (index=-1,row="") {
-      this.modelLowerShelfVisible =  true;
+    lowerShelf (index=-1,row="",type) {
+      console.log(type)
+      // this.modelLowerShelfVisible =  true;
+      //   this.$nextTick(() => {
+      //       this.$refs.modelLowerShelfCompon.init(row)
+      //   })
+      if(type==1){//上架
+        this.isDown(row,type);
+      } else if (type==0) { // 下架
+        this.modelLowerShelfVisible =  true;
         this.$nextTick(() => {
             this.$refs.modelLowerShelfCompon.init(row)
         })
+      }
+    },
+    // 判断是否需要出现确认图片弹框
+    isDown (row,type) {
+      var ids = [];
+      ids = this.getIds();
+      var obj  = {
+        ids: ids,
+      }
+      if(this.row) obj.id = this.row.id
+      showIsDown(obj).then((res)=>{
+          if(res.code == 200){ // 200 不显示图片弹框，直接显示上下架弹框
+            this.modelLowerShelfVisible =  true;
+            this.$nextTick(() => {
+                this.$refs.modelLowerShelfCompon.init(row)
+            })
+
+          }else if (res.code == 201){ // 201 显示图片弹框，点击确定后出现上下架弹框
+            this.modelIsDownVisible =  true;
+            this.$nextTick(() => {
+                this.$refs.modelIsDownCompon.init(this.multipleSelection,type)
+            })
+          }
+      })
     },
     // 批量上下架
     lowerBatchShelf (type) {
@@ -570,12 +603,15 @@ export default {
         if(arr.length!=0){
           this.$message.warning("已上架的商品不能再上架");
           return
-        } else {
-          this.modelIsDownVisible =  true;
-            this.$nextTick(() => {
-                this.$refs.modelIsDownCompon.init(this.multipleSelection,type)
-            })
         }
+        this.isDownBatch(type);
+        // else {
+        //   this.modelIsDownVisible =  true;
+        //     this.$nextTick(() => {
+        //         this.$refs.modelIsDownCompon.init(this.multipleSelection,type)
+        //     })
+        // }
+
       
       }else{// 下架 或者待上架
         arr  = this.multipleSelection.filter((item,index)=>{
@@ -587,10 +623,36 @@ export default {
           this.$message.warning("已下架的商品不能再下架");
           return
         } else {
-
+            this.modelLowerBatchShelfVisible = true;
+            this.$nextTick(() => {
+                this.$refs.modelLowerBatchShelfCompon.init(this.multipleSelection,type)
+            })
         }
       }
       
+    },
+    
+    // 批量判断是否需要出现确认图片弹框
+    isDownBatch (type) {
+      var ids = [];
+      ids = this.getIds();
+      var obj  = {
+        ids: ids,
+      }
+      showIsDown(obj).then((res)=>{
+          if(res.code == 200){// 200 不显示图片弹框，直接显示上下架弹框
+            this.modelLowerBatchShelfVisible = true;
+            this.$nextTick(() => {
+                this.$refs.modelLowerBatchShelfCompon.init(this.multipleSelection,type)
+            })
+
+          }else if (res.code == 201){// 201 显示图片弹框，点击确定后出现上下架弹框
+            this.modelIsDownVisible =  true;
+            this.$nextTick(() => {
+                this.$refs.modelIsDownCompon.init(this.multipleSelection,type)
+            })
+          }
+      })
     },
     // 控制上下架
     cotrolGoodsShow(type, rowOrstatus) {
