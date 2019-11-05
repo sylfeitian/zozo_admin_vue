@@ -8,7 +8,7 @@
         width="26%"
     >
     <div style="padding-left:10%">
-        <h3>该商品图片没有下载，是否继续?</h3>
+        <h3>要上架的商品有未下载的图片，您确认要上架?</h3>
     </div>
 <el-dialog
         class="model-add-edit-data"
@@ -183,9 +183,11 @@
                 this.closeDialog();
             },
             closeDialog() {
-                this.$parent.modelLowerShelfVisible = false;
+                this.innerVisible = false;
             },
+            // 触发里面弹框
             change() {
+                this.visible = false;
                 this.innerVisible = true;
             }
         }

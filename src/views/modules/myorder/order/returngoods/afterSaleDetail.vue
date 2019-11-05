@@ -514,9 +514,9 @@
 // /deep/ .el-dialog{
 //      width: fit-content !important;
 // }
-.imgPreview{
-    width: fit-content !important;
-}
+// .imgPreview{
+//     width: fit-content !important;
+// }
 /deep/ .el-form-item.el-form-item--default {
     display: flex;
     justify-content: flex-start;

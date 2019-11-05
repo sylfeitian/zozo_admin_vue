@@ -36,7 +36,7 @@
                     <el-button type="primary" @click="openDiog" >添加商品</el-button>
                 </div>
             </el-form-item>
-            <el-form-item :label-width="formLabelWidth" prop='text' style="vertical-align:top;">
+            <el-form-item :label-width="formLabelWidth" prop='textCn' style="vertical-align:top;">
                 <template slot-scope="scope">
                     <div style="float:left;margin-left: -55px;">
                         <span style="color:#f56c6c;margin-right: 4px;">*</span>内容：
@@ -44,7 +44,7 @@
                     <div id="content" v-for="(v,i) in content" :key="i">
                         <div class="contentChild" v-if="content[i]&&v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
                             <!-- <quill-editor-img class="inforRight" :value="v.text" :index="i" ref="quillEditorCompon" style="display: inline-block;"  @artmessageContent='artmessageContent' ></quill-editor-img> -->
-                            <el-input type="textarea" :rows="5" class="inforRight" v-model="v.text" :index="i" style="display: inline-block;width:90%;"  @artmessageContent='artmessageContent' ></el-input>
+                            <el-input type="textarea" :rows="5" class="inforRight" v-model="v.textCn" :index="i" style="display: inline-block;width:90%;"  @artmessageContent='artmessageContent' ></el-input>
                             <span style="margin-left: 10px;color:#2260d2;cursor:pointer;" @click="delContent(i)">删除</span>
                             <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="upContent(i)">上移</span>
                             <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="downContent(i)">下移</span>
@@ -58,7 +58,7 @@
                         <div class="contentChild" v-if="content[i]&&v.typeId=='4'">
                             <div style="display: inline-block;">
                                 <img style="width:600px;margin-bottom: 10px;" :src="v.imageUrl | filterImgUrl" alt="">
-                                <div>{{v.text}}</div>
+                                <div>{{v.textCn}}</div>
                             </div>
                             <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="delContent(i)">删除</span>
                             <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="upContent(i)">上移</span>
@@ -322,14 +322,14 @@
                         id :v.id ,// 主键id
                         imageUrl :v.imageUrl ,// 图片url
                         sortId :"" ,// 排序id
-                        text :v.goodsName ,// 内容
+                        textCn :v.goodsName ,// 内容
                         typeId :"4" ,// 内容类型id
                     };
                     this.content.push(obj);
                 })
             },
             artmessageContent(messageContent,i){
-                if(this.content[i]) this.content[i].text = messageContent;
+                if(this.content[i]) this.content[i].textCn = messageContent;
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
@@ -354,7 +354,7 @@
                     window.this = this;
                     this.$nextTick(()=>{
                         this.content.forEach((item,index)=>{
-                            this.$refs.quillEditorCompon[index].dataForm.messageContent = item.text;
+                            this.$refs.quillEditorCompon[index].dataForm.messageContent = item.textCn;
                         })
                         this.content = [].concat(this.content)
                     },0)
@@ -411,7 +411,7 @@
                                     id :"" ,// 主键id
                                     imageUrl :res.data.url ,// 图片url
                                     sortId :"" ,// 排序id
-                                    text :"" ,// 内容
+                                    textCn :"" ,// 内容
                                     typeId :"3" ,// 内容类型id
                                 };
                                 that.content.push(obj);
@@ -437,7 +437,7 @@
                         id :"" ,// 主键id
                         imageUrl :"" ,// 图片url
                         sortId :"" ,// 排序id
-                        text :"" ,// 内容
+                        textCn :"" ,// 内容
                         typeId :type ,// 内容类型id
                     };
                     this.content.push(obj)
@@ -451,7 +451,7 @@
                             type: 'error',
                         });
                         return false
-                    }else if(v.typeId != 3&&v.text == ""){
+                    }else if(v.typeId != 3&&v.textCn == ""){
                         this.$message({
                             message: "内容不能为空!",
                             type: 'error',

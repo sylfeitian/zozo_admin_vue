@@ -206,7 +206,7 @@
                         <el-form-item label="详情：" style="height: 100%!important;">
                             <template slot-scope="scope" style="display: flex;">
                                 <div style="display:flex;padding:0;flex-direction: column;" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i" >
-                                    <div v-if="v.text || v.imageUrl" style="padding: 0;">
+                                    <div v-if="v.text || v.imageUrl || v.textCn" style="padding: 0;">
                                         <!-- <div style="height: 20px;"></div> -->
                                         <div :class="['contentChild','inputHeight'+i]"   style="min-height:33px;margin-top:0;"v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'" v-html="v.textCn">
                                             <!-- {{v.text}} -->

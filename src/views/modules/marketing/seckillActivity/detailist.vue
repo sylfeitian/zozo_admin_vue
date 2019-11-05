@@ -18,7 +18,7 @@
             >
                 <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
                 <el-table-column prop="goodsIdJp" label="商品id" width="180" align="center"></el-table-column>
-                <el-table-column prop="sort" label="排序" align="center">
+                <el-table-column prop="sort" label="排序" align="center" width="180">
                     <!-- <template slot-scope="scope">
                         <el-form-item prop="sort">
                             <el-input
@@ -298,7 +298,7 @@ export default {
 .el-form--inline .el-form-item{margin-right: 0px!important;}
 .detailListGoodsPages {
   /deep/.el-input {
-    width: 170px;
+    width: 160px;
     height: 40px;
   }
   .editDialog {
@@ -335,5 +335,14 @@ export default {
       }
     }
   }
+}
+/deep/ .el-input-number__decrease, .el-input-number__increase {
+  height: 33px!important;
+}
+/deep/ .el-input-number {
+  width: 160px!important;
+}
+/deep/ .el-input__inner {
+  height: 35px!important;
 }
 </style>
