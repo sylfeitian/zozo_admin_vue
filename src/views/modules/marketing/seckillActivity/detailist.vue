@@ -298,7 +298,7 @@ export default {
 .el-form--inline .el-form-item{margin-right: 0px!important;}
 .detailListGoodsPages {
   /deep/.el-input {
-    width: 170px;
+    width: 160px;
     height: 40px;
   }
   .editDialog {
@@ -340,6 +340,9 @@ export default {
   height: 33px!important;
 }
 /deep/ .el-input-number {
-  width: 160px;
+  width: 160px!important;
+}
+/deep/ .el-input__inner {
+  height: 35px!important;
 }
 </style>
