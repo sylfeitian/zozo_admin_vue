@@ -18,7 +18,7 @@
             >
                 <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
                 <el-table-column prop="goodsIdJp" label="商品id" width="180" align="center"></el-table-column>
-                <el-table-column prop="sort" label="排序" align="center">
+                <el-table-column prop="sort" label="排序" align="center" width="180">
                     <!-- <template slot-scope="scope">
                         <el-form-item prop="sort">
                             <el-input
@@ -335,5 +335,11 @@ export default {
       }
     }
   }
+}
+/deep/ .el-input-number__decrease, .el-input-number__increase {
+  height: 33px!important;
+}
+/deep/ .el-input-number {
+  width: 160px;
 }
 </style>
