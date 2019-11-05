@@ -125,8 +125,7 @@
                                 </div>
                                <!-- 审核时才能编辑 -->
                                <div v-else>
-                                     <el-input-number v-if="returnInfo.refundAmount == ''" v-model="returnInfo.shouldRefundAmount"  :precision="2" :step="1" :min="0" :max="parseFloat(returnInfo.shouldRefundAmount)" controls-position="right"></el-input-number>
-                                     <el-input-number v-else v-model="returnInfo.refundAmount"  :precision="2" :step="1" :min="0" :max="parseFloat(returnInfo.shouldRefundAmount)" controls-position="right"></el-input-number>
+                                     <el-input-number  v-model="returnInfo.refundAmount"  :precision="2" :step="1" :min="0" :max="parseFloat(returnInfo.shouldRefundAmount)" controls-position="right"></el-input-number>
                                </div>
                             </el-form-item>
 
@@ -135,6 +134,7 @@
                                   <!-- 审核时才能编辑 -->
                                 <el-select
                                     v-else
+                                    v-model="returnInfo.aftersaleReasonId"
                                     placeholder="请选择"
                                     loading-text="加载中···"
                                     @change ='changeWarehouse'>
