@@ -111,7 +111,7 @@
             <el-form :model="editDataForm" :rules="dataRule" ref="editDataForm" label-width="82px">
                 <div class="goodsPresent">
                     <!-- <img :src="goodsMain.mainImageUrl" alt=""> -->
-                    <img :src="goodsMain.mainImageUrl || defaultImg" :onerror="defaultImg">
+                    <img :src="goodsMain.mainImageUrl  | filterImgUrl" >
                     <!-- <div slot="placeholder" class="image-slot">加载中
                             <span class="dot">...</span>
                     </div>-->
