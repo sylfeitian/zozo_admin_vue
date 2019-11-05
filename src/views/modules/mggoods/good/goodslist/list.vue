@@ -567,11 +567,12 @@ export default {
     // 判断是否需要出现确认图片弹框
     isDown (row,type) {
       var ids = [];
-      ids = this.getIds();
+      // ids = this.getIds();
+      console.log(obj)
       var obj  = {
-        ids: ids,
+        ids: row.id,
       }
-      if(this.row) obj.id = this.row.id
+      // if(this.row) obj.id = this.row.id?
       showIsDown(obj).then((res)=>{
           if(res.code == 200){ // 200 不显示图片弹框，直接显示上下架弹框
             this.modelLowerShelfVisible =  true;
