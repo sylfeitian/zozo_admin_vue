@@ -572,7 +572,7 @@ export default {
       var obj  = {
         ids: row.id,
       }
-      // if(this.row) obj.id = this.row.id?
+      // if(this.row) obj.id = this.row.id
       showIsDown(obj).then((res)=>{
           if(res.code == 200){ // 200 不显示图片弹框，直接显示上下架弹框
             this.modelLowerShelfVisible =  true;
