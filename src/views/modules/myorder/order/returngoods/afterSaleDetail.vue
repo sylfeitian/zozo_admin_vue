@@ -135,7 +135,6 @@
                                   <!-- 审核时才能编辑 -->
                                 <el-select
                                     v-else
-                                    v-model="returnInfo.aftersaleReasonId"
                                     placeholder="请选择"
                                     loading-text="加载中···"
                                     @change ='changeWarehouse'>
