@@ -184,6 +184,7 @@
             },
             closeDialog() {
                 this.innerVisible = false;
+                this.visible = false;
             },
             // 触发里面弹框
             change() {
