@@ -93,8 +93,8 @@
                 </template>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
-                <el-button  @click="dataFormSubmit(0)">保存</el-button>
-                <el-button type="primary" @click="dataFormSubmit(1)">保存并发布</el-button>
+                <el-button  @click="dataFormSubmit(0)" :loading="saveLoading">保存</el-button>
+                <el-button type="primary" @click="dataFormSubmit(1)" :loading="publishLoading">保存并发布</el-button>
             </el-form-item>
             <el-dialog title="添加商品" :before-close="res" :visible.sync="dialogTableVisible" width="60%">
                 <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
@@ -213,6 +213,8 @@
                 picloading: false,
                 dialogVisible: false,
                 breaddata: [ "内容管理",  "时尚记事","新增时尚记事"],
+                saveLoading: false,
+                publishLoading: false
             }
         },
         components: {
@@ -477,9 +479,19 @@
                                 that.content.map((v,i)=>{
                                     v.sortId = i+1;
                                 });
+                                if (type == 0) {
+                                    this.saveLoading = true;
+                                } else {
+                                    this.publishLoading = true;
+                                }
                                 that.addDataForm.fashionContents = that.content;
                                 that.addDataForm.saveType = type;
                                 savefashiondetail(that.addDataForm).then((res)=>{
+                                if (type == 0) {
+                                    this.saveLoading = false;
+                                } else {
+                                    this.publishLoading = false;
+                                }
                                     if(res.code == 200){
                                         this.$message({
                                             message: res.msg,

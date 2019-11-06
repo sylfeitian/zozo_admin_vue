@@ -70,7 +70,7 @@
                 <img
                     :src="goodsInfo.mainImageUrl|| defaultImg | filterImgUrl" :onerror="defaultImg"
                     alt=""
-                    style="width:76px;height:76px;"
+                    style="width:110px;"
                 >
                 <div class="goodsPresentModle">
                     <div class="goodsTitle">{{goodsInfo.name}}</div>
