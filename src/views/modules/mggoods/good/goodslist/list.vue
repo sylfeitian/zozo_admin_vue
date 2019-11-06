@@ -268,7 +268,7 @@
     <modelLowerShelf v-if="modelLowerShelfVisible" ref="modelLowerShelfCompon" @searchDataList="getDataList"></modelLowerShelf>
     <modelLowerBatchShelf v-if="modelLowerBatchShelfVisible" ref="modelLowerBatchShelfCompon" @searchDataList="getDataList"></modelLowerBatchShelf>
     <modelIsDown v-if="modelIsDownVisible" ref="modelIsDownCompon" @searchDataList="getDataList"></modelIsDown>
-    
+    <modelIsDown1 v-if="modelIsDownVisible1" ref="modelIsDownCompon1" @searchDataList="getDataList"></modelIsDown1>
   </div>
 </template>
 
@@ -280,6 +280,7 @@ import { goodsUrl } from "@/api/url";
 import modelLowerShelf from "./model-lower-shelf.vue";
 import modelLowerBatchShelf from "./model-lower-batch-shelf.vue";
 import modelIsDown from "./model-isdown.vue";
+import modelIsDown1 from "./model-isdown1.vue";
 import {
   showBatchGoods,
   showGoods,
@@ -353,7 +354,8 @@ export default {
       selectBrandOption: [],
       modelLowerShelfVisible : false,
       modelLowerBatchShelfVisible:false,
-      modelIsDownVisible: false
+      modelIsDownVisible: false,
+      modelIsDownVisible1: false
     };
   },
   components: {
@@ -361,7 +363,8 @@ export default {
     detail,
     modelLowerShelf,
     modelLowerBatchShelf,
-    modelIsDown
+    modelIsDown,
+    modelIsDown1
   },
   watch: {
     // ID类搜索框仅可输入数字、英文，最多可输入30个字符
@@ -548,7 +551,7 @@ export default {
     detShowChange(row) {
       this.$emit("detShowChange", row);
     },
-    // 定时下架
+    // 定时上下架
     lowerShelf (index=-1,row="",type) {
       console.log(type)
       // this.modelLowerShelfVisible =  true;
@@ -568,7 +571,7 @@ export default {
     isDown (row,type) {
       var ids = [];
       // ids = this.getIds();
-      console.log(obj)
+      console.log(row)
       var obj  = {
         ids: row.id,
       }
@@ -581,9 +584,9 @@ export default {
             })
 
           }else if (res.code == 201){ // 201 显示图片弹框，点击确定后出现上下架弹框
-            this.modelIsDownVisible =  true;
+            this.modelIsDownVisible1 =  true;
             this.$nextTick(() => {
-                this.$refs.modelIsDownCompon.init(this.multipleSelection,type)
+                this.$refs.modelIsDownCompon1.init(row,type)
             })
           }
       })
