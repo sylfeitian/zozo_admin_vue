@@ -263,7 +263,7 @@
                 // alert([this.dataForm.name,this.dataForm.domainAddress]);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        // this.loading = true;
+                        this.saveLoading = true;
                         var obj = {
                             "endTime": this.activiDataForm.endTime,//活动结束时间 ,
                             "limitPrice": this.activiDataForm.limitPrice,// 满减限制金额 ,
@@ -275,7 +275,7 @@
                         if(this.row){  obj.id = this.row.id};
                         var fn = this.row?activityReduceEdit:activityReduceAdd;
                         fn(obj).then((res) => {
-                            this.loading = false;
+                            this.saveLoading = false;
                             // alert(JSON.stringify(res));
                             let status = null;
                             if(res.code == "200"){
