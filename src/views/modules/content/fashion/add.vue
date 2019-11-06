@@ -42,20 +42,20 @@
                         <span style="color:#f56c6c;margin-right: 4px;">*</span>内容：
                     </div>
                     <div id="content" v-for="(v,i) in content" :key="i">
-                        <div class="contentChild" v-if="content[i]&&v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
+                        <div class="contentChild" v-if="content[i]&&v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'" style="margin-bottom: 10px;">
                             <!-- <quill-editor-img class="inforRight" :value="v.text" :index="i" ref="quillEditorCompon" style="display: inline-block;"  @artmessageContent='artmessageContent' ></quill-editor-img> -->
-                            <el-input type="textarea" :rows="5" class="inforRight" v-model="v.textCn" :index="i" style="display: inline-block;width:90%;"  @artmessageContent='artmessageContent' ></el-input>
+                            <el-input type="textarea" :rows="5" class="inforRight" v-model="v.textCn" :index="i" style="display: inline-block;width:70%;"  @artmessageContent='artmessageContent' ></el-input>
                             <span style="margin-left: 10px;color:#2260d2;cursor:pointer;" @click="delContent(i)">删除</span>
                             <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="upContent(i)">上移</span>
                             <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="downContent(i)">下移</span>
                         </div>
-                        <div class="contentChild" v-if="content[i]&&v.typeId=='3'" v-loading="picloading">
+                        <div class="contentChild" v-if="content[i]&&v.typeId=='3'" v-loading="picloading" style="margin-bottom: 10px;">
                             <img style="width:600px;" :src="v.imageUrl | filterImgUrl" alt="" >
                             <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="delContent(i)">删除</span>
                             <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="upContent(i)">上移</span>
                              <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="downContent(i)">下移</span>
                         </div>
-                        <div class="contentChild" v-if="content[i]&&v.typeId=='4'">
+                        <div class="contentChild" v-if="content[i]&&v.typeId=='4'" style="margin-bottom: 10px;">
                             <div style="display: inline-block;">
                                 <img style="width:600px;margin-bottom: 10px;" :src="v.imageUrl | filterImgUrl" alt="">
                                 <div>{{v.textCn}}</div>

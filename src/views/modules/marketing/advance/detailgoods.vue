@@ -235,21 +235,21 @@
 </script>
 <style lang="scss" scoped>
     .detailGoodsPages{
-  /deep/ .el-input__inner {
-    height: 40px!important;
-  }
-/deep/ .el-input.el-input--default {
-  width: 180px!important;
-}
-/deep/ .el-input-number__decrease {
-  height: 38px!important;
-}
-/deep/ .el-input-number__increase {
-  height: 38px!important;
-}
-/deep/ .el-input-number {
-  width: 180px!important;
-}
+    /deep/ .el-input__inner {
+        height: 40px!important;
+    }
+    /deep/ .el-input.el-input--default {
+        width: 180px!important;
+    }
+    /deep/ .el-input-number__decrease {
+        height: 38px!important;
+    }
+    /deep/ .el-input-number__increase {
+        height: 38px!important;
+    }
+    /deep/ .el-input-number {
+        width: 180px!important;
+    }
         /deep/.el-input {
             width: 180px;
             height: 40px;
