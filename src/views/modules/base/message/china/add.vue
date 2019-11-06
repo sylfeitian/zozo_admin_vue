@@ -85,6 +85,7 @@
 							v-loading="genderMainLoading"
 							ref="cropperImg1"
 							:index="'1'"
+							:cropImg = "dataForm.genderMain"
 							:imgWidth='"100px"'
 							:imgHeight='"100px"'
 							@delteteImg="delteteImgAll"
@@ -104,6 +105,7 @@
 							<img-cropper
 							    v-loading="genderMrLoading"
 								ref="cropperImg1"
+								:cropImg = "dataForm.genderMr"
 								:index="'1'"
 								:imgWidth='"100px"'
 								:imgHeight='"100px"'
@@ -121,6 +123,7 @@
 							    v-loading="genderMrsLoading"
 								ref="cropperImg1"
 								:index="'1'"
+								:cropImg = "dataForm.genderMrs"
 								:imgWidth='"100px"'
 								:imgHeight='"100px"'
 								@delteteImg="delteteImgW"
@@ -137,6 +140,7 @@
 							v-loading="genderKidLoading"
 								ref="cropperImg1"
 								:index="'1'"
+								:cropImg = "dataForm.genderKid"
 								:imgWidth='"100px"'
 								:imgHeight='"100px"'
 								@delteteImg="delteteImgC"
