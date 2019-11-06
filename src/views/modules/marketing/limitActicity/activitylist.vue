@@ -6,7 +6,7 @@
             <el-input v-model.trim="dataForm.title" placeholder="请输入活动名称" clearable  maxlength="300" ></el-input>
         </el-form-item>
         <el-form-item  label="活动状态：">
-            <el-select v-model="dataForm.state" clearable  placeholder="请选择">
+            <el-select v-model="dataForm.state" placeholder="请选择">
                 <el-option
                     v-for="item in activitesstatesOption"
                     :key="item.id"
@@ -16,7 +16,7 @@
             </el-select>
         </el-form-item>
         <el-form-item  label="审核状态：">
-            <el-select v-model="dataForm.auditState" clearable  placeholder="请选择">
+            <el-select v-model="dataForm.auditState" placeholder="请选择">
                 <el-option
                     v-for="item in auditStateOption"
                     :key="item.id"
