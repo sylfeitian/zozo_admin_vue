@@ -84,8 +84,8 @@
             <el-form :model="auditForm" :rules="rules" ref="auditForm" label-width="100px">
                 <el-form-item label="审核结果" prop="state">
                     <el-radio-group v-model="auditForm.state" style="margin-left:50px;">
-                        <el-radio :label="1">通过</el-radio>
-                        <el-radio :label="2">不通过</el-radio>
+                        <el-radio label="1">通过</el-radio>
+                        <el-radio label="2">不通过</el-radio>
                     </el-radio-group>
                 </el-form-item>
             </el-form>
@@ -124,7 +124,7 @@ export default {
       },
       auditForm: {
         id: "",
-        state: ""
+        state: "1"//操作 审核状态 1审核通过 2审核不通过
       },
       dialogAuditVisible: false,
       activitesstates: [
@@ -157,7 +157,7 @@ export default {
   methods: {
     //取消审核
     cancel() {
-      this.auditForm = {};
+      this.auditForm.state = "1";
       this.dialogAuditVisible = false;
     },
     //审核活动场次
