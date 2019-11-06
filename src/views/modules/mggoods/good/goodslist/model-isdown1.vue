@@ -83,6 +83,7 @@
                 loading : false,
                 saveLoading : false,
                 dataForm: {
+                    id: "",
                     shelfTime: "",//选择时间
                     showType: 0,//0:立即，1：定时 ,
                     showWeb: ""
@@ -98,17 +99,19 @@
                 },// 日期组件 设置项
                 type:'',
                 dataListSelections:[],
+                row:"",
             }
         },
         // props:["idJp"],
         methods: {
-            init (dataListSelections,type) {
+            init (row,type) {
                 this.visible = true;
                 this.type  = type;
-                this.dataListSelections  = dataListSelections;
+                // this.dataListSelections  = dataListSelections;
                 this.dataForm.shelfTime = new Date();
                 this.dataForm.showType =0
                 this.dataForm.showWeb =""
+                this.row = row
                 this.$nextTick(() => {
                     
                 })
@@ -126,7 +129,7 @@
                     // return y+'-'+add0(m)+'-'+add0(d)
             },
             afterTime(){
-                console.log(this.dataForm.shelfTime);
+                console.log(this.dataForm);
                 if(new Date(this.dataForm.shelfTime).getTime() < new Date().getTime()){
                     this.dataForm.shelfTime = this.filterTime(new Date());
                 }
@@ -137,16 +140,13 @@
                 // console.log(this.dataForm);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        var ids = [];
-                        this.dataListSelections.forEach((item,index)=>{
-                            ids.push(item.id);
-                        })
                         var obj={
-                            ids: ids.join(","),
+                            ids: this.row.id,
                             showWeb: this.type == 1?1:2,//1上级，2下架
                             showType:this.dataForm.showType,//0:立即，1：定时 ,
                             shelfTime:this.dataForm.showType == 1?this.filterTime(this.dataForm.shelfTime):'',//选择时间
                         }
+                        console.log(obj)
                         this.saveLoading = true;
                         showBatchGoods(obj).then((res) => {
                             this.saveLoading = false;
@@ -187,7 +187,7 @@
                 this.visible = false;
             },
             // 触发里面弹框
-            change() {
+            change(row) {
                 this.visible = false;
                 this.innerVisible = true;
             }

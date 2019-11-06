@@ -79,7 +79,7 @@
                     <el-button
                         type="text"
                         size="small"
-                        v-if="scope.row.activityState==0"
+                        v-if="scope.row.selfActivityState==1"
                         @click="editGoods(scope.row.id,'update')"
                     >修改</el-button>
                     <span
@@ -111,7 +111,7 @@
             <el-form :model="editDataForm" :rules="dataRule" ref="editDataForm" label-width="82px">
                 <div class="goodsPresent">
                     <!-- <img :src="goodsMain.mainImageUrl" alt=""> -->
-                    <img :src="goodsMain.mainImageUrl  | filterImgUrl" >
+                    <img :src="goodsMain.mainImageUrl|| defaultImg | filterImgUrl" :onerror="defaultImg" style="width:110px;">
                     <!-- <div slot="placeholder" class="image-slot">加载中
                             <span class="dot">...</span>
                     </div>-->

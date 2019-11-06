@@ -85,9 +85,9 @@
                 </template>
             </el-table-column>
             <el-table-column prop="manufacturer" label="生产企业"></el-table-column>
-            <el-table-column prop="goodsCsIdJp" label="提交时间"></el-table-column>
+            <!-- <el-table-column prop="goodsCsIdJp" label="提交时间"></el-table-column>
             <el-table-column prop="goodsCsIdJp" label="完成时间"></el-table-column>
-            <el-table-column prop="goodsCsIdJp" label="备注"></el-table-column>
+            <el-table-column prop="goodsCsIdJp" label="备注"></el-table-column> -->
 
 
 

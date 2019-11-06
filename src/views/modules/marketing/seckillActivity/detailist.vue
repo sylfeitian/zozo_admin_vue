@@ -1,5 +1,5 @@
 <template>
-    <div class="detailListGoodsPages">
+    <div>
         <Bread :breaddata="breaddata" :index="'1'" @changePage="changePage"></Bread>
         <el-form :inline="true" :model="dataForm">
             <el-form-item style="float: right;">
@@ -8,7 +8,7 @@
               <el-button type="primary" @click="addGoods(activityId)" v-if="activityState===0">添加商品</el-button>
             </el-form-item>
         </el-form>
-        <el-form :inline="true" :model="sortDataList">
+        <el-form :inline="true" :model="sortDataList" class="detailListGoodsPages">
             <el-table
                 :data="sortDataList.list"
                 v-loading="dataListLoading"
@@ -17,8 +17,8 @@
                 style="width: 100%"
             >
                 <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
-                <el-table-column prop="goodsIdJp" label="商品id" width="180" align="center"></el-table-column>
-                <el-table-column prop="sort" label="排序" align="center" width="180">
+                <el-table-column prop="goodsIdJp" label="商品id" width="170" align="center"></el-table-column>
+                <el-table-column prop="sort" label="排序" align="center" width="200">
                     <!-- <template slot-scope="scope">
                         <el-form-item prop="sort">
                             <el-input
@@ -68,8 +68,9 @@
         <el-dialog :visible.sync="lookVisible" class="editDialog" width="50%">
             <div class="goodsPresent">
                 <img
-                    :src="goodsInfo.mainImageUrl|| defaultImg" :onerror="defaultImg"
+                    :src="goodsInfo.mainImageUrl|| defaultImg | filterImgUrl" :onerror="defaultImg"
                     alt=""
+                    style="width:110px;"
                 >
                 <div class="goodsPresentModle">
                     <div class="goodsTitle">{{goodsInfo.name}}</div>
@@ -297,8 +298,23 @@ export default {
 <style lang="scss" scoped>
 .el-form--inline .el-form-item{margin-right: 0px!important;}
 .detailListGoodsPages {
+  /deep/ .el-input__inner {
+    height: 40px!important;
+  }
+  /deep/ .el-input.el-input--default {
+    width: 180px!important;
+  }
+  /deep/ .el-input-number__decrease {
+    height: 38px!important;
+  }
+  /deep/ .el-input-number__increase {
+    height: 38px!important;
+  }
+  /deep/ .el-input-number {
+    width: 180px!important;
+  }
   /deep/.el-input {
-    width: 160px;
+    width: 180px;
     height: 40px;
   }
   .editDialog {
@@ -336,13 +352,7 @@ export default {
     }
   }
 }
-/deep/ .el-input-number__decrease, .el-input-number__increase {
-  height: 33px!important;
-}
-/deep/ .el-input-number {
-  width: 160px!important;
-}
-/deep/ .el-input__inner {
-  height: 35px!important;
-}
+// /deep/ .el-input__inner {
+//   height: 40px!important;
+// }
 </style>

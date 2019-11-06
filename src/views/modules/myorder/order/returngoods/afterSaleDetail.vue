@@ -125,7 +125,7 @@
                                 </div>
                                <!-- 审核时才能编辑 -->
                                <div v-else>
-                                     <el-input-number  v-model="returnInfo.refundAmount"  :precision="2" :step="1" :min="0" :max="parseFloat(returnInfo.shouldRefundAmount)" controls-position="right"></el-input-number>
+                                     <el-input-number  v-model="returnInfo.shouldRefundAmount"  :precision="2" :step="1" :min="0" :max="parseFloat(returnInfo.shouldRefundAmount)" controls-position="right"></el-input-number>
                                </div>
                             </el-form-item>
 
@@ -137,7 +137,7 @@
                                     v-model="returnInfo.aftersaleReasonId"
                                     placeholder="请选择"
                                     loading-text="加载中···"
-                                    @change ='changeWarehouse'>
+                                    >
                                     <el-option
                                         v-for="item in returnrReasonlist"
                                         :key="item.id"
@@ -437,11 +437,12 @@
                 var row = {
                     operating:operating,// 操作 0不通过 1通过 ,
                     aftersaleSn:this.row.aftersaleSn,//售后单号 ,
-                    realRefundAmount: this.returnInfo.refundAmount,//实际退款金额 ,
+                    realRefundAmount: this.returnInfo.shouldRefundAmount,//实际退款金额 ,
                     remark: this.returnInfo.remark,//处理备注
                     warehouseId: this.returnInfo.warehouseId, //退货仓id
                     aftersaleReasonId:this.returnInfo.aftersaleReasonId //退货原因id
                 }
+                console.log(row.realRefundAmount)
                 this.exammineVisible = true;
                 this.$nextTick(() => {
                    this.$refs.exammineCompon.init(row)
