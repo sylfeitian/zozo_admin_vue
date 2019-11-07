@@ -348,7 +348,7 @@
                     var fontHetght = $("."+'detail'+i).height()
                     var fontHetght2 = $("."+'imgbottomWrodJp'+i).height()
                     if (fontHetght < 147) {
-                        $("." + 'detail' + i).height(147)
+                        $("." + 'detail' + i).height(146.2)
                           $("." + 'imgbottomWrodJp' + i).height(147)
                         
                     } else {

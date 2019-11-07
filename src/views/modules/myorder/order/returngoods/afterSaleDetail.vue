@@ -129,9 +129,9 @@
                                </div>
                             </el-form-item>
 
-                            <el-form-item label="退货原因：" >
+                            <!-- <el-form-item label="退货原因：" >
                                 <span  v-if="row.auditStatus!=0">{{returnInfo.aftersaleReason}}</span>
-                                  <!-- 审核时才能编辑 -->
+                                  审核时才能编辑
                                 <el-select
                                     v-else
                                     v-model="returnInfo.aftersaleReasonId"
@@ -145,7 +145,7 @@
                                         :value="item.id">
                                     </el-option>
                                 </el-select>
-                            </el-form-item>
+                            </el-form-item> -->
 
                             <el-form-item label="退货仓：" >
                                 <span v-if="row.auditStatus!=0">{{returnInfo.warehouse}}</span>

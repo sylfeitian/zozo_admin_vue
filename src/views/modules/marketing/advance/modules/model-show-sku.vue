@@ -185,11 +185,32 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     /*/deep/.el-form-item__content:nth-child(1) {*/
     /*    margin-left: 50px!important;*/
     /*}*/
     .title {
         margin-left: -70px;
+    }
+    .goodsPresent{
+        width: 100%;
+        display: flex;
+        margin-bottom: 20px;
+        img{
+            width: 110px;
+            height: 110px;
+            object-fit: contain;
+            margin-right: 20px;
+        }
+        .goodsPresentModle{
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 6px 0;
+            .goodsmoney{
+                color:red;
+                margin-top: 66px;
+            }
+        }
     }
 </style>
