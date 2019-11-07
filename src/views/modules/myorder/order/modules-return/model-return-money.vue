@@ -102,7 +102,7 @@
 								var obj=  {
 									isAgree:this.row.isAgree,//退款类型 1同意退款 0决绝退款
 									aftersaleSn:this.row.aftersaleSn,//物流单号
-									aftersaleReasonId:this.dataForm.aftersaleReasonId //退货原因id
+									reasonId:this.dataForm.aftersaleReasonId //退货原因id
 								}
 								returnReimburse(obj).then((res) => {
 									this.loading = false;

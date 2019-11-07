@@ -430,17 +430,12 @@
              // 审核
             exammineFn(operating){
                 console.log(this.returnInfo);
-                if(!this.returnInfo.aftersaleReasonId){
-                    this.$message.warning("请选择退换原因!");
-                    return;
-                }
                 var row = {
                     operating:operating,// 操作 0不通过 1通过 ,
                     aftersaleSn:this.row.aftersaleSn,//售后单号 ,
                     realRefundAmount: this.returnInfo.shouldRefundAmount,//实际退款金额 ,
                     remark: this.returnInfo.remark,//处理备注
-                    warehouseId: this.returnInfo.warehouseId, //退货仓id
-                    aftersaleReasonId:this.returnInfo.aftersaleReasonId //退货原因id
+                    warehouseId: this.returnInfo.warehouseId //退货仓id
                 }
                 console.log(row.realRefundAmount)
                 this.exammineVisible = true;
