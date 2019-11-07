@@ -5,7 +5,7 @@
             :close-on-click-modal="false"
             :visible.sync="visible"
             :before-close="closeDialog"
-            width="26%"
+            width="35%"
     >
         <el-form
                 :model="dataForm"
@@ -14,10 +14,10 @@
                 label-width="120px"
                 :rules="dataRule"
         >
-            <el-form-item label="中文词汇：" prop="chineseVocabulary" :label-width="formLabelWidth">
+            <el-form-item label="api接口翻译中文：" prop="chineseVocabulary" :label-width="formLabelWidth">
                 <el-input v-model.trim="dataForm.chineseVocabulary" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="对照词汇：" prop="japaneseWord" :label-width="formLabelWidth">
+            <el-form-item label="对照翻译中文：" prop="japaneseWord" :label-width="formLabelWidth">
                 <el-input v-model.trim="dataForm.japaneseWord" placeholder="请输入"></el-input>
             </el-form-item>
 <!--            <el-form-item style="text-align: center;margin-left: -120px!important;">-->
@@ -221,14 +221,20 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     /*/deep/.el-form-item__content:nth-child(1) {*/
     /*    margin-left: 50px!important;*/
     /*}*/
     .title {
         margin-left: -70px;
     }
-    /deep/.el-textarea {
+    /deep/ .el-textarea {
         width: 100%;
+    }
+    /deep/ .el-form-item__label {
+        width: 130px!important;
+    }
+    /deep/ .el-form-item__content {
+        margin-left: 130px!important;
     }
 </style>

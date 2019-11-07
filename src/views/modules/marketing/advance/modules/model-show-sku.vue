@@ -209,7 +209,7 @@
             padding: 6px 0;
             .goodsmoney{
                 color:red;
-                margin-top: 26px;
+                margin-top: 66px;
             }
         }
     }
