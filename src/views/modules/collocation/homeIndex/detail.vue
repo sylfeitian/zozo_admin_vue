@@ -68,9 +68,11 @@
 		    prop="title"
             width="240"
             show-overflow-tooltip
+            align="center"
 		    label="搭配集合标题">
             <template slot-scope="scope">
-                <div class="words">{{scope.row.title}}</div>
+                <div class="words" v-if="scope.row.title">{{scope.row.title}}</div>
+                <div class="words" v-else>{{scope.row.titleJp}}</div>
 		    </template>
 		</el-table-column>
         <el-table-column
