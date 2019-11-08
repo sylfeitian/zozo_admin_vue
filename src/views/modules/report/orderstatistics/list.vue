@@ -235,6 +235,11 @@
 		    label="商品实付金额"
 				align="center">
 		</el-table-column>
+		<el-table-column
+		    prop="declareSn"
+		    label="申报单号"
+				align="center">
+		</el-table-column>
 	</el-table>
 	<!-- 分页 -->
     <el-pagination
