@@ -7,7 +7,7 @@
 			width="35%"
 			:before-close="closeDialog">
 		    	<h3 v-if="this.row.isAgree==1">同意退款将直接退款给用户，请确认退货商品已收到?</h3>
-				<h3 v-else>拒绝退款将取消该售后单，请确认已于用户达成一致?</h3>
+				<h3 v-else>拒绝退款将取消该售后单，请确认已与用户达成一致?</h3>
 				</el-form>
 			    <span slot="footer" class="dialog-footer"  >
 		     		    <el-button @click="dataFormCancel()">取消</el-button>
