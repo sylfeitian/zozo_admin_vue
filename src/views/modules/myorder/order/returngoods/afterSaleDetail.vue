@@ -236,8 +236,8 @@
                 </div>
                 <!-- 待退款时显示 -->
                 <div class="bottomBtns" v-if="row.auditStatus ==1 && row.status ==30">
-                    <el-button type="primary" @click="returnMoneyFn(1)">同意退款</el-button>
-                    <el-button type="danger" @click="returnMoneyFn(0)">拒绝退款</el-button>
+                    <el-button type="primary" @click="returnMoneyFn(1,1)">同意退款</el-button>
+                    <el-button type="danger" @click="returnMoneyFn(0,0)">拒绝退款</el-button>
                 </div>
        </div>
         <!-- 详情 -->
@@ -246,6 +246,8 @@
         <exammine v-if="exammineVisible" ref="exammineCompon" @searchDataList="getAfterSaleDetail"></exammine>
         <!-- 确认收货 -->
         <confirmGoodsModel v-if="confirmGoodsVisible" ref="confirmGoodsCompon" @searchDataList="getAfterSaleDetail"></confirmGoodsModel>
+        <!-- 拒绝退款 -->
+        <refuseMoneyModel v-if="refuseMoneyModelVisible" ref="refuseMoneyModelCompon" @searchDataList="getAfterSaleDetail"></refuseMoneyModel>
          <!-- 退款 -->
         <returnMoneyModel v-if="returnMoneyVisible" ref="returnMoneyCompon" @searchDataList="getAfterSaleDetail"></returnMoneyModel>
     </div>
@@ -256,6 +258,7 @@
     import Bread from "@/components/bread";
     import exammine from '../modules-return/model-exammine.vue'
     import confirmGoodsModel from '../modules-return/model-confirm-goods.vue'
+    import refuseMoneyModel from '../modules-return/model-return-money-refuse.vue'
     import returnMoneyModel from "../modules-return/model-return-money";
     import orderDet from "../modules/orderDet"
     export default {
@@ -270,6 +273,7 @@
                 exammineVisible:false,
                 confirmGoodsVisible:false,
                 returnMoneyVisible:false,
+                refuseMoneyModelVisible:false,
                 goodsInfo:[],
                 logs:[],
                 returnInfo:{},
@@ -289,7 +293,8 @@
             exammine,
             confirmGoodsModel,
             returnMoneyModel,
-            orderDet
+            orderDet,
+            refuseMoneyModel
         },
         watch: {
             'returnInfo.remark': function (newV, oldV) {
@@ -430,17 +435,12 @@
              // 审核
             exammineFn(operating){
                 console.log(this.returnInfo);
-                if(!this.returnInfo.aftersaleReasonId){
-                    this.$message.warning("请选择退换原因!");
-                    return;
-                }
                 var row = {
                     operating:operating,// 操作 0不通过 1通过 ,
                     aftersaleSn:this.row.aftersaleSn,//售后单号 ,
                     realRefundAmount: this.returnInfo.shouldRefundAmount,//实际退款金额 ,
                     remark: this.returnInfo.remark,//处理备注
-                    warehouseId: this.returnInfo.warehouseId, //退货仓id
-                    aftersaleReasonId:this.returnInfo.aftersaleReasonId //退货原因id
+                    warehouseId: this.returnInfo.warehouseId //退货仓id
                 }
                 console.log(row.realRefundAmount)
                 this.exammineVisible = true;
@@ -449,26 +449,33 @@
                 })
             },
             // 确认收货
-            confirmGoodsFn(isComfirm){
+            confirmGoodsFn(isComfirm, type){
                 var row = {
                     isComfirm:isComfirm, // 收货类型 0未收货 1确认收货
                     aftersaleSn:this.row.aftersaleSn,
                 }
-                this.confirmGoodsVisible = true;
-                this.$nextTick(() => {
-                   this.$refs.confirmGoodsCompon.init(row)
-                })
+                    this.confirmGoodsVisible = true;
+                    this.$nextTick(() => {
+                    this.$refs.confirmGoodsCompon.init(row)
+                    })
             },
             // 同意退款
-             returnMoneyFn(isAgree){
+             returnMoneyFn(isAgree,type){
                  var row = {
                     isAgree:isAgree,// 退款类型 1同意退款 0决绝退款
                     aftersaleSn:this.row.aftersaleSn,
                 }
-                this.returnMoneyVisible = true;
-                this.$nextTick(() => {
-                   this.$refs.returnMoneyCompon.init(row)
-                })
+                if( type == 1) {
+                    this.returnMoneyVisible = true;
+                    this.$nextTick(() => {
+                        this.$refs.returnMoneyCompon.init(row)
+                    })
+                } else {
+                    this.refuseMoneyModelVisible = true;
+                    this.$nextTick(() => {
+                        this.$refs.refuseMoneyModelCompon.init(row)
+                    })
+                }
             },
             goBack(){
                 this.$emit("orderDetListFn");

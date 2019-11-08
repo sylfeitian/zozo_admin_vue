@@ -45,7 +45,7 @@
                           style="width:400px;"></el-input>
                 <div>元可用（输入“0”为无门槛优惠券）</div>
             </el-form-item>
-            <el-form-item class="artfromitem" label="每人限领：" prop="limitNum">
+            <el-form-item class="artfromitem1" label="每人限领：" prop="limitNum">
                 <el-input v-model.trim="dataForm.limitNum" type="text" max="1000000" placeholder="1"
                           style="width:400px;"></el-input>
                 <div>张 &nbsp;&nbsp;&nbsp;&nbsp; 0代表不限制，每人最多限制5张</div>
@@ -577,6 +577,15 @@
 
             .el-input.el-input--default {
                 margin: 0 10px;
+            }
+        }
+    }
+    
+    .artfromitem1{
+        /deep/ .el-form-item__content{
+            display: flex;
+            .el-input.el-input--default{
+                margin: 0 10px 0 0;
             }
         }
     }

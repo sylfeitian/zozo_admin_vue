@@ -38,7 +38,7 @@
 		    label="封面图片"
 		    width="260">
             <template slot-scope="scope">
-		    	<img style="width:200px;height:100px;object-fit: contain" :src="scope.row.imageUrl" alt="">
+		    	<img style="width:200px;height:100px;object-fit: contain" :src="scope.row.imageUrl | filterImgUrl" alt="">
 		    </template>
 		</el-table-column>
 		<el-table-column
@@ -47,7 +47,8 @@
             show-overflow-tooltip
 		    label="搭配集合标题">
             <template slot-scope="scope">
-                <div class="words">{{scope.row.title}}</div>
+                <div class="words" v-if="scope.row.title">{{scope.row.title}}</div>
+                <div class="words" v-else>{{scope.row.titleJp}}</div>
 		    </template>
 		</el-table-column>
         <el-table-column
