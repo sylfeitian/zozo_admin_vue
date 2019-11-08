@@ -59,9 +59,9 @@
 		    prop="imageUrl"
             align="center"
 		    label="封面图片"
-		    width="260">
+		    width="200">
             <template slot-scope="scope">
-		    	<img style="width:200px;height:100px;object-fit: contain" :src="scope.row.imageUrl" alt="">
+		    	<img style="width:200px;height:100px;object-fit: contain" :src="scope.row.imageUrl | filterImgUrl" alt="">
 		    </template>
 		</el-table-column>
 		<el-table-column
