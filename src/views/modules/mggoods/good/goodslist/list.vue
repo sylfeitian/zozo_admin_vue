@@ -668,7 +668,7 @@ export default {
           this.$message({
             message: "请选择商品",
             type: "warning",
-            duration: 1500
+            duration: 3000
           });
           return;
         }
@@ -681,7 +681,7 @@ export default {
             this.$message({
               message: "不可售商品不能上架",
               type: "warning",
-              duration: 1500
+              duration: 3000
             });
             return;
         }
@@ -721,7 +721,7 @@ export default {
           this.$message({
             message: msg,
             type: status,
-            duration: 1500
+            duration: 3000
           });
         });
     },
