@@ -216,8 +216,8 @@
                                                     <img :src="v.imageUrl | filterImgUrl" style="width:200px;" alt=""/>
                                                 </div>
                                                 <div v-if="v.typeId=='4'"   :class="['imgbottomWrodCn'+i]">
-                                                    <!-- {{v.textCn}} -->
-                                                    <el-input style="margin: auto;" v-model="v.textCn" type="textarea" :rows="5" ></el-input>
+                                                    {{v.textCn}}
+                                                    <!-- <el-input style="margin: auto;" v-model="v.textCn" type="textarea" :rows="5" ></el-input> -->
                                                 </div>
                                             </div>
                                         </div>
