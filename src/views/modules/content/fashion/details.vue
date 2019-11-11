@@ -178,15 +178,13 @@
                         </el-form-item>
                     </div>
                 </div>
-                <div style="display:flex;padding:0">
+                <!-- <div style="display:flex;padding:0">
                     <div style="width:50%;padding:0"  v-if="row.fashionFlag == 0">
                         <el-form-item label="详情：" style="height: 100%!important;"  v-if="row.fashionFlag == 0">
                             <template slot-scope="scope">
                                 <div style="display:flex;padding:0;" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
                                     <div v-if="v.text || v.imageUrl"  v-show="row.fashionFlag == 0" style="padding: 0;">
-                                        <!-- <div style="height: 20px;"></div> -->
                                         <div :class="['contentChild','detail'+i]" style="min-height:33px;padding-right: 6px;" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'" v-html="v.text">
-                                        <!-- {{v.text}} -->
                                         </div>
                                         <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
                                             <div class="goodsPropsWrap">
@@ -207,9 +205,7 @@
                             <template slot-scope="scope" style="display: flex;">
                                 <div style="display:flex;padding:0;flex-direction: column;" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i" >
                                     <div v-if="v.text || v.imageUrl || v.textCn" style="padding: 0;">
-                                        <!-- <div style="height: 20px;"></div> -->
                                         <div :class="['contentChild','inputHeight'+i]"   style="min-height:33px;margin-top:0;"v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'" v-html="v.textCn">
-                                            <!-- {{v.text}} -->
                                         </div>
                                         <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
                                             <div class="goodsPropsWrap">
@@ -223,6 +219,43 @@
                                 </div>
                             </template>
                         </el-form-item>
+                    </div>
+                </div> -->
+                <div style="display:flex;" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
+                    <div v-if="v.text=='' || v.text || v.textCn || v.imageUrl"  style="padding: 0;;width: 100%;">
+                        <div style="display:flex;justify-content: center; ">
+                            <!-- 左边 -->
+                            <div  style="width:50%;min-height:33px;padding:8px 3% 8px 3% ;text-align:left;" v-show="row.fashionFlag == 0" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'" v-html="v.text">
+                                <!-- {{shopFashionContentsVOList[i].text}} -->
+                            </div>
+                            <!-- 右边 -->
+                            <div  style="width:50%;min-height:33px;padding:8px 3% 8px 3% ;"    :class="row.fashionFlag==0?'borderLeftLine':''" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'" v-html="v.textCn">
+                                <!-- <el-input style="margin: auto;" v-model="v.textCn" type="textarea" :rows="5" ></el-input> -->
+                            </div>
+                        </div>
+
+                        <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
+                            <div class="goodsPropsWrap" style="text-align: center;">
+                                <div style="display:flex;justify-content: center; " v-show="row.fashionFlag == 0">
+                                        <!-- 左边 -->
+                                        <div class="goodsImg" style="width:50%;padding:8px 3% 8px 3% ;">
+                                            <img :src="v.imageUrl | filterImgUrl" style="width:200px;" alt=""/>
+                                        </div>
+                                        <!-- 右边 -->
+                                        <div class="goodsImg"  :class="row.fashionFlag==0?'borderLeftLine':''" style="width:50%;padding:8px 3% 8px 3% ;" >
+                                            <img :src="v.imageUrl | filterImgUrl" style="width:200px;" alt=""/>
+                                        </div>
+                                </div>
+                                <div style="display:flex;justify-content: center; ">
+                                    <!-- 左边 -->
+                                    <div v-if="v.typeId=='4'" style="width:50%;padding:8px 3% 8px 3% ;" v-show="row.fashionFlag == 0">{{v.text}}</div>
+                                    <!-- 右边 -->
+                                    <div v-if="v.typeId=='4'"  style="width:50%;;padding:8px 3% 8px 3% ;"    :class="row.fashionFlag==0?'borderLeftLine':''" v-html="v.textCn">
+                                        <!-- <el-input v-if="v.text != null" style="margin: auto;" v-model="v.textCn" type="textarea" :rows="5" ></el-input> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </el-form>
@@ -241,8 +274,8 @@
                 dataForm: {},
                 row:'',
                 timer: null, // 定时器
-                fullscreenLoading: true
-
+                shopFashionContentsVOList:[],
+                fullscreenLoading: false
             }
         },
         components: {
@@ -251,12 +284,12 @@
         created(){
             // 判断页面加载完毕
             const that = this
-            that.timer = setInterval(function () {
-                if (document.readyState === 'complete') {
-                    that.getHeight()
-                    window.clearInterval(that.timer)
-                }
-            }, 1500)
+            // that.timer = setInterval(function () {
+            //     if (document.readyState === 'complete') {
+            //         that.getHeight()
+            //         window.clearInterval(that.timer)
+            //     }
+            // }, 1500)
         },
         methods: {
             init(row){
@@ -277,21 +310,21 @@
             changePage(){
                 this.$emit("showList");
             },
-            getHeight(){
-                // 详情文字的高度
-                for(let i=0;i<this.dataForm.shopFashionContentsVOList.length;i++){
-                    // 文字高度
-                    var fontH = $("."+'detail'+i).height()
-                    // 输入框高度
-                    var inputH = $("."+'inputHeight'+i).height()
-                    if(fontH<inputH){
-                        $("."+'detail'+i).height(inputH)
-                    }else{
-                        $("."+'inputHeight'+i).height(fontH)
-                    }
-                }
-                this.fullscreenLoading = false
-            }
+            // getHeight(){
+            //     // 详情文字的高度
+            //     for(let i=0;i<this.dataForm.shopFashionContentsVOList.length;i++){
+            //         // 文字高度
+            //         var fontH = $("."+'detail'+i).height()
+            //         // 输入框高度
+            //         var inputH = $("."+'inputHeight'+i).height()
+            //         if(fontH<inputH){
+            //             $("."+'detail'+i).height(inputH)
+            //         }else{
+            //             $("."+'inputHeight'+i).height(fontH)
+            //         }
+            //     }
+            //     this.fullscreenLoading = false
+            // }
         }
     }
 </script>
@@ -316,9 +349,9 @@
         margin-left: 20px;
         display: inline-block;
     }
-    div {
-        padding: 8px 0;
-    }
+    // div {
+    //     padding: 8px 0;
+    // }
     .orderState {
         margin-left: 2%;
     }
