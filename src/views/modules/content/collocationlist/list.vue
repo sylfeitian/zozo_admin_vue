@@ -53,7 +53,7 @@
         >
             <el-table-column type="selection" width="70"></el-table-column>
             <el-table-column prop="idJp" label="ID" align="center"></el-table-column>
-            <el-table-column prop="imageUrl" label="封面图片" width="100" min-width="100" align="center" :resizable="false">
+            <el-table-column prop="imageUrl" label="封面图片" width="100" min-width="100" align="center">
                 <template slot-scope="scope">
                     <img
                         :src="scope.row.imageUrl | filterImgUrl"
@@ -74,14 +74,14 @@
             </el-table-column>
             <el-table-column prop="userNickname" label="用户" align="center"></el-table-column>
             <el-table-column prop="lookCount" width="80" label="搭配数量" align="center"></el-table-column>
-            <el-table-column prop="sate" width="120" min-width="120" label="发布状态" align="center" :resizable="false">
+            <el-table-column prop="sate" width="120" min-width="120" label="发布状态" align="center">
                 <template slot-scope="scope">
                     <el-tag v-if="scope.row.sate == 1" type="success">已发布</el-tag>
                     <el-tag v-if="scope.row.sate == 2" type="info">取消发布</el-tag>
                     <el-tag v-if="scope.row.sate == 0" type="info">待发布</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column width="120" min-width="120" prop="jpPublishState"  label="日本发布状态" align="center" :resizable="false">
+            <el-table-column width="120" min-width="120" prop="jpPublishState"  label="日本发布状态" align="center">
                 <template slot-scope="scope">
                     <el-tag v-if="scope.row.jpPublishState == 1" type="success">已发布</el-tag>
                     <el-tag v-if="scope.row.jpPublishState == 0" type="info">取消发布</el-tag>
