@@ -68,7 +68,7 @@
                     @keyup.enter.native="getDataList()"
             >
                 <div style="display:flex;padding:0">
-                    <div style="width:50%;">
+                    <div style="width:50%;"  v-if="row.fashionFlag == 0">
                         <p class="title" >日文</p>
                     </div>
                     <div style="width:50%" :class="row.fashionFlag==0?'borderLeftLine':''" >
@@ -77,7 +77,7 @@
                 </div>
 
                 <div style="display:flex;padding:0">
-                    <div style="width:50%;padding:0">
+                    <div style="width:50%;padding:0"  v-if="row.fashionFlag == 0">
                          <el-form-item label="纪实编号：" style="width:50%;">
                             <span>{{dataForm.idJp}}</span>
                         </el-form-item>
@@ -90,7 +90,7 @@
                 </div>
 
                 <div style="display:flex;padding:0">
-                    <div style="width:50%;padding:0">
+                    <div style="width:50%;padding:0"  v-if="row.fashionFlag == 0">
                         <el-form-item label="发布者：" style="width:50%;">
                             <span>{{dataForm.publisher}}</span>
                         </el-form-item>
@@ -103,7 +103,7 @@
                 </div>
 
                 <div style="display:flex;padding:0">
-                    <div style="width:50%;padding:0">
+                    <div style="width:50%;padding:0"  v-if="row.fashionFlag == 0">
                         <el-form-item label="收藏数量：">
                             <span>{{dataForm.totalFavNum}}</span>
                         </el-form-item>
@@ -116,7 +116,7 @@
                 </div>
 
                 <div style="display:flex;padding:0">
-                    <div style="width:50%;padding:0">
+                    <div style="width:50%;padding:0"  v-if="row.fashionFlag == 0">
                         <el-form-item label="浏览数量：">
                             <span>{{dataForm.viewsNum}}</span>
                         </el-form-item>
@@ -129,7 +129,7 @@
                 </div>
 
                 <div style="display:flex;padding:0">
-                    <div style="width:50%;padding:0">
+                    <div style="width:50%;padding:0"  v-if="row.fashionFlag == 0">
                         <el-form-item label="发布状态：">
                             <span>{{dataForm.isOpen == 1?"发布":dataForm.isOpen == 2?"未发布":""}}</span>
                         </el-form-item>
@@ -142,8 +142,8 @@
                 </div>
 
                 <div style="display:flex;padding:0">
-                    <div style="width:50%;padding:0">
-                        <el-form-item label="背景图：" style="height: 100%!important;">
+                    <div style="width:50%;padding:0"  v-if="row.fashionFlag == 0">
+                        <el-form-item label="背景图：" style="height: 100%!important;" >
                             <template slot-scope="scope">
                                 <div class="goodsPropsWrap">
                                     <div class="goodsImg">
@@ -167,63 +167,62 @@
                 </div>
 
                 <div style="display:flex;padding:0">
-                    <div style="width:50%;padding:0">
+                    <div style="width:50%;padding:8px 0"  v-if="row.fashionFlag == 0">
                          <el-form-item label="标题：" style="height: 100%!important;">
                             <span>{{dataForm.titleJp}}</span>
                         </el-form-item>
                     </div>
-                    <div style="width:50%;padding:0" :class="row.fashionFlag==0?'borderLeftLine':''">
+                    <div style="width:50%;padding:8px 0;" :class="row.fashionFlag==0?'borderLeftLine':''">
                         <el-form-item label="标题：" style="height: 100%!important;">
                             <el-input v-model.trim="dataForm.title" type="text" placeholder="请输入标题名称"></el-input>
                         </el-form-item>
                     </div>
                 </div>
-                <div style="display:flex;padding:0">
-                    <div style="width:50%;padding:0">
-                        <el-form-item label="详情：" style="height: 100%!important;">
-                            <template slot-scope="scope">
-                                <div style="display:flex;padding:0" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
-                                    <div v-if="v.text=='' || shopFashionContentsVOList[i].text || v.imageUrl"  v-show="row.fashionFlag == 0" style="padding: 0;;width: 100%;">
-                                        <!-- <div style="height: 20px;"></div> -->
-                                        <div :class="['contentChild','detail'+i]" style="min-height:33px;padding-right: 6px;padding: 0;text-align:left;" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
-                                            {{shopFashionContentsVOList[i].text}}
-                                        </div>
-                                        <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
-                                            <div class="goodsPropsWrap" style="text-align: center;">
-                                                <div class="goodsImg">
-                                                    <img :src="v.imageUrl | filterImgUrl" style="width:200px;" alt=""/>
-                                                </div>
-                                                <div v-if="v.typeId=='4'" :class="['imgbottomWrodJp'+i]">{{v.text}}</div>
-                                            </div>
-                                        </div>
+               <div style="display:flex;justify-content: center; ">
+                    <el-form-item label="详情：" style="width:50%;"  v-show="row.fashionFlag == 0"> </el-form-item>
+                    <el-form-item label="详情：" style="width:50%;"  :class="row.fashionFlag==0?'borderLeftLine':''"> </el-form-item>
+               </div>
+                <!-- <el-form-item label="详情：" style="height: 100%!important;"> -->
+                    <!-- <template slot-scope="scope"> -->
+                        <div style="display:flex;" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
+                            <div v-if="v.text=='' || v.text || shopFashionContentsVOList[i].text || v.imageUrl"  style="padding: 0;;width: 100%;">
+                                <div style="display:flex;justify-content: center; ">
+                                    <!-- 左边 -->
+                                    <div  style="width:50%;min-height:33px;padding:8px 3% 8px 3% ;text-align:left;" v-show="row.fashionFlag == 0" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
+                                        {{shopFashionContentsVOList[i].text}}
+                                    </div>
+                                    <!-- 右边 -->
+                                    <div  style="width:50%;min-height:33px;padding:8px 3% 8px 3% ;"    :class="row.fashionFlag==0?'borderLeftLine':''" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
+                                        <el-input style="margin: auto;" v-model="v.textCn" type="textarea" :rows="5" ></el-input>
                                     </div>
                                 </div>
-                            </template>
-                        </el-form-item>
-                    </div>
-                    <div style="width:50%;padding:0" :class="row.fashionFlag==0?'borderLeftLine':''">
-                        <el-form-item label="详情：" style="height: 100%!important;">
-                            <template slot-scope="scope">
-                                <div style="padding:0;" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
-                                    <div  v-if="v.text=='' || v.text || v.imageUrl" style="padding: 0;width:80%;margin-left:100px;">
-                                        <!-- <div style="height: 20px;"></div> -->
-                                        <div :class="['contentChild','inputHeight'+i]" style="min-height:33px;"  v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
-                                            <el-input style="margin: auto;" v-model="v.textCn" type="textarea" :rows="5" ></el-input>
-                                        </div>
-                                        <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
-                                            <div class="goodsPropsWrap" style="text-align: center;">
-                                                <div class="goodsImg">
+
+                                <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
+                                    <div class="goodsPropsWrap" style="text-align: center;">
+                                        <div style="display:flex;justify-content: center; " v-show="row.fashionFlag == 0">
+                                                <!-- 左边 -->
+                                                <div class="goodsImg" style="width:50%;padding:8px 3% 8px 3% ;">
                                                     <img :src="v.imageUrl | filterImgUrl" style="width:200px;" alt=""/>
                                                 </div>
-                                                <div v-if="v.typeId=='4'"   :class="['imgbottomWrodCn'+i]">{{v.textCn}}</div>
-                                            </div>
+                                                <!-- 右边 -->
+                                                <div class="goodsImg"  :class="row.fashionFlag==0?'borderLeftLine':''" style="width:50%;padding:8px 3% 8px 3% ;" >
+                                                    <img :src="v.imageUrl | filterImgUrl" style="width:200px;" alt=""/>
+                                                </div>
                                         </div>
+                                        <div style="display:flex;justify-content: center; ">
+                                            <!-- 左边 -->
+                                            <div v-if="v.typeId=='4'" style="width:50%;padding:8px 3% 8px 3% ;" v-show="row.fashionFlag == 0">{{v.text}}</div>
+                                            <!-- 右边 -->
+                                            <div v-if="v.typeId=='4'"  style="width:50%;;padding:8px 3% 8px 3% ;"    :class="row.fashionFlag==0?'borderLeftLine':''">
+                                                <el-input v-if="v.text != null" style="margin: auto;" v-model="v.textCn" type="textarea" :rows="5" ></el-input>
+                                            </div>
+                                            </div>
                                     </div>
                                 </div>
-                            </template>
-                        </el-form-item>
-                    </div>
-                </div>
+                            </div>
+                        </div>
+                    <!-- </template> -->
+                <!-- </el-form-item> -->
             </el-form>
         </el-col>
         <el-col :span="24">
@@ -259,7 +258,7 @@
                 shopFashionContentsVOList:[],
                 row:"",
                 timer: null, // 定时器
-                fullscreenLoading: true
+                fullscreenLoading: false
             }
         },
         components: {
@@ -269,12 +268,12 @@
         created(){
             // 判断页面加载完毕
             const that = this
-            that.timer = setInterval(function () {
-                if (document.readyState === 'complete') {
-                that.getHeight()
-                    window.clearInterval(that.timer)
-                }
-            }, 1500)
+            // that.timer = setInterval(function () {
+            //     if (document.readyState === 'complete') {
+            //     that.getHeight()
+            //         window.clearInterval(that.timer)
+            //     }
+            // }, 1500)
         },
         methods: {
             init(row){
@@ -342,22 +341,22 @@
                     }
                 })
             },
-            getHeight() {
-                for (let i = 0; i < this.shopFashionContentsVOList.length; i++) {
-                    // 详情文字的高度
-                    var fontHetght = $("."+'detail'+i).height()
-                    var fontHetght2 = $("."+'imgbottomWrodJp'+i).height()
-                    if (fontHetght < 147) {
-                        $("." + 'detail' + i).height(146.2)
-                          $("." + 'imgbottomWrodJp' + i).height(147)
+            // getHeight() {
+            //     for (let i = 0; i < this.shopFashionContentsVOList.length; i++) {
+            //         // 详情文字的高度
+            //         var fontHetght = $("."+'detail'+i).height()
+            //         var fontHetght2 = $("."+'imgbottomWrodJp'+i).height()
+            //         if (fontHetght < 147) {
+            //             $("." + 'detail' + i).height(147)
+            //               $("." + 'imgbottomWrodJp' + i).height(147)
                         
-                    } else {
-                        $("." + 'inputHeight' + i).height(fontHetght)
-                        $("." + 'imgbottomWrodCn' + i).height(fontHetght2)
-                    }
-                }
-                this.fullscreenLoading = false
-            }
+            //         } else {
+            //             $("." + 'inputHeight' + i).height(fontHetght)
+            //             $("." + 'imgbottomWrodCn' + i).height(fontHetght2)
+            //         }
+            //     }
+            //     this.fullscreenLoading = false
+            // }
         }
     }
 </script>
@@ -377,9 +376,9 @@
     .inforRight {
         display: inline-block;
     }
-    div {
-        padding: 8px 0;
-    }
+    // div {
+    //     padding: 8px 0;
+    // }
     .orderState {
         margin-left: 2%;
     }
