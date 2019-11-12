@@ -221,24 +221,31 @@
                         </el-form-item>
                     </div>
                 </div> -->
+                <div style="display:flex;justify-content: center; " v-if="row.fashionFlag == 0">
+                    <el-form-item label="详情：" style="width:50%;"  v-show="row.fashionFlag == 0"> </el-form-item>
+                    <el-form-item label="详情：" style="width:50%;"  :class="row.fashionFlag==0?'borderLeftLine':''"> </el-form-item>
+                </div>
+                <div style="width:50%;padding:0" v-else>
+                   <el-form-item label="详情：" style="width:50%;"  :class="row.fashionFlag==0?'borderLeftLine':''"> </el-form-item>
+                </div>
                 <div style="display:flex;" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
                     <div v-if="v.text=='' || v.text || v.textCn || v.imageUrl"  style="padding: 0;;width: 100%;">
-                        <div style="display:flex;justify-content: center; ">
+                        <div style="display:flex;" :style="{'justify-content':row.fashionFlag == 0?'center':'none'}">
                             <!-- 左边 -->
                             <div  style="width:50%;min-height:33px;padding:8px 3% 8px 3% ;text-align:left;" v-show="row.fashionFlag == 0" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'" v-html="v.text">
                                 <!-- {{shopFashionContentsVOList[i].text}} -->
                             </div>
                             <!-- 右边 -->
-                            <div  style="width:50%;min-height:33px;padding:8px 3% 8px 3% ;"    :class="row.fashionFlag==0?'borderLeftLine':''" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'" v-html="v.textCn">
+                            <div  style="width:50%;min-height:33px;padding:8px 3% 8px 3% ;" :style="{'text-align':row.fashionFlag == 0?'none':'center'}":class="row.fashionFlag==0?'borderLeftLine':''" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'" v-html="v.textCn">
                                 <!-- <el-input style="margin: auto;" v-model="v.textCn" type="textarea" :rows="5" ></el-input> -->
                             </div>
                         </div>
 
                         <div class="contentChild" v-if="v.typeId=='3'||v.typeId=='4'">
                             <div class="goodsPropsWrap" style="text-align: center;">
-                                <div style="display:flex;justify-content: center; " v-show="row.fashionFlag == 0">
+                                <div style="display:flex;" :style="{'justify-content':row.fashionFlag == 0?'center':'none'}">
                                         <!-- 左边 -->
-                                        <div class="goodsImg" style="width:50%;padding:8px 3% 8px 3% ;">
+                                        <div class="goodsImg" style="width:50%;padding:8px 3% 8px 3% ;" v-show="row.fashionFlag == 0">
                                             <img :src="v.imageUrl | filterImgUrl" style="width:200px;" alt=""/>
                                         </div>
                                         <!-- 右边 -->
@@ -246,7 +253,7 @@
                                             <img :src="v.imageUrl | filterImgUrl" style="width:200px;" alt=""/>
                                         </div>
                                 </div>
-                                <div style="display:flex;justify-content: center; ">
+                                <div style="display:flex;" :style="{'justify-content':row.fashionFlag == 0?'center':'none'}">
                                     <!-- 左边 -->
                                     <div v-if="v.typeId=='4'" style="width:50%;padding:8px 3% 8px 3% ;" v-show="row.fashionFlag == 0">{{v.text}}</div>
                                     <!-- 右边 -->

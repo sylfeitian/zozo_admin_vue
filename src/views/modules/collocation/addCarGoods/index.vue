@@ -29,6 +29,7 @@
                 border=""
                 style="width: 100%"
                 ref="multipleTable"
+                class="addcargoodstable"
             >
                 <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
                 <!-- <el-table-column
@@ -541,4 +542,11 @@ export default {
     line-height: 35px;
     width: 180px;
 }
+
+  /deep/ .el-form--inline .el-input {
+    width: 180px!important;
+  }
+  /deep/ .el-form--inline .el-input .el-input__inner {
+    height: 40px!important;
+  }
 </style>
