@@ -71,6 +71,13 @@
   <!-- <script>window.SITE_CONFIG['imgURL'] = 'http://oss-cn-beijing.speedycloud.org';</script> -->
   <script>window.SITE_CONFIG['imgURL'] = 'http://cdn.zozo.cn/image';</script>
   <% } %>
+  <!-- 验证测试环境-->
+  <% if (process.env.VUE_APP_NODE_ENV === 'prod:test') { %>
+    <script>window.SITE_CONFIG['apiURL'] = 'http://47.104.214.191:19093';</script>
+    <!-- <script>window.SITE_CONFIG['imgURL'] = 'http://62.234.0.169:8888';</script> -->
+    <!-- <script>window.SITE_CONFIG['imgURL'] = 'http://oss-cn-beijing.speedycloud.org';</script> -->
+    <script>window.SITE_CONFIG['imgURL'] = 'http://cdn.zozo.cn/image';</script>
+  <% } %>
   <!-- 生产环境 -->
   <% if (process.env.VUE_APP_NODE_ENV === 'prod') { %>
   <!-- <script>window.SITE_CONFIG['apiURL'] = 'https://adminapi.zozo.cn/';</script> -->
