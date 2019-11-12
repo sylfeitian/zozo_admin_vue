@@ -109,7 +109,7 @@
             <el-table-column prop="" label="商品图片" align="center">
                 <template slot-scope="scope">
                     <img
-                        :src="scope.row.mainImageUrl | filterImgUrl"
+                        :src="scope.row.image | filterImgUrl"
                         alt=""
                         style=" object-fit: contain;width: 70px;height:70px;border-radius:100px;"
                     >
