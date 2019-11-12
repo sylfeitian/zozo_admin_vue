@@ -268,9 +268,6 @@
 
 <style lang="scss" scoped>
     @import "@/element-ui/theme-variables.scss";
-    .grayLine{
-        border-bottom: 0!important;
-    }
     .bottomFun {
         display: flex;
         justify-content: space-between;
