@@ -99,6 +99,26 @@
           ></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="下发状态：">
+        <el-select v-model="dataFormShow.transportFlag" placeholder="请选择">
+          <el-option
+            v-for="item in transportOptions"
+            :key="item.id"
+            :label="item.label"
+            :value="item.id"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="店铺状态：">
+        <el-select v-model="dataFormShow.operateFlag" placeholder="请选择">
+          <el-option
+            v-for="item in operateOptions"
+            :key="item.id"
+            :label="item.label"
+            :value="item.id"
+          ></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button class="btn" type="primary" @click="getData()">搜索</el-button>
         <el-button class="btn" type="primary" plain @click="reset()">重置</el-button>
@@ -311,7 +331,9 @@ export default {
         brandName: "", //品牌名称
         sellState: "", //是否可售
         showWeb: "", //上下架状态:0：待上架，1：已上架，2：下架 ,
-        priceState: "" //价格变更
+        priceState: "", //价格变更
+        transportFlag:"", // 下发状态
+        operateFlag: "" // 店铺状态
       },
       classList: [],
       props: {
@@ -332,6 +354,13 @@ export default {
         { id: "1", label: "价格上涨" },
         { id: "2", label: "价格下降" },
         { id: "3", label: "倒挂" }
+      ],
+      transportOptions: [{id:"",label:"全部"},{ id: "0", label: "未下发" }, { id: "1", label: "已下发" }],
+      operateOptions: [
+        { id:"",label:"全部"},
+        { id: "0", label: "待营业" },
+        { id: "1", label: "营业中" },
+        { id: "2", label: "已停业" }
       ],
       activeName: "",
       data: {}, //总数据
@@ -472,6 +501,10 @@ export default {
       this.dataFormShow.priceState = "";
       this.dataFormShow.categoryId = "";
       this.dataFormShow.sellState = "";
+      this.dataFormShow.transportFlag = "";
+      this.dataFormShow.operateFlag = "";
+      this.dataForm.operateFlag = "";
+      this.dataForm.transportFlag = "";
       this.dataForm.categoryId = "";
       this.dataForm.goodsName = "";
       this.dataForm.idJp = "";
