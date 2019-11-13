@@ -110,6 +110,7 @@
                     <!-- <el-button size="mini" type="text" @click="exammineFn(scope.row)" >审核</el-button> -->
                     <el-button size="mini" type="text" @click="confirmGoodsFn(scope.row)" v-if="scope.row.status==20">确认收货</el-button>
                     <el-button size="mini" type="text" @click="returnMoneyFn(scope.row)"  v-if="scope.row.status==30">同意退款</el-button>
+                    <el-button size="mini" type="text" @click="retryFn(scope.row)"  v-if="scope.row.status==60">同意退款</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -131,6 +132,8 @@
         <!-- <returnGoodsModel v-if="returnGoodsVisible" ref="returnGoodsCompon"></returnGoodsModel> -->
         <!-- 退款 -->
         <returnMoneyModel v-if="returnMoneyVisible" ref="returnMoneyCompon" @searchDataList="getDataList"></returnMoneyModel>
+        <!-- 退款失败时的同意退款 -->
+        <retryModel v-if="retryVisible" ref="retryCompon" @searchDataList="getDataList"></retryModel>
     </div>
 </template>
 <script>
@@ -141,6 +144,7 @@
     // import exammine from '../modules-return/model-exammine.vue'
     import confirmGoodsModel from '../modules-return/model-confirm-goods.vue'
     import returnMoneyModel from "../modules-return/model-return-money";
+    import retryModel from "../modules-return/model-retry";
     
     export default {
         mixins: [mixinViewModule],
@@ -178,6 +182,7 @@
                 confirmGoodsVisible:false,
                 // returnGoodsVisible:false,
                 returnMoneyVisible:false,
+                retryVisible:false,
                 goodsData: [], //售后商品table
                 saleGoods: [], //售后申请数据
                 params: {
@@ -191,6 +196,7 @@
             // exammine,
             confirmGoodsModel,
             returnMoneyModel,
+            retryModel
         },
         watch:{
         	'dataForm.orderSn':function(newV,oldV) {
@@ -295,11 +301,18 @@
                 // })
             // },
             // 同意退货
-             returnMoneyFn(row){
+            returnMoneyFn(row){
                 this.returnMoneyVisible = true;
                 row.isAgree= 1;
                 this.$nextTick(() => {
                    this.$refs.returnMoneyCompon.init(row)
+                })
+            },
+            // 退款失败时的同意退款
+            retryFn(row){
+                this.retryVisible = true;
+                this.$nextTick(() => {
+                   this.$refs.retryCompon.init(row)
                 })
             },
 

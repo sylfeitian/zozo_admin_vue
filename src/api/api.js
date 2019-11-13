@@ -828,6 +828,8 @@ export const aftersaleComfirm = params => { return http.put(`${base}/aftersale/r
 export const aftersaleReturnVerify = params => { return http.put(`${base}/aftersale/return/verify`, params).then(res => res.data); };
 // 退货退款|仅退款分页数据
 export const aftersaleReturnrReason = params => { return http.get(`${base}/aftersale/return/return/reason`, params).then(res => res.data); };
+//退款失败重试
+export const retryMoney = params => { return http.post(`${base}/aftersale/return/refund/money/retry`, params).then(res => res.data); };
 
 //操作日志-------------------------------------------------------------------------------------------------------------
 // 导出
