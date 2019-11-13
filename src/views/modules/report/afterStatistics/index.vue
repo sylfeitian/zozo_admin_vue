@@ -129,7 +129,12 @@
                     <span v-if="scope.row.payTypeDec == 2" >支付宝</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="realRefundAmount" label="退款金额" align="center"></el-table-column>
+            <el-table-column prop="realRefundAmount" label="退款金额" align="center">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.status==50" >￥{{scope.row.realRefundAmount}}</span>
+                    <span v-else>￥0.00</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="skuid" label="SKUID" align="center"></el-table-column>
             <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
             <el-table-column prop="spuid" label="商品ID（SPU）" align="center"></el-table-column>
@@ -137,7 +142,12 @@
             <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
             <el-table-column prop="reason" label="售后原因" align="center"></el-table-column>
             <el-table-column prop="goodsNum" label="退款数量" align="center"></el-table-column>
-            <el-table-column prop="realSalePrice" label="退款金额（件）" align="center"></el-table-column>
+            <el-table-column prop="realSalePrice" label="退款金额（件）" align="center">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.status==50" >￥{{scope.row.realSalePrice}}</span>
+                    <span v-else>￥0.00</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="JpCancelOrderSn" label="日方取消订单号" align="center"></el-table-column>
 
         </el-table>
