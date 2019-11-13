@@ -124,10 +124,10 @@
                 </template>
             </el-table-column>
             <el-table-column prop="payTypeDec" label="退款路径" align="center">
-                <template slot-scope="scope">
+                <!-- <template slot-scope="scope">
                     <span v-if="scope.row.payTypeDec == 1" >微信支付</span>
                     <span v-if="scope.row.payTypeDec == 2" >支付宝</span>
-                </template>
+                </template> -->
             </el-table-column>
             <el-table-column prop="realRefundAmount" label="退款金额" align="center">
                 <template slot-scope="scope">
