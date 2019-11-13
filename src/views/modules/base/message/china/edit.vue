@@ -265,9 +265,9 @@
          			{ required: true, message: '必填项不能为空', trigger: 'blur' },
          			{ validator: sortminmax,trigger: 'blur'},
 				],
-				categoryJpId:[
-					{ required: true, message: '必填项不能为空', trigger: 'blur' },
-				],
+				// categoryJpId:[
+				// 	{ required: true, message: '必填项不能为空', trigger: 'blur' },
+				// ],
 	        	appraisal: [
 					{ required: true, message: '必填项不能为空', trigger: 'blur' },
 					{ validator: validateAppraisal,trigger: 'blur'},
@@ -480,14 +480,14 @@
 					if(this.yijishow){
 						ids = this.$refs.treeCategory.getCheckedKeys(true);
 						console.log(ids);
-						if(ids.length==0){
-							this.$message({
-								message: '请选择关联分类',
-								type: 'warning',
-								duration: 1500
-							})
-							return false;
-						}
+						// if(ids.length==0){
+						// 	this.$message({
+						// 		message: '请选择关联分类',
+						// 		type: 'warning',
+						// 		duration: 1500
+						// 	})
+						// 	return false;
+						// }
 					}
 				
 					//确定提交
