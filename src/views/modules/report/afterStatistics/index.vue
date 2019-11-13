@@ -95,18 +95,25 @@
             <el-table-column prop="status" label="售后状态" align="center">
                    <!-- （退货退款 10待审核、20待退货、30待入库、40待退款、50退款中、60退款完成、70退款失败、80售后取消） 仅退款（10退款中、20退款完成、30退款失败） -->
                     <template slot-scope="scope">
-                        <el-tag v-if="scope.row.auditStatus==0" type="danger">待审核</el-tag>
-                        <el-tag v-else-if="scope.row.auditStatus==2" type="danger">审核不通过</el-tag>
-                        <el-tag v-else-if="scope.row.auditStatus==3" type="danger">已取消</el-tag>
-                        <!-- 审核通过 -->
-                        <div  v-else-if="scope.row.auditStatus==1">
-                            <el-tag v-if="scope.row.status==10" type="danger">待退货</el-tag>
-                            <el-tag v-else-if="scope.row.status==20" type="danger">待入库</el-tag>
-                            <el-tag v-else-if="scope.row.status==30" type="danger">待退款</el-tag>
-                            <el-tag v-else-if="scope.row.status==40" type="danger">退款中</el-tag>
-                            <el-tag v-else-if="scope.row.status==50" type="danger">退款完成</el-tag>
-                            <el-tag v-else-if="scope.row.status==60" type="danger">退款失败</el-tag>
-                            <el-tag v-else-if="scope.row.status==70" type="danger">售后取消</el-tag>
+                        <div v-if="scope.row.aftersaleType == 0" >
+                            <el-tag v-if="scope.row.auditStatus==0" type="danger">待审核</el-tag>
+                            <el-tag v-else-if="scope.row.auditStatus==2" type="danger">审核不通过</el-tag>
+                            <el-tag v-else-if="scope.row.auditStatus==3" type="danger">已取消</el-tag>
+                            <!-- 审核通过 -->
+                            <div  v-else-if="scope.row.auditStatus==1">
+                                <el-tag v-if="scope.row.status==10" type="danger">待退货</el-tag>
+                                <el-tag v-else-if="scope.row.status==20" type="danger">待入库</el-tag>
+                                <el-tag v-else-if="scope.row.status==30" type="danger">待退款</el-tag>
+                                <el-tag v-else-if="scope.row.status==40" type="danger">退款中</el-tag>
+                                <el-tag v-else-if="scope.row.status==50" type="danger">退款完成</el-tag>
+                                <el-tag v-else-if="scope.row.status==60" type="danger">退款失败</el-tag>
+                                <el-tag v-else-if="scope.row.status==70" type="danger">售后取消</el-tag>
+                            </div>
+                        </div>
+                        <div v-if="scope.row.aftersaleType == 1" >
+                            <el-tag v-if="scope.row.status==10" type="danger">退款中</el-tag>
+                            <el-tag v-else-if="scope.row.status==20" type="danger">退款完成</el-tag>
+                            <el-tag v-else-if="scope.row.status==30" type="danger">退款失败</el-tag>
                         </div>
                     </template>
             </el-table-column>
@@ -122,7 +129,12 @@
                     <span v-if="scope.row.payTypeDec == 2" >支付宝</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="realRefundAmount" label="退款金额" align="center"></el-table-column>
+            <el-table-column prop="realRefundAmount" label="退款金额" align="center">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.status==50" >￥{{scope.row.realRefundAmount}}</span>
+                    <span v-else>￥0.00</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="skuid" label="SKUID" align="center"></el-table-column>
             <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
             <el-table-column prop="spuid" label="商品ID（SPU）" align="center"></el-table-column>
@@ -130,7 +142,12 @@
             <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
             <el-table-column prop="reason" label="售后原因" align="center"></el-table-column>
             <el-table-column prop="goodsNum" label="退款数量" align="center"></el-table-column>
-            <el-table-column prop="realSalePrice" label="退款金额（件）" align="center"></el-table-column>
+            <el-table-column prop="realSalePrice" label="退款金额（件）" align="center">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.status==50" >￥{{scope.row.realSalePrice}}</span>
+                    <span v-else>￥0.00</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="JpCancelOrderSn" label="日方取消订单号" align="center"></el-table-column>
 
         </el-table>
