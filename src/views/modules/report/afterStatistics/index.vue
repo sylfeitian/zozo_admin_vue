@@ -131,7 +131,7 @@
             </el-table-column>
             <el-table-column prop="realRefundAmount" label="退款金额" align="center">
                 <template slot-scope="scope">
-                    <span v-if="scope.row.status==50" >￥{{scope.row.realRefundAmount}}</span>
+                    <span v-if="scope.row.status==50 || (scope.row.status==20&&scope.row.aftersaleType == 1)">￥{{scope.row.realRefundAmount}}</span>
                     <span v-else>￥0.00</span>
                 </template>
             </el-table-column>
@@ -144,7 +144,7 @@
             <el-table-column prop="goodsNum" label="退款数量" align="center"></el-table-column>
             <el-table-column prop="realSalePrice" label="退款金额（件）" align="center">
                 <template slot-scope="scope">
-                    <span v-if="scope.row.status==50" >￥{{scope.row.realSalePrice}}</span>
+                    <span v-if="scope.row.status==50 || (scope.row.status==20&&scope.row.aftersaleType == 1)">￥{{scope.row.realSalePrice}}</span>
                     <span v-else>￥0.00</span>
                 </template>
             </el-table-column>
