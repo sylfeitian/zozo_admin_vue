@@ -28,7 +28,7 @@
                 </el-cascader>
             </el-form-item>
             <el-form-item  label="品牌：">
-                <el-select v-model="dataFormShow.brandId" placeholder="请选择">
+                <el-select v-model="dataFormShow.brandId" filterable placeholder="请选择">
                     <el-option
                             v-for="item in brandName"
                             :key="item.id"
@@ -38,7 +38,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item  label="所属店铺：">
-                <el-select v-model="dataFormShow.storeId" placeholder="请选择">
+                <el-select v-model="dataFormShow.storeId" filterable placeholder="请选择">
                     <el-option
                             v-for="item in storeName"
                             :key="item.id"
