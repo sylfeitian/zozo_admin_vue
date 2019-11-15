@@ -4,19 +4,19 @@
         <div>
             <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getDataList()">
                 <el-form-item label="商品名称：">
-                    <el-input v-model.trim="dataForm.dictName" placeholder="请输入商品名称" clearable></el-input>
+                    <el-input v-model.trim="dataForm.dictName" placeholder="请输入商品名称"></el-input>
                 </el-form-item>
                 <el-form-item label="商品ID：">
-                    <el-input v-model.trim="dataForm.dictName" placeholder="请输入商品名称" clearable></el-input>
+                    <el-input v-model.trim="dataForm.dictName" placeholder="请输入spuID"></el-input>
                 </el-form-item>
                 <el-form-item label="分类">
-                    <el-input v-model.trim="dataForm.dictName" placeholder="请输入商品名称" clearable></el-input>
+                    <el-input v-model.trim="dataForm.dictName" placeholder="请选择"></el-input>
                 </el-form-item>
                 <el-form-item label="店铺名称：">
-                    <el-input v-model.trim="dataForm.dictName" placeholder="请输入商品名称" clearable></el-input>
+                    <el-input v-model.trim="dataForm.dictName" placeholder="请输入店铺名称" clearable></el-input>
                 </el-form-item>
                 <el-form-item label="品牌名称：">
-                    <el-input v-model.trim="dataForm.dictName" placeholder="请输入商品名称" clearable></el-input>
+                    <el-input v-model.trim="dataForm.dictName" placeholder="请输入品牌名称" clearable></el-input>
                 </el-form-item>
                 <el-form-item label="上架状态：">
                     <el-select v-model="dataForm.showWeb" placeholder="请选择">
@@ -43,7 +43,12 @@
                     <el-button  class="btn" type="primary" plain @click="reset()" >重置</el-button>
                 </el-form-item>
             </el-form>
-            <el-button type="primary" @click="addOrUpdateHandle()">导出</el-button>
+            <el-form>
+            <el-form-item>
+                    <!-- <el-button @click="" class="btn" type="primary">导出</el-button> -->
+                    <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
+                </el-form-item>
+            </el-form>
             <el-table
                     v-loading="dataListLoading"
                     :data="dataList"
@@ -126,11 +131,19 @@
     import mixinViewModule from '@/mixins/view-module'
     import Bread from "@/components/bread";
     import { dictUrl,deleteDict } from '@/api/url'
+    import importAndExport from "@/components/import-and-export"
+    import { statisticsStoreExport } from "@/api/io";
 
     export default {
         mixins: [mixinViewModule],
         data () {
             return {
+                importAndExportOptions:{
+                    // importUrl:colorImportExcel,//导入接口
+                    // importWord:"导入信息",
+                    exportUrl:statisticsStoreExport,//导出接口
+                    exportWord:"导出",
+                },
                 mixinViewModuleOptions: {
                     activatedIsNeed: false,
                     getDataListURL: dictUrl,
@@ -158,7 +171,8 @@
             }
         },
         components: {
-            Bread
+            Bread,
+            importAndExport
         },
          watch:{
             'dataForm.dictName':function(newV,oldV) {

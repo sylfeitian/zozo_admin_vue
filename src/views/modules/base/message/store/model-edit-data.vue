@@ -50,6 +50,7 @@
                                         style="display: inline-block;"
                                 ></img-cropper>
                             </div>
+                            <div style="color:#999;">建议尺寸：750*700px</div>
                         </template>
                     </el-form-item>
                 </el-col>
@@ -69,6 +70,7 @@
                                         style="display: inline-block;"
                                 ></img-cropper>
                             </div>
+                            <div style="color:#999;">建议尺寸：132*132px</div>
                         </template>
                     </el-form-item>
                 </el-col>
