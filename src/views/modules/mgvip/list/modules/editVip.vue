@@ -186,6 +186,8 @@ import { isMobile,isIdCard } from '@/utils/validate'
                         if(this.dataForm.memberState == true) this.dataForm.memberState = 0;
                         else if(this.dataForm.memberState == false) this.dataForm.memberState = 1;
                         var obj = cloneDeep(this.dataForm);
+                        if(this.dataForm.memberState == 0) this.dataForm.memberState = true;
+                        else if(this.dataForm.memberState == 1) this.dataForm.memberState = false;
                         updateZozomember(obj).then((res)=>{
                             console.log(res);
                             if(res.code==200){
