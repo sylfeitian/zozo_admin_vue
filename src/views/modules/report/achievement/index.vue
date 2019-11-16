@@ -64,7 +64,7 @@
             <el-table-column prop="cancelOrderAmount" label="已取消订单金额" align="center"></el-table-column>
             <el-table-column prop="aftersaleNum" label="退单数量" align="center"></el-table-column>
             <el-table-column prop="aftersaleAmount" label="退单金额" align="center"></el-table-column>
-            <el-table-column prop="customerAmount" label="客单价" align="center"></el-table-column>
+            <el-table-column prop="customerAmount" label="平均单价" align="center"></el-table-column>
         </el-table>
         <!-- 分页 -->
         <el-pagination
