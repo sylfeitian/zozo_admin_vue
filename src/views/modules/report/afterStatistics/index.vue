@@ -98,7 +98,7 @@
                         <div v-if="scope.row.aftersaleType == 0" >
                             <el-tag v-if="scope.row.auditStatus==0" type="danger">待审核</el-tag>
                             <el-tag v-else-if="scope.row.auditStatus==2" type="danger">审核不通过</el-tag>
-                            <el-tag v-else-if="scope.row.auditStatus==3" type="danger">已取消</el-tag>
+                            <el-tag v-else-if="scope.row.auditStatus==3" type="danger">售后取消</el-tag>
                             <!-- 审核通过 -->
                             <div  v-else-if="scope.row.auditStatus==1">
                                 <el-tag v-if="scope.row.status==10" type="danger">待退货</el-tag>
@@ -189,7 +189,7 @@
                 breaddata: [ "报表中心", "售后统计"],
                 operateShopStore:[ {payType: '', name: '全部' },{ payType: 'alipay', name: '支付宝' },{ payType: 'wechat', name: '微信' }],//统计维度
                 operateShopStore2:[{refundType:"",name:"全部"},{refundType:"0",name:"退货退款"},{refundType:"1",name:"仅退款"}],
-                operateShopStore3:[{status:"",name:"全部"},{status:"0",name:"待审核"},{status:"10",name:"待退货"},{status:"20",name:"待入库"},{status:"30",name:"待退款"},{status:"50",name:"退款完成"},{status:"70",name:"售后取消"}],
+                operateShopStore3:[{status:"",name:"全部"},{status:"0",name:"待审核"},{status:"10",name:"待退货"},{status:"20",name:"待入库"},{status:"30",name:"待退款"},{status:"40",name:"退款中"},{status:"50",name:"退款完成"},{status:"60",name:"退款失败"},{status:"70",name:"售后取消"}],
                 valuetime1:"",
                 valuetime2:"",
                 dataForm: {
