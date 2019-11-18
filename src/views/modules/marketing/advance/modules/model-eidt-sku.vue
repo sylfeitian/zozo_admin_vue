@@ -47,7 +47,7 @@
                     <el-form-item
                             class="specError"
                             :prop="'goodsSpecList.'+ scope.$index + '.activityQuantity' "
-                            :rules="dataRule.activityQuantity"
+                            :rules="multipleSelection.indexOf(scope.row)!=-1?dataRule.activityQuantity:nullRule"
                     >
                     <el-input
                               v-model="scope.row.activityQuantity"
@@ -81,7 +81,7 @@
                     <el-form-item
                             class="specError"
                             :prop=" 'goodsSpecList.' + scope.$index + '.personLimit' "
-                            :rules="dataRule.personLimit"
+                            :rules="multipleSelection.indexOf(scope.row)!=-1?dataRule.activityQuantity:nullRule"
                     >
                     <el-input v-model="scope.row.personLimit"
                               :maxlength="6"
