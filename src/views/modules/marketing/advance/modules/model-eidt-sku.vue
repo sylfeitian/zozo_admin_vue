@@ -165,6 +165,7 @@
                 moneyNum:99.9,
                 kucun:'',
                 row:'',
+                nullRule:[],
                 row2:'',
                 type:'',//choose修改；edit编辑
                 isLimit: "", //当前选中行的日本限制数量
