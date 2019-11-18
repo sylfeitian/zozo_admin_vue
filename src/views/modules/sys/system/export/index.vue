@@ -54,10 +54,9 @@
 		    label="状态"
 			align="center">
 			<template slot-scope="scope">
-				<el-tag v-if="scope.row.operationStatus==0" type="info">失败</el-tag>
-				<el-tag v-if="scope.row.operationStatus==1" type="success">进行中</el-tag>
-				<el-tag v-if="scope.row.operationStatus==2" type="warning">已完成</el-tag>
-				<el-tag v-if="scope.row.operationStatus==3" type="warning">操作失败</el-tag>
+				<el-tag v-if="scope.row.operationStatus==0" type="warning">失败</el-tag>
+				<el-tag v-if="scope.row.operationStatus==1" type="info">进行中</el-tag>
+				<el-tag v-if="scope.row.operationStatus==2" type="success">已完成</el-tag>
 			</template>
 		</el-table-column>
 	    <el-table-column
