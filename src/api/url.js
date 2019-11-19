@@ -504,3 +504,8 @@ export const getsysversionmange = `${base}/sysversionmange/page`;
 
 // 导出管理
 export const getsysexportmanagement = `${base}/sysexportmanagement/page`;
+
+
+//限时折扣
+export const getseckillJpUrl = `${base}/seckillJp/page`;
+export const getseckillJpGoods = `${base}/seckillJp/goods/page`;
