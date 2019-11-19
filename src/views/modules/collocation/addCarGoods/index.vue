@@ -494,7 +494,7 @@ export default {
     },
     // 弹框分页, 当前页
     pageCurrent(val) {
-      this.page = val;
+      this.pages = val;
       this.getgoodsList();
     },
 
