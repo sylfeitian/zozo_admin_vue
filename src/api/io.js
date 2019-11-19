@@ -78,8 +78,9 @@ export const couponsExportRegisterUrl = `${allBase}/statistics/coupons/export`;
 export const postfileupload = `${allBase}/fileupload/appversion`;
 
 
-
-
+// 导入导出管理
+// 导入失败信息导出
+export const sysexportmanagementExport = `${allBase}/sysexportmanagement/error/export`;
 
 
 

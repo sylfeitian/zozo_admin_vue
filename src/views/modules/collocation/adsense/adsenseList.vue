@@ -533,10 +533,13 @@
             //取消弹框
             noCheck(formName){
                 this.$refs[formName].resetFields();
-                this.activiDataForm.imageSrc = '';
-                this.checkItem = '';
-                this.checkFunStatus = ''
-                this.activiDataForm.sort = 0;
+                this.activiDataForm.imageSrc = "";
+                this.activiDataForm.position = "";
+                this.activiDataForm.name = "";
+                this.activiDataForm.sort = "";
+                this.fileList = "";
+                this.activiDataForm.state = 1;
+                this.activiDataForm.linkType = 0;
                 console.log(this.activiDataForm.fileList)
                 this.activiVisible = false;
             },

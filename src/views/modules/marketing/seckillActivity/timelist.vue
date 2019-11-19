@@ -377,7 +377,7 @@ export default {
 }
 .activiDialog {
   .el-input {
-    width: 300px;
+    width: 200px;
   }
 }
     .ques{

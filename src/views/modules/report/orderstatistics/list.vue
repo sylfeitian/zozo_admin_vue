@@ -107,7 +107,7 @@
 		<el-form>
       	<el-form-item>
 	    	<!-- <el-button  class="btn" type="primary" plain @click="artaddmassage()">导出数据</el-button> -->
-			<importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
+			<importAndExport :btType="'primary'" :downType="2" :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
 	  	</el-form-item>
     </el-form>
 	<el-table

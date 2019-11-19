@@ -1101,4 +1101,6 @@ export const addfileupload = params => { return http.post(`${base}/sysversionman
 export const postfileupload = params => { return http.post(`${base}/fileupload/appversion`, params).then(res => res.data); };
 
 
-
+// 导出管理
+export const sysexportmanagementPage = params => { return http.get(`${base}/sysexportmanagement/page`, params).then(res => res.data); };
+ 

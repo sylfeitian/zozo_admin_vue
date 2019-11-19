@@ -72,7 +72,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="上架状态：">
-        <el-select v-model="dataFormShow.showWeb" @change="handleClick1" placeholder="请选择">
+        <el-select v-model="dataFormShow.showWeb" placeholder="请选择">
           <el-option
             v-for="item in showOptions"
             :key="item.id"
@@ -437,6 +437,19 @@ export default {
             }
         }
     },
+    'dataFormShow.showWeb':function(newV,oldV) {
+				console.log(newV);
+				console.log(this.dataFormShow.showWeb);
+        if(newV==''){
+          this.activeName = "";
+        } else if(newV=='0'){
+          this.activeName = "not";
+        } else if(newV=='1'){
+          this.activeName = "upper";
+        } else if(newV=='2'){
+          this.activeName = "lower";
+        }
+    },
   },
   created() {
     // 第一次请求数据
@@ -481,20 +494,6 @@ export default {
       this.changeVal = val;
       this.dataForm.showWeb = this.dataFormShow.showWeb;
       console.log(this.changeVal);
-      this.getDataList();
-    },
-    handleClick1(showWeb,tab) {
-      console.log(showWeb);
-      console.log(tab);
-      if (showWeb == "") {
-        this.tab = ""
-      } else if (showWeb == "1") {
-        this.tab = "upper"
-      } else if (showWeb = "2") {
-        this.tab = "lower"
-      } else if (showWeb = "0") {
-        this.tab = "not"
-      }
       this.getDataList();
     },
     getData() {

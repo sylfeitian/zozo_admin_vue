@@ -14,28 +14,35 @@
             label-width="120px"
         >
             <el-form-item label="导入成功条数：">
-                <span>{{dataForm.idJp}}</span>
+                <span>{{dataForm.successfulNumber}}</span>
             </el-form-item>
             <el-form-item label="导入失败条数：">
-                <span>{{dataForm.nameJp}}</span>
-                <span style="margin-left:10px;color: #2260D2;">导出详情</span>
+                <span>{{dataForm.failureNumber}}</span>
+                <importAndExport :btType="'text'" :downType="1" :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList" style="margin-left:10px;"></importAndExport>
             </el-form-item>
         </el-form>
     </el-dialog>
 </template>
 
 <script>
-    import { backScanColor,updateColor } from '@/api/api'
+    import mixinViewModule from '@/mixins/view-module'
+    // import { backScanColor,updateColor } from '@/api/api'
+    import importAndExport from "@/components/import-and-export"
+    import { sysexportmanagementExport} from "@/api/io.js"
     export default {
-        name: "model-add-edit-data",
+        mixins: [mixinViewModule],
         data () {
             return {
+                importAndExportOptions:{
+                    exportUrl:sysexportmanagementExport,//导出接口
+                    exportWord:"导出详情",
+                },
                 visible : false,
                 loading : false,
                 dataForm: {
                     id: "",
-                    nameJp: "",
-                    name: "",
+                    successfulNumber: "",
+                    failureNumber: "",
                 },
                 optionsApplication: [],
                 optionsRight: [],
@@ -45,6 +52,7 @@
             }
         },
         components:{
+            importAndExport
         },
         computed:{},
         mounted(){},
@@ -53,27 +61,17 @@
                 this.visible = true;
                 this.row = row;
                 this.title="查看详情";
-                this.backScan();
-                this.$nextTick(() => {
-                    this.$refs['addForm'].resetFields();
-                    // this.getApplyPullList();
-                })
+                // this.dataForm.id = row.id
+                this.backScan(row);
+                // this.$nextTick(() => {
+                //     this.$refs['addForm'].resetFields();
+                //     // this.getApplyPullList();
+                // })
             },
             //编辑回显
-            backScan(){
-                var obj  = {
-                    id:this.row.id,
-                    nameJp:this.row.nameJp,
-                    name:this.row.name
-                }
-                backScanColor(obj).then((res)=>{
-                    if(res.code == 200){
-                        Object.assign(this.dataForm,res.data);
-
-                    }else{
-
-                    }
-                })
+            backScan(row){
+                console.log(row)
+                this.dataForm = row;
             },
             dataFormCancel(){
                 this.visible = false;

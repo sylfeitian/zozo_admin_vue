@@ -334,7 +334,7 @@
             // 点击放大图片
             handlePictureCardPreview(url) {
                 // 拿到原图的宽高
-                this.oImgWidth = document.getElementById("oImg").naturalWidth;
+                this.oImgWidth = document.getElementById("oImg").style.naturalHeight='800px';
                 this.oImgHeight = document.getElementById("oImg").naturalHeight;
                 this.dialogVisible = true;
                 if(url){
