@@ -95,10 +95,13 @@ export default {
             // 请求后端接口
             exportByInterface(){
                 let that = this;
-                var  params = {
-                    ...this.dataForm
+                var  obj = {
+                    params:{
+                        ...this.dataForm
+                    }
+                    
                  }
-                 http.get(`${this.importAndExportOptions.exportUrl}`, params).then(res =>{
+                 http.get(`${this.importAndExportOptions.exportUrl}`, obj).then(res =>{
                      res = res.data
                     if(res.code==200){
                         that.$message({
