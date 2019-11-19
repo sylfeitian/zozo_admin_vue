@@ -1,6 +1,6 @@
 <template>
     <div style="display: inline-block;">
-       <el-button v-if="importAndExportOptions && importAndExportOptions.exportUrl" class="btn" type="primary" @click="exportExcel">{{importAndExportOptions.exportWord}}</el-button>
+       <el-button v-if="importAndExportOptions && importAndExportOptions.exportUrl" class="btn" :type="btType" @click="exportExcel">{{importAndExportOptions.exportWord}}</el-button>
         <el-upload
             v-if="importAndExportOptions && importAndExportOptions.importUrl"
             style="display:inline-block"
@@ -17,7 +17,7 @@
             :on-progress="handleProgress"
             @on-change="handleChange"
             >
-                <el-button slot="trigger"  class="btn"  type="primary">{{uploadLoading?"导入中...":importAndExportOptions.importWord}}</el-button>
+                <el-button slot="trigger"  class="btn"  :type="btType">{{uploadLoading?"导入中...":importAndExportOptions.importWord}}</el-button>
                 <!-- <div slot="tip" class="el-upload__tip">只能上传excel格式视频，且不超过10M</div> -->
         </el-upload>
     </div>
@@ -44,6 +44,10 @@ export default {
             type: Number,//// 1  是正常下载，2是请求接口
             default: 1
         },
+        btType:{
+            type: String,
+            defalut: "primary"
+        }
     },
     data () {
         return {
