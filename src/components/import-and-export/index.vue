@@ -25,9 +25,26 @@
 <script>
 import Cookies from 'js-cookie'
 import qs from 'qs'
+import http from '@/utils/request'
+
 export default {
     name:'bread',
-    props: ['importAndExportOptions','dataForm'],
+    // type==1
+    // props: ['importAndExportOptions','dataForm',"type"],
+    props:{
+        importAndExportOptions: {
+            type: Object,
+            default: ""
+        },
+        dataForm: {
+            type: Object,
+            default: ""
+        },
+        downType: {
+            type: Number,//// 1  是正常下载，2是请求接口
+            default: 1
+        },
+    },
     data () {
         return {
             myHeaders: {},//Cookies.get(teacher_token)
@@ -59,12 +76,48 @@ export default {
                 // url = this.importAndExportOptions.exportUrl + "?"+url;
                 // window.open(url);
 
-                 var params = qs.stringify({
+              
+                //  window.open(`${this.importAndExportOptions.exportUrl}?${params}`);
+                if(this.downType==1){
+                    this.downLoadExcel();
+                }else{
+                    this.exportByInterface();
+                }
+            },
+            // 下载excel
+            downLoadExcel(){
+                var params = qs.stringify({
                     'token': Cookies.get('token'),
                     ...this.dataForm
                 })
                 window.location.href = `${this.importAndExportOptions.exportUrl}?${params}`
-                //  window.open(`${this.importAndExportOptions.exportUrl}?${params}`);
+            },
+            // 请求后端接口
+            exportByInterface(){
+                let that = this;
+                var  obj = {
+                    params:{
+                        ...this.dataForm
+                    }
+                    
+                 }
+                 http.get(`${this.importAndExportOptions.exportUrl}`, obj).then(res =>{
+                     res = res.data
+                    if(res.code==200){
+                        that.$message({
+                            message: res.msg,
+                            type: "success",
+                            duration: 1500
+                        })
+                    }else{
+                        that.$message({
+                            message: res.msg,
+                            type: "error",
+                            duration: 1500
+                        })
+                    }
+
+                })
             },
             // 导入之前
             beforeAvatarUpload(file) {
