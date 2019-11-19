@@ -18,18 +18,25 @@
             </el-form-item>
             <el-form-item label="导入失败条数：">
                 <span>{{dataForm.failureNumber}}</span>
-                <span style="margin-left:10px;color: #2260D2;">导出详情</span>
+                <importAndExport :btType="'text'" :downType="1" :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList" style="margin-left:10px;"></importAndExport>
             </el-form-item>
         </el-form>
     </el-dialog>
 </template>
 
 <script>
-    import { backScanColor,updateColor } from '@/api/api'
+    import mixinViewModule from '@/mixins/view-module'
+    // import { backScanColor,updateColor } from '@/api/api'
+    import importAndExport from "@/components/import-and-export"
+    import { sysexportmanagementExport} from "@/api/io.js"
     export default {
-        name: "model-add-edit-data",
+        mixins: [mixinViewModule],
         data () {
             return {
+                importAndExportOptions:{
+                    exportUrl:sysexportmanagementExport,//导出接口
+                    exportWord:"导出详情",
+                },
                 visible : false,
                 loading : false,
                 dataForm: {
@@ -45,6 +52,7 @@
             }
         },
         components:{
+            importAndExport
         },
         computed:{},
         mounted(){},

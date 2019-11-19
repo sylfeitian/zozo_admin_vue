@@ -59,7 +59,7 @@
         </el-radio-group>
         <el-form style="float: right;" v-if="dataFormShow.isTofile=='0'">
             <el-form-item>
-                <importAndExport :downType="2" :importAndExportOptions="importAndExportOptions" :dataForm="Object.assign({},dataFormShow,{isTofile:dataFormShow.isTofile2?dataFormShow.isTofile2:0})"  @getDataList="getDataList"></importAndExport>
+                <importAndExport :btType="'primary'" :downType="2" :importAndExportOptions="importAndExportOptions" :dataForm="Object.assign({},dataFormShow,{isTofile:dataFormShow.isTofile2?dataFormShow.isTofile2:0})"  @getDataList="getDataList"></importAndExport>
             </el-form-item>
         </el-form>
         <el-table

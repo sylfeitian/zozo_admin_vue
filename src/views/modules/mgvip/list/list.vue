@@ -32,7 +32,7 @@
         <el-button type="primary" @click="getData()">搜索</el-button>
         <el-button @click="reset()" type="primary" plain style="margin-right:20px;" >重置</el-button>
         <!-- <el-button type="primary" plain>导出</el-button> -->
-         <!-- <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport> -->
+         <!-- <importAndExport :btType="'primary'" :downType="2" :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport> -->
       </el-form-item>
       <br />
     </el-form>
