@@ -206,7 +206,7 @@
                     this.backScanLoading = false;
                     if(res.code == 200){
                         Object.assign(this.dataForm,res.data);
-                        if(this.dataForm.mainTag != "") {
+                        if(this.dataForm.mainTag != "" && this.dataForm.mainTag != null) {
                             this.dataForm.mainTag = res.data.mainTag.split(",");
                         } else {
                             
