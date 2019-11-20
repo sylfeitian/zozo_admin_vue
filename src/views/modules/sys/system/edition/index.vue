@@ -94,7 +94,7 @@
                 <el-input v-model.trim="dataForm.md5Sign" placeholder="请输入"></el-input>
            </el-form-item>
             <el-form-item v-if="isShow" label="文件包：" prop="filePath" >
-                <uploud-model ref="apkupload" @getDataurl="getDataurl" :importAndExportOptions="importAndExportOptions" :btType="'primary'" :downType="2" :dataForm="dataForm" @getDataList="getDataList"></uploud-model>
+                <uploud-model ref="apkupload" @getDataurl="getDataurl" :importAndExportOptions="importAndExportOptions" :btType="'primary'" :dataForm="dataForm" @getDataList="getDataList"></uploud-model>
             </el-form-item>
             <el-form-item label="是否强制更新：" prop="forceUpdateFlag">
                 <el-radio v-model="dataForm.forceUpdateFlag" label="1">是</el-radio>
