@@ -747,7 +747,7 @@
             gettem(item){
                 console.log(item)
                 this.checkFunStatus = item.id;
-                this.checkItem = item.nameJp;//数据正常后改为中国商品名称
+                this.checkItem = item.name;//数据正常后改为中国商品名称
                 this.activiDataForm.linkValue = item.id;
                 this.activiDataForm.linkValueName = this.checkItem;
             },
