@@ -333,7 +333,7 @@
             },
 
             noCheck(formName) {
-                this.$refs[formName].resetFields();
+                // this.$refs[formName].resetFields();
                 this.editVisible = false;
                 this.isShow = false;
                 this.editDataForm.title = "";
@@ -346,6 +346,7 @@
             // 关闭弹窗
             closeDialog() {
                 this.editVisible = false;
+                this.noCheck();
             },
             subActivity(formName) {
                 let that = this;
