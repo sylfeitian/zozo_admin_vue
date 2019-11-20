@@ -119,7 +119,7 @@
             </el-form>
             <span slot="footer" class="dialog-footer">
             <el-button @click="noCheck('editDataForm')">取 消</el-button>
-            <el-button type="primary" @click="subActivity('editDataForm')" :loading="buttonStatus">确 定</el-button>
+            <el-button type="primary" @click="subActivity('editDataForm')" :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
         </span>
         </el-dialog>
     </div>
@@ -151,7 +151,7 @@
                 isShow:false,
                 dataForm: {},
                 isSave: true,
-                buttonStatus: false,
+                loading : false,
                 editVisible: false,
                 editDataForm: {
                     type: '',
@@ -353,12 +353,15 @@
                             type: "warning"
                         })
                             .then(() => {
+                                this.loading = true;
                                 if (that.isSave) {
                                     saveQuestionanswer(that.editDataForm).then((res) => {
+                                        this.loading = false;
                                         if (res.code == 200) {
                                             this.$message({
                                                 message: res.msg,
                                                 type: 'success',
+                                                duration: 1500,
                                                 onClose: function () {
                                                     that.noCheck("editDataForm");
                                                     that.getDataList();
@@ -368,15 +371,18 @@
                                             this.$message({
                                                 message: res.msg,
                                                 type: 'error',
+                                                duration: 1500
                                             });
                                         }
                                     })
                                 } else {
                                     putQuestionanswer(that.editDataForm).then((res) => {
+                                        this.loading = false;
                                         if (res.code == 200) {
                                             this.$message({
                                                 message: res.msg,
                                                 type: 'success',
+                                                duration: 1500,
                                                 onClose: function () {
                                                     that.noCheck("editDataForm")
                                                     that.getDataList();
@@ -386,6 +392,7 @@
                                             this.$message({
                                                 message: res.msg,
                                                 type: 'error',
+                                                duration: 1500
                                             });
                                         }
                                     })
