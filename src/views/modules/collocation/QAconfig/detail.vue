@@ -98,7 +98,7 @@
                 :title="helpTitle"
                 :visible.sync="editVisible"
                 :close-on-click-modal="false"
-                :show-close="false"
+                :before-close="closeDialog"
                 class="activiDialog"
                 width="40%">
             <el-form :model="editDataForm" :rules="dataRule" ref="editDataForm" @keyup.enter.native="subActivity()"
@@ -343,6 +343,10 @@
                 this.editDataForm.id = "";
                 this.editDataForm.views = "";
             },
+            // 关闭弹窗
+            closeDialog() {
+                this.editVisible = false;
+            },
             subActivity(formName) {
                 let that = this;
                 this.$refs[formName].validate((valid) => {
@@ -357,44 +361,40 @@
                                 if (that.isSave) {
                                     saveQuestionanswer(that.editDataForm).then((res) => {
                                         this.loading = false;
-                                        if (res.code == 200) {
-                                            this.$message({
-                                                message: res.msg,
-                                                type: 'success',
-                                                duration: 1500,
-                                                onClose: function () {
-                                                    that.noCheck("editDataForm");
-                                                    that.getDataList();
-                                                }
-                                            });
-                                        } else {
-                                            this.$message({
-                                                message: res.msg,
-                                                type: 'error',
-                                                duration: 1500
-                                            });
+                                        if(res.code == "200"){
+                                            status = "success";
+                                            this.visible = false;
+                                            this.getDataList();
+                                            this.closeDialog();
+
+                                        }else{
+                                            status = "error";
                                         }
+
+                                        this.$message({
+                                            message: res.msg,
+                                            type: status,
+                                            duration: 1500
+                                        })
                                     })
                                 } else {
                                     putQuestionanswer(that.editDataForm).then((res) => {
                                         this.loading = false;
-                                        if (res.code == 200) {
-                                            this.$message({
-                                                message: res.msg,
-                                                type: 'success',
-                                                duration: 1500,
-                                                onClose: function () {
-                                                    that.noCheck("editDataForm")
-                                                    that.getDataList();
-                                                }
-                                            });
-                                        } else {
-                                            this.$message({
-                                                message: res.msg,
-                                                type: 'error',
-                                                duration: 1500
-                                            });
+                                        if(res.code == "200"){
+                                            status = "success";
+                                            this.visible = false;
+                                            this.getDataList();
+                                            this.closeDialog();
+
+                                        }else{
+                                            status = "error";
                                         }
+
+                                        this.$message({
+                                            message: res.msg,
+                                            type: status,
+                                            duration: 1500
+                                        })
                                     })
                                 }
                             })
