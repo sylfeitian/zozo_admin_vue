@@ -14,8 +14,8 @@
             <el-form-item label="日本发布时间：">
                 <el-date-picker
                         v-model="timeArr"
-                        type="daterange"
-                        value-format="yyyy-MM-dd"
+                        type="datetimerange"
+			      	    value-format="yyyy-MM-dd HH:mm:ss"
                         align="left"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
@@ -24,8 +24,8 @@
             <el-form-item label="发布时间：">
                 <el-date-picker
                         v-model="timeArr2"
-                        type="daterange"
-                        value-format="yyyy-MM-dd"
+                        type="datetimerange"
+			      	    value-format="yyyy-MM-dd HH:mm:ss"
                         align="left"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"

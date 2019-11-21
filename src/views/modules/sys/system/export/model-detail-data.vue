@@ -18,7 +18,7 @@
             </el-form-item>
             <el-form-item label="导入失败条数：">
                 <span>{{dataForm.failureNumber}}</span>
-                <importAndExport :btType="'text'" :downType="1" :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList" style="margin-left:10px;"></importAndExport>
+                <importAndExport v-if="dataForm.failureNumber>0" :btType="'text'" :downType="1" :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList" style="margin-left:10px;"></importAndExport>
             </el-form-item>
         </el-form>
     </el-dialog>

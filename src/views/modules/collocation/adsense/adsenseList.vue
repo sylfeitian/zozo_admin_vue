@@ -124,6 +124,7 @@
     <el-dialog
         :title="activiTitle"
         :visible.sync="activiVisible"
+        :before-close="closeDialog"
         :close-on-click-modal = "false"
         class="activiDialog"
         width="40%">
@@ -532,7 +533,7 @@
             },
             //取消弹框
             noCheck(formName){
-                this.$refs[formName].resetFields();
+                // this.$refs[formName].resetFields();
                 this.activiDataForm.imageSrc = "";
                 this.activiDataForm.position = "";
                 this.activiDataForm.name = "";
@@ -542,6 +543,10 @@
                 this.activiDataForm.linkType = 0;
                 console.log(this.activiDataForm.fileList)
                 this.activiVisible = false;
+            },
+            // 关闭弹窗
+            closeDialog() {
+                this.noCheck();
             },
             upLoad(file) {
                 const that = this;
@@ -742,7 +747,7 @@
             gettem(item){
                 console.log(item)
                 this.checkFunStatus = item.id;
-                this.checkItem = item.nameJp;//数据正常后改为中国商品名称
+                this.checkItem = item.name;//数据正常后改为中国商品名称
                 this.activiDataForm.linkValue = item.id;
                 this.activiDataForm.linkValueName = this.checkItem;
             },

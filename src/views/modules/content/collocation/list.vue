@@ -11,22 +11,22 @@
             <el-form-item label="日本发布时间：">
                 <el-date-picker
 			      	v-model="valuetime1"
-			     	type="daterange"
+			     	type="datetimerange"
 			      	range-separator="-"
 			      	start-placeholder="开始日期"
 			      	end-placeholder="结束日期"
-			      	value-format="yyyy-MM-dd"
+			      	value-format="yyyy-MM-dd HH:mm:ss"
 			      	@blur='acttime1'>
 			    </el-date-picker>
             </el-form-item>
             <el-form-item label="发布时间：">
                <el-date-picker
 		      		v-model="valuetime2"
-		      		type="daterange"
+		      		type="datetimerange"
 		      		range-separator="-"
 		      		start-placeholder="开始日期"
 		      		end-placeholder="结束日期"
-		      		value-format="yyyy-MM-dd"
+		      		value-format="yyyy-MM-dd HH:mm:ss"
 		      		@blur='acttime2'>
 		    	</el-date-picker>
             </el-form-item>
@@ -217,24 +217,13 @@
             },
             //发布开始结束时间
 		    acttime2(){
-                if(this.valuetime2.length!=0){
-                    this.dataForm.publishStartTime = this.valuetime2[0];
-                    this.dataForm.publishEndTime = this.valuetime2[1];
-                }else{
-                    this.dataForm.publishStartTime = "";
-                    this.dataForm.publishEndTime = "";
-                }
+                    this.dataForm.publishStartTime = this.valuetime2[0] || '';
+                    this.dataForm.publishEndTime = this.valuetime2[1] || '';
 		    },
 		    //日本发布开始结束时间
 		    acttime1(){
-                if(this.valuetime1.length!=0){
-                    this.dataForm.publishStartTimeJp = this.valuetime1[0];
-                    this.dataForm.publishEndTimeJp = this.valuetime1[1];
-                }else{
-                    this.dataForm.publishStartTimeJp = "";
-                    this.dataForm.publishEndTimeJp = "";
-                }
-		    	
+                    this.dataForm.publishStartTimeJp = this.valuetime1[0] || '';
+                    this.dataForm.publishEndTimeJp = this.valuetime1[1] || '';
 		    },
             reset() {
                 this.valuetime1 = [];

@@ -83,7 +83,7 @@ export default {
     /deep/.el-table__row{
       td:nth-child(2){
         .cell{
-          display: flex;
+          display: flex!important;
           .el-table__expand-icon{
             margin-right: 10px;
           }

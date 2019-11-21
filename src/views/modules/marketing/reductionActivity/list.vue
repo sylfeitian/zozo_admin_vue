@@ -28,7 +28,7 @@
         <el-form-item label="活动时间：">
             <el-date-picker
                 v-model="valuetime"
-                type="daterange"
+                type="datetimerange"
                 align="right"
                 unlink-panels
                 range-separator="-"
