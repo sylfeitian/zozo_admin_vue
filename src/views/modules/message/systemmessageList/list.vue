@@ -92,7 +92,7 @@
                     <span>{{messageDetail.messageTitle}}</span>
                 </el-form-item>
                 <el-form-item label="消息内容：">
-                    <div style="overflow: auto;" v-html="messageDetail.messageContent"></div>
+                    <div style="overflow: auto;" class="messcontent" v-html="messageDetail.messageContent"></div>
                 </el-form-item>
             </el-form>
         </el-dialog>
@@ -278,5 +278,8 @@
             display: flex;
             align-items: center;
         }
+    }
+    /deep/ .messcontent p {
+        margin:0!important;
     }
 </style>
