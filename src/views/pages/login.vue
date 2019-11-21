@@ -86,7 +86,7 @@ export default {
     dataRule () {
       var validateUsername = (rule, value, callback) => {
         if (!isUserName(value)) {
-          return callback(new Error('仅可输入英文、数字'))
+          return callback(new Error('仅可输入英文、数字、常用字符并且不可超过20字符'))
         }else{
           callback()
         }

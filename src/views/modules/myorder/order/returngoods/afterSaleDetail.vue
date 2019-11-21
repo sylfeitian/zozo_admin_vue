@@ -190,7 +190,7 @@
                         </el-form-item>
                     </div>
                 </el-form>
-           <el-dialog :visible.sync="dialogVisible" class="imgPreview">
+           <el-dialog :visible.sync="dialogVisible" class="imgPreview" width="50%">
                <img :style="{width:oImgWidth,height:oImgHeight}" :src="dialogImageUrl" alt="">
            </el-dialog>
                 <!-- 分割线------------------------------------------------ -->

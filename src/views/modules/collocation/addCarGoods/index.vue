@@ -77,7 +77,7 @@
         <div class="footerBox">
             <div class="footerBtn">
                 <el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                <el-button @click="deleteHandle()" style="margin-left: 20px;" type="primary">批量删除</el-button>
+                <el-button @click="cotrolGoodsShow()" style="margin-left: 20px;" type="primary">批量删除</el-button>
                 <el-button @click="changeSortSave()" :loading="clicking" type="primary">保存排序</el-button>
             </div>
             <el-pagination
@@ -254,6 +254,7 @@ export default {
     },
     //批量删除
     cotrolGoodsShow() {
+      this.page = 1;
       this.deleteHandle();
     },
     //保存排序
