@@ -99,7 +99,7 @@ export default {
   min-height: auto;
 }
   .tabFixed > /deep/ .el-tabs__header{
-    z-index: 8888;
+    z-index: 1020;
     // margin: 30px 30px 0 20px !important;
     /*left: 195px !important;*/
     // padding-left: 40px !important;
