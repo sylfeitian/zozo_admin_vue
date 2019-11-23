@@ -168,12 +168,13 @@
                     //
                 	// 分类图片(插入图片)
                 	if(key == 'genderMain' && value != '--'){
+                        var urlval = value.indexOf("http") != -1 ? value : this.$imgDomain+value
                 		return h(
                 			'el-col',
                     		{
 	                    		'props': {span: colSpan},
 	                    		'class': {'text-center': col.center, 'textIndex5': true},
-	                    		'domProps': { innerHTML: `<img src=${this.$imgDomain}${value} width=100%>` },// DOM 属性
+	                    		'domProps': { innerHTML: `<img src=${urlval} width=100%>` },// DOM 属性
                 			},   
 						);
                 	};

@@ -35,7 +35,7 @@
                 <el-input v-model.trim="dataForm.brandName" placeholder="请输入品牌名称" clearable></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button class="btn" type="primary" @click="getDataList()">搜索</el-button>
+                <el-button class="btn" type="primary" @click="getData()">搜索</el-button>
                 <el-button class="btn" type="primary" plain @click="reset()">重置</el-button>
             </el-form-item>
             <br>
@@ -79,7 +79,7 @@
                     <el-button
                         type="text"
                         size="small"
-                        v-if="scope.row.activityState==0"
+                        v-if="scope.row.selfActivityState==1"
                         @click="editGoods(scope.row.id,'update')"
                     >修改</el-button>
                     <span
@@ -111,7 +111,7 @@
             <el-form :model="editDataForm" :rules="dataRule" ref="editDataForm" label-width="82px">
                 <div class="goodsPresent">
                     <!-- <img :src="goodsMain.mainImageUrl" alt=""> -->
-                    <img :src="goodsMain.mainImageUrl || defaultImg" :onerror="defaultImg">
+                    <img :src="goodsMain.mainImageUrl|| defaultImg | filterImgUrl" :onerror="defaultImg" style="width:110px;">
                     <!-- <div slot="placeholder" class="image-slot">加载中
                             <span class="dot">...</span>
                     </div>-->
@@ -170,7 +170,7 @@
 <!--                            </el-form-item>-->
 <!--                        </template>-->
                     </el-table-column>
-                    <el-table-column label="每人限购" width="130" align="center">
+                    <el-table-column label="每人限购" width="200" align="center">
                         <template slot-scope="scope">
                             <el-form-item
                                 class="specError"

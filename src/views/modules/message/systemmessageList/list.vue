@@ -9,7 +9,7 @@
                 <el-select v-model="dataForm.sendMode" placeholder="请选择"  style="margin-left: 10px;width: 140px;">
                     <el-option label="全部" value=""></el-option>
                     <el-option label="站内信" value="0"></el-option>
-                    <el-option label="友盟" value="1"></el-option>
+                    <el-option label="APP推送" value="1"></el-option>
                     <el-option label="短信" value="2"></el-option>
                 </el-select>
             </el-form-item>
@@ -51,7 +51,7 @@
             </el-table-column>
             <el-table-column prop="sendMode" label="推送方式" align="center">
                 <template slot-scope="scope">
-                    <div v-if="scope.row.sendMode == 1" >友盟</div>
+                    <div v-if="scope.row.sendMode == 1" >APP推送</div>
                     <div v-else-if="scope.row.sendMode == 0" >站内信</div>
                     <div v-else >短信</div>
                 </template>
@@ -83,7 +83,7 @@
         <el-dialog title="查看消息" :visible.sync="dialogTableVisible">
             <el-form>
                 <el-form-item label="推送类型：">
-                    <span>{{messageDetail.sendMode == 1?"友盟":messageDetail.sendMode == 0?"站内信":"短信"}}</span>
+                    <span>{{messageDetail.sendMode == 1?"APP推送":messageDetail.sendMode == 0?"站内信":"短信"}}</span>
                 </el-form-item>
                 <el-form-item label="推送对象：">
                     <span>{{messageDetail.receiverPeople == 0?"全部":messageDetail.messageCount+"人"}}</span>
@@ -92,7 +92,7 @@
                     <span>{{messageDetail.messageTitle}}</span>
                 </el-form-item>
                 <el-form-item label="消息内容：">
-                    <div style="overflow: auto;" v-html="messageDetail.messageContent"></div>
+                    <div style="overflow: auto;" class="messcontent" v-html="messageDetail.messageContent"></div>
                 </el-form-item>
             </el-form>
         </el-dialog>
@@ -268,9 +268,6 @@
 
 <style lang="scss" scoped>
     @import "@/element-ui/theme-variables.scss";
-    .grayLine{
-        border-bottom: 0!important;
-    }
     .bottomFun {
         display: flex;
         justify-content: space-between;
@@ -281,5 +278,8 @@
             display: flex;
             align-items: center;
         }
+    }
+    /deep/ .messcontent p {
+        margin:0!important;
     }
 </style>

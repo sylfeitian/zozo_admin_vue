@@ -33,7 +33,7 @@
                 <el-button class="btn"type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
             <el-form-item>
-                <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
+                <importAndExport :btType="'primary'" :downType="2" :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
             </el-form-item>
         </el-form>
         <el-table
@@ -80,7 +80,7 @@
                 mixinViewModuleOptions: {
                     getDataListURL: couponStorePage,
                     getDataListIsPage: true,
-                    exportURL: "",
+                    // exportURL: "",
                     // deleteURL: deleteAttributeUrl,
                     deleteIsBatch: true,
                     deleteIsBatchKey: "id"

@@ -11,22 +11,22 @@
             <el-form-item label="日本发布时间：">
                 <el-date-picker
 			      	v-model="valuetime1"
-			     	type="daterange"
+			     	type="datetimerange"
 			      	range-separator="-"
 			      	start-placeholder="开始日期"
 			      	end-placeholder="结束日期"
-			      	value-format="yyyy-MM-dd"
+			      	value-format="yyyy-MM-dd HH:mm:ss"
 			      	@blur='acttime1'>
 			    </el-date-picker>
             </el-form-item>
             <el-form-item label="发布时间：">
                <el-date-picker
 		      		v-model="valuetime2"
-		      		type="daterange"
+		      		type="datetimerange"
 		      		range-separator="-"
 		      		start-placeholder="开始日期"
 		      		end-placeholder="结束日期"
-		      		value-format="yyyy-MM-dd"
+		      		value-format="yyyy-MM-dd HH:mm:ss"
 		      		@blur='acttime2'>
 		    	</el-date-picker>
             </el-form-item>
@@ -51,7 +51,7 @@
         >
             <el-table-column type="selection" width="70"></el-table-column>
             <el-table-column prop="idJp" width="100" label="ID" align="center"></el-table-column>
-            <el-table-column prop="imageUrl" label="封面图片" width="150" min-width="150" align="center" :resizable="false">
+            <el-table-column prop="imageUrl" label="封面图片" width="150" min-width="150" align="center">
                 <template slot-scope="scope">
                     <img
                         :src="scope.row.imageUrl320 | filterImgUrl"
@@ -62,13 +62,13 @@
             </el-table-column>
             <el-table-column prop="nickname" label="用户" align="center"></el-table-column>
             <el-table-column prop="goodsNums" width="80" label="相关商品" align="center"></el-table-column>
-            <el-table-column prop="state" min-width="120" width="120" label="发布状态" align="center" :resizable="false">
+            <el-table-column prop="state" min-width="120" width="120" label="发布状态" align="center">
             	<template slot-scope="scope">
                     <el-tag v-if="scope.row.state == 1" type="success">已发布</el-tag>
 					<el-tag v-else type="info">取消发布</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column min-width="120" width="120" prop="jpPublishState"  label="日本发布状态" align="center" :resizable="false">
+            <el-table-column min-width="120" width="120" prop="jpPublishState"  label="日本发布状态" align="center">
             	<template slot-scope="scope">
                     <el-tag v-if="scope.row.jpPublishState == 1" type="success">已发布</el-tag>
 					<el-tag v-else-if="scope.row.jpPublishState == 2" type="info">取消发布</el-tag>
@@ -217,24 +217,13 @@
             },
             //发布开始结束时间
 		    acttime2(){
-                if(this.valuetime2.length!=0){
-                    this.dataForm.publishStartTime = this.valuetime2[0];
-                    this.dataForm.publishEndTime = this.valuetime2[1];
-                }else{
-                    this.dataForm.publishStartTime = "";
-                    this.dataForm.publishEndTime = "";
-                }
+                    this.dataForm.publishStartTime = this.valuetime2[0] || '';
+                    this.dataForm.publishEndTime = this.valuetime2[1] || '';
 		    },
 		    //日本发布开始结束时间
 		    acttime1(){
-                if(this.valuetime1.length!=0){
-                    this.dataForm.publishStartTimeJp = this.valuetime1[0];
-                    this.dataForm.publishEndTimeJp = this.valuetime1[1];
-                }else{
-                    this.dataForm.publishStartTimeJp = "";
-                    this.dataForm.publishEndTimeJp = "";
-                }
-		    	
+                    this.dataForm.publishStartTimeJp = this.valuetime1[0] || '';
+                    this.dataForm.publishEndTimeJp = this.valuetime1[1] || '';
 		    },
             reset() {
                 this.valuetime1 = [];

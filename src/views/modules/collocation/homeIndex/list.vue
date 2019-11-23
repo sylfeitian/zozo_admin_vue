@@ -3,7 +3,7 @@
     <Bread :breaddata="breaddata"></Bread>
     <!-- <el-button style="float:right;margin-bottom:20px;" type="primary" @click="addHelp()">新增帮助类型</el-button> -->
     <el-button style="float:right;margin-bottom:20px;" type="primary" @click="toDetail('1212211')">添加推荐</el-button>
-    <el-button style="float:right;margin:0 20px;" type="primary" @click="deleteHandle()">批量删除</el-button>
+    <el-button style="float:right;margin:0 20px;" type="primary" @click="deleteHandle1()">批量删除</el-button>
 
     <el-table
         :data="dataList"
@@ -38,7 +38,7 @@
 		    label="封面图片"
 		    width="260">
             <template slot-scope="scope">
-		    	<img style="width:200px;height:100px;object-fit: contain" :src="scope.row.imageUrl" alt="">
+		    	<img style="width:200px;height:100px;object-fit: contain" :src="scope.row.imageUrl | filterImgUrl" alt="">
 		    </template>
 		</el-table-column>
 		<el-table-column
@@ -47,7 +47,8 @@
             show-overflow-tooltip
 		    label="搭配集合标题">
             <template slot-scope="scope">
-                <div class="words">{{scope.row.title}}</div>
+                <div class="words" v-if="scope.row.title">{{scope.row.title}}</div>
+                <div class="words" v-else>{{scope.row.titleJp}}</div>
 		    </template>
 		</el-table-column>
         <el-table-column
@@ -73,7 +74,7 @@
 	    	label="操作"
             width="220">
 		    <template slot-scope="scope">
-		    	<el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+		    	<el-button type="text" size="small" @click="deleteHandle1(scope.row.id)">删除</el-button>
 		    </template>
 	  	</el-table-column>
 	</el-table>
@@ -151,7 +152,10 @@
                     this.helpTitle = '新增帮助类型'
                 }
             },
-            
+            deleteHandle1 () {
+                this.page = 1;
+                this.deleteHandle();
+            },
             noCheck(formName){
                 this.$refs[formName].resetFields();
                 this.editVisible = false;

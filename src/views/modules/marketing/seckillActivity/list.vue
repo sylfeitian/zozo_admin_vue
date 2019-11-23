@@ -20,13 +20,13 @@
             <el-form-item label="活动时间：">
                 <el-date-picker
                     v-model="valuetime"
-                    type="daterange"
+                    type="datetimerange"
                     align="right"
                     unlink-panels
                     range-separator="-"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
-                    value-format="yyyy-MM-dd"
+							      value-format="yyyy-MM-dd HH:mm:ss"
                     @blur="acttime"
                 ></el-date-picker>
             </el-form-item>
@@ -43,10 +43,14 @@
             <el-table-column type="index" prop="$index" align="center" label="序号" width="70 ">
                 <template slot-scope="scope">{{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}</template>
             </el-table-column>
-            <el-table-column prop="id" label="活动场次" width="180" align="center"></el-table-column>
+            <el-table-column prop="title" label="活动场次" width="180" align="center"></el-table-column>
             <el-table-column prop="auditState" :formatter="auditStateType" label="审核状态" align="center"></el-table-column>
             <el-table-column prop="state" :formatter="stateType" label="活动状态" align="center"></el-table-column>
-            <el-table-column prop="title" label="秒杀时间段" align="center"></el-table-column>
+            <el-table-column prop="title" label="秒杀时间段" align="center">
+                <template slot-scope="scope">
+                  <span>{{scope.row.startTime}}</span>~<span>{{scope.row.endTime}}</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="address" label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button
@@ -80,8 +84,8 @@
             <el-form :model="auditForm" :rules="rules" ref="auditForm" label-width="100px">
                 <el-form-item label="审核结果" prop="state">
                     <el-radio-group v-model="auditForm.state" style="margin-left:50px;">
-                        <el-radio :label="1">通过</el-radio>
-                        <el-radio :label="2">不通过</el-radio>
+                        <el-radio label="1">通过</el-radio>
+                        <el-radio label="2">不通过</el-radio>
                     </el-radio-group>
                 </el-form-item>
             </el-form>
@@ -120,7 +124,7 @@ export default {
       },
       auditForm: {
         id: "",
-        state: ""
+        state: "1"//操作 审核状态 1审核通过 2审核不通过
       },
       dialogAuditVisible: false,
       activitesstates: [
@@ -153,7 +157,7 @@ export default {
   methods: {
     //取消审核
     cancel() {
-      this.auditForm = {};
+      this.auditForm.state = "1";
       this.dialogAuditVisible = false;
     },
     //审核活动场次

@@ -9,7 +9,7 @@
         width="70%">
         <el-form :model="dataList" :rules="dataRule" ref="dataList" label-width="82px">
         <div class="goodsPresent" >
-            <img :src="this.dataForm.mainImageUrl | filterImgUrl" alt="" />
+            <img :src="this.dataForm.mainImageUrl | filterImgUrl" alt="" style="width:110px;height:110px;"/>
             <div class="goodsPresentModle">
                 <div class="goodsTitle">{{this.dataForm.name?this.dataForm.name:"暂无名字"}}</div>
                 <div class="goodsmoney">￥ {{this.dataForm.sellPrice?this.dataForm.sellPrice:'0.00'}}</div>
@@ -47,7 +47,7 @@
                     <el-form-item
                             class="specError"
                             :prop="'goodsSpecList.'+ scope.$index + '.activityQuantity' "
-                            :rules="dataRule.activityQuantity"
+                            :rules="multipleSelection.indexOf(scope.row)!=-1?dataRule.activityQuantity:nullRule"
                     >
                     <el-input
                               v-model="scope.row.activityQuantity"
@@ -81,7 +81,7 @@
                     <el-form-item
                             class="specError"
                             :prop=" 'goodsSpecList.' + scope.$index + '.personLimit' "
-                            :rules="dataRule.personLimit"
+                            :rules="multipleSelection.indexOf(scope.row)!=-1?dataRule.activityQuantity:nullRule"
                     >
                     <el-input v-model="scope.row.personLimit"
                               :maxlength="6"
@@ -165,6 +165,7 @@
                 moneyNum:99.9,
                 kucun:'',
                 row:'',
+                nullRule:[],
                 row2:'',
                 type:'',//choose修改；edit编辑
                 isLimit: "", //当前选中行的日本限制数量

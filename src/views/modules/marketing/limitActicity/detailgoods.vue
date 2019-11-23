@@ -268,5 +268,21 @@
             }
         }
     }
+    .detailGoodsPages /deep/.el-input {
+        width: 180px;
+    }
+    
+/deep/ .el-input-number__decrease {
+  height: 33px!important;
+}
+/deep/ .el-input-number__increase {
+  height: 33px!important;
+}
+/deep/ .el-input-number {
+  width: 160px!important;
+}
+/deep/ .el-input__inner {
+  height: 35px!important;
+}
 
 </style>
