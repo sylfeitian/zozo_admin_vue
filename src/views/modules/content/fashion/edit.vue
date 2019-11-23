@@ -186,7 +186,7 @@
                     <!-- <template slot-scope="scope"> -->
                         <div style="display:flex;" v-for="(v,i) in dataForm.shopFashionContentsVOList" v-if="dataForm.shopFashionContentsVOList[i]" :key="i">
                             <div v-if="v.text=='' || v.text || shopFashionContentsVOList[i].text || v.imageUrl"  style="padding: 0;;width: 100%;">
-                                <div style="display:flex;justify-content: center; ">
+                                <div style="display:flex;justify-content: center; " v-if="shopFashionContentsVOList[i].text != ''">
                                     <!-- 左边 -->
                                     <div  style="width:50%;min-height:33px;padding:8px 3% 8px 3% ;text-align:left;" v-show="row.fashionFlag == 0" v-if="v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
                                         {{shopFashionContentsVOList[i].text}}
@@ -209,14 +209,14 @@
                                                     <img :src="v.imageUrl | filterImgUrl" style="width:200px;" alt=""/>
                                                 </div>
                                         </div>
-                                        <div style="display:flex;justify-content: center; ">
+                                        <div style="display:flex;justify-content: center; " v-if="v.text != ''">
                                             <!-- 左边 -->
                                             <div v-if="v.typeId=='4'" style="width:50%;padding:8px 3% 8px 3% ;" v-show="row.fashionFlag == 0">{{v.text}}</div>
                                             <!-- 右边 -->
                                             <div v-if="v.typeId=='4'"  style="width:50%;;padding:8px 3% 8px 3% ;"    :class="row.fashionFlag==0?'borderLeftLine':''">
                                                 <el-input v-if="v.text != null" style="margin: auto;" v-model="v.textCn" type="textarea" :rows="5" ></el-input>
                                             </div>
-                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
