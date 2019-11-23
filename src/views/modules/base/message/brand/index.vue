@@ -9,16 +9,16 @@
             <el-form-item label="品牌名称：">
                 <el-input v-model.trim="dataFormShow.brandName" placeholder="请输入品牌名称"></el-input>
             </el-form-item>
-            <!-- <el-form-item label="日本状态：">
-                <el-select v-model="dataFormShow.showWeb" placeholder="请选择">
+            <el-form-item label="日本状态：">
+                <el-select v-model="dataFormShow.processFlag" placeholder="请选择">
                     <el-option
-                        v-for="item in showOptions"
+                        v-for="item in processFlagOptions"
                         :key="item.id"
                         :label="item.label"
                         :value="item.id"
                     ></el-option>
                 </el-select>
-            </el-form-item> -->
+            </el-form-item>
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="getData">搜索</el-button>
                 <el-button  class="btn" type="primary" plain @click="reset()" >重置</el-button>
@@ -99,6 +99,7 @@
                 dataFormShow: {
                     idJp: "",
                     brandName: "",
+                    processFlag: ""
                 },
                 value: '',
                 formLabelWidth: '120px',
@@ -106,11 +107,11 @@
                 dataListLoading: false,
                 // uploadVisible: false,
                 check: null,
-                // showOptions: [
-                //     { id:"",label:"全部"},
-                //     { id: "0", label: "删除" },
-                //     { id: "1", label: "正常" }
-                // ],
+                processFlagOptions: [
+                    { id:"",label:"全部"},
+                    { id: "0", label: "正常" },
+                    { id: "1", label: "删除" }
+                ],
             }
         },
         components: {
@@ -167,8 +168,10 @@
             reset() {
                 this.dataFormShow.idJp = "";
                 this.dataFormShow.brandName = "";
+                this.dataFormShow.processFlag = "";
                 this.dataForm.idJp = "";
                 this.dataForm.brandName = "";
+                this.dataForm.processFlag = "";
                 this.getDataList();
             },
             // 新建和编辑
