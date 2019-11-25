@@ -19,11 +19,37 @@
                         @change="handleChange">
                 </el-cascader>
             </el-form-item>
-            <el-form-item  label="所属店铺：">
-                <el-input v-model.trim="dataFormShow.storeName" placeholder="请输入店铺名称" ></el-input>
+            <el-form-item label="店铺名称：">
+                <el-select
+                v-model="dataFormShow.storeId"
+                filterable
+                clearable
+                placeholder="请输入店铺名称"
+                @change="changeStore"
+                >
+                <el-option
+                    v-for="(item,index) in selectStoreOption"
+                    :key="item.index"
+                    :label="item.storeName"
+                    :value="item.id"
+                ></el-option>
+                </el-select>
             </el-form-item>
-            <el-form-item  label="品牌：">
-                <el-input v-model.trim="dataFormShow.brandName" placeholder="请输入品牌名称" ></el-input>
+            <el-form-item label="品牌名称：">
+                <el-select
+                v-model="dataFormShow.brandId"
+                filterable
+                clearable
+                placeholder="请输入品牌名称"
+                @change="changeBrand"
+                >
+                <el-option
+                    v-for="(item,index) in selectBrandOption"
+                    :key="item.id"
+                    :label="item.brandName"
+                    :value="item.id"
+                ></el-option>
+                </el-select>
             </el-form-item>
             <el-form-item  label="状态：" v-if="dataFormShow.isTofile=='1'">
                 <el-select v-model="dataFormShow.transportFlag" placeholder="请选择">
@@ -179,7 +205,7 @@
     import importAndExport from "@/components/import-and-export"
     // import Cookies from 'js-cookie'
     import { registerUrl } from '@/api/url'
-    import { backScanCategorys} from '@/api/api'
+    import { backScanCategorys, searchStoreName, searchBrandName } from '@/api/api'
     import {importRegisterUrl,exportRegisterUrl} from "@/api/io.js"
     export default {
         mixins: [mixinViewModule],
@@ -237,6 +263,8 @@
                     label: '已下发'
                 }],
                 selectCategoryOption:[],
+                selectStoreOption: [],
+                selectBrandOption: [],
                 classList:[],
                 props: {
                     label:'name',
@@ -325,14 +353,26 @@
             this.dataFormShow.isTofile = "1";
             this.backScan();
             this.getData();
+            this.backScan1();
+            this.backScan2();
         },
         methods: {
+            // select下拉改变时触发
             handleChange(){
                 if(this.classList.length!=0){
                     this.dataFormShow.categoryId = this.classList[this.classList.length-1]
                 }
                 console.log(this.dataFormShow.categoryId)
             },
+            changeStore(val) {
+                this.$set(this.dataFormShow, "storeId", val);
+                this.selectStoreOption = [].concat(this.selectStoreOption);
+            },
+            changeBrand(val) {
+                this.$set(this.dataFormShow, "brandId", val);
+                this.selectBrandOption = [].concat(this.selectBrandOption);
+            },
+            // 回显
             backScan(){
                 var obj  = {
                     id:this.dataForm.id,
@@ -352,6 +392,22 @@
 
                     }
                 })
+            },
+            backScan1() {
+                searchStoreName().then(res => {
+                    if (res.code == 200) {
+                        this.selectStoreOption = res.data;
+                    } else {
+                    }
+                });
+            },
+            backScan2() {
+                searchBrandName().then(res => {
+                    if (res.code == 200) {
+                        this.selectBrandOption = res.data;
+                    } else {
+                    }
+                });
             },
             handleClick(tab) {
             	this.page = 1;
@@ -399,16 +455,30 @@
                 this.dataFormShow.storeName = "";//店铺名称
                 this.dataFormShow.transportFlag = "";//下发状态
                 this.dataFormShow.categoryId = "";
+<<<<<<< HEAD
+=======
+                this.dataFormShow.isTofile2 = ""; // 备案状态
+                this.dataFormShow.storeId = "";
+                this.dataFormShow.brandId = "";
+                this.dataFormShow.categoryId = "";
+>>>>>>> 9ef7a600f351cf048ed00ae2a087a230d8fa49df
                // this.dataFormShow.isTofile = "";
                 this.dataForm.categoryId = "";
+                this.dataForm.storeId = "";
+                this.dataForm.brandId = "";
                 this.dataForm.skuIdJp = "";//商品sku ID
                 this.dataForm.goodsName = "";//商品名称/商品货号
                 this.dataForm.brandName = "";//品牌名称
                 this.dataForm.storeName = "";//店铺名称
                 this.dataForm.transportFlag = "";//下发状态
                 this.dataForm.isTofile = "";
+<<<<<<< HEAD
                 this.dataForm.isTofile2 = "";
                 this.classList = "";//分类名称
+=======
+                this.dataForm.isTofile2 = ""; // 备案状态
+                this.classList = []; //分类名称
+>>>>>>> 9ef7a600f351cf048ed00ae2a087a230d8fa49df
                 this.handleClick();
                 this.getData();
             },

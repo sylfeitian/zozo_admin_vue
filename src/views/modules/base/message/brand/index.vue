@@ -89,6 +89,7 @@
                 dataFormShow: {
                     idJp: "",
                     brandName: "",
+                    processFlag: ""
                 },
                 value: '',
                 formLabelWidth: '120px',
@@ -96,6 +97,14 @@
                 dataListLoading: false,
                 // uploadVisible: false,
                 check: null,
+<<<<<<< HEAD
+=======
+                processFlagOptions: [
+                    { id:"",label:"全部"},
+                    { id: "0", label: "正常" },
+                    { id: "1", label: "删除" }
+                ],
+>>>>>>> 9ef7a600f351cf048ed00ae2a087a230d8fa49df
             }
         },
         components: {
@@ -152,8 +161,10 @@
             reset() {
                 this.dataFormShow.idJp = "";
                 this.dataFormShow.brandName = "";
+                this.dataFormShow.processFlag = "";
                 this.dataForm.idJp = "";
                 this.dataForm.brandName = "";
+                this.dataForm.processFlag = "";
                 this.getDataList();
             },
             // 新建和编辑
