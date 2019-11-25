@@ -529,4 +529,7 @@
     display: flex;
     justify-content: flex-start;
 }
+/deep/ .el-dialog{
+    width: 840px!important;
+}
 </style>

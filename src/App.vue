@@ -51,5 +51,7 @@ export default {
 .el-form-item__label{
   color: #333 !important;
 }
-
+.el-message {
+  z-index: 2500 !important;
+}
 </style>
