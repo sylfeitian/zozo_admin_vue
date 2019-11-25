@@ -25,7 +25,6 @@
                 filterable
                 clearable
                 placeholder="请输入店铺名称"
-                :loading="loading"
                 @change="changeStore"
                 >
                 <el-option
@@ -42,7 +41,6 @@
                 filterable
                 clearable
                 placeholder="请输入品牌名称"
-                :loading="loading"
                 @change="changeBrand"
                 >
                 <el-option
