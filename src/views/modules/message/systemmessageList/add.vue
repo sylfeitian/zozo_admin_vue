@@ -249,6 +249,9 @@
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
+                if (this.multipleSelection.length == this.dataList.length)
+                    this.checkAll = true;
+                else this.checkAll = false;
             },
             openDiog(){
                 this.dialogTableVisible = true;
