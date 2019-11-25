@@ -59,7 +59,7 @@
         </el-radio-group>
         <el-form style="float: right;" v-if="dataFormShow.isTofile=='0'">
             <el-form-item>
-                <importAndExport :btType="'primary'" :downType="2" :importAndExportOptions="importAndExportOptions" :dataForm="Object.assign({},dataFormShow,{isTofile:dataFormShow.isTofile2?dataFormShow.isTofile2:0})"  @getDataList="getDataList"></importAndExport>
+                <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="Object.assign({},dataFormShow,{isTofile:dataFormShow.isTofile2?dataFormShow.isTofile2:0})"  @getDataList="getDataList"></importAndExport>
             </el-form-item>
         </el-form>
         <el-table
@@ -399,7 +399,6 @@
                 this.dataFormShow.storeName = "";//店铺名称
                 this.dataFormShow.transportFlag = "";//下发状态
                 this.dataFormShow.categoryId = "";
-                this.dataFormShow.isTofile2 = ""; // 备案状态
                // this.dataFormShow.isTofile = "";
                 this.dataForm.categoryId = "";
                 this.dataForm.skuIdJp = "";//商品sku ID
@@ -408,7 +407,7 @@
                 this.dataForm.storeName = "";//店铺名称
                 this.dataForm.transportFlag = "";//下发状态
                 this.dataForm.isTofile = "";
-                this.dataForm.isTofile2 = ""; // 备案状态
+                this.dataForm.isTofile2 = "";
                 this.classList = "";//分类名称
                 this.handleClick();
                 this.getData();

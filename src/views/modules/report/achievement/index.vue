@@ -42,7 +42,7 @@
         <el-form>
             <el-form-item>
                 <!-- <el-button @click="" class="btn" type="primary">导出</el-button> -->
-                <importAndExport :btType="'primary'" :downType="2" :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
+                <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
             </el-form-item>
         </el-form>
         <el-table
@@ -64,7 +64,7 @@
             <el-table-column prop="cancelOrderAmount" label="已取消订单金额" align="center"></el-table-column>
             <el-table-column prop="aftersaleNum" label="退单数量" align="center"></el-table-column>
             <el-table-column prop="aftersaleAmount" label="退单金额" align="center"></el-table-column>
-            <el-table-column prop="customerAmount" label="平均单价" align="center"></el-table-column>
+            <el-table-column prop="customerAmount" label="客单价" align="center"></el-table-column>
         </el-table>
         <!-- 分页 -->
         <el-pagination
@@ -98,7 +98,7 @@
                 mixinViewModuleOptions: {
                     getDataListURL: statisticsPerformancePage,
                     getDataListIsPage: true,
-                    // exportURL: "",
+                    exportURL: "",
                     // deleteURL: deleteAttributeUrl,
                     deleteIsBatch: true,
                     deleteIsBatchKey: "id"

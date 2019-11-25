@@ -142,8 +142,8 @@
             },
         	//开始结束时间
 		    acttime(){
-		    	this.dataForm.startTime = this.valuetime[0] || '';
-		    	this.dataForm.endTime = this.valuetime[1] || '';
+		    	this.dataForm.startTime = this.valuetime[0];
+		    	this.dataForm.endTime = this.valuetime[1];
 		    },
 		    // 每页数
 			sizeChangeHandle (val) {

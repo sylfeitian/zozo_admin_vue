@@ -29,7 +29,6 @@
                 border=""
                 style="width: 100%"
                 ref="multipleTable"
-                class="addcargoodstable"
             >
                 <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
                 <!-- <el-table-column
@@ -77,7 +76,7 @@
         <div class="footerBox">
             <div class="footerBtn">
                 <el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                <el-button @click="cotrolGoodsShow()" style="margin-left: 20px;" type="primary">批量删除</el-button>
+                <el-button @click="deleteHandle()" style="margin-left: 20px;" type="primary">批量删除</el-button>
                 <el-button @click="changeSortSave()" :loading="clicking" type="primary">保存排序</el-button>
             </div>
             <el-pagination
@@ -254,7 +253,6 @@ export default {
     },
     //批量删除
     cotrolGoodsShow() {
-      this.page = 1;
       this.deleteHandle();
     },
     //保存排序
@@ -495,7 +493,7 @@ export default {
     },
     // 弹框分页, 当前页
     pageCurrent(val) {
-      this.pages = val;
+      this.page = val;
       this.getgoodsList();
     },
 
@@ -543,11 +541,4 @@ export default {
     line-height: 35px;
     width: 180px;
 }
-
-  /deep/ .el-form--inline .el-input {
-    width: 180px!important;
-  }
-  /deep/ .el-form--inline .el-input .el-input__inner {
-    height: 40px!important;
-  }
 </style>

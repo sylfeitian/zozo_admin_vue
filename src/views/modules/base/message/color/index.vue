@@ -19,7 +19,7 @@
         </el-form>
         <el-form>
             <!-- <el-button @click="addOrEditHandle()"  class="btn" type="primary">导入信息</el-button> -->
-            <importAndExport :btType="'primary'" :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
+            <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
         </el-form>
         <el-table width="100%" :data="dataList" border v-loading="dataListLoading" style="width: 100%;margin-top: 10px;">
             <el-table-column prop="idJp" label="颜色ID" align="center"></el-table-column>

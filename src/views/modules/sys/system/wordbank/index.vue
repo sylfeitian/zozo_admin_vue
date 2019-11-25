@@ -3,7 +3,7 @@
         <Bread :breaddata="breaddata"></Bread>
         <div class="mod-sys__user">
             <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getDataList()">
-                <el-form-item label="api接口翻译中文：">
+                <el-form-item label="中文词汇：">
                     <el-input v-model.trim="dataForm.chineseVocabulary" placeholder="请输入中文搜索" clearable></el-input>
                 </el-form-item>
                 <el-form-item>
@@ -19,7 +19,7 @@
                 <el-button @click="addOrEditHandle()" type="primary" style="margin-right:20px;">添加对照词</el-button>
                 <!-- <el-button @click="" type="primary">导入</el-button> -->
                 <!-- <el-button @click="">下载模板</el-button> -->
-                 <importAndExport :btType="'primary'" :downType="2" :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
+                 <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
             </el-form>
             <el-table
                     v-loading="dataListLoading"
@@ -85,7 +85,7 @@
                     getDataListURL: syslexiconUrl,
                     getDataListIsPage: true,
                     deleteURL: deleteSyslexicon,
-                    // exportURL: exportSyslexicon,
+                    exportURL: exportSyslexicon,
                     deleteIsBatch: true,
                     deleteIsBatchKey: 'id'
                 },

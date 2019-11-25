@@ -33,7 +33,7 @@ export function isURL (s) {
  * @param {*} s
  */
 export function isUserName (s) {
-	return /^[a-zA-Z0-9_^%&',;=?#@￥*+/"':~·|。…(){}<>《》【】$\x22]{1,20}$/.test(s)
+	return /^[a-zA-Z]([_a-zA-Z0-9]{3,15})$/.test(s)
 }
 /**
  * 昵称

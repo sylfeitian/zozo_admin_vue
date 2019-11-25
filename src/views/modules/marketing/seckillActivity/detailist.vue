@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="detailListGoodsPages">
         <Bread :breaddata="breaddata" :index="'1'" @changePage="changePage"></Bread>
         <el-form :inline="true" :model="dataForm">
             <el-form-item style="float: right;">
@@ -8,7 +8,7 @@
               <el-button type="primary" @click="addGoods(activityId)" v-if="activityState===0">添加商品</el-button>
             </el-form-item>
         </el-form>
-        <el-form :inline="true" :model="sortDataList" class="detailListGoodsPages">
+        <el-form :inline="true" :model="sortDataList">
             <el-table
                 :data="sortDataList.list"
                 v-loading="dataListLoading"
@@ -17,9 +17,9 @@
                 style="width: 100%"
             >
                 <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
-                <el-table-column prop="goodsIdJp" label="商品id" width="170" align="center"></el-table-column>
-                <el-table-column prop="sort" label="排序" align="center" width="200">
-                    <!-- <template slot-scope="scope">
+                <el-table-column prop="goodsIdJp" label="商品id" width="180" align="center"></el-table-column>
+                <el-table-column prop="sort" label="排序" align="center">
+                    <template slot-scope="scope">
                         <el-form-item prop="sort">
                             <el-input
                                 v-model="scope.row.sort"
@@ -28,9 +28,6 @@
                                 type="number"
                             ></el-input>
                         </el-form-item>
-                    </template> -->
-                    <template slot-scope="scope">
-                      <el-input-number v-model="scope.row.sort" :step="1" :min="0" :max="10000000" ></el-input-number>
                     </template>
                 </el-table-column>
                 <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
@@ -68,9 +65,8 @@
         <el-dialog :visible.sync="lookVisible" class="editDialog" width="50%">
             <div class="goodsPresent">
                 <img
-                    :src="goodsInfo.mainImageUrl|| defaultImg | filterImgUrl" :onerror="defaultImg"
+                    :src="goodsInfo.mainImageUrl|| defaultImg" :onerror="defaultImg"
                     alt=""
-                    style="width:110px;"
                 >
                 <div class="goodsPresentModle">
                     <div class="goodsTitle">{{goodsInfo.name}}</div>
@@ -137,52 +133,32 @@ export default {
   },
   methods: {
     //保存排序
-    saveSortList(){
-      let dataArr = [];
-      let that = this;
-      this.sortDataList.list.forEach((item,index)=>{
-        dataArr.push({
-          id:item.goodsId,//活动商品id ,
-          sort:item.sort,// 排序
-        })
-      })
-      var obj = dataArr
-      seckillSortSave(obj).then((res)=>{
-        if(res.code==200){
-          this.$message.success(res.msg);
-          that.getDataList();
-        }else{
-          this.$message.error(res.msg);
+    saveSortList(sortList) {
+      console.log(sortList, "00", sortList.length);
+      if (sortList.length == 0) {
+        this.$message({
+          type: "warning",
+          message: "请先修改要保存的排序"
+        });
+        return false;
+      }
+      const activityGoodsUpdateSortDTOList = sortList;
+      seckillSortSave(activityGoodsUpdateSortDTOList).then(res => {
+        if (res.code == 200) {
+          this.$message({
+            type: "success",
+            message: res.msg
+          });
+          this.getDataList();
+        } else {
+          this.$message({
+            type: "error",
+            message: res.msg
+          });
+          this.getDataList();
         }
-      })
+      });
     },
-    //保存排序
-    // saveSortList(sortList) {
-    //   console.log(sortList, "00", sortList.length);
-    //   if (sortList.length == 0) {
-    //     this.$message({
-    //       type: "warning",
-    //       message: "请先修改要保存的排序"
-    //     });
-    //     return false;
-    //   }
-    //   const activityGoodsUpdateSortDTOList = sortList;
-    //   seckillSortSave(activityGoodsUpdateSortDTOList).then(res => {
-    //     if (res.code == 200) {
-    //       this.$message({
-    //         type: "success",
-    //         message: res.msg
-    //       });
-    //       this.getDataList();
-    //     } else {
-    //       this.$message({
-    //         type: "error",
-    //         message: res.msg
-    //       });
-    //       this.getDataList();
-    //     }
-    //   });
-    // },
     //批量选中数据
     dataListSelectionChangeHandle(val) {
       this.selDataList = val;
@@ -298,23 +274,8 @@ export default {
 <style lang="scss" scoped>
 .el-form--inline .el-form-item{margin-right: 0px!important;}
 .detailListGoodsPages {
-  /deep/ .el-input__inner {
-    height: 40px!important;
-  }
-  /deep/ .el-input.el-input--default {
-    width: 180px!important;
-  }
-  /deep/ .el-input-number__decrease {
-    height: 38px!important;
-  }
-  /deep/ .el-input-number__increase {
-    height: 38px!important;
-  }
-  /deep/ .el-input-number {
-    width: 180px!important;
-  }
   /deep/.el-input {
-    width: 180px;
+    width: 170px;
     height: 40px;
   }
   .editDialog {
@@ -352,7 +313,4 @@ export default {
     }
   }
 }
-// /deep/ .el-input__inner {
-//   height: 40px!important;
-// }
 </style>

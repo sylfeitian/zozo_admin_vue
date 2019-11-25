@@ -6,7 +6,7 @@
             <el-input v-model.trim="dataForm.title" placeholder="请输入活动名称" clearable  maxlength="300" ></el-input>
         </el-form-item>
         <el-form-item  label="活动状态：">
-            <el-select v-model="dataForm.state" placeholder="请选择">
+            <el-select v-model="dataForm.state" clearable  placeholder="请选择">
                 <el-option
                     v-for="item in activitesstatesOption"
                     :key="item.id"
@@ -16,7 +16,7 @@
             </el-select>
         </el-form-item>
         <el-form-item  label="审核状态：">
-            <el-select v-model="dataForm.auditState" placeholder="请选择">
+            <el-select v-model="dataForm.auditState" clearable  placeholder="请选择">
                 <el-option
                     v-for="item in auditStateOption"
                     :key="item.id"
@@ -28,13 +28,13 @@
         <el-form-item label="活动时间：">
             <el-date-picker
                 v-model="valuetime"
-                type="datetimerange"
+                type="daterange"
                 align="right"
                 unlink-panels
                 range-separator="-"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
-                value-format="yyyy-MM-dd HH:mm:ss"
+                value-format="yyyy-MM-dd"
                 @blur='acttime'>
 			</el-date-picker>
 		    </el-form-item>
@@ -165,11 +165,11 @@ export default {
       activiTitle:'添加活动',
       
       dataForm: {
-          title:'',// 活动标题 ,
-          state:'',//0:未开始，1：进行中，2：已结束 ,
-          auditState :'',//审核状态：0未审核，1：审核通过，2审核未通过 ,
-          startTime:'',//活动开始时间   
-          endTime:'', // 活动结束时间
+        //   title:'',// 活动标题 ,
+        //   state:'',//0:未开始，1：进行中，2：已结束 ,
+        //   auditState :'',//审核状态：0未审核，1：审核通过，2审核未通过 ,
+        //   startTime:'',//活动开始时间   
+        //   endTime:'', // 活动结束时间
       },
       auditStateOption:[
           {id: '',label: '全部'},
@@ -205,10 +205,7 @@ export default {
       modelStop
   },
   created(){
-    this.dataForm.state = this.activitesstatesOption && this.activitesstatesOption[0].id;
-    this.dataForm.auditState = this.auditStateOption && this.auditStateOption[0].id;
-    this.getDataList();
-    // this.demo();
+    this.demo();
   },
   methods: {
       getData () {
@@ -222,11 +219,11 @@ export default {
         //重置
         reset() {
             this.dataForm.title = '';
-            this.dataForm.state = this.activitesstatesOption[0].id;
-            this.dataForm.auditState = this.auditStateOption[0].id;
+            this.dataForm.state = '';
+            this.dataForm.auditState = '';
             this.dataForm.startTime = '';
             this.dataForm.endTime = '';
-            this.valuetime = '';
+            this.valuetime = [];
             this.page = 1;
             this.getDataList();
         },
@@ -264,16 +261,16 @@ export default {
             });
         },
 
-        // demo(){
-        // 	function placeholderPic(){
-        //         var w = document.documentElement.offsetWidth;
-        //         document.documentElement.style.fontSize=w/20+'px';
-        //     }
-        //         placeholderPic();
-        //     window.onresize=function(){
-        //         placeholderPic();
-        //     }
-        // },
+        demo(){
+        	function placeholderPic(){
+                var w = document.documentElement.offsetWidth;
+                document.documentElement.style.fontSize=w/20+'px';
+            }
+                placeholderPic();
+            window.onresize=function(){
+                placeholderPic();
+            }
+        },
         //开始结束时间
         acttime(){
             this.dataForm.startTime = this.valuetime[0];

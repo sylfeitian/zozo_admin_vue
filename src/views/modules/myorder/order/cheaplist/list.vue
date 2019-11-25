@@ -39,16 +39,6 @@
 
                 </el-select>
             </el-form-item>
-            <el-form-item label="订单留言：">
-                <el-select v-model="dataForm.orderMessage" placeholder="请选择">
-                <el-option
-                    v-for="item in orderMessageOptions"
-                    :key="item.id"
-                    :label="item.label"
-                    :value="item.id"
-                ></el-option>
-                </el-select>
-            </el-form-item>
             <el-form-item label="下单时间：">
                 <el-date-picker
                         v-model="timeArr"
@@ -249,7 +239,6 @@
                     storeIdAndName: "",
                     memberName: "",
                     paymentId: "",
-                    orderMessage: "", //订单留言
                     // paymentStatus: "",
                     startTime: "",
                     endTime: "",
@@ -268,7 +257,6 @@
                     currentPage: 1, //当前页数
                     currentPageSize: 10 //每页显示的条数
                 },
-                orderMessageOptions: [{id:"",label:"全部"},{ id: "0", label: "有留言" }, { id: "1", label: "无留言" }],
                 // orderState: function(row, column) {
                 //     return row.orderStatus == 0 ? (
                 //         <el-tag type="info">已取消</el-tag>
@@ -374,7 +362,6 @@
                 this.timeArr2 = [];
                 this.dataForm.startTime = "";
                 this.dataForm.endTime = "";
-                this.dataForm.orderMessage = "";
                 // this.dataForm.startPaymentTime = "";
                 // this.dataForm.endPaymentTime = "";
                 this.$refs[formName].resetFields();

@@ -95,8 +95,7 @@
             <el-table-column label="操作" min-width="100" align="center" width="200">
                 <template slot-scope="scope">
                     <el-button size="mini" type="text" @click="afterSaleDetailFn(scope.row)">查看</el-button>
-                    <el-button size="mini" type="text" @click="returnMoneyFn(scope.row)" v-if="scope.row.status==40">同意退款</el-button>
-                    <el-button size="mini" type="text" @click="retryFn(scope.row)" v-if="scope.row.status==30">同意退款</el-button>
+                    <el-button size="mini" type="text" @click="returnMoneyFn(scope.row)"   v-if="scope.row.status==40">同意退款</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -109,8 +108,6 @@
                 :total="total"
                 layout="total, sizes, prev, pager, next, jumper"
         ></el-pagination>
-        <!-- 退款失败时的同意退款 -->
-        <retryModel v-if="retryVisible" ref="retryCompon" @searchDataList="getDataList"></retryModel>
 
         <!-- 退款 -->
         <returnMoneyModel v-if="returnMoneyVisible" ref="returnMoneyCompon"  @searchDataList="getDataList"></returnMoneyModel>
@@ -121,8 +118,7 @@
     import { returngoods, exportsales } from "@/api/url";
     import { returnDetail } from "@/api/api";
     import mixinViewModule from "@/mixins/view-module";
-    import returnMoneyModel from "../modules-return/model-return-money";
-    import retryModel from "../modules-return/model-retry";
+      import returnMoneyModel from "../modules-return/model-return-money";
     export default {
         mixins: [mixinViewModule],
         data() {
@@ -155,8 +151,7 @@
                 totalPage: 0,
                 dataListLoading: false,
                 detailOrList: true,
-                returnMoneyVisible:false,
-                retryVisible:false,
+                 returnMoneyVisible:false,
                 goodsData: [], //售后商品table
                 saleGoods: [], //售后申请数据
                 params: {
@@ -176,8 +171,7 @@
         },
         components: {
              Bread,
-             returnMoneyModel,
-             retryModel
+             returnMoneyModel
         },
         methods: {
              orderDetFn(row){
@@ -244,13 +238,6 @@
                 this.returnMoneyVisible = true;
                 this.$nextTick(() => {
                    this.$refs.returnMoneyCompon.init(row)
-                })
-            },
-            // 退款失败时的同意退款
-            retryFn(row){
-                this.retryVisible = true;
-                this.$nextTick(() => {
-                   this.$refs.retryCompon.init(row)
                 })
             },
         }

@@ -74,13 +74,10 @@ import { isMobile,isIdCard } from '@/utils/validate'
                 callback()
             }
             var validatorIdCard = (rule, value, callback) => {
-                if(!value){
-                    return  callback();
-                }
                  if (value != '' && !isIdCard(value)) {
                     callback(new Error('身份证号输入有误'))
                 } else {
-                     return callback()
+                     callback()
                 }
             }
             return {
@@ -132,29 +129,13 @@ import { isMobile,isIdCard } from '@/utils/validate'
         },
         watch:{
             'dataForm.idCard':function(newV,oldV) {
-                if(this.dataForm.idCard){
-                     this.dataForm.idCardTemp =   this.dataForm.idCard.slice(0,12)+"******"
-                }
+               this.dataForm.idCardTemp =   this.dataForm.idCard.slice(0,12)+"******"
             },
         },
         methods:{
             init(row){
                 this.row= row,
                 this.getData();
-            },
-            formatTimeLocal(datatime){   //获取当前时间
-                    var dateTime = datatime || new Date();
-                    var year = dateTime.getFullYear();
-                    var month = dateTime.getMonth()+1;//js从0开始取
-                    var date = dateTime.getDate();
-                   
-                    if(month<10){
-                        month = "0" + month;
-                    }
-                    if(date<10){
-                        date = "0" + date;
-                    }
-                    return year+"-"+month+"-"+date
             },
             // 回显数据
             getData(){
@@ -165,14 +146,8 @@ import { isMobile,isIdCard } from '@/utils/validate'
                     console.log(res);
                     if(res.code==200){
                         this.dataForm = res.data;
-                        if( res.data.memberBirthday){
-                          this.dataForm.memberBirthday = this.formatTimeLocal(new Date(res.data.memberBirthday));
-                        }
                         if(this.dataForm.idCard){
                             this.dataForm.idCardTemp =   this.dataForm.idCard.slice(0,12)+"******"
-                        }
-                        if(!this.dataForm.memberSex){
-                            this.dataForm.memberSex = 0 //性别保密
                         }
                         if(this.dataForm.memberState == 0) this.dataForm.memberState = true;
                         else if(this.dataForm.memberState == 1) this.dataForm.memberState = false;
@@ -186,8 +161,6 @@ import { isMobile,isIdCard } from '@/utils/validate'
                         if(this.dataForm.memberState == true) this.dataForm.memberState = 0;
                         else if(this.dataForm.memberState == false) this.dataForm.memberState = 1;
                         var obj = cloneDeep(this.dataForm);
-                        if(this.dataForm.memberState == 0) this.dataForm.memberState = true;
-                        else if(this.dataForm.memberState == 1) this.dataForm.memberState = false;
                         updateZozomember(obj).then((res)=>{
                             console.log(res);
                             if(res.code==200){

@@ -67,11 +67,7 @@ const vueFilter ={
   },
   filterImgUrl:function(value){
         if(!value){return "http://morefun.image.alimmdn.com/xiaoBai/default.png";}
-        // if(/http/.test(value)|| /data:image/.test(value)){
-          if(/data:image/.test(value)){
-             return "http://morefun.image.alimmdn.com/xiaoBai/default.png";
-          }
-          if(/http/.test(value)){
+        if(/http/.test(value)|| /data:image/.test(value)){
         //  如果是绝对地址，不用加前缀
         }else{
               value = window.SITE_CONFIG['imgURL'] + "" + value;

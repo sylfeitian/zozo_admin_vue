@@ -26,7 +26,7 @@
             <el-input v-model.trim="dataForm.brandName" placeholder="请输入品牌名称" clearable></el-input>
         </el-form-item>
         <el-form-item>
-            <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>
+            <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
             <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
         </el-form-item>
         <br />

@@ -8,9 +8,9 @@
                 <el-radio-button label="loginLog">登录日志</el-radio-button>
             </el-radio-group>
         </div>
-        <!-- <div v-else>
+        <div v-else>
              <el-button type="primary">会员详情</el-button>
-        </div> -->
+        </div>
         <vipDetail v-if="activeName=='vipDetail'"  ref="vipDetailCompon"></vipDetail>
         <editVip  v-else-if="activeName=='editVip'" @changePage = "changePage" ref="editVipCompon"></editVip>
         <loginLog  v-else-if="activeName=='loginLog'" ref="loginLogCompon"></loginLog>

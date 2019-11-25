@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="detailGoodsPages">
     <Bread :breaddata="breaddata" :index = "'1'" @changePage = "changePage"></Bread>
     <el-form :inline="true" :model="dataForm">
         <el-form-item style="float: right;">
@@ -13,9 +13,8 @@
 	  :data="dataList"
       v-loading="dataListLoading"
        @selection-change="handleSelectionChange"
-        border
-        class="detailGoodsPages"
-	    style="width: 100%">
+      border
+	  style="width: 100%">
         <el-table-column
             type="selection"
             header-align="center"
@@ -233,25 +232,10 @@
         }
     };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
     .detailGoodsPages{
-    /deep/ .el-input__inner {
-        height: 40px!important;
-    }
-    /deep/ .el-input.el-input--default {
-        width: 180px!important;
-    }
-    /deep/ .el-input-number__decrease {
-        height: 38px!important;
-    }
-    /deep/ .el-input-number__increase {
-        height: 38px!important;
-    }
-    /deep/ .el-input-number {
-        width: 180px!important;
-    }
         /deep/.el-input {
-            width: 180px;
+            width: 170px;
             height: 40px;
         }
         .editDialog{
@@ -284,13 +268,5 @@
             }
         }
     }
-// /deep/ .el-input-number__decrease, .el-input-number__increase {
-//   height: 33px!important;
-// }
-// /deep/ .el-input-number {
-//   width: 160px!important;
-// }
-// /deep/ .el-input__inner {
-//   height: 35px!important;
-// }
+
 </style>

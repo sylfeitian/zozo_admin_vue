@@ -14,8 +14,8 @@
             <el-form-item label="日本发布时间：">
                 <el-date-picker
                         v-model="timeArr"
-                        type="datetimerange"
-			      	    value-format="yyyy-MM-dd HH:mm:ss"
+                        type="daterange"
+                        value-format="yyyy-MM-dd"
                         align="left"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
@@ -24,8 +24,8 @@
             <el-form-item label="发布时间：">
                 <el-date-picker
                         v-model="timeArr2"
-                        type="datetimerange"
-			      	    value-format="yyyy-MM-dd HH:mm:ss"
+                        type="daterange"
+                        value-format="yyyy-MM-dd"
                         align="left"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
@@ -53,7 +53,7 @@
         >
             <el-table-column type="selection" width="70"></el-table-column>
             <el-table-column prop="idJp" label="ID" align="center"></el-table-column>
-            <el-table-column prop="imageUrl" label="封面图片" width="100" min-width="100" align="center">
+            <el-table-column prop="imageUrl" label="封面图片" width="100" min-width="100" align="center" :resizable="false">
                 <template slot-scope="scope">
                     <img
                         :src="scope.row.imageUrl | filterImgUrl"
@@ -74,14 +74,14 @@
             </el-table-column>
             <el-table-column prop="userNickname" label="用户" align="center"></el-table-column>
             <el-table-column prop="lookCount" width="80" label="搭配数量" align="center"></el-table-column>
-            <el-table-column prop="sate" width="120" min-width="120" label="发布状态" align="center">
+            <el-table-column prop="sate" width="120" min-width="120" label="发布状态" align="center" :resizable="false">
                 <template slot-scope="scope">
                     <el-tag v-if="scope.row.sate == 1" type="success">已发布</el-tag>
                     <el-tag v-if="scope.row.sate == 2" type="info">取消发布</el-tag>
                     <el-tag v-if="scope.row.sate == 0" type="info">待发布</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column width="120" min-width="120" prop="jpPublishState"  label="日本发布状态" align="center">
+            <el-table-column width="120" min-width="120" prop="jpPublishState"  label="日本发布状态" align="center" :resizable="false">
                 <template slot-scope="scope">
                     <el-tag v-if="scope.row.jpPublishState == 1" type="success">已发布</el-tag>
                     <el-tag v-if="scope.row.jpPublishState == 0" type="info">取消发布</el-tag>

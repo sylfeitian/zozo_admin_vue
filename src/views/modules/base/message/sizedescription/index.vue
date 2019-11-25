@@ -17,7 +17,7 @@
         <el-form>
         	<el-form-item>
                 <!-- <el-button @click="addOrEditHandle()"  class="btn" type="primary">导入信息</el-button> -->
-                <importAndExport :btType="'primary'" :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
+                <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
             </el-form-item>
         </el-form>
         <el-table width="100%" :data="dataList" border v-loading="dataListLoading" style="width: 100%;">

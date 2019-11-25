@@ -97,22 +97,6 @@
                 }
                 callback()
             }
-            var validatorRule2 = (rule, value, callback) => {
-                // if (parseFloat(this.activiDataForm.reducePrice) > parseFloat(this.activiDataForm.limitPrice)) {
-                //     return callback(new Error("立减价格不能大于满减金额"))
-                // } else if (!value) {
-                //     return  callback(new Error("立减价格不能为空"))
-                // } else if (Number(value) == 0) {
-                //     return callback(new Error("立减价格不能为0"))
-                // } else {
-                //     callback();
-                // }
-                if (Number(this.activiDataForm.rule2) == 0) {
-                    callback(new Error("立减价格不能为0"));
-                } else {
-                    callback();
-                }
-            };
             return {
                 visible : false,
                 loading : false,
@@ -142,17 +126,15 @@
                     // ],
                     // reducePrice: [
                     //     { required: true, message: '立减多少元不能为空', trigger: 'blur' },
-                    //     { validator: validatorRule2, trigger: ["blur", "change"] }
+                        
                     // ],
                     rule1: [
                         { required: true, message: '订单满多少元不能为空', trigger: 'blur' },
-                        { validator: validatorPrice, trigger: 'blur'},
-                        { validator: validatorRule2, trigger: 'blur' }
+                        { validator: validatorPrice, trigger: 'blur'}
                     ],
                      rule2: [
                         { required: true, message: '立减多少元不能为空', trigger: 'blur' },
-                        { validator: validatorPrice, trigger: 'blur'},
-                        { validator: validatorRule2, trigger: 'blur' }
+                        { validator: validatorPrice, trigger: 'blur'}
                     ],
                 },
                 activiDataForm:{
@@ -235,9 +217,9 @@
             backScan(){
               Object.assign(this.activiDataForm, this.row);
               if(this.row.shareFlag==1){
-                  this.checkList = false;
+                  this.checkList = true;
               }else{
-                 this.checkList = true;
+                 this.checkList = false;
               }
                this.activiDataForm.rule1 =this.activiDataForm.limitPrice 
                 this.activiDataForm.rule2 =this.activiDataForm.reducePrice 
@@ -257,14 +239,13 @@
                 }
                 this.activiDataForm.reducePrice =this.activiDataForm.rule2
                 console.log('====',this.ruleName)
-                console.log('12312313',this.activiDataForm.rule2)
             },
             // 提交
             dataFormSubmit(formName){
                 // alert([this.dataForm.name,this.dataForm.domainAddress]);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.saveLoading = true;
+                        // this.loading = true;
                         var obj = {
                             "endTime": this.activiDataForm.endTime,//活动结束时间 ,
                             "limitPrice": this.activiDataForm.limitPrice,// 满减限制金额 ,
@@ -276,7 +257,7 @@
                         if(this.row){  obj.id = this.row.id};
                         var fn = this.row?activityReduceEdit:activityReduceAdd;
                         fn(obj).then((res) => {
-                            this.saveLoading = false;
+                            this.loading = false;
                             // alert(JSON.stringify(res));
                             let status = null;
                             if(res.code == "200"){

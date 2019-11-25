@@ -78,7 +78,7 @@
                 <el-button class="btn"type="primary" plain @click="reset()" >重置</el-button>
             </el-form-item>
             <el-form-item>
-                <importAndExport :btType="'primary'" :downType="2" :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
+                <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
             </el-form-item>
         </el-form>
         <el-table
@@ -95,26 +95,18 @@
             <el-table-column prop="status" label="售后状态" align="center">
                    <!-- （退货退款 10待审核、20待退货、30待入库、40待退款、50退款中、60退款完成、70退款失败、80售后取消） 仅退款（10退款中、20退款完成、30退款失败） -->
                     <template slot-scope="scope">
-                        <div v-if="scope.row.aftersaleType == 0" >
-                            <el-tag v-if="scope.row.auditStatus==0" type="danger">待审核</el-tag>
-                            <el-tag v-else-if="scope.row.auditStatus==2" type="danger">审核不通过</el-tag>
-                            <el-tag v-else-if="scope.row.auditStatus==3" type="danger">售后取消</el-tag>
-                            <!-- 审核通过 -->
-                            <div  v-else-if="scope.row.auditStatus==1">
-                                <el-tag v-if="scope.row.status==10" type="danger">待退货</el-tag>
-                                <el-tag v-else-if="scope.row.status==20" type="danger">待入库</el-tag>
-                                <el-tag v-else-if="scope.row.status==30" type="danger">待退款</el-tag>
-                                <el-tag v-else-if="scope.row.status==40" type="danger">退款中</el-tag>
-                                <el-tag v-else-if="scope.row.status==50" type="danger">退款完成</el-tag>
-                                <el-tag v-else-if="scope.row.status==60" type="danger">退款失败</el-tag>
-                                <el-tag v-else-if="scope.row.status==70" type="danger">售后取消</el-tag>
-                                <el-tag v-else-if="scope.row.status==80" type="danger">推送日本异常</el-tag>
-                            </div>
-                        </div>
-                        <div v-if="scope.row.aftersaleType == 1" >
-                            <el-tag v-if="scope.row.status==10" type="danger">退款中</el-tag>
-                            <el-tag v-else-if="scope.row.status==20" type="danger">退款完成</el-tag>
-                            <el-tag v-else-if="scope.row.status==30" type="danger">退款失败</el-tag>
+                        <el-tag v-if="scope.row.auditStatus==0" type="danger">待审核</el-tag>
+                        <el-tag v-else-if="scope.row.auditStatus==2" type="danger">审核不通过</el-tag>
+                        <el-tag v-else-if="scope.row.auditStatus==3" type="danger">已取消</el-tag>
+                        <!-- 审核通过 -->
+                        <div  v-else-if="scope.row.auditStatus==1">
+                            <el-tag v-if="scope.row.status==10" type="danger">待退货</el-tag>
+                            <el-tag v-else-if="scope.row.status==20" type="danger">待入库</el-tag>
+                            <el-tag v-else-if="scope.row.status==30" type="danger">待退款</el-tag>
+                            <el-tag v-else-if="scope.row.status==40" type="danger">退款中</el-tag>
+                            <el-tag v-else-if="scope.row.status==50" type="danger">退款完成</el-tag>
+                            <el-tag v-else-if="scope.row.status==60" type="danger">退款失败</el-tag>
+                            <el-tag v-else-if="scope.row.status==70" type="danger">售后取消</el-tag>
                         </div>
                     </template>
             </el-table-column>
@@ -125,17 +117,12 @@
                 </template>
             </el-table-column>
             <el-table-column prop="payTypeDec" label="退款路径" align="center">
-                <!-- <template slot-scope="scope">
+                <template slot-scope="scope">
                     <span v-if="scope.row.payTypeDec == 1" >微信支付</span>
                     <span v-if="scope.row.payTypeDec == 2" >支付宝</span>
-                </template> -->
-            </el-table-column>
-            <el-table-column prop="realRefundAmount" label="退款金额" align="center">
-                <template slot-scope="scope">
-                    <span v-if="scope.row.status==50 || (scope.row.status==20&&scope.row.aftersaleType == 1)">￥{{scope.row.realRefundAmount}}</span>
-                    <span v-else>￥0.00</span>
                 </template>
             </el-table-column>
+            <el-table-column prop="realRefundAmount" label="退款金额" align="center"></el-table-column>
             <el-table-column prop="skuid" label="SKUID" align="center"></el-table-column>
             <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
             <el-table-column prop="spuid" label="商品ID（SPU）" align="center"></el-table-column>
@@ -143,12 +130,7 @@
             <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
             <el-table-column prop="reason" label="售后原因" align="center"></el-table-column>
             <el-table-column prop="goodsNum" label="退款数量" align="center"></el-table-column>
-            <el-table-column prop="realSalePrice" label="退款金额（件）" align="center">
-                <template slot-scope="scope">
-                    <span v-if="scope.row.status==50 || (scope.row.status==20&&scope.row.aftersaleType == 1)">￥{{scope.row.realSalePrice}}</span>
-                    <span v-else>￥0.00</span>
-                </template>
-            </el-table-column>
+            <el-table-column prop="realSalePrice" label="退款金额（件）" align="center"></el-table-column>
             <el-table-column prop="JpCancelOrderSn" label="日方取消订单号" align="center"></el-table-column>
 
         </el-table>
@@ -178,7 +160,7 @@
                 mixinViewModuleOptions: {
                     getDataListURL: afterStorePage,
                     getDataListIsPage: true,
-                    // exportURL: "",
+                    exportURL: "",
                     // deleteURL: deleteAttributeUrl,
                     deleteIsBatch: true,
                     deleteIsBatchKey: "id"
@@ -190,7 +172,7 @@
                 breaddata: [ "报表中心", "售后统计"],
                 operateShopStore:[ {payType: '', name: '全部' },{ payType: 'alipay', name: '支付宝' },{ payType: 'wechat', name: '微信' }],//统计维度
                 operateShopStore2:[{refundType:"",name:"全部"},{refundType:"0",name:"退货退款"},{refundType:"1",name:"仅退款"}],
-                operateShopStore3:[{status:"",name:"全部"},{status:"0",name:"待审核"},{status:"10",name:"待退货"},{status:"20",name:"待入库"},{status:"30",name:"待退款"},{status:"40",name:"退款中"},{status:"50",name:"退款完成"},{status:"60",name:"退款失败"},{status:"70",name:"售后取消"},{status:"80",name:"推送日本异常"}],
+                operateShopStore3:[{status:"",name:"全部"},{status:"0",name:"待审核"},{status:"10",name:"待退货"},{status:"20",name:"待入库"},{status:"30",name:"待退款"},{status:"50",name:"退款完成"},{status:"70",name:"售后取消"}],
                 valuetime1:"",
                 valuetime2:"",
                 dataForm: {

@@ -6,7 +6,7 @@
         class="editDialog"
         width="70%">
         <div class="goodsPresent" >
-            <img :src="this.dataForm.mainImageUrl | filterImgUrl" alt="" style="width:110px;"/>
+            <img :src="this.dataForm.mainImageUrl | filterImgUrl" alt="" />
             <div class="goodsPresentModle">
                 <div class="goodsTitle">{{this.dataForm.name?this.dataForm.name:"暂无名字"}}</div>
                 <div class="goodsmoney">￥ {{this.dataForm.sellPrice?this.dataForm.sellPrice:'0.00'}}</div>
