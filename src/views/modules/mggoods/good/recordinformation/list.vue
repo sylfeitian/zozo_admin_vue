@@ -85,7 +85,7 @@
         </el-radio-group>
         <el-form style="float: right;" v-if="dataFormShow.isTofile=='0'">
             <el-form-item>
-                <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="Object.assign({},dataFormShow,{isTofile:dataFormShow.isTofile2?dataFormShow.isTofile2:0})"  @getDataList="getDataList"></importAndExport>
+                <importAndExport :btType="'primary'" :downType="2" :importAndExportOptions="importAndExportOptions" :dataForm="Object.assign({},dataFormShow,{isTofile:dataFormShow.isTofile2?dataFormShow.isTofile2:0})"  @getDataList="getDataList"></importAndExport>
             </el-form-item>
         </el-form>
         <el-table
@@ -455,13 +455,10 @@
                 this.dataFormShow.storeName = "";//店铺名称
                 this.dataFormShow.transportFlag = "";//下发状态
                 this.dataFormShow.categoryId = "";
-<<<<<<< HEAD
-=======
                 this.dataFormShow.isTofile2 = ""; // 备案状态
                 this.dataFormShow.storeId = "";
                 this.dataFormShow.brandId = "";
                 this.dataFormShow.categoryId = "";
->>>>>>> 9ef7a600f351cf048ed00ae2a087a230d8fa49df
                // this.dataFormShow.isTofile = "";
                 this.dataForm.categoryId = "";
                 this.dataForm.storeId = "";
@@ -472,13 +469,8 @@
                 this.dataForm.storeName = "";//店铺名称
                 this.dataForm.transportFlag = "";//下发状态
                 this.dataForm.isTofile = "";
-<<<<<<< HEAD
-                this.dataForm.isTofile2 = "";
-                this.classList = "";//分类名称
-=======
                 this.dataForm.isTofile2 = ""; // 备案状态
                 this.classList = []; //分类名称
->>>>>>> 9ef7a600f351cf048ed00ae2a087a230d8fa49df
                 this.handleClick();
                 this.getData();
             },

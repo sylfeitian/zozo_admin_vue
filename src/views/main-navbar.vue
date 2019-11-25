@@ -340,11 +340,7 @@ export default {
   }
 }
 .aui-navbar{
-<<<<<<< HEAD
   z-index: 2010;
-=======
-  z-index: 2000;
->>>>>>> 5d02947eeede723b4e9433c1c15ec790d3733732
 }
 .aui-sidebar--fold {
   .aui-navbar__header {

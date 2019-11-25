@@ -729,7 +729,8 @@ export const backScanCategorys = params => { return http.get(`${base}/zozogoods/
 export const searchBrandName = params => { return http.get(`${base}/zozogoods/brandname`, params).then(res => res.data); };
 // 查询店铺列表
 export const searchStoreName = params => { return http.get(`${base}/zozogoods/storename`, params).then(res => res.data); };
-
+// 商品上下架前判断图片是否下载
+export const showIsDown = params => { return http.get(`${base}/zozogoods/show/isDown?ids=${params.ids}`, params).then(res => res.data); };
 
 
 
@@ -827,6 +828,8 @@ export const aftersaleComfirm = params => { return http.put(`${base}/aftersale/r
 export const aftersaleReturnVerify = params => { return http.put(`${base}/aftersale/return/verify`, params).then(res => res.data); };
 // 退货退款|仅退款分页数据
 export const aftersaleReturnrReason = params => { return http.get(`${base}/aftersale/return/return/reason`, params).then(res => res.data); };
+//退款失败重试
+export const retryMoney = params => { return http.post(`${base}/aftersale/return/refund/money/retry`, params).then(res => res.data); };
 
 //操作日志-------------------------------------------------------------------------------------------------------------
 // 导出
@@ -1098,4 +1101,6 @@ export const addfileupload = params => { return http.post(`${base}/sysversionman
 export const postfileupload = params => { return http.post(`${base}/fileupload/appversion`, params).then(res => res.data); };
 
 
-
+// 导出管理
+export const sysexportmanagementPage = params => { return http.get(`${base}/sysexportmanagement/page`, params).then(res => res.data); };
+ 
