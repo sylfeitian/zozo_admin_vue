@@ -458,8 +458,13 @@
                 this.dataFormShow.transportFlag = "";//下发状态
                 this.dataFormShow.categoryId = "";
                 this.dataFormShow.isTofile2 = ""; // 备案状态
+                this.dataFormShow.storeId = "";
+                this.dataFormShow.brandId = "";
+                this.dataFormShow.categoryId = "";
                // this.dataFormShow.isTofile = "";
                 this.dataForm.categoryId = "";
+                this.dataForm.storeId = "";
+                this.dataForm.brandId = "";
                 this.dataForm.skuIdJp = "";//商品sku ID
                 this.dataForm.goodsName = "";//商品名称/商品货号
                 this.dataForm.brandName = "";//品牌名称
@@ -467,7 +472,7 @@
                 this.dataForm.transportFlag = "";//下发状态
                 this.dataForm.isTofile = "";
                 this.dataForm.isTofile2 = ""; // 备案状态
-                this.classList = "";//分类名称
+                this.classList = []; //分类名称
                 this.handleClick();
                 this.getData();
             },
