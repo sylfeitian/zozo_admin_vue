@@ -69,7 +69,7 @@
                     <el-button type="text" size="mini">下载</el-button>
                 </a>
 				<!-- <el-button v-if="scope.row.failureNumber>0" type="text" size="small" @click="download(scope.row)">下载</el-button> -->
-                <el-button v-if="(scope.row.operationStatus==0||2) && scope.row.isShowDetail==1" @click.native.prevent="detailHandle(scope.$index, scope.row)" type="text" size="mini" style="margin-left:10px;">查看详情</el-button>
+                <el-button v-if="scope.row.operationStatus==0&&scope.row.isShowDetail==1 || scope.row.operationStatus==2&&scope.row.isShowDetail==1" @click.native.prevent="detailHandle(scope.$index, scope.row)" type="text" size="mini" style="margin-left:10px;">查看详情</el-button>
 			</template>
 	  	</el-table-column>
 	</el-table>
