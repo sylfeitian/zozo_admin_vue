@@ -47,7 +47,7 @@
                     <el-form-item
                             class="specError"
                             :prop="'goodsSpecList.'+ scope.$index + '.activityQuantity' "
-                            :rules="dataRule.activityQuantity"
+                            :rules="multipleSelection.indexOf(scope.row)!=-1?dataRule.activityQuantity:nullRule"
                     >
                         <el-input class="inputWidth"
                                   v-model="scope.row.activityQuantity"
@@ -81,7 +81,7 @@
                     <el-form-item
                             class="specError"
                             :prop=" 'goodsSpecList.' + scope.$index + '.personLimit' "
-                            :rules="dataRule.personLimit"
+                            :rules="multipleSelection.indexOf(scope.row)!=-1?dataRule.personLimit:nullRule"
                     >
                         <el-input class="inputWidth" v-model="scope.row.personLimit"
                                           :maxlength="6"
@@ -153,7 +153,7 @@
                 dataList: {
                     activityQuantity: "",
                     personLimit: "",
-                    goodsSpecList: ""
+                    goodsSpecList: []
                 },
                 isLimit: "", //当前选中行的日本限制数量
                 dataForm:{
@@ -184,7 +184,8 @@
                             trigger: ["blur", "change"]
                         },
                         { validator: limitNumber, trigger: ["blur", "change"] }
-                    ]
+                    ],
+                    nullRule:[],
                 }
             }
 
@@ -336,7 +337,7 @@
                             var obj = {
                                 "activityGoodsList": activityGoodsList,//活动商品新增集合 ,
                                 "activityId": this.row.id,//活动id ,
-                                "isAllCheck": this.multipleSelection.length == this.dataList.length ? 1 : 0,// 商品下的规格是否全部选中（ 默认0未全部选中，1全部选中）
+                                "isAllCheck": this.multipleSelection.length == this.dataList.goodsSpecList.length ? 1 : 0,// 商品下的规格是否全部选中（ 默认0未全部选中，1全部选中）
                             }
 
                             editLimitActivityGoods(obj).then((res) => {

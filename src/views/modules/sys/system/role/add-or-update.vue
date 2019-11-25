@@ -106,7 +106,10 @@
                     if (res.code !== 200) {
                         return this.$message.error(res.msg)
                     }
-                    this.menuList = res.data
+                    // this.menuList = res.data
+                     this.menuList = res.data.filter((item)=>{
+                          return item.pid=="0"
+                     })
                 }).catch(() => {})
             },
             // 获取部门列表

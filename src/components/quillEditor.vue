@@ -95,8 +95,12 @@ export default {
 						          console.log(res.data.url);
 						          if(res && res.code == "200"){
 						            var url = res.data.url
-		                    //这里很重要，你图片上传成功后，img的src需要在这里添加，res.path就是你服务器返回的图片链接。        、                        
-						            self.quill.insertEmbed(self.quill.getSelection().index, 'image', window.SITE_CONFIG['imgURL'] + res.data.url)
+							//这里很重要，你图片上传成功后，img的src需要在这里添加，res.path就是你服务器返回的图片链接。        、         
+									if(/http/.test(res.data.url)){
+										self.quill.insertEmbed(self.quill.getSelection().index, 'image', res.data.url)
+									}else{
+										self.quill.insertEmbed(self.quill.getSelection().index, 'image', window.SITE_CONFIG['imgURL'] + res.data.url)
+									}             
 						            self.quill.setSelection(lengthcontent + 1)
 						           
 						          }else {

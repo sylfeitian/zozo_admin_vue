@@ -1,11 +1,23 @@
 <template>
 <el-dialog
         class="model-add-edit-data"
-        :title="type == 1 ?'上架': '下架' "
+        title="提示"
         :close-on-click-modal="false"
         :visible.sync="visible"
         :before-close="closeDialog"
         width="26%"
+    >
+    <div style="padding-left:10%">
+        <h3>要上架的商品有未下载的图片，您确认要上架?</h3>
+    </div>
+<el-dialog
+        class="model-add-edit-data"
+        :title="type == 1 ?'上架': '下架' "
+        :close-on-click-modal="false"
+        :visible.sync="innerVisible"
+        :before-close="closeDialog"
+        width="26%"
+        append-to-body
     >
         <el-form
             :model="dataForm"
@@ -43,6 +55,11 @@
                          :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
         </span>
     </el-dialog>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="visible = false">取 消</el-button>
+      <el-button type="primary" @click="change()">确定</el-button>
+    </div>
+    </el-dialog>
 </template>
 
 <script>
@@ -62,9 +79,11 @@
                 //     deleteIsBatchKey: 'id'
                 // },
                 visible : false,
+                innerVisible: false,
                 loading : false,
                 saveLoading : false,
                 dataForm: {
+                    id: "",
                     shelfTime: "",//选择时间
                     showType: 0,//0:立即，1：定时 ,
                     showWeb: ""
@@ -80,17 +99,19 @@
                 },// 日期组件 设置项
                 type:'',
                 dataListSelections:[],
+                row:"",
             }
         },
         // props:["idJp"],
         methods: {
-            init (dataListSelections,type) {
+            init (row,type) {
                 this.visible = true;
                 this.type  = type;
-                this.dataListSelections  = dataListSelections;
+                // this.dataListSelections  = dataListSelections;
                 this.dataForm.shelfTime = new Date();
                 this.dataForm.showType =0
                 this.dataForm.showWeb =""
+                this.row = row
                 this.$nextTick(() => {
                     
                 })
@@ -108,7 +129,7 @@
                     // return y+'-'+add0(m)+'-'+add0(d)
             },
             afterTime(){
-                console.log(this.dataForm.shelfTime);
+                console.log(this.dataForm);
                 if(new Date(this.dataForm.shelfTime).getTime() < new Date().getTime()){
                     this.dataForm.shelfTime = this.filterTime(new Date());
                 }
@@ -119,16 +140,13 @@
                 // console.log(this.dataForm);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        var ids = [];
-                        this.dataListSelections.forEach((item,index)=>{
-                            ids.push(item.id);
-                        })
                         var obj={
-                            ids: ids.join(","),
+                            ids: this.row.id,
                             showWeb: this.type == 1?1:2,//1上级，2下架
                             showType:this.dataForm.showType,//0:立即，1：定时 ,
                             shelfTime:this.dataForm.showType == 1?this.filterTime(this.dataForm.shelfTime):'',//选择时间
                         }
+                        console.log(obj)
                         this.saveLoading = true;
                         showBatchGoods(obj).then((res) => {
                             this.saveLoading = false;
@@ -161,11 +179,18 @@
             },
             dataFormCancel(){
                 this.visible = false;
+                this.innerVisible = false;
                 this.closeDialog();
             },
             closeDialog() {
-                this.$parent.modelLowerBatchShelfVisible = false;
+                this.innerVisible = false;
+                this.visible = false;
             },
+            // 触发里面弹框
+            change(row) {
+                this.visible = false;
+                this.innerVisible = true;
+            }
         }
     }
 </script>

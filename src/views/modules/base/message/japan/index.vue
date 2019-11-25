@@ -2,7 +2,7 @@
     <div>
         <Bread  :breaddata="breaddata"></Bread>
         <!-- <el-button @click="addOrEditHandle()"  class="btn" type="primary">导入信息</el-button> -->
-        <importAndExport :importAndExportOptions="importAndExportOptions" class="btn" :dataForm="dataForm"  @getDataList="getTree"></importAndExport>
+        <importAndExport :btType="'primary'" :importAndExportOptions="importAndExportOptions" class="btn" :dataForm="dataForm"  @getDataList="getTree"></importAndExport>
         <MyTableTree
                 v-loading="dataListLoading"
                 :children="'list'"

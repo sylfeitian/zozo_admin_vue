@@ -107,7 +107,7 @@
 		<el-form>
       	<el-form-item>
 	    	<!-- <el-button  class="btn" type="primary" plain @click="artaddmassage()">导出数据</el-button> -->
-			<importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
+			<importAndExport :btType="'primary'" :downType="2" :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
 	  	</el-form-item>
     </el-form>
 	<el-table
@@ -149,8 +149,8 @@
 					<!-- 待付款 -->
 					<!-- <span v-if="scope.row.orderStatus==10">待付款</span> -->
 						<!-- 待发货 -->
-					<!-- <span v-else-if="scope.row.orderStatus==20">付款中</span> -->
 					<span v-if="scope.row.orderStatus==30">待审核</span>
+					<span v-else-if="scope.row.orderStatus==20">付款中</span>
 					<span v-else-if="scope.row.orderStatus==35">审核未通过</span>
 					<span v-else-if="scope.row.orderStatus==40">lakala申报中</span>
 					<span v-else-if="scope.row.orderStatus==50">lakala申报失败</span>
@@ -233,6 +233,11 @@
 		<el-table-column
 		    prop="realSalePrice"
 		    label="商品实付金额"
+				align="center">
+		</el-table-column>
+		<el-table-column
+		    prop="declareSn"
+		    label="申报单号"
 				align="center">
 		</el-table-column>
 	</el-table>

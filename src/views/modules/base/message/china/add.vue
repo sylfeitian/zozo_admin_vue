@@ -21,7 +21,7 @@
 				</el-select>
 				</el-form-item>
 			<el-form-item label="分类名称：" prop="name">
-				<el-input v-model.trim="dataForm.name " type="text" placeholder="请输入4个汉字/8个字符以内的内容" style="width:400px;"></el-input>
+				<el-input v-model.trim="dataForm.name " type="text" placeholder="请输入10个汉字/20个字符以内的内容" style="width:400px;"></el-input>
 			</el-form-item>
 			<el-form-item label="排序：" prop="sort">
 				<el-input v-model.trim="dataForm.sort" type="text" placeholder="数字越大越靠前" show-word-limit style="width:200px;"></el-input>
@@ -30,7 +30,7 @@
 			<el-form-item label="评价类型：" prop="appraisal" v-if="erjishow">
 				<el-input v-model.trim="dataForm.appraisal" type="text" placeholder="请输入6字以内的内容" style="width:400px;"></el-input>
 			</el-form-item>
-			<el-form-item v-if="yijishow" prop="categoryJpId" v-for="(item, index) in dataForm.categoryJpId" :key="index" :label="index == 0 ? '关联日本分类：' : '' ">
+			<!-- <el-form-item v-if="yijishow" prop="categoryJpId" v-for="(item, index) in dataForm.categoryJpId" :key="index" :label="index == 0 ? '关联日本分类：' : '' ">
 				<el-select
 				v-model="dataForm.categoryJpId[index]"
 				placeholder="请选择"
@@ -45,7 +45,20 @@
 				</el-select>
 				<el-button v-if="index+1 == dataForm.categoryJpId.length" @click="actadd" type="primary" style="margin-left: 20px;">添加</el-button>
 				<el-button v-if="index!=0" @click="removecategoryJpItemFn(index)" type="primary" style="margin-left: 20px;">删除</el-button>
+			</el-form-item> -->
+
+			<el-form-item  v-if="yijishow" label="关联日本分类：">
+				<el-tree
+						ref="treeCategory"
+						:data="goodKindList2"
+						show-checkbox
+						node-key="id"
+						:default-expanded-keys="expandedKeys"
+						:default-checked-keys="checkedKeys"
+						:props="defaultProps">
+					</el-tree>
 			</el-form-item>
+
 			
 			<el-form-item label="测量方法：" prop="methodUrl" v-if="yijishow">
 				<div class="pcCoverUrl imgUrl"   style="width: 100px;" v-for="(item,index) in dataForm.methodUrlshow" @click="imgtype = 'rule'">
@@ -72,6 +85,7 @@
 							v-loading="genderMainLoading"
 							ref="cropperImg1"
 							:index="'1'"
+							:cropImg = "dataForm.genderMain"
 							:imgWidth='"100px"'
 							:imgHeight='"100px"'
 							@delteteImg="delteteImgAll"
@@ -91,6 +105,7 @@
 							<img-cropper
 							    v-loading="genderMrLoading"
 								ref="cropperImg1"
+								:cropImg = "dataForm.genderMr"
 								:index="'1'"
 								:imgWidth='"100px"'
 								:imgHeight='"100px"'
@@ -108,6 +123,7 @@
 							    v-loading="genderMrsLoading"
 								ref="cropperImg1"
 								:index="'1'"
+								:cropImg = "dataForm.genderMrs"
 								:imgWidth='"100px"'
 								:imgHeight='"100px"'
 								@delteteImg="delteteImgW"
@@ -124,6 +140,7 @@
 							v-loading="genderKidLoading"
 								ref="cropperImg1"
 								:index="'1'"
+								:cropImg = "dataForm.genderKid"
 								:imgWidth='"100px"'
 								:imgHeight='"100px"'
 								@delteteImg="delteteImgC"
@@ -227,6 +244,14 @@
 		      	genderMrs:'', //分类女士图片 
 		      	genderKid:'', //分类儿童图片 
 			},
+			defaultProps: {
+				// children: 'list',
+				// label: 'name',
+				children: 'children',
+				label: 'label'
+			},
+			expandedKeys:[],
+			checkedKeys:[],
 			methodUrlLoading:[false,false,false,false,false,false,false,false,false,false],
 			genderMainLoading:false,
 			genderMrLoading:false,
@@ -241,10 +266,10 @@
          			{ required: true, message: '必填项不能为空', trigger: 'blur' },
          			{ validator: sortminmax,trigger: 'blur'},
 				],
-				categoryJpId:[
-					{ required: true, message: '必填项不能为空', trigger: 'blur' },
-					{ validator: validateCategoryJpId,trigger: 'blur'},
-				],
+				// categoryJpId:[
+				// 	{ required: true, message: '必填项不能为空', trigger: 'blur' },
+				// 	{ validator: validateCategoryJpId,trigger: 'blur'},
+				// ],
 	        	appraisal: [
 	       			{ required: true, message: '必填项不能为空', trigger: 'blur' },
                     { validator: validateAppraisal,trigger: 'blur'},
@@ -268,7 +293,7 @@
 						characterCount = characterCount + 1;
 					}
 					var count = chineseCount + characterCount;
-					if (count > 8) { //输入字符大于20的时候过滤
+					if (count > 20) { //输入字符大于20的时候过滤
 						this.dataForm.name = newV.substr(0,(chineseCount/2+characterCount)-1)
 					}
 				}
@@ -336,18 +361,39 @@
 					id:id
 				}
 			}
-			return searchCategoryJp(obj).then((res)=>{
-	  			if(res.code == 200){
-	  				console.log(res.data);
-	  				res.data.forEach((item)=>{
-	  					this.goodKindList2.push(item);
-	  				})
-	  			}else{
-	  				this.$message(res.msg);
-	  			}
-	  		}).catch(()=>{
-	  			this.$message("服务器错误");
-	  		})
+			return new Promise((resolve)=>{
+				searchCategoryJp(obj).then((res)=>{
+					if(res.code == 200){
+						console.log(res.data);
+						res.data.forEach((item)=>{
+							if(!item.name){
+									item.name = item.nameJp;
+								}
+								item.children = item.list;
+								item.label = item.name;
+
+								if(item && item.list){
+									item.list.forEach((item2)=>{
+										if(!item2.name){
+											item2.name = item2.nameJp;
+										}
+										item2.children = "";
+										item2.label = item2.name;
+									})
+								}
+								this.goodKindList2.push(item);
+						})
+						resolve("ok")
+					}else{
+						this.$message(res.msg);
+						resolve("error")
+					}
+	  			}).catch(()=>{
+					this.$message("服务器错误");
+					resolve("error")
+				})
+			})
+			  
 		},
 		//  判断是否是一级，啦显示不同的选项
 		actselectchange(){
@@ -414,17 +460,31 @@
 			console.log(this.dataForm);
 			this.$refs[formName].validate((valid) => {
 				if (valid) {
+					var ids = []
+					if(this.yijishow){
+						ids = this.$refs.treeCategory.getCheckedKeys(true);
+						console.log(ids);
+						// if(ids.length==0){
+						// 	this.$message({
+						// 		message: '请选择关联分类',
+						// 		type: 'warning',
+						// 		duration: 1500
+						// 	})
+						// 	return false;
+						// }
+					}
+
 					this.saveLoading = true;
 					var obj = {};
 					Object.assign(obj,this.dataForm);
 					if(obj.parentId=="0") {
 						obj.categoryJpId = [];
 					}else{
-						var categoryJpId = [] ;
-						this.dataForm.categoryJpId.forEach((item,index)=>{
-							if(item) categoryJpId.push(item)
-						})
-						obj.categoryJpId = categoryJpId
+						// var categoryJpId = [] ;
+						// this.dataForm.categoryJpId.forEach((item,index)=>{
+						// 	if(item) categoryJpId.push(item)
+						// })
+						obj.categoryJpId = ids
 					}
 					updataCategoryCn(obj).then((res)=>{
 						this.saveLoading = false;

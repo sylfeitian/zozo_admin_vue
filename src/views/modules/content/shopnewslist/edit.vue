@@ -25,7 +25,7 @@
                     <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg">
-                                <img :src="dataForm.imageUrl | filterImgUrl" alt=""/>
+                                <img :src="dataForm.imageUrl | filterImgUrl" alt="" width="200px"/>
                             </div>
                         </div>
                     </template>
@@ -77,6 +77,7 @@
                     ref="dataForm"
                     class="grayLine topGapPadding"
                     :model="dataForm"
+                    :rules="dataRule"
                     @keyup.enter.native="getDataList()"
             >
                 <p class="title">中文</p>
@@ -92,7 +93,7 @@
                 <el-form-item label="发布状态：">
                     <span>{{dataForm.showWeb == 1?"已发布":dataForm.showWeb == 0?"待发布":"取消发布"}}</span>
                 </el-form-item>
-                <el-form-item label="背景图：">
+                <el-form-item label="背景图：" prop="imageUrl">
                     <!-- <template slot-scope="scope">
                         <div class="goodsPropsWrap">
                             <div class="goodsImg">
@@ -162,8 +163,8 @@
             <div style="margin: 0 auto;width: 85%;text-align: center;z-index: 999;">
                 <span style="font-size: 20px;margin-right: 20px;">状态：{{dataForm.showWeb == 0?"未发布":dataForm.showWeb == 1?"已发布":dataForm.showWeb == 2?"取消发布":''}}</span>
                 <el-button class="btn" @click="reset()">取消</el-button>
-                <el-button class="btn" @click="getData(0)">保存</el-button>
-                <el-button class="btn" :disabled="dataForm.showWebJp == 0" type="primary" @click="getData(1)">保存并发布</el-button>
+                <el-button class="btn" @click="getData('dataForm',0)">保存</el-button>
+                <el-button class="btn" :disabled="dataForm.showWebJp == 0" type="primary" @click="getData('dataForm',1)">保存并发布</el-button>
             </div>
         </el-col>
     </div>
@@ -181,6 +182,11 @@
                 dataForm: {},
                 dataListLoading: false,
                 uploading:false,
+                dataRule : {
+                    imageUrl : [
+                        { required: true, message: '必填项不能为空', trigger: 'blur' },
+                    ]
+                },
             }
         },
         components: {
@@ -244,43 +250,50 @@
                 console.log(val);
                 this.uploadPic(val,index);
             },
-            getData(saveType){
-                let that = this;
-               if(saveType == 0){
-                   saveStoreNewsdetailOne(this.dataForm).then((res)=>{
-                       if(res.code == 200){
-                           this.$message({
-                               message: res.msg,
-                               type: 'success',
-                               onClose:function () {
-                                   that.changePage();
-                               }
-                           });
-                       }else{
-                           this.$message({
-                               message: res.msg,
-                               type: 'error',
-                           });
-                       }
-                   })
-               }else{
-                   saveStoreNewsdetail(this.dataForm).then((res)=>{
-                       if(res.code == 200){
-                           this.$message({
-                               message: res.msg,
-                               type: 'success',
-                               onClose:function () {
-                                   that.changePage();
-                               }
-                           });
-                       }else{
-                           this.$message({
-                               message: res.msg,
-                               type: 'error',
-                           });
-                       }
-                   })
-               }
+            getData(formName,saveType){
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        let that = this;
+                        if(saveType == 0){
+                            saveStoreNewsdetailOne(this.dataForm).then((res)=>{
+                                if(res.code == 200){
+                                    this.$message({
+                                        message: res.msg,
+                                        type: 'success',
+                                        onClose:function () {
+                                            that.changePage();
+                                        }
+                                    });
+                                }else{
+                                    this.$message({
+                                        message: res.msg,
+                                        type: 'error',
+                                    });
+                                }
+                            })
+                        }else{
+                            saveStoreNewsdetail(this.dataForm).then((res)=>{
+                                if(res.code == 200){
+                                    this.$message({
+                                        message: res.msg,
+                                        type: 'success',
+                                        onClose:function () {
+                                            that.changePage();
+                                        }
+                                    });
+                                }else{
+                                    this.$message({
+                                        message: res.msg,
+                                        type: 'error',
+                                    });
+                                }
+                            })
+                        }
+                    } else {
+                            //console.log('error 添加失败!!');
+                            return false;
+                    }
+                })
             }
         }
     }
@@ -340,4 +353,7 @@
 	/deep/ .crop-img .el-upload-dragger .el-icon-upload {
 		line-height: 150px!important;
 	}
+    /deep/ .el-form-item__error {
+        margin: -10px 0 0 120px;
+    }
 </style>

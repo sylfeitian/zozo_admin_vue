@@ -1,11 +1,23 @@
 <template>
 <el-dialog
         class="model-add-edit-data"
-        :title="type == 1 ?'上架': '下架' "
+        title="提示"
         :close-on-click-modal="false"
         :visible.sync="visible"
         :before-close="closeDialog"
         width="26%"
+    >
+    <div style="padding-left:10%">
+        <h3>要上架的商品有未下载的图片，您确认要上架?</h3>
+    </div>
+<el-dialog
+        class="model-add-edit-data"
+        :title="type == 1 ?'上架': '下架' "
+        :close-on-click-modal="false"
+        :visible.sync="innerVisible"
+        :before-close="closeDialog"
+        width="26%"
+        append-to-body
     >
         <el-form
             :model="dataForm"
@@ -43,6 +55,11 @@
                          :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
         </span>
     </el-dialog>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="visible = false">取 消</el-button>
+      <el-button type="primary" @click="change()">确定</el-button>
+    </div>
+    </el-dialog>
 </template>
 
 <script>
@@ -62,6 +79,7 @@
                 //     deleteIsBatchKey: 'id'
                 // },
                 visible : false,
+                innerVisible: false,
                 loading : false,
                 saveLoading : false,
                 dataForm: {
@@ -161,11 +179,18 @@
             },
             dataFormCancel(){
                 this.visible = false;
+                this.innerVisible = false;
                 this.closeDialog();
             },
             closeDialog() {
-                this.$parent.modelLowerBatchShelfVisible = false;
+                this.innerVisible = false;
+                this.visible = false;
             },
+            // 触发里面弹框
+            change() {
+                this.visible = false;
+                this.innerVisible = true;
+            }
         }
     }
 </script>
