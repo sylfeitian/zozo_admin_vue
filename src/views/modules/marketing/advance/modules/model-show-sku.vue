@@ -6,7 +6,7 @@
         class="editDialog"
         width="70%">
         <div class="goodsPresent" >
-            <img :src="this.dataForm.mainImageUrl | filterImgUrl" alt=""  style="width:110px;"/>
+            <img :src="this.dataForm.mainImageUrl | filterImgUrl" alt="" />
             <div class="goodsPresentModle">
                 <div class="goodsTitle">{{this.dataForm.name?this.dataForm.name:"暂无名字"}}</div>
                 <div class="goodsmoney">￥ {{this.dataForm.sellPrice?this.dataForm.sellPrice:'0.00'}}</div>
@@ -185,32 +185,11 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
     /*/deep/.el-form-item__content:nth-child(1) {*/
     /*    margin-left: 50px!important;*/
     /*}*/
     .title {
         margin-left: -70px;
-    }
-    .goodsPresent{
-        width: 100%;
-        display: flex;
-        margin-bottom: 20px;
-        img{
-            width: 110px;
-            height: 110px;
-            object-fit: contain;
-            margin-right: 20px;
-        }
-        .goodsPresentModle{
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 6px 0;
-            .goodsmoney{
-                color:red;
-                margin-top: 66px;
-            }
-        }
     }
 </style>

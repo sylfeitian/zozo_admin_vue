@@ -1,6 +1,6 @@
 <template>
     <div style="display: inline-block;">
-       <el-button v-if="importAndExportOptions && importAndExportOptions.exportUrl" class="btn" :type="btType" @click="exportExcel">{{importAndExportOptions.exportWord}}</el-button>
+       <el-button v-if="importAndExportOptions && importAndExportOptions.exportUrl" class="btn" type="primary" @click="exportExcel">{{importAndExportOptions.exportWord}}</el-button>
         <el-upload
             v-if="importAndExportOptions && importAndExportOptions.importUrl"
             style="display:inline-block"
@@ -17,7 +17,7 @@
             :on-progress="handleProgress"
             @on-change="handleChange"
             >
-                <el-button slot="trigger"  class="btn"  :type="btType">{{uploadLoading?"导入中...":importAndExportOptions.importWord}}</el-button>
+                <el-button slot="trigger"  class="btn"  type="primary">{{uploadLoading?"导入中...":importAndExportOptions.importWord}}</el-button>
                 <!-- <div slot="tip" class="el-upload__tip">只能上传excel格式视频，且不超过10M</div> -->
         </el-upload>
     </div>
@@ -25,30 +25,9 @@
 <script>
 import Cookies from 'js-cookie'
 import qs from 'qs'
-import http from '@/utils/request'
-
 export default {
     name:'bread',
-    // type==1
-    // props: ['importAndExportOptions','dataForm',"type"],
-    props:{
-        importAndExportOptions: {
-            type: Object,
-            default: ""
-        },
-        dataForm: {
-            type: Object,
-            default: ""
-        },
-        downType: {
-            type: Number,//// 1  是正常下载，2是请求接口
-            default: 1
-        },
-        btType:{
-            type: String,
-            defalut: "primary"
-        }
-    },
+    props: ['importAndExportOptions','dataForm'],
     data () {
         return {
             myHeaders: {},//Cookies.get(teacher_token)
@@ -80,48 +59,12 @@ export default {
                 // url = this.importAndExportOptions.exportUrl + "?"+url;
                 // window.open(url);
 
-              
-                //  window.open(`${this.importAndExportOptions.exportUrl}?${params}`);
-                if(this.downType==1){
-                    this.downLoadExcel();
-                }else{
-                    this.exportByInterface();
-                }
-            },
-            // 下载excel
-            downLoadExcel(){
-                var params = qs.stringify({
+                 var params = qs.stringify({
                     'token': Cookies.get('token'),
                     ...this.dataForm
                 })
                 window.location.href = `${this.importAndExportOptions.exportUrl}?${params}`
-            },
-            // 请求后端接口
-            exportByInterface(){
-                let that = this;
-                var  obj = {
-                    params:{
-                        ...this.dataForm
-                    }
-                    
-                 }
-                 http.get(`${this.importAndExportOptions.exportUrl}`, obj).then(res =>{
-                     res = res.data
-                    if(res.code==200){
-                        that.$message({
-                            message: res.msg,
-                            type: "success",
-                            duration: 1500
-                        })
-                    }else{
-                        that.$message({
-                            message: res.msg,
-                            type: "error",
-                            duration: 1500
-                        })
-                    }
-
-                })
+                //  window.open(`${this.importAndExportOptions.exportUrl}?${params}`);
             },
             // 导入之前
             beforeAvatarUpload(file) {

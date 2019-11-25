@@ -4,20 +4,10 @@
         <el-form :inline="true" class="grayLine topGapPadding" :model="dataFormShow" @keyup.enter.native="getDataList()" >
             <!-- <el-scrollbar style="height:90px;margin-right: 30px;"> -->
             <el-form-item label="品牌ID：">
-                <el-input v-model.trim="dataFormShow.idJp" maxlength="30" placeholder="请输入ID"></el-input>
+                <el-input v-model.trim="dataFormShow.idJp" maxlength="30" ></el-input>
             </el-form-item>
             <el-form-item label="品牌名称：">
-                <el-input v-model.trim="dataFormShow.brandName" placeholder="请输入品牌名称"></el-input>
-            </el-form-item>
-            <el-form-item label="日本状态：">
-                <el-select v-model="dataFormShow.processFlag" placeholder="请选择">
-                    <el-option
-                        v-for="item in processFlagOptions"
-                        :key="item.id"
-                        :label="item.label"
-                        :value="item.id"
-                    ></el-option>
-                </el-select>
+                <el-input v-model.trim="dataFormShow.brandName" ></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="getData">搜索</el-button>
@@ -25,7 +15,7 @@
             </el-form-item>
         </el-form>
         <!-- <el-button  @click="uploadHandle()" class="btn" type="primary">导入信息</el-button> -->
-         <importAndExport :btType="'primary'" :importAndExportOptions="importAndExportOptions" :dataForm="dataForm" @getDataList="getDataList"></importAndExport>
+         <importAndExport :importAndExportOptions="importAndExportOptions" :dataForm="dataForm" @getDataList="getDataList"></importAndExport>
         <el-table
                 width="100%"
                 :data="dataList"
@@ -107,11 +97,14 @@
                 dataListLoading: false,
                 // uploadVisible: false,
                 check: null,
+<<<<<<< HEAD
+=======
                 processFlagOptions: [
                     { id:"",label:"全部"},
                     { id: "0", label: "正常" },
                     { id: "1", label: "删除" }
                 ],
+>>>>>>> 9ef7a600f351cf048ed00ae2a087a230d8fa49df
             }
         },
         components: {

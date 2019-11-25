@@ -46,10 +46,7 @@ import {logisticsInfo} from "@/api/api.js"
                       this.loading = false;
                       console.log(res);
                       if(res.code==200){
-                        // this.logisticsData = res.data;
-                        res.data.forEach((item)=>{
-                            this.logisticsData.unshift(item);
-                        })
+                        this.logisticsData = res.data;
                         if(this.logisticsData.length!=0){
                             this.active = this.logisticsData.length-1
                         }

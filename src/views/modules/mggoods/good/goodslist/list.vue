@@ -41,7 +41,6 @@
         <el-select
           v-model="dataFormShow.storeId"
           filterable
-          clearable
           placeholder="请输入店铺名称"
           :loading="loading"
           @change="changeStore"
@@ -58,7 +57,6 @@
         <el-select
           v-model="dataFormShow.brandId"
           filterable
-          clearable
           placeholder="请输入品牌名称"
           :loading="loading"
           @change="changeBrand"
@@ -101,26 +99,6 @@
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="下发状态：">
-        <el-select v-model="dataFormShow.transportFlag" placeholder="请选择">
-          <el-option
-            v-for="item in transportOptions"
-            :key="item.id"
-            :label="item.label"
-            :value="item.id"
-          ></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="店铺状态：">
-        <el-select v-model="dataFormShow.operateFlag" placeholder="请选择">
-          <el-option
-            v-for="item in operateOptions"
-            :key="item.id"
-            :label="item.label"
-            :value="item.id"
-          ></el-option>
-        </el-select>
-      </el-form-item>
       <el-form-item>
         <el-button class="btn" type="primary" @click="getData()">搜索</el-button>
         <el-button class="btn" type="primary" plain @click="reset()">重置</el-button>
@@ -151,7 +129,7 @@
           >{{scope.row.idJp}}</div>
         </template>
       </el-table-column>
-      <el-table-column label="主图" prop="imageUrl" align="center" width="160" min-width="160">
+      <el-table-column label="主图" prop="imageUrl" align="center" width="160" min-width="160" :resizable="false">
         <template slot-scope="scope">
           <img
             :src="scope.row.mainImageUrl | filterImgUrl"
@@ -185,13 +163,10 @@
       </el-table-column>
       <el-table-column prop="categoryId" label="分类" align="center">
         <template slot-scope="scope">
-          <!-- <div :title="scope.row.goodsTypeName ?scope.row.firstCategory+'--'+scope.row.goodsTypeName:scope.row.firstCategory">
+          <div :title="scope.row.goodsTypeName ?scope.row.firstCategory+'--'+scope.row.goodsTypeName:scope.row.firstCategory">
             {{scope.row.firstCategory}}
             <span v-if="scope.row.goodsTypeName">--</span>
             {{scope.row.goodsTypeName}}
-          </div> -->
-          <div>
-            {{scope.row.pathName}}
           </div>
         </template>
       </el-table-column>
@@ -200,7 +175,7 @@
           <div>{{scope.row.storeName}}</div>
         </template>
       </el-table-column>
-      <el-table-column label="状态" align="center" min-width="100" width="100">
+      <el-table-column label="状态" align="center" min-width="100" width="100" :resizable="false">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.showWeb==0" type="info">待上架</el-tag>
           <el-tag v-if="scope.row.showWeb==1" type="success">已上架</el-tag>
@@ -245,7 +220,7 @@
           <!--                    <el-button size="mini" type="text" @click="detShowChange(scope.row)">查看详情</el-button>-->
           <el-button @click="editList(scope.row)" type="text" size="mini">编辑</el-button>
           <el-button 
-            @click.native.prevent="lowerShelf(scope.$index, scope.row,1)" 
+            @click.native.prevent="lowerShelf(scope.$index, scope.row)" 
             :disabled="scope.row.sellState== 0"
             v-if="scope.row.showWeb==0 || scope.row.showWeb==2" 
             type="text" size="mini">
@@ -253,7 +228,7 @@
           </el-button>
 
           <el-button  
-            @click.native.prevent="lowerShelf(scope.$index, scope.row,0)" 
+            @click.native.prevent="lowerShelf(scope.$index, scope.row)" 
             v-else-if="scope.row.showWeb==1" class="artclose" 
             type="text" size="mini">
             <span >下架</span>
@@ -289,8 +264,7 @@
     </div>
     <modelLowerShelf v-if="modelLowerShelfVisible" ref="modelLowerShelfCompon" @searchDataList="getDataList"></modelLowerShelf>
     <modelLowerBatchShelf v-if="modelLowerBatchShelfVisible" ref="modelLowerBatchShelfCompon" @searchDataList="getDataList"></modelLowerBatchShelf>
-    <modelIsDown v-if="modelIsDownVisible" ref="modelIsDownCompon" @searchDataList="getDataList"></modelIsDown>
-    <modelIsDown1 v-if="modelIsDownVisible1" ref="modelIsDownCompon1" @searchDataList="getDataList"></modelIsDown1>
+    
   </div>
 </template>
 
@@ -301,15 +275,12 @@ import detail from "./detail";
 import { goodsUrl } from "@/api/url";
 import modelLowerShelf from "./model-lower-shelf.vue";
 import modelLowerBatchShelf from "./model-lower-batch-shelf.vue";
-import modelIsDown from "./model-isdown.vue";
-import modelIsDown1 from "./model-isdown1.vue";
 import {
   showBatchGoods,
   showGoods,
   searchStoreName,
   searchBrandName,
-  backScanCategorys,
-  showIsDown
+  backScanCategorys
 } from "@/api/api";
 import cloneDeep from "lodash/cloneDeep";
 export default {
@@ -333,9 +304,7 @@ export default {
         brandName: "", //品牌名称
         sellState: "", //是否可售
         showWeb: "", //上下架状态:0：待上架，1：已上架，2：下架 ,
-        priceState: "", //价格变更
-        transportFlag:"", // 下发状态
-        operateFlag: "" // 店铺状态
+        priceState: "" //价格变更
       },
       classList: [],
       props: {
@@ -356,13 +325,6 @@ export default {
         { id: "1", label: "价格上涨" },
         { id: "2", label: "价格下降" },
         { id: "3", label: "倒挂" }
-      ],
-      transportOptions: [{id:"",label:"全部"},{ id: "0", label: "未下发" }, { id: "1", label: "已下发" }],
-      operateOptions: [
-        { id:"",label:"全部"},
-        { id: "0", label: "待营业" },
-        { id: "1", label: "营业中" },
-        { id: "2", label: "已停业" }
       ],
       activeName: "",
       data: {}, //总数据
@@ -385,17 +347,13 @@ export default {
       selectBrandOption: [],
       modelLowerShelfVisible : false,
       modelLowerBatchShelfVisible:false,
-      modelIsDownVisible: false,
-      modelIsDownVisible1: false
     };
   },
   components: {
     Bread,
     detail,
     modelLowerShelf,
-    modelLowerBatchShelf,
-    modelIsDown,
-    modelIsDown1
+    modelLowerBatchShelf
   },
   watch: {
     // ID类搜索框仅可输入数字、英文，最多可输入30个字符
@@ -435,19 +393,6 @@ export default {
             if (count > 300) { //输入字符大于300的时候过滤
                 this.dataFormShow.brandId = newV.substr(0,(chineseCount/2+characterCount)-1)
             }
-        }
-    },
-    'dataFormShow.showWeb':function(newV,oldV) {
-				console.log(newV);
-				console.log(this.dataFormShow.showWeb);
-        if(newV==''){
-          this.activeName = "";
-        } else if(newV=='0'){
-          this.activeName = "not";
-        } else if(newV=='1'){
-          this.activeName = "upper";
-        } else if(newV=='2'){
-          this.activeName = "lower";
         }
     },
   },
@@ -516,10 +461,6 @@ export default {
       this.dataFormShow.priceState = "";
       this.dataFormShow.categoryId = "";
       this.dataFormShow.sellState = "";
-      this.dataFormShow.transportFlag = "";
-      this.dataFormShow.operateFlag = "";
-      this.dataForm.operateFlag = "";
-      this.dataForm.transportFlag = "";
       this.dataForm.categoryId = "";
       this.dataForm.goodsName = "";
       this.dataForm.idJp = "";
@@ -599,45 +540,12 @@ export default {
     detShowChange(row) {
       this.$emit("detShowChange", row);
     },
-    // 定时上下架
-    lowerShelf (index=-1,row="",type) {
-      console.log(type)
-      // this.modelLowerShelfVisible =  true;
-      //   this.$nextTick(() => {
-      //       this.$refs.modelLowerShelfCompon.init(row)
-      //   })
-      if(type==1){//上架
-        this.isDown(row,type);
-      } else if (type==0) { // 下架
-        this.modelLowerShelfVisible =  true;
+    // 定时下架
+    lowerShelf (index=-1,row="") {
+      this.modelLowerShelfVisible =  true;
         this.$nextTick(() => {
             this.$refs.modelLowerShelfCompon.init(row)
         })
-      }
-    },
-    // 判断是否需要出现确认图片弹框
-    isDown (row,type) {
-      var ids = [];
-      // ids = this.getIds();
-      console.log(row)
-      var obj  = {
-        ids: row.id,
-      }
-      // if(this.row) obj.id = this.row.id
-      showIsDown(obj).then((res)=>{
-          if(res.code == 200){ // 200 不显示图片弹框，直接显示上下架弹框
-            this.modelLowerShelfVisible =  true;
-            this.$nextTick(() => {
-                this.$refs.modelLowerShelfCompon.init(row)
-            })
-
-          }else if (res.code == 201){ // 201 显示图片弹框，点击确定后出现上下架弹框
-            this.modelIsDownVisible1 =  true;
-            this.$nextTick(() => {
-                this.$refs.modelIsDownCompon1.init(row,type)
-            })
-          }
-      })
     },
     // 批量上下架
     lowerBatchShelf (type) {
@@ -652,59 +560,21 @@ export default {
             return item
           }
         })
-        if(arr.length!=0){
-          this.$message.warning("已上架的商品不能再上架");
-          return
-        }
-        this.isDownBatch(type);
-        // else {
-        //   this.modelIsDownVisible =  true;
-        //     this.$nextTick(() => {
-        //         this.$refs.modelIsDownCompon.init(this.multipleSelection,type)
-        //     })
-        // }
-
-      
+        this.$message.warning("已上架的商品不能在上架");
+        return
       }else{// 下架 或者待上架
         arr  = this.multipleSelection.filter((item,index)=>{
           if(item.showWeb!=1){
             return item
           }
         })
-        if(arr.length!=0){
-          this.$message.warning("已下架的商品不能再下架");
-          return
-        } else {
-            this.modelLowerBatchShelfVisible = true;
-            this.$nextTick(() => {
-                this.$refs.modelLowerBatchShelfCompon.init(this.multipleSelection,type)
-            })
-        }
+        this.$message.warning("已下架的商品不能在下架");
+        return
       }
-      
-    },
-    
-    // 批量判断是否需要出现确认图片弹框
-    isDownBatch (type) {
-      var ids = [];
-      ids = this.getIds();
-      var obj  = {
-        ids: ids,
-      }
-      showIsDown(obj).then((res)=>{
-          if(res.code == 200){// 200 不显示图片弹框，直接显示上下架弹框
-            this.modelLowerBatchShelfVisible = true;
-            this.$nextTick(() => {
-                this.$refs.modelLowerBatchShelfCompon.init(this.multipleSelection,type)
-            })
-
-          }else if (res.code == 201){// 201 显示图片弹框，点击确定后出现上下架弹框
-            this.modelIsDownVisible =  true;
-            this.$nextTick(() => {
-                this.$refs.modelIsDownCompon.init(this.multipleSelection,type)
-            })
-          }
-      })
+      this.modelLowerBatchShelfVisible =  true;
+        this.$nextTick(() => {
+            this.$refs.modelLowerBatchShelfCompon.init(this.multipleSelection,type)
+        })
     },
     // 控制上下架
     cotrolGoodsShow(type, rowOrstatus) {
@@ -716,7 +586,7 @@ export default {
           this.$message({
             message: "请选择商品",
             type: "warning",
-            duration: 3000
+            duration: 1500
           });
           return;
         }
@@ -729,7 +599,7 @@ export default {
             this.$message({
               message: "不可售商品不能上架",
               type: "warning",
-              duration: 3000
+              duration: 1500
             });
             return;
         }
@@ -769,7 +639,7 @@ export default {
           this.$message({
             message: msg,
             type: status,
-            duration: 3000
+            duration: 1500
           });
         });
     },

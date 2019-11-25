@@ -33,7 +33,7 @@
 	    </el-form-item>
     
 
-        <!-- <el-form-item v-if="yijishow"  prop="categoryJpId" v-for="(item, index) in dataForm.categoryJpId" :key="index" :label="index == 0 ? '关联日本分类：' : '' ">
+        <el-form-item v-if="yijishow"  prop="categoryJpId" v-for="(item, index) in dataForm.categoryJpId" :key="index" :label="index == 0 ? '关联日本分类：' : '' ">
 	        <el-select
 	          v-model="dataForm.categoryJpId[index]"
 	          placeholder="请选择"
@@ -48,21 +48,7 @@
 	        </el-select>
 	        <el-button v-if="index+1 == dataForm.categoryJpId.length" @click="actadd" type="primary" style="margin-left: 20px;">添加</el-button>
 			<el-button v-if="index!=0" @click="removecategoryJpItemFn(index)" type="primary" style="margin-left: 20px;">删除</el-button>
-		</el-form-item> -->
-
-		<el-form-item  v-if="yijishow" label="关联日本分类：">
-			 <el-tree
-					ref="treeCategory"
-					:data="goodKindList2"
-					show-checkbox
-					node-key="id"
-					:default-expanded-keys="expandedKeys"
-					:default-checked-keys="checkedKeys"
-					:props="defaultProps">
-                </el-tree>
-	    </el-form-item>
-
-
+		</el-form-item>
        <el-form-item label="测量方法：" prop="methodUrl" v-if="yijishow">
 				<div class="pcCoverUrl imgUrl" style="width: 84px;" v-for="(item,index) in dataForm.methodUrlshow" @click="imgtype = 'rule'">
 					<img-cropper
@@ -155,7 +141,6 @@
 					<div  v-else class="artuploadimg">上传图片</div>
     			</div>
 			</el-checkbox-group>
-			<div style="color:#999;">建议尺寸：84*84px</div>
     		
     	</el-form-item>
 	</el-form>
@@ -243,14 +228,6 @@
 		      	genderMrs:'', //分类女士图片 
 		      	genderKid:'', //分类儿童图片 
 			},
-			defaultProps: {
-				// children: 'list',
-				// label: 'name',
-				children: 'children',
-				label: 'label'
-			},
-			expandedKeys:[],
-			checkedKeys:[],
 			methodUrlLoading:[false,false,false,false,false,false,false,false,false,false],
 			genderMainLoading:false,
 			genderMrLoading:false,
@@ -265,9 +242,9 @@
          			{ required: true, message: '必填项不能为空', trigger: 'blur' },
          			{ validator: sortminmax,trigger: 'blur'},
 				],
-				// categoryJpId:[
-				// 	{ required: true, message: '必填项不能为空', trigger: 'blur' },
-				// ],
+				categoryJpId:[
+					{ required: true, message: '必填项不能为空', trigger: 'blur' },
+				],
 	        	appraisal: [
 					{ required: true, message: '必填项不能为空', trigger: 'blur' },
 					{ validator: validateAppraisal,trigger: 'blur'},
@@ -317,21 +294,6 @@
 		  this.actselectchange()
 	  },
 	  methods: {
-		init(row){
-			this.row = row;
-			this.saveLoading = false;
-			if(this.row){
-				this.tempName = this.row.label; // 暂存当前名字，校验用
-			}
-			this.showListVisible = true;
-			var id = row&&row.id?row.id:""
-			this.$nextTick(()=> {
-				this.getCategoryJp().then(()=>{
-					this.backScan();	// 编辑时回显数据
-				});// 获取关联日本分类
-				this.getCategoryCn();//获取一级分类
-			})
-	  	},
 	  	actselectchange(){
 	  		if(this.dataForm.parentId == 0){   //添加一级
 	  			this.erjishow = true;
@@ -355,6 +317,21 @@
 				if(this.dataForm.genderKid) this.checkList.push("儿童");
 		  		}
 	  	},
+	  	init(row){
+			this.row = row;
+			this.saveLoading = false;
+			if(this.row){
+				this.tempName = this.row.label; // 暂存当前名字，校验用
+			}
+			this.showListVisible = true;
+			var id = row&&row.id?row.id:""
+			this.$nextTick(()=> {
+				this.backScan();	// 编辑时回显数据
+				this.getCategoryJp(id);// 获取关联日本分类
+				this.getCategoryCn();//获取一级分类
+				
+			})
+	  	},
 		// 编辑时回显数据
 		backScan(){
 			backScanCategoryCn(this.row).then((res) => {
@@ -364,13 +341,6 @@
 						this.dataForm.methodUrlshow = JSON.parse(res.data.methodUrl);
 					this.actselectchange();
 					this.delay=true
-					// 默认展开选中的树形结构
-					this.$nextTick(()=>{
-						this.expandedKeys = res.data.categoryJpId;
-						this.checkedKeys =  res.data.categoryJpId;
-						// alert(this.expandedKeys);
-						// alert(this.checkedKeys);
-					})
 				} else {
 					this.$message(res.msg);
 				}
@@ -378,44 +348,24 @@
 				this.$message("服务器错误");
 			})
 		},
-		// 获取关联日本分类下拉列表
-		getCategoryJp(){
+		// 获取关联日本分类
+		getCategoryJp(id){
 			var obj = {
 				params:{
-					id:this.row.id
+					id:id
 				}
 			}
-			return new Promise((resolve)=>{
-					searchCategoryJp(obj).then((res) => {
-						if (res.code == 200) {
-							console.log(res.data);
-							res.data.forEach((item) => {
-								if(!item.name){
-									item.name = item.nameJp;
-								}
-								item.children = item.list;
-								item.label = item.name;
-
-								if(item && item.list){
-									item.list.forEach((item2)=>{
-										if(!item2.name){
-											item2.name = item2.nameJp;
-										}
-										item2.children = "";
-										item2.label = item2.name;
-									})
-								}
-								this.goodKindList2.push(item);
-							})
-							resolve("ok")
-						} else {
-							this.$message(res.msg);
-							resolve("error")
-						}
-					}).catch(() => {
-						this.$message("服务器错误");
-						resolve("error")
+			searchCategoryJp(obj).then((res) => {
+				if (res.code == 200) {
+					console.log(res.data);
+					res.data.forEach((item) => {
+						this.goodKindList2.push(item);
 					})
+				} else {
+					this.$message(res.msg);
+				}
+			}).catch(() => {
+				this.$message("服务器错误");
 			})
 		},
 		//获取一级分类
@@ -432,7 +382,6 @@
 				this.$message("服务器错误");
 			})
 		},
-		// 提交
 		actuploaddata(formName){  //确定提交 
 		if(this.saveLoading){
 			return;
@@ -476,29 +425,15 @@
 	  		}
 			this.$refs[formName].validate((valid) => {
 				if (valid) {
-					var ids = []
-					if(this.yijishow){
-						ids = this.$refs.treeCategory.getCheckedKeys(true);
-						console.log(ids);
-						// if(ids.length==0){
-						// 	this.$message({
-						// 		message: '请选择关联分类',
-						// 		type: 'warning',
-						// 		duration: 1500
-						// 	})
-						// 	return false;
-						// }
-					}
-				
 					//确定提交
-					// var categoryJpId = [] ;
-					// this.dataForm.categoryJpId.forEach((item,index)=>{
-					// 		if(item) categoryJpId.push(item)
-					// })
+					var categoryJpId = [] ;
+					this.dataForm.categoryJpId.forEach((item,index)=>{
+							if(item) categoryJpId.push(item)
+					})
 					this.saveLoading = true
 					var obj = {
 						...this.dataForm,
-						categoryJpId:ids
+						categoryJpId:categoryJpId
 					}
 					updataCategoryCn(obj).then((res)=>{
 						this.saveLoading = false;

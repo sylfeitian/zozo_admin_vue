@@ -5,7 +5,6 @@
             <thead>
                 <tr>
                     <th>活动名称</th>
-                    <th>活动限制</th>
                     <th>满减规则</th>
                     <th>活动状态</th>
                     <th>活动时间</th>
@@ -14,10 +13,6 @@
             <tbody>
                 <tr>
                     <td>{{dataInfo.title}}</td>
-                    <td>
-                        <span v-if="dataInfo.shareFlag == 0">不可使用优惠券</span>
-                        <span v-else-if="dataInfo.shareFlag ==1">可使用优惠券</span>
-                    </td>
                     <td>满{{dataInfo.limitPrice}}减{{dataInfo.reducePrice}}</td>
                     <td>
                         <span v-if="dataInfo.state ==0">未开始</span>

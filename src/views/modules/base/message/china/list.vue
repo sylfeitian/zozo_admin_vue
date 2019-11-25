@@ -223,11 +223,9 @@ export default {
     	  let obj = {
             params:this.formData
         }
-        this.dataListLoading = true;
         // 获取表格数据
        getdatalist(obj).then(res => {
           //Promise后 对数据格式进行处理
-          this.dataListLoading = false;
           if (res.code == 200) {
               var data = res.data.list;
               this.total = res.data.total;

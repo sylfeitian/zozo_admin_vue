@@ -124,7 +124,6 @@
     <el-dialog
         :title="activiTitle"
         :visible.sync="activiVisible"
-        :before-close="closeDialog"
         :close-on-click-modal = "false"
         class="activiDialog"
         width="40%">
@@ -143,7 +142,7 @@
                 <el-input v-model.trim="activiDataForm.name" placeholder="请输入30字以内的名称"></el-input>
             </el-form-item>
             <el-form-item label="排序：">
-            	 <el-input-number v-model="activiDataForm.sort" placeholder="数字越大排序越靠前"  :min="1" :max="99999" :step="1" label="数字越大排序越靠前"></el-input-number>
+            	 <el-input-number v-model.trim="activiDataForm.sort" placeholder="数字越大排序越靠前"  :min="1" :max="99999" label="数字越大排序越靠前"></el-input-number>
             </el-form-item>
             <el-form-item label="上传轮播图：" prop="fileList" class="imgConfig">
                 <el-upload
@@ -173,7 +172,7 @@
             <div v-if="activiDataForm.position == 4" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：375*400px</div>
             <div v-if="activiDataForm.position == 5" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：375*250px</div>
             <div v-if="activiDataForm.position == 6" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：375*250px</div>
-            <div v-if="activiDataForm.position == 7" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：300*500px</div>
+            <div v-if="activiDataForm.position == 7" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：320*523px</div>
             <div v-if="activiDataForm.position == 8" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：375*812px</div>
             <el-form-item label="状态：" prop="state">
                <el-radio-group v-model="activiDataForm.state">
@@ -533,20 +532,13 @@
             },
             //取消弹框
             noCheck(formName){
-                // this.$refs[formName].resetFields();
-                this.activiDataForm.imageSrc = "";
-                this.activiDataForm.position = "";
-                this.activiDataForm.name = "";
-                this.activiDataForm.sort = "";
-                this.fileList = "";
-                this.activiDataForm.state = 1;
-                this.activiDataForm.linkType = 0;
+                this.$refs[formName].resetFields();
+                this.activiDataForm.imageSrc = '';
+                this.checkItem = '';
+                this.checkFunStatus = ''
+                this.activiDataForm.sort = 0;
                 console.log(this.activiDataForm.fileList)
                 this.activiVisible = false;
-            },
-            // 关闭弹窗
-            closeDialog() {
-                this.noCheck();
             },
             upLoad(file) {
                 const that = this;
@@ -747,7 +739,7 @@
             gettem(item){
                 console.log(item)
                 this.checkFunStatus = item.id;
-                this.checkItem = item.name;//数据正常后改为中国商品名称
+                this.checkItem = item.nameJp;//数据正常后改为中国商品名称
                 this.activiDataForm.linkValue = item.id;
                 this.activiDataForm.linkValueName = this.checkItem;
             },

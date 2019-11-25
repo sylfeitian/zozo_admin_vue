@@ -50,7 +50,6 @@
                                         style="display: inline-block;"
                                 ></img-cropper>
                             </div>
-                            <div style="color:#999;">建议尺寸：750*700px</div>
                         </template>
                     </el-form-item>
                 </el-col>
@@ -70,7 +69,6 @@
                                         style="display: inline-block;"
                                 ></img-cropper>
                             </div>
-                            <div style="color:#999;">建议尺寸：132*132px</div>
                         </template>
                     </el-form-item>
                 </el-col>
@@ -206,11 +204,7 @@
                     this.backScanLoading = false;
                     if(res.code == 200){
                         Object.assign(this.dataForm,res.data);
-                        if(this.dataForm.mainTag != "" && this.dataForm.mainTag != null) {
-                            this.dataForm.mainTag = res.data.mainTag.split(",");
-                        } else {
-                            
-                        }
+                        this.dataForm.mainTag = res.data.mainTag.split(",");
                     }else{
 
                     }

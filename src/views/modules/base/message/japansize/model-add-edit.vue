@@ -24,12 +24,7 @@
             	<el-select
 		          v-model="dataForm.cnSizeId"
 		          placeholder="请选择"
-                  filterable
-                  remote
-                  :remote-method="remoteMethod"
-		          :loading="optionLoading"
-                 >
-                  <!-- @change="chooseCnSize" -->
+		          loading-text="加载中···">
 		          <el-option
 		            v-for="item in goodKindList1"
 		            :key="item.id"
@@ -61,14 +56,12 @@
             return {
                 visible : false,
                 loading : false,
-                optionLoading: false,
                 dataForm: {
                 	id:"",
                     idJp: "",//尺码ID
                     name: "",//日本尺码名称
                     cnSizeName: "",//尺码名称
                     cnSizeId:"",//中国尺码id
-
                 },
                 goodKindList1:[],
                 dataRule : {
@@ -87,8 +80,7 @@
                 title:'',
                 row:"",
                 type: "",
-                formLabelWidth: '120px',
-                list: []
+                formLabelWidth: '120px'
             }
         },
         components:{
@@ -97,31 +89,25 @@
         	
         },
         mounted(){
-            // this.list = data.map(item => {
-            //     return { value: item, label: item };
-            // });
-        	
+        	this.artgetsize();
         },
         methods: {
         	//获取尺码
         	artgetsize(){
-                // getsizecn().then(({data})=>{
-                // 	if(data){
-                // 		this.goodKindList1 = data;
-		        //   	}else {
-			    //       	this.$message.error("服务器错误");
-		        //   	}
-                //     })
-                this.goodKindList1 = [{"id":this.dataForm.cnSizeId,"name":this.dataForm.cnSizeName}];
-
+                getsizecn().then(({data})=>{
+                	if(data){
+                		this.goodKindList1 = data;
+		          	}else {
+			          	this.$message.error("服务器错误");
+		          	}
+	                })
         	},
             init (row,type) {
                 this.visible = true;
-                console.log(typeof this.dataForm)
                 this.dataForm = cloneDeep(row);
-                this.artgetsize();
                 this.type  = type;
-                this.list = cloneDeep(this.goodKindList1);
+            
+                
 //              this.$nextTick(() => {
 //                  this.$refs['addForm'].resetFields();
 //                  // this.getApplyPullList();
@@ -134,17 +120,11 @@
                     if (valid) {
                         this.loading = true;
                         console.log(this.dataForm);
-                        var obj = {
-                           ...this.dataForm,
-                            cnSizeId:this.dataForm.cnSizeId,
-                            id:this.dataForm.id
-                        }
-                        uploadsizejptag(obj).then((res) => {
+                        uploadsizejptag(this.dataForm).then((res) => {
                             this.loading = false;
                             let status = null;
                             if(res.code == "200"){
-                                res.msg = "修改成功";
-                                 status = "success";
+                                status = "修改成功";
                                 this.visible = false;
                                 this.$emit('searchDataList');
                                 this.closeDialog();
@@ -172,27 +152,6 @@
             closeDialog() {
                 this.$parent.addEditisshow = false;
             },
-            remoteMethod(query) {
-                if (query !== '') {
-                    this.optionLoading = true;
-                    var obj = {
-                        name:query,
-                    }
-                    getsizecn().then((res)=>{
-                        this.optionLoading = false;
-                        console.log(res);
-                        console.log(this.goodKindList1)
-                        this.goodKindList1 = res.data.filter(item => {
-                        return item.name.toLowerCase()
-                            .indexOf(query.toLowerCase()) > -1;
-                        });
-                     })
-                } else {
-                this.goodKindList1 = [];
-                }
-               
-            }
-    
         }
     }
 </script>

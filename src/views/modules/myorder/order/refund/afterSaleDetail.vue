@@ -98,7 +98,7 @@
                          <el-tag v-if="scope.row.status==0" type="info">待审核</el-tag>
                         <el-tag v-else-if="scope.row.status==10" type="info">退款中</el-tag>
                         <el-tag v-else-if="scope.row.status==20" type="info">退款完成</el-tag>
-                        <el-tag v-else-if="scope.row.status==30" type="info">退款失败</el-tag>
+                        <el-tag v-else-if="scope.row.status==20" type="info">退款失败</el-tag>
                         <span  v-else="info">——</span>
                     </template>
                 </el-table-column>

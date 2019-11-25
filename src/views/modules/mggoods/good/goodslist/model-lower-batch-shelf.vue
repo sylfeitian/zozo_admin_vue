@@ -164,7 +164,7 @@
                 this.closeDialog();
             },
             closeDialog() {
-                this.$parent.modelLowerBatchShelfVisible = false;
+                this.$parent.modelLowerShelfVisible = false;
             },
         }
     }

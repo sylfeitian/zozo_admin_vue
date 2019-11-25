@@ -36,36 +36,28 @@
                     <el-button type="primary" @click="openDiog" >添加商品</el-button>
                 </div>
             </el-form-item>
-            <el-form-item :label-width="formLabelWidth" prop='textCn' style="vertical-align:top;">
+            <el-form-item :label-width="formLabelWidth" prop='text' style="vertical-align:top;">
                 <template slot-scope="scope">
                     <div style="float:left;margin-left: -55px;">
                         <span style="color:#f56c6c;margin-right: 4px;">*</span>内容：
                     </div>
                     <div id="content" v-for="(v,i) in content" :key="i">
-                        <div class="contentChild" v-if="content[i]&&v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'" style="margin-bottom: 10px;">
+                        <div class="contentChild" v-if="content[i]&&v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'">
                             <!-- <quill-editor-img class="inforRight" :value="v.text" :index="i" ref="quillEditorCompon" style="display: inline-block;"  @artmessageContent='artmessageContent' ></quill-editor-img> -->
-                            <el-input type="textarea" :rows="5" class="inforRight" v-model="v.textCn" :index="i" style="display: inline-block;width:70%;"  @artmessageContent='artmessageContent' ></el-input>
+                            <el-input type="textarea" :rows="5" class="inforRight" v-model="v.text" :index="i" style="display: inline-block;width:90%;"  @artmessageContent='artmessageContent' ></el-input>
                             <span style="margin-left: 10px;color:#2260d2;cursor:pointer;" @click="delContent(i)">删除</span>
-                            <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="upContent(i)">上移</span>
-                            <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="downContent(i)">下移</span>
                         </div>
-                        <div class="contentChild" v-if="content[i]&&v.typeId=='3'" v-loading="picloading" style="margin-bottom: 10px;">
+                        <div class="contentChild" v-if="content[i]&&v.typeId=='3'" v-loading="picloading">
                             <img style="width:600px;" :src="v.imageUrl | filterImgUrl" alt="" >
                             <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="delContent(i)">删除</span>
-                            <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="upContent(i)">上移</span>
-                             <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="downContent(i)">下移</span>
                         </div>
-                        <div class="contentChild" v-if="content[i]&&v.typeId=='4'" style="margin-bottom: 10px;">
+                        <div class="contentChild" v-if="content[i]&&v.typeId=='4'">
                             <div style="display: inline-block;">
                                 <img style="width:600px;margin-bottom: 10px;" :src="v.imageUrl | filterImgUrl" alt="">
-                                <div>{{v.textCn}}</div>
+                                <div>{{v.text}}</div>
                             </div>
                             <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="delContent(i)">删除</span>
-                            <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="upContent(i)">上移</span>
-                            <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="downContent(i)">下移</span>
                         </div>
-                     
-                        
                     </div>
                 </template>
             </el-form-item>
@@ -93,8 +85,8 @@
                 </template>
             </el-form-item>
             <el-form-item style="text-align: center;margin-left: -120px!important;">
-                <el-button  @click="dataFormSubmit(0)" :loading="saveLoading">保存</el-button>
-                <el-button type="primary" @click="dataFormSubmit(1)" :loading="publishLoading">保存并发布</el-button>
+                <el-button  @click="dataFormSubmit(0)">保存</el-button>
+                <el-button type="primary" @click="dataFormSubmit(1)">保存并发布</el-button>
             </el-form-item>
             <el-dialog title="添加商品" :before-close="res" :visible.sync="dialogTableVisible" width="60%">
                 <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
@@ -153,8 +145,6 @@
     import quillEditorImg from "@/components/quillEditor";
     import { getGoodscspage } from '@/api/url';
     import mixinViewModule from '@/mixins/view-module'
-    import cloneDeep from 'lodash/cloneDeep'
-
     export default {
         mixins: [mixinViewModule],
         data () {
@@ -213,8 +203,6 @@
                 picloading: false,
                 dialogVisible: false,
                 breaddata: [ "内容管理",  "时尚记事","新增时尚记事"],
-                saveLoading: false,
-                publishLoading: false
             }
         },
         components: {
@@ -324,14 +312,14 @@
                         id :v.id ,// 主键id
                         imageUrl :v.imageUrl ,// 图片url
                         sortId :"" ,// 排序id
-                        textCn :v.goodsName ,// 内容
+                        text :v.goodsName ,// 内容
                         typeId :"4" ,// 内容类型id
                     };
                     this.content.push(obj);
                 })
             },
             artmessageContent(messageContent,i){
-                if(this.content[i]) this.content[i].textCn = messageContent;
+                if(this.content[i]) this.content[i].text = messageContent;
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
@@ -356,44 +344,21 @@
                     window.this = this;
                     this.$nextTick(()=>{
                         this.content.forEach((item,index)=>{
-                            this.$refs.quillEditorCompon[index].dataForm.messageContent = item.textCn;
+                            this.$refs.quillEditorCompon[index].dataForm.messageContent = item.text;
                         })
                         this.content = [].concat(this.content)
                     },0)
                 }).catch(() => {});
 
             },
-            // 上移
-            upContent(i){
-                if(i==0){
-                    return
-                }
-                var content =  cloneDeep(this.content)
-                 var temp = this.content[i];
-                this.content[i] = content[i-1];
-                 this.content[i-1] = content[i];
-                 this.content = [].concat(this.content);
-            },
-             //下移
-            downContent(i){
-                if(i==this.content.length-1){
-                    return
-                }
-               var content =  cloneDeep(this.content)
-                var temp = this.content[i];
-                this.content[i] = content[i+1];
-                 this.content[i+1] = content[i];
-                 this.content = [].concat(this.content);
-            },
             imgUpload(e){
                 let that = this;
-                
+                this.picloading = true;
                 for (let i = 0; i < e.target.files.length; i++) {
                     var reader = new FileReader();
                     reader.readAsDataURL(e.target.files[i])
                     reader.onload = function(){
                         const params = { "imgStr": reader.result };
-                        this.picloading = true;
                         uploadPicBase64(params).then(res =>{
                             that.picloading = false;
                             if(res && res.code == "200"){
@@ -413,7 +378,7 @@
                                     id :"" ,// 主键id
                                     imageUrl :res.data.url ,// 图片url
                                     sortId :"" ,// 排序id
-                                    textCn :"" ,// 内容
+                                    text :"" ,// 内容
                                     typeId :"3" ,// 内容类型id
                                 };
                                 that.content.push(obj);
@@ -439,7 +404,7 @@
                         id :"" ,// 主键id
                         imageUrl :"" ,// 图片url
                         sortId :"" ,// 排序id
-                        textCn :"" ,// 内容
+                        text :"" ,// 内容
                         typeId :type ,// 内容类型id
                     };
                     this.content.push(obj)
@@ -453,7 +418,7 @@
                             type: 'error',
                         });
                         return false
-                    }else if(v.typeId != 3&&v.textCn == ""){
+                    }else if(v.typeId != 3&&v.text == ""){
                         this.$message({
                             message: "内容不能为空!",
                             type: 'error',
@@ -479,19 +444,9 @@
                                 that.content.map((v,i)=>{
                                     v.sortId = i+1;
                                 });
-                                if (type == 0) {
-                                    this.saveLoading = true;
-                                } else {
-                                    this.publishLoading = true;
-                                }
                                 that.addDataForm.fashionContents = that.content;
                                 that.addDataForm.saveType = type;
                                 savefashiondetail(that.addDataForm).then((res)=>{
-                                if (type == 0) {
-                                    this.saveLoading = false;
-                                } else {
-                                    this.publishLoading = false;
-                                }
                                     if(res.code == 200){
                                         this.$message({
                                             message: res.msg,

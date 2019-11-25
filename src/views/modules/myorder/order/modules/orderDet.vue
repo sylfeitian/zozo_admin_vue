@@ -93,11 +93,7 @@
                             </span>
                         </div>
                     </el-col>
-                    <el-col :span="4">
-                        <div class="grid-content">
-                        <span v-if="orderBase.orderSnJp!=0">{{orderBase.orderSnJp}}</span>
-                        </div>
-                    </el-col>
+                    <el-col :span="4"><div class="grid-content">{{orderBase.orderSnJp}}</div></el-col>
                     <el-col :span="4"><div class="grid-content">{{orderBase.deliveryTime}}</div></el-col>
                      <el-col :span="4"><div class="grid-content">{{orderBase.tradeSn}}</div></el-col>
                 </el-row>
