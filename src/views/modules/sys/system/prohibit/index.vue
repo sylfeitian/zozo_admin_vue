@@ -42,7 +42,7 @@
                 </el-table-column>
                 <el-table-column prop="name" label="禁用词名称" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="createDate" label="添加时间" header-align="center" align="center"></el-table-column>
-                <el-table-column label="操作" fixed="right" header-align="center" align="center" width="200">
+                <el-table-column label="操作" fixed="right" header-align="center" align="center">
                     <template slot-scope="scope" >
                         <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row)">编辑</el-button>
                         <el-button  type="text" class="artdanger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
