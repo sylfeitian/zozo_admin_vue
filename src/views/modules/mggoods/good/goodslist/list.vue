@@ -218,7 +218,7 @@
         <template slot-scope="scope">
           <span v-if="scope.row.priceState==0">价格正常</span>
           <span v-if="scope.row.priceState==1">价格上涨</span>
-          <span v-if="scope.row.priceState==2">价格下架</span>
+          <span v-if="scope.row.priceState==2">价格下降</span>
           <span v-if="scope.row.priceState==3" style="color: red;">倒挂</span>
         </template>
       </el-table-column>
