@@ -137,7 +137,8 @@
                     versionDescription:"", //版本描述
                     forceUpdateFlag:'0',  //是否强制更新
                     md5Sign:"",  //签名MD5
-                    filePath:"", //apk路径   
+                    filePath:"", //apk路径  
+                    targetSize:'', //apk大小
                 },
                 breaddata: ["系统管理", "版本管理"],
                 timeArr: "", //操作时间数据
@@ -248,17 +249,22 @@
                 this.dataForm.forceUpdateFlag = "0";
                 this.dataForm.md5Sign = "";
                 this.dataForm.filePath = "";
-                this.$refs.apkupload.importWord = '上传文件'
+                this.$nextTick(()=>{
+                    this.$refs.apkupload.importWord = '上传文件'
+                })
+                
            	},
            	dataFormCancel(){
                 this.visiblecopy = false;
                 this.closeDialogcopy();
             },
-            getDataurl(apkurl){
-            	this.dataForm.filePath = apkurl
+            getDataurl(apkurl,targetSize){
+                this.dataForm.filePath = apkurl
+                this.dataForm.targetSize = targetSize;
             },
             // 提交
             dataFormSubmit(formName) {
+                // console.log(this.dataForm);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         addfileupload(this.dataForm).then((res)=>{
@@ -268,7 +274,8 @@
 			                        type: 'success',
 			                        duration: 1500
 			                    })
-		           				this.visiblecopy = false;
+                                   this.visiblecopy = false;
+                                   this.getDataList();
 		                    } else{
 		                    	this.$message({
 			                        message: res.msg,

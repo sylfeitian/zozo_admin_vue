@@ -118,7 +118,7 @@ export default {
                     console.log(response,file,fileList)
                     // that.dataFormSubmit();
                     that.importWord = file.name;
-                    that.$emit("getDataurl",response.data);
+                    that.$emit("getDataurl",response.data,this.data.targetSize);
                 }else{
                     // that.progress = 0;
                     that.$message({
