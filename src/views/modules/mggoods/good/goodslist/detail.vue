@@ -38,14 +38,14 @@
                     <!--                <span>{{}}</span>-->
                     <template>
                         <span v-if="dataForm.brands && dataForm.brands.length!=0 && dataForm.brands[0].isMainBrand==0">{{dataForm.brands[0].brandName}}</span>
-                        <span v-if="dataForm.brands && dataForm.brands.length!=0 && dataForm.brands[1].isMainBrand==0">{{dataForm.brands[1].brandName}}</span>
+                        <span v-else-if="dataForm.brands && dataForm.brands.length>1 && dataForm.brands[1].isMainBrand==0">{{dataForm.brands[1].brandName}}</span>
                         <span v-else>/</span>
                     </template>
                 </el-form-item>
                 <el-form-item label="副品牌：" class="item">
                     <template>
                         <span v-if="dataForm.brands && dataForm.brands.length!=0 && dataForm.brands[0].isMainBrand==1">{{dataForm.brands[0].brandName}}</span>
-                        <span v-if="dataForm.brands && dataForm.brands.length!=0 && dataForm.brands[1].isMainBrand==1">{{dataForm.brands[1].brandName}}</span>
+                        <span v-else-if="dataForm.brands && dataForm.brands.length>1 && dataForm.brands[1].isMainBrand==1">{{dataForm.brands[1].brandName}}</span>
                         <span v-else>/</span>
                     </template>
                 </el-form-item>
@@ -236,7 +236,7 @@
                 </el-form-item>
                 <el-form-item label="商品图片：">
                         <template slot-scope="scope">
-                            <div class="goodsImg" style="display:flex">
+                            <div class="goodsImg" style="display:flex;flex-wrap:wrap;">
         <!--                        <img  :src="scope.row.imageUrl | filterImgUrl" style="width:60px;height:60px;object-fit: contain;" alt=""/>-->
                                 <!-- <img :src="dataForm.imageUrl | filterImgUrl" alt=""/> -->
                             <div v-for="(item,index) in  dataForm.imgs" style="width:100px;height:100px;margin-right:5px;">
@@ -293,6 +293,7 @@
                 mainVisible: true,
                 tags: [],
                 row:'',
+                brands:[]
             }
         },
         components: {
