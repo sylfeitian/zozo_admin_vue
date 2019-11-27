@@ -60,7 +60,7 @@
 </template>
 
 <script>
-    import { backScanCategorys } from '@/api/api'
+    import { backScanCategorys, categoryCn, childCategoryCn } from '@/api/api'
     export default {
         name: "model-edit-data",
         data () {
@@ -102,16 +102,32 @@
             //编辑回显
             backScan(){
                 var obj  = {}
-                backScanCategorys(obj).then((res)=>{
+                categoryCn(obj).then((res)=>{
                     //找第一级下拉
                     this.selectFirstCategory = res.data;
                     var itemObj = this.selectFirstCategory.find((item,index)=>{
                         return item.id ==this.dataForm.firstCategoryId;
                     })
                     console.log(itemObj);
+                    console.log(this.dataForm.firstCategoryId );
+                    //找第二级下拉
+                    // this.selectSecondCategory = itemObj.list;
+                })
+            },
+            backScan2 (id) {
+                var obj  = {
+                    id: id?id:this.dataForm.firstCategoryId
+                }
+                childCategoryCn(obj).then((res)=>{
+                    //找第二级下拉
+                    this.selectSecondCategory = res.data;
+                    var itemObj = this.selectSecondCategory.find((item,index)=>{
+                        return item.id ==this.dataForm.secondCategoryId;
+                    })
+                    console.log(itemObj);
                     console.log(this.dataForm.secondCategoryId );
                     //找第二级下拉
-                    this.selectSecondCategory = itemObj.list;
+                    // this.selectSecondCategory = itemObj.list;
                 })
             },
             //切换第一级
@@ -127,9 +143,10 @@
                 this.dataForm.secondCategoryId = "";
                 this.dataForm.secondCategory = "";
                 //找第二级下拉
-                this.selectSecondCategory = itemObj.list? itemObj.list:[]
+                // this.selectSecondCategory = itemObj.list? itemObj.list:[]
+                this.backScan2(itemObj&&itemObj.id?itemObj.id:"");
             },
-            //切换第二级
+            // 切换第二级
             changeSecondCategoryFn(val){
                 var itemObj = this.selectSecondCategory.find((item,index)=>{
                     return item.id == val;
