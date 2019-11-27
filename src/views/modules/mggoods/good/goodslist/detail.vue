@@ -212,8 +212,8 @@
                         </el-table-column>
                         <el-table-column prop="sellPrice" label="售价(RMB)" align="center">
                             <template slot-scope="scope">
-                                <span v-if="scope.row.specSellPrice!==''&&scope.row.specSellPrice!==null"
-                            >￥{{scope.row.sellPrice?scope.row.sellPrice:'0.00'}}</span>
+                                <span v-if="scope.row.priceType == 'proper'">￥{{scope.row.sellPrice}}</span>
+                                <span v-else-if="scope.row.priceType == 'sale'">￥{{scope.row.discountPrice}}</span>
                                 <span v-else>/</span>
                             </template>
                         </el-table-column>
