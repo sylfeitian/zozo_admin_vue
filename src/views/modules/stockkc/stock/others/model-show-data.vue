@@ -17,7 +17,7 @@
                 <el-input v-model.trim="dataForm.goodsName" placeholder="请输入商品名称" maxlength="300"></el-input>
             </el-form-item>
             <el-form-item label="商品货号：">
-                <el-input v-model.trim="dataForm.goodCsId" placeholder="请输入spu编号" maxlength="30"></el-input>
+                <el-input v-model.trim="dataForm.goodCsId" placeholder="请输入sku编号" maxlength="30"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="search()">查询</el-button>
@@ -52,7 +52,7 @@
 	          		{{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}
 	        	</template>
 			</el-table-column>
-            <el-table-column prop="goodsCsId" label="spuID" align="center"></el-table-column>
+            <el-table-column prop="goodsCsId" label="skuID" align="center"></el-table-column>
             <el-table-column prop="goodsName" label="商品名称" align="center"></el-table-column>
             <el-table-column prop="spe" label="规格" align="center"></el-table-column>
             <el-table-column prop="warehouseName" label="所属仓库" align="center"></el-table-column>
