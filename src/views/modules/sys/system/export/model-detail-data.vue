@@ -18,7 +18,7 @@
             </el-form-item>
             <el-form-item label="导入失败条数：">
                 <span>{{dataForm.failureNumber}}</span>
-                <importAndExport v-if="dataForm.failureNumber>0" :btType="'text'" :downType="1" :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList" style="margin-left:10px;"></importAndExport>
+                <importAndExport v-if="dataForm.failureNumber>0" :btType="'text'" :downType="1" :importAndExportOptions="importAndExportOptions" :dataForm="dataForm2"  @getDataList="getDataList" style="margin-left:10px;"></importAndExport>
             </el-form-item>
         </el-form>
     </el-dialog>
@@ -43,6 +43,10 @@
                     id: "",
                     successfulNumber: "",
                     failureNumber: "",
+                    sysManagerId:""
+                },
+                dataForm2: {
+                    sysManagerId:""
                 },
                 optionsApplication: [],
                 optionsRight: [],
@@ -72,6 +76,7 @@
             backScan(row){
                 console.log(row)
                 this.dataForm = row;
+                this.dataForm2.sysManagerId = this.dataForm.id;
             },
             dataFormCancel(){
                 this.visible = false;
