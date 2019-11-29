@@ -94,6 +94,7 @@
                 this.dataForm.secondCategoryId =  this.$parent.dataForm.secondCategoryIsd
                 // this.changeFirstCategoryFn(this.dataForm.firstCategoryId);
                 this.backScan();
+                this.backScan2();
                 this.$nextTick(() => {
                     this.$refs['addForm'].resetFields();
                     // this.getApplyPullList();
@@ -105,27 +106,27 @@
                 categoryCn(obj).then((res)=>{
                     //找第一级下拉
                     this.selectFirstCategory = res.data;
-                    var itemObj = this.selectFirstCategory.find((item,index)=>{
-                        return item.id ==this.dataForm.firstCategoryId;
-                    })
-                    console.log(itemObj);
-                    console.log(this.dataForm.firstCategoryId );
+                    // var itemObj = this.selectFirstCategory.find((item,index)=>{
+                    //     return item.id ==this.dataForm.firstCategoryId;
+                    // })
+                    // console.log(itemObj);
+                    // console.log(this.dataForm.firstCategoryId );
                     //找第二级下拉
                     // this.selectSecondCategory = itemObj.list;
                 })
             },
-            backScan2 (id) {
+            backScan2 () {
                 var obj  = {
-                    id: id?id:this.dataForm.firstCategoryId
+                    id: this.dataForm.firstCategoryId
                 }
                 childCategoryCn(obj).then((res)=>{
                     //找第二级下拉
                     this.selectSecondCategory = res.data;
-                    var itemObj = this.selectSecondCategory.find((item,index)=>{
-                        return item.id ==this.dataForm.secondCategoryId;
-                    })
-                    console.log(itemObj);
-                    console.log(this.dataForm.secondCategoryId );
+                    // var itemObj = this.selectSecondCategory.find((item,index)=>{
+                    //     return item.id ==this.dataForm.secondCategoryId;
+                    // })
+                    // console.log(itemObj);
+                    // console.log(this.dataForm.secondCategoryId );
                     //找第二级下拉
                     // this.selectSecondCategory = itemObj.list;
                 })
@@ -144,7 +145,8 @@
                 this.dataForm.secondCategory = "";
                 //找第二级下拉
                 // this.selectSecondCategory = itemObj.list? itemObj.list:[]
-                this.backScan2(itemObj&&itemObj.id?itemObj.id:"");
+                this.selectSecondCategory = [];
+                this.backScan2();
             },
             // 切换第二级
             changeSecondCategoryFn(val){

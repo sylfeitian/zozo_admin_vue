@@ -208,11 +208,11 @@
                 this.dataForm.minConsumeAmount = newV.toString().replace(newV[i],"")
             }
         }
-        // 解决数字键盘可以输入输入多个小数点问题
-        if(newV==='' && oldV.toString().indexOf('.')>0){
-            this.dataForm.minConsumeAmount = oldV;
-            return ;
-        }
+        // 解决数字键盘可以输入输入多个小数点问题 // 会导致小数无法清空
+        // if(newV==='' && oldV.toString().indexOf('.')>0){
+        //     this.dataForm.minConsumeAmount = oldV;
+        //     return ;
+        // }
         // 保留两位小数
         if(newV){
             newV = newV.toString();
@@ -236,11 +236,11 @@
                 this.dataForm.maxConsumeAmount = newV.toString().replace(newV[i],"")
             }
         }
-        // 解决数字键盘可以输入输入多个小数点问题
-        if(newV==='' && oldV.toString().indexOf('.')>0){
-            this.dataForm.maxConsumeAmount = oldV;
-            return ;
-        }
+        // 解决数字键盘可以输入输入多个小数点问题 // 会导致小数无法清空
+        // if(newV==='' && oldV.toString().indexOf('.')>0){
+        //     this.dataForm.maxConsumeAmount = oldV;
+        //     return ;
+        // }
         // 保留两位小数
         if(newV){
             newV = newV.toString();

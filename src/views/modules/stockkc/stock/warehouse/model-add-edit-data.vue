@@ -60,7 +60,7 @@
                             :value="item.id">
                     </el-option>
                 </el-select>
-                <el-select v-model="dataForm.streetId" placeholder="街道/乡镇"
+                <el-select v-model="dataForm.streetId" placeholder="街道/乡镇" :class="townArea==null ? 'glay' : '' "
                            @visible-change="changeArea(dataForm.streetId,4)">
                     <el-option
                             v-for="item in optionsArea4"
@@ -318,18 +318,19 @@
                 }
                 backScanWare(obj).then((res) => {
                     if (res.code == 200) {
-                        Object.assign(this.dataForm, res.data);
-                        this.preOptionsArea1 = [];
+                        // this.preOptionsArea1 = [];
                         // this.orderBase = orderBase;
                         // Object.assign(this.dataForm,receiverInfo);
-                        var receiverInfo = res.data
-                        // this.preOptionsArea1 = [];
+                        var receiverInfo = res.data;
+                        this.streetName = receiverInfo.streetName;
+                        Object.assign(this.dataForm, receiverInfo);
+                        this.preOptionsArea1 = [];
                         this.optionsArea2[0] = {id: receiverInfo.cityId, name: receiverInfo.cityName};
                         this.optionsArea3[0] = {id: receiverInfo.areaId, name: receiverInfo.areaName};
-                        this.optionsArea4[0] = {id: receiverInfo.streetId, name: receiverInfo.streetName};
-                        // receiverInfo.provinceId && this.changeArea(receiverInfo.provinceId,1,false);
-                        // receiverInfo.cityId && this.changeArea(receiverInfo.cityId,2,false);
-                        // receiverInfo.areaId && this.changeArea(receiverInfo.areaId,3,false);
+                        this.optionsArea4[0] = {id: receiverInfo.streetId, name: receiverInfo.streetName==null ? '街道':receiverInfo.streetName};
+                        receiverInfo.provinceId && this.changeArea(receiverInfo.provinceId,1,false);
+                        receiverInfo.cityId && this.changeArea(receiverInfo.cityId,2,false);
+                        receiverInfo.areaId && this.changeArea(receiverInfo.areaId,3,false);
 
                     } else {
 
@@ -410,5 +411,7 @@
     /deep/ .el-select--default {
         width: 146px !important;
     }
-
+    /deep/ .glay .el-input__inner{
+        color: #c0c4cc !important;
+    }
 </style>
