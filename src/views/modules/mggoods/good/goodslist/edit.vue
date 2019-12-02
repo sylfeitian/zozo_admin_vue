@@ -131,10 +131,10 @@
                     <el-table-column prop="limitPerCustomer" label="日本每人限购数量" align="center"></el-table-column>
                     <el-table-column prop="sellPrice" label="售价(RMB)" align="center">
                         <template slot-scope="scope">
-                                <span v-if="scope.row.priceType == 'proper'">￥{{scope.row.sellPrice}}</span>
-                                <span v-else-if="scope.row.priceType == 'sale'">￥{{scope.row.discountPrice}}</span>
-                                <span v-else>/</span>
-                            </template>
+                            <span v-if="scope.row.priceType == 'proper'">￥{{scope.row.sellPrice}}</span>
+                            <span v-else-if="scope.row.priceType == 'sale'">￥{{scope.row.discountPrice}}</span>
+                            <span v-else>/</span>
+                        </template>
                     </el-table-column>
                     <el-table-column prop="goodsNum" label="图片" align="center">
                         <template slot-scope="scope">
