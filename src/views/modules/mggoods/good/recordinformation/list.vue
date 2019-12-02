@@ -71,6 +71,17 @@
                     </el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item label="同步时间：">
+                <el-date-picker
+                        v-model="timeArr"
+                        type="datetimerange"
+                        value-format="yyyy-MM-dd HH:mm:ss"
+                        align="left"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"
+                        :default-time="['00:00:00', '23:59:59']"
+                ></el-date-picker>
+            </el-form-item>
             <br>
             <el-form-item>
                 <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>
@@ -119,7 +130,7 @@
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="spe" label="规格" align="center" width="150">
+            <el-table-column prop="spe" label="规格" align="center" width="100">
                 <template slot-scope="scope">
                     <div>
                         {{scope.row.spe}}
@@ -185,6 +196,11 @@
                     </div>
                 </template>
             </el-table-column>
+            <el-table-column prop="createDate" label="同步时间" align="center">
+                <template slot-scope="scope">
+                    <span>{{scope.row.createDate}}</span>
+                </template>
+            </el-table-column>
         </el-table>
         <!-- 分页 -->
         <el-pagination
@@ -227,6 +243,7 @@
                     deleteIsBatch: true,
                     deleteIsBatchKey: 'id'
                 },
+                timeArr: "", //同步时间数据
                 breaddata: [ "商品管理", "备案商品管理"],
                 activeName: "",
                 dataFormShow: {
@@ -427,6 +444,8 @@
             getData(){
                 this.page = 1;
                 this.dataForm = {};
+                this.dataForm.startTime = this.timeArr && this.timeArr[0];
+                this.dataForm.endTime = this.timeArr && this.timeArr[1];
                 for(let key in this.dataFormShow){
                     this.$set(this.dataForm,`${key}`,this.dataFormShow[key]);
                 }
@@ -449,6 +468,9 @@
                 this.$emit("detShowChange",row);
             },
             reset() {
+                this.timeArr = [];
+                this.dataForm.startTime = "";
+                this.dataForm.endTime = "";
                 this.dataFormShow.skuIdJp = "";//商品sku ID
                 this.dataFormShow.goodsName = "";//商品名称/商品货号
                 this.dataFormShow.brandName = "";//品牌名称

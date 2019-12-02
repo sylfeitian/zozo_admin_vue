@@ -60,7 +60,9 @@
                 min-width="180"
                 label="价格">
                 <template slot-scope="scope">
-                    <span>{{scope.row.sellPrice?scope.row.sellPrice:'0.00'}}</span>
+                    <span v-if="scope.row.priceType == 'proper'">￥{{scope.row.sellPrice}}</span>
+                    <span v-else-if="scope.row.priceType == 'sale'">￥{{scope.row.discountPrice}}</span>
+                    <span v-else>/</span>
                 </template>
             </el-table-column>
             <!-- <el-table-column
