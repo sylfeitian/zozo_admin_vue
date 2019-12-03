@@ -164,7 +164,7 @@
     import Bread from "@/components/bread";
     import { getseckillJpGoods } from '@/api/url'
     import importAndExport from "@/components/import-and-export"
-    import { statisticsStoreExport } from "@/api/io";
+    import { limitedtimeExport } from "@/api/io";
     import { searchStoreName, searchBrandName, backScanCategorys } from "@/api/api";
 
     export default {
@@ -174,7 +174,7 @@
                 importAndExportOptions:{
                     // importUrl:colorImportExcel,//导入接口
                     // importWord:"导入信息",
-                    exportUrl:statisticsStoreExport,//导出接口
+                    exportUrl:limitedtimeExport,//导出接口
                     exportWord:"导出",
                 },
                 mixinViewModuleOptions: {

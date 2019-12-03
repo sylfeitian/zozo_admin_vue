@@ -83,6 +83,8 @@ export const postfileupload = `${allBase}/fileupload/appversion`;
 export const sysexportmanagementExport = `${allBase}/sysexportmanagement/error/export`;
 
 
+// 限时折扣导出
+export const limitedtimeExport = `${allBase}/goods/export`;
 
 
 
