@@ -163,7 +163,7 @@
                 },
                 activeName: "",
                 selectVal:"",
-                breaddata: [ "内容管理", "时尚纪实"],
+                breaddata: [ "内容管理", "时尚杂志"],
                 dataForm: {},
                 multipleSelection:[],
                 dataList: [],
