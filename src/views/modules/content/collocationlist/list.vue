@@ -195,7 +195,7 @@
                 options:"",
                 activeName: "",
                 dialogTableVisible:false,
-                breaddata: [ "内容管理","搭配集合管理"],
+                breaddata: [ "内容管理","穿搭合辑"],
                 dataForm: {
                 	idJp:null,
                 	titleOrJp:null,
