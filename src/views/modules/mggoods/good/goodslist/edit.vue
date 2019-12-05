@@ -54,10 +54,14 @@
         </template>
       </el-form-item>
       <el-form-item label="副性别：" class="item">
-        <template>
+        <!-- <template>
           <span v-if="dataForm.viceGenders==0">男</span>
           <span v-if="dataForm.viceGenders==1">女</span>
           <span v-if="dataForm.viceGenders==2">儿童</span>
+        </template> -->
+        <template slot-scope="scope">
+            <span v-if="dataForm.viceGenders">{{dataForm.viceGenders}}</span>
+            <span v-else>/</span>
         </template>
       </el-form-item>
       <el-form-item label="日本销售价：" class="item">
