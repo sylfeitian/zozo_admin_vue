@@ -444,8 +444,8 @@
             getData(){
                 this.page = 1;
                 this.dataForm = {};
-                this.dataForm.startTime = this.timeArr && this.timeArr[0];
-                this.dataForm.endTime = this.timeArr && this.timeArr[1];
+                this.dataFormShow.startTime = this.timeArr && this.timeArr[0];
+                this.dataFormShow.endTime = this.timeArr && this.timeArr[1];
                 for(let key in this.dataFormShow){
                     this.$set(this.dataForm,`${key}`,this.dataFormShow[key]);
                 }
@@ -471,6 +471,8 @@
                 this.timeArr = [];
                 this.dataForm.startTime = "";
                 this.dataForm.endTime = "";
+                this.dataFormShow.startTime = "";
+                this.dataFormShow.endTime = "";
                 this.dataFormShow.skuIdJp = "";//商品sku ID
                 this.dataFormShow.goodsName = "";//商品名称/商品货号
                 this.dataFormShow.brandName = "";//品牌名称
