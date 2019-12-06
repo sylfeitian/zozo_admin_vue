@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     // 获取数据列表
-    getDataList() {
+    getDataList(coustom=false) {
       this.dataListLoading = true
       return new Promise((resolve,reject)=>{
         this.$http[this.retquestType](
@@ -54,22 +54,24 @@ export default {
         ).then(({ data: res }) => {
 
           this.dataListLoading = false
-          if (res.code !== 200) {
-            this.dataList = []
-            this.total = 0
-            return this.$message.error(res.msg)
-          }
-          if(this.mixinViewModuleOptions.getDataListIsPage){
-              if(res.data && res.data.list){
-                this.dataList = res.data.list 
-                this.total = res.data.total;
-              }else{
-                this.dataList = [];
-                this.total = 0;
+          if (!coustom) { 
+              if (res.code !== 200) {
+                this.dataList = []
+                this.total = 0
+                return this.$message.error(res.msg)
               }
-          }else{
-              this.dataList = res.data;
-              this.total = res.data.total;
+              if(this.mixinViewModuleOptions.getDataListIsPage){
+                  if(res.data && res.data.list){
+                    this.dataList = res.data.list 
+                    this.total = res.data.total;
+                  }else{
+                    this.dataList = [];
+                    this.total = 0;
+                  }
+              }else{
+                  this.dataList = res.data;
+                  this.total = res.data.total;
+              }
           }
           // console.log(this.dataList);
           resolve(res);

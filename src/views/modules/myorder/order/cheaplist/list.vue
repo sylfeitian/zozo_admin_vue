@@ -6,7 +6,7 @@
                 ref="dataForm"
                 class="grayLine topGapPadding"
                 :model="dataForm"
-                @keyup.enter.native="getDataList()"
+                @keyup.enter.native="getDataListFn()"
         >
             <el-form-item label="订单号搜索：" prop="orderSn">
                 <el-input v-model.trim="dataForm.orderSn" placeholder="请输入" clearable style="width:180px!important;"></el-input>
@@ -174,7 +174,6 @@
                 layout="total, sizes, prev, pager, next, jumper"
         ></el-pagination>
 
-
         <!-- 订单重试 -->
         <reptyOrder v-if="reptyOrderVisible" ref="reptyOrderCompon" @searchDataList="searchDataList"></reptyOrder>
         <!-- 申报 -->
@@ -220,6 +219,7 @@
         data() {
             return {
                 mixinViewModuleOptions: {
+                    activatedIsNeed: false, 
                     getDataListURL: orderlists,
                     getDataListIsPage: true,
                     exportURL: "",
@@ -294,11 +294,13 @@
         },
         props: ["status"],
         created() {
+             this.getDataListFn();
+            console.log(this.dataList)
             //处理不同状态
             // this.radio1 = this.status == undefined ? "" : this.status;
             this.dataForm.orderStatus = this.status == undefined ? "" : this.status;
             // this.getPaymentList();
-            this.getOrderListTop();
+            // this.getOrderListTop();
         },
         components: {
             Bread,
@@ -312,6 +314,30 @@
             // discountDet
         },
         methods: {
+            // 分页, 每页条数
+            pageSizeChangeHandleLocal(val) {
+                this.page = 1
+                this.limit = val
+                this.getDataListFn();
+            },
+            // 分页, 当前页
+            pageCurrentChangeHandleLocal(val) {
+                this.page = val
+                this.getDataListFn();
+            },
+            getDataListFn(){
+                this.getDataList(true).then((res)=>{
+                    if(res.code==200){
+                        this.dataList = res.data.page.list;
+                        this.topNum = res.data.orderListTopVO;
+                        this.total = res.data.page.total;
+                    }else{
+                        this.dataList =[];
+                        this.topNum = {};
+                        this.total = 0;
+                    }
+                })
+            },
             orderDetFn(row){
                 console.log(row)
                 this.$emit("orderDetFn",row);
@@ -324,11 +350,12 @@
                 this.page = 1;
                 this.limit = 10;
                 //  this.dataForm.orderStatus  = this.dataForm.paymentStatus
-                this.getDataList();
+                // this.getDataList();
+                this.getDataListFn();
             },
              searchDataList() {
-                this.getOrderListTop();
-                this.getDataList();
+                // this.getOrderListTop();
+                this.getDataListFn();
             },
             //订单支付方式
             // getPaymentList() {
@@ -344,21 +371,21 @@
             //     });
             // },
             // 订单上部的数量
-            getOrderListTop(){
-                orderListTop().then((res)=>{
-                    console.log(res);
-                    if(res.code==200){
-                        Object.assign(this.topNum,res.data)
-                    }else{
-                        this.topNum.all = 0;   all:0,//全部订单数量 ,
-                        this.topNum.cancel = 0;//订单取消数量 ,
-                        this.topNum.complete = 0; //交易成功完成 ,
-                        this.topNum.waitpay = 0;//待付款数量 ,
-                        this.topNum.waitreceived = 0;//待收货数量
-                        this.topNum.waitshipped = 0; ///待发货数量
-                    }
-                })
-            },
+            // getOrderListTop(){
+            //     orderListTop().then((res)=>{
+            //         console.log(res);
+            //         if(res.code==200){
+            //             Object.assign(this.topNum,res.data)
+            //         }else{
+            //             this.topNum.all = 0;   all:0,//全部订单数量 ,
+            //             this.topNum.cancel = 0;//订单取消数量 ,
+            //             this.topNum.complete = 0; //交易成功完成 ,
+            //             this.topNum.waitpay = 0;//待付款数量 ,
+            //             this.topNum.waitreceived = 0;//待收货数量
+            //             this.topNum.waitshipped = 0; ///待发货数量
+            //         }
+            //     })
+            // },
             //订单状态筛选
             agreeChange(val) {
                 // this.dataForm.paymentStatus = ""
@@ -366,7 +393,8 @@
                 this.dataForm.topStatus = val
                 this.page = 1;
                 this.limit = 10;
-                this.getDataList();
+                // this.getDataList();
+                this.getDataListFn()
             },
             //重置
             reset(formName) {
@@ -375,12 +403,14 @@
                 this.dataForm.startTime = "";
                 this.dataForm.endTime = "";
                 this.dataForm.orderMessage = "";
+                //this.radio1= "all";
                 // this.dataForm.startPaymentTime = "";
                 // this.dataForm.endPaymentTime = "";
                 this.$refs[formName].resetFields();
                 this.page = 1;
                 this.limit = 10;
-                this.getDataList();
+                // this.getDataList();
+                this.getDataListFn()
             },
             //返回页 1-列表  3-优惠详情
             // changePage(data) {
@@ -463,14 +493,6 @@
                    this.$refs.reptyOrderCompon.init(row)
                 })
                 this.searchDataList();
-            },
-            pageCurrentChangeHandleLocal(val){
-                this.pageCurrentChangeHandle(val);
-                this.getOrderListTop();
-            },
-            pageSizeChangeHandleLocal(val){
-                this.pageSizeChangeHandle(val);
-                this.getOrderListTop();
             },
         }
     };
