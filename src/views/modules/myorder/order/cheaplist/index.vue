@@ -32,7 +32,7 @@
                 this.orderDetVisible = false;
                 this.mainVisible = true;
                 this.$nextTick(()=>{
-                    this.$refs.listCompon.getDataList();
+                    this.$refs.listCompon.getDataListFn();
                 })
             }
 
