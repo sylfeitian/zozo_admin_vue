@@ -6,7 +6,7 @@
                 ref="dataForm"
                 class="grayLine topGapPadding"
                 :model="dataForm"
-                @keyup.enter.native="getDataList()"
+                @keyup.enter.native="getDataListFn()"
         >
             <el-form-item label="订单号搜索：" prop="orderSn">
                 <el-input v-model.trim="dataForm.orderSn" placeholder="请输入" clearable></el-input>
@@ -118,8 +118,8 @@
             </el-table-column>
         </el-table>
         <el-pagination
-                @size-change="pageSizeChangeHandle"
-                @current-change="pageCurrentChangeHandle"
+                @size-change="pageSizeChangeHandleLocal"
+                @current-change="pageCurrentChangeHandleLocal"
                 :current-page="page"
                 :page-sizes="[10, 20, 50, 100]"
                 :page-size="limit"
@@ -128,15 +128,15 @@
         ></el-pagination>
         
         <!-- 申报 -->
-        <declareSth v-if="declareSthVisible" ref="declareSthCompon" @searchDataList="getDataList"></declareSth>
+        <declareSth v-if="declareSthVisible" ref="declareSthCompon" @searchDataList="getDataListFn"></declareSth>
          <!-- 审核 -->
-        <exammine v-if="exammineVisible" ref="exammineCompon" @searchDataList="getDataList"></exammine>
+        <exammine v-if="exammineVisible" ref="exammineCompon" @searchDataList="getDataListFn"></exammine>
         <!-- 取消订单弹框 -->
-        <cancleOrder v-if="cancleOrderVisible" ref="cancleOrderCompon" @searchDataList="getDataList"></cancleOrder>
+        <cancleOrder v-if="cancleOrderVisible" ref="cancleOrderCompon" @searchDataList="getDataListFn"></cancleOrder>
          <!-- 清关失败 -->
-        <clearancFailure v-if="clearancFailureVisible" ref="clearancFailureCompon" @searchDataList="getDataList"></clearancFailure>
+        <clearancFailure v-if="clearancFailureVisible" ref="clearancFailureCompon" @searchDataList="getDataListFn"></clearancFailure>
          <!-- 填写物流 -->
-        <writeLogisticsInfo v-if="writeLogisticsInfoVisible" ref="writeLogisticsInfoCompon" @searchDataList="getDataList"></writeLogisticsInfo>
+        <writeLogisticsInfo v-if="writeLogisticsInfoVisible" ref="writeLogisticsInfoCompon" @searchDataList="getDataListFn"></writeLogisticsInfo>
 
     </div>
     <!-- <orderDet
@@ -167,6 +167,7 @@
         data() {
             return {
                 mixinViewModuleOptions: {
+                    activatedIsNeed: false, 
                     getDataListURL: orderlists,
                     getDataListIsPage: true,
                     exportURL: "",
@@ -242,15 +243,35 @@
             //处理不同状态
             // this.dataForm.orderStatus = this.status == undefined ? "" : this.status;
             // this.getPaymentList();
-            this.getDataList().then((res)=>{
-                this.dataList = res.data.page.list;
-                this.topNum = res.data.orderListTopVO;
-                this.total = res.data.page.total;
-            })
+            this.getDataListFn();
         },
         methods: {
             orderDetFn(row){
                 this.$emit("orderDetFn",row);
+            },
+             // 分页, 每页条数
+            pageSizeChangeHandleLocal(val) {
+                this.page = 1
+                this.limit = val
+                this.getDataListFn();
+            },
+            // 分页, 当前页
+            pageCurrentChangeHandleLocal(val) {
+                this.page = val
+                this.getDataListFn();
+            },
+            getDataListFn(){
+                this.getDataList(true).then((res)=>{
+                    if(res.code==200){
+                        this.dataList = res.data.page.list;
+                        this.topNum = res.data.orderListTopVO;
+                        this.total = res.data.page.total;
+                    }else{
+                        this.dataList =[];
+                        this.topNum = {};
+                        this.total = 0;
+                    }
+                })
             },
             getData() {
                 this.dataForm.startTime = this.timeArr && this.timeArr[0];
@@ -261,11 +282,7 @@
                 this.limit = 10;
                 // this.dataForm.orderStatus  = this.dataForm.orderStatus 
                 // this.getDataList();
-                this.getDataList().then((res)=>{
-                    this.dataList = res.data.page.list;
-                    this.topNum = res.data.orderListTopVO;
-                    this.total = res.data.page.total;
-                })
+                this.getDataListFn()
             },
             //订单支付方式
             // getPaymentList() {
@@ -292,11 +309,7 @@
                 this.page = 1;
                 this.limit = 10;
                 // this.getDataList();
-                this.getDataList().then((res)=>{
-                    this.dataList = res.data.page.list;
-                    this.topNum = res.data.orderListTopVO;
-                    this.total = res.data.page.total;
-                })
+                this.getDataListFn()
             },
             // //返回页 1-列表  3-优惠详情
             // changePage(data) {

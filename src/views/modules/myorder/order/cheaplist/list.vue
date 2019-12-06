@@ -6,7 +6,7 @@
                 ref="dataForm"
                 class="grayLine topGapPadding"
                 :model="dataForm"
-                @keyup.enter.native="getDataList()"
+                @keyup.enter.native="getDataListFn()"
         >
             <el-form-item label="订单号搜索：" prop="orderSn">
                 <el-input v-model.trim="dataForm.orderSn" placeholder="请输入" clearable style="width:180px!important;"></el-input>
@@ -174,7 +174,6 @@
                 layout="total, sizes, prev, pager, next, jumper"
         ></el-pagination>
 
-
         <!-- 订单重试 -->
         <reptyOrder v-if="reptyOrderVisible" ref="reptyOrderCompon" @searchDataList="searchDataList"></reptyOrder>
         <!-- 申报 -->
@@ -295,11 +294,7 @@
         },
         props: ["status"],
         created() {
-            this.getDataList().then((res)=>{
-                this.dataList = res.data.page.list;
-                this.topNum = res.data.orderListTopVO;
-                this.total = res.data.page.total;
-            })
+             this.getDataListFn();
             console.log(this.dataList)
             //处理不同状态
             // this.radio1 = this.status == undefined ? "" : this.status;
@@ -320,22 +315,27 @@
         },
         methods: {
             // 分页, 每页条数
-            pageSizeChangeHandle(val) {
+            pageSizeChangeHandleLocal(val) {
                 this.page = 1
                 this.limit = val
-                this.getDataList().then((res)=>{
-                    this.dataList = res.data.page.list;
-                    this.topNum = res.data.orderListTopVO;
-                    this.total = res.data.page.total;
-                })
+                this.getDataListFn();
             },
             // 分页, 当前页
-            pageCurrentChangeHandle(val) {
+            pageCurrentChangeHandleLocal(val) {
                 this.page = val
-                this.getDataList().then((res)=>{
-                    this.dataList = res.data.page.list;
-                    this.topNum = res.data.orderListTopVO;
-                    this.total = res.data.page.total;
+                this.getDataListFn();
+            },
+            getDataListFn(){
+                this.getDataList(true).then((res)=>{
+                    if(res.code==200){
+                        this.dataList = res.data.page.list;
+                        this.topNum = res.data.orderListTopVO;
+                        this.total = res.data.page.total;
+                    }else{
+                        this.dataList =[];
+                        this.topNum = {};
+                        this.total = 0;
+                    }
                 })
             },
             orderDetFn(row){
@@ -351,15 +351,11 @@
                 this.limit = 10;
                 //  this.dataForm.orderStatus  = this.dataForm.paymentStatus
                 // this.getDataList();
-                this.getDataList().then((res)=>{
-                    this.dataList = res.data.page.list;
-                    this.topNum = res.data.orderListTopVO;
-                    this.total = res.data.page.total;
-                })
+                this.getDataListFn();
             },
              searchDataList() {
                 // this.getOrderListTop();
-                this.getDataList();
+                this.getDataListFn();
             },
             //订单支付方式
             // getPaymentList() {
@@ -398,11 +394,7 @@
                 this.page = 1;
                 this.limit = 10;
                 // this.getDataList();
-                this.getDataList().then((res)=>{
-                    this.dataList = res.data.page.list;
-                    this.topNum = res.data.orderListTopVO;
-                    this.total = res.data.page.total;
-                })
+                this.getDataListFn()
             },
             //重置
             reset(formName) {
@@ -418,11 +410,7 @@
                 this.page = 1;
                 this.limit = 10;
                 // this.getDataList();
-                this.getDataList().then((res)=>{
-                    this.dataList = res.data.page.list;
-                    this.topNum = res.data.orderListTopVO;
-                    this.total = res.data.page.total;  
-                })
+                this.getDataListFn()
             },
             //返回页 1-列表  3-优惠详情
             // changePage(data) {
@@ -505,14 +493,6 @@
                    this.$refs.reptyOrderCompon.init(row)
                 })
                 this.searchDataList();
-            },
-            pageCurrentChangeHandleLocal(val){
-                this.pageCurrentChangeHandle(val);
-                // this.getOrderListTop();
-            },
-            pageSizeChangeHandleLocal(val){
-                this.pageSizeChangeHandle(val);
-                // this.getOrderListTop();
             },
         }
     };
