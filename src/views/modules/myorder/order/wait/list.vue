@@ -242,6 +242,11 @@
             //处理不同状态
             // this.dataForm.orderStatus = this.status == undefined ? "" : this.status;
             // this.getPaymentList();
+            this.getDataList().then((res)=>{
+                this.dataList = res.data.page.list;
+                this.topNum = res.data.orderListTopVO;
+                this.total = res.data.page.total;
+            })
         },
         methods: {
             orderDetFn(row){
@@ -255,7 +260,12 @@
                 this.page = 1;
                 this.limit = 10;
                 // this.dataForm.orderStatus  = this.dataForm.orderStatus 
-                this.getDataList();
+                // this.getDataList();
+                this.getDataList().then((res)=>{
+                    this.dataList = res.data.page.list;
+                    this.topNum = res.data.orderListTopVO;
+                    this.total = res.data.page.total;
+                })
             },
             //订单支付方式
             // getPaymentList() {
@@ -281,7 +291,12 @@
                 this.$refs[formName].resetFields();
                 this.page = 1;
                 this.limit = 10;
-                this.getDataList();
+                // this.getDataList();
+                this.getDataList().then((res)=>{
+                    this.dataList = res.data.page.list;
+                    this.topNum = res.data.orderListTopVO;
+                    this.total = res.data.page.total;
+                })
             },
             // //返回页 1-列表  3-优惠详情
             // changePage(data) {
