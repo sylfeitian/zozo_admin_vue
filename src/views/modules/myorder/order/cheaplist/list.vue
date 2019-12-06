@@ -403,7 +403,7 @@
                 this.dataForm.startTime = "";
                 this.dataForm.endTime = "";
                 this.dataForm.orderMessage = "";
-                this.radio1= "all";
+                //this.radio1= "all";
                 // this.dataForm.startPaymentTime = "";
                 // this.dataForm.endPaymentTime = "";
                 this.$refs[formName].resetFields();
