@@ -179,8 +179,8 @@
               <img-cropper
                 ref="cropperImg"
                 :index="0"
-                :imgWidth=""100px""
-                :imgHeight=""100px""
+                :imgWidth="'100px'"
+                :imgHeight="'100px'"
                 :cropImg="tempImage"
                 @GiftUrlHandle="GiftUrlHandle"
               ></img-cropper>
