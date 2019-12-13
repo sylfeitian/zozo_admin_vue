@@ -8,8 +8,14 @@
                 :model="dataForm"
                 @keyup.enter.native="getDataListFn()"
         >
-            <el-form-item label="订单号搜索：" prop="orderSn">
+            <el-form-item label="订单号：" prop="orderSn">
                 <el-input v-model.trim="dataForm.orderSn" placeholder="请输入" clearable style="width:180px!important;"></el-input>
+            </el-form-item>
+            <el-form-item label="日本订单号：" prop="orderSnJp">
+                <el-input v-model.trim="dataForm.orderSnJp" placeholder="请输入" clearable></el-input>
+            </el-form-item>
+            <el-form-item label="拉卡拉申报单号：" prop="tradeSn">
+                <el-input v-model.trim="dataForm.tradeSn" placeholder="请输入" clearable></el-input>
             </el-form-item>
             <el-form-item label="会员账号：" prop="memberName">
                 <el-input v-model.trim="dataForm.memberName" placeholder="请输入" clearable></el-input>
