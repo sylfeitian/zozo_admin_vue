@@ -297,7 +297,7 @@
         <!-- 查看物流 -->
         <logistics v-if="logisticsVisible" ref="logisticsCompon"></logistics>
         <!-- 修改收货人信息 -->
-        <reciverInfo v-if="reciverInfoVisible" ref="reciverInfoCompon" @searchDataList="getOrderDetail"></reciverInfo>
+        <reciverInfo v-if="reciverInfoVisible" ref="reciverInfoCompon" @getOrderDetail="getOrderDetail"></reciverInfo>
          <!-- 审核 -->
         <exammine v-if="exammineVisible" ref="exammineCompon" @searchDataList="getOrderDetail"></exammine>
         <!-- 备注信息 -->
@@ -377,6 +377,9 @@
             modelUserinfo
         },
         props: ["data", "addressInfo", "orderLog","packageInfo",'breaddata'],
+        activated(){
+             this.getOrderDetail();
+        },
         methods: {
             init(row){
                 console.log(row);

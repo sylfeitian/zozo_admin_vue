@@ -132,13 +132,13 @@
                 </el-form-item>
                 <el-form-item label="计算加价率：" class="item">
                     <template slot-scope="scope">
-                        <span v-if="dataForm.addRate">{{dataForm.addRate}}</span>
+                        <span v-if="dataForm.addRate">{{Number(dataForm.addRate*100)}}%</span>
                         <span v-else>/</span>
                     </template>
                 </el-form-item>
                 <el-form-item label="计算上调幅度：" class="item">
                     <template slot-scope="scope">
-                        <span v-if="dataForm.riseIn">{{dataForm.riseIn}}</span>
+                        <span v-if="dataForm.riseIn">{{Number(dataForm.riseIn*100)}}%</span>
                         <span v-else>/</span>
                     </template>
                 </el-form-item>
