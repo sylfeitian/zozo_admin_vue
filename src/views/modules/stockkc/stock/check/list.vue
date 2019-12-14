@@ -313,7 +313,7 @@
         { id: "2", label: "已停业" }
       ],
       goodsSellState(row, column) {
-        return row.sellState == 0 ? "可售" : "不可售";
+        return row.sellState == 0 ? "不可售" : "可售";
       },
       formatoperateFlag(row, column) {
         return row.operateFlag == 0
