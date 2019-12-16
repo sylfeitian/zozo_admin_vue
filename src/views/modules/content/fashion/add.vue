@@ -42,30 +42,35 @@
                         <span style="color:#f56c6c;margin-right: 4px;">*</span>内容：
                     </div>
                     <div id="content" v-for="(v,i) in content" :key="i">
-                        <div class="contentChild" v-if="i==1&&v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'" style="margin-bottom: 10px;">
+                        <div class="contentChild" v-if="content[i] &&v.typeId=='1'||v.typeId=='2'||v.typeId=='5'||v.typeId=='6'" style="margin-bottom: 10px;">
                             <!-- <quill-editor-img class="inforRight" :value="v.text" :index="i" ref="quillEditorCompon" style="display: inline-block;"  @artmessageContent='artmessageContent' ></quill-editor-img> -->
                             <el-input type="textarea" :rows="5" class="inforRight" v-model="v.textCn" :index="i" style="display: inline-block;width:70%;"  @artmessageContent='artmessageContent' ></el-input>
-                            <span style="margin-left: 10px;color:#2260d2;cursor:pointer;" @click="delContent(i)">删除11{{content.length}}</span>
-                            <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="upContent(i)">上移{{i}}</span>
+                            <span style="margin-left: 10px;color:#2260d2;cursor:pointer;"  @click="delContent(i)">删除</span>
+                            <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="upContent(i)">上移</span>
                             <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="downContent(i)">下移</span>
                         </div>
-                        <div class="contentChild" v-if="i==1&&v.typeId=='3'" v-loading="picloading" style="margin-bottom: 10px;">
+                        <div class="contentChild" v-if="content[i] &&v.typeId=='3'" v-loading="picloading" style="margin-bottom: 10px;">
                             <img style="width:600px;" :src="v.imageUrl | filterImgUrl" alt="" >
-                            <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="delContent(i)">删除22</span>
+                            <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="delContent(i)">删除</span>
                             <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="upContent(i)">上移</span>
                              <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="downContent(i)">下移</span>
                         </div>
-                        <div class="contentChild" v-if="i==1&&v.typeId=='4'" style="margin-bottom: 10px;">
+                        <div class="contentChild" v-if="content[i] &&v.typeId=='4'" style="margin-bottom: 10px;">
                             <div style="display: inline-block;">
                                 <img style="width:600px;margin-bottom: 10px;" :src="v.imageUrl | filterImgUrl" alt="">
                                 <div>{{v.textCn}}</div>
                             </div>
-                            <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="delContent(i)">删除33</span>
+                            <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="delContent(i)">删除</span>
                             <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="upContent(i)">上移</span>
                             <span style="margin-left: 10px;color:#2260d2;cursor: pointer;" @click="downContent(i)">下移</span>
                         </div>
-                     
-                        
+                    
+                </div>
+                          <div style="background-color: #fff;display: flex;align-items: center;justify-content:flex-end;width:70%;">
+                    <!-- <p style="margin-left: -100px;margin-right: 50px;">详细信息</p> -->
+                    <el-button type="primary" @click="addContent('5')" >添加文字</el-button>
+                    <el-button type="primary" style="position: relative;"><input accept="image/*" multiple type="file" @change="imgUpload" style="width:100%;height:100%;position:absolute;top: 0; opacity: 0;left: 0;">添加图片</el-button>
+                    <el-button type="primary" @click="openDiog" >添加商品</el-button>
                     </div>
                 </template>
             </el-form-item>
