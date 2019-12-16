@@ -82,6 +82,7 @@
                                 :cropImg="addDataForm.mainImageUrl"
                                 :imgWidth='"100px"'
                                 :imgHeight='"100px"'
+                                :aspectRatio="1"
                                 @delteteImg="delteteImg"
                                 @GiftUrlHandle="GiftUrlHandle"
                                 style="display: inline-block;"
