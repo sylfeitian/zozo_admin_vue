@@ -20,7 +20,7 @@
 			          {{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}
 			        </template>
 			    </el-table-column>
-                <el-table-column prop="systemType" width="90" label="端口" header-align="center" align="center"></el-table-column>
+                <el-table-column prop="systemType" width="90" label="端口" header-align="center" align="center" :formatter="systemTypeStatus"></el-table-column>
                 <el-table-column prop="versionNum" width="100" label="版本号" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="versionDescription" label="版本描述" header-align="center" align="center"></el-table-column>
                 <el-table-column prop="forceUpdateFlag" width="110" label="是否强制更新" header-align="center" align="center">
@@ -37,6 +37,7 @@
 					width="100">
 					<template slot-scope="scope">
 						<el-button type="text" size="small" @click="showDetail(scope.row)">查看</el-button>
+                        <el-button type="text" size="small" @click="delSystem(scope.row.id)">删除</el-button>
 					</template>
 			  	</el-table-column>
             </el-table>
@@ -58,7 +59,7 @@
             :before-close="closeDialog"
             width="500px"
     	>
-    	<div><span style="display:inline-block; width:100px; margin-right: 10px; text-align: right;">端口：</span> <span class="artccc">{{detail && detail.systemType}}</span></div>
+    	<div><span style="display:inline-block; width:100px; margin-right: 10px; text-align: right;">端口：</span> <span class="artccc">{{detail && detail.systemType=='1'?'IOS':'安卓'}}</span></div>
     	<div><span style="display:inline-block; width:100px; margin-right: 10px; text-align: right;">版本号：</span>  <span class="artccc">{{detail &&  detail.versionNum}}</span></div>
     	<div><span style="display:inline-block; width:100px; margin-right: 10px; text-align: right;">版本描述：</span>  <span class="artccc">{{detail &&  detail.versionDescription}}</span></div>
     	<div><span style="display:inline-block; width:100px; margin-right: 10px; text-align: right;">文件包：</span>  <span class="artccc">{{detail &&  detail.filePath }}</span></div>
@@ -80,12 +81,12 @@
             @keyup.enter.native="dataFormSubmit('dataForm')"
             label-width="120px"
         >
-            <el-form-item label="端口号：" prop="systemType">
+            <el-form-item label="端口号：" prop="systemType" >
                 <el-radio v-model="dataForm.systemType" label="1">Android</el-radio>
   				<el-radio v-model="dataForm.systemType" label="2">IOS</el-radio>
             </el-form-item>
             <el-form-item label="版本号：" prop="versionNum">
-                <el-input type="number" v-model="dataForm.versionNum" placeholder="请输入"></el-input>
+                <el-input  v-model="dataForm.versionNum" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="版本描述：" prop="versionDescription">
                  <el-input type="textarea" placeholder="请输入200字以内的内容" v-model="dataForm.versionDescription"></el-input>
@@ -115,7 +116,7 @@
     import Bread from "@/components/bread";
     import { getsysversionmange,exportError } from '@/api/url'
     import uploudModel from './import_model'
-    import { sysversionmangedetail ,addfileupload} from '@/api/api'
+    import { sysversionmangedetail ,addfileupload,getsysversidel} from '@/api/api'
 	import { postfileupload } from '@/api/io'
     
 
@@ -170,6 +171,9 @@
 			            { required: true, message: '请选择', trigger: 'blur' },
 			        ],
                 },
+                systemTypeStatus:function(row){
+                    return row.systemType  == 1 ?  'IOS': '安卓';
+                },
                 isShow: true,
                 importAndExportOptions:{
                     importUrl:postfileupload,//导入接口
@@ -218,6 +222,27 @@
         	//this.$refs.refuploud.init();
         },
         methods: {
+            delSystem(id){
+                const params={
+                    id:id
+                }
+                getsysversidel(params).then(res=>{
+                    if(res.code==200){
+                        this.$message({
+	                        message: res.msg,
+	                        type: 'success',
+	                        duration: 1500
+                        })
+                        this.getDataList()
+                    }else{
+                        this.$message({
+	                        message: res.msg,
+	                        type: 'warning',
+	                        duration: 1500
+	                    })
+                    }
+                })
+            },
            	showDetail(row){
            		sysversionmangedetail(row).then((res)=>{
            			if (res.code == "200") {
