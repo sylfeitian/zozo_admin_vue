@@ -57,6 +57,66 @@
                     </el-option>
                 </el-select>
             </el-form-item>
+             <!--12.12  -->
+      <el-form-item label="上架状态：">
+        <el-select v-model="dataFormShow.showWeb" placeholder="请选择">
+          <el-option
+            v-for="item in showOptions"
+            :key="item.id"
+            :label="item.label"
+            :value="item.id"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="可售状态：">
+        <el-select v-model="dataFormShow.goodsSellState" placeholder="请选择">
+          <el-option
+            v-for="item in stateOptions"
+            :key="item.id"
+            :label="item.label"
+            :value="item.id"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="价格区间：" class="price">
+        <el-form-item>
+          <el-input
+            v-model="bottom"
+            type="number"
+            placeholder="最低价格"
+            onkeypress="return( /[\d]/.test(String.fromCharCode(event.keyCode) ) )"
+          />
+        </el-form-item>——
+        <el-form-item>
+          <el-input
+            v-model="top"
+            type="number"
+            placeholder="最高价格"
+            onkeypress="return( /[\d]/.test(String.fromCharCode(event.keyCode) ) )"
+          />
+        </el-form-item>
+      </el-form-item>
+      <el-form-item label="下发状态：">
+        <el-select v-model="dataFormShow.transportFlag" placeholder="请选择">
+          <el-option
+            v-for="item in transportOptions"
+            :key="item.id"
+            :label="item.label"
+            :value="item.id"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="店铺状态：">
+        <el-select v-model="dataFormShow.operateFlag" placeholder="请选择">
+          <el-option
+            v-for="item in operateOptions"
+            :key="item.id"
+            :label="item.label"
+            :value="item.id"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+
             <!--//showDetail()-->
             <el-form-item>
                 <el-button class="btn" type="primary" @click="getData">查询</el-button>
@@ -115,6 +175,19 @@
                     <span v-else-if="scope.row.showWeb==2">已下架</span>
                 </template>
             </el-table-column>
+            <el-table-column prop="sellState" label="可售状态" align="center" :formatter="goodsSellState"></el-table-column>
+            <el-table-column
+                prop="transportFlag"
+                label="下发状态"
+                align="center"
+                :formatter="formattransportFlag"
+            ></el-table-column>
+            <el-table-column
+                prop="operateFlag"
+                label="店铺状态"
+                align="center"
+                :formatter="formatoperateFlag"
+            ></el-table-column>
             <el-table-column prop="stockQuantity" label="库存数" align="center"></el-table-column>
         </el-table>
         <!-- 分页 -->
@@ -159,22 +232,13 @@
 		          deleteIsBatchKey: 'id'
 			    },
                 breaddata: [ "商品管理", "查看库存"],
-                dataFormShow: {  
-                    goodsName: "",//商品名称/商品货号
-                    goodsCsIdJp:"",  //商品id
-                    categoryId:'',// 中国分类Id
-                    sellState:'',// 是否售完，已售完1，未售完0
-                    storeId:'',//所属店铺名称
-                    brandId:'',//品牌名称
-
-                    // brandName: "",//品牌名称
-                    // storeName: "",//店铺名称
-                },
                  dataForm: {
 				},
                 storeName:[],  //店铺名称
                 selectCategoryOption: [],//中国分类id
                 brandName: [],//品牌名称
+                bottom: "",
+                top: "",
                 options: [{  //是否可售
                     value: '',
                     label: '全部'
@@ -206,19 +270,61 @@
                     children:'list'
                 },
                 dataFormShow:{
-                    goodsName:'',//商品中文名称
-                    goodsCsIdJp:'',//商品spuid
-                    categoryId:'',// 中国分类Id
-                    sellState:'',// 是否售完，已售完1，未售完0
-                    storeId:'',//所属店铺名称
-                    brandId:'',//品牌名称
-
+                    goodsName: "", //商品中文名称
+                    goodsCsIdJp: "", //商品spuid
+                    categoryId: "", // 中国分类Id
+                    sellState: "", // 是否售完，已售完1，未售完0
+                    storeId: "", //所属店铺名称
+                    brandId: "", //品牌名称
+                    bottomPrice: "", //最低价
+                    topPrice: "", //最高价
+                    transportFlag: "", //下发状态
+                    operateFlag: "", //店铺状态
+                    goodsSellState: "", //可售状态
+                    showWeb: "" //上下架状态
+                    // sellState:'',//销售状态
                     // brandName:'',//品牌名称
                     // storeName:'',//	所属店铺名称
                     // categoryId:'',//中国分类Id
                     // sellState:'',//是否售完，已售完1，未售完0
+
                 },
                 classList:[],
+                 showOptions: [
+        { id: "", label: "全部" },
+        { id: "0", label: "待上架" },
+        { id: "1", label: "已上架" },
+        { id: "2", label: "已下架" }
+      ],
+      stateOptions: [
+        { id: "", label: "全部" },
+        { id: "0", label: "不可售" },
+        { id: "1", label: "可售" }
+      ],
+      transportOptions: [
+        { id: "", label: "全部" },
+        { id: "0", label: "未下发" },
+        { id: "1", label: "已下发" }
+      ],
+      operateOptions: [
+        { id: "", label: "全部" },
+        { id: "0", label: "待营业" },
+        { id: "1", label: "营业中" },
+        { id: "2", label: "已停业" }
+      ],
+      goodsSellState(row, column) {
+        return row.sellState == 0 ? "不可售" : "可售";
+      },
+      formatoperateFlag(row, column) {
+        return row.operateFlag == 0
+          ? "待业中"
+          : row.operateFlag == 1
+            ? "营业中"
+            : "已停业";
+      },
+      formattransportFlag(row, column) {
+        return row.transportFlag == 0 ? "未下发" : "已下发";
+      }
             }
         },
         components: {
@@ -237,7 +343,43 @@
                 if(newV.length>30){
                     this.dataFormShow.goodsCsIdJp = newV.substr(0,30)
                 }
-            }
+            },
+             bottom(val) {
+                if (val !== "") {
+                    this.dataFormShow.bottomPrice = val;
+                } else if (val == "e") {
+                    val = "";
+                } else {
+                    this.dataFormShow.bottomPrice = 0;
+                }
+
+         if (this.dataFormShow.topPrice == "") {
+        this.dataFormShow.topPrice = 99999;
+      } else if (this.dataFormShow.topPrice < this.dataFormShow.bottomPrice) {
+        this.$message("最低价格不得大于最高价格");
+        this.dataFormShow.topPrice = 99999;
+        this.top = 99999;
+      }
+    },
+    top(val) {
+      console.log(val, val == "e");
+      if (val !== "") {
+        this.dataFormShow.topPrice = val;
+      } else if (val == "e") {
+        val = "";
+      } else {
+        this.dataFormShow.topPrice = 99999;
+      }
+      this.dataFormShow.topPrice = val;
+      if (this.dataFormShow.bottomPrice == "") {
+        this.dataFormShow.bottomPrice = 0;
+      } else if (this.dataFormShow.topPrice < this.dataFormShow.bottomPrice) {
+        this.$message("最高价格不得于最低价格");
+        this.dataFormShow.bottomPrice = 0;
+        this.bottom = 0;
+      }
+    }
+
         },
         created () {
             // 第一次请求数据
@@ -316,19 +458,26 @@
                 this.getDataList()
             },
             reset() {
-                this.dataFormShow.goodsName = "";//商品名称/商品货号
-                this.dataFormShow.goodsCsIdJp = "";//商品id
-                this.dataFormShow.brandId = "";//品牌名称
-                this.dataFormShow.categoryId = "";//分类id
-                this.dataFormShow.storeId = "";//店铺名称
-                this.dataFormShow.sellState = "";//是否可售
-                
-                this.dataForm.goodsName = "";//商品名称/商品货号
-                this.dataForm.goodsCsIdJp = "";//商品id
-                this.dataForm.brandId = "";//品牌名称
-                this.dataForm.categoryId = "";//分类id
-                this.dataForm.storeId = "";//店铺名称
-                this.dataForm.sellState = "";//是否可售
+                this.dataFormShow.goodsName = ""; //商品名称/商品货号
+                this.dataFormShow.goodsCsIdJp = ""; //商品id
+                this.dataFormShow.brandId = ""; //品牌名称
+                this.dataFormShow.categoryId = ""; //分类id
+                this.dataFormShow.storeId = ""; //店铺名称
+                this.dataFormShow.sellState = ""; //是否可售
+                this.dataFormShow.bottomPrice = ""; //最低价
+                this.dataFormShow.topPrice = ""; //最高价
+                this.top='';
+                this.bottom='';
+                this.dataFormShow.transportFlag = ""; //下发状态
+                this.dataFormShow.operateFlag = ""; //店铺状态
+                this.dataFormShow.goodsSellState = ""; //可售状态
+                this.dataFormShow.showWeb = ""; //上下架状态
+                this.dataForm.goodsName = ""; //商品名称/商品货号
+                this.dataForm.goodsCsIdJp = ""; //商品id
+                this.dataForm.brandId = ""; //品牌名称
+                this.dataForm.categoryId = ""; //分类id
+                this.dataForm.storeId = ""; //店铺名称
+                this.dataForm.sellState = ""; //是否可售
                 this.classList = [];
                 this.getDataList();
             },
@@ -367,6 +516,12 @@
 </script>
 
 <style lang="scss" scoped>
+/deep/.price {
+  /deep/.el-form-item {
+    margin-right: 3px !important;
+  }
+}
+
     .grayLine{
         border-bottom: 0!important;
     }

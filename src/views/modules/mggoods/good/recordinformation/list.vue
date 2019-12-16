@@ -9,6 +9,9 @@
             <el-form-item label="商品sku ID：">
                 <el-input v-model.trim="dataFormShow.skuIdJp" placeholder="商品skuid" maxlength="30"></el-input>
             </el-form-item>
+            <el-form-item label="商品spu ID：">
+                <el-input v-model.trim="dataFormShow.spuIdJp" placeholder="商品spuid" maxlength="30"></el-input>
+            </el-form-item>
             <el-form-item label="分类：">
                 <el-cascader
                         :options="selectCategoryOption"
@@ -111,6 +114,13 @@
                 <template slot-scope="scope">
                     <div @click="detShowChange(scope.row)" style="cursor:pointer;color:#2260D2;">
                         {{scope.row.skuIdJp}}
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column label="商品SPU ID" align="center">
+                <template slot-scope="scope">
+                    <div @click="detShowChange(scope.row)" style="cursor:pointer;color:#2260D2;">
+                        {{scope.row.goodsIdJp}}
                     </div>
                 </template>
             </el-table-column>
@@ -307,6 +317,16 @@
                     this.dataFormShow.skuIdJp = newV.substr(0,30)
                 }
             },
+            'dataFormShow.spuIdJp':function(newV,oldV) {
+                for(let i=0;i<newV.length;i++){
+                    if(!/[a-zA-Z0-9\s]/.test(newV[i])){
+                        this.dataFormShow.spuIdJp = newV.replace(newV[i],"")
+                    }
+                }
+                if(newV.length>30){
+                    this.dataFormShow.spuIdJp = newV.substr(0,30)
+                }
+            },
                 'dataFormShow.goodsName':function(newV,oldV) {
                     var chineseCount = 0,characterCount = 0;
                     for (let i = 0; i < newV.length; i++) {
@@ -474,6 +494,7 @@
                 this.dataFormShow.startTime = "";
                 this.dataFormShow.endTime = "";
                 this.dataFormShow.skuIdJp = "";//商品sku ID
+                this.dataFormShow.spuIdJp = "";//商品spu ID
                 this.dataFormShow.goodsName = "";//商品名称/商品货号
                 this.dataFormShow.brandName = "";//品牌名称
                 this.dataFormShow.storeName = "";//店铺名称
@@ -488,6 +509,7 @@
                 this.dataForm.storeId = "";
                 this.dataForm.brandId = "";
                 this.dataForm.skuIdJp = "";//商品sku ID
+                this.dataForm.spuIdJp = "";//商品spu ID
                 this.dataForm.goodsName = "";//商品名称/商品货号
                 this.dataForm.brandName = "";//品牌名称
                 this.dataForm.storeName = "";//店铺名称

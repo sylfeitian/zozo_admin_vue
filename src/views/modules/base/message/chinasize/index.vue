@@ -95,7 +95,7 @@
 		          // exportURL: '/admin-api/log/login/export',
 		          deleteURL: delsizeCndata,
 		          dataListLoading: false,
-		          deleteIsBatch: true,
+		          deleteIsBatch: false,
 		          deleteIsBatchKey: 'id'
 			    },
                 breaddata: [ "商品管理", "中国尺码"],

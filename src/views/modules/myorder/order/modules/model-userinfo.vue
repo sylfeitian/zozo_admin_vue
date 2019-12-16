@@ -107,7 +107,8 @@
 									if(res.code == "200"){
 										status = "success";
 										this.visible = false;
-										this.$emit('searchDataList');
+										console.log(this.$parent,'------')
+										this.$parent.$parent.getOrderDetail();
 					         			 this.closeDialog();
 									}else{
 										status = "error";

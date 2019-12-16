@@ -95,6 +95,24 @@
         <span>{{dataForm.materialJp}}</span>
         <el-input v-model.trim="dataForm.material" placeholder="请输入" style="margin-left: 10px;"></el-input>&nbsp;&nbsp;
       </el-form-item>
+      <el-form-item label="计算汇率：" class="item">
+        <template slot-scope="scope">
+            <span v-if="dataForm.priceRate">{{dataForm.priceRate}}</span>
+            <span v-else>/</span>
+        </template>
+      </el-form-item>
+      <el-form-item label="计算加价率：" class="item">
+        <template slot-scope="scope">
+            <span v-if="dataForm.addRate">{{dataForm.addRate}}</span>
+            <span v-else>/</span>
+        </template>
+      </el-form-item>
+      <el-form-item label="计算上调幅度：" class="item">
+          <template slot-scope="scope">
+              <span v-if="dataForm.riseIn">{{dataForm.riseIn}}</span>
+              <span v-else>/</span>
+          </template>
+      </el-form-item>
       <el-form-item label="上架状态：" class="item">
         <template>
           <span v-if="dataForm.showWeb==0">下架</span>

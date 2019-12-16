@@ -64,6 +64,10 @@
         </template>
       </el-table-column>
       <el-table-column prop="updateDate" label="更新时间" align="center"></el-table-column>
+      <el-table-column prop="noTofileSku" label="待备案sku数" align="center"></el-table-column>
+      <el-table-column prop="isTofileSku" label="已备案sku数" align="center"></el-table-column>
+      <el-table-column prop="upShowWebSpu" label="已上架spu数" align="center"></el-table-column>
+      <el-table-column prop="downShowWebSpu" label="已下架spu数" align="center"></el-table-column>
       <el-table-column prop="mainTag" label="店铺主风格标签" align="center">
         <template slot-scope="scope">
           <div :title="scope.row.mainTag">

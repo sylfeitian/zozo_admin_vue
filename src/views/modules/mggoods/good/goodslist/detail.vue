@@ -124,6 +124,24 @@
                         <span v-else>/</span>
                     </template>
                 </el-form-item>
+                <el-form-item label="计算汇率：" class="item">
+                    <template slot-scope="scope">
+                        <span v-if="dataForm.priceRate">{{dataForm.priceRate}}</span>
+                        <span v-else>/</span>
+                    </template>
+                </el-form-item>
+                <el-form-item label="计算加价率：" class="item">
+                    <template slot-scope="scope">
+                        <span v-if="dataForm.addRate">{{Number(dataForm.addRate*100)}}%</span>
+                        <span v-else>/</span>
+                    </template>
+                </el-form-item>
+                <el-form-item label="计算上调幅度：" class="item">
+                    <template slot-scope="scope">
+                        <span v-if="dataForm.riseIn">{{Number(dataForm.riseIn*100)}}%</span>
+                        <span v-else>/</span>
+                    </template>
+                </el-form-item>
                 <el-form-item label="上架状态：" class="item">
                     <template>
                         <span v-if="dataForm.showWeb==0">下架</span>

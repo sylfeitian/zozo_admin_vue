@@ -1099,7 +1099,8 @@ export const sysversionmangedetail = params => { return http.get(`${base}/sysver
 export const addfileupload = params => { return http.post(`${base}/sysversionmange/add`, params).then(res => res.data); };
 //apk上传
 export const postfileupload = params => { return http.post(`${base}/fileupload/appversion`, params).then(res => res.data); };
-
+//版本删除
+export const getsysversidel = params => { return http.delete(`${base}/sysversionmange/${params.id}`, params).then(res => res.data); };
 
 // 导出管理
 export const sysexportmanagementPage = params => { return http.get(`${base}/sysexportmanagement/page`, params).then(res => res.data); };

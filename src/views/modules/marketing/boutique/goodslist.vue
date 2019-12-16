@@ -86,7 +86,7 @@
         <el-pagination
             @size-change="pageSizeChangeHandle"
             @current-change="pageCurrentChangeHandle"
-            :current-page="page"
+            :current-page="dataForm.page"
             :page-sizes="[10, 20, 50, 100]"
             :page-size="limit"
             :total="total"
@@ -145,7 +145,7 @@
                 this.getData();
             },
             getData(){
-                this.dataForm.page =1;
+                // this.dataForm.page =1;
                 this.getDataList();
             },
             //返回

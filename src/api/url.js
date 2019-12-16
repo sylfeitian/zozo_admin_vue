@@ -502,6 +502,7 @@ export const couponStorePage = `${base}/statistics/coupons/page`;
 export const getsysversionmange = `${base}/sysversionmange/page`;
 
 
+
 // 导出管理
 export const getsysexportmanagement = `${base}/sysexportmanagement/page`;
 
