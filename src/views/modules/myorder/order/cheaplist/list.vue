@@ -151,7 +151,7 @@
                     <div v-if="scope.row.exceptionStatus!=0">
                         <el-button size="mini" type="text" @click="orderDetFn(scope.row)">查看</el-button>
                         <el-button size="mini" type="text" @click="reptyOrderFn(scope.row)">重试</el-button>
-                        <el-button size="mini" type="text" @click="cancleOrderFn(scope.row)" v-if="scope.row.orderStatus!=0">取消订单</el-button>
+                        <el-button size="mini" type="text" @click="cancleOrderFn(scope.row)" v-if="scope.row.orderStatus!=0 && scope.row.exceptionStatus!=20 && scope.row.exceptionStatus!=30">取消订单</el-button>
                    </div>
                     <!-- 正常订单 -->
                    <div v-else>
