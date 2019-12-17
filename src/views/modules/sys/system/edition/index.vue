@@ -172,7 +172,7 @@
 			        ],
                 },
                 systemTypeStatus:function(row){
-                    return row.systemType  == 1 ?  'IOS': '安卓';
+                    return row.systemType  == 1 ?  'Android': 'IOS';
                 },
                 isShow: true,
                 importAndExportOptions:{
