@@ -1,7 +1,9 @@
 <template>
     <div>
         <!-- <button @click="getData">123132</button> -->
-        <list v-if="mainVisible" ref="listCompon" @orderDetFn="orderDetFn" @afterSaleDetailFn="afterSaleDetailFn"></list>
+        <keep-alive>
+            <list v-if="mainVisible" ref="listCompon" @orderDetFn="orderDetFn" @afterSaleDetailFn="afterSaleDetailFn"></list>
+        </keep-alive>
         <orderDet v-if="orderDetVisible" ref="orderDetCompon" @orderDetListFn="orderDetListFn"  :breaddata="subBreaddata"></orderDet>
         <afterSaleDetail v-if="afterSaleDetailVisible" ref="afterSaleDetailCompon" @orderDetListFn="orderDetListFn"  :breaddata="subBreaddata2"></afterSaleDetail>
     </div>
