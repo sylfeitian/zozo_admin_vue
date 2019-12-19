@@ -1,6 +1,8 @@
 <template>
     <div>
-        <list v-if="mainVisible" ref="listCompon" @showDetail="showDetail" @addOrAdit="addOrAdit"></list>
+        <keep-alive>
+            <list v-if="mainVisible" ref="listCompon" @showDetail="showDetail" @addOrAdit="addOrAdit"></list>
+        </keep-alive>
         <detail v-if="detailVisible" ref="detailCompon" @logMore="showList" @operational="operational"></detail>
         <operation v-if="operationVisible" ref="operationCompon" @operationList="operationList" @operationalList="operationalList"></operation>
     </div>
