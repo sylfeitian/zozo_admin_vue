@@ -182,11 +182,15 @@
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="链接类型：" prop="linkType">
-               <el-radio-group v-model="activiDataForm.linkType"  @change="changeType">
+               <el-radio-group v-model="activiDataForm.linkType"  @change="changeType" class="linktype-radio-group">
                     <el-radio :label="0">无链接</el-radio>
                     <el-radio :label="1">站内链接</el-radio>
                     <el-radio :label="2">指定商品</el-radio>
                     <el-radio :label="3">自定义链接</el-radio>
+                    <el-radio :label="4">指定分类</el-radio>
+                    <el-radio :label="5">指定店铺</el-radio>
+                    <el-radio :label="6">指定品牌</el-radio>
+                    <el-radio :label="7">指定时尚杂志</el-radio>
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="链接：" v-if="activiDataForm.linkType == '1'" prop="linkValue">
@@ -211,8 +215,19 @@
                     >
                     </el-input>
             </el-form-item>
-            <el-form-item label="链接：" v-if="activiDataForm.linkType == '2'" prop="linkValue">
+            <el-form-item label="链接：" v-if="activiDataForm.linkType == '2' || activiDataForm.linkType == '5' || activiDataForm.linkType == '6' || activiDataForm.linkType == '7'" prop="linkValue">
                 <div @click="toOpen()">{{checkItem}}</div>
+            </el-form-item>
+            <el-form-item label="分类：" v-if="activiDataForm.linkType == '4'" prop="linkValue" class="cascader-option">
+                <el-cascader
+                ref="cascaderClass"
+                :options="classList"
+                change-on-select
+                :clearable="true"
+                :props="props"
+                v-model="classSelectedOptions"
+                @change="classHandleChangeOut">
+                ></el-cascader>
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -299,13 +314,243 @@
             layout="total, sizes, prev, pager, next, jumper">
         </el-pagination>
     </el-dialog>
+    <!-- 店铺弹框 -->
+    <el-dialog
+        title="添加店铺"
+        :visible.sync="shopVisible"
+        width="60%">
+        <el-form :inline="true" :model="shopdataForm">
+            <el-form-item label="店铺ID：">
+                <el-input v-model.trim="shopdataForm.idJp" placeholder="请输入店铺ID" clearable maxlength="300"></el-input>
+            </el-form-item>
+            <el-form-item label="店铺名称：">
+                <el-input v-model.trim="shopdataForm.name" placeholder="请输入店铺名称" clearable maxlength="300"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button class="btn" type="primary" @click="getshopDataList()">搜索</el-button>
+                <el-button class="btn"  type="primary" plain @click="shopreset()" plain>重置</el-button>
+            </el-form-item>
+        </el-form>
+        <el-table
+            :data="shopdataList"
+            v-loading="shopdataListLoading"
+            border
+            style="width: 100%">
+            <el-table-column
+                prop="idJp"
+                label="店铺ID"
+                align="center"
+                width="80">
+            </el-table-column>
+            <el-table-column
+                prop="nameJp"
+                align="center"
+                label="店铺日本名称"
+                width="180"
+                :show-overflow-tooltip="true">
+            </el-table-column>
+            <el-table-column
+                prop="nameGlo"
+                align="center"
+                label="全球名称"
+                width="180"
+                :show-overflow-tooltip="true">
+            </el-table-column>
+            <el-table-column
+                prop="nameCn"
+                align="center"
+                label="中文名称"
+                width="180"
+                :show-overflow-tooltip="true">
+            </el-table-column>
+            <el-table-column
+                prop="operateFlag"
+                align="center"
+                label="营业状态">
+                <template slot-scope="scope">
+                    <div>{{operateFlagToCn(scope.row.operateFlag)}}</div>
+                </template>
+            </el-table-column>
+            <el-table-column
+                align="center"
+                label="操作">
+                <template slot-scope="scope">
+                    <div @click="selectShopOrBrand(scope.row)" :class="scope.row.id==checkFunStatus?'canClick':'checkFun'" class="checkFun"><span style="width: 5px;height: 5px;background: #fff;border-radius: 50%;"></span></div>
+                </template>
+            </el-table-column>
+        </el-table>
+
+        <el-pagination
+            @size-change="pageSizeChangeHandle2"
+            @current-change="pageCurrentChangeHandle2"
+            :current-page="shopPage"
+            :page-sizes="[10, 20, 50, 100]"
+            :page-size="shopLimit"
+            :total="shopTotal"
+            layout="total, sizes, prev, pager, next, jumper">
+        </el-pagination>
+    </el-dialog>
+    <!-- 品牌弹框 -->
+    <el-dialog
+        title="添加品牌"
+        :visible.sync="brandVisible"
+        width="60%">
+        <el-form :inline="true" :model="branddataForm">
+            <el-form-item label="品牌ID：">
+                <el-input v-model.trim="branddataForm.idJp" placeholder="请输入品牌ID" clearable maxlength="300"></el-input>
+            </el-form-item>
+            <el-form-item label="品牌名称：">
+                <el-input v-model.trim="branddataForm.name" placeholder="请输入品牌名称" clearable maxlength="300"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button class="btn" type="primary" @click="getbrandDataList()">搜索</el-button>
+                <el-button class="btn"  type="primary" plain @click="brandreset()" plain>重置</el-button>
+            </el-form-item>
+        </el-form>
+        <el-table
+            :data="branddataList"
+            v-loading="branddataListLoading"
+            border
+            style="width: 100%">
+            <el-table-column
+                prop="idJp"
+                label="品牌ID"
+                align="center"
+                width="80">
+            </el-table-column>
+            <el-table-column
+                prop="nameJp"
+                align="center"
+                label="品牌日本名称"
+                width="180"
+                :show-overflow-tooltip="true">
+            </el-table-column>
+            <el-table-column
+                prop="nameGlo"
+                align="center"
+                label="全球名称"
+                width="180"
+                :show-overflow-tooltip="true">
+            </el-table-column>
+            <el-table-column
+                prop="nameCn"
+                align="center"
+                label="中文名称"
+                width="180"
+                :show-overflow-tooltip="true">
+            </el-table-column>
+            <el-table-column
+                align="center"
+                label="操作">
+                <template slot-scope="scope">
+                    <div @click="selectShopOrBrand(scope.row)" :class="scope.row.id==checkFunStatus?'canClick':'checkFun'" class="checkFun"><span style="width: 5px;height: 5px;background: #fff;border-radius: 50%;"></span></div>
+                </template>
+            </el-table-column>
+        </el-table>
+
+        <el-pagination
+            @size-change="pageSizeChangeHandle3"
+            @current-change="pageCurrentChangeHandle3"
+            :current-page="brandPage"
+            :page-sizes="[10, 20, 50, 100]"
+            :page-size="brandLimit"
+            :total="brandTotal"
+            layout="total, sizes, prev, pager, next, jumper">
+        </el-pagination>
+    </el-dialog>
+    <!-- 时尚弹框 -->
+    <el-dialog
+        title="添加时尚杂志"
+        :visible.sync="fashionVisible"
+        width="60%">
+        <el-form :inline="true" :model="fashiondataForm">
+            <el-form-item label="ID：">
+                <el-input v-model.trim="fashiondataForm.idJp" placeholder="请输入编号" clearable maxlength="300"></el-input>
+            </el-form-item>
+            <el-form-item label="标题：">
+                <el-input v-model.trim="fashiondataForm.title" placeholder="请输入标题" clearable maxlength="300"></el-input>
+            </el-form-item>
+            <el-form-item label="发布时间：">
+                <el-date-picker
+                        v-model="timeArr"
+                        type="datetimerange"
+                        value-format="yyyy-MM-dd HH:mm:ss"
+                        align="left"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"
+                        :default-time="['00:00:00', '23:59:59']"
+                ></el-date-picker>
+            </el-form-item>
+            <el-form-item>
+                <el-button class="btn" type="primary" @click="getfashionDataList()">搜索</el-button>
+                <el-button class="btn"  type="primary" plain @click="fashionreset()" plain>重置</el-button>
+            </el-form-item>
+        </el-form>
+        <el-table
+            :data="fashiondataList"
+            v-loading="fashiondataListLoading"
+            border
+            style="width: 100%">
+            <el-table-column
+                prop="idJp"
+                label="ID"
+                align="center"
+                width="80">
+            </el-table-column>
+            <el-table-column
+                prop="mainImageUrl"
+                align="center"
+                label="封面"
+                width="180"> 
+                <template slot-scope="scope">
+                    <img v-if="scope.row.mainImageUrl" :src="getImgUrl(scope.row.mainImageUrl)" width="45" height="55" alt="封面">
+                </template>
+            </el-table-column>
+            <el-table-column
+                prop="title"
+                align="center"
+                label="标题"
+                width="180"
+                :show-overflow-tooltip="true">
+            </el-table-column>
+            <el-table-column
+                prop="mediaName"
+                align="center"
+                label="发布人"
+                width="180"
+            </el-table-column>
+            <el-table-column
+                prop="publishTime"
+                align="center"
+                label="发布时间"
+                width="180">
+            </el-table-column>
+            <el-table-column
+                align="center"
+                label="操作">
+                <template slot-scope="scope">
+                    <div @click="selectFashion(scope.row)" :class="scope.row.id==checkFunStatus?'canClick':'checkFun'" class="checkFun"><span style="width: 5px;height: 5px;background: #fff;border-radius: 50%;"></span></div>
+                </template>
+            </el-table-column>
+        </el-table>
+
+        <el-pagination
+            @size-change="pageSizeChangeHandle3"
+            @current-change="pageCurrentChangeHandle3"
+            :current-page="fashionPage"
+            :page-sizes="[10, 20, 50, 100]"
+            :page-size="fashionLimit"
+            :total="fashionTotal"
+            layout="total, sizes, prev, pager, next, jumper">
+        </el-pagination>
+    </el-dialog>
   </div>
 </template>
 
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import { advList,advDelete } from '@/api/url'
-    import { uploadPicBase64,zozogoodsPage,plainAdveAdd,plainAdveUpdate,adverDetail,categoryCnList } from '@/api/api'
+    import { uploadPicBase64,zozogoodsPage,plainAdveAdd,plainAdveUpdate,adverDetail,categoryCnList,shopStoreAdvList,shopBrandAdvList,fashionAdvList } from '@/api/api'
     import Bread from "@/components/bread";
     import { getUrlBase64 } from '@/utils'
     export default {
@@ -333,6 +578,29 @@
                 buttonStatus:false,
                 activiVisible:false,
                 goodsVisible:false,
+                // 商店
+                shopdataListLoading:false,
+                shopdataList:[],
+                shopPage:1,
+                shopLimit:10,
+                shopTotal:0,
+                shopVisible:false,
+                // 品牌
+                branddataListLoading:false,
+                branddataList:[],
+                brandPage:1,
+                brandLimit:10,
+                brandTotal:0,
+                brandVisible:false,
+                // 时尚
+                fashiondataListLoading:false,
+                fashiondataList:[],
+                fashionPage:1,
+                fashionLimit:10,
+                fashionTotal:0,
+                fashionVisible:false,
+                timeArr: [],
+
                 props: {
                     label:'name',
                     value: 'id',
@@ -360,7 +628,22 @@
                     goodsName:'',
                     categoryId:'',
                 },
+                shopdataForm:{
+                    idJp: '',
+                    name: '',
+                },
+                branddataForm:{
+                    idJp: '',
+                    name: '',
+                },
+                fashiondataForm:{
+                    idJp: '',
+                    title: '',
+                    startTime: '',
+                    endTime: '',
+                },
                 selectedOptions:[],
+                classSelectedOptions:[],
                 activitesstates: [
                     {id:'',name:'全部'},
                     {id:'1',name:'启用'},
@@ -613,12 +896,25 @@
                 this.activiDataForm.linkValue = '';
                 this.activiDataForm.linkValueName = '';
                 this.activiDataForm.linkUrl = '';
+                this.classSelectedOptions = [];
                 if(val == 2){
                     this.goodsVisible = true;
                     this.getGoodsDataList();
                     // this.getClassList();
+                } else if(val == 5){
+                    this.shopVisible = true;
+                    this.getshopDataList();
+                }else if(val == 6){
+                    this.brandVisible = true;
+                    this.getbrandDataList();
+                }else if(val == 7){
+                    this.fashionVisible = true;
+                    this.getfashionDataList();
                 }else{
                     this.goodsVisible = false;
+                    this.shopVisible = false;
+                    this.brandVisible = false;
+                    this.fashionVisible = false;
                 }
             },
             //提交新增编辑活动
@@ -681,10 +977,47 @@
                 this.goodsPage = val;
                 this.getGoodsDataList();
             },
+            // 分页, 每页条数
+            pageSizeChangeHandle2(val) {
+                this.shopPage = 1;
+                this.shopLimit = val;
+                this.getshopDataList()
+            },
+            // 分页, 当前页
+            pageCurrentChangeHandle2(val) {
+                this.shopPage = val;
+                this.getshopDataList();
+            },
+            // 分页, 每页条数
+            pageSizeChangeHandle3(val) {
+                this.brandPage = 1;
+                this.brandLimit = val;
+                this.getbrandDataList()
+            },
+            // 分页, 当前页
+            pageCurrentChangeHandle3(val) {
+                this.brandPage = val;
+                this.getbrandDataList();
+            },
+            // 分页, 每页条数
+            pageSizeChangeHandle4(val) {
+                this.fashionPage = 1;
+                this.fashionLimit = val;
+                this.getfashionDataList()
+            },
+            // 分页, 当前页
+            pageCurrentChangeHandle4(val) {
+                this.fashionPage = val;
+                this.getfashionDataList();
+            },
 
             handleChangeOut(val){
                 console.log(val)
                 this.goodsdataForm.categoryId = val[val.length-1];
+            },
+            classHandleChangeOut(val) {
+                this.activiDataForm.linkValueName = this.$refs.cascaderClass.currentLabels.join('/');
+                this.activiDataForm.linkValue = val[val.length-1];
             },
             // 联动分类
             getClassList(){
@@ -710,8 +1043,31 @@
                 })
             },
             toOpen(){
-                this.goodsVisible = true;
-                this.getGoodsDataList();
+                console.log('toOpen')
+                switch (this.activiDataForm.linkType) {
+                    case 2:
+                        this.goodsVisible = true;
+                        this.getGoodsDataList();
+                        break;
+                    
+                    case 5:
+                        this.shopVisible = true;
+                        this.getshopDataList();
+                        break;
+                    
+                    case 6:
+                        this.brandVisible = true;
+                        this.getbrandDataList();
+                        break;
+
+                    case 7:
+                        this.fashionVisible = true;
+                        this.getfashionDataList();
+                        break;
+
+                    default:
+                        break;
+                }
             },
             // 弹框商品列表查询
             getGoodsDataList(){
@@ -751,6 +1107,117 @@
                 this.activiDataForm.linkValue = item.id;
                 this.activiDataForm.linkValueName = this.checkItem;
             },
+            // 店铺列表
+            getshopDataList(){
+                this.shopdataListLoading = true;
+                shopStoreAdvList({
+                    params: {
+                        page: this.shopPage,
+                        limit: this.shopLimit,
+                        idJp: this.shopdataForm.idJp,
+                        name: this.shopdataForm.name
+                    }
+                }).then((res) => {
+                    this.shopdataListLoading = false;
+                    this.shopTotal = Number(res.data.total);
+                    this.shopdataList = res.data.list;
+                })
+            },
+            shopreset(){
+                this.shopPage = 1;
+                this.shopLimit = 10;
+                this.shopdataForm = {
+                    idJp : '',
+                    name : ''
+                };
+                this.getshopDataList()
+            },
+            selectShopOrBrand(item) {
+                this.checkFunStatus = item.id;
+                this.checkItem = item.nameCn;//数据正常后改为中国商品名称
+                this.activiDataForm.linkValue = item.id;
+                this.activiDataForm.linkValueName = this.checkItem;
+            },
+            operateFlagToCn(operateFlag) {
+                let operateStatusStr = '';
+                switch (operateFlag) {
+                    case 0:
+                        operateStatusStr = '待营业';
+                        break;
+
+                    case 1:
+                        operateStatusStr = '营业中';
+                        break;
+                    
+                    case 2:
+                        operateStatusStr = '已停业';
+                        break;
+                    
+                    default:
+                        operateStatusStr = '暂无信息';
+                        break;
+                }
+                return operateStatusStr;
+            },
+            // 品牌
+            getbrandDataList() {
+                this.branddataListLoading = true;
+                shopBrandAdvList({
+                    idJp: this.branddataForm.idJp,
+                    name: this.branddataForm.name
+                }).then((res) => {
+                    this.branddataListLoading = false;
+                    this.brandTotal = Number(res.data.total);
+                    this.branddataList = res.data.list;
+                })
+            },
+            brandreset(){
+                this.shopPage = 1;
+                this.shopLimit = 10;
+                this.shopdataForm = {
+                    idJp : '',
+                    name : ''
+                };
+            },
+            // 时尚
+            getfashionDataList() {
+                this.fashiondataListLoading = true;
+                this.fashiondataForm.startTime = this.timeArr && this.timeArr[0];
+                this.fashiondataForm.endTime = this.timeArr && this.timeArr[1];
+                fashionAdvList({
+                    diJp: this.fashiondataForm.idJp,
+                    title: this.fashiondataForm.title,
+                    startTime: this.fashiondataForm.startTime,
+                    endTime: this.fashiondataForm.endTime
+                }).then((res) => {
+                    this.fashiondataListLoading = false;
+                    this.fashionTotal = Number(res.data.total);
+                    this.fashiondataList = res.data.list;
+                })
+            },
+            fashionreset(){
+                this.shopPage = 1;
+                this.shopLimit = 10;
+                this.shopdataForm = {
+                    idJp: '',
+                    title: '',
+                    startTime: '',
+                    endTime: '',
+                };
+            },
+            selectFashion(item) {
+                this.checkFunStatus = item.id;
+                this.checkItem = item.title;
+                this.activiDataForm.linkValue = item.id;
+                this.activiDataForm.linkValueName = this.checkItem;
+            },
+            getImgUrl(url) {
+                if(url.includes('http')) {
+                    return url;
+                }
+                return this.$imgDomain + url;
+            },
+
 
 
 
@@ -844,5 +1311,8 @@
         -webkit-line-clamp: 2;
         overflow: hidden;
     }
-
+    .linktype-radio-group .el-radio {
+        display: inline-block;
+        margin: 5px;
+    }
 </style>

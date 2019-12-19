@@ -89,6 +89,8 @@ export const saveStoreNewsdetail = params => { return http.post(`${base}/store/n
 export const saveStoreNewsdetailOne = params => { return http.post(`${base}/store/news/save`, params).then(res => res.data); };
 //获取风格标签名称
 export const getStyleName = params => { return http.get(`${base}/look/folder/stylename`, params).then(res => res.data); };
+//广告位时尚列表
+export const fashionAdvList = params => { return http.get(`${base}/fashion/adv/fashion/list`, params).then(res => res.data); };
 
 
 
@@ -560,6 +562,8 @@ export const recommendShopStore = params => { return http.put(`${base}/shopStore
 export const verifyShopStore = params => { return http.get(`${base}/shopStore/verify/name`, params).then(res => res.data); };
 // 根据中国ID获取信息
 export const backScanShopStore = params => { return http.get(`${base}/shopStore/${params.id}`, params).then(res => res.data); };
+// 广告位指定店铺列表
+export const shopStoreAdvList = params => { return http.get(`${base}/shopStore/adv/store/list`, params).then(res => res.data); };
 //
 //地区管理--------------------------------------------------------------------------------------------------------------------
 // 查询全部一级地区
@@ -600,6 +604,8 @@ export const shopBrandPage = params => { return http.get(`${base}/shopBrand/page
 // export const pageByStore = params => { return http.get(`${base}/shopBrand/pageByStore`, params).then(res => res.data); };
 // 根据中国ID获取品牌信息
 export const backScanShopBrand = params => { return http.get(`${base}/shopBrand/${params.id}`, params).then(res => res.data); };
+// 广告位品牌列表
+export const shopBrandAdvList = params => { return http.get(`${base}/shopBrand/adv/brand/list`, params).then(res => res.data); };
 
 
 
