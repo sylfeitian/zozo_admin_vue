@@ -1,7 +1,9 @@
 <template>
   <div>
       <!-- 列表 -->
-      <list v-if="mainVisible" ref="listCompon" @showDetail="showDetail"></list>
+      <keep-alive>
+        <list v-if="mainVisible" ref="listCompon" @showDetail="showDetail"></list>
+      </keep-alive>
       <!-- 查看 -->
       <detail v-if="detailVisible" ref="detailCompon" @showList="showList"></detail>
 
