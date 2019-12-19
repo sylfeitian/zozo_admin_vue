@@ -47,7 +47,7 @@
                         <!-- <span v-if="dataForm.brands && dataForm.brands.length!=0 && dataForm.brands[0].isMainBrand==1">{{dataForm.brands[0].brandName}}</span>
                         <span v-else-if="dataForm.brands && dataForm.brands.length>1 && dataForm.brands[1].isMainBrand==1">{{dataForm.brands[1].brandName}}</span>
                         <span v-else>/</span> -->
-                        <span v-for="(item,index) in dataForm.brands" :key="index" style="margin-right: 15px;">{{item.isMainBrand == 1?item.brandName:''}}</span>
+                        <span>{{showBrand(dataForm.brands)}}</span>
                     </template>
                 </el-form-item>
                 <el-form-item label="所属店铺：" class="item">
@@ -393,10 +393,19 @@
                 this.$nextTick(() => {
                     this.$refs.sizeDataCompon.init(this.row,row2);
                 })
-            }
+            },
             // operational () {
             //     this.$emit("operational",this.dataForm.idJp)
             // },
+            showBrand(brands) {
+                let arr = [];
+                for(let val of brands) {
+                    if(val.isMainBrand == 1) {
+                        arr.push(val.brandName);
+                    } 
+                }
+                return arr.join('、');
+            },
 
         }
     }
