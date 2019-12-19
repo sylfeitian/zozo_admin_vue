@@ -535,8 +535,8 @@
         </el-table>
 
         <el-pagination
-            @size-change="pageSizeChangeHandle3"
-            @current-change="pageCurrentChangeHandle3"
+            @size-change="pageSizeChangeHandle4"
+            @current-change="pageCurrentChangeHandle4"
             :current-page="fashionPage"
             :page-sizes="[10, 20, 50, 100]"
             :page-size="fashionLimit"
@@ -1165,7 +1165,9 @@
                 shopBrandAdvList({
                     params: {
                         idJp: this.branddataForm.idJp,
-                        name: this.branddataForm.name
+                        name: this.branddataForm.name,
+                        page: this.brandPage,
+                        limit: this.brandLimit,
                     }
                 }).then((res) => {
                     this.branddataListLoading = false;
@@ -1174,9 +1176,9 @@
                 })
             },
             brandreset(){
-                this.shopPage = 1;
-                this.shopLimit = 10;
-                this.shopdataForm = {
+                this.brandPage = 1;
+                this.brandLimit = 10;
+                this.branddataForm = {
                     idJp : '',
                     name : ''
                 };
@@ -1188,10 +1190,12 @@
                 this.fashiondataForm.endTime = this.timeArr && this.timeArr[1];
                 fashionAdvList({
                     params: {
-                        diJp: this.fashiondataForm.idJp,
+                        idJp: this.fashiondataForm.idJp,
                         title: this.fashiondataForm.title,
                         startTime: this.fashiondataForm.startTime,
-                        endTime: this.fashiondataForm.endTime
+                        endTime: this.fashiondataForm.endTime,
+                        page: this.fashionPage,
+                        limit: this.fashionLimit,
                     }
                 }).then((res) => {
                     this.fashiondataListLoading = false;
@@ -1200,9 +1204,9 @@
                 })
             },
             fashionreset(){
-                this.shopPage = 1;
-                this.shopLimit = 10;
-                this.shopdataForm = {
+                this.fashionPage = 1;
+                this.fashionLimit = 10;
+                this.fashiondataForm = {
                     idJp: '',
                     title: '',
                     startTime: '',
