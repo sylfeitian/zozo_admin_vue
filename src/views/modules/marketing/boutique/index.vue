@@ -5,7 +5,7 @@
         <list v-if='showStatus'  @goodsListFun='goodsListFun'></list>
       </keep-alive>
       <!-- 商品列表页面 -->
-      <goodslist v-else @showListFun='showListFun' ref="goodsListComon" ></goodslist>
+      <goodslist v-if="!showStatus" @showListFun='showListFun' ref="goodsListComon" ></goodslist>
   </div>
 </template>
 
