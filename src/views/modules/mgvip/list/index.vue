@@ -1,7 +1,9 @@
 <template>
     <div>
         <!-- <button @click="getData">123132</button> -->
-        <list v-if="showPage==1" ref="listCompon" @controlShowPage="controlShowPage" ></list>
+        <keep-alive>
+            <list v-if="showPage==1" ref="listCompon" @controlShowPage="controlShowPage" ></list>
+        </keep-alive>
         <tabFn  v-if="showPage==2" @controlShowPage="controlShowPage" ref="tabFnCompon" :breaddata="nextBreaddata" :index="index" :showTab="true"></tabFn>
     </div>
 </template>
