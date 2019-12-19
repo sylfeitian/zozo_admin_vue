@@ -308,6 +308,10 @@
             // this.getPaymentList();
             // this.getOrderListTop();
         },
+        // activated() { // keep-alive重新激活时，是否需要刷新列表
+        //     this.getDataListFn();
+        //     this.dataForm.orderStatus = this.status == undefined ? "" : this.status;
+        // },
         components: {
             Bread,
             declareSth,
