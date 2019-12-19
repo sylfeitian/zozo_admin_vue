@@ -808,7 +808,7 @@
                         Object.assign(this.activiDataForm,res.data);
                         this.activiDataForm.position =this.activiDataForm.position+"";
                         this.activiDataForm.fileList = [{name: '文件',url: res.data.imageSrc}];
-                        if(res.data.linkType == 2&&res.data.linkValueName){
+                        if((res.data.linkType == 2 || res.data.linkType == 5 || res.data.linkType == 6 || res.data.linkType == 7)&&res.data.linkValueName){
                             this.checkItem = res.data.linkValueName;
                         }
                     }
@@ -1163,8 +1163,10 @@
             getbrandDataList() {
                 this.branddataListLoading = true;
                 shopBrandAdvList({
-                    idJp: this.branddataForm.idJp,
-                    name: this.branddataForm.name
+                    params: {
+                        idJp: this.branddataForm.idJp,
+                        name: this.branddataForm.name
+                    }
                 }).then((res) => {
                     this.branddataListLoading = false;
                     this.brandTotal = Number(res.data.total);
@@ -1185,10 +1187,12 @@
                 this.fashiondataForm.startTime = this.timeArr && this.timeArr[0];
                 this.fashiondataForm.endTime = this.timeArr && this.timeArr[1];
                 fashionAdvList({
-                    diJp: this.fashiondataForm.idJp,
-                    title: this.fashiondataForm.title,
-                    startTime: this.fashiondataForm.startTime,
-                    endTime: this.fashiondataForm.endTime
+                    params: {
+                        diJp: this.fashiondataForm.idJp,
+                        title: this.fashiondataForm.title,
+                        startTime: this.fashiondataForm.startTime,
+                        endTime: this.fashiondataForm.endTime
+                    }
                 }).then((res) => {
                     this.fashiondataListLoading = false;
                     this.fashionTotal = Number(res.data.total);
