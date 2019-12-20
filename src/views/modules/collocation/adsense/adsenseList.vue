@@ -228,6 +228,7 @@
                 :options="classList"
                 change-on-select
                 :clearable="true"
+                :show-all-levels="false"
                 :props="props"
                 v-model="classSelectedOptions"
                 @change="classHandleChangeOut">
@@ -1020,7 +1021,7 @@
                 this.goodsdataForm.categoryId = val[val.length-1];
             },
             classHandleChangeOut(val) {
-                this.activiDataForm.linkValueName = this.$refs.cascaderClass.currentLabels.join('/');
+                this.activiDataForm.linkValueName = this.$refs.cascaderClass.currentLabels[this.$refs.cascaderClass.currentLabels.length-1];
                 this.activiDataForm.linkValue = val[val.length-1];
             },
             // 联动分类
