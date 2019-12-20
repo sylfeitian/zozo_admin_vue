@@ -105,7 +105,7 @@
                 dataFormShow: {
                     idJp: "",
                     brandName: "",
-                    processFlag: ""
+                    processFlag: "all"
                 },
                 value: '',
                 formLabelWidth: '120px',
@@ -114,7 +114,7 @@
                 // uploadVisible: false,
                 check: null,
                 processFlagOptions: [
-                    { id:"",label:"全部"},
+                    { id:"all",label:"全部"},
                     { id: "0", label: "正常" },
                     { id: "1", label: "删除" }
                 ],
