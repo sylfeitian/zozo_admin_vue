@@ -83,6 +83,7 @@
                 <el-button type="primary" @click="deleteRow()">批量删除</el-button>
                 <!-- <el-button type="primary" @click="saveSort">保存排序</el-button> -->
                 <el-button type="primary" @click="addGoods()">添加商品</el-button>
+                <el-button type="primary" @click="exportGoods()">导出</el-button>
             </el-form-item>
         </el-form>
 
@@ -237,7 +238,7 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import { categoryactivitygoodsPageUrl } from '@/api/url'
-    import { categoryactivitygoodsBatch,deleteCateActgoods,categoryactivitygoodsUpdateBach,searchStoreName,searchBrandName,backScanCategorys } from '@/api/api'
+    import { categoryactivitygoodsBatch,deleteCateActgoods,categoryactivitygoodsUpdateBach,searchStoreName,searchBrandName,backScanCategorys,categoryactivitygoodsExport } from '@/api/api'
     import Bread from "@/components/bread";
     import modelEditSku from "./modules/model-edit-sku";
 
@@ -344,6 +345,22 @@
                 this.$nextTick(()=>{
                     this.$refs.modelEditSkuCompon.init(this.row);
                 })
+            },
+            // 导出
+            exportGoods() {
+                categoryactivitygoodsExport({
+                    params: {
+                        categoryId: this.dataForm.categoryId || this.categoryId,
+                        goodsName: this.dataForm.goodsName,
+                        goodsId: this.dataForm.goodsId,
+                        storeId: this.dataForm.storeId,
+                        brandId: this.dataForm.brandId,
+                        showWeb: this.dataForm.showWeb,
+                        sellState: this.dataForm.sellState
+                    }
+                }).then((res) => {
+                    this.$message.success(res.msg);
+                });
             },
              // 保存排序
             saveSort(){

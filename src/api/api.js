@@ -1035,6 +1035,8 @@ export const categoryactivitygoodsBatch = params => { return http.post(`${base}/
 export const  deleteCateActgoods= params => { return http.delete(`${base}/categoryactivitygoods`, params).then(res => res.data); };
 // 批量修改
 export const categoryactivitygoodsUpdateBach = params => { return http.put(`${base}/categoryactivitygoods/updateBach`, params).then(res => res.data); };
+// 分类商品列表导出
+export const categoryactivitygoodsExport = params => { return http.get(`${base}/categoryactivitygoods/export`, params).then(res => res.data); };
 
 
 
