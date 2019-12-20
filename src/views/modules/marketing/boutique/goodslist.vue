@@ -156,7 +156,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                prop="goodsTypeName"
+                prop="categoryActivityName"
                 align="center"
                 label="所属分类">
             </el-table-column>
@@ -328,6 +328,7 @@
                 this.dataForm.showWeb = '', // 上架状态
                 this.dataForm.sellState = '', // 可售状态
                 this.dataForm.categoryActivityId = this.categoryActivityId;
+                this.dataForm.categoryId = '',
                 this.getData();
             },
             changeCheck($event,id){
@@ -491,11 +492,13 @@
             // 品牌选择回调
             handleChange() {
                 if (this.classList.length != 0) {
-                    this.dataForm.categoryActivityId = this.classList[
+                    this.dataForm.categoryId = this.classList[
                     this.classList.length - 1
                     ];
+                    this.dataForm.categoryActivityId = '';
                 } else {
                     this.dataForm.categoryActivityId = this.categoryActivityId;
+                    this.dataForm.categoryId = '';
                 }
             },
             changeBrand(val) {
