@@ -47,6 +47,15 @@
                 align="center"
                 width="180">
             </el-table-column>
+            <el-table-column
+                prop="imageUrl"
+                label="主图"
+                align="center">
+                <template slot-scope="scope">
+                    <img v-if="getImgUrl(scope.row.imageUrl)" :src="getImgUrl(scope.row.imageUrl)" alt="主图" width="51" height="60">
+                    <span v-else> -- </span>
+                </template>
+            </el-table-column>
              <!-- <el-table-column
                 prop="sort"
                 label="排序"
@@ -63,17 +72,78 @@
                 min-width="300">
             </el-table-column>
             <el-table-column
+                prop="storeName"
+                align="center"
+                label="所属店铺">
+                <template slot-scope="scope">
+                    {{scope.row.storeName?scope.row.storeName:'--'}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                prop="brandName"
+                align="center"
+                label="品牌">
+                <template slot-scope="scope">
+                    {{scope.row.brandName?scope.row.brandName:'--'}}
+                </template>
+            </el-table-column>
+            <el-table-column
                 prop="goodsTypeName"
                 align="center"
                 label="所属分类">
             </el-table-column>
+
             <el-table-column
+                prop="showWeb"
                 align="center"
-                label="销售价格">
-                 <template slot-scope="scope">
-                   <span>￥{{scope.row.salePrice?scope.row.salePrice:'0.00'}}</span>
+                label="上架状态">
+                <template slot-scope="scope">
+                   <span>{{showWebStr(scope.row.showWeb)}}</span>
                 </template>
             </el-table-column>
+            <el-table-column
+                prop="sellState"
+                align="center"
+                label="可售状态">
+                <template slot-scope="scope">
+                   <span>{{scope.row.sellState == 1?'可售':'不可售'}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                prop="priceType"
+                align="center"
+                label="是否折扣">
+                <template slot-scope="scope">
+                   <span>{{scope.row.priceType == 'sale'?'是':'否'}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                align="center"
+                label="标准价">
+                <template slot-scope="scope">
+                   <span>￥{{scope.row.sellPrice?scope.row.sellPrice:'0.00'}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                align="center"
+                label="促销价">
+                 <template slot-scope="scope">
+                   <span>￥{{scope.row.discountPrice?scope.row.discountPrice:'--'}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                align="center"
+                label="折扣率">
+                <template slot-scope="scope">
+                   <span>{{scope.row.discountRate?`${scope.row.discountRate*100}%`:'--'}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                prop="stockQuantity"
+                align="center"
+                label="本地库存">
+            </el-table-column>
+
             <el-table-column
                 align="center"
                 label="操作">
@@ -230,6 +300,36 @@
                 }).catch(() => {
                 })
             },
+            getImgUrl(url) {
+                if(!url) {
+                    return url;
+                }
+                if(url.includes('http')) {
+                    return url;
+                }
+                return this.$imgDomain + url;
+            },
+            showWebStr(type) {
+                let str = '';
+                switch (type) {
+                    case 0:
+                        str = '待上架';
+                        break;
+                
+                    case 1:
+                        str = '已上架';
+                        break;
+                
+                    case 2:
+                        str = '已下架';
+                        break;
+                
+                    default:
+                        str = '暂无信息'
+                        break;
+                }
+                return str;
+            }
         }
     };
 </script>
