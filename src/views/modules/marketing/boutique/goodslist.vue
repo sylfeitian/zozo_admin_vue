@@ -8,10 +8,77 @@
             <el-form-item label="商品名称：">
                 <el-input v-model.trim="dataForm.goodsName" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
             </el-form-item>
+            <el-form-item label="店铺名称：">
+                <el-select
+                v-model="dataForm.storeId"
+                filterable
+                clearable
+                placeholder="请输入店铺名称"
+                :loading="loading"
+                @change="changeStore"
+                >
+                <el-option
+                    v-for="(item,index) in selectStoreOption"
+                    :key="item.index"
+                    :label="item.storeName"
+                    :value="item.id"
+                ></el-option>
+                </el-select>
+            </el-form-item>
+
             <el-form-item >
                 <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
                 <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
             </el-form-item>
+
+            <el-form-item label="分类：">
+                <el-cascader
+                :options="selectCategoryOption"
+                v-model="classList"
+                change-on-select
+                :clearable="true"
+                :props="props"
+                @change="handleChange"
+                ></el-cascader>
+            </el-form-item>
+            <el-form-item label="品牌名称：">
+                <el-select
+                v-model="dataForm.brandId"
+                filterable
+                clearable
+                placeholder="请输入品牌名称"
+                :loading="loading"
+                @change="changeBrand"
+                >
+                <el-option
+                    v-for="(item,index) in selectBrandOption"
+                    :key="item.id"
+                    :label="item.brandName"
+                    :value="item.id"
+                ></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="上架状态：">
+                <el-select v-model="dataForm.showWeb" placeholder="请选择">
+                <el-option
+                    v-for="item in showOptions"
+                    :key="item.id"
+                    :label="item.label"
+                    :value="item.id"
+                ></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="可售状态：">
+                <el-select v-model="dataForm.sellState" placeholder="请选择">
+                <el-option
+                    v-for="item in stateOptions"
+                    :key="item.id"
+                    :label="item.label"
+                    :value="item.id"
+                ></el-option>
+                </el-select>
+            </el-form-item>
+
             <el-form-item style="float:right">
                 <el-button type="primary" @click="deleteRow()">批量删除</el-button>
                 <!-- <el-button type="primary" @click="saveSort">保存排序</el-button> -->
@@ -170,7 +237,7 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import { categoryactivitygoodsPageUrl } from '@/api/url'
-    import { categoryactivitygoodsBatch,deleteCateActgoods,categoryactivitygoodsUpdateBach } from '@/api/api'
+    import { categoryactivitygoodsBatch,deleteCateActgoods,categoryactivitygoodsUpdateBach,searchStoreName,searchBrandName,backScanCategorys } from '@/api/api'
     import Bread from "@/components/bread";
     import modelEditSku from "./modules/model-edit-sku";
 
@@ -198,21 +265,51 @@
                     goodsName:'',//商品名称
                     goodsId:'',//商品货号
                     categoryId:'',//精选分类ID
+                    storeId: '', // 店铺ID
+                    brandId: '', // 品牌ID
+                    showWeb: '', // 上架状态
+                    sellState: '', // 可售状态
                 },
                 listdataForm:{
                     storeId:'',
                 },
                 row:'',
+                // 表单部分
+                loading: false,
+                selectStoreOption: [],
+                selectBrandOption: [],
+                classList: [],
+                props: {
+                    label: "name",
+                    value: "id",
+                    children: "list"
+                },
+                selectCategoryOption: [],
+                categoryName: '',
+                categoryId: '',
+
+                showOptions: [
+                    {id:"",label:"全部"},
+                    { id: "0", label: "待上架" },
+                    { id: "1", label: "已上架" },
+                    { id: "2", label: "已下架" }
+                ],
+                stateOptions: [{id:"",label:"全部"},{ id: "0", label: "不可售" }, { id: "1", label: "可售" }],
             }
         },
         created(){
+            this.backScan();
+            this.backScan1();
         },
         methods: {
             init(row){
                 console.log(row)
                 this.row = row;
                 this.dataForm.categoryId = row.id;
+                this.categoryId = row.id;
+                this.categoryName = row.title
                 this.getData();
+                this.backScan2();
             },
             getData(){
                 // this.dataForm.page =1;
@@ -225,6 +322,11 @@
             reset(){
                 this.dataForm.goodsName= "";//商品名称
                 this.dataForm.goodsId= "";//商品货号
+                this.dataForm.storeId = '', // 店铺ID
+                this.dataForm.brandId = '', // 品牌ID
+                this.dataForm.showWeb = '', // 上架状态
+                this.dataForm.sellState = '', // 可售状态
+                this.dataForm.categoryId = this.categoryId;
                 this.getData();
             },
             changeCheck($event,id){
@@ -329,7 +431,60 @@
                         break;
                 }
                 return str;
-            }
+            },
+            changeStore(val) {
+                this.$set(this.dataForm, "storeId", val);
+                this.selectStoreOption = [].concat(this.selectStoreOption);
+            },
+            // 下拉字典
+            backScan() {
+                searchStoreName().then(res => {
+                    if (res.code == 200) {
+                    this.selectStoreOption = res.data;
+                    } else {
+                    }
+                });
+            },
+            backScan1() {
+                searchBrandName().then(res => {
+                    if (res.code == 200) {
+                    this.selectBrandOption = res.data;
+                    } else {
+                    }
+                });
+            },
+            backScan2() {
+                var params = {
+                    id: this.dataForm.categoryId,
+                    categoryName: this.categoryName
+                };
+                backScanCategorys(params).then(res => {
+                    if (res.code == 200) {
+                    this.selectCategoryOption = res.data ? res.data : [];
+                    this.selectCategoryOption.forEach((item, index) => {
+                        item.list &&
+                        item.list.forEach((item2, index2) => {
+                            item2.list = "";
+                        });
+                    });
+                    } else {
+                    }
+                });
+            },
+            // 品牌选择回调
+            handleChange() {
+                if (this.classList.length != 0) {
+                    this.dataForm.categoryId = this.classList[
+                    this.classList.length - 1
+                    ];
+                } else {
+                    this.dataForm.categoryId = this.categoryId;
+                }
+            },
+            changeBrand(val) {
+                this.$set(this.dataForm, "brandId", val);
+                this.selectBrandOption = [].concat(this.selectBrandOption);
+            },
         }
     };
 </script>
