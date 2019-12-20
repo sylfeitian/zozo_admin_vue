@@ -1,7 +1,9 @@
 <template>
   <div>
       <!-- 列表 -->
-      <activitylist v-if='showStatus&&!detailStatus'  @addAditFun='addAditFun' @showDetail='showDetail'></activitylist>
+      <keep-alive>
+        <activitylist v-if='showStatus&&!detailStatus'  @addAditFun='addAditFun' @showDetail='showDetail'></activitylist>
+      </keep-alive>
       <!-- 添加商品 -->
       <addgoods v-if='!showStatus&&!detailStatus' ref="addGoodsCompon" @addGoodsActivity="addGoodsActivity" @showDetail='showDetail' :activityId="activityId"></addgoods>
       <!-- 查看 -->

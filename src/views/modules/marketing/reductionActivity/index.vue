@@ -1,9 +1,11 @@
 <template>
   <div>
       <!-- 列表 -->
-      <list v-if='showStatus'  @showDetailFun='showDetailFun'></list>
+      <keep-alive>
+        <list v-if='showStatus'  @showDetailFun='showDetailFun'></list>
+      </keep-alive>
       <!-- 查看 -->
-      <detail ref="detailCompon" v-else @showListFun='showListFun' ></detail>
+      <detail ref="detailCompon" v-if='!showStatus' @showListFun='showListFun' ></detail>
   </div>
 </template>
 
