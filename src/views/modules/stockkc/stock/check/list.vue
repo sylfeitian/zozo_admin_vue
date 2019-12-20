@@ -162,7 +162,7 @@
             <el-table-column prop="brandName" label="品牌" align="center"></el-table-column>
             <el-table-column prop="price" label="售价" width="100" align="center">
                 <template slot-scope="scope">
-                    <span  v-if="scope.row.priceType=='sale'">￥{{scope.row.retailPrice?scope.row.retailPrice:"0.00"}}</span>
+                    <span  v-if="scope.row.priceType=='sale'">￥{{scope.row.discountPrice?scope.row.discountPrice:"0.00"}}</span>
                     <span  v-else-if="scope.row.priceType=='proper'">￥{{scope.row.sellPrice?scope.row.sellPrice:"0.00"}}</span>
                 </template>
             </el-table-column>
