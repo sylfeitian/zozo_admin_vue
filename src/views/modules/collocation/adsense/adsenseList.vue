@@ -76,6 +76,10 @@
                 <span v-if="scope.row.linkType == 1">站内链接</span>
                 <span v-if="scope.row.linkType == 2">指定商品</span>
                 <span v-if="scope.row.linkType == 3">自定义链接</span>
+                <span v-if="scope.row.linkType == 4">指定分类</span>
+                <span v-if="scope.row.linkType == 5">指定店铺</span>
+                <span v-if="scope.row.linkType == 6">指定品牌</span>
+                <span v-if="scope.row.linkType == 7">指定时尚杂志</span>
             </template>
 		</el-table-column>
         <el-table-column
@@ -1182,6 +1186,7 @@
                     idJp : '',
                     name : ''
                 };
+                this.getbrandDataList();
             },
             // 时尚
             getfashionDataList() {
@@ -1212,6 +1217,7 @@
                     startTime: '',
                     endTime: '',
                 };
+                this.getfashionDataList();
             },
             selectFashion(item) {
                 this.checkFunStatus = item.id;
