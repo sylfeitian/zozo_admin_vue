@@ -133,7 +133,7 @@
 			        deleteIsBatchKey: 'id'
 			    },
                 dataForm: {
-                    systemType: "1",   //端口
+                    systemType: "",   //端口
                     versionNum:"",   //版本号
                     versionDescription:"", //版本描述
                     forceUpdateFlag:'0',  //是否强制更新
@@ -233,6 +233,7 @@
 	                        type: 'success',
 	                        duration: 1500
                         })
+                        this.dataForm.systemType = "";
                         this.getDataList()
                     }else{
                         this.$message({
@@ -300,6 +301,7 @@
 			                        duration: 1500
 			                    })
                                    this.visiblecopy = false;
+                                   this.dataForm.systemType = "";
                                    this.getDataList();
 		                    } else{
 		                    	this.$message({
