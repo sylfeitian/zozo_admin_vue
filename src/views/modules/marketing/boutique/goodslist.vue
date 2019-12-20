@@ -265,7 +265,7 @@
                 dataForm: {
                     goodsName:'',//商品名称
                     goodsId:'',//商品货号
-                    categoryId:'',//精选分类ID
+                    categoryActivityId:'',//精选分类ID
                     storeId: '', // 店铺ID
                     brandId: '', // 品牌ID
                     showWeb: '', // 上架状态
@@ -287,7 +287,7 @@
                 },
                 selectCategoryOption: [],
                 categoryName: '',
-                categoryId: '',
+                categoryActivityId: '',
 
                 showOptions: [
                     {id:"",label:"全部"},
@@ -306,8 +306,8 @@
             init(row){
                 console.log(row)
                 this.row = row;
-                this.dataForm.categoryId = row.id;
-                this.categoryId = row.id;
+                this.dataForm.categoryActivityId = row.id;
+                this.categoryActivityId = row.id;
                 this.categoryName = row.title
                 this.getData();
                 this.backScan2();
@@ -327,7 +327,7 @@
                 this.dataForm.brandId = '', // 品牌ID
                 this.dataForm.showWeb = '', // 上架状态
                 this.dataForm.sellState = '', // 可售状态
-                this.dataForm.categoryId = this.categoryId;
+                this.dataForm.categoryActivityId = this.categoryActivityId;
                 this.getData();
             },
             changeCheck($event,id){
@@ -350,7 +350,7 @@
             exportGoods() {
                 categoryactivitygoodsExport({
                     params: {
-                        categoryId: this.dataForm.categoryId || this.categoryId,
+                        categoryActivityId: this.dataForm.categoryActivityId || this.categoryActivityId,
                         goodsName: this.dataForm.goodsName,
                         goodsId: this.dataForm.goodsId,
                         storeId: this.dataForm.storeId,
@@ -472,7 +472,7 @@
             },
             backScan2() {
                 var params = {
-                    id: this.dataForm.categoryId,
+                    id: this.dataForm.categoryActivityId,
                     categoryName: this.categoryName
                 };
                 backScanCategorys(params).then(res => {
@@ -491,11 +491,11 @@
             // 品牌选择回调
             handleChange() {
                 if (this.classList.length != 0) {
-                    this.dataForm.categoryId = this.classList[
+                    this.dataForm.categoryActivityId = this.classList[
                     this.classList.length - 1
                     ];
                 } else {
-                    this.dataForm.categoryId = this.categoryId;
+                    this.dataForm.categoryActivityId = this.categoryActivityId;
                 }
             },
             changeBrand(val) {
