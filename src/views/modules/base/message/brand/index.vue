@@ -100,7 +100,7 @@
                 },
                 breaddata: [ "商品管理", "品牌"],
                 dataForm:{
-
+                    processFlag: "all"
                 },
                 dataFormShow: {
                     idJp: "",
@@ -174,10 +174,10 @@
             reset() {
                 this.dataFormShow.idJp = "";
                 this.dataFormShow.brandName = "";
-                this.dataFormShow.processFlag = "";
+                this.dataFormShow.processFlag = "all";
                 this.dataForm.idJp = "";
                 this.dataForm.brandName = "";
-                this.dataForm.processFlag = "";
+                this.dataForm.processFlag = "all";
                 this.getDataList();
             },
             // 新建和编辑
