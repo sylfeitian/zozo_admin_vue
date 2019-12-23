@@ -85,6 +85,7 @@
             type="number"
             placeholder="最低价格"
             onkeypress="return( /[\d]/.test(String.fromCharCode(event.keyCode) ) )"
+            @blur="bottomCheck"
           />
         </el-form-item>——
         <el-form-item>
@@ -93,6 +94,7 @@
             type="number"
             placeholder="最高价格"
             onkeypress="return( /[\d]/.test(String.fromCharCode(event.keyCode) ) )"
+            @blur="topCheck"
           />
         </el-form-item>
       </el-form-item>
@@ -353,32 +355,32 @@
                     this.dataFormShow.bottomPrice = 0;
                 }
 
-         if (this.dataFormShow.topPrice == "") {
-        this.dataFormShow.topPrice = 99999;
-      } else if (this.dataFormShow.topPrice < this.dataFormShow.bottomPrice) {
-        this.$message("最低价格不得大于最高价格");
-        this.dataFormShow.topPrice = 99999;
-        this.top = 99999;
-      }
-    },
-    top(val) {
-      console.log(val, val == "e");
-      if (val !== "") {
-        this.dataFormShow.topPrice = val;
-      } else if (val == "e") {
-        val = "";
-      } else {
-        this.dataFormShow.topPrice = 99999;
-      }
-      this.dataFormShow.topPrice = val;
-      if (this.dataFormShow.bottomPrice == "") {
-        this.dataFormShow.bottomPrice = 0;
-      } else if (this.dataFormShow.topPrice < this.dataFormShow.bottomPrice) {
-        this.$message("最高价格不得于最低价格");
-        this.dataFormShow.bottomPrice = 0;
-        this.bottom = 0;
-      }
-    }
+                // if (this.dataFormShow.topPrice == "") {
+                //     this.dataFormShow.topPrice = 99999;
+                // } else if (this.dataFormShow.topPrice < this.dataFormShow.bottomPrice) {
+                //     this.$message("最低价格不低大于最高价格");
+                //     this.dataFormShow.topPrice = 99999;
+                //     this.top = 99999;
+                // }
+            },
+            top(val) {
+                console.log(val, val == "e");
+                if (val !== "") {
+                    this.dataFormShow.topPrice = val;
+                } else if (val == "e") {
+                    val = "";
+                } else {
+                    this.dataFormShow.topPrice = 99999;
+                }
+                this.dataFormShow.topPrice = val;
+                // if (this.dataFormShow.bottomPrice == "") {
+                //     this.dataFormShow.bottomPrice = 0;
+                // } else if (this.dataFormShow.topPrice < this.dataFormShow.bottomPrice) {
+                //     this.$message("最高价格不得于最低价格");
+                //     this.dataFormShow.bottomPrice = 0;
+                //     this.bottom = 0;
+                // }
+            }
 
         },
         created () {
@@ -509,6 +511,24 @@
                         type: "warning",
                         message: res.msg
                     });
+                }
+            },
+            bottomCheck() {
+                if (this.dataFormShow.topPrice == "") {
+                    this.dataFormShow.topPrice = 99999;
+                } else if (this.dataFormShow.topPrice < this.dataFormShow.bottomPrice) {
+                    this.$message("最低价格不得大于最高价格");
+                    this.dataFormShow.topPrice = 99999;
+                    this.top = 99999;
+                }
+            },
+            topCheck() {
+                if (this.dataFormShow.bottomPrice == "") {
+                    this.dataFormShow.bottomPrice = 0;
+                } else if (this.dataFormShow.topPrice < this.dataFormShow.bottomPrice) {
+                    this.$message("最高价格不得于最低价格");
+                    this.dataFormShow.bottomPrice = 0;
+                    this.bottom = 0;
                 }
             }
         },
