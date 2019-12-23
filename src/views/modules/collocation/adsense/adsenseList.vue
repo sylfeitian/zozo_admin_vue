@@ -815,6 +815,8 @@
                         this.activiDataForm.fileList = [{name: '文件',url: res.data.imageSrc}];
                         if((res.data.linkType == 2 || res.data.linkType == 5 || res.data.linkType == 6 || res.data.linkType == 7)&&res.data.linkValueName){
                             this.checkItem = res.data.linkValueName;
+                        } else if(res.data.linkType == 4) {
+                            this.classSelectedOptions.push(res.data.linkValue);
                         }
                     }
                 })
