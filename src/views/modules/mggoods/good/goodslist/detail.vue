@@ -351,7 +351,7 @@
             operational () {
                 this.setOperationalVisible(true);
                 this.$nextTick(() => {
-                    this.$refs.operationallogCompon.init(this.row)
+                    this.$refs.operationallogCompon.init(this.dataForm)
                 })
                 console.log(this.row)
             },
