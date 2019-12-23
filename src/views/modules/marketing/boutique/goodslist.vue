@@ -156,7 +156,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                prop="categoryActivityName"
+                prop="goodsTypeName"
                 align="center"
                 label="所属分类">
             </el-table-column>
