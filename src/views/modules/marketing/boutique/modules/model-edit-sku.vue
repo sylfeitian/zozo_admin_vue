@@ -73,8 +73,8 @@
             </el-form-item>
             
             <el-form-item >
-                <el-button  class="btn" type="primary" @click="handleCheckAllChange(multipleSelection)">选择全部</el-button>
-                <el-button class="btn"  type="primary">导入</el-button>
+                <el-button  class="btn" type="primary" @click="handleCheckAllChange(multipleSelection)" style="margin-right: 10px;">选择全部</el-button>
+                <importAndExport :btType="'primary'" :importAndExportOptions="importAndExportOptions" :dataForm="{}" @getDataList="getDataList"></importAndExport>
             </el-form-item>
             <el-form-item label="促销价：">
                 <div style="display:flex">
@@ -323,8 +323,10 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import {editLimitActivityGoods,getdatacategory,searchStoreName,searchBrandName} from "@/api/api.js"
+    import { categoryactivitygoodsImport } from "@/api/io.js"
      import {categoryactivitygoodsBatch} from "@/api/api.js" 
      import {categoryactivityGoodsPagePopUrl} from "@/api/url.js"
+     import importAndExport from "@/components/import-and-export"
     export default {
         name: "model-add-edit-data",
           mixins: [mixinViewModule],
@@ -399,11 +401,18 @@
                     { id: "0", label: "否" },
                     { id: "1", label: "是" },
                 ],
+                importAndExportOptions:{
+                    importUrl:categoryactivitygoodsImport,//导入接口
+                    importWord:"导入",
+                },
             }
             
         },
         created(){
         	
+        },
+        components: {
+            importAndExport
         },
         watch: {
             'discountPriceStart': function(val) {
