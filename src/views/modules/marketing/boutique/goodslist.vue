@@ -31,7 +31,7 @@
                 <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
             </el-form-item>
 
-            <el-form-item label="分类：">
+            <el-form-item label="选择分类：">
                 <el-cascader
                 :options="selectCategoryOption"
                 v-model="classList"
