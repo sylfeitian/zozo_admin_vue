@@ -72,7 +72,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item>
-                    <el-button  class="btn" type="primary" @click="getDataList">搜索</el-button>
+                    <el-button  class="btn" type="primary" @click="getDataList(false)">搜索</el-button>
                     <el-button  class="btn" type="primary" plain @click="reset()" >重置</el-button>
                 </el-form-item>
             </el-form>
