@@ -671,15 +671,15 @@
             getGenders(gen) {
                 let str = '';
                 switch (gen) {
-                    case 0:
+                    case '0':
                         str = '男';
                         break;
                 
-                    case 1:
+                    case '1':
                         str = '女';
                         break;
                 
-                    case 2:
+                    case '2':
                         str = '儿童';
                         break;
                 
