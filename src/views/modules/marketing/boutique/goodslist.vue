@@ -26,11 +26,6 @@
                 </el-select>
             </el-form-item>
 
-            <el-form-item >
-                <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
-                <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
-            </el-form-item>
-
             <el-form-item label="选择分类：">
                 <el-cascader
                 :options="selectCategoryOption"
@@ -79,9 +74,16 @@
                 </el-select>
             </el-form-item>
 
-            <el-form-item style="float:right">
+            <!-- <el-form-item style="float:right">
                 <el-button type="primary" @click="deleteRow()">批量删除</el-button>
-                <!-- <el-button type="primary" @click="saveSort">保存排序</el-button> -->
+                <el-button type="primary" @click="saveSort">保存排序</el-button>
+                <el-button type="primary" @click="addGoods()">添加商品</el-button>
+                <el-button type="primary" @click="exportGoods()">导出</el-button>
+            </el-form-item> -->
+            <el-form-item >
+                <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
+                <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
+                <el-button type="primary" @click="deleteRow()">批量删除</el-button>
                 <el-button type="primary" @click="addGoods()">添加商品</el-button>
                 <el-button type="primary" @click="exportGoods()">导出</el-button>
             </el-form-item>

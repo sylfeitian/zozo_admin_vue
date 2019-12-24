@@ -30,10 +30,10 @@
                 ></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item >
+            <!-- <el-form-item >
                 <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>
                 <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="品牌名称：">
                 <el-select
                 v-model="dataForm.brandId"
@@ -72,10 +72,6 @@
                 </el-select>
             </el-form-item>
             
-            <el-form-item >
-                <el-button  class="btn" type="primary" @click="handleCheckAllChange(multipleSelection)" style="margin-right: 10px;">选择全部</el-button>
-                <importAndExport :btType="'primary'" :importAndExportOptions="importAndExportOptions" :dataForm="{}" @getDataList="getDataList"></importAndExport>
-            </el-form-item>
             <el-form-item label="促销价：">
                 <div style="display:flex">
                 <el-input 
@@ -148,6 +144,12 @@
                     :value="item.id"
                 ></el-option>
                 </el-select>
+            </el-form-item>
+            <el-form-item >
+                <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>
+                <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
+                <el-button  class="btn" type="primary" @click="handleCheckAllChange(multipleSelection)" style="margin-right: 10px;">选择全部</el-button>
+                <importAndExport :btType="'primary'" :importAndExportOptions="importAndExportOptions" :dataForm="{}" @getDataList="getDataList"></importAndExport>
             </el-form-item>
         </el-form>
         
