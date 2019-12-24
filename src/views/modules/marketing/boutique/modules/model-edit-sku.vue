@@ -108,12 +108,12 @@
                 <div style="display:flex">
                 <el-input v-model.trim="stockQuantityStart" 
                 type="number" placeholder="0" class="custom-range-input" 
-                @blur="bottomCheck('stockQuantityStart','stockQuantityEnd',true)"
+                @blur="bottomCheck('stockQuantityStart','stockQuantityeEnd',true)"
                 ></el-input>
                 <span>&nbsp 至 &nbsp</span>
-                <el-input v-model.trim="stockQuantityEnd" 
+                <el-input v-model.trim="stockQuantityeEnd" 
                 type="number" placeholder="0" class="custom-range-input"
-                @blur="topCheck('stockQuantityStart','stockQuantityEnd',true)"
+                @blur="topCheck('stockQuantityStart','stockQuantityeEnd',true)"
                 ></el-input>
 
                 </div>
@@ -366,7 +366,7 @@
                     discountRateStart: '',
                     discountRateEnd: '',
                     stockQuantityStart: '',
-                    stockQuantityEnd: '',
+                    stockQuantityeEnd: '',
 
                 },
                 discountPriceStart: '',
@@ -374,7 +374,7 @@
                 discountRateStart: '',
                 discountRateEnd: '',
                 stockQuantityStart: '',
-                stockQuantityEnd: '',
+                stockQuantityeEnd: '',
                 moneyNum:99.9,
                 kucun:'',
                 row:'',
@@ -456,17 +456,17 @@
                     this.stockQuantityStart = 0;
                 }
             },
-            'stockQuantityEnd': function(val) {
+            'stockQuantityeEnd': function(val) {
                 if(val == '') {
-                    this.dataForm.stockQuantityEnd = '';
-                    this.stockQuantityEnd = '';
+                    this.dataForm.stockQuantityeEnd = '';
+                    this.stockQuantityeEnd = '';
                 } else if(val >= 0) {
-                    this.dataForm.stockQuantityEnd = val;
+                    this.dataForm.stockQuantityeEnd = val;
                 } else if(val == 'e') {
-                    this.stockQuantityEnd = '';
+                    this.stockQuantityeEnd = '';
                 } else {
-                    this.dataForm.stockQuantityEnd = 0;
-                    this.stockQuantityEnd = 0;
+                    this.dataForm.stockQuantityeEnd = 0;
+                    this.stockQuantityeEnd = 0;
                 }
             },
             'discountRateStart': function(val) {
@@ -597,13 +597,13 @@
                 this.dataForm.discountRateStart = ""
                 this.dataForm.discountRateEnd = ""
                 this.dataForm.stockQuantityStart = ""
-                this.dataForm.stockQuantityEnd = ""
+                this.dataForm.stockQuantityeEnd = ""
                 this.discountPriceStart = ""
                 this.discountPriceEnd = ""
                 this.discountRateStart = ""
                 this.discountRateEnd = ""
                 this.stockQuantityStart = ""
-                this.stockQuantityEnd = ""
+                this.stockQuantityeEnd = ""
                 this.classList = []
                 this.getData();
             },
