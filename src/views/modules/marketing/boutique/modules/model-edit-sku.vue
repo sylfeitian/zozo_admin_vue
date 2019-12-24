@@ -495,6 +495,9 @@
                     this.discountRateEnd = 1.0;
                 }
             },
+            // 'dataForm.categoryId': function(val) {
+            //     this.importAndExportOptions.importUrl = categoryactivitygoodsImport + `?id=${val}`
+            //  }
 
         },
         methods: {
@@ -507,6 +510,7 @@
                 this.$nextTick(() => {
                     this.row = row;
                     this.dataForm.categoryActivityId = row.id
+                    this.importAndExportOptions.importUrl = categoryactivitygoodsImport + `?id=${row.id}`
                     this.title = "修改";
                     this.getData();
                    
