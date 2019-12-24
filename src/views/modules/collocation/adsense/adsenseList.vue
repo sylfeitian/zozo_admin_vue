@@ -816,7 +816,9 @@
                         if((res.data.linkType == 2 || res.data.linkType == 5 || res.data.linkType == 6 || res.data.linkType == 7)&&res.data.linkValueName){
                             this.checkItem = res.data.linkValueName;
                         } else if(res.data.linkType == 4) {
-                            this.classSelectedOptions.push(res.data.linkValue);
+                            let lvArr = res.data.linkValue.split(',');
+                            this.classSelectedOptions.length = 0;
+                            lvArr.map(val => this.classSelectedOptions.push(val));
                         }
                     }
                 })
@@ -1024,7 +1026,7 @@
             },
             classHandleChangeOut(val) {
                 this.activiDataForm.linkValueName = this.$refs.cascaderClass.currentLabels[this.$refs.cascaderClass.currentLabels.length-1];
-                this.activiDataForm.linkValue = val[val.length-1];
+                this.activiDataForm.linkValue = val.join(',');
             },
             // 联动分类
             getClassList(){
