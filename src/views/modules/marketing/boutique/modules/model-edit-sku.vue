@@ -594,6 +594,12 @@
                 this.dataForm.discountRateEnd = ""
                 this.dataForm.stockQuantityStart = ""
                 this.dataForm.stockQuantityEnd = ""
+                this.discountPriceStart = ""
+                this.discountPriceEnd = ""
+                this.discountRateStart = ""
+                this.discountRateEnd = ""
+                this.stockQuantityStart = ""
+                this.stockQuantityEnd = ""
                 this.classList = []
                 this.getData();
             },
@@ -741,5 +747,10 @@
     }
     .custom-range-input {
         width: 70px!important;
+    }
+</style>
+<style>
+    .el-tooltip__popper {
+        width: 80%!important;
     }
 </style>
