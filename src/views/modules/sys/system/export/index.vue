@@ -1,6 +1,7 @@
 <template>
   <div>
-    <Bread :breaddata="breaddata"></Bread>
+    <Bread :breaddata="breaddata" class="bread"></Bread>
+		<el-button class="relaod-button" type="primary" @click="getData">刷新</el-button>
     <el-table
 	  :data="dataList"
       v-loading="dataListLoading"
@@ -146,5 +147,11 @@ export default {
 	-webkit-line-clamp: 2;
 	overflow: hidden;
 }
-
+.relaod-button {
+	float: right;
+	margin-bottom: 5px;
+}
+.bread {
+	display: inline-block;
+}
 </style>
