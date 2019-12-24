@@ -347,12 +347,13 @@
                 }
             },
              bottom(val) {
-                if (val !== "") {
+                if (val !== "" && val >= 0) {
                     this.dataFormShow.bottomPrice = val;
                 } else if (val == "e") {
                     val = "";
                 } else {
                     this.dataFormShow.bottomPrice = 0;
+                    this.bottom = 0;
                 }
 
                 // if (this.dataFormShow.topPrice == "") {
@@ -365,14 +366,15 @@
             },
             top(val) {
                 console.log(val, val == "e");
-                if (val !== "") {
+                if (val !== "" && val >= 0) {
                     this.dataFormShow.topPrice = val;
                 } else if (val == "e") {
                     val = "";
                 } else {
                     this.dataFormShow.topPrice = 99999;
+                    this.top = 99999;
                 }
-                this.dataFormShow.topPrice = val;
+                // this.dataFormShow.topPrice = val;
                 // if (this.dataFormShow.bottomPrice == "") {
                 //     this.dataFormShow.bottomPrice = 0;
                 // } else if (this.dataFormShow.topPrice < this.dataFormShow.bottomPrice) {
