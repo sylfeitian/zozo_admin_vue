@@ -88,17 +88,17 @@
 
                 </div>
             </el-form-item>
-            <el-form-item label="折扣率：">
+            <el-form-item label="折扣率(%)：">
                 <div style="display:flex">
                 <el-input 
                 v-model.trim="discountRateStart" 
-                type="number" placeholder="0.0" class="custom-range-input" 
+                type="number" placeholder="0.00" class="custom-range-input" 
                 @blur="bottomCheck('discountRateStart','discountRateEnd',false)"
                 ></el-input>
                 <span>&nbsp 至 &nbsp</span>
                 <el-input 
                 v-model.trim="discountRateEnd" 
-                type="number" placeholder="1.0" class="custom-range-input"
+                type="number" placeholder="100.00" class="custom-range-input"
                 @blur="topCheck('discountRateStart','discountRateEnd',false)"
                 ></el-input>
 
@@ -240,7 +240,7 @@
                 align="center"
                 label="折扣率">
                 <template slot-scope="scope">
-                   <span>{{scope.row.discountRate?`${scope.row.discountRate*100}%`:'--'}}</span>
+                   <span>{{scope.row.discountRate?`${Number.parseInt(scope.row.discountRate).toFixed(2)*100}%`:'--'}}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -469,30 +469,36 @@
                     this.stockQuantityeEnd = 0;
                 }
             },
-            'discountRateStart': function(val) {
-                if(val == '') {
+            'discountRateStart': function(val,oldVal) {
+                if(val == "" || val == "e") {
                     this.dataForm.discountRateStart = '';
                     this.discountRateStart = '';
-                } else if(val >= 0&&val<=1) {
-                    this.dataForm.discountRateStart = val;
-                } else if(val == 'e') {
-                    this.discountRateStart = '';
                 } else {
-                    this.dataForm.discountRateStart = 0.0
-                    this.discountRateStart = 0.0;
+                    let regRate = /^(?:(?!0\d)\d{1,2}(?:\.\d{1,2})?|100(?:\.0{1,2})?)$/;
+                    if(regRate.test(val)) {
+                        let intVal = val;
+                        this.dataForm.discountRateStart = Number.parseInt(intVal*100)/10000;
+                    } else {
+                        this.discountRateStart = oldVal;
+                        oldVal = Number.parseInt(oldVal*100);
+                        this.dataForm.discountRateStart = oldVal/10000;
+                    }
                 }
             },
-            'discountRateEnd': function(val) {
-                if(val == '') {
+            'discountRateEnd': function(val,oldVal) {
+                if(val == "" || val == "e") {
                     this.dataForm.discountRateEnd = '';
                     this.discountRateEnd = '';
-                } else if(val >= 0&&val<=1) {
-                    this.dataForm.discountRateEnd = val;
-                } else if(val == 'e') {
-                    this.discountRateEnd = '';
                 } else {
-                    this.dataForm.discountRateEnd = 1.0
-                    this.discountRateEnd = 1.0;
+                    let regRate = /^(?:(?!0\d)\d{1,2}(?:\.\d{1,2})?|100(?:\.0{1,2})?)$/;
+                    if(regRate.test(val)) {
+                        let intVal = val;
+                        this.dataForm.discountRateEnd = Number.parseInt(intVal*100)/10000;
+                    } else {
+                        this.discountRateEnd = oldVal;
+                        oldVal = Number.parseInt(oldVal*100);
+                        this.dataForm.discountRateEnd = oldVal/10000;
+                    }
                 }
             },
             // 'dataForm.categoryId': function(val) {
@@ -734,8 +740,8 @@
                     return ;
                 } else if (this.dataForm[startKey] > this.dataForm[endKey]) {
                     this.$message("最高不低于最低");
-                    this.dataForm[endKey] = isInt? Number.parseInt(this.dataForm[startKey]) + 1 : Number.parseFloat(this.dataForm[startKey]) + 1.0;
-                    this[endKey] = isInt? Number.parseInt(this.dataForm[startKey]) + 1 : Number.parseFloat(this.dataForm[startKey]) + 0.1;
+                    this.dataForm[endKey] = isInt? Number.parseInt(this.dataForm[startKey]) + 1 : Number.parseFloat(this.dataForm[startKey]) + 0.001;
+                    this[endKey] = isInt? Number.parseInt(this[startKey]) + 1 : Number.parseFloat(this[startKey]) + 0.1;
                 }
             }
         }
