@@ -8,10 +8,10 @@
         width="80%">
         <el-form :inline="true" :model="dataForm"  ref="addForm">
             <el-form-item label="商品货号：">
-                <el-input v-model.trim="dataForm.goodsId" placeholder="请输入商品名称" clearable maxlength="300"></el-input>
+                <el-input v-model.trim="dataForm.goodsId" placeholder="请输入商品货号" clearable maxlength="300"></el-input>
             </el-form-item>
             <el-form-item label="商品名称：">
-                <el-input v-model.trim="dataForm.goodsName"  placeholder="请输入商品货号" clearable></el-input>
+                <el-input v-model.trim="dataForm.goodsName"  placeholder="请输入商品名称" clearable></el-input>
             </el-form-item>
             <el-form-item label="店铺名称：">
                 <el-select
