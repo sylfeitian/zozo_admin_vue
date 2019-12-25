@@ -349,7 +349,7 @@
              bottom(val) {
                 if (val !== "" && val >= 0) {
                     this.dataFormShow.bottomPrice = val;
-                } else if (val == "e") {
+                } else if (val == "e" || val == "") {
                     val = "";
                 } else {
                     this.dataFormShow.bottomPrice = 0;
@@ -368,7 +368,7 @@
                 console.log(val, val == "e");
                 if (val !== "" && val >= 0) {
                     this.dataFormShow.topPrice = val;
-                } else if (val == "e") {
+                } else if (val == "e" || val == "") {
                     val = "";
                 } else {
                     this.dataFormShow.topPrice = 99999;
