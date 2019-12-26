@@ -51,10 +51,10 @@
 	    		</div>
 	    	</div>
 	    	<div class="artitem">  
-	    		<div class="artitems" @click="actordercheaplist">
+	    		<div class="artitems" @click="actordercheaplist(1)">
 	    			待付款订单<span>（<em>{{ data && data.toPayOrdersNum || 0}}</em>）</span>
 	    		</div>
-	    		<div class="artitems" @click="actordercheaplist">
+	    		<div class="artitems" @click="actordercheaplist(2)">
 	    			待发货订单<span>（<em>{{ data && data.toSendOrdersNum || 0  }}</em>）</span>
 	    		</div>
 	    	</div>
@@ -153,10 +153,16 @@
         methods: {
         	//待处理事务跳转
         	actorder(){
-        		 this.$router.push('myorder-order-wait');  
+				this.$router.push('myorder-order-wait',);  
         	}, 
-        	actordercheaplist(){
-        		 this.$router.push('myorder-order-cheaplist');  
+        	actordercheaplist(state){
+				this.$router.push({
+					path:'myorder-order-cheaplist',
+					query:{
+						state:state, 
+					}
+				})
+
         	}, 
         	actrecordinformation(){ 
         		 this.$router.push('mggoods-good-recordinformation');  
