@@ -240,7 +240,7 @@
                 align="center"
                 label="折扣率">
                 <template slot-scope="scope">
-                   <span>{{scope.row.discountRate?`${Number.parseInt(scope.row.discountRate).toFixed(2)*100}%`:'--'}}</span>
+                   <span>{{scope.row.discountRate?`${Number.parseFloat(scope.row.discountRate).toFixed(2)*100}%`:'--'}}</span>
                 </template>
             </el-table-column>
             <el-table-column

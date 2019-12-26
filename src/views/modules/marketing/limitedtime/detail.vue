@@ -72,16 +72,16 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item>
-                    <el-button  class="btn" type="primary" @click="getDataList(false)">搜索</el-button>
+                    <el-button  class="btn" type="primary" @click="getData(false)">搜索</el-button>
                     <el-button  class="btn" type="primary" plain @click="reset()" >重置</el-button>
+                    <importAndExport :btType="'primary'" :downType="2" :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList" style="margin-left:20px;"></importAndExport>
                 </el-form-item>
             </el-form>
-            <el-form>
-            <el-form-item>
-                    <!-- <el-button @click="" class="btn" type="primary">导出</el-button> -->
+            <!-- <el-form>
+                <el-form-item>
                     <importAndExport :btType="'primary'" :downType="2" :importAndExportOptions="importAndExportOptions" :dataForm="dataForm"  @getDataList="getDataList"></importAndExport>
                 </el-form-item>
-            </el-form>
+            </el-form> -->
             <el-table
                     v-loading="dataListLoading"
                     :data="dataList"
@@ -178,7 +178,7 @@
                     exportWord:"导出",
                 },
                 mixinViewModuleOptions: {
-                    activatedIsNeed: true,
+                    activatedIsNeed: false,
                     getDataListURL: getseckillJpGoods,
                     getDataListIsPage: true,
                     deleteURL: "",
@@ -285,6 +285,10 @@
                 this.dataForm.seckillId = row.id;
                 this.getDataList()
             },
+            getData () {
+                this.page =1;
+                this.getDataList();
+            },
             //下拉改变时触发
             handleChange() {
                 if (this.classList.length != 0) {
@@ -351,7 +355,7 @@
                 this.dataForm.sellState = ""; //是否可售
                 this.dataForm.showWeb = ""; //上下架状态:0：待上架，1：已上架，2：下架 ,
                 this.classList = []; //分类名称
-                this.getDataList();
+                this.getData();
             },
             changePage(){
                 this.$emit("showList");

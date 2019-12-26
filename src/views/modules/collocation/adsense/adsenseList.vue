@@ -687,6 +687,7 @@
                     {id:'9',name:'时尚纪实'},
                     {id:'10',name:'店铺新闻'},
                     {id:'11',name:'搭配集合'},
+                    {id:'12',name:'限时折扣'},
                 ],
                 breaddata: ["配置管理", "广告位配置"],
                 updateloading: false
