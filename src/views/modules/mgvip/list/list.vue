@@ -10,6 +10,9 @@
       <el-form-item label="会员账号/ID：">
         <el-input v-model.trim="dataForm.memeberNameOrId" placeholder="请输入会员账号/ID" clearable maxlength="30" ></el-input>
       </el-form-item>
+      <el-form-item label="系统ID：">
+        <el-input v-model.trim="dataForm.id" placeholder="请输入系统ID" clearable maxlength="30" ></el-input>
+      </el-form-item>
       <el-form-item label="消费金额：">
         <div style="display:flex">
           <el-input v-model.trim="dataForm.minConsumeAmount" placeholder="" @blur="compare"></el-input>
@@ -47,6 +50,7 @@
       <el-table-column type="index" prop="$index" label="序号" align="center" width="70">
         <template slot-scope="scope">{{scope.$index+1+(parseInt(page)-1)* parseInt(limit) }}</template>
       </el-table-column>
+      <el-table-column prop="id" label="系统ID" align="center" width="100"></el-table-column>
       <el-table-column prop="memberCode" label="会员ID" align="center" width="170"></el-table-column>
       <el-table-column prop="memberName" label="会员账号" align="center"></el-table-column>
       <el-table-column prop="nickName" align="center" label="用户昵称" width="140"></el-table-column>
@@ -312,6 +316,7 @@
       },
       reset(){
         this.dataForm.memeberNameOrId = "";
+        this.dataForm.id = "";
         this.dataForm.minConsumeAmount = "";
         this.dataForm.maxConsumeAmount = "";
         this.dataForm.memberState = "";

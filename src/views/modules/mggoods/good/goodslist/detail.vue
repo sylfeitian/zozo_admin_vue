@@ -44,9 +44,10 @@
                 </el-form-item>
                 <el-form-item label="副品牌：" class="item">
                     <template>
-                        <span v-if="dataForm.brands && dataForm.brands.length!=0 && dataForm.brands[0].isMainBrand==1">{{dataForm.brands[0].brandName}}</span>
+                        <!-- <span v-if="dataForm.brands && dataForm.brands.length!=0 && dataForm.brands[0].isMainBrand==1">{{dataForm.brands[0].brandName}}</span>
                         <span v-else-if="dataForm.brands && dataForm.brands.length>1 && dataForm.brands[1].isMainBrand==1">{{dataForm.brands[1].brandName}}</span>
-                        <span v-else>/</span>
+                        <span v-else>/</span> -->
+                        <span>{{showBrand(dataForm.brands)}}</span>
                     </template>
                 </el-form-item>
                 <el-form-item label="所属店铺：" class="item">
@@ -350,7 +351,7 @@
             operational () {
                 this.setOperationalVisible(true);
                 this.$nextTick(() => {
-                    this.$refs.operationallogCompon.init(this.row)
+                    this.$refs.operationallogCompon.init(this.dataForm)
                 })
                 console.log(this.row)
             },
@@ -392,10 +393,19 @@
                 this.$nextTick(() => {
                     this.$refs.sizeDataCompon.init(this.row,row2);
                 })
-            }
+            },
             // operational () {
             //     this.$emit("operational",this.dataForm.idJp)
             // },
+            showBrand(brands) {
+                let arr = [];
+                for(let val of brands) {
+                    if(val.isMainBrand == 1) {
+                        arr.push(val.brandName);
+                    } 
+                }
+                return arr.join('、');
+            },
 
         }
     }

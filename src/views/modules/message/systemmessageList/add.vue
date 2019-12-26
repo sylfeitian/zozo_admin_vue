@@ -258,12 +258,13 @@
                 this.getDataList();
             },
             reset() {
-                this.dataForm.maxCount = "";
-                this.dataForm.minCount = "";
-                this.dataForm.minAmount = "";
-                this.dataForm.maxAmount = "";
-                this.dataForm.maxAmount = "";
-                this.dataForm.memberName = "";
+                // this.dataForm.maxCount = "";
+                // this.dataForm.minCount = "";
+                // this.dataForm.minAmount = "";
+                // this.dataForm.maxAmount = "";
+                // this.dataForm.maxAmount = "";
+                // this.dataForm.memberName = "";
+                this.dataForm = {};
                 this.getDataList();
             },
             dataFormSubmit(){

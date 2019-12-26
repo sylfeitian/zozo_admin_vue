@@ -300,13 +300,22 @@
         },
         props: ["status"],
         created() {
-             this.getDataListFn();
+            this.getDataListFn();
             console.log(this.dataList)
             //处理不同状态
             // this.radio1 = this.status == undefined ? "" : this.status;
             this.dataForm.orderStatus = this.status == undefined ? "" : this.status;
             // this.getPaymentList();
             // this.getOrderListTop();
+        },
+        activated() { // keep-alive重新激活时，是否需要刷新列表
+            // this.getDataListFn();
+            // this.dataForm.orderStatus = this.status == undefined ? "" : this.status;
+            if(this.$route.query.state == 1){
+                this.radio1="waitpay"
+            }else if (this.$route.query.state == 2){
+                this.radio1="waitshipped"
+            }
         },
         components: {
             Bread,

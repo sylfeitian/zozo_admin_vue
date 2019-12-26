@@ -1,6 +1,8 @@
 <template>
     <div>
-        <list v-if="mainVisible" ref="listCompon" @orderDetFn="orderDetFn"></list>
+        <keep-alive>
+            <list v-if="mainVisible" ref="listCompon" @orderDetFn="orderDetFn"></list>
+        </keep-alive>
         <orderDet v-if="orderDetVisible" ref="orderDetCompon" @orderDetListFn="orderDetListFn" :breaddata="subBreaddata"></orderDet>
     </div>
 </template>

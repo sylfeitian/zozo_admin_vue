@@ -338,7 +338,18 @@ export default {
     //重置
     reset() {
       this.timeArr = [];
-      this.dataForm = {};
+      // this.dataForm = {};
+      this.dataForm.memberName = "" //会员账号
+      this.dataForm.orderSn = '' //订单号
+      this.dataForm.goodsCsIdJp = "" //skuId
+      this.dataForm.goodsName = "" //商品名称
+      this.dataForm.sizeFeeling = "" //尺码感受 0合适 1偏大 2偏小
+      this.dataForm.startTime = "" //评价开始时间
+      this.dataForm.endTime = "" //评价结束时间
+      this.dataForm.qualityGrade = "" //	质量星级 1（1星） 2（2星） 3（3星） 4（4星） 5（5星）
+      this.dataForm.comfortGrade = "" //	舒适度星级 1（1星） 2（2星） 3（3星） 4（4星） 5（5星）
+      this.dataForm.faceValueGrade = "" //颜值星级 1（1星） 2（2星） 3（3星） 4（4星） 5（5星）
+      this.dataForm.access = '' //'订单评价(0超赞、1一般、2满意)',
       this.page = 1;
       this.limit = 10;
       this.getDataList();

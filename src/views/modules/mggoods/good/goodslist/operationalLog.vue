@@ -57,15 +57,15 @@
         },
         props:["idJp"],
         methods: {
-            init (row) {
+            init (dataFrom) {
                 this.visible = true;
-                this.row = row;
-                console.log("我在看row");
-                console.log(this.row);
+                this.dataFrom = dataFrom;
+                console.log("我在看dataFrom");
+                console.log(this.dataFrom);
                 // this.dataForm.spuId = res.data.list.spuId;
                 console.log(this.idJp);
                 this.$nextTick(() => {
-                    this.dataForm.goodsId = this.row.id;
+                    this.dataForm.goodsId = this.dataFrom.id;
                     this.getDataList();
                     // this.$refs['addForm'].resetFields();
                     // this.getApplyPullList();

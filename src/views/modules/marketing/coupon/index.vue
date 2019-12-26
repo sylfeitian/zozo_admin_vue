@@ -1,7 +1,9 @@
 <template>
     <div>
         <!-- 列表 -->
-        <coupon v-if='couponIsshow&&!detailStatus'  @showAddOrEditCoupon='showAddOrEditCoupon' @showDetail='showDetail'></coupon>
+        <keep-alive>
+            <coupon v-if='couponIsshow&&!detailStatus'  @showAddOrEditCoupon='showAddOrEditCoupon' @showDetail='showDetail'></coupon>
+        </keep-alive>
         <!-- 新增编辑 -->
         <addcoupon v-if='!couponIsshow&&!detailStatus' ref="addCouponCompon" @artcouponno='artcouponno' ></addcoupon>
         <!-- 查看 -->

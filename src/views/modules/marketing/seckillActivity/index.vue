@@ -1,7 +1,9 @@
 <template>
   <div>
       <!-- 秒杀活动主页面 -->
-      <list v-if='showStatus'  @timelistFun='timelistFun' @detailistFun='detailistFun' @addlistFun='addlistFun'></list>
+      <keep-alive>
+            <list v-if='showStatus'  @timelistFun='timelistFun' @detailistFun='detailistFun' @addlistFun='addlistFun'></list>
+      </keep-alive>
       <!-- 秒杀时间段页面 -->
       <timelist v-if='!showStatus&&timelistStatus' @timeshowList='timeshowList'></timelist>
       <!-- 查看商品列表页面 -->

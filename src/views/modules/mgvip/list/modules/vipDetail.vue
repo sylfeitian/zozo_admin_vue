@@ -21,8 +21,14 @@
                 <div class="topItem">
                      <label for="">身高</label><span>{{allData.height }}</span>
                 </div>
+                <div class="topItem">
+                     <label for="">账户绑定</label><span>{{allData.bind}}</span>
+                </div>
           </div>
            <div class="topRight">
+                <div class="topItem">
+                     <label for="">系统ID</label><span>{{allData.id }}</span>
+                </div>
                 <div class="topItem">
                      <label for="">体重</label><span>{{allData.weight }}</span>
                 </div>
@@ -41,13 +47,10 @@
                 <div class="topItem">
                      <label for="">注册时间</label><span>{{allData.createDate }}</span>
                 </div>
-                <div class="topItem">
-                     <label for="">账户绑定</label><span>{{allData.bind}}</span>
-                </div>
           </div>
       </div>
       <br>
-     <h3>统计信息</h3>
+     <h3 class="statistics">统计信息</h3>
       <div class="bottomMoudel">
             <div class="bottomItem">
                 <label>消费金额</label>
@@ -190,7 +193,7 @@
       
      .topLeft{
          width: 238px;
-         height: 225px;
+         height: 270px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -232,7 +235,9 @@
     }
     
 }
-
+.statistics{
+    margin-top: 63.4px;
+}
 
 .bottomMoudel{
     display: flex;

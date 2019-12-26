@@ -79,12 +79,13 @@
         </el-select>
       </el-form-item>
       <el-form-item label="价格区间：" class="price">
-        <el-form-item>
+        <!-- <el-form-item>
           <el-input
             v-model="bottom"
             type="number"
             placeholder="最低价格"
             onkeypress="return( /[\d]/.test(String.fromCharCode(event.keyCode) ) )"
+            @blur="bottomCheck"
           />
         </el-form-item>——
         <el-form-item>
@@ -93,8 +94,14 @@
             type="number"
             placeholder="最高价格"
             onkeypress="return( /[\d]/.test(String.fromCharCode(event.keyCode) ) )"
+            @blur="topCheck"
           />
-        </el-form-item>
+        </el-form-item> -->
+        <div style="display:flex">
+          <el-input v-model.trim="dataFormShow.bottomPrice" placeholder="最低价格" @blur="compare"></el-input>
+          <span>&nbsp - &nbsp</span>
+          <el-input v-model.trim="dataFormShow.topPrice" placeholder="最高价格" @blur="compare"></el-input>
+        </div>
       </el-form-item>
       <el-form-item label="下发状态：">
         <el-select v-model="dataFormShow.transportFlag" placeholder="请选择">
@@ -344,42 +351,32 @@
                     this.dataFormShow.goodsCsIdJp = newV.substr(0,30)
                 }
             },
-             bottom(val) {
-                if (val !== "") {
-                    this.dataFormShow.bottomPrice = val;
-                } else if (val == "e") {
-                    val = "";
-                } else {
-                    this.dataFormShow.bottomPrice = 0;
+            'dataFormShow.bottomPrice':function (newV,oldV) {
+                for(let i=0;i<newV.toString().length;i++){
+                    // 只能输入数字
+                    if(!/[0-9|]/g.test(newV[i])){
+                        this.dataFormShow.bottomPrice = newV.toString().replace(newV[i],"")
+                    }
                 }
-
-         if (this.dataFormShow.topPrice == "") {
-        this.dataFormShow.topPrice = 99999;
-      } else if (this.dataFormShow.topPrice < this.dataFormShow.bottomPrice) {
-        this.$message("最低价格不得大于最高价格");
-        this.dataFormShow.topPrice = 99999;
-        this.top = 99999;
-      }
-    },
-    top(val) {
-      console.log(val, val == "e");
-      if (val !== "") {
-        this.dataFormShow.topPrice = val;
-      } else if (val == "e") {
-        val = "";
-      } else {
-        this.dataFormShow.topPrice = 99999;
-      }
-      this.dataFormShow.topPrice = val;
-      if (this.dataFormShow.bottomPrice == "") {
-        this.dataFormShow.bottomPrice = 0;
-      } else if (this.dataFormShow.topPrice < this.dataFormShow.bottomPrice) {
-        this.$message("最高价格不得于最低价格");
-        this.dataFormShow.bottomPrice = 0;
-        this.bottom = 0;
-      }
-    }
-
+                // 最大值999999
+                if(newV>999999){
+                    this.dataFormShow.bottomPrice = oldV;
+                    return ;
+                }
+            },
+            'dataFormShow.topPrice':function (newV,oldV) {
+                for(let i=0;i<newV.toString().length;i++){
+                    // 只能输入数字
+                    if(!/[0-9|]/g.test(newV[i])){
+                        this.dataFormShow.topPrice = newV.toString().replace(newV[i],"")
+                    }
+                }
+                // 最大值999999
+                if(newV>999999){
+                    this.dataFormShow.topPrice = oldV;
+                    return ;
+                }
+            }
         },
         created () {
             // 第一次请求数据
@@ -390,6 +387,28 @@
             this.getselectdata();
         },
         methods: {
+            // input失去焦点时判断金额大小 置换位置
+            compare(){
+                var temp=this.dataFormShow.topPrice;
+                // 比较整数的大小
+                if(parseInt(this.dataFormShow.topPrice)<parseInt(this.dataFormShow.bottomPrice)){
+                this.dataFormShow.topPrice=this.dataFormShow.bottomPrice
+                this.dataFormShow.bottomPrice=temp
+                }else if(parseInt(this.dataFormShow.topPrice)===parseInt(this.dataFormShow.bottomPrice)){ // 整数相等的情况下 比较小数点后的大小
+                var minTemp,maxTemp = 0;
+                if(this.dataFormShow.bottomPrice.indexOf('.') !==-1){
+                    minTemp = this.dataFormShow.bottomPrice.substr(this.dataFormShow.bottomPrice.indexOf('.')+1)
+                }
+                if(this.dataFormShow.topPrice.indexOf('.') !==-1){
+                    maxTemp = this.dataFormShow.topPrice.substr(this.dataFormShow.topPrice.indexOf('.')+1)
+                }
+                if(parseInt(maxTemp)<parseInt(minTemp)){
+                    this.dataFormShow.topPrice=this.dataFormShow.bottomPrice
+                    this.dataFormShow.bottomPrice=temp
+                }
+
+                }
+            },
         	//获取select  下拉内容
         	getselectdata(){
         		//获取品牌列表
@@ -466,8 +485,6 @@
                 this.dataFormShow.sellState = ""; //是否可售
                 this.dataFormShow.bottomPrice = ""; //最低价
                 this.dataFormShow.topPrice = ""; //最高价
-                this.top='';
-                this.bottom='';
                 this.dataFormShow.transportFlag = ""; //下发状态
                 this.dataFormShow.operateFlag = ""; //店铺状态
                 this.dataFormShow.goodsSellState = ""; //可售状态
@@ -478,6 +495,12 @@
                 this.dataForm.categoryId = ""; //分类id
                 this.dataForm.storeId = ""; //店铺名称
                 this.dataForm.sellState = ""; //是否可售
+                this.dataForm.bottomPrice = ""; //最低价
+                this.dataForm.topPrice = ""; //最高价
+                this.dataForm.transportFlag = ""; //下发状态
+                this.dataForm.operateFlag = ""; //店铺状态
+                this.dataForm.goodsSellState = ""; //可售状态
+                this.dataForm.showWeb = ""; //上下架状态
                 this.classList = [];
                 this.getDataList();
             },

@@ -154,6 +154,14 @@ export default {
   created() {
     this.demo();
   },
+  watch:{
+    valuetime(val){
+      if(!val){
+          this.dataForm.startTime = '';
+          this.dataForm.endTime = '';
+      }
+    }
+  },
   methods: {
     //取消审核
     cancel() {

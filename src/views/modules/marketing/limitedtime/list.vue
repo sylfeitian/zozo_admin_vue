@@ -191,7 +191,7 @@ export default {
       },
       activitesstates: [{ id: '', name: "全部" },{ id: 0, name: "未开始" },{ id: 1, name: "进行中" },{ id: 2, name: "已结束" }],
       breaddata: ["营销管理", "限时折扣"],
-      valuetime:"",
+      valuetime:[],
       selectStoreOption: [],
       selectBrandOption: [],
       loading: false,
@@ -257,7 +257,13 @@ export default {
                 this.dataForm.storeId = newV.substr(0,(chineseCount/2+characterCount)-1)
             }
         }
-    }
+	},
+	valuetime(val){
+      if(!val){
+          this.dataForm.startTime = '';
+          this.dataForm.endTime = '';
+      }
+	}
   },
   methods: {
 	getData () {
@@ -293,13 +299,13 @@ export default {
 		this.dataForm.storeId = '';
 		this.dataForm.spuIdJp  = '';
 		this.dataForm.brandId  = '';
-		this.valuetime = '';
-		this.getDataList();
+		this.valuetime = [];
+		this.getData();
 	},
 	// 开始结束时间
 	acttime(){
-		this.dataForm.startTime = this.valuetime[0] || '';
-		this.dataForm.endTime = this.valuetime[1] || '';
+		this.dataForm.startTime = this.valuetime[0];
+		this.dataForm.endTime = this.valuetime[1];
 	},
 	//下拉改变时触发
 	changeStore(val) {

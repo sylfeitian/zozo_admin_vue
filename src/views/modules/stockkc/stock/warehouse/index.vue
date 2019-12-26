@@ -1,6 +1,8 @@
 <template>
     <div>
-        <list v-if="mainVisible" ref="listCompon" @showDetail="showDetail"></list>
+        <keep-alive>
+            <list v-if="mainVisible" ref="listCompon" @showDetail="showDetail"></list>
+        </keep-alive>
         <detail v-if="detailVisible" ref="detailCompon" @showList="showList"></detail>
     </div>
 </template>

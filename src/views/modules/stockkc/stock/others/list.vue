@@ -103,6 +103,9 @@
             Bread,
             showDetail
         },
+        activated() {
+            this.getDataList();
+        },
         watch:{
 			valuetime(val){
 		      if(!val){
