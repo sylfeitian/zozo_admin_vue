@@ -504,6 +504,7 @@ export default {
       // }
       this.dataForm = cloneDeep(this.dataFormShow);
       console.log(this.dataForm);
+      this.handleCheckAllChange();
       this.getDataList();
     },
     reset() {
