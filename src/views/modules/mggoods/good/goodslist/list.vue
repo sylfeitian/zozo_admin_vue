@@ -504,7 +504,8 @@ export default {
       // }
       this.dataForm = cloneDeep(this.dataFormShow);
       console.log(this.dataForm);
-      this.handleCheckAllChange();
+      this.$refs.multipleTable.clearSelection();
+      this.checkAll = false;
       this.getDataList();
     },
     reset() {
