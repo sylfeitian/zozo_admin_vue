@@ -530,6 +530,7 @@ export default {
       this.dataForm.priceState = "";
       this.dataForm.sellState = "";
       this.classList = []; //分类名称
+      this.page = 1;
       this.handleClick();
     },
     //回显
