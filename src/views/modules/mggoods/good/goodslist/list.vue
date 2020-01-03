@@ -470,6 +470,8 @@ export default {
         this.dataFormShow.categoryId = this.classList[
           this.classList.length - 1
         ];
+      } else if(this.classList.length==0){
+        this.dataFormShow.categoryId = ""
       }
       console.log(this.dataFormShow.categoryId);
     },
