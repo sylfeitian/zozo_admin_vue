@@ -691,9 +691,12 @@
             modeldataFormSubmit () {
                 this.loading = true;
                     var obj=  {
+                        params:{
+                            ...this.dataForm,
+                        },
                         "categoryActivityId": this.row.id,// 活动ID ,
                         "categoryActivityName": this.row.title,//精选分类名称 ,
-                        ...this.dataForm,
+                        
                     }
                     categoryactivitygoodsAll(obj).then((res) => {
                         this.loading = false;
