@@ -703,7 +703,7 @@
                         // alert(JSON.stringify(res));
                         let status = null;
                         if(res.code == "200"){
-                            console.log(res.data)
+                            console.log(res.msg)
                             status = "success";
                             this.visible2 = false;
                             this.getData;
@@ -712,7 +712,7 @@
                             status = "error";
                         }
                         this.$message({
-                            message: res.data,
+                            message: res.msg,
                             type: status,
                             duration: 1500
                         })
