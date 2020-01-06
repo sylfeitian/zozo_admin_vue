@@ -1038,7 +1038,7 @@ export const categoryactivitygoodsUpdateBach = params => { return http.put(`${ba
 // 分类商品列表导出
 export const categoryactivitygoodsExport = params => { return http.get(`${base}/categoryactivitygoods/export`, params).then(res => res.data); };
 // 全选商品列表内容
-export const categoryactivitygoodsAll = params => { return http.post(`${base}/categoryactivitygoods/selectAll`, params).then(res => res.data); };
+export const categoryactivitygoodsAll = params => { return http.get(`${base}/categoryactivitygoods/selectAll`, params).then(res => res.data); };
 
 
 
