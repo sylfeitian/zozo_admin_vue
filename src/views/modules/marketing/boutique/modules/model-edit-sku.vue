@@ -330,7 +330,7 @@
 			width="35%"
 			append-to-body
 			:before-close="closeDialog">
-		    	<h3 style="text-align:center;">是否选择全部?</h3>
+		    	<h3 style="text-align:center;">请确定是否添加全部商品到该分类下?</h3>
                 <!-- <p style="color:red">请确认已与用户沟通达成一致</p> -->
 			    <span slot="footer" class="dialog-footer"  >
 		     		    <el-button @click="dataFormCancel()">取消</el-button>
@@ -700,6 +700,7 @@
                         // alert(JSON.stringify(res));
                         let status = null;
                         if(res.code == "200"){
+                            console.log(res.data)
                             status = "success";
                             this.visible2 = false;
                             this.getData;
@@ -708,7 +709,7 @@
                             status = "error";
                         }
                         this.$message({
-                            message: res.msg,
+                            message: res.data,
                             type: status,
                             duration: 1500
                         })
