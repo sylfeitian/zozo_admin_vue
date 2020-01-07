@@ -238,10 +238,7 @@ export default {
   created(){
   	this.dataForm.type = this.couponKindList1 && this.couponKindList1[0].id;
   	this.dataForm.state = this.activitesstates && this.activitesstates[0].id;
-	  this.dataForm.auditState = this.storeTypes && this.storeTypes[0].id;
-  },
-  activated () {
-	  this.getData();
+  	this.dataForm.auditState = this.storeTypes && this.storeTypes[0].id;
   },
   methods: {
 	  getData () {
