@@ -804,7 +804,8 @@ export const saveShopmessagetemplate = params => { return http.post(`${base}/sho
 export const getMessageDetail = params => { return http.get(`${base}/shopmessagetemplate/messageDetails/${params.id}`, params).then(res => res.data); };
 // 消息类型
 export const messageTypePage = params => { return http.get(`${base}/shopmessagetemplate/messagetypepage`, params).then(res => res.data); };
-
+// 全选用户信息
+export const messageuserall = params => { return http.get(`${base}/shopmessagetemplate/messageuserall`, params).then(res => res.data); };
 
 
 
@@ -1037,6 +1038,8 @@ export const  deleteCateActgoods= params => { return http.delete(`${base}/catego
 export const categoryactivitygoodsUpdateBach = params => { return http.put(`${base}/categoryactivitygoods/updateBach`, params).then(res => res.data); };
 // 分类商品列表导出
 export const categoryactivitygoodsExport = params => { return http.get(`${base}/categoryactivitygoods/export`, params).then(res => res.data); };
+// 全选商品列表内容
+export const categoryactivitygoodsAll = params => { return http.get(`${base}/categoryactivitygoods/selectAll?categoryActivityId=${params.categoryActivityId}&categoryActivityName=${params.categoryActivityName}`, params).then(res => res.data); };
 
 
 

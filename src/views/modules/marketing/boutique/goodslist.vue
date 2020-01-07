@@ -205,7 +205,7 @@
                 align="center"
                 label="折扣率">
                 <template slot-scope="scope">
-                   <span>{{scope.row.discountRate?`${scope.row.discountRate*100}%`:'--'}}</span>
+                   <span>{{scope.row.discountRate?`${Math.round((scope.row.discountRate)*100)}%`:'--'}}</span>
                 </template>
             </el-table-column>
             <el-table-column

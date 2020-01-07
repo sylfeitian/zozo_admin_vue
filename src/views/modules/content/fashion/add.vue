@@ -20,7 +20,7 @@
             </el-form-item>
                 <p style="margin-left: 120px;color: #bebebe;line-height: 14px;">请输入20个字符以内，仅包含数字的编号</p>
             <el-form-item label="发布人：" prop="" :label-width="formLabelWidth" style="display: inline-block;vertical-align:top;">
-                <el-input v-model.trim="addDataForm.publisher" auto-complete="off" placeholder="" style="width: 540px;"></el-input>
+                <el-input v-model.trim="addDataForm.mediaName" auto-complete="off" placeholder="" style="width: 540px;"></el-input>
             </el-form-item>
             <el-form-item label="关注量：" prop="" :label-width="formLabelWidth" style="display: inline-block;">
                 <el-input v-model.trim="addDataForm.favNumCn" type="text" auto-complete="off" placeholder="（仅可填写数字，可选）" style="width: 540px;"></el-input>
@@ -184,7 +184,7 @@
                     fashionContents: [],
                     favNumCn: "",
                     mainImageUrl: "",
-                    publisher: "ZOZO.CN",
+                    mediaName: "ZOZO.CN",
                     saveType: 0,
                     title: "",
                     idJp:"",
@@ -494,6 +494,7 @@
                                 }
                                 that.addDataForm.fashionContents = that.content;
                                 that.addDataForm.saveType = type;
+                                that.addDataForm.publisher = that.addDataForm.mediaName;
                                 savefashiondetail(that.addDataForm).then((res)=>{
                                 if (type == 0) {
                                     this.saveLoading = false;
