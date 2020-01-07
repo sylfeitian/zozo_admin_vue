@@ -92,12 +92,12 @@
                 <div style="display:flex;padding:0">
                     <div style="width:50%;padding:0"  v-if="row.fashionFlag == 0">
                         <el-form-item label="发布者：" style="width:50%;">
-                            <span>{{dataForm.publisher}}</span>
+                            <span>{{dataForm.mediaName}}</span>
                         </el-form-item>
                     </div>
                     <div style="width:50%;padding:0" :class="row.fashionFlag==0?'borderLeftLine':''">
                         <el-form-item label="发布者：" >
-                            <span>{{dataForm.publisher}}</span>
+                            <span>{{dataForm.mediaName}}</span>
                         </el-form-item>
                     </div>
                 </div>
@@ -318,7 +318,7 @@
                     "id": this.dataForm.id,  // 主键
                     "idJp": this.dataForm.idJp,  // 编号
                     "mainImageUrl": this.dataForm.mainImageUrl,  // 封面图
-                    "publisher": this.dataForm.publisher,  // 发布人
+                    "publisher": this.dataForm.mediaName,  // 发布人
                     "saveType": saveType,  // 保存类型 0保存 1保存并发布
                     "title":  this.dataForm.title,  // 标题
                     "viewsNumCn": this.dataForm.viewsNumCn  // 中国浏览量中国浏览量

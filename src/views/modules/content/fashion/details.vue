@@ -90,12 +90,12 @@
                 <div style="display:flex;padding:0">
                     <div style="width:50%;padding:0"  v-if="row.fashionFlag == 0">
                         <el-form-item label="发布者：" style="width:50%;">
-                            <span>{{dataForm.publisher}}</span>
+                            <span>{{dataForm.mediaName}}</span>
                         </el-form-item>
                     </div>
                     <div style="width:50%;padding:0"  :class="row.fashionFlag==0?'borderLeftLine':''">
                         <el-form-item label="发布者：" >
-                            <span>{{dataForm.publisher}}</span>
+                            <span>{{dataForm.mediaName}}</span>
                         </el-form-item>
                     </div>
                 </div>

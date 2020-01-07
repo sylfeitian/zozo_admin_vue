@@ -64,6 +64,13 @@
   <!-- <script>window.SITE_CONFIG['imgURL'] = 'http://47.103.97.147';</script> -->
   <script>window.SITE_CONFIG['imgURL'] = 'http://cdn.zozo.cn/image';</script>
   <% } %>
+  <!-- 压测环境 -->
+  <% if (process.env.VUE_APP_NODE_ENV === 'prod:presstest') { %>
+    <script>window.SITE_CONFIG['apiURL'] = 'http://192.168.1.202:9093';</script>
+    <!-- <script>window.SITE_CONFIG['imgURL'] = 'http://62.234.0.169:8888';</script> -->
+    <!-- <script>window.SITE_CONFIG['imgURL'] = 'http://47.103.97.147';</script> -->
+    <script>window.SITE_CONFIG['imgURL'] = 'http://cdn.zozo.cn/image';</script>
+    <% } %>
   <!-- 验收测试环境 -->
   <% if (process.env.VUE_APP_NODE_ENV === 'prod:uat') { %>
   <script>window.SITE_CONFIG['apiURL'] = 'http://106.2.12.221:9093';</script>

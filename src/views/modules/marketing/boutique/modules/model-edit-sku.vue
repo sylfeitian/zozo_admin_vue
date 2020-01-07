@@ -148,7 +148,8 @@
             <el-form-item >
                 <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>
                 <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
-                <el-button  class="btn" type="primary" @click="handleCheckAllChange(multipleSelection)" style="margin-right: 10px;">选择全部</el-button>
+                <!-- <el-button  class="btn" type="primary" @click="handleCheckAllChange(multipleSelection)" style="margin-right: 10px;">选择全部</el-button> -->
+                <el-button  class="btn" type="primary" @click="showModel(row)" style="margin-right: 10px;">选择全部</el-button>
                 <importAndExport :btType="'primary'" :importAndExportOptions="importAndExportOptions" :dataForm="{}" @getDataList="getDataList"></importAndExport>
             </el-form-item>
         </el-form>
@@ -319,6 +320,24 @@
             <el-button @click="dataFormCancel()">取 消</el-button>
             <el-button type="primary" @click="dataFormSubmit('addForm')" :loading="saveLoading">{{saveLoading?'提交中..':'确 定'}}</el-button>
         </span>
+    <!-- 选择全部 -->
+    <showOrder v-if="showOrderVisible" :dataForm="{}" ref="showOrderCompon" @searchDataList="searchDataList"></showOrder>
+    <el-dialog
+	 	    class="model-add-edit-data"
+		    title="提示"
+		    :close-on-click-modal="false"
+		    :visible.sync="visible2"
+			width="35%"
+			append-to-body
+			:before-close="closeDialog">
+		    	<h3 style="text-align:center;">请确定是否添加全部商品到该分类下?</h3>
+                <!-- <p style="color:red">请确认已与用户沟通达成一致</p> -->
+			    <span slot="footer" class="dialog-footer"  >
+		     		    <el-button @click="dataFormCancel()">取消</el-button>
+		     		    <el-button type="primary" @click="modeldataFormSubmit('addForm')"
+		     		    :loading="loading">{{loading ? "提交中···" : "确定"}}</el-button>
+			    </span>
+	</el-dialog>
     </el-dialog>
 </template>
 
@@ -326,9 +345,10 @@
     import mixinViewModule from '@/mixins/view-module'
     import {editLimitActivityGoods,getdatacategory,searchStoreName,searchBrandName} from "@/api/api.js"
     import { categoryactivitygoodsImport } from "@/api/io.js"
-     import {categoryactivitygoodsBatch} from "@/api/api.js" 
+     import {categoryactivitygoodsBatch, categoryactivitygoodsAll} from "@/api/api.js" 
      import {categoryactivityGoodsPagePopUrl} from "@/api/url.js"
      import importAndExport from "@/components/import-and-export"
+    import showOrder from './model-show.vue'
     export default {
         name: "model-add-edit-data",
           mixins: [mixinViewModule],
@@ -343,7 +363,9 @@
                     deleteIsBatch: true,
                 // deleteIsBatchKey: 'id'
                 },
+                showOrderVisible:false,
                 visible : false,
+                visible2:false,
                 loading : false,
                 saveLoading:false,
                 dataList:[],
@@ -414,7 +436,8 @@
         	
         },
         components: {
-            importAndExport
+            importAndExport,
+            showOrder
         },
         watch: {
             'dataForm.discountPriceStart':function (newV,oldV) {
@@ -541,7 +564,9 @@
                 this.saveLoading = false;
                 this.$nextTick(() => {
                     this.row = row;
+                    console.log(this.row)
                     this.dataForm.categoryActivityId = row.id
+                    console.log(this.dataForm.categoryActivityId)
                     this.importAndExportOptions.importUrl = categoryactivitygoodsImport + `?id=${row.id}`
                     this.title = "修改";
                     this.getData();
@@ -576,6 +601,22 @@
                 this.page=1;
                 this.getDataList();
             },
+            showModel (row) {
+                this.visible2 = true;
+                // console.log(row)
+                // this.showOrderVisible = true;
+                // this.$nextTick(() => {
+                //    this.$refs.showOrderCompon.init(row)
+                // })
+                // this.searchDataList();
+            },
+            dataFormCancel(){
+                this.visible2 = false;
+                this.closeDialog();
+			},
+			closeDialog() {
+                this.visible2 = false;
+			},
              //获取中国分类
             getDatacategoryFn(){
                     getdatacategory().then((res)=>{
@@ -673,6 +714,36 @@
                 //     }
                 // })
             },
+            modeldataFormSubmit () {
+                this.loading = true;
+                    var obj=  {
+                        params:{
+                            ...this.dataForm,
+                        },
+                        "categoryActivityId": this.row.id,// 活动ID ,
+                        "categoryActivityName": this.row.title,//精选分类名称 ,
+                        
+                    }
+                    categoryactivitygoodsAll(obj).then((res) => {
+                        this.loading = false;
+                        // alert(JSON.stringify(res));
+                        let status = null;
+                        if(res.code == "200"){
+                            console.log(res.msg)
+                            status = "success";
+                            this.visible2 = false;
+                            this.getData;
+                            this.closeDialog();
+                        }else{
+                            status = "error";
+                        }
+                        this.$message({
+                            message: res.msg,
+                            type: status,
+                            duration: 1500
+                        })
+                    })
+            },
             dataFormCancel(){
                 this.visible = false;
                 this.closeDialog();
@@ -681,66 +752,9 @@
                  this.$emit('searchDataList');
                 this.$parent.modelEditSkuVisible = false;
             },
-            // input失去焦点时判断金额大小 置换位置
-            priceCompare(){
-                var temp=this.dataForm.discountPriceEnd;
-                // 比较整数的大小
-                if(parseInt(this.dataForm.discountPriceEnd)<parseInt(this.dataForm.discountPriceStart)){
-                this.dataForm.discountPriceEnd=this.dataForm.discountPriceStart
-                this.dataForm.discountPriceStart=temp
-                }else if(parseInt(this.dataForm.discountPriceEnd)===parseInt(this.dataForm.discountPriceStart)){ // 整数相等的情况下 比较小数点后的大小
-                var minTemp,maxTemp = 0;
-                if(this.dataForm.discountPriceStart.indexOf('.') !==-1){
-                    minTemp = this.dataForm.discountPriceStart.substr(this.dataForm.discountPriceStart.indexOf('.')+1)
-                }
-                if(this.dataForm.discountPriceEnd.indexOf('.') !==-1){
-                    maxTemp = this.dataForm.discountPriceEnd.substr(this.dataForm.discountPriceEnd.indexOf('.')+1)
-                }
-                if(parseInt(maxTemp)<parseInt(minTemp)){
-                    this.dataForm.discountPriceEnd=this.dataForm.discountPriceStart
-                    this.dataForm.discountPriceStart=temp
-                }
-                }
-            },
-            rateCompare(){
-                var temp=this.discountRateEnd;
-                // 比较整数的大小
-                if(parseInt(this.discountRateEnd)<parseInt(this.discountRateStart)){
-                this.discountRateEnd=this.discountRateStart
-                this.discountRateStart=temp
-                }else if(parseInt(this.discountRateEnd)===parseInt(this.discountRateStart)){ // 整数相等的情况下 比较小数点后的大小
-                var minTemp,maxTemp = 0;
-                if(this.discountRateStart.indexOf('.') !==-1){
-                    minTemp = this.discountRateStart.substr(this.discountRateStart.indexOf('.')+1)
-                }
-                if(this.discountRateEnd.indexOf('.') !==-1){
-                    maxTemp = this.discountRateEnd.substr(this.discountRateEnd.indexOf('.')+1)
-                }
-                if(parseInt(maxTemp)<parseInt(minTemp)){
-                    this.discountRateEnd=this.discountRateStart
-                    this.discountRateStart=temp
-                }
-                }
-            },
-            stockCompare(){
-                var temp=this.stockQuantityeEnd;
-                // 比较整数的大小
-                if(parseInt(this.stockQuantityeEnd)<parseInt(this.stockQuantityStart)){
-                this.stockQuantityeEnd=this.stockQuantityStart
-                this.stockQuantityStart=temp
-                }else if(parseInt(this.stockQuantityeEnd)===parseInt(this.stockQuantityStart)){ // 整数相等的情况下 比较小数点后的大小
-                var minTemp,maxTemp = 0;
-                if(this.stockQuantityStart.indexOf('.') !==-1){
-                    minTemp = this.stockQuantityStart.substr(this.stockQuantityStart.indexOf('.')+1)
-                }
-                if(this.stockQuantityeEnd.indexOf('.') !==-1){
-                    maxTemp = this.stockQuantityeEnd.substr(this.stockQuantityeEnd.indexOf('.')+1)
-                }
-                if(parseInt(maxTemp)<parseInt(minTemp)){
-                    this.stockQuantityeEnd=this.stockQuantityStart
-                    this.stockQuantityStart=temp
-                }
-                }
+            searchDataList() {
+                // this.getOrderListTop();
+                this.getData();
             },
             // 表格
             getImgUrl(url) {
