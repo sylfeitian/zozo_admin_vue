@@ -470,8 +470,6 @@ export default {
         this.dataFormShow.categoryId = this.classList[
           this.classList.length - 1
         ];
-      } else if(this.classList.length==0){
-        this.dataFormShow.categoryId = ""
       }
       console.log(this.dataFormShow.categoryId);
     },
@@ -506,8 +504,6 @@ export default {
       // }
       this.dataForm = cloneDeep(this.dataFormShow);
       console.log(this.dataForm);
-      this.$refs.multipleTable.clearSelection();
-      this.checkAll = false;
       this.getDataList();
     },
     reset() {
@@ -534,7 +530,6 @@ export default {
       this.dataForm.priceState = "";
       this.dataForm.sellState = "";
       this.classList = []; //分类名称
-      this.page = 1;
       this.handleClick();
     },
     //回显

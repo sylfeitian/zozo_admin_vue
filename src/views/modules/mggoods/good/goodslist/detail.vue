@@ -246,7 +246,7 @@
                 <el-form-item label="分类条件：" style="overflow: hidden;">
                     <el-row v-for="(item,index) in dataForm.tags" :key="index" class="info" style="width: 80%;">
                         <el-col :span="12"><div class="grid-content">{{item.parentTagName}}</div></el-col>
-                        <el-col :span="12"><div class="grid-content">{{item.name}}</div></el-col>
+                        <el-col :span="12"><div class="grid-content">{{item.nameJp}}</div></el-col>
                     </el-row>
 <!--                    <Table class="inforRight" style="display: inline-block;" :tableData="tableData" :tableStyle="{ width:'600px' }"></Table>-->
                 </el-form-item>

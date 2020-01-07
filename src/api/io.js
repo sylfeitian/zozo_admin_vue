@@ -84,7 +84,7 @@ export const sysexportmanagementExport = `${allBase}/sysexportmanagement/error/e
 
 
 // 限时折扣导出
-export const limitedtimeExport = `${allBase}/seckillJp/goods/export`;
+export const limitedtimeExport = `${allBase}/goods/export`;
 
 // 分类商品列表添加商品导入
 export const categoryactivitygoodsImport =`${allBase}/categoryactivitygoods/import`;

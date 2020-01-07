@@ -9,7 +9,6 @@
     "build:uat": "vue-cli-service build --mode production.uat",
     "build:test": "vue-cli-service build --mode production.test",
     "build:prod": "vue-cli-service build --mode production",
-    "build:presstest": "vue-cli-service build --mode production.presstest",
     "lint": "vue-cli-service lint",
     "et": "node_modules/.bin/et",
     "et:init": "node_modules/.bin/et -i",
