@@ -804,7 +804,8 @@ export const saveShopmessagetemplate = params => { return http.post(`${base}/sho
 export const getMessageDetail = params => { return http.get(`${base}/shopmessagetemplate/messageDetails/${params.id}`, params).then(res => res.data); };
 // 消息类型
 export const messageTypePage = params => { return http.get(`${base}/shopmessagetemplate/messagetypepage`, params).then(res => res.data); };
-
+// 全选用户信息
+export const messageuserall = params => { return http.get(`${base}/shopmessagetemplate/messageuserall`, params).then(res => res.data); };
 
 
 
