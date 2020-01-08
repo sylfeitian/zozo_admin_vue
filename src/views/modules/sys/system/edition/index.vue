@@ -59,7 +59,7 @@
             :before-close="closeDialog"
             width="500px"
     	>
-    	<div><span style="display:inline-block; width:100px; margin-right: 10px; text-align: right;">端口：</span> <span class="artccc">{{detail && detail.systemType=='1'?'IOS':'安卓'}}</span></div>
+    	<div><span style="display:inline-block; width:100px; margin-right: 10px; text-align: right;">端口：</span> <span class="artccc">{{detail && detail.systemType=='1'?'安卓':'IOS'}}</span></div>
     	<div><span style="display:inline-block; width:100px; margin-right: 10px; text-align: right;">版本号：</span>  <span class="artccc">{{detail &&  detail.versionNum}}</span></div>
     	<div><span style="display:inline-block; width:100px; margin-right: 10px; text-align: right;">版本描述：</span>  <span class="artccc">{{detail &&  detail.versionDescription}}</span></div>
     	<div><span style="display:inline-block; width:100px; margin-right: 10px; text-align: right;">文件包：</span>  <span class="artccc">{{detail &&  detail.filePath }}</span></div>
