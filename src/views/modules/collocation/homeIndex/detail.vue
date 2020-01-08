@@ -22,7 +22,7 @@
             </el-select>
         </el-form-item>
         <el-form-item style="float:right;">
-            <el-button  class="btn" type="primary" @click="getDataList()">搜索</el-button>
+            <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>
             <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
             <el-button  class="btn" type="primary" @click="toSet()">设为推荐</el-button>
         </el-form-item>
@@ -183,6 +183,10 @@
             changePage(){
                 this.$emit("showListFun");
             },
+            getData () {
+                this.page = 1;
+                this.getDataList();
+            },
             //重置
             reset(){
                 this.dataForm = {
@@ -191,7 +195,7 @@
                     userNickname:'',
                     gender:'',
                 };
-                this.getDataList();
+                this.getData();
             },
             toSet(id){
                 if(this.dataListSelections.length==0&&!id){
