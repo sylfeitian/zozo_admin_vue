@@ -411,7 +411,7 @@
                 // this.dataForm.paymentStatus = ""
                 // this.dataForm.orderStatus = val;
                 this.dataForm.topStatus = val
-                this.page = 1;
+                // this.page = 1;
                 this.limit = 10;
                 // this.getDataList();
                 this.getDataListFn()
