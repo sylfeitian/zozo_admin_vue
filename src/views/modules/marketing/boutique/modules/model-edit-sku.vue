@@ -75,13 +75,13 @@
             <el-form-item label="促销价：">
                 <div style="display:flex">
                 <el-input 
-                v-model.trim="discountPriceStart" 
+                v-model.trim="discountPriceStart"
                 type="number" placeholder="0" class="custom-range-input"
                 @blur="bottomCheck('discountPriceStart','discountPriceEnd',true)"
                 ></el-input>
                 <span>&nbsp 至 &nbsp</span>
                 <el-input 
-                v-model.trim="discountPriceEnd" 
+                v-model.trim="discountPriceEnd"
                 type="number" placeholder="0" class="custom-range-input"
                 @blur="topCheck('discountPriceStart','discountPriceEnd',true)"
                 ></el-input>
@@ -645,8 +645,8 @@
                 this.dataForm.discountRateEnd = ""
                 this.dataForm.stockQuantityStart = ""
                 this.dataForm.stockQuantityeEnd = ""
-                this.discountPriceStart = ""
-                this.discountPriceEnd = ""
+                // this.discountPriceStart = ""
+                // this.discountPriceStartdiscountPriceStart = ""
                 this.discountRateStart = ""
                 this.discountRateEnd = ""
                 this.stockQuantityStart = ""
