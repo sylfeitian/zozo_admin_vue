@@ -75,15 +75,15 @@
             <el-form-item label="促销价：">
                 <div style="display:flex">
                 <el-input 
-                v-model.trim="discountPriceStart"
+                v-model.trim="dataForm.discountPriceStart" 
                 type="number" placeholder="0" class="custom-range-input"
-                @blur="bottomCheck('discountPriceStart','discountPriceEnd',true)"
+                @blur="priceCompare"
                 ></el-input>
                 <span>&nbsp 至 &nbsp</span>
                 <el-input 
-                v-model.trim="discountPriceEnd"
+                v-model.trim="dataForm.discountPriceEnd"
                 type="number" placeholder="0" class="custom-range-input"
-                @blur="topCheck('discountPriceStart','discountPriceEnd',true)"
+                @blur="priceCompare"
                 ></el-input>
 
                 </div>
@@ -93,13 +93,13 @@
                 <el-input 
                 v-model.trim="discountRateStart" 
                 type="number" placeholder="0.00" class="custom-range-input" 
-                @blur="bottomCheck('discountRateStart','discountRateEnd',false)"
+                @blur="rateCompare"
                 ></el-input>
                 <span>&nbsp 至 &nbsp</span>
                 <el-input 
                 v-model.trim="discountRateEnd" 
                 type="number" placeholder="100.00" class="custom-range-input"
-                @blur="topCheck('discountRateStart','discountRateEnd',false)"
+                @blur="rateCompare"
                 ></el-input>
 
                 </div>
@@ -108,12 +108,12 @@
                 <div style="display:flex">
                 <el-input v-model.trim="stockQuantityStart" 
                 type="number" placeholder="0" class="custom-range-input" 
-                @blur="bottomCheck('stockQuantityStart','stockQuantityeEnd',true)"
+                @blur="stockCompare"
                 ></el-input>
                 <span>&nbsp 至 &nbsp</span>
                 <el-input v-model.trim="stockQuantityeEnd" 
                 type="number" placeholder="0" class="custom-range-input"
-                @blur="topCheck('stockQuantityStart','stockQuantityeEnd',true)"
+                @blur="stockCompare"
                 ></el-input>
 
                 </div>
@@ -383,8 +383,8 @@
                     categoryMore: '',
                     madeIn: '',
                     fuzzySearch: '',
-                    discountPriceStart: '',
-                    discountPriceEnd: '',
+                    // discountPriceStart: '',
+                    // discountPriceEnd: '',
                     discountRateStart: '',
                     discountRateEnd: '',
                     stockQuantityStart: '',
@@ -440,32 +440,60 @@
             showOrder
         },
         watch: {
-            'discountPriceStart': function(val) {
-                if(val == '') {
-                    this.dataForm.discountPriceStart = '';
-                    this.discountPriceStart = '';
-                } else if(val >= 0) {
-                    this.dataForm.discountPriceStart = val;
-                } else if(val == 'e') {
-                    this.discountPriceStart = '';
-                } else {
-                    this.dataForm.discountPriceStart = 0;
-                    this.discountPriceStart = 0;
+            // 'discountPriceStart': function(val) {
+            //     if(val == '') {
+            //         this.dataForm.discountPriceStart = '';
+            //         this.discountPriceStart = '';
+            //     } else if(val >= 0) {
+            //         this.dataForm.discountPriceStart = val;
+            //     } else if(val == 'e') {
+            //         this.discountPriceStart = '';
+            //     } else {
+            //         this.dataForm.discountPriceStart = 0;
+            //         this.discountPriceStart = 0;
+            //     }
+            // },
+            'dataForm.discountPriceStart':function (newV,oldV) {
+                for(let i=0;i<newV.toString().length;i++){
+                    // 只能输入数字
+                    if(!/[0-9|]/g.test(newV[i])){
+                        this.dataForm.discountPriceStart = newV.toString().replace(newV[i],"")
+                    }
+                }
+                // 最大值999999
+                if(newV>999999){
+                    this.dataForm.discountPriceStart = oldV;
+                    return ;
                 }
             },
-            'discountPriceEnd': function(val) {
-                if(val == '') {
-                    this.dataForm.discountPriceEnd = '';
-                    this.discountPriceEnd = '';
-                } else if(val >= 0) {
-                    this.dataForm.discountPriceEnd = val;
-                } else if(val == 'e') {
-                    this.discountPriceEnd = '';
-                } else {
-                    this.dataForm.discountPriceEnd = 0;
-                    this.discountPriceEnd = 0;
+
+            // 'discountPriceEnd': function(val) {
+            //     if(val == '') {
+            //         this.dataForm.discountPriceEnd = '';
+            //         this.discountPriceEnd = '';
+            //     } else if(val >= 0) {
+            //         this.dataForm.discountPriceEnd = val;
+            //     } else if(val == 'e') {
+            //         this.discountPriceEnd = '';
+            //     } else {
+            //         this.dataForm.discountPriceEnd = 0;
+            //         this.discountPriceEnd = 0;
+            //     }
+            // },
+            'dataForm.discountPriceEnd':function (newV,oldV) {
+                for(let i=0;i<newV.toString().length;i++){
+                    // 只能输入数字
+                    if(!/[0-9|]/g.test(newV[i])){
+                        this.dataForm.discountPriceEnd = newV.toString().replace(newV[i],"")
+                    }
+                }
+                // 最大值999999
+                if(newV>999999){
+                    this.dataForm.discountPriceEnd = oldV;
+                    return ;
                 }
             },
+
             'stockQuantityStart': function(val) {
                 if(val == '') {
                     this.dataForm.stockQuantityStart = '';
@@ -801,24 +829,86 @@
                 this.$set(this.dataForm, "brandId", val);
                 this.selectBrandOption = [].concat(this.selectBrandOption);
             },
-            bottomCheck(startKey,endKey,isint) {
-                if (this.dataForm[endKey] == "") {
-                    return ;
-                } else if (this.dataForm[startKey] > this.dataForm[endKey]) {
-                    this.$message("最低不得大于最高");
-                    this.dataForm[startKey] = 0;
-                    this[startKey] = 0;
+            // bottomCheck(startKey,endKey,isint) {
+            //     if (this.dataForm[endKey] == "") {
+            //         return ;
+            //     } else if (this.dataForm[startKey] > this.dataForm[endKey]) {
+            //         this.$message("最低不得大于最高");
+            //         this.dataForm[startKey] = 0;
+            //         this[startKey] = 0;
+            //     }
+            // },
+            // topCheck(startKey,endKey,isInt) {
+            //     if (this.dataForm[startKey] == "") {
+            //         return ;
+            //     } else if (this.dataForm[startKey] > this.dataForm[endKey]) {
+            //         this.$message("最高不低于最低");
+            //         this.dataForm[endKey] = isInt? Number.parseInt(this.dataForm[startKey]) + 1 : Number.parseFloat(this.dataForm[startKey]) + 0.001;
+            //         this[endKey] = isInt? Number.parseInt(this[startKey]) + 1 : Number.parseFloat(this[startKey]) + 0.1;
+            //     }
+            // }
+            // input失去焦点时判断金额大小 置换位置
+            priceCompare(){
+                var temp=this.dataForm.discountPriceEnd;
+                // 比较整数的大小
+                if(parseInt(this.dataForm.discountPriceEnd)<parseInt(this.dataForm.discountPriceStart)){
+                this.dataForm.discountPriceEnd=this.dataForm.discountPriceStart
+                this.dataForm.discountPriceStart=temp
+                }else if(parseInt(this.dataForm.discountPriceEnd)===parseInt(this.dataForm.discountPriceStart)){ // 整数相等的情况下 比较小数点后的大小
+                var minTemp,maxTemp = 0;
+                if(this.dataForm.discountPriceStart.indexOf('.') !==-1){
+                    minTemp = this.dataForm.discountPriceStart.substr(this.dataForm.discountPriceStart.indexOf('.')+1)
+                }
+                if(this.dataForm.discountPriceEnd.indexOf('.') !==-1){
+                    maxTemp = this.dataForm.discountPriceEnd.substr(this.dataForm.discountPriceEnd.indexOf('.')+1)
+                }
+                if(parseInt(maxTemp)<parseInt(minTemp)){
+                    this.dataForm.discountPriceEnd=this.dataForm.discountPriceStart
+                    this.dataForm.discountPriceStart=temp
+                }
                 }
             },
-            topCheck(startKey,endKey,isInt) {
-                if (this.dataForm[startKey] == "") {
-                    return ;
-                } else if (this.dataForm[startKey] > this.dataForm[endKey]) {
-                    this.$message("最高不低于最低");
-                    this.dataForm[endKey] = isInt? Number.parseInt(this.dataForm[startKey]) + 1 : Number.parseFloat(this.dataForm[startKey]) + 0.001;
-                    this[endKey] = isInt? Number.parseInt(this[startKey]) + 1 : Number.parseFloat(this[startKey]) + 0.1;
+            rateCompare(){
+                var temp=this.discountRateEnd;
+                // 比较整数的大小
+                if(parseInt(this.discountRateEnd)<parseInt(this.discountRateStart)){
+                this.discountRateEnd=this.discountRateStart
+                this.discountRateStart=temp
+                }else if(parseInt(this.discountRateEnd)===parseInt(this.discountRateStart)){ // 整数相等的情况下 比较小数点后的大小
+                var minTemp,maxTemp = 0;
+                if(this.discountRateStart.indexOf('.') !==-1){
+                    minTemp = this.discountRateStart.substr(this.discountRateStart.indexOf('.')+1)
                 }
-            }
+                if(this.discountRateEnd.indexOf('.') !==-1){
+                    maxTemp = this.discountRateEnd.substr(this.discountRateEnd.indexOf('.')+1)
+                }
+                if(parseInt(maxTemp)<parseInt(minTemp)){
+                    this.discountRateEnd=this.discountRateStart
+                    this.discountRateStart=temp
+                }
+                }
+            },
+            stockCompare(){
+                var temp=this.stockQuantityeEnd;
+                // 比较整数的大小
+                if(parseInt(this.stockQuantityeEnd)<parseInt(this.stockQuantityStart)){
+                this.stockQuantityeEnd=this.stockQuantityStart
+                this.stockQuantityStart=temp
+                }else if(parseInt(this.stockQuantityeEnd)===parseInt(this.stockQuantityStart)){ // 整数相等的情况下 比较小数点后的大小
+                var minTemp,maxTemp = 0;
+                if(this.stockQuantityStart.indexOf('.') !==-1){
+                    minTemp = this.stockQuantityStart.substr(this.stockQuantityStart.indexOf('.')+1)
+                }
+                if(this.stockQuantityeEnd.indexOf('.') !==-1){
+                    maxTemp = this.stockQuantityeEnd.substr(this.stockQuantityeEnd.indexOf('.')+1)
+                }
+                if(parseInt(maxTemp)<parseInt(minTemp)){
+                    this.stockQuantityeEnd=this.stockQuantityStart
+                    this.stockQuantityStart=temp
+                }
+                }
+            },
+
         }
     }
 </script>
