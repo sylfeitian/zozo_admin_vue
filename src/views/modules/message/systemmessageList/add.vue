@@ -335,49 +335,53 @@
                 this.$emit("addList");
             },
             modeldataFormSubmit () {
+                if(this.dataList.length==0){
+                    this.$message.warning("至少勾选一个");
+                    return
+                }
                 this.loading = true;
-                    var obj=  {
-                        params:{
-                            ...this.dataForm,
-                        }
+                var obj=  {
+                    params:{
+                        ...this.dataForm,
                     }
-                    messageuserall(obj).then((res) => {
-                        this.loading = false;
-                        // alert(JSON.stringify(res));
-                        let status = null;
-                        if(res.code == "200"){
-                            // console.log(res.msg)
-                            // status = "success";
-                            // this.visible2 = false;
-                            // this.getData;
-                            // this.closeDialog();
-                            this.$message({
-                                message: "正在添加，由于商品数量较多，请稍后到分类列表查看",
-                                type: "success",
-                                duration: 1500
-                            })
-                            this.visible2 = false;
-                            this.getData;
-                            this.closeDialog();
-                            this.decl();
-                            var userLsit = res.data
-                            this.userLsit1 = res.data
-                            this.userLsit = userLsit.slice(0,50)
-                            console.log(this.userLsit)
-                        }else{
-                            // status = "error";
-                            this.$message({
-                                message: "添加失败",
-                                type: "error",
-                                duration: 1500
-                            })
-                        }
-                        // this.$message({
-                        //     message: res.msg,
-                        //     type: status,
-                        //     duration: 1500
-                        // })
-                    })
+                }
+                messageuserall(obj).then((res) => {
+                    this.loading = false;
+                    // alert(JSON.stringify(res));
+                    let status = null;
+                    if(res.code == "200"){
+                        // console.log(res.msg)
+                        // status = "success";
+                        // this.visible2 = false;
+                        // this.getData;
+                        // this.closeDialog();
+                        this.$message({
+                            message: "正在添加，由于商品数量较多，请稍后到分类列表查看",
+                            type: "success",
+                            duration: 1500
+                        })
+                        this.visible2 = false;
+                        this.getData;
+                        this.closeDialog();
+                        this.decl();
+                        var userLsit = res.data
+                        this.userLsit1 = res.data
+                        this.userLsit = userLsit.slice(0,50)
+                        console.log(this.userLsit)
+                    }else{
+                        // status = "error";
+                        this.$message({
+                            message: "添加失败",
+                            type: "error",
+                            duration: 1500
+                        })
+                    }
+                    // this.$message({
+                    //     message: res.msg,
+                    //     type: status,
+                    //     duration: 1500
+                    // })
+                })
             },
             // 关闭内层弹窗
             dataFormCancel(){
