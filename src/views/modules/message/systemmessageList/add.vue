@@ -33,6 +33,7 @@
                     {{tag.id}}
                 </el-tag>
 					  </span>
+                      <span style="margin-top: 10px;display: inline-block;">共{{userLsit1.length}}条</span>
             </el-form-item>
             <el-form-item label="消息标题：" prop="messageTitle" :label-width="formLabelWidth">
                 <el-input v-model.trim="addDataForm.messageTitle" auto-complete="off" placeholder="请填写标题" style="width: 1200px;"></el-input>
@@ -145,6 +146,7 @@
                     deleteIsBatchKey: 'id'
                 },
                 userLsit:[],
+                userLsit1:[],
                 checkAll: false,
                 dataListLoading: false,
                 dialogTableVisible: false,
@@ -224,6 +226,7 @@
             saveUser(){
                 this.dialogTableVisible = false;
                 this.userLsit = this.multipleSelection;
+                this.userLsit1 = this.multipleSelection;
             },
             receiver(val){
               
@@ -358,6 +361,7 @@
                             this.closeDialog();
                             this.decl();
                             var userLsit = res.data
+                            this.userLsit1 = res.data
                             this.userLsit = userLsit.slice(0,50)
                             console.log(this.userLsit)
                         }else{
