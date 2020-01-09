@@ -307,10 +307,6 @@
             this.dataForm.orderStatus = this.status == undefined ? "" : this.status;
             // this.getPaymentList();
             // this.getOrderListTop();
-        },
-        activated() { // keep-alive重新激活时，是否需要刷新列表
-            // this.getDataListFn();
-            // this.dataForm.orderStatus = this.status == undefined ? "" : this.status;
             if(this.$route.query.state == 1){
                 this.radio1="waitpay";
                 this.dataForm.topStatus="waitpay";
@@ -320,7 +316,10 @@
             }
             console.log(this.dataForm.topStatus);
             this.agreeChange(this.dataForm.topStatus);
-            
+        },
+        activated() { // keep-alive重新激活时，是否需要刷新列表
+            // this.getDataListFn();
+            // this.dataForm.orderStatus = this.status == undefined ? "" : this.status;
         },
         components: {
             Bread,
@@ -411,7 +410,7 @@
                 // this.dataForm.paymentStatus = ""
                 // this.dataForm.orderStatus = val;
                 this.dataForm.topStatus = val
-                // this.page = 1;
+                this.page = 1;
                 this.limit = 10;
                 // this.getDataList();
                 this.getDataListFn()
