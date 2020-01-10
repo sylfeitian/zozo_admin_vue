@@ -112,7 +112,7 @@
                         width="35%"
                         append-to-body
                         :before-close="closeDialog">
-                            <h3 style="text-align:center;">请确定是否添加全部商品到该分类下?</h3>
+                            <h3 style="text-align:center;">请确定是否添加全部?</h3>
                             <!-- <p style="color:red">请确认已与用户沟通达成一致</p> -->
                             <span slot="footer" class="dialog-footer"  >
                                     <el-button @click="dataFormCancel()">取消</el-button>
@@ -357,7 +357,7 @@
                         // this.getData;
                         // this.closeDialog();
                         this.$message({
-                            message: "正在添加，由于商品数量较多，请稍后到分类列表查看",
+                            message: "正在添加，由于用户数量较多，请稍后查看",
                             type: "success",
                             duration: 1500
                         })
