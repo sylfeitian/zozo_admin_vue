@@ -33,6 +33,7 @@
                     {{tag.id}}
                 </el-tag>
 					  </span>
+                      <span style="margin-top: 10px;display: inline-block;">共{{userLsit1.length}}条</span>
             </el-form-item>
             <el-form-item label="消息标题：" prop="messageTitle" :label-width="formLabelWidth">
                 <el-input v-model.trim="addDataForm.messageTitle" auto-complete="off" placeholder="请填写标题" style="width: 1200px;"></el-input>
@@ -111,7 +112,7 @@
                         width="35%"
                         append-to-body
                         :before-close="closeDialog">
-                            <h3 style="text-align:center;">请确定是否添加全部商品到该分类下?</h3>
+                            <h3 style="text-align:center;">请确定是否添加全部?</h3>
                             <!-- <p style="color:red">请确认已与用户沟通达成一致</p> -->
                             <span slot="footer" class="dialog-footer"  >
                                     <el-button @click="dataFormCancel()">取消</el-button>
@@ -145,6 +146,7 @@
                     deleteIsBatchKey: 'id'
                 },
                 userLsit:[],
+                userLsit1:[],
                 checkAll: false,
                 dataListLoading: false,
                 dialogTableVisible: false,
@@ -220,10 +222,12 @@
             },
             handleClose(index){
                 this.userLsit.splice(index, 1);
+                this.userLsit1.splice(index, 1);
             },
             saveUser(){
                 this.dialogTableVisible = false;
                 this.userLsit = this.multipleSelection;
+                this.userLsit1 = this.multipleSelection;
             },
             receiver(val){
               
@@ -332,48 +336,53 @@
                 this.$emit("addList");
             },
             modeldataFormSubmit () {
+                if(this.dataList.length==0){
+                    this.$message.warning("至少勾选一个");
+                    return
+                }
                 this.loading = true;
-                    var obj=  {
-                        params:{
-                            ...this.dataForm,
-                        }
+                var obj=  {
+                    params:{
+                        ...this.dataForm,
                     }
-                    messageuserall(obj).then((res) => {
-                        this.loading = false;
-                        // alert(JSON.stringify(res));
-                        let status = null;
-                        if(res.code == "200"){
-                            // console.log(res.msg)
-                            // status = "success";
-                            // this.visible2 = false;
-                            // this.getData;
-                            // this.closeDialog();
-                            this.$message({
-                                message: "正在添加，由于商品数量较多，请稍后到分类列表查看",
-                                type: "success",
-                                duration: 1500
-                            })
-                            this.visible2 = false;
-                            this.getData;
-                            this.closeDialog();
-                            this.decl();
-                            var userLsit = res.data
-                            this.userLsit = userLsit.slice(0,50)
-                            console.log(this.userLsit)
-                        }else{
-                            // status = "error";
-                            this.$message({
-                                message: "添加失败",
-                                type: "error",
-                                duration: 1500
-                            })
-                        }
-                        // this.$message({
-                        //     message: res.msg,
-                        //     type: status,
-                        //     duration: 1500
-                        // })
-                    })
+                }
+                messageuserall(obj).then((res) => {
+                    this.loading = false;
+                    // alert(JSON.stringify(res));
+                    let status = null;
+                    if(res.code == "200"){
+                        // console.log(res.msg)
+                        // status = "success";
+                        // this.visible2 = false;
+                        // this.getData;
+                        // this.closeDialog();
+                        this.$message({
+                            message: "正在添加，由于用户数量较多，请稍后查看",
+                            type: "success",
+                            duration: 1500
+                        })
+                        this.visible2 = false;
+                        this.getData;
+                        this.closeDialog();
+                        this.decl();
+                        var userLsit = res.data
+                        this.userLsit1 = res.data
+                        this.userLsit = userLsit.slice(0,50)
+                        console.log(this.userLsit)
+                    }else{
+                        // status = "error";
+                        this.$message({
+                            message: "添加失败",
+                            type: "error",
+                            duration: 1500
+                        })
+                    }
+                    // this.$message({
+                    //     message: res.msg,
+                    //     type: status,
+                    //     duration: 1500
+                    // })
+                })
             },
             // 关闭内层弹窗
             dataFormCancel(){
