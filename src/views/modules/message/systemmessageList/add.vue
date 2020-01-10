@@ -222,6 +222,7 @@
             },
             handleClose(index){
                 this.userLsit.splice(index, 1);
+                this.userLsit1.splice(index, 1);
             },
             saveUser(){
                 this.dialogTableVisible = false;
