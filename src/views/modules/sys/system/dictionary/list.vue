@@ -2,12 +2,12 @@
     <div>
         <Bread :breaddata="breaddata"></Bread>
         <div class="mod-sys__dict">
-            <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getDataList()">
+            <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getData()">
                 <el-form-item label="字典名称：">
                     <el-input v-model.trim="dataForm.dictName" placeholder="请输入关键词搜索" clearable></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button  class="btn" type="primary" @click="getDataList">搜索</el-button>
+                    <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>
                     <el-button  class="btn" type="primary" plain @click="reset()" >重置</el-button>
                 </el-form-item>
             </el-form>
@@ -120,6 +120,11 @@
             this.getDataList()
         },
         methods: {
+            getData(){
+                this.page = 1;
+                this.limit = 10;
+                this.getDataList();
+            },
             addWord(id){
                 this.$emit("addWord",id);
             },
@@ -134,7 +139,7 @@
             },
             reset(){
                 this.dataForm.dictName = "";
-                this.getDataList();
+                this.getData();
             }
         }
     }

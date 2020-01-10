@@ -2,12 +2,12 @@
     <div>
         <Bread :breaddata="breaddata"></Bread>
         <div class="mod-sys__user">
-            <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getDataList()">
+            <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getData()">
                 <el-form-item label="api接口翻译中文：">
                     <el-input v-model.trim="dataForm.chineseVocabulary" placeholder="请输入中文搜索" clearable></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button class="btn" type="primary" @click="getDataList">搜索</el-button>
+                    <el-button class="btn" type="primary" @click="getData()">搜索</el-button>
                     <el-button class="btn" type="primary" plain @click="reset()" >重置</el-button>
                 </el-form-item>
             </el-form>
@@ -128,6 +128,11 @@
             this.getDataList()
         },
         methods:{
+            getData(){
+                this.page = 1;
+                this.limit = 10;
+                this.getDataList();
+            },
             handleClick(tab,val) {
                 if(tab== ""){
                     this.dataForm.lexiconType = "1"
@@ -151,7 +156,7 @@
             },
             reset(){
                 this.dataForm.chineseVocabulary = "";
-                this.getDataList();
+                this.getData();
             },
         }
     }
