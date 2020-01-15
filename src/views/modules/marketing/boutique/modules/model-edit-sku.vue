@@ -717,6 +717,10 @@
                 // })
             },
             modeldataFormSubmit () {
+                if(this.dataList.length==0){
+                    this.$message.warning("至少勾选一个");
+                    return
+                }
                 this.loading = true;
                     var obj=  {
                         params:{

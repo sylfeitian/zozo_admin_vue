@@ -3,7 +3,7 @@
         <Bread :breaddata="breaddata"></Bread>
 
         <div class="mod-sys__log-error">
-            <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getDataList()">
+            <el-form :inline="true" :model="dataForm" class="grayLine" @keyup.enter.native="getData()">
                 <el-form-item label="操作账号：">
                     <el-input v-model.trim="dataForm.creator" placeholder="请输入账号" clearable></el-input>
                 </el-form-item>
@@ -31,7 +31,7 @@
                     ></el-date-picker>
                 </el-form-item>
                 <el-form-item>
-                    <el-button  class="btn" type="primary" @click="getDataList">搜索</el-button>
+                    <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>
                     <el-button  class="btn" type="primary" plain @click="reset()" >重置</el-button>
                 </el-form-item>
                 <br />
@@ -114,6 +114,11 @@
             this.listModule()
         },
         methods: {
+            getData(){
+                this.page = 1;
+                this.limit = 10;
+                this.getDataList();
+            },
             listModule(){
                 errorListModule().then((res)=>{
                     if(res.code == 200 && res.data){
@@ -131,7 +136,7 @@
                 this.dataForm.module = "";
                 this.dataForm.createDateStart = "";
                 this.dataForm.createDateEnd = "";
-                this.getDataList();
+                this.getData();
             },
             acttime(){
                 this.dataForm.createDateStart = this.timeArr[0];
