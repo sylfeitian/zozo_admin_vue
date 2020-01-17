@@ -441,9 +441,10 @@ export const exportError= `${base}/log/error/export`;
 //配置管理-------------------------------------------------------------------------------------------------------------
 // 广告位列表
 export const advList = `${base}/adv/page`;
+export const matrixList = `${base}/matrixadv/page`;
 // 广告位批量删除
 export const advDelete = `${base}/adv/batch`;
-
+export const matrixDelete = `${base}/matrixadv/batch`;
 // 底部iCon配置
 export const iconCinfigList = `${base}/icon/list`;
 //首页集合列表
@@ -498,7 +499,7 @@ export const couponStorePage = `${base}/statistics/coupons/page`;
 
 
 
-//版本管理 
+//版本管理
 export const getsysversionmange = `${base}/sysversionmange/page`;
 
 

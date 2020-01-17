@@ -487,6 +487,20 @@ export default {
                     "parentName":null
                 },
                 {
+                    "id":"1067246875800000086",
+                    "pid":"1067246875800000011",
+                    "children":[],
+                    "name":"矩阵广告位配置",
+                    "url":"collocation/matrix/adsenseList",
+                    "type":0,
+                    "icon":"icon-medicinebox",
+                    "permissions":"",
+                    "sort":0,
+                    "createDate":"2019-04-29 18:57:16",
+                    "resourceList":null,
+                    "parentName":null
+                },
+                {
                     "id":"1067246875800000082",
                     "pid":"1067246875800000011",
                     "children":[],
