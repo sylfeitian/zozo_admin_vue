@@ -565,7 +565,7 @@
 <script>
     import mixinViewModule from '@/mixins/view-module'
     import { matrixList,matrixDelete } from '@/api/url'
-    import { uploadPicBase64,zozogoodsPage,plainMatrixAdveAdd,plainMatrixAdveUpdate,adverMatirxDetail,categoryCnList,shopStoreAdvList,shopBrandAdvList,fashionAdvList } from '@/api/api'
+    import { uploadPicBase64,zozogoodsPage,plainMatrixAdveAdd,plainMatrixAdveUpdate,adverMatrixDetail,categoryCnList,shopStoreAdvList,shopBrandAdvList,fashionAdvList } from '@/api/api'
     import Bread from "@/components/bread";
     import { getUrlBase64 } from '@/utils'
     export default {
@@ -722,7 +722,7 @@
                     linkType:  [
                             { required: true, message: '链接类型不能为空', trigger: 'blur' },
                     ],
-                    fileList:[
+                    imageSrc:[
                             { required: true, message: '矩阵图不能为空', trigger: 'blur' },
                     ],
                     linkUrl:[
@@ -816,24 +816,36 @@
                     this.activiTitle = '编辑矩阵图';
                     this.getInfo(id);//判断是编辑情况下调详情方法
                 }else{
+                    this.activiDataForm.imageSrc1 = '';
+                    this.activiDataForm.imageSrc2 = '';
                     this.activiTitle = '添加矩阵图';
                     this.advId = '';
                 }
             },
             //矩阵图回显
             getInfo(id){
-                adverMatirxDetail({id:id}).then((res)=>{
+                adverMatrixDetail({id:id}).then((res)=>{
                     console.log('矩阵详情',res)
-                    if(res.code == 200){
-                        Object.assign(this.activiDataForm,res.data);
-                        this.activiDataForm.position =this.activiDataForm.position+"";
+                    let urlList = '';
+                    if (res.code == 200) {
+                        Object.assign(this.activiDataForm, res.data);
+                        this.activiDataForm.position = this.activiDataForm.position + "";
                         urlList = res.data.imageSrc.split(',');
-                        urlList.forEach((item) => {
-                            this.activiDataForm.fileList = [{name: '文件',url: item}];
-                        });
-                        if((res.data.linkType == 2 || res.data.linkType == 5 || res.data.linkType == 6 || res.data.linkType == 7)&&res.data.linkValueName){
+                        if (urlList.length === 0) {
+                            this.activiDataForm.imageSrc1 = ''
+                            this.activiDataForm.imageSrc2 = ''
+                        } else if (urlList.length === 1) {
+                            this.activiDataForm.imageSrc1 = urlList[0]
+                        } else if (urlList.length === 2) {
+                            this.activiDataForm.imageSrc1 = urlList[0]
+                            this.activiDataForm.imageSrc2 = urlList[1]
+                        }
+                        // urlList.forEach((item) => {
+                        //     this.activiDataForm.fileList = [{name: '文件',url: item}];
+                        // });
+                        if ((res.data.linkType == 2 || res.data.linkType == 5 || res.data.linkType == 6 || res.data.linkType == 7) && res.data.linkValueName) {
                             this.checkItem = res.data.linkValueName;
-                        } else if(res.data.linkType == 4) {
+                        } else if (res.data.linkType == 4) {
                             let lvArr = res.data.linkValue.split(',');
                             this.classSelectedOptions.length = 0;
                             lvArr.map(val => this.classSelectedOptions.push(val));
@@ -873,7 +885,7 @@
                         that.updateloading1 = false;
                         console.log(res)
                         if(res.code == 200){
-                            that.activiDataForm.fileList = [{name: '文件',url:that.$imgDomain + res.data.url}]
+                            that.activiDataForm.fileList = [{name: '文件',url: res.data.url}]
                             // that.activiDataForm.imageSrc = that.$imgDomain + res.data.url;
                             that.activiDataForm.imageSrc1 = res.data.url;
                             that.activiDataForm.imageSrc = that.activiDataForm.imageSrc1 + ',' + that.activiDataForm.imageSrc2
@@ -898,7 +910,7 @@
                         that.updateloading2 = false;
                         console.log(res)
                         if(res.code == 200){
-                            that.activiDataForm.fileList = [{name: '文件',url:that.$imgDomain + res.data.url}]
+                            that.activiDataForm.fileList = [{name: '文件',url: res.data.url}]
                             // that.activiDataForm.imageSrc = that.$imgDomain + res.data.url;
                             that.activiDataForm.imageSrc2 = res.data.url;
                             that.activiDataForm.imageSrc = that.activiDataForm.imageSrc1 + ',' + that.activiDataForm.imageSrc2

@@ -98,6 +98,9 @@
 <!--                <el-input v-model.trim="dataForm.description" placeholder="" style="width: 250px;"></el-input>&nbsp;-->
 <!--                <el-button class="btn" type="primary" @click="getDataList()">搜索</el-button>-->
             </el-form-item>
+            <el-form-item label="排序：" prop="sort">
+                <el-input-number v-model="dataForm.sort" :min="1" :max="10000000"></el-input-number>
+            </el-form-item>
 <!--            <el-form-item style="text-align: center;margin-left: -120px!important;">-->
 <!--                <el-button  @click="dataFormCancel()">取消</el-button>-->
 <!--                <el-button type="primary" @click="dataFormSubmit('addForm')"-->
@@ -138,6 +141,7 @@
                     imageUrl:"",//店铺主图
                     storeLogo:"",//店铺logo
                     mainTag:[],//标签分类
+                    sort:'0',
                 },
                 labelOption:[{ id: '0', name: '营业中' },{ id: '1', name: '已停业' }],
                 dataRule : {
@@ -209,7 +213,7 @@
                         if(this.dataForm.mainTag != "" && this.dataForm.mainTag != null) {
                             this.dataForm.mainTag = res.data.mainTag.split(",");
                         } else {
-                            
+
                         }
                     }else{
 
@@ -298,6 +302,7 @@
                             "imageUrl":   this.dataForm.imageUrl, //"http://bug.leimingtech.com/zentao/file-read-25289.png",
                             "storeLogo": this.dataForm.storeLogo,// "http://bug.leimingtech.com/zentao/file-read-25289.png",
                             "mainTag":  mainTag,
+                            "sort": this.dataForm.sort,
                         }
                         if(this.row) obj.id = this.row.id
                         var fn = updateShopStore;

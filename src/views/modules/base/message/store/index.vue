@@ -98,6 +98,7 @@
           </div>
         </template>
       </el-table-column>
+      <el-table-column prop="sort" label="排序" align="center"></el-table-column>
       <el-table-column label="售卖品牌" align="center">
         <template slot-scope="scope">
           <el-button type="text" @click.native.prevent="addHandle(scope.row)" size="mini">查看</el-button>

@@ -431,15 +431,15 @@ export const updateMobbileMenu = params => { return http.put(`${base}/mobile/ind
 // 广告管理--------------------------------------------------------------------------------------------------------------------
 //普通广告新增
 export const plainAdveAdd = params => { return http.post(`${base}/adv`, params).then(res => res.data); };
-export const plainMatrixAdveAdd = params => { return http.post(`${base}/matirxadv`, params).then(res => res.data); };
+export const plainMatrixAdveAdd = params => { return http.post(`${base}/matrixadv`, params).then(res => res.data); };
 //普通广告类别下拉
 export const plainAdveSlect = params => { return http.get(`${base}/adv/category/list/enabled`).then(res => res.data); }
 //普通广告修改
 export const plainAdveUpdate = params => { return http.put(`${base}/adv`, params).then(res => res.data); };
-export const plainMatrixAdveUpdate = params => { return http.put(`${base}/matirxadv`, params).then(res => res.data); };
+export const plainMatrixAdveUpdate = params => { return http.put(`${base}/matrixadv`, params).then(res => res.data); };
 //广告详情
 export const adverDetail = params => { return http.get(`${base}/adv/${params.id}`).then(res => res.data); }
-export const adverMatirxDetail = params => { return http.get(`${base}/matrixadv/${params.id}`).then(res => res.data); }
+export const adverMatrixDetail = params => { return http.get(`${base}/matrixadv/${params.id}`).then(res => res.data); }
 //移动楼层回显
 export const flooradveDetail = params => { return http.get(`${base}/webfloor/${params.id}`).then(res => res.data); }
 //修改移动楼层
