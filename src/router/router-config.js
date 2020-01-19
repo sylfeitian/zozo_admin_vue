@@ -490,7 +490,7 @@ export default {
                     "id":"1067246875800000086",
                     "pid":"1067246875800000011",
                     "children":[],
-                    "name":"矩阵广告位配置",
+                    "name":"首页导航配置",
                     "url":"collocation/matrix/adsenseList",
                     "type":0,
                     "icon":"icon-medicinebox",

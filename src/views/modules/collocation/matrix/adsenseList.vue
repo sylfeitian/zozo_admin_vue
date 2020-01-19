@@ -2,19 +2,19 @@
   <div>
     <Bread :breaddata="breaddata"></Bread>
     <el-form :inline="true" class="grayLine topGapPadding" :model="dataForm" @keyup.enter.native="getDataList()" >
-        <el-form-item label="矩阵广告名称：">
-            <el-input v-model.trim="dataForm.name" placeholder="请输入矩阵广告名称" clearable></el-input>
+        <el-form-item label="导航：">
+            <el-input v-model.trim="dataForm.name" placeholder="根据标题/副标题查询" clearable></el-input>
         </el-form-item>
-        <el-form-item label="广告位置：">
-            <el-select v-model="dataForm.position" clearable  placeholder="请选择">
-                <el-option
-                    v-for="item in address"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id">
-                </el-option>
-            </el-select>
-        </el-form-item>
+<!--        <el-form-item label="广告位置：">-->
+<!--            <el-select v-model="dataForm.position" clearable  placeholder="请选择">-->
+<!--                <el-option-->
+<!--                    v-for="item in address"-->
+<!--                    :key="item.id"-->
+<!--                    :label="item.name"-->
+<!--                    :value="item.id">-->
+<!--                </el-option>-->
+<!--            </el-select>-->
+<!--        </el-form-item>-->
         <el-form-item  label="活动状态：">
             <el-select v-model="dataForm.state" clearable  placeholder="请选择">
                 <el-option
@@ -28,11 +28,11 @@
         <el-form-item>
             <el-button  class="btn" type="primary" @click="getData()">搜索</el-button>
             <el-button class="btn"  type="primary" plain @click="reset()" plain>重置</el-button>
+            <el-button type="primary" @click="addActivity()">添加导航</el-button>
         </el-form-item>
     </el-form>
-    <el-form>
-        <el-button type="primary" @click="addActivity()">添加矩阵图</el-button>
-    </el-form>
+<!--    <el-form>-->
+<!--    </el-form>-->
     <el-table
 	  :data="dataList"
       v-loading="dataListLoading"
@@ -51,9 +51,15 @@
 		<el-table-column
 		    prop="name"
             align="center"
-		    label="矩阵图名称"
+		    label="导航标题"
 		    width="240">
 		</el-table-column>
+        <el-table-column
+                prop="subtitle"
+                align="center"
+                label="导航副标题"
+                width="240">
+        </el-table-column>
 		<el-table-column
 		    prop="createDate"
             align="center"
@@ -133,23 +139,26 @@
         class="activiDialog"
         width="40%">
         <el-form :model="activiDataForm" :rules="dataRule" ref="activiDataForm" @keyup.enter.native="subActivity()" label-width="120px">
-            <el-form-item  label="广告位置："  prop="position">
-                <el-select v-model="activiDataForm.position" clearable  placeholder="请选择广告位置">
-                    <el-option
-                        v-for="item in adsenses"
-                        :key="item.id"
-                        :label="item.name"
-                        :value="item.id">
-                    </el-option>
-                </el-select>
+<!--            <el-form-item  label="广告位置："  prop="position">-->
+<!--                <el-select v-model="activiDataForm.position" clearable  placeholder="请选择广告位置">-->
+<!--                    <el-option-->
+<!--                        v-for="item in adsenses"-->
+<!--                        :key="item.id"-->
+<!--                        :label="item.name"-->
+<!--                        :value="item.id">-->
+<!--                    </el-option>-->
+<!--                </el-select>-->
+<!--            </el-form-item>-->
+            <el-form-item label="导航标题：" prop="name">
+                <el-input v-model.trim="activiDataForm.name" placeholder="请输入6个字以内的标题"></el-input>
             </el-form-item>
-            <el-form-item label="矩阵图名称：" prop="name">
-                <el-input v-model.trim="activiDataForm.name" placeholder="请输入30字以内的名称"></el-input>
+            <el-form-item label="导航副标题：" prop="subtitle">
+                <el-input v-model.trim="activiDataForm.subtitle" placeholder="请输入12字以内的副标题"></el-input>
             </el-form-item>
             <el-form-item label="排序：">
             	 <el-input-number v-model="activiDataForm.sort" placeholder="数字越大排序越靠前"  :min="1" :max="99999" :step="1" label="数字越大排序越靠前"></el-input-number>
             </el-form-item>
-            <el-form-item label="上传矩阵图：" prop="fileList" class="imgConfig">
+            <el-form-item label="上传导航图1：" prop="fileList" class="imgConfig">
                 <el-upload
                     v-loading="updateloading1"
                     class="avatar-uploader"
@@ -157,9 +166,14 @@
                     :http-request="upLoad1"
                     :show-file-list="false"
                     :before-upload="beforeAvatarUpload">
-                    <img v-if="activiDataForm.imageSrc1" :src="activiDataForm.imageSrc1 | filterImgUrl" class="avatar">
+                    <img v-if="activiDataForm.imageSrc" :src="activiDataForm.imageSrc | filterImgUrl" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
+            </el-form-item>
+            <el-form-item>
+                <div style="margin-left:0px;margin-bottom:0px;color: rgba(58,71,84,0.44)">只能上传jpg/jpeg/png格式文件，文件不能超过5Mb 建议尺寸：300*200px</div>
+            </el-form-item>
+            <el-form-item label="上传导航图2：" prop="fileList" class="imgConfig">
                 <el-upload
                     v-loading="updateloading2"
                     class="avatar-uploader"
@@ -167,9 +181,12 @@
                     :http-request="upLoad2"
                     :show-file-list="false"
                     :before-upload="beforeAvatarUpload">
-                    <img v-if="activiDataForm.imageSrc2" :src="activiDataForm.imageSrc2 | filterImgUrl" class="avatar">
+                    <img v-if="activiDataForm.imageSrcSecond" :src="activiDataForm.imageSrcSecond | filterImgUrl" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
+            </el-form-item>
+            <el-form-item>
+                <div style="margin-left:0px;margin-bottom:0px;color: rgba(58,71,84,0.44)">只能上传jpg/jpeg/png格式文件，文件不能超过5Mb 建议尺寸：300*200px</div>
             </el-form-item>
             <!-- adsenses:[
                     {id:'1',name:'首页'},
@@ -181,14 +198,14 @@
                     {id:'7',name:'首页弹窗'},
                     {id:'8',name:'首页弹框背景'},
                 ], -->
-            <div v-if="activiDataForm.position == 1" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：375*420px</div>
-            <div v-if="activiDataForm.position == 2" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：375*400px</div>
-            <div v-if="activiDataForm.position == 3" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：375*400px</div>
-            <div v-if="activiDataForm.position == 4" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：375*400px</div>
-            <div v-if="activiDataForm.position == 5" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：375*250px</div>
-            <div v-if="activiDataForm.position == 6" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：375*250px</div>
-            <div v-if="activiDataForm.position == 7" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：300*500px</div>
-            <div v-if="activiDataForm.position == 8" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：375*812px</div>
+
+<!--            <div v-if="activiDataForm.position == 2" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：375*400px</div>-->
+<!--            <div v-if="activiDataForm.position == 3" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：375*400px</div>-->
+<!--            <div v-if="activiDataForm.position == 4" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：375*400px</div>-->
+<!--            <div v-if="activiDataForm.position == 5" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：375*250px</div>-->
+<!--            <div v-if="activiDataForm.position == 6" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：375*250px</div>-->
+<!--            <div v-if="activiDataForm.position == 7" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：300*500px</div>-->
+<!--            <div v-if="activiDataForm.position == 8" style="margin-left:120px;margin-bottom:20px;">只能上传jpg/png文件，且不超过5Mb，建议尺寸：375*812px</div>-->
             <el-form-item label="状态：" prop="state">
                <el-radio-group v-model="activiDataForm.state">
                     <el-radio :label="1">启用</el-radio>
@@ -532,7 +549,7 @@
                 prop="mediaName"
                 align="center"
                 label="发布人"
-                width="180"
+                width="180">
             </el-table-column>
             <el-table-column
                 prop="publishTime"
@@ -625,13 +642,13 @@
                 activiTitle:'添加活动',
                 activiDataForm:{
                     name:'',
-                    position:'',
+                    subtitle:'',
+                    position:'1',
                     state:1,
                     sort:0,
                     linkType:0,
                     imageSrc:'',
-                    imageSrc1:'',
-                    imageSrc2:'',
+                    imageSrcSecond:'',
                     fileList:[],
                     linkUrl:'',
                     linkValue:''
@@ -701,7 +718,7 @@
                     {id:'11',name:'搭配集合'},
                     {id:'12',name:'限时折扣'},
                 ],
-                breaddata: ["配置管理", "矩阵广告位配置"],
+                breaddata: ["配置管理", "首页导航配置"],
                 updateloading: false,
                 updateloading1: false,
                 updateloading2: false
@@ -711,7 +728,10 @@
             dataRule(){
                 return{
                     name : [
-                        { required: true, message: '矩阵图名称不能为空', trigger: 'blur' },
+                        { required: true, message: '导航标题不能为空', trigger: 'blur' },
+                    ],
+                    subtitle : [
+                        { required: false },
                     ],
                     position : [
                             { required: true, message: '广告位置不能为空', trigger: 'blur' },
@@ -744,8 +764,22 @@
                         characterCount = characterCount + 1;
                     }
                     var count = chineseCount + characterCount;
-                    if (count > 60) { //输入字符大于60的时候过滤
+                    if (count > 12) {
                         this.activiDataForm.name = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
+                    }
+                }
+            },
+            'activiDataForm.subtitle': function (newV, oldV) {
+                var chineseCount = 0, characterCount = 0;
+                for (let i = 0; i < newV.length; i++) {
+                    if (/^[\u4e00-\u9fa5]*$/.test(newV[i])) { //汉字
+                        chineseCount = chineseCount + 2;
+                    } else { //字符
+                        characterCount = characterCount + 1;
+                    }
+                    var count = chineseCount + characterCount;
+                    if (count > 24) {
+                        this.activiDataForm.subtitle = newV.substr(0, (chineseCount / 2 + characterCount) - 1)
                     }
                 }
             },
@@ -777,14 +811,6 @@
                     }
                 }
             },
-            // 'activiDataForm.sort':function(newV,oldV) {
-            //     newV=~~newV;
-            //     for (let i = 0; i < newV.toString().length; i++) {
-            //         if(!/[0-9]/.test(newV[i])){
-            //             this.activiDataForm.sort = newV.toString().replace(newV[i],"")
-            //         }
-            //     }
-            // },
 
             },
             created(){
@@ -813,36 +839,24 @@
                 this.buttonStatus = false
                 if(id){
                     this.advId = id;
-                    this.activiTitle = '编辑矩阵图';
+                    this.activiTitle = '编辑导航';
                     this.getInfo(id);//判断是编辑情况下调详情方法
                 }else{
-                    this.activiDataForm.imageSrc1 = '';
-                    this.activiDataForm.imageSrc2 = '';
-                    this.activiTitle = '添加矩阵图';
+                    this.activiDataForm.imageSrc = '';
+                    this.activiDataForm.imageSrcSecond = '';
+                    this.activiTitle = '添加导航';
                     this.advId = '';
                 }
             },
             //矩阵图回显
             getInfo(id){
                 adverMatrixDetail({id:id}).then((res)=>{
-                    console.log('矩阵详情',res)
-                    let urlList = '';
+                    console.log('导航详情',res)
                     if (res.code == 200) {
                         Object.assign(this.activiDataForm, res.data);
                         this.activiDataForm.position = this.activiDataForm.position + "";
-                        urlList = res.data.imageSrc.split(',');
-                        if (urlList.length === 0) {
-                            this.activiDataForm.imageSrc1 = ''
-                            this.activiDataForm.imageSrc2 = ''
-                        } else if (urlList.length === 1) {
-                            this.activiDataForm.imageSrc1 = urlList[0]
-                        } else if (urlList.length === 2) {
-                            this.activiDataForm.imageSrc1 = urlList[0]
-                            this.activiDataForm.imageSrc2 = urlList[1]
-                        }
-                        // urlList.forEach((item) => {
-                        //     this.activiDataForm.fileList = [{name: '文件',url: item}];
-                        // });
+                        this.activiDataForm.imageSrc = res.data.imageSrc;
+                        this.activiDataForm.imageSrcSecond = res.data.imageSrcSecond;
                         if ((res.data.linkType == 2 || res.data.linkType == 5 || res.data.linkType == 6 || res.data.linkType == 7) && res.data.linkValueName) {
                             this.checkItem = res.data.linkValueName;
                         } else if (res.data.linkType == 4) {
@@ -886,9 +900,7 @@
                         console.log(res)
                         if(res.code == 200){
                             that.activiDataForm.fileList = [{name: '文件',url: res.data.url}]
-                            // that.activiDataForm.imageSrc = that.$imgDomain + res.data.url;
-                            that.activiDataForm.imageSrc1 = res.data.url;
-                            that.activiDataForm.imageSrc = that.activiDataForm.imageSrc1 + ',' + that.activiDataForm.imageSrc2
+                            that.activiDataForm.imageSrc = res.data.url;
                         }else{
                             that.$message.error('上传失败');
                         }
@@ -911,9 +923,7 @@
                         console.log(res)
                         if(res.code == 200){
                             that.activiDataForm.fileList = [{name: '文件',url: res.data.url}]
-                            // that.activiDataForm.imageSrc = that.$imgDomain + res.data.url;
-                            that.activiDataForm.imageSrc2 = res.data.url;
-                            that.activiDataForm.imageSrc = that.activiDataForm.imageSrc1 + ',' + that.activiDataForm.imageSrc2
+                            that.activiDataForm.imageSrcSecond = res.data.url;
                         }else{
                             that.$message.error('上传失败');
                         }
